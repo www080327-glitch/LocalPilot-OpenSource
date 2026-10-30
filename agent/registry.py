@@ -205,7 +205,7 @@ class ToolRegistry:
         bounded = {"status": result.get("status", "ok") if isinstance(result, dict) else "ok",
                    "truncated": True, "result_preview": preview}
         if isinstance(result, dict):
-            for field in ("exit_code", "timeout_seconds", "action_sent", "action_may_have_applied",
+            for field in ("exit_code", "timeout_seconds", "process_completed", "partial_effects_possible", "action_sent", "action_may_have_applied",
                           "replay_allowed", "verification", "receipt_id", "server_id", "tool_id",
                           "trust", "server_reported_success", "stage", "verified"):
                 if field in result:

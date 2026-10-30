@@ -65,7 +65,7 @@ def shell(workspace_root, command, timeout=20, access='workspace', *, mode, priv
         p.wait();p.stdout.close();p.stderr.close()
     return {'status':'timeout' if timed_out else 'ok' if p.returncode==0 else 'nonzero_exit',
             'exit_code':p.returncode,**{k:v.decode(errors='replace') for k,v in output.items()},'truncated':truncated,
-            'action_sent':True,'action_may_have_applied':timed_out or p.returncode!=0,'replay_allowed':False,
+            'action_sent':True,'process_completed':not timed_out and p.returncode>=0,'partial_effects_possible':not timed_out and p.returncode>0,'action_may_have_applied':timed_out or p.returncode<0,'replay_allowed':False,
             'verification':'NOT_RUN','network':'available','sandbox_mode':effective}
 
 
@@ -120,6 +120,6 @@ def qualified_shell(registry, name):
     ledger must quarantine an interrupted or uncertain execution.
     """
     fn=registry._tools.get(name)
-    policy=getattr(registry,'scope_policy',{})
+    policy=getattr(registry,'scope_policy',None) or {}
     return (name=='shell' and policy.get('revision') in {2,3} and isinstance(fn,partial)
             and fn.func is shell and fn.keywords.get('mode')==policy.get('mode'))

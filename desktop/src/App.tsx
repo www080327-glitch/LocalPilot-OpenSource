@@ -1,3 +1,4 @@
+import { shouldSubmitEnter, type EnterBehavior } from "./inputBehavior";
 import { ensureLocalModelLoaded } from "./modelLoading";
 import { latestTask, errorAfterHealthyConnection } from "./domain";
 import {
@@ -464,6 +465,16 @@ export default function App() {
       persistQueue.current.catch(() => {});
     }
   }
+  const [enterBehavior, setEnterBehavior] = useState<EnterBehavior>(() =>
+    stored<EnterBehavior>("lp.enterBehavior", "newline") === "send"
+      ? "send"
+      : "newline",
+  );
+  const composing = useRef(false);
+  const lastCompositionEnd = useRef(-Infinity);
+  useEffect(() => {
+    localStorage.setItem("lp.enterBehavior", JSON.stringify(enterBehavior));
+  }, [enterBehavior]);
   const composer = useRef<HTMLTextAreaElement>(null),
     scroller = useRef<HTMLDivElement>(null),
     searchRef = useRef<HTMLInputElement>(null),
@@ -1029,6 +1040,18 @@ export default function App() {
     }
   }
   async function send(cloud = false) {
+    if (
+      !preview &&
+      currentTask &&
+      (isUnknown(currentTask) || !terminal.has(currentTask.status))
+    ) {
+      setError(
+        isUnknown(currentTask)
+          ? "这条任务的旧操作结果尚未核对，不能通过继续自动重做。请检查实际文件，或新建会话重新说明任务。"
+          : "当前任务正在执行或等待处理，结束后再发送。",
+      );
+      return;
+    }
     if (!preferencesReady || !globals.completed) {
       setOnboarding(true);
       return;
@@ -1475,9 +1498,9 @@ export default function App() {
             <span>LocalPilot</span>
             <span
               className="version"
-              title={`${packageInfo.version} · 权限修复版`}
+              title={`${packageInfo.version} · 交互修复版`}
             >
-              RC.7 · 权限版
+              RC.7 · 交互修复
             </span>
           </div>
           <button className="new-chat" onClick={newChat}>
@@ -1655,7 +1678,7 @@ export default function App() {
                 className="icon-btn"
                 onClick={() =>
                   setApiInfo(
-                    "⌘ N 新会话\n⌘ K 搜索任务\n⌘ J 折叠任务栏\n⌘ , 连接与偏好设置\n⌘ Enter 发送\nEnter 发送 · Shift Enter 换行\n方向键调整思考档位和面板宽度\nEsc 关闭弹窗",
+                    `⌘ N 新会话\n⌘ K 搜索任务\n⌘ J 折叠任务栏\n⌘ , 连接与偏好设置\n${enterBehavior === "send" ? "Enter 发送 · Shift Enter 换行" : "Enter 换行 · ⌘ Enter 发送"}\n方向键调整思考档位和面板宽度\nEsc 关闭弹窗`,
                   )
                 }
                 aria-label="键盘快捷键"
@@ -2007,14 +2030,36 @@ export default function App() {
               value={input}
               rows={3}
               onChange={(e) => setInput(e.target.value)}
+              onBlur={() => {
+                composing.current = false;
+              }}
+              onCompositionStart={() => {
+                composing.current = true;
+              }}
+              onCompositionEnd={() => {
+                composing.current = false;
+                lastCompositionEnd.current = performance.now();
+              }}
               onKeyDown={(e) => {
                 if (
-                  e.key === "Enter" &&
-                  !e.shiftKey &&
-                  !e.nativeEvent.isComposing
+                  shouldSubmitEnter(
+                    {
+                      key: e.key,
+                      shiftKey: e.shiftKey,
+                      altKey: e.altKey,
+                      metaKey: e.metaKey,
+                      ctrlKey: e.ctrlKey,
+                      isComposing: e.nativeEvent.isComposing,
+                      keyCode: e.nativeEvent.keyCode,
+                    },
+                    enterBehavior,
+                    composing.current,
+                    lastCompositionEnd.current,
+                    performance.now(),
+                  )
                 ) {
                   e.preventDefault();
-                  send();
+                  void send();
                 }
               }}
             />
@@ -2342,7 +2387,9 @@ export default function App() {
                   : "操作按当前权限执行 · 云端使用所选模型"}
             </span>
             <span>
-              Enter 发送 <b>·</b> Shift Enter 换行
+              {enterBehavior === "send"
+                ? "Enter 发送 · Shift Enter 换行"
+                : "Enter 换行 · ⌘ Enter 发送"}
             </span>
           </div>
         </div>
@@ -2997,7 +3044,7 @@ export default function App() {
           <div className="onboarding-intro">
             <Mark />
             <span className="eyebrow">
-              WELCOME TO LOCALPILOT · {packageInfo.version} · 权限修复版
+              WELCOME TO LOCALPILOT · {packageInfo.version} · 交互修复版
             </span>
             <p>
               检测设备、准备服务，再接受推荐或跳过下载。以后可以在模型库随时调整。
@@ -3206,6 +3253,8 @@ export default function App() {
           </section>
           <ProductSettings
             permissionMode={permissionDefault}
+            enterBehavior={enterBehavior}
+            onEnterBehavior={setEnterBehavior}
             onPermission={(id) => choosePermission(id, true)}
             defaultModel={defaultModel}
             models={models.filter((m) => !m.reasoning_only)}

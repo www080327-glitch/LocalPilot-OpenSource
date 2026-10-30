@@ -890,6 +890,10 @@ class AgentSession:
             for receipt in receipts:
                 try: mutating = self.registry.metadata(receipt['name']).mutating
                 except ValueError: continue  # Coordinator tools retain their own obligations.
+                # A fully observed Shell exit is a settled failed attempt, not
+                # an unresolved effect. Preserve its error, allow inspection and
+                # corrected work; final deliverable verification stays separate.
+                if receipt.get('side_effect_status') == 'failed_process':continue
                 if mutating and not receipt['payload'].get('ok') and receipt['receipt_id'] not in repaired:
                     status = 'incomplete'
                     break
@@ -1824,13 +1828,16 @@ class AgentSession:
                 else:
                     result = self.registry.call(call.name, args, approved=approved, receipt_id=call.id, scope_approval=scope_approval)
             payload = self._payload(result)
+            from .host_tools import qualified_shell
+            completed_shell_failure = (qualified_shell(self.registry,call.name) and isinstance(result,dict)
+                and result.get('status')=='nonzero_exit' and result.get('process_completed') is True)
             if (not self.legacy and metadata.mutating and isinstance(result, dict)
                     and result.get('status') in {'unknown','UNKNOWN'}):
                 payload = {'ok':False,'error':{'type':'unknown_effect','message':'Tool reported an uncertain mutation.'},
                     'result':{**result,'action_may_have_applied':True,'replay_allowed':False}}
             if (not self.legacy and not self.computer and metadata.mutating and not payload.get("ok")
                     and isinstance(result, dict) and result.get("status") in {"error", "timeout", "nonzero_exit"}
-                    and result.get("action_sent") is not False and result.get("applied") != []):
+                    and result.get("action_sent") is not False and result.get("applied") != [] and not completed_shell_failure):
                 # A failing process/extension may already have changed the world.
                 # A receipt for failure is not a certificate of no side effects.
                 payload["result"] = {**result, "action_may_have_applied": True, "replay_allowed": False}
@@ -1927,12 +1934,15 @@ class AgentSession:
         result = payload.get("result")
         partial_effect = isinstance(result, dict) and (bool(result.get("applied")) or result.get("action_sent") is True) and not payload.get("ok")
         unknown_effect = isinstance(result, dict) and result.get("action_may_have_applied") is True
+        from .host_tools import qualified_shell
+        completed_shell_failure = (qualified_shell(self.registry,call.name) and isinstance(result,dict)
+            and result.get('status')=='nonzero_exit' and result.get('process_completed') is True)
         record = {"signature": self._signature(call), "arguments": call.arguments,
                   "payload": deepcopy(payload), "read_receipt": deepcopy(read_receipt),
                   "receipt_id": f"turn:{self.turn_id}/call:{call.id}/entry:{len(self.tool_history)}",
                   "status": "completed" if payload.get("ok") else "failed",
-                  "side_effect_completed": bool(payload.get("ok")) or partial_effect,
-                  "side_effect_status": "unknown" if unknown_effect else "partial" if partial_effect else "completed" if payload.get("ok") else "not_completed"}
+                  "side_effect_completed": bool(payload.get("ok")) or partial_effect and not completed_shell_failure,
+                  "side_effect_status": "unknown" if unknown_effect else "failed_process" if completed_shell_failure else "partial" if partial_effect else "completed" if payload.get("ok") else "not_completed"}
         context = self._call_context.pop(self._call_key(call), {})
         record["receipt_reused"] = context.pop("receipt_reused", False)
         from .tool_protocol import resolves_patch_rejection

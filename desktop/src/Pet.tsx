@@ -1,3 +1,4 @@
+import { shouldSubmitEnter } from "./inputBehavior";
 import { useEffect, useRef, useState } from "react";
 import { listen } from "@tauri-apps/api/event";
 import Markdown from "react-markdown";
@@ -60,6 +61,7 @@ export default function Pet() {
     taskStatus = useRef("");
   const current = useRef(""),
     composing = useRef(false),
+    lastCompositionEnd = useRef(-Infinity),
     bottom = useRef<HTMLDivElement>(null),
     lastQuestion = useRef("");
   async function refresh() {
@@ -617,14 +619,29 @@ export default function Pet() {
               }}
               onCompositionEnd={() => {
                 composing.current = false;
+                lastCompositionEnd.current = performance.now();
               }}
               onKeyDown={(e) => {
+                const behavior =
+                  localStorage.getItem("lp.enterBehavior") === '"send"'
+                    ? "send"
+                    : "newline";
                 if (
-                  e.key === "Enter" &&
-                  !e.shiftKey &&
-                  !e.nativeEvent.isComposing &&
-                  !composing.current &&
-                  e.keyCode !== 229
+                  shouldSubmitEnter(
+                    {
+                      key: e.key,
+                      shiftKey: e.shiftKey,
+                      altKey: e.altKey,
+                      metaKey: e.metaKey,
+                      ctrlKey: e.ctrlKey,
+                      isComposing: e.nativeEvent.isComposing,
+                      keyCode: e.nativeEvent.keyCode,
+                    },
+                    behavior,
+                    composing.current,
+                    lastCompositionEnd.current,
+                    performance.now(),
+                  )
                 ) {
                   e.preventDefault();
                   void send();

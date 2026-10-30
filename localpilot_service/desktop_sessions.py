@@ -153,7 +153,7 @@ def switch_profile(server, principal, session_id, body):
         if not options or session.closed:
             raise APIError('Desktop session required','profile_switch_unavailable',409)
         if session.active_task or any(t.session_id==session_id and (t.executing or t.control_pending) for t in service.tasks.values()):
-            raise APIError('Finish or stop the active task before switching','session_busy',409)
+            raise APIError('当前任务尚未结束，不能切换权限或 Agent 模式。请先完成或取消当前任务；若显示副作用未知，请先核对结果，勿重复执行原命令。','session_busy',409)
         current=options['agent_profile']
         desired_mode=body.get('permission_mode',options['permission_mode'])
         if current==body['agent_profile'] and desired_mode==options['permission_mode'] and options.get('prompt_revision')==2 and (desired_mode not in {'isolated','request','workspace','full'} or options.get('scope_revision')==3):

@@ -20,7 +20,8 @@ def host_state(runtime, state, tools):
         keep = {'receipt_id', 'worker_id', 'tool', 'status', 'effect', 'verification',
                 'path', 'version', 'coverage', 'resources', 'source_sha256'}
         state['completed_steps'] = [{k: v for k, v in record.items() if k in keep} for record in records]
-    state.update(original_task=runtime.working.task, revisions=deepcopy(runtime.working.revisions),
+    import sys
+    state.update(platform=sys.platform, workspace=str(runtime.workspace), original_task=runtime.working.task, revisions=deepcopy(runtime.working.revisions),
                  phase='final_only' if runtime._finalizing else 'planning' if runtime._planning else 'executing',
                  primary_model=runtime.current_primary_model,
                  plan_mode=runtime._planning, active_plan=deepcopy(runtime.active_plan),

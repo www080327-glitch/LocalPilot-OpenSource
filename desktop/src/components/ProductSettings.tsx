@@ -1,9 +1,12 @@
+import type { EnterBehavior } from "../inputBehavior";
 import { permissionModes, legacyPermissions } from "../permissions";
 import { useState, useEffect } from "react";
 import { call, desktop } from "../bridge";
 import { InstallationSettings } from "./InstallationSettings";
 import { ChannelSettings } from "./ChannelSettings";
 export function ProductSettings({
+  enterBehavior,
+  onEnterBehavior,
   permissionMode,
   onPermission,
   onModels,
@@ -13,6 +16,8 @@ export function ProductSettings({
   onDefaultModel,
   onUpdates,
 }: {
+  enterBehavior: EnterBehavior;
+  onEnterBehavior: (value: EnterBehavior) => void;
   defaultModel: string;
   models: any[];
   onDefaultModel: (s: string) => void;
@@ -39,6 +44,20 @@ export function ProductSettings({
   return (
     <section className="product-settings">
       <h3>常用设置</h3>
+      <div className="setting-row">
+        <span>
+          回车键行为
+          <small>中文输入法确认候选时始终不发送；⌘ Enter 可发送。</small>
+        </span>
+        <select
+          aria-label="回车键行为"
+          value={enterBehavior}
+          onChange={(e) => onEnterBehavior(e.target.value as EnterBehavior)}
+        >
+          <option value="newline">回车换行，⌘ Enter 发送</option>
+          <option value="send">回车发送，Shift Enter 换行</option>
+        </select>
+      </div>
       <InstallationSettings onError={onError} />
       <ChannelSettings onError={onError} />
       {notice && <p role="status">{notice}</p>}

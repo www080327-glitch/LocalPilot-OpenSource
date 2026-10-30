@@ -1,5 +1,5 @@
 {
-  "upstream_source_commit": "9497eaba",
+  "upstream_source_commit": "b4c84adf",
   "snapshot_date": "2026-10-30",
   "license": "Apache-2.0",
   "history": "fresh public source snapshot",
@@ -12,5 +12,5 @@
     "model weights",
     "bundled runtimes"
   ],
-  "verification": "10 focused v3 file/Shell/context tests + 3 regression checks + 2 headless UI tests; scripted cloud backend only, no new real-model run."
+  "verification": "4 Enter/IME unit checks, 2 headless UI checks, 2 real subprocess/file fixture checks; no live model rerun."
 }
