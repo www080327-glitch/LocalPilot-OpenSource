@@ -2,7 +2,7 @@
 
 LocalPilot 是一个能在自己电脑上执行真实文件任务，并支持本地与云端模型协同的 AI Agent。
 
-本仓库为 MIT 公开源码版，来自 RC.7 初始化修复候选，导出源提交为 `4a497c2f`。首次公开采用独立历史，未包含原私有仓库的备份、账号配置、API 密钥、模型权重、录屏或私人执行记录。
+本仓库为 Apache 2.0 公开源码版，来自 RC.7 初始化修复候选，导出源提交为 `4a497c2f`。首次公开采用独立历史，未包含原私有仓库的备份、账号配置、API 密钥、模型权重、录屏或私人执行记录。
 
 ## 功能
 
@@ -50,4 +50,4 @@ npm run dev
 
 ## License
 
-LocalPilot 自有代码采用 [MIT License](LICENSE)。第三方组件保留其各自许可证及版权声明，详见 `third_party/`、`docs/licenses/`、`desktop/licenses/` 和 `DEEPSEEK_HARNESS_REUSE_LICENSES.md`。模型权重不包含在本仓库中，其使用条件由模型发布者规定。
+LocalPilot 自有代码采用 [Apache License 2.0](LICENSE)。第三方组件保留其各自许可证及版权声明，详见 `third_party/`、`docs/licenses/`、`desktop/licenses/` 和 `DEEPSEEK_HARNESS_REUSE_LICENSES.md`。模型权重不包含在本仓库中，其使用条件由模型发布者规定。
