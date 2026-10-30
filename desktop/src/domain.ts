@@ -29,6 +29,8 @@ export interface Model {
   cloud_egress?: string;
   provenance?: string;
   reasoning_efforts?: string[];
+  default_reasoning_effort?: string;
+  reasoning_toggle?: { supported: boolean; default: boolean; model: string };
 }
 export interface Task extends Json {
   id: string;

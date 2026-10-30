@@ -24,6 +24,12 @@ export function Effort({
   variant?: "aurora" | "spectrum" | "steps";
   preview?: boolean;
 }) {
+  const binary =
+    options.length === 2 &&
+    options.includes("none") &&
+    options.includes("high");
+  const display = (option: string) =>
+    binary && option === "high" ? "开启" : names[option] || option;
   const id = useId(),
     index = Math.max(0, options.indexOf(value)),
     progress = options.length > 1 ? index / (options.length - 1) : 0;
@@ -44,7 +50,7 @@ export function Effort({
         </span>
         <span className="effort-value">
           {options.length ? (
-            names[value] || value
+            display(value)
           ) : (
             <>
               <LockKeyhole size={11} />
@@ -67,7 +73,7 @@ export function Effort({
         <input
           id={id}
           aria-label="思考强度"
-          aria-valuetext={names[value] || value || "由服务配置"}
+          aria-valuetext={display(value) || "由服务配置"}
           type="range"
           min={0}
           max={Math.max(options.length - 1, 1)}
@@ -84,15 +90,15 @@ export function Effort({
               key={o}
               className={i === index ? "selected" : ""}
               onClick={() => onChange(o)}
-              aria-label={`思考强度 ${names[o] || o}`}
+              aria-label={`思考强度 ${display(o)}`}
             >
-              {names[o] || o}
+              {display(o)}
             </button>
           ))
         ) : (
           <>
-            <span>模型能力未声明可选档位</span>
-            <span>RC2</span>
+            <span>当前模型未提供可调思考开关</span>
+            <span>可更新内置组件后重新检测</span>
           </>
         )}
       </div>

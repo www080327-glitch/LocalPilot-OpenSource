@@ -209,6 +209,12 @@ class ServiceServer(APIServer):
                     'not_deployed' if not model or not model.get('loaded') else model['deployment_status'],
                 provenance='live_omlx_discovery_loaded_state',
                 model_state=model)
+            if model and type(model.get('thinking_default')) is bool:
+                default=backend.chat_template_kwargs.get('enable_thinking',model['thinking_default'])
+                self.catalog[route].update(reasoning_efforts=['none','high'],thinking_scope='session',
+                    default_reasoning_effort='high' if default else 'none',reasoning_toggle={
+                        'supported':True,'model':backend.model,'default':bool(default),'source':'omlx_models_status_thinking_default'})
+                if 'reasoning' not in self.catalog[route].get('capabilities',[]):self.catalog[route].setdefault('capabilities',[]).append('reasoning')
         return {'health':health, 'models':list(entries.values())}
 
     def __init__(self, address, service, *, access, catalog=None, max_handlers=32):

@@ -1,5 +1,5 @@
 {
-  "upstream_source_commit": "b4c84adf",
+  "upstream_source_commit": "a18599f8",
   "snapshot_date": "2026-10-30",
   "license": "Apache-2.0",
   "history": "fresh public source snapshot",
@@ -12,5 +12,5 @@
     "model weights",
     "bundled runtimes"
   ],
-  "verification": "4 Enter/IME unit checks, 2 headless UI checks, 2 real subprocess/file fixture checks; no live model rerun."
+  "verification": "5 local-thinking payload/discovery/persistence checks, 4 frontend checks, 1 headless model-switch flow, 1 session-history regression. No model inference."
 }

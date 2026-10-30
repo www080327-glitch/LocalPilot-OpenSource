@@ -1,3 +1,4 @@
+import { compatibleEffort, thinkingKey } from "./modelThinking";
 import { shouldSubmitEnter, type EnterBehavior } from "./inputBehavior";
 import { ensureLocalModelLoaded } from "./modelLoading";
 import { latestTask, errorAfterHealthyConnection } from "./domain";
@@ -485,6 +486,37 @@ export default function App() {
     : tasks.find((t) => t.id === selected);
   const actualModels = preview ? previewModels : models;
   const chosen = actualModels.find((m) => m.id === model);
+  const [modelEfforts, setModelEfforts] = useState<Record<string, string>>(() =>
+    stored("lp.modelEfforts", {}),
+  );
+  const previousThinkingModel = useRef("");
+  const selectedEffort = compatibleEffort(chosen, sessionPrefs.effort);
+  useEffect(() => {
+    localStorage.setItem("lp.modelEfforts", JSON.stringify(modelEfforts));
+  }, [modelEfforts]);
+  useEffect(() => {
+    if (!chosen) return;
+    const key = thinkingKey(chosen);
+    const changed =
+      previousThinkingModel.current && previousThinkingModel.current !== key;
+    const requested = changed
+      ? modelEfforts[key]
+      : (sessionPrefs.effort ?? modelEfforts[key]);
+    const next = compatibleEffort(chosen, requested);
+    previousThinkingModel.current = key;
+    if (next !== sessionPrefs.effort)
+      setSessionPrefs((old) => ({ ...old, effort: next }));
+  }, [
+    chosen?.id,
+    chosen?.reasoning_efforts?.join("|"),
+    chosen?.default_reasoning_effort,
+    sessionPrefs.effort,
+  ]);
+  function chooseThinking(value: string) {
+    if (!chosen || !chosen.reasoning_efforts?.includes(value)) return;
+    setModelEfforts((old) => ({ ...old, [thinkingKey(chosen)]: value }));
+    setSessionPrefs((old) => ({ ...old, effort: value }));
+  }
   const routeCloud =
     model === "__auto__"
       ? sessionPrefs.source !== "local_only"
@@ -1018,6 +1050,27 @@ export default function App() {
     if (modelLoadLock.current || busy) return;
     const target = actualModels.find((m) => m.id === id);
     setModelOpen(false);
+    setError("");
+    if (
+      chosen &&
+      sessionPrefs.effort &&
+      chosen.reasoning_efforts?.includes(sessionPrefs.effort)
+    ) {
+      setModelEfforts((old) => ({
+        ...old,
+        [thinkingKey(chosen)]: sessionPrefs.effort!,
+      }));
+    }
+    if (target && !preview)
+      setSessionPrefs((old) => ({
+        ...old,
+        effort: compatibleEffort(
+          target,
+          chosen && thinkingKey(chosen) === thinkingKey(target)
+            ? sessionPrefs.effort
+            : modelEfforts[thinkingKey(target)],
+        ),
+      }));
     if (!target || preview || target.adapter !== "omlx") {
       setModel(id);
       return;
@@ -1122,6 +1175,10 @@ export default function App() {
           );
         let effectiveModel = model;
         const caps = health?.compatibility?.capabilities || [];
+        const requestPreferences = {
+          ...sessionPrefs,
+          effort: compatibleEffort(chosen, sessionPrefs.effort),
+        };
         const wanted = {
           permission_mode: permissionMode,
           agent_profile: agentProfile,
@@ -1193,6 +1250,19 @@ export default function App() {
             });
             useSession = session.id;
             effectiveModel = session.model;
+            if (caps.includes("omlx_thinking_toggle_v1"))
+              await call<Json>("product_control", {
+                operation: "desktop_profile",
+                args: {
+                  session_id: session.id,
+                  agent_profile: agentProfile,
+                  expected_profile:
+                    session.desktop_options?.agent_profile || agentProfile,
+                  permission_mode: permissionMode,
+                  expected_permission_mode:
+                    session.desktop_options?.permission_mode || permissionMode,
+                },
+              });
           }
         } else
           throw Error(
@@ -1236,8 +1306,8 @@ export default function App() {
           sessionId: useSession,
           agentConsent: true,
           cloudConsent: cloud || caps.includes("desktop_permissions_v3"),
-          effort: sessionPrefs.effort,
-          preferences: sessionPrefs,
+          effort: requestPreferences.effort,
+          preferences: requestPreferences,
         });
         await Promise.all(
           attachments.files.map((f) =>
@@ -1252,12 +1322,12 @@ export default function App() {
         attachments.setFiles([]);
         call("session_preferences", {
           sessionId: t.session_id,
-          value: sessionPrefs,
+          value: requestPreferences,
         }).catch(showError);
         setDrafts((old) => ({
           ...old,
           [t.session_id]: {
-            preferences: { ...sessionPrefs },
+            preferences: { ...requestPreferences },
             model,
             title: question.slice(0, 32),
             scope,
@@ -1498,9 +1568,9 @@ export default function App() {
             <span>LocalPilot</span>
             <span
               className="version"
-              title={`${packageInfo.version} · 交互修复版`}
+              title={`${packageInfo.version} · 思考修复版`}
             >
-              RC.7 · 交互修复
+              RC.7 · 思考修复
             </span>
           </div>
           <button className="new-chat" onClick={newChat}>
@@ -2295,28 +2365,13 @@ export default function App() {
                                   ),
                                 )
                           }
-                          value={
-                            preview
-                              ? effort
-                              : sessionPrefs.effort ||
-                                currentTask?.thinking?.effective ||
-                                "none"
-                          }
-                          onChange={
-                            preview
-                              ? setEffort
-                              : (value) =>
-                                  setSessionPrefs({
-                                    ...sessionPrefs,
-                                    effort: value,
-                                  })
-                          }
+                          value={preview ? effort : selectedEffort || "none"}
+                          onChange={preview ? setEffort : chooseThinking}
                           preview={preview}
                         />
                         {!preview && (
                           <p>
-                            档位来自当前 Provider 声明。选择后由 Core
-                            按会话保存；未声明能力时保持锁定。
+                            只显示当前模型支持的档位。选择后用于下一条消息，并按模型分别记住。
                           </p>
                         )}
                       </Popover>
@@ -3044,7 +3099,7 @@ export default function App() {
           <div className="onboarding-intro">
             <Mark />
             <span className="eyebrow">
-              WELCOME TO LOCALPILOT · {packageInfo.version} · 交互修复版
+              WELCOME TO LOCALPILOT · {packageInfo.version} · 思考修复版
             </span>
             <p>
               检测设备、准备服务，再接受推荐或跳过下载。以后可以在模型库随时调整。

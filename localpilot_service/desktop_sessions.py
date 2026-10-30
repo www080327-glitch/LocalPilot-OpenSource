@@ -3,8 +3,16 @@ from localpilot_api.service import APIError
 import hashlib,json,re
 MODES = {"isolated":"approve-mutations", "request":"approve-mutations", "workspace":"workspace-auto", "ask":"approve-all", "safe":"assist-low-risk", "uncertain":"assist-high-risk", "full":"full-permission"}
 
+def thinking_backends(runtime):
+    candidates=[runtime.current_backend]
+    if runtime.hybrid:candidates.extend(runtime.hybrid.catalog.values())
+    seen=set();result=[]
+    for backend in candidates:
+        if id(backend) not in seen:seen.add(id(backend));result.append(backend)
+    return result
+
 def apply_options(runtime, options):
-    if not isinstance(options, dict) or set(options)-{"permission_mode","agent_profile","context_length","prompt_revision","workspace_grant","scope_revision"} or not {"permission_mode","agent_profile"}<=set(options) or options["permission_mode"] not in MODES or options["agent_profile"] not in {"standard","minimal"} or type(options.get('prompt_revision',1)) is not int or options.get('prompt_revision',1) not in {1,2}:
+    if not isinstance(options, dict) or set(options)-{"permission_mode","agent_profile","context_length","prompt_revision","workspace_grant","scope_revision","thinking_toggle"} or not {"permission_mode","agent_profile"}<=set(options) or options["permission_mode"] not in MODES or options["agent_profile"] not in {"standard","minimal"} or type(options.get('prompt_revision',1)) is not int or options.get('prompt_revision',1) not in {1,2}:
         raise APIError("Unsupported Desktop session settings")
     if "workspace_grant" in options and (not isinstance(options["workspace_grant"],str) or not re.fullmatch(r"grant_[0-9a-f]{32}",options["workspace_grant"])):
         raise APIError("Invalid folder authorization identity")
@@ -12,6 +20,13 @@ def apply_options(runtime, options):
         runtime._desktop_base_capabilities = runtime.registry.gateway.capabilities
     if options.get("workspace_grant"):
         runtime._workspace_grants.bind(runtime,options["workspace_grant"])
+    toggle=options.get('thinking_toggle')
+    if toggle is not None:
+        if not isinstance(toggle,dict) or set(toggle)!={'model','default'} or type(toggle['default']) is not bool:
+            raise APIError('Invalid local thinking control declaration')
+        targets=[b for b in thinking_backends(runtime) if getattr(b,'model',None)==toggle['model'] and hasattr(b,'configure_thinking_toggle')]
+        if not targets:raise APIError('Local thinking model is not in this session')
+        for backend in targets:backend.configure_thinking_toggle(toggle['default'])
     runtime.permission_mode=runtime.registry.gateway.mode=MODES[options["permission_mode"]]
     if options.get('scope_revision')==3:
         from agent.safety import CapabilityPolicy
@@ -112,6 +127,9 @@ def create(server, principal, body, key):
         except (PermissionError,OSError):raise APIError('文件夹授权已撤销、目录身份或执行主体已变化，或系统拒绝访问；请重新选择文件夹并核对 macOS 文件与文件夹授权','workspace_reauthorization_required',403) from None
         ceiling=server.catalog.get(route,{}).get('tool_capabilities',{})
         if grant['scope']!='read' and not ceiling.get('write',True):raise APIError('Selected route disables writes; choose a route with write capability before authorizing organization','workspace_capability_insufficient',409)
+    declared=server.catalog.get(route,{}).get('reasoning_toggle')
+    if declared and declared.get('supported'):
+        options['thinking_toggle']={'model':declared['model'],'default':declared['default']}
     options['prompt_revision']=2
     if options.get('permission_mode') in {'isolated','request','workspace','full'}:options['scope_revision']=3
     backend=getattr(server,'model_backends',{}).get(route)
@@ -156,7 +174,9 @@ def switch_profile(server, principal, session_id, body):
             raise APIError('当前任务尚未结束，不能切换权限或 Agent 模式。请先完成或取消当前任务；若显示副作用未知，请先核对结果，勿重复执行原命令。','session_busy',409)
         current=options['agent_profile']
         desired_mode=body.get('permission_mode',options['permission_mode'])
-        if current==body['agent_profile'] and desired_mode==options['permission_mode'] and options.get('prompt_revision')==2 and (desired_mode not in {'isolated','request','workspace','full'} or options.get('scope_revision')==3):
+        declared=server.catalog.get(session.model,{}).get('reasoning_toggle')
+        desired_toggle=({'model':declared['model'],'default':declared['default']} if declared and declared.get('supported') else options.get('thinking_toggle'))
+        if current==body['agent_profile'] and desired_mode==options['permission_mode'] and options.get('thinking_toggle')==desired_toggle and options.get('prompt_revision')==2 and (desired_mode not in {'isolated','request','workspace','full'} or options.get('scope_revision')==3):
             return service.session_snapshot(session_id)
         if 'expected_permission_mode' in body and options['permission_mode']!=body['expected_permission_mode']:
             raise APIError('Permission mode changed in another client','permission_conflict',409)
@@ -165,10 +185,12 @@ def switch_profile(server, principal, session_id, body):
         runtime=session.runtime
         old=(runtime.messages[:],runtime.prompt_profile,runtime.base_prompt,getattr(runtime,'_persistence_config',None),session.base_prompt)
         registry=runtime.registry
+        thinking_state=[(b,b.capabilities,getattr(b,"_thinking_toggle",False)) for b in thinking_backends(runtime)]
         permission_state=(runtime.permission_mode,registry.gateway.mode,registry.gateway.capabilities,registry.gateway.data_policy,getattr(registry,'authorization_guard',None),deepcopy(getattr(registry,'scope_policy',None)),registry._tools.copy(),registry._metadata.copy(),runtime.hybrid.policy if runtime.hybrid else None,getattr(runtime,'_desktop_cloud_context',False),runtime.workspace,registry._extension_schemas[:],registry._metadata_declared.copy())
         metadata={t.id:deepcopy(t.execution_metadata) for t in service.tasks.values() if t.session_id==session_id}
         updated={**options,'agent_profile':body['agent_profile'],'permission_mode':desired_mode,'prompt_revision':2}
         if desired_mode in {'isolated','request','workspace','full'}:updated['scope_revision']=3
+        if desired_toggle is not None:updated['thinking_toggle']=desired_toggle
         try:
             for tid in metadata:
                 task=service.tasks[tid]
@@ -182,6 +204,8 @@ def switch_profile(server, principal, session_id, body):
         except Exception:
             runtime.messages,runtime.prompt_profile,runtime.base_prompt,runtime._persistence_config,session.base_prompt=old
             session.desktop_options=options
+            for backend,capabilities,toggle_enabled in thinking_state:
+                backend.capabilities,backend._thinking_toggle=capabilities,toggle_enabled
             runtime.registry=registry
             runtime.permission_mode,registry.gateway.mode,registry.gateway.capabilities,registry.gateway.data_policy,registry.authorization_guard,registry.scope_policy,registry._tools,registry._metadata,hybrid_policy,runtime._desktop_cloud_context,runtime.workspace,registry._extension_schemas,registry._metadata_declared=permission_state
             if runtime.hybrid:runtime.hybrid.policy=hybrid_policy

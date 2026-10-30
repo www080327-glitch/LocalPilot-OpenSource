@@ -282,6 +282,12 @@ def build(config_path):
             if catalog[route_name]['adapter'] == 'omlx':
                 model_backends[route_name] = probe.current_backend
             catalog[route_name]['reasoning_efforts']=list(probe.current_backend.capabilities.supported_thinking_efforts)
+            if catalog[route_name]['adapter']=='omlx':
+                observed=probe.current_backend.thinking_toggle_observation()
+                if observed['supported']:
+                    catalog[route_name].update(reasoning_efforts=['none','high'],reasoning_toggle=observed,
+                        default_reasoning_effort='high' if observed['default'] else 'none')
+                    if 'reasoning' not in catalog[route_name]['capabilities']:catalog[route_name]['capabilities'].append('reasoning')
             catalog[route_name]['thinking_scope']='session' if catalog[route_name]['reasoning_efforts'] else 'host_route_configuration'
             probe.close()
         except Exception as exc:

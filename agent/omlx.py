@@ -1,6 +1,8 @@
 """oMLX transport over an existing service. Never owns its process or weights."""
 import json
 import threading
+import time
+import hashlib
 import re
 import subprocess
 import sys
@@ -20,10 +22,52 @@ class OMLXBackend(LocalHTTPBackend):
         self._response_lock = threading.Lock()
         self._responses = set()
 
-    def _payload(self, *args, **kwargs):
-        payload = super()._payload(*args, **kwargs)
+    _thinking_cache = {}
+    _thinking_cache_lock = threading.Lock()
+
+    def thinking_toggle_observation(self):
+        """Read declared tokenizer support only; never load or infer a model."""
+        key=(self.base_url,hashlib.sha256((self._api_key or '').encode()).hexdigest())
+        now=time.monotonic()
+        with self._thinking_cache_lock:
+            cached=self._thinking_cache.get(key)
+            if not cached or now-cached[0]>5:
+                try:
+                    from urllib.request import Request
+                    headers={'Authorization':'Bearer '+self._api_key} if self._api_key else {}
+                    with self._opener.open(Request(self.base_url+'/models/status',headers=headers),timeout=min(self.timeout,2)) as response:data=json.load(response)
+                    rows=data.get('models',[])
+                    if not isinstance(rows,list):rows=[]
+                except Exception:
+                    rows=[]
+                self._thinking_cache[key]=(now,rows)
+            else: rows=cached[1]
+        row=next((m for m in rows if isinstance(m,dict) and m.get('id')==self.model),{})
+        supported=type(row.get('thinking_default')) is bool
+        default=self.chat_template_kwargs.get('enable_thinking',row.get('thinking_default'))
+        return {'supported':supported,'model':self.model,'default':default if type(default) is bool else False,
+                'source':'omlx_models_status_thinking_default'}
+
+    def configure_thinking_toggle(self, default):
+        from dataclasses import replace
+        if type(default) is not bool: raise ValueError('Thinking default must be boolean')
+        self._thinking_toggle=True
+        self.capabilities=replace(self.capabilities,supports_native_thinking=True,supports_reasoning_effort=True,
+            supported_thinking_efforts=('none','high'),default_thinking_effort='high' if default else 'none')
+
+    def thinking_mapping(self, thinking, has_tools=False):
+        if not getattr(self,'_thinking_toggle',False):return super().thinking_mapping(thinking,has_tools)
+        effective=thinking if thinking is not None else self.capabilities.default_thinking_effort
+        if effective not in {'none','high'}:raise ValueError('This local model supports thinking off/on only')
+        return {'requested':thinking,'effective':effective,'provider_value':effective=='high',
+                'reason':'omlx_enable_thinking_chat_template_kwargs'}
+
+    def _payload(self, messages, tools, max_tokens, stream=False, thinking=None):
+        toggle=getattr(self,'_thinking_toggle',False)
+        payload=super()._payload(messages,tools,max_tokens,stream,thinking=None if toggle else thinking)
+        if toggle:
+            payload.setdefault('chat_template_kwargs',{})['enable_thinking']=self.thinking_mapping(thinking)['provider_value']
         for message in payload['messages']:
-            # Native DeepSeek replay is never part of the local wire protocol.
             for name in ('reasoning_content', 'native_replay', 'signature'):
                 message.pop(name, None)
         return payload
@@ -109,6 +153,7 @@ class OMLXBackend(LocalHTTPBackend):
                 except (OSError,ValueError,KeyError,TypeError):files_present=False
             entries.append({'id': model['id'], 'downloaded': files_present is not False, 'files_present':files_present,
                 'loaded': d.get('loaded', model['id'] in status.get('loaded_models', [])),
+                'thinking_default':d.get('thinking_default'),
                 'deployment_status': 'not_deployed' if files_present is False else ('loading' if d.get('is_loading') else 'ready'),
                 'context_budget': d.get('max_context_window') or model.get('max_model_len'),
                 'size_bytes': d.get('estimated_size'), 'resident_bytes': d.get('actual_size'),
