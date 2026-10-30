@@ -1,0 +1,20 @@
+{
+  "tools": {
+    "lookup_public_note": {
+      "effect": "observation",
+      "summary": "Look up a fixed public MCP note",
+      "argument_schema": {
+        "type": "object",
+        "properties": {"topic": {"type": "string", "enum": ["mcp"]}},
+        "required": ["topic"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "resources": ["public-note://mcp"],
+  "prompts": ["explain_public_note"],
+  "plugin_egress": "allow",
+  "network_access": false,
+  "scope": "Only fixed public notes from the reviewed server source",
+  "allow_agent": true
+}

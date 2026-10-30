@@ -1,0 +1,23 @@
+{
+  "identifier": "pet",
+  "description": "Companion presentation with personal character import and explicit local Core delegation; no autonomous approval or cloud grant.",
+  "windows": [
+    "pet",
+    "pet-bubble"
+  ],
+  "permissions": [
+    "core:default",
+    "allow-pet-action",
+    "allow-pet-edge",
+    "allow-pet-service",
+    "allow-pet-chat",
+    "allow-pet-handoff",
+    "allow-pet-expand",
+    "allow-pet-window",
+    "allow-pet-runtime",
+    "core:window:allow-start-dragging",
+    "allow-pet-asset",
+    "allow-pet-agent",
+    "allow-pet-core"
+  ]
+}

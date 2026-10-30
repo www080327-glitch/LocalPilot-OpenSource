@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-suite-tool"
+description = "Enables the suite_tool command without any pre-configured scope."
+commands.allow = ["suite_tool"]
+
+[[permission]]
+identifier = "deny-suite-tool"
+description = "Denies the suite_tool command without any pre-configured scope."
+commands.deny = ["suite_tool"]

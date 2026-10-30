@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-pick-developer-source"
+description = "Enables the pick_developer_source command without any pre-configured scope."
+commands.allow = ["pick_developer_source"]
+
+[[permission]]
+identifier = "deny-pick-developer-source"
+description = "Denies the pick_developer_source command without any pre-configured scope."
+commands.deny = ["pick_developer_source"]

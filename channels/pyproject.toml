@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "localpilot-channels"
+version = "0.1.0a3"
+description = "Optional QQ/WeChat transport facade for an independently running LocalPilot Core"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+localpilot-channels = "localpilot_channels.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["localpilot_channels*"]
+
+[tool.setuptools.data-files]
+"share/localpilot/channels/qq-bridge" = ["integrations/qq-bridge/bridge.mjs", "integrations/qq-bridge/cli.mjs", "integrations/qq-bridge/gateway.mjs", "integrations/qq-bridge/package.json"]
+"share/localpilot/channels/wechat-ilink-bridge" = ["integrations/wechat-ilink-bridge/bridge.mjs", "integrations/wechat-ilink-bridge/cli.mjs", "integrations/wechat-ilink-bridge/package.json", "integrations/wechat-ilink-bridge/THIRD_PARTY_NOTICES.md"]
+"share/localpilot/channels/channel-common" = ["integrations/channel-common/security.mjs", "integrations/channel-common/evidence.mjs", "integrations/channel-common/control.mjs"]

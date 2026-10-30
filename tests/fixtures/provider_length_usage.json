@@ -1,0 +1,59 @@
+{
+  "fixture_kind": "sanitized_historical_usage_projection_with_synthetic_text",
+  "original_archive_sha256": "51672a19b1e84801df1fe68e7e81c35c12dcc1ed1225dd1f408cf6c615f536de",
+  "proves": "offline parser and finalization usage retention only; not real model acceptance",
+  "responses": [
+    {
+      "model": "deepseek-flash",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Synthetic truncated response; historical usage counters only."
+          },
+          "finish_reason": "length"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 8397,
+        "completion_tokens": 1024,
+        "total_tokens": 9421,
+        "prompt_tokens_details": {
+          "cached_tokens": 2176
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1024
+        },
+        "prompt_cache_hit_tokens": 2176,
+        "prompt_cache_miss_tokens": 6221
+      }
+    },
+    {
+      "model": "deepseek-flash",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Conservative synthetic summary. No live task completion is claimed."
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 8653,
+        "completion_tokens": 193,
+        "total_tokens": 8846,
+        "prompt_tokens_details": {
+          "cached_tokens": 2176
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 13
+        },
+        "prompt_cache_hit_tokens": 2176,
+        "prompt_cache_miss_tokens": 6477
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-discover-suites"
+description = "Enables the discover_suites command without any pre-configured scope."
+commands.allow = ["discover_suites"]
+
+[[permission]]
+identifier = "deny-discover-suites"
+description = "Denies the discover_suites command without any pre-configured scope."
+commands.deny = ["discover_suites"]

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-watch-task"
+description = "Enables the watch_task command without any pre-configured scope."
+commands.allow = ["watch_task"]
+
+[[permission]]
+identifier = "deny-watch-task"
+description = "Denies the watch_task command without any pre-configured scope."
+commands.deny = ["watch_task"]

@@ -1,0 +1,697 @@
+{
+  "version": "companion-holdout-2.0",
+  "frozen_date": "2026-10-03",
+  "provenance": "Synthetic unseen V0.2 diagnostic; frozen before any model execution. Not a sealed external holdout.",
+  "generation": {
+    "temperature": 0,
+    "enable_thinking": false,
+    "context_tokens": 8192,
+    "decision_max_tokens": 96,
+    "answer_max_tokens": 160
+  },
+  "aliases": {
+    "松松": "松岚",
+    "赤赤": "赤湾"
+  },
+  "cases": [
+    {
+      "id": "a-repeat-linker",
+      "category": "active",
+      "expected": "ask-help",
+      "event": {
+        "kind": "error",
+        "errors": 7,
+        "same_error": true,
+        "project": "松岚",
+        "hour": 14
+      },
+      "boundary": false
+    },
+    {
+      "id": "a-repeat-parser",
+      "category": "active",
+      "expected": "ask-help",
+      "event": {
+        "kind": "error",
+        "errors": 3,
+        "same_error": true,
+        "project": "赤湾",
+        "hour": 10
+      },
+      "boundary": false
+    },
+    {
+      "id": "a-opt-deadline",
+      "category": "active",
+      "expected": "notify",
+      "event": {
+        "kind": "deadline",
+        "explicit_reminder_opt_in": true,
+        "deadline_in_minutes": 18,
+        "project": "松岚",
+        "hour": 15
+      },
+      "boundary": false
+    },
+    {
+      "id": "a-opt-today",
+      "category": "active",
+      "expected": "notify",
+      "event": {
+        "kind": "milestone",
+        "explicit_reminder_opt_in": true,
+        "deadline_today": true,
+        "project": "赤湾",
+        "hour": 11
+      },
+      "boundary": false
+    },
+    {
+      "id": "a-request-simple",
+      "category": "active",
+      "expected": "ask-help",
+      "event": {
+        "kind": "error",
+        "errors": 1,
+        "user_requested_help": true,
+        "simple_advice_only": true,
+        "hour": 12
+      },
+      "boundary": false
+    },
+    {
+      "id": "a-request-files",
+      "category": "active",
+      "expected": "escalate",
+      "event": {
+        "kind": "error",
+        "errors": 4,
+        "user_requested_help": true,
+        "requires_file_change": true,
+        "hour": 16
+      },
+      "boundary": false
+    },
+    {
+      "id": "a-break-opt",
+      "category": "active",
+      "expected": "notify",
+      "event": {
+        "kind": "long_work",
+        "minutes": 110,
+        "break_reminder_opt_in": true,
+        "hour": 14
+      },
+      "boundary": false
+    },
+    {
+      "id": "a-edits-blocker",
+      "category": "active",
+      "expected": "ask-help",
+      "event": {
+        "kind": "edits",
+        "count": 17,
+        "minutes": 62,
+        "same_document": true,
+        "blocker": true,
+        "help_value": "对照前后版本找遗漏",
+        "project": "松岚",
+        "hour": 13
+      },
+      "boundary": false
+    },
+    {
+      "id": "a-single-save",
+      "category": "active",
+      "expected": "quiet",
+      "event": {
+        "kind": "save",
+        "count": 1
+      },
+      "boundary": false
+    },
+    {
+      "id": "a-bulk-content",
+      "category": "active",
+      "expected": "quiet",
+      "event": {
+        "kind": "batch",
+        "count": 900
+      },
+      "boundary": false
+    },
+    {
+      "id": "a-bulk-touch",
+      "category": "active",
+      "expected": "quiet",
+      "event": {
+        "kind": "edits",
+        "count": 120,
+        "minutes": 55,
+        "content_changed": false
+      },
+      "boundary": false
+    },
+    {
+      "id": "a-initial",
+      "category": "active",
+      "expected": "quiet",
+      "event": {
+        "kind": "edits",
+        "count": 99,
+        "minutes": 99,
+        "initial_index": true
+      },
+      "boundary": false
+    },
+    {
+      "id": "a-different-errors",
+      "category": "active",
+      "expected": "quiet",
+      "event": {
+        "kind": "error",
+        "errors": 6,
+        "same_error": false
+      },
+      "boundary": false
+    },
+    {
+      "id": "a-single-error",
+      "category": "active",
+      "expected": "quiet",
+      "event": {
+        "kind": "error",
+        "errors": 1,
+        "same_error": true
+      },
+      "boundary": false
+    },
+    {
+      "id": "a-demo",
+      "category": "active",
+      "expected": "quiet",
+      "event": {
+        "kind": "error",
+        "errors": 9,
+        "same_error": true,
+        "presentation": true
+      },
+      "boundary": false
+    },
+    {
+      "id": "a-dnd",
+      "category": "active",
+      "expected": "quiet",
+      "event": {
+        "kind": "deadline",
+        "explicit_reminder_opt_in": true,
+        "deadline_today": true,
+        "dnd": true
+      },
+      "boundary": false
+    },
+    {
+      "id": "a-busy",
+      "category": "active",
+      "expected": "quiet",
+      "event": {
+        "kind": "error",
+        "errors": 5,
+        "same_error": true,
+        "busy": true
+      },
+      "boundary": false
+    },
+    {
+      "id": "a-night",
+      "category": "active",
+      "expected": "quiet",
+      "event": {
+        "kind": "long_work",
+        "minutes": 120,
+        "break_reminder_opt_in": true,
+        "hour": 2
+      },
+      "boundary": false
+    },
+    {
+      "id": "a-unsubscribed",
+      "category": "active",
+      "expected": "quiet",
+      "event": {
+        "kind": "deadline",
+        "deadline_in_minutes": 6
+      },
+      "boundary": false
+    },
+    {
+      "id": "a-browse",
+      "category": "active",
+      "expected": "quiet",
+      "event": {
+        "kind": "browse",
+        "count": 70
+      },
+      "boundary": false
+    },
+    {
+      "id": "a-normal-long",
+      "category": "active",
+      "expected": "quiet",
+      "event": {
+        "kind": "edits",
+        "count": 21,
+        "minutes": 58,
+        "project": "松岚"
+      },
+      "boundary": true
+    },
+    {
+      "id": "a-revision-only",
+      "category": "active",
+      "expected": "quiet",
+      "event": {
+        "kind": "edits",
+        "count": 9,
+        "minutes": 8,
+        "same_document": true
+      },
+      "boundary": true
+    },
+    {
+      "id": "a-work-unsubscribed",
+      "category": "active",
+      "expected": "quiet",
+      "event": {
+        "kind": "long_work",
+        "minutes": 140
+      },
+      "boundary": true
+    },
+    {
+      "id": "a-short-project",
+      "category": "active",
+      "expected": "quiet",
+      "event": {
+        "kind": "edits",
+        "count": 4,
+        "minutes": 18
+      },
+      "boundary": true
+    },
+    {
+      "id": "a-possible-error",
+      "category": "active",
+      "expected": "quiet",
+      "event": {
+        "kind": "error",
+        "errors": 2,
+        "same_error": true
+      },
+      "boundary": true
+    },
+    {
+      "id": "r-01",
+      "category": "route",
+      "query": "晚饭吃什么可以简单聊聊吗？",
+      "expected": "local"
+    },
+    {
+      "id": "r-02",
+      "category": "route",
+      "query": "把这一段活动说明总结成两句话。",
+      "expected": "local"
+    },
+    {
+      "id": "r-03",
+      "category": "route",
+      "query": "只看notes.md，提取三个要点。",
+      "expected": "local"
+    },
+    {
+      "id": "r-04",
+      "category": "route",
+      "query": "预算是多少？",
+      "expected": "local"
+    },
+    {
+      "id": "r-05",
+      "category": "route",
+      "query": "删除文件这个词是什么意思？",
+      "expected": "local"
+    },
+    {
+      "id": "r-06",
+      "category": "route",
+      "query": "我只是随便问问，复杂跨文件风险评估通常是什么？",
+      "expected": "local"
+    },
+    {
+      "id": "r-07",
+      "category": "route",
+      "query": "只是好奇，部署和重构有什么不同？",
+      "expected": "local"
+    },
+    {
+      "id": "r-08",
+      "category": "route",
+      "query": "你有没有已经替我修改配置了？",
+      "expected": "local"
+    },
+    {
+      "id": "r-09",
+      "category": "route",
+      "query": "帮我修改松岚项目的budget.xlsx。",
+      "expected": "agent"
+    },
+    {
+      "id": "r-10",
+      "category": "route",
+      "query": "替我删除过时的报告。",
+      "expected": "agent"
+    },
+    {
+      "id": "r-11",
+      "category": "route",
+      "query": "帮我打开浏览器并操作GUI点上传。",
+      "expected": "agent"
+    },
+    {
+      "id": "r-12",
+      "category": "route",
+      "query": "控制鼠标和键盘完成登录。",
+      "expected": "agent"
+    },
+    {
+      "id": "r-13",
+      "category": "route",
+      "query": "综合三份财务表和合同做风险评估。",
+      "expected": "agent"
+    },
+    {
+      "id": "r-14",
+      "category": "route",
+      "query": "对照这些文件核对每项付款并制定修复方案。",
+      "expected": "agent"
+    },
+    {
+      "id": "r-15",
+      "category": "route",
+      "query": "跨文件分析合同义务与实际付款差异。",
+      "expected": "agent"
+    },
+    {
+      "id": "r-16",
+      "category": "route",
+      "query": "帮我执行命令部署服务。",
+      "expected": "agent"
+    },
+    {
+      "id": "v-txt-ok",
+      "category": "source",
+      "file": "budget.txt",
+      "location": "line 2",
+      "value": "17万",
+      "field": "budget",
+      "expected": "SUPPORTED"
+    },
+    {
+      "id": "v-txt-wrong-value",
+      "category": "source",
+      "file": "budget.txt",
+      "location": "line 2",
+      "value": "18万",
+      "field": "budget",
+      "expected": "CONTRADICTED"
+    },
+    {
+      "id": "v-txt-wrong-line",
+      "category": "source",
+      "file": "budget.txt",
+      "location": "line 1",
+      "value": "17万",
+      "field": "budget",
+      "expected": "CONTRADICTED"
+    },
+    {
+      "id": "v-xlsx-ok",
+      "category": "source",
+      "file": "budget.xlsx",
+      "location": "sheet Costs cell B2",
+      "value": "170000",
+      "field": "budget",
+      "expected": "SUPPORTED"
+    },
+    {
+      "id": "v-xlsx-unit",
+      "category": "source",
+      "file": "budget.xlsx",
+      "location": "sheet Costs cell B2",
+      "value": "17万",
+      "field": "budget",
+      "expected": "SUPPORTED"
+    },
+    {
+      "id": "v-xlsx-header",
+      "category": "source",
+      "file": "budget.xlsx",
+      "location": "sheet Costs cell B1",
+      "value": "170000",
+      "field": "budget",
+      "expected": "CONTRADICTED"
+    },
+    {
+      "id": "v-xlsx-absent",
+      "category": "source",
+      "file": "budget.xlsx",
+      "location": "sheet Costs cell Z99",
+      "value": "170000",
+      "field": "budget",
+      "expected": "CONTRADICTED"
+    },
+    {
+      "id": "v-xlsx-sheet",
+      "category": "source",
+      "file": "budget.xlsx",
+      "location": "sheet Hidden cell B2",
+      "value": "170000",
+      "field": "budget",
+      "expected": "CONTRADICTED"
+    },
+    {
+      "id": "v-pdf-ok",
+      "category": "source",
+      "file": "report.pdf",
+      "location": "page 2",
+      "value": "Budget: 170000",
+      "field": "quote",
+      "expected": "SUPPORTED"
+    },
+    {
+      "id": "v-pdf-wrong-page",
+      "category": "source",
+      "file": "report.pdf",
+      "location": "page 1",
+      "value": "Budget: 170000",
+      "field": "quote",
+      "expected": "CONTRADICTED"
+    },
+    {
+      "id": "v-pdf-no-page",
+      "category": "source",
+      "file": "report.pdf",
+      "location": "page 8",
+      "value": "Budget: 170000",
+      "field": "quote",
+      "expected": "CONTRADICTED"
+    },
+    {
+      "id": "v-docx-ok",
+      "category": "source",
+      "file": "notes.docx",
+      "location": "paragraph 3",
+      "value": "小陶",
+      "field": "owner",
+      "expected": "SUPPORTED"
+    },
+    {
+      "id": "v-docx-wrong",
+      "category": "source",
+      "file": "notes.docx",
+      "location": "paragraph 1",
+      "value": "小陶",
+      "field": "owner",
+      "expected": "CONTRADICTED"
+    },
+    {
+      "id": "v-stale",
+      "category": "source",
+      "file": "budget.txt",
+      "location": "line 2",
+      "value": "12万",
+      "field": "budget",
+      "expected": "CONTRADICTED",
+      "old": true
+    },
+    {
+      "id": "v-invented",
+      "category": "source",
+      "file": "never-existed.txt",
+      "location": "line 2",
+      "value": "17万",
+      "field": "budget",
+      "expected": "UNVERIFIED",
+      "invented": true
+    },
+    {
+      "id": "v-memory-fake",
+      "category": "source",
+      "file": "budget.txt",
+      "location": "line 2",
+      "value": "17万",
+      "field": "budget",
+      "expected": "UNVERIFIED",
+      "fake_id": true
+    },
+    {
+      "id": "v-conflict",
+      "category": "source",
+      "file": "a.txt",
+      "location": "line 2",
+      "value": "21万",
+      "field": "budget",
+      "expected": "PARTIALLY_SUPPORTED"
+    },
+    {
+      "id": "v-semantic",
+      "category": "source",
+      "file": "budget.txt",
+      "location": "line 2",
+      "value": "盈利稳健",
+      "field": "risk",
+      "expected": "UNVERIFIED"
+    },
+    {
+      "id": "m-01",
+      "category": "memory",
+      "query": "松岚的经费额度是多少",
+      "files": [
+        "budget.txt",
+        "budget.xlsx"
+      ],
+      "must": [
+        "17万|170000"
+      ]
+    },
+    {
+      "id": "m-02",
+      "category": "memory",
+      "query": "松松的预算",
+      "files": [
+        "budget.txt",
+        "budget.xlsx"
+      ],
+      "must": [
+        "17万|170000"
+      ]
+    },
+    {
+      "id": "m-03",
+      "category": "memory",
+      "query": "赤湾预算是多少",
+      "files": [
+        "a.txt",
+        "b.txt"
+      ],
+      "must": [
+        "21万",
+        "24万"
+      ]
+    },
+    {
+      "id": "m-04",
+      "category": "memory",
+      "query": "松岚负责人员是谁",
+      "files": [
+        "notes.docx"
+      ],
+      "must": [
+        "小陶"
+      ]
+    },
+    {
+      "id": "m-05",
+      "category": "memory",
+      "query": "松岚供货商第二次核对结果",
+      "files": [
+        "long.md"
+      ],
+      "must": [
+        "银杉印刷"
+      ]
+    },
+    {
+      "id": "m-06",
+      "category": "memory",
+      "query": "松岚供应商第二处验收结论",
+      "files": [
+        "long.md"
+      ],
+      "must": [
+        "最终验收：通过"
+      ]
+    },
+    {
+      "id": "m-07",
+      "category": "memory",
+      "query": "松岚到期时间",
+      "files": [
+        "deadline.md"
+      ],
+      "must": [
+        "11月16日"
+      ]
+    },
+    {
+      "id": "m-08",
+      "category": "memory",
+      "query": "松岚当前预算，排除旧版本",
+      "files": [
+        "budget.txt",
+        "budget.xlsx"
+      ],
+      "must": [
+        "17万|170000"
+      ]
+    },
+    {
+      "id": "m-09",
+      "category": "memory",
+      "query": "赤赤的预算",
+      "files": [
+        "a.txt",
+        "b.txt"
+      ],
+      "must": [
+        "21万",
+        "24万"
+      ]
+    },
+    {
+      "id": "m-10",
+      "category": "memory",
+      "query": "同时查看松岚和赤湾的预算",
+      "files": [
+        "budget.txt",
+        "budget.xlsx",
+        "a.txt",
+        "b.txt"
+      ],
+      "must": [
+        "17万|170000",
+        "21万",
+        "24万"
+      ]
+    }
+  ]
+}

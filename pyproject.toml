@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "localpilot-agent-service"
+version = "5.0.0b21+channels.3"
+description = "Authenticated Agent service over the LocalPilot persistent runtime"
+requires-python = ">=3.10"
+dependencies = ["psutil>=7,<8", "pypdf>=6.1,<7", "Pillow>=11,<13", "defusedxml>=0.7,<1"]
+
+[project.optional-dependencies]
+documents = ["pypdf>=6.1,<7", "Pillow>=11,<13", "defusedxml>=0.7,<1"]
+
+plugins = ["mcp==1.26.0", "jsonschema==4.26.0", "packaging==26.0"]
+
+[project.scripts]
+localpilot-service = "localpilot_service.__main__:main"
+localpilot-adapter = "localpilot_service.adapter:main"
+localpilot-core = "localpilot_service.cli:main"
+localpilot-channels = "localpilot_channels.__main__:main"
+
+[tool.setuptools]
+py-modules = ["catalog", "recommender", "hardware", "selector_mlp"]
+
+[tool.setuptools.packages.find]
+include = ["agent*", "computer*", "localpilot_api*", "localpilot_service*", "localpilot_plugins*", "localpilot_channels*"]
+exclude = ["tests*", "benchmarks*", "docs*"]
+
+[tool.setuptools.package-data]
+localpilot_service = ["openapi.json", "data/*.json"]
+computer = ["native/*.swift"]
+
+[tool.setuptools.data-files]
+"share/doc/localpilot" = ["SERVICE_DEPLOYMENT.md", "AGENT_SERVICE_API.md", "COMPANION_CLIENT_CONTRACT.md", "MODEL_BACKEND_API.md", "MODEL_MANAGER_CONTRACT.md", "LOCALPILOT_SERVICE_RELEASE_REPORT.md", "LOCALPILOT_SUITE_RELEASE_REPORT.md", "SUITE_CLI.md", "SUITE_INSTALL_UPGRADE_ROLLBACK.md", "SUITE_API_COMPATIBILITY.md", "SUITE_CACHE_ACCEPTANCE.md"]
+"share/localpilot/skill" = ["localpilot-agent/SKILL.md"]
+"share/localpilot/skill/scripts" = ["localpilot-agent/scripts/localpilot_adapter.py", "localpilot-agent/scripts/sdk.py"]
+"share/localpilot/skill/references" = ["localpilot-agent/references/installation.md"]
+
+"share/doc/localpilot/third_party/deepseek-harness" = ["third_party/deepseek-harness/LICENSE", "third_party/deepseek-harness/NOTICE.md"]
+"share/doc/localpilot/v5" = ["LOCALPILOT_V5_AGENT_ENGINE_REPORT.md", "LOCALPILOT_V5_ARCHITECTURE.md", "LOCALPILOT_V5_DSH_MATRIX.md", "LOCALPILOT_V5_MIGRATION.md"]
+"share/doc/localpilot/plugins" = ["docs/PLUGIN_ECOSYSTEM.md"]
+"share/localpilot/plugins/public-notes" = ["examples/plugins/public_notes/server.py", "examples/plugins/public_notes/review.json"]
+"share/localpilot/skills/public-notes" = ["examples/skills/public-notes/skill.json", "examples/skills/public-notes/SKILL.md"]
+
+"share/localpilot/channels/qq-bridge" = ["integrations/qq-bridge/bridge.mjs", "integrations/qq-bridge/cli.mjs", "integrations/qq-bridge/gateway.mjs", "integrations/qq-bridge/package.json"]
+"share/localpilot/channels/wechat-ilink-bridge" = ["integrations/wechat-ilink-bridge/bridge.mjs", "integrations/wechat-ilink-bridge/cli.mjs", "integrations/wechat-ilink-bridge/package.json", "integrations/wechat-ilink-bridge/THIRD_PARTY_NOTICES.md"]
+"share/localpilot/channels/channel-common" = ["integrations/channel-common/security.mjs", "integrations/channel-common/evidence.mjs", "integrations/channel-common/control.mjs"]

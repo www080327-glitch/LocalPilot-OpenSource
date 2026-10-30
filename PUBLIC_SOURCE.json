@@ -1,0 +1,16 @@
+{
+  "upstream_source_commit": "4a497c2f",
+  "snapshot_date": "2026-10-30",
+  "license": "MIT",
+  "history": "fresh public source snapshot",
+  "excluded": [
+    "private backups",
+    "personal execution evidence",
+    "credentials",
+    "user databases",
+    "recordings",
+    "model weights",
+    "bundled runtimes"
+  ],
+  "verification": "export content and credential-pattern review only; no new product tests"
+}

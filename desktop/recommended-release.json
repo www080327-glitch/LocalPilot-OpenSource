@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "product": "LocalPilot Desktop",
+  "version": "5.0.0",
+  "tag": "desktop-v5.0.0",
+  "channel": "recommended",
+  "repository_visibility": "private",
+  "bundle_id": "io.localpilot.desktop",
+  "platform": "macOS arm64",
+  "minimum_macos": "15.0",
+  "liquid_glass_macos": "26.0+",
+  "release_url": "https://github.com/www080327-glitch/LocalPilot/releases/tag/desktop-v5.0.0",
+  "default_download_url": "https://github.com/www080327-glitch/LocalPilot/releases/latest/download/LocalPilot-5.0.0-arm64.dmg",
+  "zip_url": "https://github.com/www080327-glitch/LocalPilot/releases/latest/download/LocalPilot-5.0.0-arm64.app.zip",
+  "sha256_url": "https://github.com/www080327-glitch/LocalPilot/releases/latest/download/SHA256SUMS",
+  "edge_pet_baseline_commit": "7847c7cbf582e55b62e86a7745ddc4aed418c705",
+  "human_glass_acceptance_commit": "b1ab1f67",
+  "bundled_modules": {
+    "core": "5.0.0b20",
+    "suite": "0.2.0b21",
+    "companion": "0.5.7b2"
+  },
+  "signing": "ad-hoc; not notarized",
+  "character_assets_bundled": false,
+  "weights_bundled": false,
+  "user_data_bundled": false
+}

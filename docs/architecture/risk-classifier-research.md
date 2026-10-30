@@ -1,0 +1,7 @@
+# Existing risk evaluation and optional classifier research
+
+Inspected `agent/safety.py`, `agent/permissions.py`, `agent/judge.py`, and `agent/registry.py`. The project already has deterministic workspace/capability checks, five historical permission modes, risk metadata, and LocalSafetyJudge. No additional decision Runtime or downloaded classifier is needed for the four requested product modes. Assist-low/high use deterministic SAFE/UNCERTAIN/RISKY thresholds. Unclassified extensions require human approval, including full mode. Existing model assessments cannot lower deterministic high-risk or host-only approval floors.
+
+2026-10-23 primary-source check: [Simple Jev](https://github.com/featherless-ai/simple-jev) is real and Apache-2.0. Its local implementation uses Hugging Face Transformers/PyTorch and compatible open models, not a universal tiny Mac risk classifier. Model weights require their own license and resource evaluation. No Jev weights were installed, no cloud classification data was sent, and local latency/accuracy are NOT_RUN. Existing LocalSafetyJudge remains available in historical host policies.
+
+[oMLX official source](https://github.com/jundot/omlx) describes tiered RAM/SSD prefix KV caching. [Official DeepSeek API](https://api-docs.deepseek.com/quick_start/pricing/) documents a 1M context range; newly configured cloud routes use the documented 1000000 configuration convention, without increasing per-request output limits. Existing routes and sessions retain their prior host configuration.

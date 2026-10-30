@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-pending-submissions"
+description = "Enables the pending_submissions command without any pre-configured scope."
+commands.allow = ["pending_submissions"]
+
+[[permission]]
+identifier = "deny-pending-submissions"
+description = "Denies the pending_submissions command without any pre-configured scope."
+commands.deny = ["pending_submissions"]

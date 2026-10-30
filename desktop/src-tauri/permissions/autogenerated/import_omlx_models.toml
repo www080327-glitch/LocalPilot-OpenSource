@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-import-omlx-models"
+description = "Enables the import_omlx_models command without any pre-configured scope."
+commands.allow = ["import_omlx_models"]
+
+[[permission]]
+identifier = "deny-import-omlx-models"
+description = "Denies the import_omlx_models command without any pre-configured scope."
+commands.deny = ["import_omlx_models"]

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-desktop-verify-archive"
+description = "Enables the desktop_verify_archive command without any pre-configured scope."
+commands.allow = ["desktop_verify_archive"]
+
+[[permission]]
+identifier = "deny-desktop-verify-archive"
+description = "Denies the desktop_verify_archive command without any pre-configured scope."
+commands.deny = ["desktop_verify_archive"]

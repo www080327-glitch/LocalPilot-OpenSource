@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-pet-handoff"
+description = "Enables the pet_handoff command without any pre-configured scope."
+commands.allow = ["pet_handoff"]
+
+[[permission]]
+identifier = "deny-pet-handoff"
+description = "Denies the pet_handoff command without any pre-configured scope."
+commands.deny = ["pet_handoff"]

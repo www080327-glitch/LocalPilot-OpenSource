@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-global-preferences"
+description = "Enables the global_preferences command without any pre-configured scope."
+commands.allow = ["global_preferences"]
+
+[[permission]]
+identifier = "deny-global-preferences"
+description = "Denies the global_preferences command without any pre-configured scope."
+commands.deny = ["global_preferences"]

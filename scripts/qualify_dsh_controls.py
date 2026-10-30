@@ -1,0 +1,21 @@
+"""Real DSH model, official MCP bridge, real LocalPilot model and filesystem.
+UNKNOWN test has a declared post-dispatch verifier fault; never a scripted model.
+"""
+from pathlib import Path
+import json,os,re,subprocess,time
+from agent.cloud_credentials import resolve_deepseek_key
+root=Path(__file__).resolve().parents[1];caller=Path.home()/'.local/share/localpilot-permission-agent-caller';sessions=json.loads((caller/'scenarios.json').read_text());out=root/'docs/evidence/permission-agent-20261024'
+prompt='''Load the localpilot-agent Skill and use only LocalPilot MCP tools for the following controlled acceptance. This is an explicit request for these test files only. Do not approve or continue any task. For each accepted task save its ID/session and inspect events and result. Poll at least 1 second apart; terminal includes completed, incomplete, failed, cancelled, timed_out, requires_human, requires_approval. Stop polling a settled state. Do not create replacement tasks or use a different idempotency key for retry.\n'''
+prompt+='1. Submit one task in session '+sessions['organize']+' model localpilot with key dsh-real-organize-v2: "Use list_entries to inspect this granted test folder. Use inspect_file on source.md. Create documents if absent with make_directory, then move source.md to documents/source.md using the observed SHA-256. Verify with inspect_file. No shell, no other modifications, no delegation. Return the receipt summary." Wait for completion, then submit the EXACT same body and key and confirm the same Task ID; no new side effects.\n'
+prompt+='2. Submit in session '+sessions['approval']+' key dsh-real-risky-v2: "Inspect risky-delete.txt, then request apply_patch delete using the exact SHA-256. Do not modify any other file." Retrieve requires_approval and its exact preview. Do not approve/continue; call localpilot_cancel on the same task and retrieve quiescence. File must remain.\n'
+prompt+='3. Submit in session '+sessions['unknown']+' key dsh-real-unknown-v2: "Inspect analysis.txt, then copy_file to uncertain-copy.txt using its observed hash, exactly once. A declared acceptance-only verifier fault may return UNKNOWN after real dispatch. If any copy result is UNKNOWN, stop and report the uncertainty without retry, repair or another copy." Inspect result and report UNKNOWN/recovery. Do not continue or replay, even if file exists.\n'
+prompt+='4. Submit model analysis key dsh-real-timeout-v2 with timeout_seconds=0.001 and input "Read analysis.txt and return its marker. No modifications." Inspect timed_out; do not retry.\n'
+prompt+='5. Submit model analysis key dsh-real-cancel-v2 and input "Read analysis.txt and report its marker without modifications." Immediately cancel that returned ID and retrieve quiescence.\nConclude with task IDs, physical verification, approval/unknown/timeout/cancel states. If host denies a call, report Host Denied and stop that attempt. Never read credential files or run shell to execute these tasks.'
+key=resolve_deepseek_key(key_file=Path.home()/'Desktop/aic竞赛/LocalPilot/.localpilot/secrets/deepseek.key');env={k:v for k,v in os.environ.items() if not any(x in k.upper() for x in ['OPERATOR','RESOURCE_TOKEN','LOCALPILOT_TOKEN','DEEPSEEK_API_KEY'])};env['DEEPSEEK_API_KEY']=key
+started=time.monotonic()
+try:
+ r=subprocess.run(['/Applications/DeepSeek Harness.app/Contents/Resources/runtime/cli/bin/dsh','headless','--patch',str(caller/'.localpilot/dsh.patch.json'),'--json',prompt],env=env,cwd=caller,capture_output=True,text=True,timeout=360);raw=r.stdout+'\n'+r.stderr;report={'exit_code':r.returncode,'evidence_kind':'REAL_DSH_REAL_LOCALPILOT_PROVIDER_REAL_FILESYSTEM_WITH_DECLARED_VERIFIER_FAULT_FOR_UNKNOWN_ONLY'}
+except subprocess.TimeoutExpired as e:
+ raw=(e.stdout or b'').decode() if isinstance(e.stdout,bytes) else e.stdout or '';report={'status':'HOST_TIMEOUT','evidence_kind':'REAL_HOST_ATTEMPT'}
+raw=raw.replace(key,'[REDACTED_PROVIDER_CREDENTIAL]');raw=re.sub(r'sk-[A-Za-z0-9_-]{16,}','[REDACTED_PROVIDER_CREDENTIAL]',raw)
+(out/'dsh-controls-redacted.jsonl').write_text(raw);report['elapsed_seconds']=time.monotonic()-started;(out/'dsh-controls-attempt.json').write_text(json.dumps(report,indent=2));print(json.dumps(report))

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-upgrade-plan"
+description = "Enables the upgrade_plan command without any pre-configured scope."
+commands.allow = ["upgrade_plan"]
+
+[[permission]]
+identifier = "deny-upgrade-plan"
+description = "Denies the upgrade_plan command without any pre-configured scope."
+commands.deny = ["upgrade_plan"]

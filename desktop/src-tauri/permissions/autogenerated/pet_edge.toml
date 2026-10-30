@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-pet-edge"
+description = "Enables the pet_edge command without any pre-configured scope."
+commands.allow = ["pet_edge"]
+
+[[permission]]
+identifier = "deny-pet-edge"
+description = "Denies the pet_edge command without any pre-configured scope."
+commands.deny = ["pet_edge"]

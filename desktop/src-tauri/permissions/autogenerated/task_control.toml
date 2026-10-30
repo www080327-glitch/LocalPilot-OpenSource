@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-task-control"
+description = "Enables the task_control command without any pre-configured scope."
+commands.allow = ["task_control"]
+
+[[permission]]
+identifier = "deny-task-control"
+description = "Denies the task_control command without any pre-configured scope."
+commands.deny = ["task_control"]

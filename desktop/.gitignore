@@ -1,0 +1,20 @@
+/node_modules
+dist/
+src-tauri/target/
+.DS_Store
+playwright-report/
+test-results/
+*.log
+.private/
+*.tsbuildinfo
+release/
+src-tauri/gen/
+__pycache__/
+
+# Generated UI captures belong to a run, never overwrite published references.
+docs/evidence/runs/
+
+/src-tauri/bundled-backends/
+
+# Generated wheel rollback metadata is retained locally, outside source publication.
+/docs/delivery/product-20261023/rollback-metadata/

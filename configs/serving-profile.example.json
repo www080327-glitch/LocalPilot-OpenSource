@@ -1,0 +1,21 @@
+{
+  "base_url": "http://127.0.0.1:1234/v1",
+  "model": "YOUR_MODEL_ID",
+  "engine": "UNKNOWN",
+  "engine_version": "UNKNOWN",
+  "model_revision": "UNKNOWN",
+  "hardware": "UNKNOWN",
+  "device": "UNKNOWN",
+  "service_location": "unknown",
+  "configured_context": 131072,
+  "size_class": "unknown",
+  "timeout": 30,
+  "capabilities": {
+    "streaming": true,
+    "tool_calling": true
+  },
+  "chat_template_kwargs": {},
+  "reasoning_replay": false,
+  "include_stream_usage": false,
+  "reasoning_efforts": []
+}

@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-27",
+  "timezone": "Asia/Shanghai",
+  "phase": "MAINTAINER_AUTHORIZED_MERGE_ARM64_REVERIFIED",
+  "pr": 2,
+  "pr_head": "1d7303d94dc9743d6d1ec97abad07160850a1adf",
+  "main": "df04ca709b699b170a29c2aaa337aeebe8a38ef4",
+  "reviewed_files": 26,
+  "worktree_created": true,
+  "daily_app_changed": false,
+  "real_platform_connections_changed": false,
+  "releases_created": false,
+  "gates": {
+    "CHANNEL_CODE_REVIEW_GO": {
+      "go": true,
+      "status": "GO",
+      "scope": "26 original PR files reviewed; confirmed defects patched and native regression matrix passed"
+    },
+    "MACOS_ARM64_GO": {
+      "go": true,
+      "status": "GO",
+      "scope": "Darwin 27.0.1, Python 3.14.6, Node 24.20.0 arm64, SQLite 3.50.4; isolated adapter/component tests"
+    },
+    "MACOS_X86_64_GO": {
+      "go": false,
+      "status": "NOT_RUN",
+      "scope": "No native Intel execution environment; handoff script provided, no Rosetta substitution"
+    },
+    "CHANNEL_PACKAGING_GO": {
+      "go": true,
+      "status": "GO",
+      "scope": "Core, Suite and optional facade wheels built and installed into fresh venvs; source-free imports verified"
+    },
+    "QQ_AGENT_E2E_GO": {
+      "go": true,
+      "status": "GO",
+      "scope": "Synthetic QQ HTTP transport through installed facade to real Core/file tools, receipts and query; no live QQ account"
+    },
+    "WECHAT_AGENT_E2E_GO": {
+      "go": true,
+      "status": "GO",
+      "scope": "Synthetic WeChat transport, separate test Operator, approve/reject/expiry/UNKNOWN/restart and independent file assertions; no live WeChat account"
+    },
+    "CHANNEL_SECURITY_GO": {
+      "go": true,
+      "status": "GO",
+      "scope": "Tested macOS identity/permission/replay/private-state/credential contracts; no claim of global OS or physical account certification"
+    },
+    "MAIN_MERGE_GO": {
+      "go": true,
+      "status": "GO",
+      "scope": "Maintainer explicitly authorized main merge after scoped arm64 acceptance; main/PR heads unchanged and source-free wheel matrix re-run passed. Intel/live-platform/full-GUI NOT_RUN remain; no daily APP replacement."
+    }
+  },
+  "maintainer_decision": {
+    "instruction": "那就合并进main，然后装到我本机",
+    "limitations_preserved": [
+      "Intel native NOT_RUN",
+      "live QQ/WeChat NOT_RUN",
+      "full Desktop GUI upgrade NOT_RUN"
+    ],
+    "daily_app_replacement": false
+  }
+}

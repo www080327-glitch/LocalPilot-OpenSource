@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "localpilot-companion"
+version = "0.5.7b3"
+description = "Independent read-only local AI companion"
+requires-python = ">=3.11"
+dependencies = ["watchdog>=6,<7", "pypdf>=6,<7", "psutil>=7,<8"]
+
+[project.optional-dependencies]
+mlx = ["mlx-lm>=0.31.3,<0.32"]
+validation = ["reportlab>=4,<5", "python-docx>=1.2,<2", "python-pptx>=1,<2", "openpyxl>=3.1,<4"]
+
+[project.scripts]
+companion = "companion.cli:main"
+
+[tool.setuptools]
+packages = ["companion", "companion.runtime", "companion.observers", "companion.memory", "companion.model", "companion.triggers", "companion.channels", "companion.escalation", "companion.benchmark", "companion.ui"]
+package-dir = {companion = "."}
+
+[tool.setuptools.package-data]
+companion = ["ui/*.swift", "ui/*.entitlements", "channels/*.swift", "observers/*.swift", "observers/shared_ax/*.swift", "observers/shared_ax/*.json", "config.example.json", "benchmark/*.json", "benchmark/*.sha256"]

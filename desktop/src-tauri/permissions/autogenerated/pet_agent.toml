@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-pet-agent"
+description = "Enables the pet_agent command without any pre-configured scope."
+commands.allow = ["pet_agent"]
+
+[[permission]]
+identifier = "deny-pet-agent"
+description = "Denies the pet_agent command without any pre-configured scope."
+commands.deny = ["pet_agent"]

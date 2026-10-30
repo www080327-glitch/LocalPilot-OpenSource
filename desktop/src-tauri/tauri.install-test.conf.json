@@ -1,0 +1,20 @@
+{
+  "identifier": "io.localpilot.desktop.test",
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "LocalPilot Test",
+        "width": 1440,
+        "height": 940,
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true
+      }
+    ]
+  },
+  "bundle": {
+    "macOS": {
+      "infoPlist": "Test-Info.plist"
+    }
+  }
+}

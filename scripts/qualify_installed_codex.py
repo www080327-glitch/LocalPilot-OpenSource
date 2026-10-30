@@ -1,0 +1,11 @@
+"""Final installed MCP metadata check with real Codex; no approval override/fallback."""
+from pathlib import Path
+import json,subprocess,os,time
+root=Path(__file__).resolve().parents[1];out=root/'docs/evidence/permission-agent-20261024';sid=json.loads((out/'codex-final-read-authorization.json').read_text())['session_id'];config=__import__('tomllib').loads((root/'.codex/config.toml').read_text())['mcp_servers']['localpilot']
+prompt='Load $localpilot-agent from this project. Use only its actual MCP tools for delegation. First call localpilot_capabilities and inspect the read-only authorized session '+sid+'. Then submit exactly one task with session_id '+sid+' model desktop-file-agent-v1 idempotency_key codex-installed-b12-read-v1 origin_agent codex-installed-final parent_task_id permission-agent-20261024 and input "Read sorted/source.txt via read_file and return its exact marker, without changing files or delegating." Save IDs, follow localpilot_events and localpilot_result until settled. Report IDs and actual verification, never infer semantic PASS. If any call is denied by this host, report Host Denied and stop the attempt. Do not switch to shell, HTTP, another server or identity; do not change approval settings, approve, continue, read credentials or execute child tool proposals locally.'
+cmd=['codex','exec','-C',str(root),'--ephemeral','--json','-s','read-only']
+for k,v in config.items():cmd+=['-c','mcp_servers.localpilot.'+k+'='+json.dumps(v)]
+cmd+=[prompt];env={k:v for k,v in os.environ.items() if not any(s in k.upper() for s in ['OPERATOR','RESOURCE_TOKEN','LOCALPILOT_TOKEN','DEEPSEEK_API_KEY'])};start=time.monotonic()
+try:r=subprocess.run(cmd,cwd=root,env=env,capture_output=True,text=True,timeout=180);raw=r.stdout+'\n'+r.stderr;report={'exit':r.returncode,'evidence_kind':'ACTUAL_CODEX_MODEL_FINAL_INSTALLED_B12_SKILL_MCP_NO_POLICY_OVERRIDE'}
+except subprocess.TimeoutExpired as e:raw=(e.stdout or b'').decode() if isinstance(e.stdout,bytes) else e.stdout or '';report={'status':'HOST_TIMEOUT'}
+(out/'codex-installed-final-redacted.jsonl').write_text(raw);report['seconds']=time.monotonic()-start;(out/'codex-installed-final-attempt.json').write_text(json.dumps(report,indent=2));print(report)

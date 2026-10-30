@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-pet-chat"
+description = "Enables the pet_chat command without any pre-configured scope."
+commands.allow = ["pet_chat"]
+
+[[permission]]
+identifier = "deny-pet-chat"
+description = "Denies the pet_chat command without any pre-configured scope."
+commands.deny = ["pet_chat"]

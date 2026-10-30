@@ -1,0 +1,552 @@
+html[data-pet="true"],
+html[data-pet="true"] body,
+html[data-pet="true"] #root {
+  background: transparent !important;
+  overflow: hidden;
+  color-scheme: light dark;
+}
+html[data-pet-part="character"] {
+  color-scheme: only light;
+}
+.pet-character-surface {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  user-select: none;
+}
+.pet-character-button {
+  position: absolute;
+  inset: 13.333333% 0 0;
+  width: 100%;
+  height: 86.666667%;
+  padding: 0;
+  border: 0;
+  cursor: grab;
+  touch-action: none;
+}
+.pet-sprite {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-size: 800% 1100%;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+.pet-asset-pending {
+  display: inline-block;
+  padding: 7px;
+  border-radius: 10px;
+  color: #254957;
+  background: #edf4fa;
+  font-size: 11px;
+}
+.pet-idle-aside {
+  position: absolute;
+  top: 0;
+  left: 4%;
+  max-width: 92%;
+  padding: 2px 8px;
+  border: 1px solid #fff9;
+  border-radius: 12px 12px 5px 12px;
+  background: linear-gradient(140deg, #f7fbffed, #dceaffc7);
+  box-shadow: inset 0 1px 0 #fff9;
+  color: #283e70;
+  font:
+    10px/1.6 -apple-system,
+    "PingFang SC",
+    sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+.pet-offline {
+  position: absolute;
+  right: 4px;
+  top: 28px;
+  border-radius: 50%;
+  background: #f1c0ab;
+  padding: 1px 5px;
+  font-size: 10px;
+  pointer-events: none;
+}
+.pet-character-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin: 10px 0 15px;
+}
+.pet-character-list button {
+  font-size: 11px !important;
+  padding: 9px 5px !important;
+}
+.pet-character-list button[aria-pressed="true"] {
+  border-color: #759ddd;
+  background: #8bb9fa33;
+}
+.pet-task-controls {
+  display: flex;
+  gap: 5px;
+  padding: 3px 10px;
+  flex-wrap: wrap;
+}
+.pet-chat-surface {
+  --pet-text: #253754;
+  --pet-muted: #5d7192;
+  --pet-line: #546e9b26;
+  --pet-card: #ffffff24;
+  --pet-input: #ffffff2e;
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 26px;
+  overflow: hidden;
+  color: var(--pet-text);
+  background: linear-gradient(145deg, #ffffff14, #d7e9ff08 42%, #ebedff10);
+  box-shadow:
+    inset 0 1px 0 #ffffffb0,
+    inset 0 -1px 0 #adc4e62b;
+  border: 1px solid #fff8;
+  font:
+    13px -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  animation: pet-appear 0.17s ease-out;
+}
+.pet-chat-surface[data-material="solid"] {
+  background: #f1f5fc;
+}
+.pet-header {
+  padding: 9px 12px 7px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--pet-line);
+  flex: none;
+}
+.pet-header > div {
+  display: grid;
+  grid-template-columns: 27px 1fr;
+  column-gap: 7px;
+  align-items: center;
+}
+.pet-avatar {
+  grid-row: span 2;
+  color: #5788c3;
+  font-size: 22px;
+}
+.pet-header strong {
+  font-size: 14px;
+  letter-spacing: 0.2px;
+}
+.pet-header small {
+  color: var(--pet-muted);
+  font-size: 10px;
+  margin-top: 2px;
+}
+.pet-header nav {
+  display: flex;
+  gap: 4px;
+}
+.pet-chat-surface button {
+  cursor: pointer;
+  color: inherit;
+  background: var(--pet-card);
+  border: 1px solid var(--pet-line);
+  border-radius: 9px;
+  padding: 7px 10px;
+  font: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.pet-chat-surface button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.pet-header button {
+  padding: 5px;
+  border: 0;
+  background: transparent;
+  color: var(--pet-muted);
+}
+.pet-conversation {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px 11px 4px;
+  max-height: 260px;
+  scrollbar-width: thin;
+}
+.pet-welcome {
+  margin: 4px 4px 8px;
+}
+.pet-welcome > span {
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: -0.8px;
+}
+.pet-welcome p {
+  color: var(--pet-muted);
+  line-height: 1.8;
+  margin-top: 5px;
+}
+.pet-message {
+  position: relative;
+  line-height: 1.7;
+  margin: 0 22px 12px 0;
+  padding: 9px 12px;
+  border-radius: 16px;
+  background: var(--pet-card);
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+.pet-message.user {
+  margin: 0 0 12px 40px;
+  background: #92b8f23b;
+}
+.pet-message p {
+  margin: 0 0 5px;
+}
+.pet-message p:last-child {
+  margin: 0;
+}
+.pet-message pre {
+  overflow: auto;
+  max-width: 100%;
+  font-size: 11px;
+  padding: 8px;
+  background: #182b3312;
+  border-radius: 8px;
+}
+.pet-message table {
+  font-size: 11px;
+}
+.pet-message small {
+  color: var(--pet-muted);
+  font-size: 10px;
+}
+.pet-message .pet-copy {
+  position: absolute;
+  right: -24px;
+  bottom: 4px;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  opacity: 0.5;
+}
+.pet-message .pet-handoff {
+  font-size: 11px;
+  margin-top: 8px;
+  background: #b4dacb55;
+}
+.pet-composer {
+  margin: 5px 12px 0;
+  padding: 9px 10px 8px 12px;
+  display: flex;
+  align-items: flex-end;
+  background: var(--pet-input);
+  border: 1px solid var(--pet-line);
+  border-radius: 17px;
+  flex: none;
+}
+.pet-composer textarea {
+  width: 100%;
+  resize: none;
+  max-height: 100px;
+  min-height: 24px;
+  padding: 0 6px 0 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  line-height: 1.55;
+  font: inherit;
+  user-select: text;
+}
+.pet-composer button {
+  border-radius: 50%;
+  padding: 6px;
+  background: #8eb4ef;
+  color: #203f6c;
+  border: 0;
+  flex: none;
+}
+.pet-footnote {
+  text-align: center;
+  color: var(--pet-muted);
+  font-size: 9px;
+  padding: 7px 0 9px;
+  flex: none;
+}
+.pet-settings-body {
+  overflow-y: auto;
+  flex: 1;
+  padding: 14px 20px 20px;
+  min-height: 0;
+  scrollbar-width: thin;
+}
+.pet-setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--pet-line);
+  gap: 12px;
+}
+.pet-settings-body input:not([type="checkbox"]):not([type="range"]) {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--pet-line);
+  border-radius: 8px;
+  background: var(--pet-input);
+  color: inherit;
+  padding: 8px;
+  margin: 5px 0 8px;
+  font: inherit;
+}
+.pet-setting input[type="range"] {
+  width: 110px;
+}
+.pet-settings-body input[type="checkbox"] {
+  accent-color: #478e77;
+  width: 16px;
+  height: 16px;
+}
+.pet-explanation {
+  font-size: 11px;
+  color: var(--pet-muted);
+  line-height: 1.65;
+  margin: 12px 0;
+}
+.pet-row-button {
+  width: 100%;
+  margin: 10px 0;
+  justify-content: space-between !important;
+}
+.pet-button-pair {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 10px 0;
+}
+.pet-button-pair > * {
+  flex: 1;
+}
+.pet-error {
+  font-size: 11px;
+  line-height: 1.6;
+  color: #a04e3d;
+  padding: 8px;
+  overflow-wrap: anywhere;
+}
+.pet-error button {
+  margin-left: 5px;
+}
+.pet-memory {
+  background: var(--pet-card);
+  border-radius: 12px;
+  padding: 10px;
+  margin: 8px 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.pet-settings-body h4 {
+  font-size: 12px;
+  margin: 15px 0 5px;
+}
+@keyframes pet-appear {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .pet-chat-surface {
+    --pet-text: #edf3ff;
+    --pet-muted: #b1c3df;
+    --pet-line: #c9e3d51c;
+    --pet-card: #d3f4df0c;
+    --pet-input: #18294066;
+    background: linear-gradient(145deg, #6b82a72b, #14274633 60%, #7899d51a);
+    border-color: #d8ffec20;
+  }
+  .pet-chat-surface[data-material="solid"] {
+    background: #202b40;
+  }
+  .pet-message.user {
+    background: #72b99c27;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pet-chat-surface {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+[data-reduce="true"] *,
+[data-animate="false"] * {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* A small transparent viewport; grip contacts, not canvas margins, meet the edge. */
+.edge-viewport {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 240px;
+  height: 220px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  background: transparent;
+  user-select: none;
+}
+.edge-body,
+.edge-body:hover:not(:disabled),
+.edge-body:active,
+.edge-body:focus {
+  position: absolute;
+  inset: 0;
+  width: 240px;
+  height: 220px;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0;
+  cursor: grab;
+}
+.edge-art-clip {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+  overflow: hidden;
+}
+.edge-sprite {
+  position: absolute;
+  display: block;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+.edge-chat-entry,
+.edge-chat-entry:hover:not(:disabled),
+.edge-chat-entry:active {
+  position: absolute;
+  z-index: 3;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  cursor: pointer;
+}
+.edge-thought svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.edge-thought ellipse,
+.edge-thought circle {
+  fill: #fffffff0;
+  stroke: #263d73;
+  stroke-width: 3.2;
+}
+.edge-thought-label {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 22px;
+  color: #243967;
+  font:
+    700 22px/1.3 "PingFang SC",
+    -apple-system,
+    sans-serif;
+  text-align: center;
+  pointer-events: none;
+}
+.edge-thought-label[data-up="true"] {
+  top: 51px;
+}
+.edge-thought-label[data-long="true"] {
+  top: 13px;
+  font-size: 14px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.edge-thought-label[data-up="true"][data-long="true"] {
+  top: 43px;
+}
+.edge-pending {
+  position: absolute;
+  left: 8px;
+  bottom: 14px;
+  max-width: 150px;
+  font-size: 10px;
+  color: #405977;
+  background: #f3f8ffee;
+  border-radius: 5px;
+  pointer-events: none;
+}
+.edge-water {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 240px;
+  height: 20px;
+  pointer-events: none;
+}
+@keyframes edge-work {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.07);
+  }
+}
+.edge-viewport[data-mode="WORKING"][data-reduce="false"] .edge-main,
+.edge-viewport[data-mode="CHAT_OPEN"][data-working="true"][data-reduce="false"]
+  .edge-main {
+  animation: edge-work 0.6s ease-in-out 2;
+}
+
+/* Native NSGlassEffectView supplies the material only under the thought path. */
+.edge-viewport[data-mini-glass="true"] .edge-thought ellipse,
+.edge-viewport[data-mini-glass="true"] .edge-thought circle {
+  fill: #ffffff08;
+}
+.edge-viewport[data-mini-glass="true"] .edge-thought-label {
+  text-shadow: 0 1px 0 #ffffff80;
+}
+@media (prefers-color-scheme: dark) {
+  .pet-chat-surface[data-material="liquid_glass"] {
+    --pet-text: #edf4ff;
+    --pet-muted: #bdcce3;
+    --pet-line: #c4d8ff28;
+    --pet-card: #ffffff16;
+    --pet-input: #ffffff1c;
+  }
+  .edge-viewport[data-mini-glass="true"] .edge-thought-label {
+    color: #243967;
+    text-shadow: 0 1px 1px #ffffffeb, 0 0 3px #ffffffa8;
+  }
+  .edge-viewport[data-mini-glass="true"] .edge-thought ellipse,
+  .edge-viewport[data-mini-glass="true"] .edge-thought circle {
+    stroke: #c3d6f8c9;
+  }
+}

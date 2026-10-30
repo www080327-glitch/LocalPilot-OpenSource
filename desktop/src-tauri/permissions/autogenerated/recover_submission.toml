@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-recover-submission"
+description = "Enables the recover_submission command without any pre-configured scope."
+commands.allow = ["recover_submission"]
+
+[[permission]]
+identifier = "deny-recover-submission"
+description = "Denies the recover_submission command without any pre-configured scope."
+commands.deny = ["recover_submission"]

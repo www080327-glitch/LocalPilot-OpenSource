@@ -1,0 +1,3691 @@
+{
+  "schema_version": 2,
+  "generated_from": "benchmarks/data/mlx_results.jsonl",
+  "source_sha256": "26766964ea1a9ffa61d51e4fa687d016095d2de40194ee17e8c19919bfdc5482",
+  "measurements": [
+    {
+      "measurement_id": "cfb224b9c02ede216fc8303ac3a7f693bd93871db0026bad958a4dbaae9038f5",
+      "identity": {
+        "model_id": "qwen3.5-4b",
+        "repo_id": "mlx-community/Qwen3.5-4B-4bit",
+        "model_revision": "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 32,
+        "actual_input_tokens": 32768,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential; power mode not recorded at run time",
+        "power_state": null
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation",
+        "power_state"
+      ],
+      "sources": [
+        {
+          "line": 3,
+          "record_sha256": "e1222e57a8919e9e916509d1d0a89a1dc7155b9658d780f87fa67b0e2903881d",
+          "timestamp": "2026-09-27T05:20:23.017111+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 3.395,
+        "mlx_peak_memory_gb": 7.511,
+        "ttft_seconds_median": 80.932,
+        "prompt_tps_median": 405.082714413822,
+        "decode_tps_median": 53.223183519563804,
+        "load_seconds_median": 1.899,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 43,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 47,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": null,
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "ba533c6d897e5d7cba3d2ffa01b19f7ab807af93082da3c87be9fc5751cb7957",
+      "identity": {
+        "model_id": "qwen3.5-4b",
+        "repo_id": "mlx-community/Qwen3.5-4B-4bit",
+        "model_revision": "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 32,
+        "actual_input_tokens": 32768,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential; power mode not recorded at run time",
+        "power_state": null
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation",
+        "power_state"
+      ],
+      "sources": [
+        {
+          "line": 4,
+          "record_sha256": "4ce2eb95fad410b85c3c962b00c220ad81f9cf650ee1297307b234f07a2d2669",
+          "timestamp": "2026-09-27T05:23:12.023189+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 3.398,
+        "mlx_peak_memory_gb": 7.511,
+        "ttft_seconds_median": 79.791,
+        "prompt_tps_median": 410.8678463704701,
+        "decode_tps_median": 54.69936650645646,
+        "load_seconds_median": 1.551,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 47,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 47,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": null,
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "5a71dad34b8aacef0fdc7aeb773900c25ab6f04777810832c63321fcd5fdc5c9",
+      "identity": {
+        "model_id": "qwen3.5-4b",
+        "repo_id": "mlx-community/Qwen3.5-4B-4bit",
+        "model_revision": "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 32,
+        "actual_input_tokens": 32768,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential; power mode not recorded at run time",
+        "power_state": null
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation",
+        "power_state"
+      ],
+      "sources": [
+        {
+          "line": 5,
+          "record_sha256": "89a4f8605337cb6c0cb415fa5ae87455d772f75d20b13b07c3d9ac67b48f6a55",
+          "timestamp": "2026-09-27T05:24:37.373591+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 3.397,
+        "mlx_peak_memory_gb": 7.511,
+        "ttft_seconds_median": 79.925,
+        "prompt_tps_median": 410.17461853494547,
+        "decode_tps_median": 53.649050486768445,
+        "load_seconds_median": 1.546,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 47,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 47,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": null,
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "1c30a779fc893d547549c8c0f6c7c96907fc5ea3c2858d6a86279ca3c91044a4",
+      "identity": {
+        "model_id": "qwen3.5-4b",
+        "repo_id": "mlx-community/Qwen3.5-4B-4bit",
+        "model_revision": "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 48,
+        "actual_input_tokens": 49152,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential; power mode not recorded at run time",
+        "power_state": null
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation",
+        "power_state"
+      ],
+      "sources": [
+        {
+          "line": 6,
+          "record_sha256": "3e08a877a0bca0b4cd50f41dee02b47aa82ddd881ff889850d39d3a76eade769",
+          "timestamp": "2026-09-27T05:26:02.751322+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 3.448,
+        "mlx_peak_memory_gb": 9.089,
+        "ttft_seconds_median": 131.969,
+        "prompt_tps_median": 372.6076683942412,
+        "decode_tps_median": 47.65212173882483,
+        "load_seconds_median": 1.575,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 47,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 49,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": null,
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "cea4e6b92c116b02572eaca0b248b84e9114a1967848243828911ddfeea6c6f9",
+      "identity": {
+        "model_id": "qwen3.5-4b",
+        "repo_id": "mlx-community/Qwen3.5-4B-4bit",
+        "model_revision": "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 48,
+        "actual_input_tokens": 49152,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential; power mode not recorded at run time",
+        "power_state": null
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation",
+        "power_state"
+      ],
+      "sources": [
+        {
+          "line": 7,
+          "record_sha256": "d67acb39373dd3a37466bb42f4caafcf5a9f764a839a5356439e90782c1bb07f",
+          "timestamp": "2026-09-27T05:28:23.437258+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 3.447,
+        "mlx_peak_memory_gb": 9.089,
+        "ttft_seconds_median": 131.628,
+        "prompt_tps_median": 373.57128478410164,
+        "decode_tps_median": 49.05413660252371,
+        "load_seconds_median": 1.715,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 49,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 49,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": null,
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "a15a090eef04af6ef2fef92e134e73412bae77ce195cc4325e909b1dfabd6f94",
+      "identity": {
+        "model_id": "qwen3.5-4b",
+        "repo_id": "mlx-community/Qwen3.5-4B-4bit",
+        "model_revision": "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 64,
+        "actual_input_tokens": 65536,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential; power mode not recorded at run time",
+        "power_state": null
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation",
+        "power_state"
+      ],
+      "sources": [
+        {
+          "line": 8,
+          "record_sha256": "6f64c1b17d894a3098eb0c82851fe1a1fe805f80fc4e2f66fe85182e2d170cc7",
+          "timestamp": "2026-09-27T05:30:44.246296+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 3.488,
+        "mlx_peak_memory_gb": 10.667,
+        "ttft_seconds_median": 194.927,
+        "prompt_tps_median": 336.33416564783084,
+        "decode_tps_median": 42.72937435975937,
+        "load_seconds_median": 1.641,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 49,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 51,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": null,
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "e7c5d4c189127c60f74604283102429579483523388b27393c9dec2b37a6dc05",
+      "identity": {
+        "model_id": "qwen3.5-4b",
+        "repo_id": "mlx-community/Qwen3.5-4B-4bit",
+        "model_revision": "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 64,
+        "actual_input_tokens": 65536,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential; power mode not recorded at run time",
+        "power_state": null
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation",
+        "power_state"
+      ],
+      "sources": [
+        {
+          "line": 9,
+          "record_sha256": "6a47703ffef0b803ea9336192ae2fee5459712fb6d2968490869a986c418d39a",
+          "timestamp": "2026-09-27T05:34:05.288491+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 3.491,
+        "mlx_peak_memory_gb": 10.667,
+        "ttft_seconds_median": 195.318,
+        "prompt_tps_median": 335.65914313899333,
+        "decode_tps_median": 42.45723925797243,
+        "load_seconds_median": 1.643,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 51,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 51,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": null,
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "3f903f20dc4a5d77102d6bc6e2a8e6b22f59e0985b9ccf093e3e182530d2b590",
+      "identity": {
+        "model_id": "qwen3.5-4b",
+        "repo_id": "mlx-community/Qwen3.5-4B-4bit",
+        "model_revision": "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 96,
+        "actual_input_tokens": 98304,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential; power mode not recorded at run time",
+        "power_state": null
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation",
+        "power_state"
+      ],
+      "sources": [
+        {
+          "line": 10,
+          "record_sha256": "368c2dde9fd7fefd09bdc76f89a8e20b81bad3ad428805239870ce564a98ed47",
+          "timestamp": "2026-09-27T05:37:26.331825+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 3.716,
+        "mlx_peak_memory_gb": 13.93,
+        "ttft_seconds_median": 358.659,
+        "prompt_tps_median": 274.16881413015375,
+        "decode_tps_median": 34.89838347462333,
+        "load_seconds_median": 1.653,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 51,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 55,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": null,
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "72467b7f9a14544c0f514477637572d25b4b7151a7f8a44b7a0f21795c6bfb76",
+      "identity": {
+        "model_id": "qwen3.5-4b",
+        "repo_id": "mlx-community/Qwen3.5-4B-4bit",
+        "model_revision": "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 96,
+        "actual_input_tokens": 98304,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential; power mode not recorded at run time",
+        "power_state": null
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation",
+        "power_state"
+      ],
+      "sources": [
+        {
+          "line": 11,
+          "record_sha256": "dd978c2e21bf3e9c1443372083964bfe809100f00dd74d5e0bdcbc2f86cd806f",
+          "timestamp": "2026-09-27T05:43:33.314124+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 3.713,
+        "mlx_peak_memory_gb": 13.93,
+        "ttft_seconds_median": 361.36,
+        "prompt_tps_median": 272.11790466311305,
+        "decode_tps_median": 35.69130147072536,
+        "load_seconds_median": 1.715,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 55,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 55,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": null,
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "e064e1faac112f30dc39dec09d6fae37174cee5a8b4965ede3caebd3b339f2e1",
+      "identity": {
+        "model_id": "qwen3.5-4b",
+        "repo_id": "mlx-community/Qwen3.5-4B-4bit",
+        "model_revision": "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 128,
+        "actual_input_tokens": 131072,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential; power mode not recorded at run time",
+        "power_state": null
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation",
+        "power_state"
+      ],
+      "sources": [
+        {
+          "line": 12,
+          "record_sha256": "be728cb03230099ee5ab1c5a2d94125aeb7c4e98a3971e1bd1096bc9b3b8cf34",
+          "timestamp": "2026-09-27T05:49:45.142615+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 3.824,
+        "mlx_peak_memory_gb": 17.273,
+        "ttft_seconds_median": 565.484,
+        "prompt_tps_median": 231.8473166040196,
+        "decode_tps_median": 28.74501726646117,
+        "load_seconds_median": 1.605,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 55,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 59,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": null,
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "6ce3bfb504d7ae225a220271151a73f6857f80d3e0e7036321bc524572d12d79",
+      "identity": {
+        "model_id": "qwen3.5-4b",
+        "repo_id": "mlx-community/Qwen3.5-4B-4bit",
+        "model_revision": "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 128,
+        "actual_input_tokens": 131072,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential; power mode not recorded at run time",
+        "power_state": null
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation",
+        "power_state"
+      ],
+      "sources": [
+        {
+          "line": 13,
+          "record_sha256": "cdd0458cf7c515efb35302c1d1fbc5982505cd68c2ae06f79082a67cc144acb9",
+          "timestamp": "2026-09-27T05:59:17.616749+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 3.826,
+        "mlx_peak_memory_gb": 17.273,
+        "ttft_seconds_median": 572.573,
+        "prompt_tps_median": 228.9762210608833,
+        "decode_tps_median": 28.403015981449013,
+        "load_seconds_median": 1.736,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 59,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 59,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": null,
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "7cc3df65fcc09b665d0bca99578f08e5c4b10103f2b6f940c08895d1c590f255",
+      "identity": {
+        "model_id": "qwen3.5-4b",
+        "repo_id": "mlx-community/Qwen3.5-4B-4bit",
+        "model_revision": "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 192,
+        "actual_input_tokens": 196608,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential; AC power; low-power mode not rechecked",
+        "power_state": null
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation",
+        "power_state"
+      ],
+      "sources": [
+        {
+          "line": 19,
+          "record_sha256": "ec8c4685454ed03ba1d9ecf556dc48dc025d29b0a44b032759a1e7ab1ded0d8c",
+          "timestamp": "2026-09-27T17:08:57.377583+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 4.115,
+        "mlx_peak_memory_gb": 23.96,
+        "ttft_seconds_median": 911.978,
+        "prompt_tps_median": 215.63346785945,
+        "decode_tps_median": 24.871031731424026,
+        "load_seconds_median": 1.55,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 76,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 76,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": null,
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "0e4a7b70b8b9406de823b4b5cf95851a4e33c49fc76dc5c3e0d538a661d60b25",
+      "identity": {
+        "model_id": "qwen3.5-4b",
+        "repo_id": "mlx-community/Qwen3.5-4B-4bit",
+        "model_revision": "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 256,
+        "actual_input_tokens": 262144,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; three model downloads running in parallel; speed may be affected",
+        "power_state": null
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation",
+        "power_state"
+      ],
+      "sources": [
+        {
+          "line": 21,
+          "record_sha256": "e8d54479221e8ebc7f28c81e5ae62467801ad6b12684d6f4a0faab7b8bea7536",
+          "timestamp": "2026-09-28T04:53:30.708042+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 4.302,
+        "mlx_peak_memory_gb": 30.647,
+        "ttft_seconds_median": 1826.414,
+        "prompt_tps_median": 143.55334404436164,
+        "decode_tps_median": 19.277954270619574,
+        "load_seconds_median": 1.764,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 77,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 76,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": null,
+          "observed_after_run": {
+            "observed_at": "2026-09-28T05:41:59.997487+00:00",
+            "source": "AC Power",
+            "low_power_mode": 0,
+            "note": "Observed after the run; exact power state during inference was not sampled."
+          }
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "6ce6267c1ac5172686ee6085215fc2ad74bb16b12bd4f883246384e3cd7bdb0d",
+      "identity": {
+        "model_id": "qwen3.8-27b",
+        "repo_id": "mlx-community/Qwen3.8-27B-4bit",
+        "model_revision": "10c35caafbb80f7dc6a7a432cdd11af10a6d4818",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 32,
+        "actual_input_tokens": 32768,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; Qwen3.5 9B and Qwen3.6 35B downloads running in parallel; speed may be affected",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation"
+      ],
+      "sources": [
+        {
+          "line": 22,
+          "record_sha256": "883e6611b5b177afe1d0481a431daaac4bf3c18fae5aabe7151f2050fa58eba7",
+          "timestamp": "2026-09-28T15:16:26.955896+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 6.55,
+        "mlx_peak_memory_gb": 22.819,
+        "ttft_seconds_median": 532.055,
+        "prompt_tps_median": 61.80327167380467,
+        "decode_tps_median": 10.294940112614084,
+        "load_seconds_median": 6.755,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 47,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 62,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": {
+            "source": "AC Power",
+            "low_power_mode": 0
+          },
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "1de194e1685efe6b25909a31086e2563514e6e07aef542f6a52139ad4540f625",
+      "identity": {
+        "model_id": "qwen3.8-27b",
+        "repo_id": "mlx-community/Qwen3.8-27B-4bit",
+        "model_revision": "10c35caafbb80f7dc6a7a432cdd11af10a6d4818",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 48,
+        "actual_input_tokens": 49152,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; Qwen3.5 9B and Qwen3.6 35B downloads running in parallel; speed may be affected",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation"
+      ],
+      "sources": [
+        {
+          "line": 23,
+          "record_sha256": "ac01054be6917942ccef82a1bcf42c4c9fa52ba17a8121e8d52866372c506490",
+          "timestamp": "2026-09-28T15:25:33.194214+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 13.89,
+        "mlx_peak_memory_gb": 25.474,
+        "ttft_seconds_median": 827.898,
+        "prompt_tps_median": 59.41466430794521,
+        "decode_tps_median": 8.44543549263011,
+        "load_seconds_median": 4.307,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 62,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 91,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": {
+            "source": "AC Power",
+            "low_power_mode": 0
+          },
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "3d9488b5ea6823a49ace02c304c5311d79e9bae86c89156fff00d64ec0f19d80",
+      "identity": {
+        "model_id": "qwen3.8-27b",
+        "repo_id": "mlx-community/Qwen3.8-27B-4bit",
+        "model_revision": "10c35caafbb80f7dc6a7a432cdd11af10a6d4818",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 64,
+        "actual_input_tokens": 65536,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; Qwen3.5 9B and Qwen3.6 35B downloads running in parallel; speed may be affected",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation"
+      ],
+      "sources": [
+        {
+          "line": 24,
+          "record_sha256": "3c863e2b9d58b7b8611b80ef1a222cbb898fd00daf7fad8fa80e515d2b2f6b2f",
+          "timestamp": "2026-09-28T15:39:30.346953+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 15.506,
+        "mlx_peak_memory_gb": 28.192,
+        "ttft_seconds_median": 1081.016,
+        "prompt_tps_median": 60.636060489380554,
+        "decode_tps_median": 9.613859097070588,
+        "load_seconds_median": 3.355,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 91,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 93,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": {
+            "source": "AC Power",
+            "low_power_mode": 0
+          },
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "90400e7e02784e93d13fd128d0717510702f1ef20f0e111c219ff0dec111ee24",
+      "identity": {
+        "model_id": "qwen3.8-27b",
+        "repo_id": "mlx-community/Qwen3.8-27B-4bit",
+        "model_revision": "10c35caafbb80f7dc6a7a432cdd11af10a6d4818",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 96,
+        "actual_input_tokens": 98304,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; Qwen3.5 9B and Qwen3.6 35B downloads running in parallel; speed may be affected",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation"
+      ],
+      "sources": [
+        {
+          "line": 25,
+          "record_sha256": "e02fea6623c92045616cdba37a71d8d5628b762250ccd04f08dfa4df864d3de0",
+          "timestamp": "2026-09-28T15:57:42.374526+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 15.636,
+        "mlx_peak_memory_gb": 33.691,
+        "ttft_seconds_median": 1706.118,
+        "prompt_tps_median": 57.62621860840757,
+        "decode_tps_median": 8.502190566550151,
+        "load_seconds_median": 2.207,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 93,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 94,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": {
+            "source": "AC Power",
+            "low_power_mode": 0
+          },
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "c5e7995652fd20a5748cbec5f569d70979f98f12fca8576580bdd880a4de8fc5",
+      "identity": {
+        "model_id": "qwen3.8-27b",
+        "repo_id": "mlx-community/Qwen3.8-27B-4bit",
+        "model_revision": "10c35caafbb80f7dc6a7a432cdd11af10a6d4818",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 128,
+        "actual_input_tokens": 131072,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; Qwen3.5 9B and Qwen3.6 35B downloads running in parallel; speed may be affected",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation"
+      ],
+      "sources": [
+        {
+          "line": 26,
+          "record_sha256": "e1ae6491e04b9eee328f4fd5cc19d6ab1b162bf75d27fde776bea16d8d9e64cd",
+          "timestamp": "2026-09-28T16:26:20.756305+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 15.777,
+        "mlx_peak_memory_gb": 39.191,
+        "ttft_seconds_median": 2490.546,
+        "prompt_tps_median": 52.63348065762941,
+        "decode_tps_median": 7.614190552296284,
+        "load_seconds_median": 3.225,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 94,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 94,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": {
+            "source": "AC Power",
+            "low_power_mode": 0
+          },
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "dd50910f76a3afd3b4041c106380faa335495ee14777e6f32580b68671d0b06e",
+      "identity": {
+        "model_id": "qwen3.8-27b",
+        "repo_id": "mlx-community/Qwen3.8-27B-4bit",
+        "model_revision": "10c35caafbb80f7dc6a7a432cdd11af10a6d4818",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 192,
+        "actual_input_tokens": 196608,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; Qwen3.5 9B and Qwen3.6 35B downloads running in parallel; speed may be affected",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation"
+      ],
+      "sources": [
+        {
+          "line": 27,
+          "record_sha256": "ffbb976f5ec1481a7ca5960275c613cbfdd84207bd6c0cba2b1b5951b27dc9cb",
+          "timestamp": "2026-09-28T17:08:01.741603+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 16.039,
+        "mlx_peak_memory_gb": 50.188,
+        "ttft_seconds_median": 4461.305,
+        "prompt_tps_median": 44.07278681468992,
+        "decode_tps_median": 6.413687879723223,
+        "load_seconds_median": 3.257,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 94,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 94,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": {
+            "source": "AC Power",
+            "low_power_mode": 0
+          },
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "bf09c479612d6fa40a4a3e64ef1464e8042d35f27de7c0a8244a337901901ccb",
+      "identity": {
+        "model_id": "qwen3.5-9b",
+        "repo_id": "mlx-community/Qwen3.5-9B-4bit",
+        "model_revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 16,
+        "actual_input_tokens": 16384,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no model downloads or other inference running",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation"
+      ],
+      "sources": [
+        {
+          "line": 28,
+          "record_sha256": "9e7b2ef3fb0355874340a21cb040d2cdb9c1e37a090a1a26ba52d2d20dd70aca",
+          "timestamp": "2026-09-28T23:31:36.607903+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 6.116,
+        "mlx_peak_memory_gb": 8.591,
+        "ttft_seconds_median": 64.672,
+        "prompt_tps_median": 253.64572903732153,
+        "decode_tps_median": 39.69424269144675,
+        "load_seconds_median": 2.197,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 94,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 91,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": {
+            "source": "AC Power",
+            "low_power_mode": 0
+          },
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "ac5b87901fb1b1f27c563fc478cd09c9520de0d1edc239ce679f5f73f66b3ce0",
+      "identity": {
+        "model_id": "qwen3.5-9b",
+        "repo_id": "mlx-community/Qwen3.5-9B-4bit",
+        "model_revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 32,
+        "actual_input_tokens": 32768,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no model downloads or other inference running",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation"
+      ],
+      "sources": [
+        {
+          "line": 29,
+          "record_sha256": "2cc12e1d62451995b156f48f9499a50a594b4a6c013304347e02d496454002ce",
+          "timestamp": "2026-09-28T23:32:46.812284+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 6.116,
+        "mlx_peak_memory_gb": 10.215,
+        "ttft_seconds_median": 140.996,
+        "prompt_tps_median": 232.53963907220736,
+        "decode_tps_median": 37.641098953118394,
+        "load_seconds_median": 1.705,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 91,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 94,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": {
+            "source": "AC Power",
+            "low_power_mode": 0
+          },
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "406d6b7a0281b57a185403f38e65b37bd38b9c530b8e8bf2c8a4e7b5ced2095c",
+      "identity": {
+        "model_id": "qwen3.5-9b",
+        "repo_id": "mlx-community/Qwen3.5-9B-4bit",
+        "model_revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 48,
+        "actual_input_tokens": 49152,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no model downloads or other inference running",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation"
+      ],
+      "sources": [
+        {
+          "line": 30,
+          "record_sha256": "8fbc6931d4b3b38e664c356d4057484393381bb32808c528d991946a6163a361",
+          "timestamp": "2026-09-28T23:35:12.191134+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 6.165,
+        "mlx_peak_memory_gb": 11.84,
+        "ttft_seconds_median": 219.694,
+        "prompt_tps_median": 223.82590333809787,
+        "decode_tps_median": 33.67915567350728,
+        "load_seconds_median": 1.651,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 94,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 94,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": {
+            "source": "AC Power",
+            "low_power_mode": 0
+          },
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "a661123afc8142fbebaafcb1cbf7e2ed329830cb5edad2af67d9e4a2cd1c8945",
+      "identity": {
+        "model_id": "qwen3.5-9b",
+        "repo_id": "mlx-community/Qwen3.5-9B-4bit",
+        "model_revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 64,
+        "actual_input_tokens": 65536,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no model downloads or other inference running",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation"
+      ],
+      "sources": [
+        {
+          "line": 31,
+          "record_sha256": "652c096ccff499c7eaaf0128b8490bec57d6e06014d2fceb6df9bce313d17127",
+          "timestamp": "2026-09-28T23:38:57.774637+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 6.206,
+        "mlx_peak_memory_gb": 13.506,
+        "ttft_seconds_median": 311.358,
+        "prompt_tps_median": 210.55738974917904,
+        "decode_tps_median": 30.67490055532853,
+        "load_seconds_median": 1.499,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 94,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 94,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": {
+            "source": "AC Power",
+            "low_power_mode": 0
+          },
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "49e5874887cf90ae0b3f3d9ff217c1287c227cd8a5953ecd008f20292a9a52cf",
+      "identity": {
+        "model_id": "qwen3.5-9b",
+        "repo_id": "mlx-community/Qwen3.5-9B-4bit",
+        "model_revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 96,
+        "actual_input_tokens": 98304,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no model downloads or other inference running",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation"
+      ],
+      "sources": [
+        {
+          "line": 32,
+          "record_sha256": "847782271ac31796b665eeeabb0e67f573378cf3dbd1f35774b3905ae4de59a5",
+          "timestamp": "2026-09-28T23:44:18.696364+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 6.434,
+        "mlx_peak_memory_gb": 16.942,
+        "ttft_seconds_median": 530.52,
+        "prompt_tps_median": 185.34915258871328,
+        "decode_tps_median": 26.36721747246386,
+        "load_seconds_median": 1.479,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 94,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 94,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": {
+            "source": "AC Power",
+            "low_power_mode": 0
+          },
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "1086643f2d313e2b1c21addc360e0185751d32f9f91747582e0d4d8b79514750",
+      "identity": {
+        "model_id": "qwen3.5-9b",
+        "repo_id": "mlx-community/Qwen3.5-9B-4bit",
+        "model_revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 128,
+        "actual_input_tokens": 131072,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no model downloads or other inference running",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation"
+      ],
+      "sources": [
+        {
+          "line": 33,
+          "record_sha256": "2310f5508d8d57646a7e3ab48766610a0b484df61f1339a161bd069259b35e34",
+          "timestamp": "2026-09-28T23:53:15.059948+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 6.544,
+        "mlx_peak_memory_gb": 20.38,
+        "ttft_seconds_median": 725.531,
+        "prompt_tps_median": 180.7032834353022,
+        "decode_tps_median": 25.244345860621117,
+        "load_seconds_median": 1.461,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 94,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 94,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": {
+            "source": "AC Power",
+            "low_power_mode": 0
+          },
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "9503bc06a368975c5994608b27d8ce17c020fd39af791eac260517a116a23548",
+      "identity": {
+        "model_id": "qwen3.5-9b",
+        "repo_id": "mlx-community/Qwen3.5-9B-4bit",
+        "model_revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 192,
+        "actual_input_tokens": 196608,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no model downloads or other inference running",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation"
+      ],
+      "sources": [
+        {
+          "line": 34,
+          "record_sha256": "43c4210efc2b9136beb20b2b9d7b21d8c1980d7b94971af8345c4ce96f8090ca",
+          "timestamp": "2026-09-29T00:05:26.934814+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 6.819,
+        "mlx_peak_memory_gb": 27.254,
+        "ttft_seconds_median": 1277.628,
+        "prompt_tps_median": 153.91464223192878,
+        "decode_tps_median": 20.759736069303305,
+        "load_seconds_median": 1.36,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 94,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 94,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": {
+            "source": "AC Power",
+            "low_power_mode": 0
+          },
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "4cd525d89c34685f051e40a251ab2f27b64b07635ace1e05ae15156c52d6538d",
+      "identity": {
+        "model_id": "qwen3.5-9b",
+        "repo_id": "mlx-community/Qwen3.5-9B-4bit",
+        "model_revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 256,
+        "actual_input_tokens": 262144,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no model downloads or other inference running",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation"
+      ],
+      "sources": [
+        {
+          "line": 35,
+          "record_sha256": "da568394ea6b7ae4008aada72ebaac23a5f1917386d55ff57536555e47ffc635",
+          "timestamp": "2026-09-29T00:26:54.770147+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 7.009,
+        "mlx_peak_memory_gb": 34.128,
+        "ttft_seconds_median": 2012.165,
+        "prompt_tps_median": 130.30014021518988,
+        "decode_tps_median": 17.728075148760063,
+        "load_seconds_median": 1.362,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 94,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 94,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": {
+            "source": "AC Power",
+            "low_power_mode": 0
+          },
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "c63105ff431f9e3564081b76a8a48542e9205889283296d48e7e56c200cdaacb",
+      "identity": {
+        "model_id": "qwen3.6-35b-a3b",
+        "repo_id": "mlx-community/Qwen3.6-35B-A3B-4bit",
+        "model_revision": "38740b847e4cb78f352aba30aa41c76e08e6eb46",
+        "quantization": "4-bit",
+        "backend": "mlx-lm",
+        "backend_version": "0.31.3",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 32,
+        "actual_input_tokens": 32768,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; runtime adapter smoke after fixing MLX-LM greedy sampler",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation"
+      ],
+      "sources": [
+        {
+          "line": 44,
+          "record_sha256": "8df50b698b01e78dab5099104b96e83719cda0243e3c4f53955fbcc7abd5e39c",
+          "timestamp": "2026-09-29T10:10:12.374923+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 18.754,
+        "mlx_peak_memory_gb": 22.349,
+        "ttft_seconds_median": 72.097,
+        "prompt_tps_median": 456.6292617691115,
+        "decode_tps_median": 45.575259425552304,
+        "load_seconds_median": 1.938,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 92,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 92,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": {
+            "source": "AC Power",
+            "low_power_mode": 0
+          },
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "86cb8fc9266153dd15088bc1c546069b85bd499d3d2a87cac507b5c671b47cfe",
+      "identity": {
+        "model_id": "qwen3.6-35b-a3b",
+        "repo_id": "mlx-community/Qwen3.6-35B-A3B-4bit",
+        "model_revision": "38740b847e4cb78f352aba30aa41c76e08e6eb46",
+        "quantization": "4-bit",
+        "backend": "mlx-lm",
+        "backend_version": "0.31.3",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 48,
+        "actual_input_tokens": 49152,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no downloads or other inference running",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation"
+      ],
+      "sources": [
+        {
+          "line": 45,
+          "record_sha256": "e2a0f9a4b3b6c2ca430fc11fbda1f660d9e4e88957beacf77e667e7aee226298",
+          "timestamp": "2026-09-29T10:12:53.629207+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 18.753,
+        "mlx_peak_memory_gb": 23.692,
+        "ttft_seconds_median": 141.941,
+        "prompt_tps_median": 347.12999228894574,
+        "decode_tps_median": 31.990426864487656,
+        "load_seconds_median": 1.899,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 92,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 92,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": {
+            "source": "AC Power",
+            "low_power_mode": 0
+          },
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "2820c2a3f27abb7ad86f2d1e207517050bb7fc600bd1499d127641ae7e5c8e27",
+      "identity": {
+        "model_id": "qwen3.6-35b-a3b",
+        "repo_id": "mlx-community/Qwen3.6-35B-A3B-4bit",
+        "model_revision": "38740b847e4cb78f352aba30aa41c76e08e6eb46",
+        "quantization": "4-bit",
+        "backend": "mlx-lm",
+        "backend_version": "0.31.3",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 64,
+        "actual_input_tokens": 65536,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no downloads or other inference running",
+        "power_state": {
+          "source": "Battery Power",
+          "low_power_mode": 1
+        }
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation"
+      ],
+      "sources": [
+        {
+          "line": 46,
+          "record_sha256": "9afda8a34b7639f43b5d6b3c303fcc3238624b872b9c01966a7f8987e190378f",
+          "timestamp": "2026-09-29T10:30:23.991739+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 18.752,
+        "mlx_peak_memory_gb": 25.036,
+        "ttft_seconds_median": 287.001,
+        "prompt_tps_median": 228.73877251317813,
+        "decode_tps_median": 26.0243601291116,
+        "load_seconds_median": 2.56,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 92,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 92,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": {
+            "source": "Battery Power",
+            "low_power_mode": 1
+          },
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "817c6549f8be31d30de8db90f01a70ac6bdbeced7cbf2617daba16d7b689367d",
+      "identity": {
+        "model_id": "qwen3.6-35b-a3b",
+        "repo_id": "mlx-community/Qwen3.6-35B-A3B-4bit",
+        "model_revision": "38740b847e4cb78f352aba30aa41c76e08e6eb46",
+        "quantization": "4-bit",
+        "backend": "mlx-lm",
+        "backend_version": "0.31.3",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 96,
+        "actual_input_tokens": 98304,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no downloads or other inference running",
+        "power_state": {
+          "source": "Battery Power",
+          "low_power_mode": 1
+        }
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation"
+      ],
+      "sources": [
+        {
+          "line": 47,
+          "record_sha256": "ce7acdd48e611964faa1f4fed66f409a513bc752f515e3c62751282474a0f1f0",
+          "timestamp": "2026-09-29T10:35:19.801303+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 18.975,
+        "mlx_peak_memory_gb": 27.722,
+        "ttft_seconds_median": 559.671,
+        "prompt_tps_median": 175.80579676612973,
+        "decode_tps_median": 20.364005528863675,
+        "load_seconds_median": 2.745,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 92,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 92,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": {
+            "source": "Battery Power",
+            "low_power_mode": 1
+          },
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "a414207f9952e20a722f8270dce3a05892f988ff47a1ca30f98e4ff44948ce32",
+      "identity": {
+        "model_id": "qwen3.6-35b-a3b",
+        "repo_id": "mlx-community/Qwen3.6-35B-A3B-4bit",
+        "model_revision": "38740b847e4cb78f352aba30aa41c76e08e6eb46",
+        "quantization": "4-bit",
+        "backend": "mlx-lm",
+        "backend_version": "0.31.3",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 128,
+        "actual_input_tokens": 131072,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no downloads or other inference running",
+        "power_state": {
+          "source": "Battery Power",
+          "low_power_mode": 1
+        }
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation"
+      ],
+      "sources": [
+        {
+          "line": 48,
+          "record_sha256": "1c1f3af6bb3c1dd89bc8a1049eeb07018956494e9933de7d0f5aa907565f3375",
+          "timestamp": "2026-09-29T10:44:51.358400+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 19.066,
+        "mlx_peak_memory_gb": 30.409,
+        "ttft_seconds_median": 878.879,
+        "prompt_tps_median": 149.2312316615248,
+        "decode_tps_median": 17.090360742830338,
+        "load_seconds_median": 3.894,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 92,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 92,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": {
+            "source": "Battery Power",
+            "low_power_mode": 1
+          },
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    },
+    {
+      "measurement_id": "b91d064666604d729c67134ce6d01197fedd20719144f9bcb6ea5644dbfc6ca6",
+      "identity": {
+        "model_id": "qwen3.6-35b-a3b",
+        "repo_id": "mlx-community/Qwen3.6-35B-A3B-4bit",
+        "model_revision": "38740b847e4cb78f352aba30aa41c76e08e6eb46",
+        "quantization": "4-bit",
+        "backend": "mlx-lm",
+        "backend_version": "0.31.3",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 256,
+        "actual_input_tokens": 262144,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no downloads or other inference running",
+        "power_state": {
+          "source": "Battery Power",
+          "low_power_mode": 1
+        }
+      },
+      "identity_unknown_fields": [
+        "max_output_tokens",
+        "cache_mode",
+        "prompt_protocol",
+        "rendered_prompt_sha256",
+        "generation"
+      ],
+      "sources": [
+        {
+          "line": 50,
+          "record_sha256": "16891d082515db66f673a796b42fb226679673935e332a42ca80e9beb18eb9f5",
+          "timestamp": "2026-09-29T11:24:17.821515+00:00"
+        }
+      ],
+      "repeats": 1,
+      "metrics": {
+        "peak_process_rss_gb": 19.601,
+        "mlx_peak_memory_gb": 41.396,
+        "ttft_seconds_median": 2810.241,
+        "prompt_tps_median": 93.30537759518788,
+        "decode_tps_median": 16.565656438414774,
+        "load_seconds_median": 4.316,
+        "swap_delta_bytes": null
+      },
+      "system_memory_observations": [
+        {
+          "before": {
+            "free_percent": 92,
+            "severity": "normal"
+          },
+          "after": {
+            "free_percent": 81,
+            "severity": "normal"
+          }
+        }
+      ],
+      "power_observations": [
+        {
+          "at_start": {
+            "source": "Battery Power",
+            "low_power_mode": 1
+          },
+          "observed_after_run": null
+        }
+      ],
+      "metric_provenance": {
+        "memory": "measured",
+        "latency": "measured",
+        "capability_quality": "unknown",
+        "compatibility": "measured_load_generate_only",
+        "admission_envelope": "not_measured",
+        "swap": "unknown"
+      }
+    }
+  ],
+  "failures": [
+    {
+      "identity": {
+        "model_id": "qwen3.5-4b",
+        "repo_id": "mlx-community/Qwen3.5-4B-4bit",
+        "model_revision": null,
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": null,
+        "software": null,
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 32,
+        "actual_input_tokens": null,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": null,
+        "power_state": null
+      },
+      "status": "failed",
+      "source": {
+        "line": 1,
+        "record_sha256": "0fe42b834b77e48130cfb634ec67597955293b75e2df49740699628f046de369",
+        "timestamp": "2026-09-26T18:32:00.413837+00:00"
+      },
+      "error_type": "FileNotFoundError",
+      "failure_reason": "\nNo safetensors found in ~/.cache/huggingface/hub/models--mlx-community--Qwen3.5-4B-4bit/snapshots/0e7ffd5c629ef7719d4cbc04069232580bfa9d9c\nCreate safetensors using the following code:\n```\nfrom transformers import AutoModelForCausalLM, AutoProcessor\n\nmodel_id = \"<huggingface_model_id>\"\nmodel = AutoModelForCausalLM.from_pretrained(model_id)\nprocessor = AutoProcessor.from_pretrained(model_id)\n\nmodel.save_pretrained(\"<local_dir>\")\nprocessor.save_pretrained(\"<local_dir>\")\n```\nThen use",
+      "memory_metrics": {
+        "peak_process_rss_gb": 0.108,
+        "mlx_peak_memory_gb": null
+      }
+    },
+    {
+      "identity": {
+        "model_id": "qwen3.5-4b",
+        "repo_id": "mlx-community/Qwen3.5-4B-4bit",
+        "model_revision": null,
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": null,
+        "software": null,
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 32,
+        "actual_input_tokens": null,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": null,
+        "power_state": null
+      },
+      "status": "superseded_invalid_guard",
+      "source": {
+        "line": 2,
+        "record_sha256": "d90173f0429cf01cdae2d01e08dc8cc87475fa747f17133fbe792644935c35a2",
+        "timestamp": "2026-09-26T18:32:28.879585+00:00"
+      },
+      "error_type": null,
+      "failure_reason": "Previous runner used global swap growth before loading weights; superseded by model RSS/MLX peak and system-pressure monitoring.",
+      "memory_metrics": {
+        "peak_process_rss_gb": null,
+        "mlx_peak_memory_gb": null
+      }
+    },
+    {
+      "identity": {
+        "model_id": "qwen3.5-4b",
+        "repo_id": "mlx-community/Qwen3.5-4B-4bit",
+        "model_revision": "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 192,
+        "actual_input_tokens": null,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential; stopped by user to preserve battery",
+        "power_state": null
+      },
+      "status": "stopped_by_user_battery",
+      "source": {
+        "line": 14,
+        "record_sha256": "2b6c95092250235e37ba4e2caf07d1bb92e6c9935fe0cf0c935211bf13f48101",
+        "timestamp": "2026-09-27T12:40:31.144455+00:00"
+      },
+      "error_type": null,
+      "failure_reason": null,
+      "memory_metrics": {
+        "peak_process_rss_gb": null,
+        "mlx_peak_memory_gb": null
+      }
+    },
+    {
+      "identity": {
+        "model_id": "qwen3.5-4b",
+        "repo_id": "mlx-community/Qwen3.5-4B-4bit",
+        "model_revision": "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 192,
+        "actual_input_tokens": null,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "parallel; Low Power Mode user-reported",
+        "power_state": null
+      },
+      "status": "aborted_safety",
+      "source": {
+        "line": 15,
+        "record_sha256": "14ddda00a055a5a3ab3d31bebe3a45cf3f99c298886413c291affd70fb24e152",
+        "timestamp": "2026-09-27T12:41:07.450603+00:00"
+      },
+      "error_type": null,
+      "failure_reason": "system memory free fell to 21%",
+      "memory_metrics": {
+        "peak_process_rss_gb": null,
+        "mlx_peak_memory_gb": null
+      }
+    },
+    {
+      "identity": {
+        "model_id": "qwen3.5-9b",
+        "repo_id": "mlx-community/Qwen3.5-9B-4bit",
+        "model_revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": null,
+        "software": null,
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 192,
+        "actual_input_tokens": null,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "parallel; Low Power Mode user-reported",
+        "power_state": null
+      },
+      "status": "cancelled_before_inference",
+      "source": {
+        "line": 16,
+        "record_sha256": "4b88a7efc18471af1c1b6668d9becc891c912e8ba82b2f572da59e8fbd42247f",
+        "timestamp": "2026-09-27T12:57:39.123378+00:00"
+      },
+      "error_type": null,
+      "failure_reason": null,
+      "memory_metrics": {
+        "peak_process_rss_gb": null,
+        "mlx_peak_memory_gb": null
+      }
+    },
+    {
+      "identity": {
+        "model_id": "qwen3.5-4b",
+        "repo_id": "mlx-community/Qwen3.5-4B-4bit",
+        "model_revision": "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 192,
+        "actual_input_tokens": null,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential; Low Power Mode user-reported",
+        "power_state": null
+      },
+      "status": "failed",
+      "source": {
+        "line": 17,
+        "record_sha256": "c34619e84896e250f263862777019414c147d485ea70f3536e0f5193edfe7891",
+        "timestamp": "2026-09-27T12:58:41.642131+00:00"
+      },
+      "error_type": "RuntimeError",
+      "failure_reason": "[METAL] Command buffer execution failed: Impacting Interactivity (0000000e:kIOGPUCommandBufferCallbackErrorImpactingInteractivity).",
+      "memory_metrics": {
+        "peak_process_rss_gb": 4.112,
+        "mlx_peak_memory_gb": null
+      }
+    },
+    {
+      "identity": {
+        "model_id": "qwen3.5-4b",
+        "repo_id": "mlx-community/Qwen3.5-4B-4bit",
+        "model_revision": "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 256,
+        "actual_input_tokens": null,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential; Low Power Mode user-reported",
+        "power_state": null
+      },
+      "status": "aborted_safety",
+      "source": {
+        "line": 18,
+        "record_sha256": "48d500f63fdc27351f884a27c2fbd4f03f4b8196bb2f5771dafabaee21c2e20a",
+        "timestamp": "2026-09-27T13:51:43.909535+00:00"
+      },
+      "error_type": null,
+      "failure_reason": "system memory free fell to 17%",
+      "memory_metrics": {
+        "peak_process_rss_gb": null,
+        "mlx_peak_memory_gb": null
+      }
+    },
+    {
+      "identity": {
+        "model_id": "qwen3.5-4b",
+        "repo_id": "mlx-community/Qwen3.5-4B-4bit",
+        "model_revision": "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 256,
+        "actual_input_tokens": null,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential; AC power; low-power mode not rechecked",
+        "power_state": null
+      },
+      "status": "aborted_safety",
+      "source": {
+        "line": 20,
+        "record_sha256": "31e23c217770fc5b74c8520e14cfb2998dac2c5a8c00b84b8650612d65310453",
+        "timestamp": "2026-09-27T17:26:08.633243+00:00"
+      },
+      "error_type": null,
+      "failure_reason": "system memory free fell to 17%",
+      "memory_metrics": {
+        "peak_process_rss_gb": null,
+        "mlx_peak_memory_gb": null
+      }
+    },
+    {
+      "identity": {
+        "model_id": "qwen3.8-27b",
+        "repo_id": "mlx-community/Qwen3.8-27B-4bit",
+        "model_revision": "10c35caafbb80f7dc6a7a432cdd11af10a6d4818",
+        "quantization": "4-bit",
+        "backend": "mlx-vlm",
+        "backend_version": "0.7.1",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 256,
+        "actual_input_tokens": null,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no downloads or other inference running",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "status": "failed",
+      "source": {
+        "line": 36,
+        "record_sha256": "1a4adb05c86f4d4edbe459519531821e205fb353addaad91c9e2988428f30803",
+        "timestamp": "2026-09-29T05:01:51.653980+00:00"
+      },
+      "error_type": "RuntimeError",
+      "failure_reason": "[METAL] Command buffer execution failed: Insufficient Memory (00000008:kIOGPUCommandBufferCallbackErrorOutOfMemory).",
+      "memory_metrics": {
+        "peak_process_rss_gb": 16.356,
+        "mlx_peak_memory_gb": 51.16
+      }
+    },
+    {
+      "identity": {
+        "model_id": "qwen3.6-35b-a3b",
+        "repo_id": "mlx-community/Qwen3.6-35B-A3B-4bit",
+        "model_revision": "38740b847e4cb78f352aba30aa41c76e08e6eb46",
+        "quantization": "4-bit",
+        "backend": "mlx-lm",
+        "backend_version": "0.31.3",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 32,
+        "actual_input_tokens": null,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no downloads or other inference running",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "status": "failed",
+      "source": {
+        "line": 37,
+        "record_sha256": "b7f8af084c0dcf143a34719a214fca8a2adac5de8d14d9371c3366e148c6c269",
+        "timestamp": "2026-09-29T10:06:16.483099+00:00"
+      },
+      "error_type": "TypeError",
+      "failure_reason": "generate_step() got an unexpected keyword argument 'temperature'",
+      "memory_metrics": {
+        "peak_process_rss_gb": 18.754,
+        "mlx_peak_memory_gb": 18.169
+      }
+    },
+    {
+      "identity": {
+        "model_id": "qwen3.6-35b-a3b",
+        "repo_id": "mlx-community/Qwen3.6-35B-A3B-4bit",
+        "model_revision": "38740b847e4cb78f352aba30aa41c76e08e6eb46",
+        "quantization": "4-bit",
+        "backend": "mlx-lm",
+        "backend_version": "0.31.3",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 48,
+        "actual_input_tokens": null,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no downloads or other inference running",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "status": "failed",
+      "source": {
+        "line": 38,
+        "record_sha256": "efef96264a11a68acfa0afde19bf190c63aa08818286e9a5a0c9935b4eea9fbc",
+        "timestamp": "2026-09-29T10:06:26.561160+00:00"
+      },
+      "error_type": "TypeError",
+      "failure_reason": "generate_step() got an unexpected keyword argument 'temperature'",
+      "memory_metrics": {
+        "peak_process_rss_gb": 18.754,
+        "mlx_peak_memory_gb": 18.169
+      }
+    },
+    {
+      "identity": {
+        "model_id": "qwen3.6-35b-a3b",
+        "repo_id": "mlx-community/Qwen3.6-35B-A3B-4bit",
+        "model_revision": "38740b847e4cb78f352aba30aa41c76e08e6eb46",
+        "quantization": "4-bit",
+        "backend": "mlx-lm",
+        "backend_version": "0.31.3",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 64,
+        "actual_input_tokens": null,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no downloads or other inference running",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "status": "failed",
+      "source": {
+        "line": 39,
+        "record_sha256": "d1a682004ee74449dfc41429106887689592d8881ff789fabca231a3bbfcfe11",
+        "timestamp": "2026-09-29T10:06:31.624056+00:00"
+      },
+      "error_type": "TypeError",
+      "failure_reason": "generate_step() got an unexpected keyword argument 'temperature'",
+      "memory_metrics": {
+        "peak_process_rss_gb": 18.755,
+        "mlx_peak_memory_gb": 18.169
+      }
+    },
+    {
+      "identity": {
+        "model_id": "qwen3.6-35b-a3b",
+        "repo_id": "mlx-community/Qwen3.6-35B-A3B-4bit",
+        "model_revision": "38740b847e4cb78f352aba30aa41c76e08e6eb46",
+        "quantization": "4-bit",
+        "backend": "mlx-lm",
+        "backend_version": "0.31.3",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 96,
+        "actual_input_tokens": null,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no downloads or other inference running",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "status": "failed",
+      "source": {
+        "line": 40,
+        "record_sha256": "328b2880999c4b6c32bbdd875acd61284a1d3b8bd51ffa4615c156825bfe4e1a",
+        "timestamp": "2026-09-29T10:06:36.685320+00:00"
+      },
+      "error_type": "TypeError",
+      "failure_reason": "generate_step() got an unexpected keyword argument 'temperature'",
+      "memory_metrics": {
+        "peak_process_rss_gb": 18.951,
+        "mlx_peak_memory_gb": 18.169
+      }
+    },
+    {
+      "identity": {
+        "model_id": "qwen3.6-35b-a3b",
+        "repo_id": "mlx-community/Qwen3.6-35B-A3B-4bit",
+        "model_revision": "38740b847e4cb78f352aba30aa41c76e08e6eb46",
+        "quantization": "4-bit",
+        "backend": "mlx-lm",
+        "backend_version": "0.31.3",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 128,
+        "actual_input_tokens": null,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no downloads or other inference running",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "status": "failed",
+      "source": {
+        "line": 41,
+        "record_sha256": "551f0a8d4e443db54602dee9afc372034c2612feea788ac754802ec429cee03c",
+        "timestamp": "2026-09-29T10:06:41.756016+00:00"
+      },
+      "error_type": "TypeError",
+      "failure_reason": "generate_step() got an unexpected keyword argument 'temperature'",
+      "memory_metrics": {
+        "peak_process_rss_gb": 19.059,
+        "mlx_peak_memory_gb": 18.169
+      }
+    },
+    {
+      "identity": {
+        "model_id": "qwen3.6-35b-a3b",
+        "repo_id": "mlx-community/Qwen3.6-35B-A3B-4bit",
+        "model_revision": "38740b847e4cb78f352aba30aa41c76e08e6eb46",
+        "quantization": "4-bit",
+        "backend": "mlx-lm",
+        "backend_version": "0.31.3",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 192,
+        "actual_input_tokens": null,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no downloads or other inference running",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "status": "failed",
+      "source": {
+        "line": 42,
+        "record_sha256": "0e8aa95913cf01b97756c5a841c4d47f3b751f681eba6dc1ab6e25a2c4b87f23",
+        "timestamp": "2026-09-29T10:06:51.827545+00:00"
+      },
+      "error_type": "TypeError",
+      "failure_reason": "generate_step() got an unexpected keyword argument 'temperature'",
+      "memory_metrics": {
+        "peak_process_rss_gb": 19.438,
+        "mlx_peak_memory_gb": 18.17
+      }
+    },
+    {
+      "identity": {
+        "model_id": "qwen3.6-35b-a3b",
+        "repo_id": "mlx-community/Qwen3.6-35B-A3B-4bit",
+        "model_revision": "38740b847e4cb78f352aba30aa41c76e08e6eb46",
+        "quantization": "4-bit",
+        "backend": "mlx-lm",
+        "backend_version": "0.31.3",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 256,
+        "actual_input_tokens": null,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no downloads or other inference running",
+        "power_state": {
+          "source": "AC Power",
+          "low_power_mode": 0
+        }
+      },
+      "status": "failed",
+      "source": {
+        "line": 43,
+        "record_sha256": "e8b718fae82846b80370b7e0982abf0cde33ee8a11cdd5f73ce15d434bcd8122",
+        "timestamp": "2026-09-29T10:07:01.899447+00:00"
+      },
+      "error_type": "TypeError",
+      "failure_reason": "generate_step() got an unexpected keyword argument 'temperature'",
+      "memory_metrics": {
+        "peak_process_rss_gb": 19.58,
+        "mlx_peak_memory_gb": 18.17
+      }
+    },
+    {
+      "identity": {
+        "model_id": "qwen3.6-35b-a3b",
+        "repo_id": "mlx-community/Qwen3.6-35B-A3B-4bit",
+        "model_revision": "38740b847e4cb78f352aba30aa41c76e08e6eb46",
+        "quantization": "4-bit",
+        "backend": "mlx-lm",
+        "backend_version": "0.31.3",
+        "software": {
+          "python": "3.14.6",
+          "packages": {
+            "mlx": "0.32.2",
+            "mlx-lm": "0.31.3",
+            "mlx-vlm": "0.7.1"
+          }
+        },
+        "hardware": {
+          "os": "macOS",
+          "arch": "arm64",
+          "chip": "Apple M1 Max",
+          "memory_gb": 64
+        },
+        "context_k": 192,
+        "actual_input_tokens": null,
+        "max_output_tokens": null,
+        "cache_mode": null,
+        "prompt_protocol": null,
+        "rendered_prompt_sha256": null,
+        "generation": null,
+        "benchmark_conditions": "sequential MLX inference; no downloads or other inference running",
+        "power_state": {
+          "source": "Battery Power",
+          "low_power_mode": 1
+        }
+      },
+      "status": "failed",
+      "source": {
+        "line": 49,
+        "record_sha256": "a40ceacd039698624a64fb49873cfa231914c356eaaff2406e7ba68b59883896",
+        "timestamp": "2026-09-29T10:59:43.697910+00:00"
+      },
+      "error_type": "RuntimeError",
+      "failure_reason": "[METAL] Command buffer execution failed: Impacting Interactivity (0000000e:kIOGPUCommandBufferCallbackErrorImpactingInteractivity).",
+      "memory_metrics": {
+        "peak_process_rss_gb": 19.438,
+        "mlx_peak_memory_gb": 34.529
+      }
+    }
+  ],
+  "provenance_note": "GiB = bytes/2^30. RSS and MLX allocator peaks overlap; do not add. Unknown identity rows are isolated. Resource probes do not measure task quality."
+}

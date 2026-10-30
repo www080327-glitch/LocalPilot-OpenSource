@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-pet-handoff-draft"
+description = "Enables the pet_handoff_draft command without any pre-configured scope."
+commands.allow = ["pet_handoff_draft"]
+
+[[permission]]
+identifier = "deny-pet-handoff-draft"
+description = "Denies the pet_handoff_draft command without any pre-configured scope."
+commands.deny = ["pet_handoff_draft"]

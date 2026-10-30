@@ -1,0 +1,10 @@
+{
+  "id": "public-notes",
+  "version": "1.0.0",
+  "description": "Inspect public notes using tools separately authorized by the host",
+  "requires_localpilot": ">=5.0.0b1,<6",
+  "dependencies": {},
+  "tools": ["read_file"],
+  "inputs": {"type": "object", "properties": {"path": {"type": "string"}}, "required": ["path"]},
+  "outputs": {"type": "object", "properties": {"summary": {"type": "string"}}, "required": ["summary"]}
+}

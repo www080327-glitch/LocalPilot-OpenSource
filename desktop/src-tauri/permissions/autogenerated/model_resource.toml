@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-model-resource"
+description = "Enables the model_resource command without any pre-configured scope."
+commands.allow = ["model_resource"]
+
+[[permission]]
+identifier = "deny-model-resource"
+description = "Denies the model_resource command without any pre-configured scope."
+commands.deny = ["model_resource"]

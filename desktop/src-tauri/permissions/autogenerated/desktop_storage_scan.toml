@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-desktop-storage-scan"
+description = "Enables the desktop_storage_scan command without any pre-configured scope."
+commands.allow = ["desktop_storage_scan"]
+
+[[permission]]
+identifier = "deny-desktop-storage-scan"
+description = "Denies the desktop_storage_scan command without any pre-configured scope."
+commands.deny = ["desktop_storage_scan"]

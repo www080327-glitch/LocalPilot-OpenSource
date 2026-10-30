@@ -1,0 +1,89 @@
+{
+  "applies_to": "All LocalPilot Recovery Tools rc4, rc4.1 and rc4.2 archives; identical age/age-keygen binaries",
+  "source_modules": {
+    "filippo.io/age": {
+      "version": "v1.3.1",
+      "sum": "h1:hbzdQOJkuaMEpRCLSN1/C5DX74RPcNCk6oqhKMXmZi0="
+    },
+    "filippo.io/edwards25519": {
+      "version": "v1.1.0",
+      "sum": "h1:FNf4tywRC1HmFuKW5xopWpigGjJKiJSV0Cqo0cJWDaA="
+    },
+    "filippo.io/hpke": {
+      "version": "v0.4.0",
+      "sum": "h1:p575VVQ6ted4pL+it6M00V/f2qTZITO0zgmdKCkd5+A="
+    },
+    "filippo.io/nistec": {
+      "version": "v0.0.4",
+      "sum": "h1:F14ZHT5htWlMnQVPndX9ro9arf56cBhQxq4LnDI491s="
+    },
+    "golang.org/x/crypto": {
+      "version": "v0.45.0",
+      "sum": "h1:jMBrvKuj23MTlT0bQEOBcAE0mjg8mK9RXFhRH6nyF3Q="
+    },
+    "golang.org/x/sys": {
+      "version": "v0.38.0",
+      "sum": "h1:3yZWxaJjBmCWXqhN1qh02AkOnCQ1poK6oF+a7xWL6Gc="
+    },
+    "golang.org/x/term": {
+      "version": "v0.37.0",
+      "sum": "h1:8EGAD0qCmHYZg6J17DvsMy9/wJ7/D/4pV/wfnld5lTU="
+    }
+  },
+  "license_files": [
+    {
+      "path": "filippo.io__age@v1.3.1/LICENSE",
+      "sha256": "c5d65279d02955c0fc2294ae417c3add650d228f4f5c82bd6d531fc26c89cd96"
+    },
+    {
+      "path": "filippo.io__age@v1.3.1/.github/workflows/LICENSE.suffix.txt",
+      "sha256": "51c0235a1b3e808d8c54a1e29d322751b79565488c6041f3fb3bee1ab2bc29a3"
+    },
+    {
+      "path": "filippo.io__edwards25519@v1.1.0/LICENSE",
+      "sha256": "2d36597f7117c38b006835ae7f537487207d8ec407aa9d9980794b2030cbc067"
+    },
+    {
+      "path": "filippo.io__hpke@v0.4.0/LICENSE",
+      "sha256": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad"
+    },
+    {
+      "path": "filippo.io__nistec@v0.0.4/LICENSE",
+      "sha256": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad"
+    },
+    {
+      "path": "golang.org__x__crypto@v0.45.0/LICENSE",
+      "sha256": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad"
+    },
+    {
+      "path": "golang.org__x__crypto@v0.45.0/PATENTS",
+      "sha256": "96f408bfae65bf137fc2525d3ecb030271c50c1e90799f87abf8846d8dd505cc"
+    },
+    {
+      "path": "golang.org__x__sys@v0.38.0/LICENSE",
+      "sha256": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad"
+    },
+    {
+      "path": "golang.org__x__sys@v0.38.0/PATENTS",
+      "sha256": "96f408bfae65bf137fc2525d3ecb030271c50c1e90799f87abf8846d8dd505cc"
+    },
+    {
+      "path": "golang.org__x__term@v0.37.0/LICENSE",
+      "sha256": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad"
+    },
+    {
+      "path": "golang.org__x__term@v0.37.0/PATENTS",
+      "sha256": "96f408bfae65bf137fc2525d3ecb030271c50c1e90799f87abf8846d8dd505cc"
+    },
+    {
+      "path": "go-runtime/LICENSE",
+      "sha256": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad"
+    },
+    {
+      "path": "go-runtime/PATENTS",
+      "sha256": "96f408bfae65bf137fc2525d3ecb030271c50c1e90799f87abf8846d8dd505cc"
+    }
+  ],
+  "python_and_wheel_notices": "Retained under runtime/lib/python3.14/LICENSE.txt and runtime/lib/python3.14/site-packages/*dist-info/(licenses/)",
+  "private_data_or_keys_included": false
+}

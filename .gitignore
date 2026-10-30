@@ -1,0 +1,90 @@
+__pycache__/
+*.pyc
+build/
+dist/
+*.egg-info/
+.env*
+!.env.example
+*.sqlite*
+*.db*
+*.safetensors
+*.gguf
+.localpilot/
+.data/
+.venv/
+
+# Independent module / publication exclusions
+.venv/
+.idea/
+__pycache__/
+*.pyc
+.env
+agent-usage*.jsonl
+benchmarks/results*.jsonl
+benchmarks/results*.summary.json
+benchmarks/smoke-results*.jsonl
+benchmarks/smoke-summary*.json
+.DS_Store
+
+# Never publish local credentials, weights, caches or generated private traces.
+.env.*
+!.env.example
+*.safetensors
+*.gguf
+*.pt
+*.pth
+*.pem
+*.key
+agent-audit*.jsonl
+
+# Operator deployment configuration and potentially private verification traces.
+serving-profile.json
+backend-verification*.json
+backend-verification*.md
+
+# Modular release data exclusions
+__pycache__/
+*.pyc
+build/
+dist/
+*.egg-info/
+.env*
+!.env.example
+*.sqlite*
+*.db*
+*.safetensors
+*.gguf
+.localpilot/
+.data/
+.venv/
+
+**/.private/
+**/bundled-backends/
+
+# Local project integrations and immutable local acceptance installers.
+/.agents/skills/localpilot-agent/
+/.codex/config.toml
+/docs/delivery/permission-agent-20261024/
+
+# Isolated permission parity build/test outputs (reports remain tracked).
+.venv-parity/
+docs/evidence/desktop-permission-parity-20261024/perf-*/
+docs/evidence/desktop-permission-parity-20261024/wheels/
+desktop/test-results/
+desktop/playwright-report/
+# Live nested test installation kept locally; credentials remain in private service home.
+docs/evidence/desktop-permission-parity-20261024/dsh-caller/
+
+docs/integration/20261025/private-visuals/
+
+# Private inventory and encrypted-backup staging are never plaintext source assets.
+/docs/evidence/channels-onboarding-20261027/private/
+/docs/evidence/channels-final-review-20261028/private/
+
+# AIC private runtimes and owned experiment services.
+.aic-runtime/
+output/
+# Retain local presentation QA work without including it in source deliveries.
+.chart-data-*/
+# Private originals remain on disk; review copies and hashes are delivered separately.
+/docs/evidence/aic-final-20261029/

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-pick-developer-python"
+description = "Enables the pick_developer_python command without any pre-configured scope."
+commands.allow = ["pick_developer_python"]
+
+[[permission]]
+identifier = "deny-pick-developer-python"
+description = "Denies the pick_developer_python command without any pre-configured scope."
+commands.deny = ["pick_developer_python"]

@@ -1,0 +1,23 @@
+{
+  "identifier": "io.localpilot.desktop.channels.test",
+  "productName": "LocalPilot Test",
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "LocalPilot Test",
+        "width": 1100,
+        "height": 850,
+        "minWidth": 540,
+        "minHeight": 600,
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true
+      }
+    ]
+  },
+  "bundle": {
+    "macOS": {
+      "infoPlist": "Test-Info.plist"
+    }
+  }
+}

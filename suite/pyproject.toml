@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "localpilot-suite"
+version = "0.2.0b26"
+description = "Thin installation and CLI coordination for independent LocalPilot and Companion services"
+requires-python = ">=3.11"
+dependencies = ["localpilot-agent-service>=5.0.0b20,<6", "localpilot-companion>=0.5.6b1,<0.6"]
+[project.scripts]
+localpilot = "localpilot_suite.cli:main"
+[tool.setuptools.packages.find]
+include = ["localpilot_suite*"]
+
+[tool.setuptools.data-files]
+"share/doc/localpilot-suite" = ["docs/SUITE_CLI.md", "docs/SUITE_INSTALL_UPGRADE_ROLLBACK.md", "docs/SUITE_API_COMPATIBILITY.md", "docs/SUITE_CACHE_ACCEPTANCE.md"]

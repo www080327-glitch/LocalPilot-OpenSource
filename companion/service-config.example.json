@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "host": "127.0.0.1",
+  "port": 8765,
+  "data_dir": "/private/companion-service/data",
+  "clients": [
+    {
+      "subject": "companion",
+      "token_env": "LOCALPILOT_COMPANION_TOKEN",
+      "scopes": [
+        "read",
+        "submit",
+        "cancel"
+      ],
+      "routes": {
+        "localpilot": "companion-execution",
+        "companion-reasoning": "companion-reasoning"
+      }
+    },
+    {
+      "subject": "companion-resource",
+      "token_env": "LOCALPILOT_COMPANION_RESOURCE_TOKEN",
+      "scopes": [
+        "read",
+        "resource_control"
+      ],
+      "operator": true,
+      "approval_for": [
+        "companion"
+      ],
+      "routes": {
+        "localpilot": "companion-execution",
+        "companion-reasoning": "companion-reasoning"
+      }
+    }
+  ],
+  "routes": {
+    "companion-execution": {
+      "workspace": "/private/companion-task-workspace",
+      "backend": {
+        "kind": "local-openai",
+        "model": "Qwen3.6-35B-A3B-4bit",
+        "base_url": "http://127.0.0.1:8048/v1",
+        "context_budget": 65536,
+        "timeout": 90,
+        "include_stream_usage": true
+      },
+      "managed_local_model": {
+        "snapshot": "~/.cache/huggingface/hub/models--mlx-community--Qwen3.6-35B-A3B-4bit/snapshots/38740b847e4cb78f352aba30aa41c76e08e6eb46",
+        "port": 8048,
+        "memory_bytes": 27917287424,
+        "min_available_bytes": 30064771072
+      },
+      "permissions": "approve-mutations",
+      "cache_stable_prefix": true,
+      "prompt_profile": "standard",
+      "tool_profile": "full",
+      "cloud_egress": "LOCAL_ONLY",
+      "capabilities": {
+        "read": true,
+        "write": false,
+        "execute": false
+      },
+      "budgets": {
+        "max_steps": 4,
+        "max_output_tokens": 256
+      }
+    },
+    "companion-reasoning": {
+      "workspace": "/private/companion-task-workspace",
+      "backend": {
+        "kind": "local-openai",
+        "model": "Qwen3.6-35B-A3B-4bit",
+        "base_url": "http://127.0.0.1:8048/v1",
+        "context_budget": 65536,
+        "timeout": 90,
+        "include_stream_usage": true
+      },
+      "managed_local_model": {
+        "snapshot": "~/.cache/huggingface/hub/models--mlx-community--Qwen3.6-35B-A3B-4bit/snapshots/38740b847e4cb78f352aba30aa41c76e08e6eb46",
+        "port": 8048,
+        "memory_bytes": 27917287424,
+        "min_available_bytes": 30064771072
+      },
+      "permissions": "approve-mutations",
+      "cache_stable_prefix": true,
+      "prompt_profile": "minimal_0",
+      "tool_profile": "compact",
+      "cloud_egress": "LOCAL_ONLY",
+      "capabilities": {
+        "read": false,
+        "write": false,
+        "execute": false
+      },
+      "budgets": {
+        "max_steps": 4,
+        "max_output_tokens": 256
+      },
+      "reasoning_only": true
+    }
+  }
+}

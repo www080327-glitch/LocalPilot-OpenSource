@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-import-attachments"
+description = "Enables the import_attachments command without any pre-configured scope."
+commands.allow = ["import_attachments"]
+
+[[permission]]
+identifier = "deny-import-attachments"
+description = "Denies the import_attachments command without any pre-configured scope."
+commands.deny = ["import_attachments"]

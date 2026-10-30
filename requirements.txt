@@ -1,0 +1,5 @@
+# Core service CLI process ownership checks; inference providers remain separate.
+psutil>=7,<8
+pypdf>=6.1,<7
+Pillow>=11,<13
+defusedxml>=0.7,<1

@@ -1,0 +1,726 @@
+[
+  {
+    "id": "doctor",
+    "label": "诊断",
+    "command": ["doctor"],
+    "fields": [],
+    "review": "通过已安装 Suite 的固定命令查询或管理服务。",
+    "confirm": false
+  },
+  {
+    "id": "status",
+    "label": "服务状态",
+    "command": ["status"],
+    "fields": [],
+    "review": "通过已安装 Suite 的固定命令查询或管理服务。",
+    "confirm": false
+  },
+  {
+    "id": "start",
+    "label": "启动 Core",
+    "command": ["start"],
+    "fields": [],
+    "review": "通过已安装 Suite 的固定命令查询或管理服务。",
+    "confirm": false
+  },
+  {
+    "id": "stop",
+    "label": "停止 Core",
+    "command": ["stop"],
+    "fields": [],
+    "review": "Core 拒绝停止含活动任务的服务。关闭桌面应用只是断开连接。",
+    "confirm": true
+  },
+  {
+    "id": "restart",
+    "label": "重启 Core",
+    "command": ["restart"],
+    "fields": [],
+    "review": "Core 拒绝停止含活动任务的服务。关闭桌面应用只是断开连接。",
+    "confirm": true
+  },
+  {
+    "id": "models",
+    "label": "模型注册表",
+    "command": ["models"],
+    "fields": [],
+    "review": "通过已安装 Suite 的固定命令查询或管理服务。",
+    "confirm": false
+  },
+  {
+    "id": "tasks",
+    "label": "任务列表",
+    "command": ["tasks"],
+    "fields": [],
+    "review": "通过已安装 Suite 的固定命令查询或管理服务。",
+    "confirm": false
+  },
+  {
+    "id": "logs",
+    "label": "服务日志",
+    "command": ["logs"],
+    "fields": [],
+    "review": "通过已安装 Suite 的固定命令查询或管理服务。",
+    "confirm": false
+  },
+  {
+    "id": "config",
+    "label": "连接配置摘要",
+    "command": ["config"],
+    "fields": [],
+    "review": "通过已安装 Suite 的固定命令查询或管理服务。",
+    "confirm": false
+  },
+  {
+    "id": "version",
+    "label": "模块版本",
+    "command": ["--version"],
+    "fields": [],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": false
+  },
+  {
+    "id": "task-watch",
+    "label": "打开任务并跟随事件",
+    "command": ["task", "show"],
+    "fields": [
+      {
+        "key": "task_id",
+        "label": "Task ID",
+        "type": "text",
+        "id": true
+      }
+    ],
+    "review": "先查询原 Task，再由桌面端按持久游标跟随 SSE；不会重复提交任务。",
+    "confirm": false
+  },
+  {
+    "id": "task-show",
+    "label": "任务快照",
+    "command": ["task", "show"],
+    "fields": [
+      {
+        "key": "task_id",
+        "label": "Task ID",
+        "type": "text",
+        "id": true
+      }
+    ],
+    "review": "取消是协作请求，不保证撤销已经发生的副作用。",
+    "confirm": false
+  },
+  {
+    "id": "task-cancel",
+    "label": "取消任务",
+    "command": ["task", "cancel"],
+    "fields": [
+      {
+        "key": "task_id",
+        "label": "Task ID",
+        "type": "text",
+        "id": true
+      }
+    ],
+    "review": "取消是协作请求，不保证撤销已经发生的副作用。",
+    "confirm": true
+  },
+  {
+    "id": "companion-start",
+    "label": "启动 Companion",
+    "command": ["companion", "start"],
+    "fields": [],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": false
+  },
+  {
+    "id": "companion-stop",
+    "label": "停止 Companion",
+    "command": ["companion", "stop"],
+    "fields": [],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": true
+  },
+  {
+    "id": "companion-status",
+    "label": "Companion 状态",
+    "command": ["companion", "status"],
+    "fields": [],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": false
+  },
+  {
+    "id": "companion-privacy",
+    "label": "观察权限",
+    "command": ["companion", "privacy"],
+    "fields": [],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": false
+  },
+  {
+    "id": "companion-ui-snapshot",
+    "label": "原生界面快照",
+    "command": ["companion", "ui-snapshot"],
+    "fields": [],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": false
+  },
+  {
+    "id": "companion-recent-memories",
+    "label": "记忆列表",
+    "command": ["companion", "recent-memories"],
+    "fields": [],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": false
+  },
+  {
+    "id": "companion-reminders",
+    "label": "提醒列表",
+    "command": ["companion", "reminders"],
+    "fields": [],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": false
+  },
+  {
+    "id": "companion-notices",
+    "label": "通知列表",
+    "command": ["companion", "notices"],
+    "fields": [],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": false
+  },
+  {
+    "id": "companion-index",
+    "label": "索引状态",
+    "command": ["companion", "index"],
+    "fields": [],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": false
+  },
+  {
+    "id": "companion-retention",
+    "label": "保留策略",
+    "command": ["companion", "retention"],
+    "fields": [],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": false
+  },
+  {
+    "id": "companion-escalation-status",
+    "label": "升级帮助状态",
+    "command": ["companion", "escalation-status"],
+    "fields": [],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": false
+  },
+  {
+    "id": "companion-ui",
+    "label": "打开 Companion 界面",
+    "command": ["companion", "ui"],
+    "fields": [],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": false
+  },
+  {
+    "id": "companion-popup",
+    "label": "打开 Companion 卡片",
+    "command": ["companion", "popup"],
+    "fields": [],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": false
+  },
+  {
+    "id": "companion-ui-build",
+    "label": "构建 Companion Web UI",
+    "command": ["companion", "ui-build"],
+    "fields": [],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": true
+  },
+  {
+    "id": "companion-native-build",
+    "label": "构建 Companion 原生 UI",
+    "command": ["companion", "native-build"],
+    "fields": [],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": true
+  },
+  {
+    "id": "companion-ask",
+    "label": "轻量问答",
+    "command": ["companion", "ask"],
+    "fields": [
+      {
+        "key": "text",
+        "label": "文本",
+        "type": "text"
+      }
+    ],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": false
+  },
+  {
+    "id": "companion-retrieve",
+    "label": "检索记忆",
+    "command": ["companion", "retrieve"],
+    "fields": [
+      {
+        "key": "text",
+        "label": "文本",
+        "type": "text"
+      }
+    ],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": false
+  },
+  {
+    "id": "companion-escalate",
+    "label": "准备进一步帮助",
+    "command": ["companion", "escalate"],
+    "fields": [
+      {
+        "key": "text",
+        "label": "文本",
+        "type": "text"
+      }
+    ],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": false
+  },
+  {
+    "id": "companion-dnd",
+    "label": "免打扰",
+    "command": ["companion", "dnd"],
+    "fields": [
+      {
+        "key": "value",
+        "label": "免打扰",
+        "type": "choice",
+        "options": ["on", "off"]
+      }
+    ],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": true
+  },
+  {
+    "id": "companion-remember",
+    "label": "添加记忆",
+    "command": ["companion", "remember"],
+    "fields": [
+      {
+        "key": "type",
+        "label": "记忆类型",
+        "type": "choice",
+        "options": ["user_fact", "preference"]
+      },
+      {
+        "key": "text",
+        "label": "记忆内容",
+        "type": "text"
+      },
+      {
+        "key": "fact_key",
+        "label": "事实键",
+        "type": "text",
+        "flag": "--fact-key",
+        "optional": true
+      },
+      {
+        "key": "expires_days",
+        "label": "有效天数",
+        "type": "number",
+        "flag": "--expires-days",
+        "min": 1,
+        "max": 3650,
+        "optional": true
+      }
+    ],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": true
+  },
+  {
+    "id": "companion-forget",
+    "label": "删除一条记忆",
+    "command": ["companion", "forget"],
+    "fields": [
+      {
+        "key": "id",
+        "label": "记忆 ID",
+        "type": "text",
+        "id": true
+      }
+    ],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": true
+  },
+  {
+    "id": "companion-clear-memory",
+    "label": "清空记忆",
+    "command": ["companion", "clear-memory"],
+    "fields": [],
+    "review": "明确确认后清空此 Companion 的记忆。此操作无法通过本桌面端撤销。",
+    "confirm": true,
+    "fixed_flags": ["--confirm"]
+  },
+  {
+    "id": "companion-respond",
+    "label": "回应通知",
+    "command": ["companion", "respond"],
+    "fields": [
+      {
+        "key": "id",
+        "label": "通知 ID",
+        "type": "text",
+        "id": true
+      },
+      {
+        "key": "response",
+        "label": "回应",
+        "type": "choice",
+        "options": [
+          "ignore",
+          "not_needed",
+          "reply",
+          "help",
+          "useful",
+          "mute",
+          "more"
+        ]
+      },
+      {
+        "key": "text",
+        "label": "附加回复",
+        "type": "text",
+        "flag": "--text",
+        "optional": true
+      }
+    ],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": true
+  },
+  {
+    "id": "companion-submit-escalation",
+    "label": "确认提交进一步帮助",
+    "command": ["companion", "submit-escalation"],
+    "fields": [
+      {
+        "key": "review_digest",
+        "label": "当前审核摘要",
+        "type": "text",
+        "flag": "--review-digest"
+      },
+      {
+        "key": "session_id",
+        "label": "会话 ID",
+        "type": "text",
+        "flag": "--session-id",
+        "id": true,
+        "optional": true
+      },
+      {
+        "key": "conversation_id",
+        "label": "对话 ID",
+        "type": "text",
+        "flag": "--conversation-id",
+        "id": true,
+        "optional": true
+      },
+      {
+        "key": "allow_cloud",
+        "label": "单次允许云端",
+        "type": "boolean",
+        "flag": "--allow-cloud"
+      }
+    ],
+    "review": "审核摘要必须来自当前 escalation-status。仅允许当前原问题的明确帮助提交；Host 仍核对摘要、原幂等键与单次云端许可。",
+    "confirm": true,
+    "fixed_flags": ["--approve"]
+  },
+  {
+    "id": "companion-retry-submission",
+    "label": "恢复原帮助提交",
+    "command": ["companion", "retry-submission"],
+    "fields": [
+      {
+        "key": "review_digest",
+        "label": "当前审核摘要",
+        "type": "text",
+        "flag": "--review-digest"
+      },
+      {
+        "key": "session_id",
+        "label": "会话 ID",
+        "type": "text",
+        "flag": "--session-id",
+        "id": true,
+        "optional": true
+      },
+      {
+        "key": "conversation_id",
+        "label": "对话 ID",
+        "type": "text",
+        "flag": "--conversation-id",
+        "id": true,
+        "optional": true
+      },
+      {
+        "key": "allow_cloud",
+        "label": "单次允许云端",
+        "type": "boolean",
+        "flag": "--allow-cloud"
+      }
+    ],
+    "review": "审核摘要必须来自当前 escalation-status。仅允许当前原问题的明确帮助提交；Host 仍核对摘要、原幂等键与单次云端许可。",
+    "confirm": true,
+    "fixed_flags": ["--approve"]
+  },
+  {
+    "id": "companion-authorize-observation",
+    "label": "授权观察范围",
+    "command": ["companion", "authorize-observation"],
+    "fields": [],
+    "review": "先在“观察权限”检查当前配置。确认会授权已配置的应用与目录观察范围；OS 权限仍由系统决定。",
+    "confirm": true,
+    "fixed_flags": ["--confirm"]
+  },
+  {
+    "id": "companion-observe",
+    "label": "暂停或恢复观察",
+    "command": ["companion", "observe"],
+    "fields": [
+      {
+        "key": "value",
+        "label": "观察状态",
+        "type": "choice",
+        "options": ["pause", "resume"]
+      }
+    ],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": true
+  },
+  {
+    "id": "companion-observations",
+    "label": "查询观察记录",
+    "command": ["companion", "observations"],
+    "fields": [
+      {
+        "key": "text",
+        "label": "查询文本",
+        "type": "text",
+        "optional": true
+      }
+    ],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": false
+  },
+  {
+    "id": "companion-forget-observation",
+    "label": "删除观察记录",
+    "command": ["companion", "forget-observation"],
+    "fields": [
+      {
+        "key": "id",
+        "label": "记录 ID",
+        "type": "text",
+        "id": true
+      }
+    ],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": true
+  },
+  {
+    "id": "companion-exclude-apps",
+    "label": "设置排除应用",
+    "command": ["companion", "exclude-apps"],
+    "fields": [
+      {
+        "key": "apps",
+        "label": "应用 bundle ID，每行一个",
+        "type": "text",
+        "many": true,
+        "optional": true
+      }
+    ],
+    "review": "替换 Companion 的排除应用列表。留空将清空此列表；授权范围仍由 Host 和 OS 控制。",
+    "confirm": true
+  },
+  {
+    "id": "companion-proactive",
+    "label": "主动帮助策略",
+    "command": ["companion", "proactive"],
+    "fields": [
+      {
+        "key": "level",
+        "label": "帮助频率",
+        "type": "choice",
+        "options": ["off", "low", "normal"],
+        "flag": "--level"
+      },
+      {
+        "key": "delivery",
+        "label": "通知投递",
+        "type": "choice",
+        "options": ["silent", "enabled"],
+        "flag": "--delivery"
+      }
+    ],
+    "review": "仅改变 Companion 主动帮助策略，不授予观察、工具或自动云端权限。",
+    "confirm": true
+  },
+  {
+    "id": "companion-set-reminder",
+    "label": "创建提醒",
+    "command": ["companion", "set-reminder"],
+    "fields": [
+      {
+        "key": "text",
+        "label": "提醒内容",
+        "type": "text"
+      },
+      {
+        "key": "due_at",
+        "label": "到期时间（Unix 秒）",
+        "type": "number",
+        "flag": "--due-at",
+        "min": 1,
+        "max": 32503680000
+      }
+    ],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": true,
+    "fixed_flags": ["--confirm"]
+  },
+  {
+    "id": "companion-delete-reminder",
+    "label": "删除提醒",
+    "command": ["companion", "delete-reminder"],
+    "fields": [
+      {
+        "key": "id",
+        "label": "提醒 ID",
+        "type": "text",
+        "id": true
+      }
+    ],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": true
+  },
+  {
+    "id": "companion-localpilot-health",
+    "label": "Core 连接健康",
+    "command": ["companion", "localpilot-health"],
+    "fields": [
+      {
+        "key": "allow_cloud",
+        "label": "单次允许检查云端",
+        "type": "boolean",
+        "flag": "--allow-cloud"
+      }
+    ],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": true
+  },
+  {
+    "id": "companion-task-status",
+    "label": "Companion 任务状态",
+    "command": ["companion", "task-status"],
+    "fields": [
+      {
+        "key": "task_id",
+        "label": "Task ID",
+        "type": "text",
+        "id": true
+      },
+      {
+        "key": "allow_cloud",
+        "label": "单次允许云端路径",
+        "type": "boolean",
+        "flag": "--allow-cloud"
+      }
+    ],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": false
+  },
+  {
+    "id": "companion-task-cancel",
+    "label": "Companion 取消任务",
+    "command": ["companion", "task-cancel"],
+    "fields": [
+      {
+        "key": "task_id",
+        "label": "Task ID",
+        "type": "text",
+        "id": true
+      },
+      {
+        "key": "allow_cloud",
+        "label": "单次允许云端路径",
+        "type": "boolean",
+        "flag": "--allow-cloud"
+      }
+    ],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": true,
+    "fixed_flags": ["--approve"]
+  },
+  {
+    "id": "companion-task-events",
+    "label": "Companion 任务事件",
+    "command": ["companion", "task-events"],
+    "fields": [
+      {
+        "key": "task_id",
+        "label": "Task ID",
+        "type": "text",
+        "id": true
+      },
+      {
+        "key": "allow_cloud",
+        "label": "单次允许云端路径",
+        "type": "boolean",
+        "flag": "--allow-cloud"
+      },
+      {
+        "key": "after",
+        "label": "事件游标",
+        "type": "number",
+        "flag": "--after",
+        "min": 0,
+        "max": 9007199254740991,
+        "optional": true
+      }
+    ],
+    "review": "此操作调用已安装的 Suite；结果以 CLI/服务返回为准。",
+    "confirm": false
+  },
+  {
+    "id": "companion-launchd",
+    "label": "后台启动管理",
+    "command": ["companion", "launchd"],
+    "fields": [
+      {
+        "key": "operation",
+        "label": "后台任务操作",
+        "type": "choice",
+        "options": ["render", "install", "uninstall", "status"]
+      }
+    ],
+    "review": "install/uninstall 改变 Companion 的后台启动注册。render/status 只查询。",
+    "confirm": true,
+    "fixed_flags": ["--confirm"]
+  },
+  {
+    "id": "companion-model-smoke",
+    "label": "轻量模型真实试运行",
+    "command": ["companion", "model-smoke"],
+    "fields": [
+      {
+        "key": "prompt",
+        "label": "公开测试问题",
+        "type": "text",
+        "flag": "--prompt"
+      }
+    ],
+    "review": "这会实际调用已配置的轻量模型并消耗本机资源；电源与 Host 限制继续生效。",
+    "confirm": true
+  }
+]

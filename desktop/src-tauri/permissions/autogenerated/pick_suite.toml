@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-pick-suite"
+description = "Enables the pick_suite command without any pre-configured scope."
+commands.allow = ["pick_suite"]
+
+[[permission]]
+identifier = "deny-pick-suite"
+description = "Denies the pick_suite command without any pre-configured scope."
+commands.deny = ["pick_suite"]

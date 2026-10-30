@@ -1,0 +1,19 @@
+{
+  "identifier": "io.localpilot.desktop.test",
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "LocalPilot Test",
+        "width": 1440,
+        "height": 940,
+        "minWidth": 540,
+        "minHeight": 600,
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true,
+        "backgroundColor": "#00000000",
+        "transparent": true
+      }
+    ]
+  }
+}

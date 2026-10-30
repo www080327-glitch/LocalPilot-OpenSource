@@ -1,0 +1,17 @@
+age-keygen: go1.24.2
+	path	filippo.io/age/cmd/age-keygen
+	mod	filippo.io/age	v1.3.1	h1:hbzdQOJkuaMEpRCLSN1/C5DX74RPcNCk6oqhKMXmZi0=
+	dep	filippo.io/hpke	v0.4.0	h1:p575VVQ6ted4pL+it6M00V/f2qTZITO0zgmdKCkd5+A=
+	dep	golang.org/x/crypto	v0.45.0	h1:jMBrvKuj23MTlT0bQEOBcAE0mjg8mK9RXFhRH6nyF3Q=
+	dep	golang.org/x/sys	v0.38.0	h1:3yZWxaJjBmCWXqhN1qh02AkOnCQ1poK6oF+a7xWL6Gc=
+	dep	golang.org/x/term	v0.37.0	h1:8EGAD0qCmHYZg6J17DvsMy9/wJ7/D/4pV/wfnld5lTU=
+	build	-buildmode=exe
+	build	-compiler=gc
+	build	CGO_ENABLED=1
+	build	CGO_CFLAGS=
+	build	CGO_CPPFLAGS=
+	build	CGO_CXXFLAGS=
+	build	CGO_LDFLAGS=
+	build	GOARCH=arm64
+	build	GOOS=darwin
+	build	GOARM64=v8.0

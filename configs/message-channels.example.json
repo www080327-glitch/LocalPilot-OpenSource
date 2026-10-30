@@ -1,0 +1,17 @@
+{
+  "instance_id": "isolated-migration-v1",
+  "service_url": "http://127.0.0.1:8765",
+  "channels": [
+    {
+      "kind": "qq", "channel": "qq.CONFIRMED_CHANNEL",
+      "ingress_key_env": "LP_QQ_MESSAGE_KEY",
+      "senders": [{"sender_id": "CONFIRMED_QQ_SENDER", "subject": "qq_user", "token_env": "LP_QQ_SERVICE_TOKEN", "model": "localpilot"}]
+    },
+    {
+      "kind": "wechat", "channel": "wechat.ilink.CONFIRMED_CHANNEL",
+      "ingress_key_env": "LP_WECHAT_MESSAGE_KEY",
+      "senders": [{"sender_id": "CONFIRMED_WECHAT_SENDER", "subject": "wechat_user", "token_env": "LP_WECHAT_SERVICE_TOKEN", "model": "localpilot"}],
+      "approval": {"key_env": "LP_WECHAT_APPROVAL_KEY", "token_env": "LP_WECHAT_OPERATOR_TOKEN", "subject": "wechat_operator", "senders": ["CONFIRMED_WECHAT_SENDER"]}
+    }
+  ]
+}
