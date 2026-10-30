@@ -1,23 +1,24 @@
 export const permissionModes = [
   {
     id: "isolated",
-    name: "严格隔离",
-    description: "仅限当前范围，每项操作先确认。",
+    name: "只读",
+    description: "读取文件，不修改文件；需要修改时可切换权限。",
   },
   {
     id: "request",
     name: "请求批准",
-    description: "直接读取合法文件；修改和 Shell 操作请求一次批准。",
+    description: "自动读取文件，修改和 Shell 执行前询问。",
   },
   {
     id: "workspace",
-    name: "工作区自动",
-    description: "自动处理工作区文件；范围外修改和 Shell 先请求批准。",
+    name: "工作区写入",
+    description: "自动读写工作区文件并运行受限 Shell；超出范围时询问。",
   },
   {
     id: "full",
     name: "完全权限",
-    description: "自主读写合法文件和运行受保护的 Shell；联网单独确认。",
+    description:
+      "按当前 macOS 用户权限自主读写、运行 Shell 和联网；允许内容交给所选云端模型，APP 内不再询问批准。",
   },
 ];
 export const legacyPermissions = [

@@ -37,6 +37,8 @@ class CapabilityPolicy:
 
 
 def sensitive_path(path):
+    from .permission_context import full_access
+    if full_access(): return False
     parts = Path(path).parts
     return any(parts[i:i + 2] == ('.localpilot', 'secrets') for i in range(len(parts))) or any(part in {".git", ".ssh", ".env"} or
                (part.startswith(".env.") and part != ".env.example")
@@ -113,6 +115,8 @@ class PermissionGateway:
                                                 and not (metadata.potentially_destructive or
                                                          metadata.external_side_effect or
                                                          metadata.requires_shell or metadata.network_access))
+        if operation=='shell' and isinstance(resource,dict) and resource.get('enforced_read_only_shell') is True:
+            read_only=True
         capability = (self.capabilities.read if read_only else
                       self.capabilities.write if operation == "apply_patch" or
                       (new_mode and operation != "execute") else self.capabilities.execute)
@@ -125,6 +129,8 @@ class PermissionGateway:
             reasons = [*reasons, "Read-only plan or capability forbids mutation."]
         if blocked:
             status = "denied"
+        elif self.mode == PermissionMode.FULL_PERMISSION.value:
+            status = "allowed"
         elif risk not in {"low","medium","high","critical"}:
             status = "approval_required"
         elif isinstance(metadata, ToolRiskMetadata) and metadata.requires_host_approval:
@@ -160,7 +166,7 @@ class PermissionGateway:
                 category = "RISKY"
             return "allowed" if category == "SAFE" or category == "UNCERTAIN" and mode == PermissionMode.ASSIST_HIGH.value else "approval_required"
         if mode == PermissionMode.WORKSPACE_AUTO.value:
-            return "allowed" if operation in READ_TOOLS | {"apply_patch", "make_directory", "move_file", "copy_file"} else "approval_required"
+            return "allowed" if operation in READ_TOOLS | {"apply_patch", "make_directory", "move_file", "copy_file", "shell", "http_get"} else "approval_required"
         if mode == PermissionMode.APPROVE_ALL.value:
             return "approval_required"
         if mode == PermissionMode.APPROVE_MUTATIONS.value:
@@ -222,6 +228,8 @@ class PermissionGateway:
             raise ValueError("argv is too long")
         program = Path(argv[0]).name.lower()
         summary = {"program": program, "argv": list(argv)}
+        if self.mode == PermissionMode.FULL_PERMISSION.value:
+            return self.decide("execute", "high", ["Host selected full access without application approval."], summary)
         if program in BLOCKED_PROGRAMS or program.startswith("mkfs"):
             return self.decide("execute", "high", ["Blocked destructive, privileged, shell, network, or installer command."], summary, blocked=True)
         # No shell is started, and shell syntax is rejected rather than guessed.

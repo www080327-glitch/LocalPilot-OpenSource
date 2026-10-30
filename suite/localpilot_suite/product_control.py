@@ -198,9 +198,9 @@ def dispatch(home,body):
         client,health=operator(home)
         return client.request('/localpilot/v1/desktop-sessions',{'client_subject':health['client_subject'],'model':args['model'],'options':{k:args[k] for k in ['permission_mode','agent_profile','workspace_grant'] if k in args},'source':args['source']},key=__import__('hashlib').sha256(str(args['key']).encode()).hexdigest())
     if op=='desktop_profile':
-        if set(args)!={'session_id','agent_profile','expected_profile'} or not isinstance(args['session_id'],str) or not re.fullmatch(r'sess_[A-Za-z0-9_-]{1,128}',args['session_id']):raise ValueError('Exact Desktop session required')
+        if set(args) not in ({'session_id','agent_profile','expected_profile'},{'session_id','agent_profile','expected_profile','permission_mode','expected_permission_mode'}) or not isinstance(args['session_id'],str) or not re.fullmatch(r'sess_[A-Za-z0-9_-]{1,128}',args['session_id']):raise ValueError('Exact Desktop session required')
         client,health=operator(home)
-        return client.request('/localpilot/v1/desktop-sessions/'+args['session_id']+'/profile',{'client_subject':health['client_subject'],'agent_profile':args['agent_profile'],'expected_profile':args['expected_profile']})
+        return client.request('/localpilot/v1/desktop-sessions/'+args['session_id']+'/profile',{'client_subject':health['client_subject'],**{k:v for k,v in args.items() if k!='session_id'}})
     if op=='attachments':
         if set(args)!={'model','paths'}:raise ValueError('Exact selected file references required')
         client,health=operator(home)

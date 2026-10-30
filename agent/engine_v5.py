@@ -36,8 +36,8 @@ def prompt(runtime):
     # permissions, tool validation and finalization do not depend on prose.
     text = runtime.base_prompt if runtime.prompt_profile == 'minimal_agent_v2' else (runtime.base_prompt or '') + '\n' + PROMPT
     if getattr(runtime.registry, 'scope_policy', None):
-        from .scope_permissions import PROMPT as SCOPE_PROMPT
-        text += SCOPE_PROMPT
+        from .scope_permissions import prompt_for
+        text += prompt_for(runtime.registry)
     if runtime.computer:
         text += '\n' + runtime.computer.agent_prompt
     return text + ('\nHost delivery format: ' + runtime.delivery_instruction if runtime.delivery_instruction else '')

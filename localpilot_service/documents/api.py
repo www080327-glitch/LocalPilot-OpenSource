@@ -31,7 +31,7 @@ def handle(server, principal, body):
                 raise DocumentError('invalid_import_fields')
             runtime = session.runtime
             if (getattr(runtime.current_backend,'is_local',None) is not True or not runtime.hybrid
-                    or runtime.hybrid.policy.egress.mode != 'LOCAL_ONLY'):
+                    or runtime.hybrid.policy.egress.mode != 'LOCAL_ONLY') and not getattr(runtime,'_desktop_cloud_context',False):
                 raise DocumentError('document_import_requires_local_only_session', 403)
             with server.service.condition:
                 if session.active_task:

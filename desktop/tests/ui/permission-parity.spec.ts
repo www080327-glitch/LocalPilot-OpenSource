@@ -5,14 +5,13 @@ test("new permissions keep full access explicit and restore keyboard focus", asy
   await page.goto("/");
   await page.getByRole("button", { name: "完成设置，开始使用" }).click();
   const trigger = page.getByRole("button", { name: "权限模式", exact: true });
-  await expect(trigger).toContainText("工作区自动");
+  await expect(trigger).toContainText("工作区写入");
   await trigger.click();
-  await page.getByRole("button", { name: /^完全权限 自主/ }).click();
+  await page.getByRole("button", { name: /^完全权限 按当前/ }).click();
+  await expect(trigger).toContainText("完全权限");
   await expect(
     page.getByRole("dialog", { name: "开启完全权限？" }),
-  ).toBeVisible();
-  await page.getByRole("button", { name: "取消", exact: true }).click();
-  await expect(trigger).toContainText("工作区自动");
+  ).toHaveCount(0);
   await trigger.click();
   await page.keyboard.press("Escape");
   await expect(trigger).toBeFocused();

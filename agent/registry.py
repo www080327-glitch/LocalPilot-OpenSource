@@ -84,6 +84,11 @@ class ToolRegistry:
         return is_plugin_tool(self, name)
 
     def call(self, name, arguments, *, approved=False, receipt_id=None, scope_approval=None):
+        from .permission_context import dispatch_access
+        with dispatch_access(self.gateway.mode == "full-permission" or (getattr(self, "scope_policy", None) or {}).get("revision") == 3):
+            return self._call(name, arguments, approved=approved, receipt_id=receipt_id, scope_approval=scope_approval)
+
+    def _call(self, name, arguments, *, approved=False, receipt_id=None, scope_approval=None):
         """Dispatch only host-registered tools; model arguments cannot change policy."""
         self.last_dispatch_started = False
         self.last_read_receipt = None
@@ -109,7 +114,7 @@ class ToolRegistry:
         request = proposal(self, name, arguments)
         if request:
             from .scope_permissions import automatic
-            if scope_approval is None and automatic(self,name):scope_approval=request
+            if scope_approval is None and (automatic(self,name) or request.get('automatic_workspace_temp')):scope_approval=request
             if scope_approval is not None:
                 return scoped_execute(self, name, arguments, scope_approval, receipt_id)
             return {"status": "approval_required", "scope_request": request,
@@ -136,6 +141,8 @@ class ToolRegistry:
             host_constraint = getattr(function, "_requires_host_approval", None)
             if host_constraint is not None and host_constraint():
                 metadata = replace(metadata, requires_host_approval=True)
+            if name == 'shell' and arguments.get('access') == 'full' and self.gateway.mode != 'full-permission':
+                metadata = replace(metadata, requires_host_approval=True)
             new_mode = self.gateway.mode in {mode.value for mode in PermissionMode}
             risk = ("high" if (metadata.potentially_destructive or metadata.external_side_effect or
                                metadata.requires_shell or metadata.network_access) else
@@ -144,6 +151,9 @@ class ToolRegistry:
             resource_provider = getattr(function, 'permission_resource', None)
             if resource_provider is not None:
                 resource = resource_provider(arguments)
+            from .host_tools import qualified_shell
+            if name=='shell' and qualified_shell(self,name) and self.scope_policy['mode']=='isolated':
+                resource={**resource,'enforced_read_only_shell':True}
             decision = self.gateway.decide(name, risk,
                 ["Trusted host extension with declared read-only behavior." if risk == "low" else
                  "Trusted host extension with unclassified or mutating behavior."],

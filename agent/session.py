@@ -593,8 +593,8 @@ class AgentSession:
             return
         text = self.base_prompt
         if getattr(self.registry, 'scope_policy', None):
-            from .scope_permissions import PROMPT as SCOPE_PROMPT
-            text += SCOPE_PROMPT
+            from .scope_permissions import prompt_for
+            text += prompt_for(self.registry)
         if self.computer:
             from computer.schemas import PROMPT
             text += PROMPT

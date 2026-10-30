@@ -285,18 +285,9 @@ export default function App() {
   );
   const effortAnchor = useRef<HTMLDivElement>(null),
     permissionAnchor = useRef<HTMLDivElement>(null);
-  const [permissionConfirm, setPermissionConfirm] = useState<{
-    id: string;
-    defaults: boolean;
-  } | null>(null);
   function choosePermission(id: string, defaults = false) {
-    if (id === "full") {
-      setPermissionConfirm({ id, defaults });
-      setPermissionOpen(false);
-    } else {
-      (defaults ? setPermissionDefault : setPermissionMode)(id);
-      setPermissionOpen(false);
-    }
+    (defaults ? setPermissionDefault : setPermissionMode)(id);
+    setPermissionOpen(false);
   }
   useEffect(() => {
     localStorage.setItem(
@@ -1046,7 +1037,12 @@ export default function App() {
       setError("会话偏好正在保存，请稍后发送。");
       return;
     }
-    if ((!input.trim() && !attachments.files.length) || busy || modelLoadLock.current) return;
+    if (
+      (!input.trim() && !attachments.files.length) ||
+      busy ||
+      modelLoadLock.current
+    )
+      return;
     if (preview) {
       setToast("设计预览不会执行模型或工具。退出预览后可连接真实服务。");
       return;
@@ -1055,7 +1051,11 @@ export default function App() {
       setSettings(true);
       return;
     }
-    if (routeCloud && !cloud) {
+    if (
+      routeCloud &&
+      !cloud &&
+      !health?.compatibility?.capabilities?.includes("desktop_permissions_v3")
+    ) {
       if (model === "__auto__") {
         const candidates = actualModels.filter(
           (m) =>
@@ -1075,7 +1075,11 @@ export default function App() {
       await persistQueue.current;
       if (chosen && !preview) {
         setLoadingModel(chosen.adapter === "omlx" ? chosen.model : "");
-        try { await ensureLocalModelLoaded(chosen, call); } finally { setLoadingModel(""); }
+        try {
+          await ensureLocalModelLoaded(chosen, call);
+        } finally {
+          setLoadingModel("");
+        }
       }
       {
         if (!model)
@@ -1106,10 +1110,14 @@ export default function App() {
           if (
             useSession &&
             currentTask?.desktop_options?.workspace_grant ===
-              (workspaceGrant || undefined) &&
-            currentTask?.desktop_options?.permission_mode ===
-              wanted.permission_mode
+              (workspaceGrant || undefined)
           ) {
+            if (
+              currentTask?.desktop_options?.permission_mode !==
+                wanted.permission_mode &&
+              !caps.includes("desktop_permissions_v3")
+            )
+              throw Error("请更新 Core 组件后切换权限，避免丢失会话。");
             // Task metadata is frozen per turn. A previous settings request may
             // have succeeded even when its task submission failed afterwards.
             if (caps.includes("desktop_profile_switch_v1")) {
@@ -1120,6 +1128,14 @@ export default function App() {
                   agent_profile: agentProfile,
                   expected_profile:
                     currentTask?.desktop_options?.agent_profile || "standard",
+                  ...(caps.includes("desktop_permissions_v3")
+                    ? {
+                        permission_mode: permissionMode,
+                        expected_permission_mode:
+                          currentTask?.desktop_options?.permission_mode ||
+                          permissionMode,
+                      }
+                    : {}),
                 },
               });
             } else if (
@@ -1132,9 +1148,7 @@ export default function App() {
           if (
             !useSession ||
             currentTask?.desktop_options?.workspace_grant !==
-              (workspaceGrant || undefined) ||
-            currentTask?.desktop_options?.permission_mode !==
-              wanted.permission_mode
+              (workspaceGrant || undefined)
           ) {
             const session = await call<Json>("product_control", {
               operation: "desktop_session",
@@ -1166,7 +1180,10 @@ export default function App() {
           const attachmentRoute = models.find((m) => m.id === effectiveModel);
           if (!attachmentRoute)
             throw Error("模型来源尚未确认，未导入附件。请刷新模型列表。");
-          if (attachmentRoute.cloud_egress !== "LOCAL_ONLY")
+          if (
+            attachmentRoute.cloud_egress !== "LOCAL_ONLY" &&
+            !caps.includes("desktop_permissions_v3")
+          )
             throw Error(
               "附件尚未获得独立云端文件范围授权，请先使用本地模型处理。未上传文件内容。",
             );
@@ -1195,7 +1212,7 @@ export default function App() {
           model: effectiveModel,
           sessionId: useSession,
           agentConsent: true,
-          cloudConsent: cloud,
+          cloudConsent: cloud || caps.includes("desktop_permissions_v3"),
           effort: sessionPrefs.effort,
           preferences: sessionPrefs,
         });
@@ -1456,8 +1473,11 @@ export default function App() {
           <div className="sidebar-brand">
             <Mark small />
             <span>LocalPilot</span>
-            <span className="version" title={packageInfo.version}>
-              {packageInfo.version.replace("5.0.0-beta.3-", "5.0 β3 · ")}
+            <span
+              className="version"
+              title={`${packageInfo.version} · 权限修复版`}
+            >
+              RC.7 · 权限版
             </span>
           </div>
           <button className="new-chat" onClick={newChat}>
@@ -2069,7 +2089,8 @@ export default function App() {
                         ))}
                       </details>
                       <p>
-                        更改用于下一次提交。系统权限、云端披露和安全限制独立生效。
+                        更改保留会话历史，在下次提交时生效。完全权限不再弹 APP
+                        内审批；macOS 自身权限仍需由系统允许。
                       </p>
                     </Popover>
                   )}
@@ -2115,7 +2136,11 @@ export default function App() {
                       <span
                         className={`model-indicator ${loadingModel || chosen?.deployment_status !== "ready" ? "unavailable" : routeCloud ? "cloud" : ""}`}
                       />
-                      <span>{loadingModel ? `正在加载 ${loadingModel}…` : chosen?.model || "选择模型"}</span>
+                      <span>
+                        {loadingModel
+                          ? `正在加载 ${loadingModel}…`
+                          : chosen?.model || "选择模型"}
+                      </span>
                       <ChevronDown size={11} />
                     </button>
                     {modelOpen && (
@@ -2141,7 +2166,9 @@ export default function App() {
                           actualModels.map((m) => (
                             <button
                               key={m.id}
-                              disabled={!!m.reasoning_only || !!loadingModel || busy}
+                              disabled={
+                                !!m.reasoning_only || !!loadingModel || busy
+                              }
                               title={
                                 m.reasoning_only
                                   ? "此路由用于 Companion 轻量对话，不具备标准 Agent 工具能力"
@@ -2291,7 +2318,8 @@ export default function App() {
                   aria-label="发送消息"
                   disabled={
                     (!input.trim() && !attachments.files.length) ||
-                    outputBlocked || !!loadingModel
+                    outputBlocked ||
+                    !!loadingModel
                   }
                   onClick={() => send()}
                 >
@@ -2309,7 +2337,9 @@ export default function App() {
               <ShieldCheck size={11} />
               {preview
                 ? "设计预览 · 所有内容均为模拟"
-                : "工具操作遵循服务权限 · 云端单独授权"}
+                : permissionMode === "full"
+                  ? "完全权限 · APP 内不再询问批准"
+                  : "操作按当前权限执行 · 云端使用所选模型"}
             </span>
             <span>
               Enter 发送 <b>·</b> Shift Enter 换行
@@ -2951,7 +2981,9 @@ export default function App() {
             models={models}
             onChanged={refresh}
             current={model}
-            onSelect={(id) => { void selectModel(id); }}
+            onSelect={(id) => {
+              void selectModel(id);
+            }}
           />
         </Modal>
       )}
@@ -2965,7 +2997,7 @@ export default function App() {
           <div className="onboarding-intro">
             <Mark />
             <span className="eyebrow">
-              WELCOME TO LOCALPILOT · {packageInfo.version}
+              WELCOME TO LOCALPILOT · {packageInfo.version} · 权限修复版
             </span>
             <p>
               检测设备、准备服务，再接受推荐或跳过下载。以后可以在模型库随时调整。
@@ -3601,40 +3633,6 @@ export default function App() {
             >
               仅授权本次云端任务
               <ArrowRight size={14} />
-            </button>
-          </div>
-        </Modal>
-      )}
-      {permissionConfirm && (
-        <Modal
-          title="开启完全权限？"
-          onClose={() => setPermissionConfirm(null)}
-        >
-          <p>
-            LocalPilot 可以自主读写工作区内外的合法文件，并运行受系统约束的
-            Shell。Shell
-            不能联网；联网工具会单独展示目标地址并请求确认。请只在信任当前任务时开启。已有文件夹授权范围继续生效。
-          </p>
-          <p className="micro muted">
-            系统权限、云端披露、身份认证和未知副作用隔离仍然生效。
-          </p>
-          <div className="dialog-actions">
-            <button
-              className="secondary"
-              onClick={() => setPermissionConfirm(null)}
-            >
-              取消
-            </button>
-            <button
-              className="primary"
-              onClick={() => {
-                (permissionConfirm.defaults
-                  ? setPermissionDefault
-                  : setPermissionMode)("full");
-                setPermissionConfirm(null);
-              }}
-            >
-              开启完全权限
             </button>
           </div>
         </Modal>

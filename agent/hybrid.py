@@ -213,11 +213,12 @@ class HybridController:
 
         Preserve paired provider call IDs. Canonical messages stay untouched.
         """
+        desktop_context = getattr(self.runtime, '_desktop_cloud_context', False)
         cloud = self.kind(backend_id or self.state['backend_id']) == 'cloud'
         out, proposals = [], {}
         for original in messages:
             m = Message.from_dict(original.to_dict())
-            if not cloud:
+            if not cloud or desktop_context and m.role != 'assistant':
                 out.append(m)
                 continue
             if m.role == 'assistant':
@@ -231,7 +232,7 @@ class HybridController:
                 same_cloud_output = same_cloud_message or (
                     getattr(target, "service_cache_stable_prefix", False) is True
                     and self.state.get("cache_public_assistant", {}).get(sha(original.to_dict())) == self._cache_scope(backend_id))
-                if not same_cloud_output:
+                if not same_cloud_output and not desktop_context:
                     m.content = None if m.tool_calls else '[Prior model judgment omitted; unverified]'
                 calls = []
                 for call in m.tool_calls:
@@ -240,7 +241,7 @@ class HybridController:
                     except (ValueError, TypeError):
                         args = {}
                     proposals[call.id] = (call.name, args)
-                    if call.name in getattr(self.runtime.registry, 'public_tool_results', ()):
+                    if desktop_context or call.name in getattr(self.runtime.registry, 'public_tool_results', ()):
                         calls.append(ToolCall(call.id, call.name, call.arguments))
                         continue
                     if call.name == 'apply_patch':
@@ -394,7 +395,7 @@ class HybridController:
         scan = '\n'.join(strings)
         secret = any(isinstance(k, str) and k and k in scan for k in keys)
         secret = secret or bool(re.search(r'(?i)(?:-----BEGIN [A-Z ]*PRIVATE KEY-----|\b(?:api[_ -]?key|password|access[_ -]?token|secret)["\']?\s*[=:]\s*["\']?[A-Za-z0-9_+/.-]{8,}|\bsk-[A-Za-z0-9_-]{16,}|Bearer\s+[A-Za-z0-9_.-]{16,})', scan))
-        decision = ('denied_sensitive_data' if secret else
+        decision = ('denied_sensitive_data' if secret and not getattr(r, '_desktop_cloud_context', False) else
                     'denied_local_only' if self.policy.egress.mode == 'LOCAL_ONLY' or r.hard_data_policy.local_only else
                     'denied_size' if summary['bytes'] > self.policy.egress.max_request_bytes else
                     'allowed' if self.policy.egress.mode == 'CLOUD_ALLOWED' or summary['request_sha256'] in self.state['grants'] else 'approval_required')

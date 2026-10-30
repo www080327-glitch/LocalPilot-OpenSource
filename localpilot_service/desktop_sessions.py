@@ -1,18 +1,48 @@
 """Host-authorized settings on the existing AgentSession, persisted with the session."""
 from localpilot_api.service import APIError
 import hashlib,json,re
-MODES = {"isolated":"approve-all", "request":"approve-mutations", "workspace":"workspace-auto", "ask":"approve-all", "safe":"assist-low-risk", "uncertain":"assist-high-risk", "full":"full-permission"}
+MODES = {"isolated":"approve-mutations", "request":"approve-mutations", "workspace":"workspace-auto", "ask":"approve-all", "safe":"assist-low-risk", "uncertain":"assist-high-risk", "full":"full-permission"}
 
 def apply_options(runtime, options):
     if not isinstance(options, dict) or set(options)-{"permission_mode","agent_profile","context_length","prompt_revision","workspace_grant","scope_revision"} or not {"permission_mode","agent_profile"}<=set(options) or options["permission_mode"] not in MODES or options["agent_profile"] not in {"standard","minimal"} or type(options.get('prompt_revision',1)) is not int or options.get('prompt_revision',1) not in {1,2}:
         raise APIError("Unsupported Desktop session settings")
     if "workspace_grant" in options and (not isinstance(options["workspace_grant"],str) or not re.fullmatch(r"grant_[0-9a-f]{32}",options["workspace_grant"])):
         raise APIError("Invalid folder authorization identity")
+    if not hasattr(runtime, "_desktop_base_capabilities"):
+        runtime._desktop_base_capabilities = runtime.registry.gateway.capabilities
     if options.get("workspace_grant"):
         runtime._workspace_grants.bind(runtime,options["workspace_grant"])
     runtime.permission_mode=runtime.registry.gateway.mode=MODES[options["permission_mode"]]
-    if options.get("scope_revision") not in {None, 1, 2}:raise APIError("Unsupported file scope revision")
-    if options["permission_mode"] in {"isolated", "request", "workspace"} or options.get("scope_revision") in {1,2}:
+    if options.get('scope_revision')==3:
+        from agent.safety import CapabilityPolicy
+        from agent.policy import DataPolicy
+        mode = options['permission_mode']
+        base = runtime._desktop_base_capabilities
+        read_grant = bool(options.get('workspace_grant') and runtime._workspace_grants.get(options['workspace_grant'])['scope']=='read')
+        runtime.registry.gateway.capabilities = CapabilityPolicy(read=base.read, write=mode=='full' or base.write and mode!='isolated' and not read_grant, execute=mode!='isolated', read_only=mode=='isolated' or read_grant and mode!='full')
+        runtime.registry.gateway.data_policy = DataPolicy(local_only=False)
+        if mode=='full':
+            runtime.registry.authorization_guard = None
+        elif options.get('workspace_grant') and options.get('scope_revision')==3:
+            from contextlib import contextmanager
+            grant_id=options['workspace_grant']
+            @contextmanager
+            def validate_workspace(name,args):
+                runtime._workspace_grants.validate(grant_id)
+                yield
+            runtime.registry.authorization_guard=validate_workspace
+        # A Desktop user selects the provider and the file policy. Readable tool
+        # results must remain visible to that provider, without per-round masking.
+        runtime._desktop_cloud_context = True
+        if runtime.hybrid:
+            from dataclasses import replace
+            from agent.hybrid import CloudEgressPolicy
+            ep=runtime.hybrid.policy.egress
+            if ep.mode!='LOCAL_ONLY': runtime.hybrid.policy=replace(runtime.hybrid.policy,egress=CloudEgressPolicy('CLOUD_ALLOWED',ep.allowed_paths,ep.max_request_bytes))
+    elif options['permission_mode']=='isolated':
+        runtime.permission_mode=runtime.registry.gateway.mode='approve-all'
+    if options.get("scope_revision") not in {None, 1, 2, 3}:raise APIError("Unsupported file scope revision")
+    if options["permission_mode"] in {"isolated", "request", "workspace"} or options.get("scope_revision") in {1,2,3}:
         from agent.scope_permissions import configure
         from agent.safe_files import make_directory, move_file, copy_file, inspect_file, list_entries
         from agent.permissions import ToolRiskMetadata
@@ -24,7 +54,7 @@ def apply_options(runtime, options):
             from localpilot_plugins.adapter import private_roots as plugin_private_roots
             private_roots = (*private_roots, *plugin_private_roots(runtime))
         configure(runtime.registry, options["permission_mode"], private_roots, revision=options.get('scope_revision',1))
-        if options.get('scope_revision')==2:
+        if options.get('scope_revision') in {2,3}:
             from agent.host_tools import register
             register(runtime.registry,options['permission_mode'],private_roots)
     from agent.profiles import prompt_text
@@ -83,7 +113,7 @@ def create(server, principal, body, key):
         ceiling=server.catalog.get(route,{}).get('tool_capabilities',{})
         if grant['scope']!='read' and not ceiling.get('write',True):raise APIError('Selected route disables writes; choose a route with write capability before authorizing organization','workspace_capability_insufficient',409)
     options['prompt_revision']=2
-    if options.get('permission_mode') in {'isolated','request','workspace','full'}:options['scope_revision']=2
+    if options.get('permission_mode') in {'isolated','request','workspace','full'}:options['scope_revision']=3
     backend=getattr(server,'model_backends',{}).get(route)
     if backend:
         observation=backend.inspect_service()
@@ -105,8 +135,11 @@ def switch_profile(server, principal, session_id, body):
     from agent.persistence import configuration, digest, dumps
     if not principal.operator or 'control' not in principal.scopes:
         raise APIError('Separate host operator required','control_required',403)
-    if not isinstance(body,dict) or set(body)!={'client_subject','agent_profile','expected_profile'} or not isinstance(body['agent_profile'],str) or not isinstance(body['expected_profile'],str) or body['agent_profile'] not in {'standard','minimal'} or body['expected_profile'] not in {'standard','minimal'}:
+    base_keys={'client_subject','agent_profile','expected_profile'}
+    permission_keys={'permission_mode','expected_permission_mode'}
+    if not isinstance(body,dict) or set(body) not in (base_keys,base_keys|permission_keys) or not isinstance(body['agent_profile'],str) or not isinstance(body['expected_profile'],str) or body['agent_profile'] not in {'standard','minimal'} or body['expected_profile'] not in {'standard','minimal'}:
         raise APIError('Exact Agent profile selection required')
+    if 'permission_mode' in body and (body['permission_mode'] not in MODES or body['expected_permission_mode'] not in MODES):raise APIError('Invalid permission mode')
     subject=body['client_subject']
     if subject not in principal.approval_for:
         raise APIError('Subject denied','scope_forbidden',403)
@@ -122,14 +155,20 @@ def switch_profile(server, principal, session_id, body):
         if session.active_task or any(t.session_id==session_id and (t.executing or t.control_pending) for t in service.tasks.values()):
             raise APIError('Finish or stop the active task before switching','session_busy',409)
         current=options['agent_profile']
-        if current==body['agent_profile'] and options.get('prompt_revision')==2:
+        desired_mode=body.get('permission_mode',options['permission_mode'])
+        if current==body['agent_profile'] and desired_mode==options['permission_mode'] and options.get('prompt_revision')==2 and (desired_mode not in {'isolated','request','workspace','full'} or options.get('scope_revision')==3):
             return service.session_snapshot(session_id)
+        if 'expected_permission_mode' in body and options['permission_mode']!=body['expected_permission_mode']:
+            raise APIError('Permission mode changed in another client','permission_conflict',409)
         if current!=body['expected_profile']:
             raise APIError('Agent profile changed in another client','profile_conflict',409)
         runtime=session.runtime
         old=(runtime.messages[:],runtime.prompt_profile,runtime.base_prompt,getattr(runtime,'_persistence_config',None),session.base_prompt)
+        registry=runtime.registry
+        permission_state=(runtime.permission_mode,registry.gateway.mode,registry.gateway.capabilities,registry.gateway.data_policy,getattr(registry,'authorization_guard',None),deepcopy(getattr(registry,'scope_policy',None)),registry._tools.copy(),registry._metadata.copy(),runtime.hybrid.policy if runtime.hybrid else None,getattr(runtime,'_desktop_cloud_context',False),runtime.workspace,registry._extension_schemas[:],registry._metadata_declared.copy())
         metadata={t.id:deepcopy(t.execution_metadata) for t in service.tasks.values() if t.session_id==session_id}
-        updated={**options,'agent_profile':body['agent_profile'],'prompt_revision':2}
+        updated={**options,'agent_profile':body['agent_profile'],'permission_mode':desired_mode,'prompt_revision':2}
+        if desired_mode in {'isolated','request','workspace','full'}:updated['scope_revision']=3
         try:
             for tid in metadata:
                 task=service.tasks[tid]
@@ -143,8 +182,11 @@ def switch_profile(server, principal, session_id, body):
         except Exception:
             runtime.messages,runtime.prompt_profile,runtime.base_prompt,runtime._persistence_config,session.base_prompt=old
             session.desktop_options=options
+            runtime.registry=registry
+            runtime.permission_mode,registry.gateway.mode,registry.gateway.capabilities,registry.gateway.data_policy,registry.authorization_guard,registry.scope_policy,registry._tools,registry._metadata,hybrid_policy,runtime._desktop_cloud_context,runtime.workspace,registry._extension_schemas,registry._metadata_declared=permission_state
+            if runtime.hybrid:runtime.hybrid.policy=hybrid_policy
             for tid,value in metadata.items():service.tasks[tid].execution_metadata=value
             raise
         result=service.session_snapshot(session_id)
-    server.access.audit(operation='desktop_profile_changed',subject=principal.subject,client_subject=subject,session_id=session_id,previous=current,agent_profile=updated['agent_profile'])
+    server.access.audit(operation='desktop_profile_changed',subject=principal.subject,client_subject=subject,session_id=session_id,previous=current,agent_profile=updated['agent_profile'],previous_permission=options['permission_mode'],permission_mode=updated['permission_mode'])
     return result

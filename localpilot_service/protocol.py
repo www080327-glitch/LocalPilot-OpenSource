@@ -8,7 +8,7 @@ CAPABILITIES = (
     "cancel", "safe_resume", "unknown_quarantine", "verification_dimensions",
     "model_registry", "explicit_cloud_egress", "resource_control_v1",
 )
-OPTIONAL_CAPABILITIES = ('task_low_power_consent_v1', 'task_outcome_v1', 'routing_preferences_v1', 'model_manager_read_v1','session_thinking_v1','model_resource_v1','pause_v1','lifecycle_suspend_v1','desktop_session_v1','desktop_session_idempotency_v1','desktop_profile_switch_v1','attachments_v1','attachments_v2','workspace_grants_v1','bounded_file_operations_v1')
+OPTIONAL_CAPABILITIES = ('desktop_permissions_v3', 'task_low_power_consent_v1', 'task_outcome_v1', 'routing_preferences_v1', 'model_manager_read_v1','session_thinking_v1','model_resource_v1','pause_v1','lifecycle_suspend_v1','desktop_session_v1','desktop_session_idempotency_v1','desktop_profile_switch_v1','attachments_v1','attachments_v2','workspace_grants_v1','bounded_file_operations_v1')
 
 
 def local_agent_constraints():

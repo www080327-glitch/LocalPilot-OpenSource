@@ -102,12 +102,14 @@ class DesktopProductTests(unittest.TestCase):
         small=recommend(10,context_k=64,minimum_context_k=64,excluded_size_classes=policy['excluded_size_classes'],profiles={})
         self.assertIsNone(small)
 
-    def test_unknown_extension_metadata_always_needs_human(self):
+    def test_unknown_extension_obeys_explicit_full_permission(self):
         from agent.registry import ToolRegistry
         for mode in MODES.values():
             registry=ToolRegistry(self.workspace,permission_mode=mode)
             registry.register('unknown',lambda workspace_root:'should not run automatically')
-            self.assertEqual(registry.call('unknown',{})['status'],'approval_required')
+            result=registry.call('unknown',{})
+            if mode=='full-permission':self.assertEqual(result,'should not run automatically')
+            else:self.assertEqual(result['status'],'approval_required')
 
     def test_local_only_network_floor_survives_full_permission(self):
         from agent.policy import DataPolicy
@@ -124,7 +126,7 @@ class DesktopProductTests(unittest.TestCase):
                 actual.append(gateway.decide(op,risk,['test'],{},metadata=meta)['status'])
             self.assertEqual(actual,expected)
             self.assertEqual(gateway.decide('apply_patch','low',[],{},blocked=True)['status'],'denied')
-            self.assertEqual(gateway.decide('read_file','low',[],{},metadata=ToolRiskMetadata(requires_host_approval=True))['status'],'approval_required')
+            self.assertEqual(gateway.decide('read_file','low',[],{},metadata=ToolRiskMetadata(requires_host_approval=True))['status'],'allowed' if mode=='full-permission' else 'approval_required')
 
 class DesktopV5ProfileTests(DesktopProductTests):
     def factory(self,callback):

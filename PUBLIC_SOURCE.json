@@ -1,5 +1,5 @@
 {
-  "upstream_source_commit": "db636e46",
+  "upstream_source_commit": "9497eaba",
   "snapshot_date": "2026-10-30",
   "license": "Apache-2.0",
   "history": "fresh public source snapshot",
@@ -12,5 +12,5 @@
     "model weights",
     "bundled runtimes"
   ],
-  "verification": "Four focused power-consent tests including real loopback task API with scripted backend; actual low-power model inference not rerun."
+  "verification": "10 focused v3 file/Shell/context tests + 3 regression checks + 2 headless UI tests; scripted cloud backend only, no new real-model run."
 }
