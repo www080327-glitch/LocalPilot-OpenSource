@@ -1,3 +1,4 @@
+import { ensureLocalModelLoaded } from "./modelLoading";
 import { latestTask, errorAfterHealthyConnection } from "./domain";
 import {
   permissionModes,
@@ -1009,6 +1010,33 @@ export default function App() {
       setManagement(false);
     }
   }
+  const [loadingModel, setLoadingModel] = useState("");
+  const modelLoadLock = useRef(false);
+  async function selectModel(id: string) {
+    if (modelLoadLock.current || busy) return;
+    const target = actualModels.find((m) => m.id === id);
+    setModelOpen(false);
+    if (!target || preview || target.adapter !== "omlx") {
+      setModel(id);
+      return;
+    }
+    modelLoadLock.current = true;
+    setModel(id);
+    setLoadingModel(target.model);
+    setError("");
+    try {
+      await ensureLocalModelLoaded(target, call);
+      await refresh();
+      setToast("模型已加载，可以发送任务。");
+    } catch (e) {
+      showError(e);
+      // Keep the chosen route visible; do not silently switch providers.
+      setLibraryOpen(true);
+    } finally {
+      setLoadingModel("");
+      modelLoadLock.current = false;
+    }
+  }
   async function send(cloud = false) {
     if (!preferencesReady || !globals.completed) {
       setOnboarding(true);
@@ -1018,7 +1046,7 @@ export default function App() {
       setError("会话偏好正在保存，请稍后发送。");
       return;
     }
-    if ((!input.trim() && !attachments.files.length) || busy) return;
+    if ((!input.trim() && !attachments.files.length) || busy || modelLoadLock.current) return;
     if (preview) {
       setToast("设计预览不会执行模型或工具。退出预览后可连接真实服务。");
       return;
@@ -1045,6 +1073,10 @@ export default function App() {
     setConfirm(null);
     try {
       await persistQueue.current;
+      if (chosen && !preview) {
+        setLoadingModel(chosen.adapter === "omlx" ? chosen.model : "");
+        try { await ensureLocalModelLoaded(chosen, call); } finally { setLoadingModel(""); }
+      }
       {
         if (!model)
           throw new Error("请选择显式模型；当前 Core 未提供自动路由契约。");
@@ -2077,12 +2109,13 @@ export default function App() {
                     <button
                       className="model-trigger"
                       aria-label="选择模型"
+                      disabled={!!loadingModel || busy}
                       onClick={() => setModelOpen(!modelOpen)}
                     >
                       <span
-                        className={`model-indicator ${routeCloud ? "cloud" : ""}`}
+                        className={`model-indicator ${loadingModel || chosen?.deployment_status !== "ready" ? "unavailable" : routeCloud ? "cloud" : ""}`}
                       />
-                      <span>{chosen?.model || "选择模型"}</span>
+                      <span>{loadingModel ? `正在加载 ${loadingModel}…` : chosen?.model || "选择模型"}</span>
                       <ChevronDown size={11} />
                     </button>
                     {modelOpen && (
@@ -2092,7 +2125,7 @@ export default function App() {
                         onClose={() => setModelOpen(false)}
                       >
                         <div className="menu-label">
-                          服务配置的模型<span>不做隐式切换</span>
+                          选择模型<span>已下载的本地模型自动加载</span>
                         </div>
                         {supportedRouting && (
                           <button
@@ -2108,7 +2141,7 @@ export default function App() {
                           actualModels.map((m) => (
                             <button
                               key={m.id}
-                              disabled={!!m.reasoning_only}
+                              disabled={!!m.reasoning_only || !!loadingModel || busy}
                               title={
                                 m.reasoning_only
                                   ? "此路由用于 Companion 轻量对话，不具备标准 Agent 工具能力"
@@ -2119,8 +2152,7 @@ export default function App() {
                                   setToast(
                                     "模型改变后，下一条消息将创建新 Session",
                                   );
-                                setModel(m.id);
-                                setModelOpen(false);
+                                void selectModel(m.id);
                               }}
                               className={model === m.id ? "selected" : ""}
                             >
@@ -2259,7 +2291,7 @@ export default function App() {
                   aria-label="发送消息"
                   disabled={
                     (!input.trim() && !attachments.files.length) ||
-                    outputBlocked
+                    outputBlocked || !!loadingModel
                   }
                   onClick={() => send()}
                 >
@@ -2919,12 +2951,7 @@ export default function App() {
             models={models}
             onChanged={refresh}
             current={model}
-            onSelect={(id) => {
-              setModel(id);
-              setToast(
-                "模型已选择；后续新会话使用此模型，已有任务保留原路由。",
-              );
-            }}
+            onSelect={(id) => { void selectModel(id); }}
           />
         </Modal>
       )}

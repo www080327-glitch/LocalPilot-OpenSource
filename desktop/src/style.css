@@ -3776,3 +3776,5 @@ html[data-pet-part="character"] button:active:not(:disabled) {
 .wechat-quick > button, .wechat-quick > label { margin: 10px 12px 10px 0; }
 .wechat-quick .channel-qr { display: block; }
 .setup-assistant .advanced-settings { margin: 12px 0; }
+
+.model-indicator.unavailable { background: var(--muted); }

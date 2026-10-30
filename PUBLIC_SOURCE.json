@@ -1,5 +1,5 @@
 {
-  "upstream_source_commit": "4a497c2f",
+  "upstream_source_commit": "73b33b42",
   "snapshot_date": "2026-10-30",
   "license": "Apache-2.0",
   "history": "fresh public source snapshot",
@@ -12,5 +12,5 @@
     "model weights",
     "bundled runtimes"
   ],
-  "verification": "export content and credential-pattern review only; no new product tests"
+  "verification": "TypeScript/native build and four focused auto-load unit checks; actual model loading not rerun"
 }
