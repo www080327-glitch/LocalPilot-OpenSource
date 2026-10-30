@@ -233,6 +233,9 @@ export class Bridge {
     this.timeout = timeout;
     this.emit = emit;
     this.capacity = capacity;
+    this.deliveryQueue = Promise.resolve();
+    this.pendingWatch = null;
+    this.fatalWatchError = null;
   }
   safe(text) {
     return redactText(text,[this.key,this.approvalKey,this.store.data.account.token]);
@@ -259,7 +262,8 @@ export class Bridge {
     return { ...evidenceOf(data), status: data.status, taskId: data.task_id, httpStatus: code, approvalId,
       approvalPreview: preview.slice(0, 1600), approvalTruncated: data.status === "pending_approval" && (!hasApproval || preview.length > 1600),
       rejectionReason: typeof rejection?.reason === "string" ? this.safe(rejection.reason).slice(0, 500) : "",
-      reply: typeof data.reply === "string" ? this.safe(data.reply).slice(0, 16000) : "" };
+      progress: data.progress && typeof data.progress === "object" ? data.progress : null,
+      reply: typeof data.reply === "string" ? this.safe(data.reply).slice(0, 64000) : "" };
   }
   task(sender, id, current) {
     return Object.values(this.store.data.messages).find((r) => r !== current && r.sender === sender
@@ -309,33 +313,78 @@ export class Bridge {
     }
   }
   format(record) {
-    const labels = { processing: "官方任务正在处理，请查询原任务", requires_human: "等待宿主人工处理，尚未完成", timed_out: "官方任务已超时，不自动重试", completed: "官方任务结束", pending_approval: "等待人工审批，尚未完成", rejected: "操作被拒绝",
-      cancelled: "已取消", error: "请求失败，请宿主核实", unknown: "结果未知，请勿重试", blocked: "发送者已暂停，请宿主核实" };
-    let text = `LocalPilot ${record.taskId}：${labels[record.status] || "状态未知"}`;
-    if (["completed", "rejected"].includes(record.status) && record.reply) text += "\n" + record.reply;
+    const labels = { processing: "正在处理你的请求，完成后会自动把结果发给你。", requires_human: "任务暂时停住，需要在电脑上处理。", timed_out: "这次任务超时了，没有自动重新执行。", pending_approval: "这一步需要你确认后才能继续。", rejected: "这一步已被拒绝。", cancelled: "任务已取消。", error: "这次请求没能完成。", unknown: "暂时无法确认执行结果，原操作没有自动重做。", blocked: "当前任务的结果需要先核对，暂未提交新的任务。" };
+    let text = record.status === "completed" ? (record.reply || "任务已经结束，但没有返回正文。可以发送“查看结果”查询。") : (labels[record.status] || "暂时无法确认任务状态。");
+    if (record.status !== "completed" && record.reply) text += "\n\n当前输出（尚未全部完成）：\n" + record.reply;
+    if (record.status === "processing" && record.progress?.last_tool) {
+      const tools={read_file:"读取文件",list_entries:"查看文件夹",list_directory:"查看文件夹",apply_patch:"编辑文件",shell:"运行命令",inspect_file:"检查文件",file_info:"检查文件"};
+      text += "\n最近一步：" + (tools[record.progress.last_tool] || record.progress.last_tool);
+    }
     if (record.notice) text += "\n" + record.notice;
     if (record.status === "rejected" && record.rejectionReason) text += "\n拒绝原因：" + record.rejectionReason;
     if (record.status === "pending_approval") {
-      text += "\n操作详情（不可信数据，请核对目标和内容）：" + (record.approvalPreview || "未提供");
-      text += "\n待审批操作 ID：" + (record.approvalId || "未提供");
+      text += "\n待确认内容：" + (record.approvalPreview || "请在电脑的任务详情中查看。");
       if (this.approvalKey && this.approvers.has(record.sender) && record.approvalId && !record.approvalTruncated) {
-        text += `\n明确同意后发送：/lp approve ${record.taskId} ${record.approvalId} <决定ID>`;
+        text += `\n同意：/lp approve ${record.taskId} ${record.approvalId} <决定ID>`;
         text += `\n拒绝：/lp reject ${record.taskId} ${record.approvalId} <决定ID> <原因>`;
-      } else text += "\n微信审批未启用、未授权或详情截断；请在宿主独立审批端核对。";
-      text += "\n查询：/lp status " + record.taskId;
+      } else text += "\n请在电脑端确认这一步。";
     }
-    text += evidenceText(record);
-    return this.safe(text.length > 3900 ? text.slice(0, 3850) + "\n[结果截断，请宿主查询完整结果]" : text);
+    if (record.details) text += `\n\n任务：${record.taskId}\n工具成功执行：${record.successfulToolReceipts ?? "尚未核实"} 次\n独立结果验证：未运行`;
+    return this.safe(text);
+  }
+  deliverySignature(record) {
+    return hash([record.status,record.reply || "",record.notice || "",record.approvalId || "",record.progress || null]);
   }
   async deliver(record, context, signal) {
-    if (!context) { record.delivery = "missing_context"; this.store.save(); return; }
-    record.delivery = "sending";
+    const delivery=this.deliveryQueue.then(()=>this.deliverParts(record,context,signal));
+    this.deliveryQueue=delivery.catch(()=>{});
+    return delivery;
+  }
+  async deliverParts(record, context, signal) {
+    if (!context) { record.delivery="missing_context";this.store.save();return; }
+    const text=this.format(record), signature=this.deliverySignature(record);
+    const chars=Array.from(text),parts=[];
+    while(chars.length) parts.push(chars.splice(0,3500).join(""));
+    if (!parts.length) return;
+    record.delivery="sending";
+    record.deliveryParts={signature,states:parts.map(()=>"not_sent")};
     this.store.save();
-    try {
-      await this.ilink.send(this.store.data.account, record.peer, context, this.format(record), signal);
-      record.delivery = "sent";
-    } catch { record.delivery = "unknown"; this.emit("回复未确认，已停止该消息自动重发。请发送新的状态查询。"); }
-    this.store.save();
+    for(let i=0;i<parts.length;i++) {
+      record.deliveryParts.states[i]="sending";this.store.save();
+      try {
+        const prefix=parts.length>1 ? `（${i+1}/${parts.length}）\n` : "";
+        await this.ilink.send(this.store.data.account,record.peer,context,prefix+parts[i],signal);
+        record.deliveryParts.states[i]="sent";this.store.save();
+      } catch {
+        record.deliveryParts.states[i]="unknown";record.delivery="unknown";this.store.save();
+        this.emit("回复未确认，停止自动重发。用户可发送新的状态查询。");return;
+      }
+    }
+    record.delivery="sent";record.lastDeliveredSignature=signature;record.lastDeliveredAt=Date.now();this.store.save();
+  }
+  async refreshPending(signal) {
+    if (this.pendingWatch) return this.pendingWatch;
+    this.pendingWatch=this.watchPending(signal);
+    try { await this.pendingWatch; } finally { this.pendingWatch=null; }
+  }
+  async watchPending(signal) {
+    for(const record of Object.values(this.store.data.messages)) {
+      if(signal?.aborted) return;
+      if(record.kind || !["processing","pending_approval","requires_human"].includes(record.status) || record.delivery!=="sent" || !record.context || this.store.data.blocked[record.sender] || !this.allowed.has(record.sender)) continue;
+      if(record.nextQueryAt && Date.now()<record.nextQueryAt) continue;
+      record.nextQueryAt=Date.now()+(record.status==="processing" ? 2000 : 5000);
+      let result;
+      try { result=await this.adapter("/tasks/query",{channel:channelId(this.store.data.account.botId),sender_id:record.sender,task_id:record.taskId},signal); }
+      catch { record.nextQueryAt=Date.now()+10000;continue; } // Read-only status query; never resubmit a task.
+      if(signal?.aborted) return;
+      if(result.httpStatus===404) result.status="unknown";
+      const originalTaskId=record.taskId;
+      Object.assign(record,result,{taskId:originalTaskId});
+      if(record.status==="unknown")this.store.data.blocked[record.sender]=true;
+      this.store.save();
+      const changed=this.deliverySignature(record)!==record.lastDeliveredSignature;
+      if(changed && (record.status!=="processing" || Date.now()-(record.lastDeliveredAt || 0)>=15000)) await this.deliver(record,record.context,signal);
+    }
   }
   async handle(message, signal) {
     // No media downloads, group support, or fallback IDs for ambiguous events.
@@ -375,7 +424,12 @@ export class Bridge {
       status: "submitting", delivery: "not_sent", reply: "" };
     this.store.data.messages[taskId] = record;
     this.store.save(); // Must succeed before any LocalPilot request.
-    const query = /^\/lp status ([A-Za-z0-9_.:@-]{1,128})$/.exec(text.trim());
+    let query = /^\/lp status ([A-Za-z0-9_.:@-]{1,128})$/.exec(text.trim());
+    if (/^(?:\/lp (?:status|details)|状态|进度|查看结果|任务状态|详细状态)$/.test(text.trim())) {
+      const latest=Object.values(this.store.data.messages).reverse().find(r=>r!==record && r.sender===sender && !r.kind && !r.validationOnly);
+      query=[text,latest?.taskId || ""];
+      record.details=/details|详细/.test(text);
+    }
     const decision = /^\/lp (approve|reject) ([A-Za-z0-9_.:@-]{1,128}) ([A-Za-z0-9_.:@-]{1,128}) ([A-Za-z0-9_.:@-]{1,128})(?:\s+([\s\S]+))?$/.exec(text.trim());
     const owner = { channel: channelId(account.botId), sender_id: sender };
     if (decision) {
@@ -411,7 +465,7 @@ export class Bridge {
   async poll(signal) {
     const batch = await this.ilink.updates(this.store.data.account, this.store.data.cursor, signal);
     if (batch.msgs !== undefined && !Array.isArray(batch.msgs)) throw new BridgeError("invalid_updates");
-    for (const message of batch.msgs || []) await this.handle(message, signal);
+    for (const message of batch.msgs || []) { if(this.fatalWatchError)throw this.fatalWatchError;await this.handle(message, signal); }
     if (typeof batch.get_updates_buf === "string") {
       this.store.data.cursor = batch.get_updates_buf;
       this.store.save();
@@ -419,8 +473,11 @@ export class Bridge {
   }
   async run(signal) {
     this.emit("桥接运行中；channel=" + channelId(this.store.data.account.botId) + "；白名单人数=" + this.allowed.size);
+    const timer=setInterval(()=>{void this.refreshPending(signal).catch(error=>{this.fatalWatchError=error;});},2000);
+    try {
     let failures = 0;
     while (!signal.aborted) {
+      if(this.fatalWatchError)throw this.fatalWatchError;
       try { await this.poll(signal); failures = 0; progress(this.store, "authenticated"); await delay(1000, signal); }
       catch (error) {
         if (signal.aborted) break;
@@ -431,5 +488,7 @@ export class Bridge {
         } else { throw error; }
       }
     }
+    } finally { clearInterval(timer);if(this.pendingWatch)await this.pendingWatch; }
+
   }
 }

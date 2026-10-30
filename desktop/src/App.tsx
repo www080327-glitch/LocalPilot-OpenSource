@@ -1,3 +1,4 @@
+import { latestConversations, conversationTitle } from "./conversations";
 import { compatibleEffort, thinkingKey } from "./modelThinking";
 import { shouldSubmitEnter, type EnterBehavior } from "./inputBehavior";
 import { ensureLocalModelLoaded } from "./modelLoading";
@@ -179,7 +180,13 @@ export default function App() {
     [events, setEvents] = useState<Record<string, StreamEvent[]>>({}),
     [delta, setDelta] = useState<Record<string, string>>({});
   const [preview, setPreview] = useState(false),
-    [input, setInput] = useState(""),
+    [input, setInput] = useState(() =>
+      desktop
+        ? ""
+        : stored<Record<string, { input?: string }>>("lp.chats.v1", {})[
+            stored<string>("lp.currentChat", "")
+          ]?.input || "",
+    ),
     [model, setModel] = useState(stored("lp.defaultModel", "")),
     [busy, setBusy] = useState(false),
     [stream, setStream] = useState("idle"),
@@ -322,6 +329,7 @@ export default function App() {
           preferences: Preferences;
           model: string;
           title: string;
+          input?: string;
           scope: string;
         }
       >
@@ -367,6 +375,42 @@ export default function App() {
   }, [drafts, chatId]);
   useEffect(() => {
     if (
+      preview ||
+      !chatId.startsWith("draft-") ||
+      !preferencesReady ||
+      (desktop && (!historyReady || !restoreDone.current))
+    )
+      return;
+    setDrafts((old) => {
+      if (!input.trim()) {
+        if (!old[chatId]) return old;
+        const next = { ...old };
+        delete next[chatId];
+        return next;
+      }
+      return {
+        ...old,
+        [chatId]: {
+          preferences: sessionPrefs,
+          model,
+          title: input.trim().split("\n")[0].slice(0, 32),
+          input,
+          scope,
+        },
+      };
+    });
+  }, [
+    chatId,
+    input,
+    model,
+    sessionPrefs,
+    scope,
+    preferencesReady,
+    historyReady,
+    preview,
+  ]);
+  useEffect(() => {
+    if (
       !preferencesReady ||
       !globals.completed ||
       !health ||
@@ -379,6 +423,7 @@ export default function App() {
     const task = tasks.find((t) => t.id === id);
     if (task) openTask(task);
     else if (drafts[chatId]?.scope === scope) {
+      setInput(drafts[chatId].input || "");
       setSessionPrefs(drafts[chatId].preferences);
       setModel(drafts[chatId].model);
     }
@@ -852,19 +897,14 @@ export default function App() {
       setOnboarding(true);
       return;
     }
+    if (!preview && !selected && !input.trim() && !attachments.files.length) {
+      composer.current?.focus();
+      return;
+    }
     const id = `draft-${crypto.randomUUID()}`;
     persistQueue.current = Promise.resolve();
     setChatId(id);
     setSessionPrefs({ ...globals.defaults });
-    setDrafts((old) => ({
-      ...old,
-      [id]: {
-        preferences: { ...globals.defaults },
-        model: "",
-        title: "新会话",
-        scope,
-      },
-    }));
     setModel(defaultModel || (supportedRouting ? "__auto__" : ""));
 
     setAgentProfile("standard");
@@ -1324,15 +1364,17 @@ export default function App() {
           sessionId: t.session_id,
           value: requestPreferences,
         }).catch(showError);
-        setDrafts((old) => ({
-          ...old,
-          [t.session_id]: {
+        setDrafts((old) => {
+          const next = { ...old };
+          if (chatId.startsWith("draft-")) delete next[chatId];
+          next[t.session_id] = {
             preferences: { ...requestPreferences },
             model,
             title: question.slice(0, 32),
             scope,
-          },
-        }));
+          };
+          return next;
+        });
         setChatId(t.session_id);
         localStorage.setItem("lp.currentTask", JSON.stringify(t.id));
         updateTask(t);
@@ -1538,12 +1580,19 @@ export default function App() {
     if (columns && left && n + shownLeft > viewport - 420)
       setLeftWidth(Math.max(220, viewport - 420 - n));
   };
-  const grouped = tasks.filter(
-    (t) =>
-      !query ||
-      `${t.id} ${t.model} ${t.session_id} ${textOf(t)}`
-        .toLowerCase()
-        .includes(query.toLowerCase()),
+  const matchedSessions = new Set(
+    tasks
+      .filter(
+        (t) =>
+          !query ||
+          `${t.user_input || ""} ${t.id} ${t.model} ${t.session_id} ${textOf(t)}`
+            .toLowerCase()
+            .includes(query.toLowerCase()),
+      )
+      .map((t) => t.session_id),
+  );
+  const grouped = latestConversations(tasks).filter((t) =>
+    matchedSessions.has(t.session_id),
   );
   const outputBlocked =
     busy || (!preview && !!currentTask && !terminal.has(currentTask.status));
@@ -1592,7 +1641,7 @@ export default function App() {
             <input
               ref={searchRef}
               aria-label="搜索历史任务"
-              placeholder="搜索任务…"
+              placeholder="搜索会话…"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
@@ -1628,7 +1677,7 @@ export default function App() {
             <ChevronDown size={13} />
           </button>
           <div className="sidebar-section">
-            <span>最近任务</span>
+            <span>最近会话</span>
             <button
               className="icon-btn"
               aria-label="刷新任务列表"
@@ -1641,7 +1690,10 @@ export default function App() {
             {!preview &&
               Object.entries(drafts)
                 .filter(
-                  ([id, d]) => id.startsWith("draft-") && d.scope === scope,
+                  ([id, d]) =>
+                    id.startsWith("draft-") &&
+                    d.scope === scope &&
+                    !!d.input?.trim(),
                 )
                 .map(([id, d]) => (
                   <button
@@ -1649,6 +1701,8 @@ export default function App() {
                     key={id}
                     onClick={() => {
                       setChatId(id);
+                      setSelected(null);
+                      setInput(d.input || "");
                       setSessionPrefs(d.preferences);
                       setModel(d.model);
                       setMessages([]);
@@ -1681,14 +1735,18 @@ export default function App() {
             ) : grouped.length ? (
               grouped.map((t) => (
                 <button
-                  className={`task-row ${selected === t.id ? "selected" : ""}`}
+                  className={`task-row ${currentTask?.session_id === t.session_id ? "selected" : ""}`}
                   key={t.id}
                   onClick={() => openTask(t)}
                 >
                   <MessageSquare size={14} />
                   <span>
-                    {stored<Record<string, string>>("lp.titles", {})[t.id] ||
-                      `${t.model || "Agent"} · ${t.id.slice(-6)}`}
+                    {conversationTitle(
+                      t,
+                      tasks,
+                      stored<Record<string, string>>("lp.titles", {}),
+                      turns,
+                    )}
                     <small>{label(t.status)}</small>
                   </span>
                   <i
@@ -1699,7 +1757,7 @@ export default function App() {
             ) : (
               <div className="sidebar-empty">
                 {query ? (
-                  "没有找到匹配任务"
+                  "没有找到匹配会话"
                 ) : (
                   <>
                     你的下一件作品

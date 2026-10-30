@@ -135,7 +135,7 @@ test("text task traverses mocked iLink and adapter and replies to original peer/
   assert.match(call.body.message_id, /^m_[a-f0-9]{64}$/);
   assert.equal(f.sent[0].to_user_id, "peer-a");
   assert.equal(f.sent[0].context_token, "context-peer-a");
-  assert.match(f.sent[0].item_list[0].text_item.text, /官方任务结束\nfiles: one.txt/);
+  assert.equal(f.sent[0].item_list[0].text_item.text, 'files: one.txt');
   assert.equal(f.store.data.cursor, "next");
 });
 test("64-bit numeric message IDs remain exact and distinct through HTTP, persistence and dedupe", async (t) => {
@@ -579,4 +579,48 @@ test("a transient QR poll failure preserves the QR and only repeats the read", a
   assert.equal(f.received.filter(r => r.route.includes("get_bot_qrcode?")).length, 1);
   assert.equal(f.adapterCalls.length, 0);
   assert.equal(f.store.data.account.token, f.token);
+});
+
+test("pending task automatically returns full answer in ordered parts without resubmission", async t => {
+  const f=await fixture(t);
+  f.control.result=b=>({status:'processing',task_id:b.message_id || b.task_id,reply:''});
+  await f.bridge.handle(event('auto-result'));
+  const first=f.sent[0].item_list[0].text_item.text;
+  assert.ok(!first.includes('m_'));
+  assert.ok(!first.includes('NOT_RUN'));
+  const answer='这是一份完整的任务报告。\n'.repeat(700);
+  f.control.result=b=>({status:'completed',task_id:b.task_id,reply:answer});
+  await f.bridge.refreshPending();
+  const body=f.sent.slice(1).map(m=>m.item_list[0].text_item.text.replace(/^（\d+\/\d+）\n/, '')).join('');
+  assert.equal(body,answer);
+  assert.ok(f.sent.length>2);
+  const count=f.sent.length;
+  await f.bridge.refreshPending();
+  assert.equal(f.sent.length,count);
+  assert.equal(f.adapterCalls.filter(c=>c.route==='/messages').length,1);
+});
+
+test("uncertain result delivery is not replayed by the task watcher", async t => {
+  const f=await fixture(t,{timeout:50});
+  f.control.result=b=>({status:'processing',task_id:b.message_id || b.task_id,reply:''});
+  await f.bridge.handle(event('auto-uncertain'));
+  f.control.result=b=>({status:'completed',task_id:b.task_id,reply:'final result'});
+  f.control.sendLost=true;
+  await f.bridge.refreshPending();
+  const record=Object.values(f.store.data.messages)[0];
+  assert.equal(record.delivery,'unknown');
+  const count=f.sent.length;
+  await f.bridge.refreshPending();
+  assert.equal(f.sent.length,count);
+});
+
+test("natural status query finds only the requesting sender task and returns the answer", async t => {
+  const f=await fixture(t);
+  await f.bridge.handle(event('owner-a','peer-a','hello'));
+  const ownerTask=Object.values(f.store.data.messages)[0].taskId;
+  await f.bridge.handle(event('owner-b','peer-b','hello'));
+  f.control.result=b=>({status:'completed',task_id:b.task_id,reply:'这里是实际回答，不是收据。'});
+  await f.bridge.handle(event('query-a','peer-a','查看结果'));
+  assert.equal(f.adapterCalls.at(-1).body.task_id,ownerTask);
+  assert.equal(f.sent.at(-1).item_list[0].text_item.text,'这里是实际回答，不是收据。');
 });

@@ -219,7 +219,9 @@ class Adapter:
                       approval=self.redact(action.get('requests', [])) if status == 'pending_approval' else None)
         result = task.get('result') or {}
         text = result.get('text')
-        record['reply'] = self.redact(text)[:16000] if isinstance(text, str) else ''
+        record['reply'] = self.redact(text)[:64000] if isinstance(text, str) else ''
+        tools=task.get('tools') or []
+        record['progress']={'phase':state,'last_tool':tools[-1].get('name') if tools else None}
         record['audit'] = self.audit(task)
         record['evidence'] = self.evidence(task, record['audit'])
         self.save(record, owner)
@@ -329,7 +331,7 @@ class Adapter:
         data = {'task_id': record['external_id'], 'message_id': record['external_id'], 'status': record['status'],
                 'official_task_id': record.get('official_id'), 'session_id': record.get('session_id'),
                 'reply': record.get('reply', ''), 'decisions': record['decisions']}
-        for key in ('audit', 'approval_id', 'approval', 'upstream_status', 'decision_hold', 'evidence'):
+        for key in ('audit', 'approval_id', 'approval', 'upstream_status', 'decision_hold', 'evidence', 'progress'):
             if record.get(key) is not None:
                 data[key] = record[key]
         if record.get('error'):

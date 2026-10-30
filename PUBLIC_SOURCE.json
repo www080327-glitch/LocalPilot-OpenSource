@@ -1,5 +1,5 @@
 {
-  "upstream_source_commit": "a18599f8",
+  "upstream_source_commit": "c3568e65",
   "snapshot_date": "2026-10-30",
   "license": "Apache-2.0",
   "history": "fresh public source snapshot",
@@ -12,5 +12,5 @@
     "model weights",
     "bundled runtimes"
   ],
-  "verification": "5 local-thinking payload/discovery/persistence checks, 4 frontend checks, 1 headless model-switch flow, 1 session-history regression. No model inference."
+  "verification": "Build completed; focused mocked WeChat final-reply/multipart/no-replay checks passed. Additional checks stopped at user request. No real WeChat send test."
 }

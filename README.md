@@ -6,32 +6,77 @@
 
 LocalPilot 采用 Apache 2.0 开源协议，致力于让强大、易用且低成本的 AI Agent 走进更多人的生活。
 
-本仓库为 Apache 2.0 公开源码版，来自 RC.7 思考开关修复候选，导出源提交为 `a18599f8`。首次公开采用独立历史，未包含原私有仓库的备份、账号配置、API 密钥、模型权重、录屏或私人执行记录。
+## 下载和安装
 
-## 下载桌面版
+[下载 macOS 安装包](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases)。发布页同时提供安装说明和 SHA256 校验文件。
 
-[下载 RC.7 思考修复版（macOS Apple Silicon）](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases/tag/desktop-v5.0.1-rc.7-thinking-20261030)。安装包、安装说明和 SHA256 校验文件均在发布页。此版本为未公证的个人工程预发布候选，需 macOS 15+。
+需要 Apple Silicon Mac 和 macOS 15 或更新版本。安装包约 150 MB，包含运行 LocalPilot 所需的 Python 和组件；模型权重单独下载或导入。
 
-## 功能
+1. 退出旧版 LocalPilot，双击 PKG 安装。
+2. 从个人“应用程序”文件夹打开 LocalPilot，跟随首次向导准备服务。
+3. 选择已有本地模型，或填写 DeepSeek API 密钥。
+4. 选择工作文件夹，输入要完成的任务。
 
-- 桌面任务界面：选择工作文件夹，执行文件读取、分析和报告生成。
-- 本地模型及 DeepSeek 等云端模型接入；云端任务和文件出站按配置授权。
-- Core 负责持久任务、工具审批、执行记录与结果状态。
-- 可选微信扫码及 QQ 机器人入口，连接状态与任务权限分别管理。
-- 独立 Companion 桌面宠物模块。
+已有用户覆盖安装后，在设置里点“检查并更新内置组件”。当前安装包尚未公证；macOS 如有拦截，核对来源后按系统提示允许即可。
 
-## 项目结构
+## 可以拿它做什么
 
-- `desktop/`：React、TypeScript、Tauri macOS 桌面客户端。
-- `agent/`、`localpilot_service/`：Agent 和 Core 服务。
-- `suite/`：安装、配置及组件管理。
-- `companion/`：Companion 模块。
-- `integrations/`、`localpilot_channels/`：消息渠道与外部集成。
-- `tests/`：单元和集成检查源码。
+| 功能 | 怎么用 |
+| --- | --- |
+| 文件任务 | 让 Agent 读取 CSV、统计数据、写报告、创建或修改 Markdown 文件。结果保存在你选的工作目录。 |
+| 模型管理 | 导入已有模型、查看下载进度、选择模型并自动加载。支持思考开关的本地模型显示关闭／开启两档。 |
+| 本地与云端 | 按任务选择本地模型或 DeepSeek，也可以选择本地优先等来源策略。切换模型时分别保存各自的思考设置。 |
+| 连续对话 | 一段会话保留提问、回答和执行记录。切换权限或 Agent 模式不会清空对话。 |
+| 手机入口 | 微信扫码连接后可从手机提交任务，查看进度和实际回答；完成后自动回传，长结果分段发送。 |
+| 桌面宠物 | Companion 提供独立的轻聊和桌面入口，可在设置中开关。 |
+
+## 试一个文件任务
+
+先把一份 `sales.csv` 放进选定的工作文件夹，然后输入：
+
+```text
+读取 sales.csv，按月份统计收入，生成 report.md。
+报告里写清楚每个月的收入、变化趋势和总收入。
+完成后重新读取报告，核对数字。
+```
+
+也可以直接从简单的文件操作开始：
+
+```text
+在这个文件夹创建 项目说明.md，写一个标题和三条待办，然后读回内容。
+```
+
+执行过程中可以查看工具调用和文件结果。文件是否创建、内容是否正确，最终以实际文件和读回结果为准。
+
+## 模型与权限
+
+本地推理通过 oMLX 连接 MLX 模型。已有模型可以直接导入；是否适合当前任务还取决于模型的工具调用能力、可用内存和上下文长度。DeepSeek 通过 API 接入，密钥保存在本机私有目录。
+
+来源选项包括完全本地、本地优先、平衡、云端优先和完全云端。完全本地不会调用云端模型；使用云端模型时，允许读取的任务上下文会交给所选服务处理。
+
+| 权限模式 | 行为 |
+| --- | --- |
+| 只读 | 可以读取文件和运行只读 Shell，不修改文件。 |
+| 请求批准 | 读取文件自动执行，修改和命令执行前询问。 |
+| 工作区写入 | 自动处理工作文件夹内的文件，超出范围的修改先询问。 |
+| 完全权限 | 使用当前 macOS 用户的读写、Shell 和联网权限，APP 内不再重复询问批准。 |
+
+macOS 本身的文件访问授权仍由系统控制。命令报错会保留错误信息，Agent 可以检查现状、修正命令；执行结果确实无法确认时，不会自动重做原操作。
+
+## 在微信里使用
+
+在设置中点击“扫码连接微信”，手机扫码并确认，再发一句话完成身份绑定。之后直接发问题或任务要求即可。
+
+- 任务还在运行时会先返回进度，完成后自动发来实际回答。
+- 长报告分段发送，普通回复不附带长任务 ID 和诊断字段。
+- 发“进度”或“查看结果”可以查询最近的任务；“详细状态”可以查看执行信息。
+- 电脑需要开机，并保持 Core 和微信连接运行。退出 APP 后要继续使用，可在连接设置中开启后台运行。
+
+QQ 入口也在设置中，目前通过官方机器人接入，需要自行准备机器人账号信息。
 
 ## 开发
 
-Python 3.10+ 可安装 Core：
+Core 使用 Python 3.10+：
 
 ```sh
 python3 -m venv .venv
@@ -48,18 +93,25 @@ npm ci
 npm run dev
 ```
 
-原生桌面构建另需 macOS、Rust / Tauri 环境，以及通过 `desktop/scripts/prepare-bundled-backends.py` 准备的独立组件。公开源码不包含打包后的 Python 运行时和依赖轮子。相关安装说明见 `SERVICE_DEPLOYMENT.md` 和 `docs/development/`。
+浏览器页面用于开发预览。运行原生桌面任务还需要 Rust、Xcode 命令行工具和独立组件资源，相关入口在 `desktop/scripts/`。Core 部署见 [SERVICE_DEPLOYMENT.md](SERVICE_DEPLOYMENT.md)，具体修复与开发说明在 [docs/development](docs/development)。
 
-## 当前状态
+| 目录 | 内容 |
+| --- | --- |
+| `desktop/` | React、TypeScript 和 Tauri 桌面客户端 |
+| `agent/`、`localpilot_service/` | 任务运行、工具调用和 Core 服务 |
+| `suite/` | 安装、配置和组件管理 |
+| `integrations/`、`localpilot_channels/` | 微信、QQ 和外部集成 |
+| `companion/` | 桌面宠物模块 |
+| `tests/` | 单元与集成检查 |
 
-这是竞赛阶段的工程候选，尚未公证。RC.7 的初始化界面已精简，下载进度与模型加载状态独立显示，完整模型哈希校验移至模型管理。微信扫码后需手机确认并发送一句话，才能自动识别单个新发送者；多个发送者需在高级设置选择。没有声称微信端到端流程已验证通过。
+## 当前版本
 
-权限模式按 DSH 的文件策略与批准策略对齐；完全权限不再弹应用内批准，不扣留合法工具正文，切换权限保留会话。详见 `docs/development/desktop-permissions-v3.md`。最近权限修复完成针对性文件、Shell、上下文与界面检查，未重新执行真实模型验收。历史小样本实验不构成通用质量或费用承诺。
+目前提供的是 AIC 阶段的 RC.7 工程候选，桌面安装包仅提供 macOS Apple Silicon 版本。模型速度、输出质量和费用会随模型、机器和任务变化。项目中的历史小样本实验不能代表所有任务。
 
-输入框默认回车换行，可在设置中改为回车发送；中文输入组合确认不触发发送。已结束的 Shell 非零退出保留错误并允许检查修正，超时和丢失的执行结果仍保持 UNKNOWN。详见 `docs/development/input-and-shell-repair.md`。
+遇到问题时，请附上版本、模型名称、操作步骤和错误提示。提交日志前先检查并移除 API 密钥和个人信息。
 
-本地思考控件沿用原滑条，支持的模型仅显示关闭／开启两档；开关实际映射到推理请求。不同模型分别记住档位，避免云端设置串到本地模型。详见 `docs/development/omlx-thinking-toggle.md`。
+## 开源与致谢
 
-## License
+LocalPilot 自有代码使用 [Apache License 2.0](LICENSE)。第三方代码保留各自的许可证。
 
-LocalPilot 自有代码采用 [Apache License 2.0](LICENSE)。第三方组件保留其各自许可证及版权声明，详见 `third_party/`、`docs/licenses/`、`desktop/licenses/` 和 `DEEPSEEK_HARNESS_REUSE_LICENSES.md`。模型权重不包含在本仓库中，其使用条件由模型发布者规定。
+感谢 DeepSeek Harness 与 oMLX 等项目。复用范围见 [DeepSeek Harness 复用与许可证说明](DEEPSEEK_HARNESS_REUSE_LICENSES.md)，其余声明在 `third_party/`、`docs/licenses/` 和 `desktop/licenses/` 中。
