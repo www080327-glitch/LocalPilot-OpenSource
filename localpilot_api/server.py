@@ -167,7 +167,7 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(service.create_session(body.get("model", "localpilot")), 201)
             if path == root + "/tasks" and self.command == "POST":
                 body = self._body()
-                if set(body) - {"input", "model", "session_id", "instructions", "timeout_seconds", "max_output_tokens", "idempotency_key", "routing_preferences", "reasoning_effort", "origin_agent", "parent_task_id"}:
+                if set(body) - {"input", "model", "session_id", "instructions", "timeout_seconds", "max_output_tokens", "idempotency_key", "routing_preferences", "reasoning_effort", "origin_agent", "parent_task_id", "low_power_consent"}:
                     raise APIError("Unsupported task parameters")
                 if "input" not in body:
                     raise APIError("input is required")

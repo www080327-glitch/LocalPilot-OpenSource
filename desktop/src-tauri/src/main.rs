@@ -1197,7 +1197,51 @@ async fn submit_task(
     if serde_json::to_vec(&input).unwrap().len() as u64 > limit {
         return Err(format!("原问题超过服务的 {limit} 字节上限；未截断、未提交"));
     }
+    let mut low_power_consent = false;
+    if !cloud && !automatic && route.is_some_and(|r| r["adapter"] == "omlx") {
+        let power = std::process::Command::new("/usr/bin/pmset")
+            .arg("-g")
+            .output();
+        let low = match power {
+            Ok(value) if value.status.success() => {
+                let text = String::from_utf8_lossy(&value.stdout);
+                !text.lines().any(|line| {
+                    let fields: Vec<_> = line.split_whitespace().collect();
+                    fields.first() == Some(&"lowpowermode") && fields.get(1) == Some(&"0")
+                })
+            }
+            _ => true,
+        };
+        if low {
+            let dialog = rfd::AsyncMessageDialog::new()
+                .set_title("LocalPilot · 低电量模式")
+                .set_description("当前开启低电量模式，或暂时无法确认电源状态。运行本地模型可能增加耗电、发热，并使电脑变慢。\n\n是否允许本次任务继续？只授权这一次任务，不修改系统省电设置，后续任务会重新询问。")
+                .set_level(rfd::MessageLevel::Warning)
+                .set_buttons(rfd::MessageButtons::OkCancelCustom("本次允许".into(), "取消".into()));
+            let answer = if let Some(window) = app.get_webview_window("main") {
+                dialog.set_parent(&window).show().await
+            } else {
+                dialog.show().await
+            };
+            if answer != rfd::MessageDialogResult::Custom("本次允许".into()) {
+                return Err(fail("已取消本次发送，没有提交任务。"));
+            }
+            if !health["compatibility"]["capabilities"]
+                .as_array()
+                .is_some_and(|a| a.iter().any(|v| v == "task_low_power_consent_v1"))
+            {
+                return Err(fail(
+                    "Core 组件需更新以支持本次低电量授权，请在设置中更新内置组件。",
+                ));
+            }
+            low_power_consent = true;
+        }
+    }
     let mut body = json!({"input":input,"timeout_seconds":600});
+    if low_power_consent {
+        body["low_power_consent"] = json!(true);
+    }
+
     if !route.is_some_and(|r| r["reasoning_only"] == true) {
         body["required_capabilities"] = json!(["tool_calling"]);
     }

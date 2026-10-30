@@ -55,6 +55,7 @@ class TaskRequest:
     reasoning_effort: str | None = None
     origin_agent: str | None = None
     parent_task_id: str | None = None
+    low_power_consent: bool = False
 
 
 @dataclass
@@ -384,6 +385,9 @@ class TaskService:
 
     def create_task(self, request, *, owner_subject=None, service_metadata=None):
         self._available()
+        if type(request.low_power_consent) is not bool:
+            raise APIError("low_power_consent must be boolean")
+        service_metadata = {**(service_metadata or {}), "low_power_consent": request.low_power_consent}
         if not isinstance(request.input, str) or not request.input.strip():
             raise APIError("input must be nonempty text")
         if request.instructions is not None and not isinstance(request.instructions, str):
@@ -407,6 +411,7 @@ class TaskService:
         fingerprint = digest(dumps({f.name: ([m.to_dict() for m in request.history] if f.name == 'history'
                                             else getattr(request, f.name))
                                     for f in fields(TaskRequest) if f.name != 'idempotency_key'
+                                    and not (f.name == 'low_power_consent' and request.low_power_consent is False)
                                     and not (f.name in {'routing_preferences','reasoning_effort','origin_agent','parent_task_id'} and getattr(request,f.name) is None)})) if key is not None else None
         with self.condition:
             if self.closed:
@@ -586,12 +591,14 @@ class TaskService:
             if output_cap:
                 from dataclasses import replace
                 runtime.budgets = replace(original_budgets, max_output_tokens=output_cap)
-            manager=getattr(runtime.current_backend,"manager",None)
-            if manager and not task.stop_reason:
-                with manager.lease(task.id,consent=task.service_metadata.get("resource_consent"),client_subject=session.owner_subject,cancelled=lambda:bool(task.stop_reason),control_ticket=task.service_metadata.get("control_ticket")):
-                    result=operation()
-            else:
-                result = operation()
+            from agent.power_consent import task_consent
+            with task_consent(task.service_metadata.get("low_power_consent") is True):
+                manager=getattr(runtime.current_backend,"manager",None)
+                if manager and not task.stop_reason:
+                    with manager.lease(task.id,consent=task.service_metadata.get("resource_consent"),client_subject=session.owner_subject,cancelled=lambda:bool(task.stop_reason),control_ticket=task.service_metadata.get("control_ticket")):
+                        result=operation()
+                else:
+                    result = operation()
             with self.condition:
                 if isinstance(result, dict):
                     if result.get("status") != "ok":

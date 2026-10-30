@@ -43,8 +43,9 @@ class OMLXBackend(LocalHTTPBackend):
             except (OSError,subprocess.SubprocessError):
                 low=True
             size=model.get('size_bytes')
-            if low and (type(size) is not int or size>1500000000):
-                raise LocalBackendError('Large or unknown-size inference blocked by the low-power policy; no model request sent',retryable=False)
+            from .power_consent import allowed
+            if low and not allowed() and (type(size) is not int or size>1500000000):
+                raise LocalBackendError('当前处于低电量模式，请在发送前选择“本次允许”以运行本地模型；本次未发送模型请求。',retryable=False)
 
     def request(self, *args, **kwargs):
         self._admit()
