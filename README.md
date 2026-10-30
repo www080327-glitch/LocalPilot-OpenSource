@@ -1,14 +1,16 @@
 # LocalPilot
 
 随着 AI Agent 的发展，越来越多的人希望让 AI 真正帮助自己完成任务，但高昂的云端 API 费用让许多人望而却步。虽然本地模型可以降低使用成本，复杂的部署流程、模型与 Agent 的兼容问题，以及长上下文带来的推理延迟，仍让普通用户难以入门。
+
 为此，我们开发了 LocalPilot，一款面向大众的本地与云端协同 AI Agent。它将模型部署、管理和任务执行整合在一起，让用户无需复杂配置，就能轻松使用本地智能体。同时，我们针对 DeepSeek、Qwen 等模型优化了任务执行与长上下文缓存，并通过智能路由，让本地模型承担更多任务，在保持任务完成能力的同时降低云端费用。
+
 LocalPilot 采用 Apache 2.0 开源协议，致力于让强大、易用且低成本的 AI Agent 走进更多人的生活。
 
 本仓库为 Apache 2.0 公开源码版，来自 RC.7 思考开关修复候选，导出源提交为 `a18599f8`。首次公开采用独立历史，未包含原私有仓库的备份、账号配置、API 密钥、模型权重、录屏或私人执行记录。
 
 ## 下载桌面版
 
-[下载 RC.7 交互修复版（macOS Apple Silicon）](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases/tag/desktop-v5.0.1-rc.7-input-20261030)。安装包、安装说明和 SHA256 校验文件均在发布页。此版本为未公证的个人工程预发布候选，需 macOS 15+。
+[下载 RC.7 思考修复版（macOS Apple Silicon）](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases/tag/desktop-v5.0.1-rc.7-thinking-20261030)。安装包、安装说明和 SHA256 校验文件均在发布页。此版本为未公证的个人工程预发布候选，需 macOS 15+。
 
 ## 功能
 
