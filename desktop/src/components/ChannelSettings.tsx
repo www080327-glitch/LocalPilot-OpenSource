@@ -74,6 +74,18 @@ export function ChannelSettings({
 }) {
   const [quickConnect, setQuickConnect] = useState(false);
   const quickPhase = useRef("");
+  const [quickStep, setQuickStep] = useState("");
+  const [waitSeconds, setWaitSeconds] = useState(0);
+  function phase(value: string) {
+    quickPhase.current = value;
+    setQuickStep(value);
+    setWaitSeconds(0);
+  }
+  useEffect(() => {
+    if (!quickConnect || !quickStep) return;
+    const timer = setInterval(() => setWaitSeconds((v) => v + 1), 1000);
+    return () => clearInterval(timer);
+  }, [quickConnect, quickStep]);
   const baselinePeers = useRef<string[]>([]);
   const [states, setStates] = useState<Record<string, Json>>({});
   const [selected, setSelected] = useState<Kind | null>(null);
@@ -185,7 +197,7 @@ export function ChannelSettings({
   async function connectWechat() {
     setSelected("wechat");
     setQuickConnect(true);
-    quickPhase.current = "preparing";
+    phase("preparing");
     baselinePeers.current = (states.wechat?.senders || []).map(
       (s: Json) => s.id,
     );
@@ -197,7 +209,7 @@ export function ChannelSettings({
           { confirmed: true },
         ))
       ) {
-        quickPhase.current = "";
+        phase("");
         return;
       }
     }
@@ -205,12 +217,28 @@ export function ChannelSettings({
     // Stop is explicit here as part of the user's reconnect action.
     if (states.wechat?.processes?.wechat) {
       if (!(await perform("wechat", "stop", { confirmed: true }))) {
-        quickPhase.current = "";
+        phase("");
         return;
       }
     }
+    if (states.wechat?.account) {
+      const resumed = await perform(
+        "wechat",
+        states.wechat.configured ? "start" : "discover",
+        { confirmed: true },
+        "已恢复消息接收，正在检查连接。",
+      );
+      phase(
+        resumed
+          ? states.wechat.configured
+            ? "checking"
+            : "discovery"
+          : "failed",
+      );
+      return;
+    }
     const result = await perform("wechat", "login", { confirmed: true });
-    quickPhase.current = result ? "login" : "";
+    phase(result ? "login" : "failed");
   }
   useEffect(() => {
     const current = states.wechat;
@@ -220,13 +248,15 @@ export function ChannelSettings({
       quickPhase.current === "login" &&
       ["logged_in", "awaiting_senders"].includes(current.status)
     ) {
-      quickPhase.current = current.configured ? "starting" : "discovery";
+      phase("starting");
       void (async () => {
         if (
           current.processes?.wechat &&
           !(await perform("wechat", "stop", { confirmed: true }))
-        )
+        ) {
+          phase("failed");
           return;
+        }
         if (current.configured) {
           await perform(
             "wechat",
@@ -234,16 +264,28 @@ export function ChannelSettings({
             { confirmed: true },
             "正在连接微信。",
           );
-          quickPhase.current = "";
+          phase("");
           return;
         }
-        await perform(
+        const discovered = await perform(
           "wechat",
           "discover",
           { confirmed: true },
-          "微信已登录。请在手机给机器人发一句话，即可自动完成连接。",
+          "微信已登录，正在接收消息。",
         );
+        phase(discovered ? "discovery" : "failed");
       })();
+    }
+    if (
+      ["discovery", "checking"].includes(quickStep) &&
+      !current.processes?.wechat &&
+      ["stopped", "cancelled", "fault", "auth_expired"].includes(current.status)
+    ) {
+      phase("failed");
+      setNotice(
+        "微信接收进程已停止，尚未连接成功。点击继续连接；无需重复扫码。",
+      );
+      return;
     }
     const candidates = (current.senders || []).filter(
       (s: Json) => !baselinePeers.current.includes(s.id),
@@ -255,7 +297,7 @@ export function ChannelSettings({
       route &&
       (!route.cloud || allowCloud)
     ) {
-      quickPhase.current = "binding";
+      phase("binding");
       void (async () => {
         const result = await perform("wechat", "configure", {
           senders: [candidates[0].id],
@@ -264,17 +306,18 @@ export function ChannelSettings({
           allow_cloud: !!route.cloud,
           confirmed: true,
         });
-        if (result)
-          await perform(
+        const started =
+          result &&
+          (await perform(
             "wechat",
             "start",
             { confirmed: true },
             "连接已启动，正在检查状态。",
-          );
-        quickPhase.current = "";
+          ));
+        phase(started ? "checking" : "failed");
       })();
     }
-  }, [states, quickConnect, busy, model, allowCloud]);
+  }, [states, quickConnect, busy, model, allowCloud, quickStep]);
   useEffect(() => {
     if (!model && states.wechat?.models?.length) {
       const routes = states.wechat.models;
@@ -347,27 +390,75 @@ export function ChannelSettings({
             ? "正在准备…"
             : states.wechat?.connected
               ? "重新扫码"
-              : "扫码连接微信"}
+              : states.wechat?.account
+                ? "继续连接微信"
+                : "扫码连接微信"}
         </button>
         {qr && selected === "wechat" && (
           <img className="channel-qr" src={qr} alt="微信登录二维码" />
         )}
-        <p role="status">
-          {channelLabels[states.wechat?.status] || "点击上方按钮获取二维码"}
-        </p>
+        <div
+          className={`wechat-feedback ${states.wechat?.connected ? "connected" : ""}`}
+          role="status"
+          aria-live="polite"
+        >
+          <strong>
+            {states.wechat?.connected
+              ? "✓ 微信已连接，可以从手机提交任务"
+              : "尚未连接完成"}
+          </strong>
+          <p>
+            {states.wechat?.connected
+              ? "平台登录、身份绑定与服务检查均已完成。"
+              : quickStep === "failed"
+                ? "连接中断，请查看下方原因。没有自动重发消息。"
+                : quickStep === "binding"
+                  ? "已收到手机消息，正在绑定身份…"
+                  : quickStep === "starting"
+                    ? "已登录，正在启动消息接收…"
+                    : quickStep === "checking"
+                      ? "已绑定身份，正在检查服务连接…"
+                      : quickStep === "discovery"
+                        ? `扫码登录已完成；等待收到手机消息（${waitSeconds} 秒）。`
+                        : channelLabels[states.wechat?.status] ||
+                          "点击上方按钮获取二维码"}
+          </p>
+          {quickStep === "discovery" && waitSeconds >= 30 && (
+            <p>
+              仍未收到消息，请确认发给本次扫码登录的机器人。若已经发送，可点“检查连接”；不需要重新扫码。
+            </p>
+          )}
+          {quickStep === "discovery" && !model && (
+            <p>请选择一个模型，收到消息后才能完成绑定。</p>
+          )}
+          {quickStep === "discovery" &&
+            states.wechat?.models?.find((m: Json) => m.id === model)?.cloud &&
+            !allowCloud && (
+              <p>已选择云端模型，请勾选上方“使用此云端模型”后继续绑定。</p>
+            )}
+          {quickConnect && !states.wechat?.connected && (
+            <button
+              className="secondary"
+              disabled={!!busy}
+              onClick={() => void refresh()}
+            >
+              检查连接
+            </button>
+          )}
+        </div>
         {quickConnect && (
           <button
             className="text-btn"
             onClick={() => {
               setQuickConnect(false);
-              quickPhase.current = "";
+              phase("");
               void close();
             }}
           >
             取消连接
           </button>
         )}
-        {quickConnect && quickPhase.current === "discovery" && (
+        {quickConnect && quickStep === "discovery" && (
           <p>
             请从手机给机器人发一句话。发现一个新身份后将自动连接；文件修改等权限可稍后设置。
           </p>

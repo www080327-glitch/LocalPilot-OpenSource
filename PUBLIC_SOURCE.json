@@ -1,5 +1,5 @@
 {
-  "upstream_source_commit": "73b33b42",
+  "upstream_source_commit": "70d99d6a",
   "snapshot_date": "2026-10-30",
   "license": "Apache-2.0",
   "history": "fresh public source snapshot",
@@ -12,5 +12,5 @@
     "model weights",
     "bundled runtimes"
   ],
-  "verification": "TypeScript/native build and four focused auto-load unit checks; actual model loading not rerun"
+  "verification": "Build checks; two focused mocked QR/discovery tests. Real phone connection not confirmed."
 }

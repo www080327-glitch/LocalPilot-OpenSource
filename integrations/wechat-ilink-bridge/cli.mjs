@@ -43,12 +43,14 @@ if (!["login", "run", "info"].includes(command) || process.argv.length !== 3) {
         approvers = JSON.parse(process.env.LOCALPILOT_WECHAT_APPROVERS || "[]");
       }
       catch { throw new BridgeError("invalid_sender_json"); }
-      // Authenticated read-only platform probe; never replays an old task.
-      await ilink.updates(store.data.account, store.data.cursor, controller.signal);
-      progress(store, "authenticated");
-      await new Bridge(store, ilink, { key: process.env.LOCALPILOT_MESSAGE_KEY, allowed,
+      const bridge = new Bridge(store, ilink, { key: process.env.LOCALPILOT_MESSAGE_KEY, allowed,
         approvalKey: process.env.LOCALPILOT_APPROVAL_KEY, approvers,
-        adapterUrl: process.env.LOCALPILOT_MESSAGE_ADAPTER_URL }).run(controller.signal);
+        adapterUrl: process.env.LOCALPILOT_MESSAGE_ADAPTER_URL });
+      // Process the first authenticated batch too: discarding this response can
+      // swallow the exact first message needed for sender discovery.
+      await bridge.poll(controller.signal);
+      progress(store, "authenticated");
+      await bridge.run(controller.signal);
     }
   } catch (error) {
     progress(store, controller.signal.aborted ? "cancelled" : error instanceof BridgeError && error.code === "qr_expired_run_login_again" ? "expired" : error instanceof BridgeError && error.code === "ilink_login_expired" ? "auth_expired" : "fault");

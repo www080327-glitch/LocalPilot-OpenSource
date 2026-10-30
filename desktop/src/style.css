@@ -3778,3 +3778,6 @@ html[data-pet-part="character"] button:active:not(:disabled) {
 .setup-assistant .advanced-settings { margin: 12px 0; }
 
 .model-indicator.unavailable { background: var(--muted); }
+
+.wechat-feedback { padding: 16px; margin: 16px 0; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+.wechat-feedback.connected { border-color: var(--mint); }
