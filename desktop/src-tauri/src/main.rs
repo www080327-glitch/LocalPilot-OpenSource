@@ -1166,7 +1166,23 @@ async fn submit_task(
     } else {
         preferences::is_cloud(route.unwrap())
     };
-    if cloud && !cloud_consent {
+    let desktop_full = if let Some(ref sid) = session_id {
+        let session = request(
+            &p,
+            "GET",
+            &format!("/localpilot/v1/sessions/{sid}"),
+            None,
+            None,
+        )
+        .await?;
+        session["desktop_options"]["permission_mode"] == "full"
+            && health["compatibility"]["capabilities"]
+                .as_array()
+                .is_some_and(|a| a.iter().any(|v| v == "desktop_permissions_v3"))
+    } else {
+        false
+    };
+    if cloud && !cloud_consent && !desktop_full {
         return Err(fail("Cloud Egress 未授权，未提交任务"));
     }
     if cloud && route.is_some_and(|r| r["reasoning_only"] == true) && session_id.is_some() {
@@ -1197,8 +1213,8 @@ async fn submit_task(
     if serde_json::to_vec(&input).unwrap().len() as u64 > limit {
         return Err(format!("原问题超过服务的 {limit} 字节上限；未截断、未提交"));
     }
-    let mut low_power_consent = false;
-    if !cloud && !automatic && route.is_some_and(|r| r["adapter"] == "omlx") {
+    let mut low_power_consent = desktop_full;
+    if !desktop_full && !cloud && !automatic && route.is_some_and(|r| r["adapter"] == "omlx") {
         let power = std::process::Command::new("/usr/bin/pmset")
             .arg("-g")
             .output();
