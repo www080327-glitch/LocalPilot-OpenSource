@@ -36,7 +36,7 @@ SHELL_DEFAULT_TIMEOUT = 120
 SHELL_MAX_TIMEOUT = 3600
 
 
-def shell(workspace_root, command, timeout=SHELL_DEFAULT_TIMEOUT, access='workspace', *, mode, private_roots=()):
+def shell(workspace_root, command, timeout=SHELL_DEFAULT_TIMEOUT, access='workspace', *, mode, private_roots=(), cancel_event=None):
     if sys.platform!='darwin':raise ValueError('This host Shell requires macOS Seatbelt')
     if not isinstance(command,str) or not 1<=len(command)<=16000 or '\0' in command:raise ValueError('Invalid shell command')
     if isinstance(timeout,bool) or not isinstance(timeout,(float,int)) or not math.isfinite(timeout) or not 0<timeout<=SHELL_MAX_TIMEOUT:raise ValueError(f'Shell timeout must be positive and at most {SHELL_MAX_TIMEOUT} seconds')
@@ -50,27 +50,25 @@ def shell(workspace_root, command, timeout=SHELL_DEFAULT_TIMEOUT, access='worksp
     p=subprocess.Popen(launcher,
         cwd=workspace_root,env=env,
         stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,stderr=subprocess.PIPE,start_new_session=True)
-    output={'stdout':bytearray(),'stderr':bytearray()};limit=32000;deadline=time.monotonic()+timeout;timed_out=False;truncated=False
+    output={'stdout':bytearray(),'stderr':bytearray()};limit=32000;deadline=time.monotonic()+timeout;timed_out=False;cancelled=False;truncated=False
     try:
         with selectors.DefaultSelector() as selector:
             for key,stream in [('stdout',p.stdout),('stderr',p.stderr)]:
                 os.set_blocking(stream.fileno(),False);selector.register(stream,selectors.EVENT_READ,key)
-            while selector.get_map():
+            while selector.get_map() or p.poll() is None:
+                if cancel_event is not None and cancel_event.is_set():cancelled=True;break
                 if time.monotonic()>=deadline:timed_out=True;break
                 for key,_ in selector.select(.05):
                     chunk=os.read(key.fileobj.fileno(),4096)
                     if not chunk:selector.unregister(key.fileobj);continue
                     room=max(0,limit-sum(map(len,output.values())));output[key.data].extend(chunk[:room]);truncated|=len(chunk)>room
-            if not timed_out:
-                try:p.wait(timeout=max(.001,deadline-time.monotonic()))
-                except subprocess.TimeoutExpired:timed_out=True
     finally:
         try:os.killpg(p.pid,signal.SIGKILL)
         except ProcessLookupError:pass
         p.wait();p.stdout.close();p.stderr.close()
-    return {'status':'timeout' if timed_out else 'ok' if p.returncode==0 else 'nonzero_exit',
+    return {'status':'cancelled' if cancelled else 'timeout' if timed_out else 'ok' if p.returncode==0 else 'nonzero_exit',
             'exit_code':p.returncode,**{k:v.decode(errors='replace') for k,v in output.items()},'truncated':truncated,
-            'action_sent':True,'process_completed':not timed_out and p.returncode>=0,'partial_effects_possible':not timed_out and p.returncode>0,'action_may_have_applied':timed_out or p.returncode<0,'replay_allowed':False,
+            'action_sent':True,'process_completed':not (timed_out or cancelled) and p.returncode>=0,'partial_effects_possible':not (timed_out or cancelled) and p.returncode>0,'action_may_have_applied':timed_out or cancelled or p.returncode<0,'replay_allowed':False,
             'verification':'NOT_RUN','network':'available','sandbox_mode':effective}
 
 

@@ -169,7 +169,11 @@ class ToolRegistry:
                 result, self.last_read_receipt = self.read_cache.read(
                     self.workspace_root, arguments["path"], function, self._bound_result, self._read_source)
             else:
-                result = function(workspace_root=self.workspace_root, **arguments)
+                from .host_tools import qualified_shell
+                if qualified_shell(self, name):
+                    result = function(workspace_root=self.workspace_root, cancel_event=getattr(self, 'plugin_cancel_event', None), **arguments)
+                else:
+                    result = function(workspace_root=self.workspace_root, **arguments)
         except Exception as error:
             builtin = function.func if isinstance(function, partial) else function
             if name == 'apply_patch' and builtin is apply_patch and not self.gateway._patch_effect_started:

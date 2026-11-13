@@ -45,7 +45,7 @@ class HarnessContextControls(unittest.TestCase):
         self.assertEqual(len(original['current_goal']),len('critical '*2000))
 
     def test_unknown_is_never_an_optional_completed_row(self):
-        original=fixture();original['completed_steps']=[{**original['failed_unknown_actions'][0],'body':'x'*10000}]
+        original=fixture();original['completed_steps']=[{**original['failed_unknown_actions'][0],'body':'x'*20000}]
         self.assertIsNone(trim_optional_state(original))
         with self.assertRaises(ContextTooSmall):transfer_with_optional_projection([],[],5000,1000,working_state=original,enabled=True)
 

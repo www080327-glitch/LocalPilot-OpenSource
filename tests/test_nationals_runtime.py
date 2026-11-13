@@ -3,6 +3,8 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from types import SimpleNamespace
 import sys
+import threading
+import time
 import unittest
 from unittest.mock import patch
 
@@ -210,6 +212,27 @@ class CanonicalScopeTests(unittest.TestCase):
 
 
 class ShellBudgetTests(unittest.TestCase):
+    def test_registry_cancellation_terminates_process_and_preserves_uncertainty(self):
+        with TemporaryDirectory() as tmp:
+            registry = create_default_registry(tmp, permission_mode='full-permission')
+            configure(registry, 'full', revision=3)
+            register(registry, 'full', ())
+            registry.plugin_cancel_event = threading.Event()
+            result = []
+            worker = threading.Thread(target=lambda: result.append(registry.call('shell', {
+                'command': 'printf started > started.txt; exec >/dev/null 2>&1; sleep 30', 'timeout': 60})))
+            worker.start()
+            deadline = time.monotonic() + 5
+            while not Path(tmp, 'started.txt').exists() and time.monotonic() < deadline:
+                time.sleep(.01)
+            self.assertTrue(Path(tmp, 'started.txt').exists())
+            registry.plugin_cancel_event.set()
+            worker.join(3)
+            self.assertFalse(worker.is_alive())
+            self.assertEqual(result[0]['status'], 'cancelled')
+            self.assertTrue(result[0]['action_may_have_applied'])
+            self.assertFalse(result[0]['replay_allowed'])
+
     def test_long_timeout_configuration_runs_real_bash(self):
         with TemporaryDirectory() as tmp, patch('agent.host_tools.sys.platform', 'darwin'):
             result = shell(tmp, 'printf ready > output.txt; cat output.txt', timeout=90, mode='full')

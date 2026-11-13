@@ -3,6 +3,8 @@ import json
 import os
 from pathlib import Path
 import tempfile
+import threading
+import time
 import unittest
 from unittest.mock import patch
 from agent.registry import create_default_registry
@@ -99,6 +101,33 @@ class HostToolTests(unittest.TestCase):
         result=s.run_turn('Create the public fixture')
         self.assertNotEqual(result.status,'completed');self.assertEqual((self.work/'shell.txt').read_text(),'partial')
         self.assertEqual(recovery_class(s),'UNKNOWN_BLOCKED')
+    def test_cancel_running_shell_retains_unknown_receipt(self):
+        from agent.hybrid import HybridPolicy,CloudEgressPolicy
+        from agent.persistence import recovery_class
+        b=Backend(answer('',call('shell',{'command':'printf partial > shell.txt; exec >/dev/null 2>&1; sleep 30'})))
+        s=AgentSession(self.registry('full',revision=3),cloud_backend=b,policy='cloud-only',hybrid_policy=HybridPolicy(CloudEgressPolicy('CLOUD_ALLOWED',())))
+        worker=threading.Thread(target=lambda:s.run_turn('Run the fixture'))
+        worker.start();deadline=time.monotonic()+5
+        while not (self.work/'shell.txt').exists() and time.monotonic()<deadline:time.sleep(.01)
+        self.assertTrue((self.work/'shell.txt').exists())
+        s.request_cancel();worker.join(3)
+        self.assertFalse(worker.is_alive())
+        receipt=next(r for r in s.tool_history if r['name']=='shell')
+        self.assertEqual(receipt['payload']['result']['status'],'cancelled')
+        self.assertEqual(receipt['side_effect_status'],'unknown')
+        self.assertEqual(recovery_class(s),'UNKNOWN_BLOCKED')
+        s.close()
+
+    def test_observed_nonzero_shell_does_not_become_unknown(self):
+        from agent.hybrid import HybridPolicy,CloudEgressPolicy
+        from agent.persistence import recovery_class
+        b=Backend(answer('',call('shell',{'command':'exit 3'})),answer('The command failed.'))
+        s=AgentSession(self.registry('full',revision=3),cloud_backend=b,policy='cloud-only',hybrid_policy=HybridPolicy(CloudEgressPolicy('CLOUD_ALLOWED',())))
+        s.run_turn('Run the fixture')
+        receipt=next(r for r in s.tool_history if r['name']=='shell')
+        self.assertEqual(receipt['side_effect_status'],'failed_process')
+        self.assertNotEqual(recovery_class(s),'UNKNOWN_BLOCKED')
+        s.close()
     def test_outside_read_keeps_version_receipt_without_cloud_body_disclosure(self):
         from agent.hybrid import HybridPolicy,CloudEgressPolicy
         from agent.finalization import FinalizationPolicy

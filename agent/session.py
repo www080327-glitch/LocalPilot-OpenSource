@@ -1913,7 +1913,7 @@ class AgentSession:
 
     @staticmethod
     def _payload(result):
-        unsuccessful = isinstance(result, dict) and result.get("status") in {"denied", "unavailable", "approval_required", "timeout", "nonzero_exit", "error", "unknown", "UNKNOWN", "blocked"}
+        unsuccessful = isinstance(result, dict) and result.get("status") in {"denied", "unavailable", "approval_required", "timeout", "cancelled", "nonzero_exit", "error", "unknown", "UNKNOWN", "blocked"}
         payload = {"ok": not unsuccessful, "result": result}
         if unsuccessful:
             payload["error"] = {"type": result["status"], "message": "Tool operation did not complete successfully."}
