@@ -24,12 +24,20 @@
 11. **SSE 恢复**：显式从 `after=0` 重放不再被 Tauri 上次持久游标跳过；前端对累计正文按事件 sequence 去重，并将 TextDelta 仅保留在正文累计状态、不再重复保留在事件时间线；快照子代理可在缺失早期 SSE 时恢复。事件服务端保留窗口和原生 GUI 重启仍需实机测量。
 12. **减法式前端提取**：新增可独立测试的协同数据投影、项目组织 hook/分组函数、模型可选路由筛选；不引入新状态管理框架。
 
+## 续接修复：流式恢复与选择模型（本轮追加）
+
+- **协同统计在运行中不读取过期快照**：`collaboration.ts` 优先使用当前 Task 的真实 SSE 用量事件，还覆盖 `SubagentEvent` 内嵌的 `HybridModelUsage`；任务完成后才采用其最终持久汇总。避免运行中把旧快照重复记为新增调用。回归：`desktop/tests/collaboration.test.ts`。
+- **本地模型加载失败不丢对话**：`App.tsx` 的模型选择先完成本地加载/刷新，成功后才执行独立新会话切换。加载失败仍留在原模型和原消息页，用户可去模型库处理；正常跨模型迁移历史依然未实现。
+- **模型来源图标修正**：DeepSeek Native、远端 OpenAI/vLLM 主模型与 DeepSeek 一致显示云端图标，本地协同主模型仍显示本地。
+- **流式文本恢复补齐**：`TaskService._snapshot` 在运行中公开当前 `streamed_text` 给已授权的任务查看者；`replyText` 在 SSE 暂时缺失时回退到该快照；当 SSE 已超保留窗口并收到 `reconciled` 快照时，前端用该服务端完整正文和 `last_event_id` 重建累计状态，再继续读取新增事件。避免只显示 SSE 末尾片段；不重放任何工具。
+- **对应真实实现测试**：`desktop/tests/domain.test.ts` 测正文回退优先级；`tests/test_runtime_api.py` 使用已有 `StreamBackend` 的真实 TaskService/HTTP 路径检查执行中的快照文字。测试文件已提交但因当前无可访问的仓库执行环境而 **NOT_RUN**。
+
 ## 待执行的真实回归（**本次追加工作未运行**）
 
 可从仓库根目录按既有流程执行：
 
 ```bash
-python3 -m unittest tests.test_nationals_runtime tests.test_context_v5 tests.test_harness_context tests.test_v49_context_cache tests.test_vllm_cooperative tests.test_cloud_local_partners
+python3 -m unittest tests.test_nationals_runtime tests.test_context_v5 tests.test_harness_context tests.test_v49_context_cache tests.test_vllm_cooperative tests.test_cloud_local_partners tests.test_runtime_api
 cd desktop
 npm test
 npm run build
