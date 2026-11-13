@@ -1283,9 +1283,11 @@ async fn submit_task(
             .flatten()
         {
             if let Ok(rec) = private_json(&file.path()) {
-                if pending_in_scope(&rec, &p.origin, &health["client_subject"]) {
+                if pending_in_scope(&rec, &p.origin, &health["client_subject"])
+                    && rec["body"]["session_id"] == body["session_id"]
+                {
                     return Err(fail(
-                        "存在提交状态未确认的原请求。请恢复原请求，禁止另建重复任务。",
+                        "本会话仍有提交状态未确认的原请求；请恢复原请求，避免重复执行。",
                     ));
                 }
             }
@@ -1327,7 +1329,7 @@ async fn pending_submissions(
     {
         if let Ok(v) = private_json(&f.path()) {
             if pending_in_scope(&v, &profile.origin, &json!(subject)) {
-                list.push(json!({"key":v["key"],"input":v["body"]["input"],"origin":v["origin"],"subject":subject}));
+                list.push(json!({"key":v["key"],"input":v["body"]["input"],"session_id":v["body"]["session_id"],"origin":v["origin"],"subject":subject}));
             }
         }
     }
