@@ -1208,9 +1208,12 @@ export default function App() {
           (model === "__auto__" || currentTask?.model === model)
             ? currentTask?.session_id || null
             : null;
-        if (scopedPending.length > 0)
+        if (
+          useSession &&
+          scopedPending.some((v) => v.session_id === useSession)
+        )
           throw new Error(
-            "有提交状态未确认的原请求，请先使用恢复原请求，避免创建重复任务。",
+            "当前会话有未确认的原请求。请先恢复它；其它独立会话仍可使用。",
           );
         let effectiveModel = model;
         const caps = health?.compatibility?.capabilities || [];
@@ -1889,7 +1892,7 @@ export default function App() {
           <div className="pending-banner">
             <ShieldAlert size={15} />
             <span>
-              {scopedPending.length} 个原请求尚未确认。恢复会复用原键和原请求。
+              {scopedPending.length} 个原请求尚未确认；可恢复原请求，其它独立会话可继续。
             </span>
             <button
               className="text-btn"
