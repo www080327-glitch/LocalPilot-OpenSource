@@ -30,6 +30,29 @@ describe("collaboration is evidence-driven", () => {
       localPercent: 60, cloudPercent: 40 });
   });
 
+  it("includes live child usage and does not show a stale checkpoint twice", () => {
+    const checkpoint = task("task-2", { runtime_metrics: {
+      hybrid: { by_backend: { localA: { kind: "local", calls: 9 } } },
+    } }, "running");
+    const e = [
+      event(1, "HybridModelUsage", { usage: { kind: "cloud" } }),
+      event(2, "SubagentEvent", { id: "1.1", event: {
+        type: "HybridModelUsage", data: { usage: { kind: "local" } },
+      } }),
+      event(3, "SubagentEvent", { id: "1.1", event: {
+        type: "ModelRequestStarted", data: { model: "local" },
+      } }),
+    ];
+    expect(observedModelShare([checkpoint], checkpoint, e)).toMatchObject({
+      local: 1, cloud: 1, observed: 2, unknown: 0,
+      localPercent: 50, cloudPercent: 50,
+    });
+    const completed = { ...checkpoint, status: "completed", quiescent: true };
+    expect(observedModelShare([completed], completed, e)).toMatchObject({
+      local: 9, cloud: 0, observed: 9,
+    });
+  });
+
   it("keeps unclassified direct model calls out of the local/cloud percentages", () => {
     const direct = task("task-1", { model_calls: [{}, {}] });
     const share = observedModelShare([direct], direct, []);
