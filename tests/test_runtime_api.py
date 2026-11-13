@@ -167,6 +167,21 @@ class APITests(unittest.TestCase):
         self.assertEqual(collected[-1]["data"]["response"]["output"][0]["id"],
                          next(f["data"]["item"]["id"] for f in collected if f["event"] == "response.output_item.added"))
 
+    def test_running_snapshot_exposes_partial_text_without_replaying_sse(self):
+        self.backend = StreamBackend()
+        task = self.responses("reconnect", background=True)
+        self.assertTrue(self.backend.first.wait(2))
+        try:
+            current = self.service.task_snapshot(task["id"])
+            self.assertEqual(current["status"], "running")
+            self.assertEqual(current["streamed_text"], "hello ")
+            self.assertFalse(current["quiescent"])
+        finally:
+            self.backend.release.set()
+        completed = self.task(task)
+        self.assertEqual(completed["streamed_text"], "")
+        self.assertEqual(completed["result"]["text"], "hello 世界")
+
     def test_chat_stateless_history_and_persistent_stream(self):
         self.backend = Backend(answer("first"), answer("second"))
         first = self.client.request("/v1/chat/completions", {"messages": [
