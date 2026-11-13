@@ -5,7 +5,8 @@ import tempfile
 import unittest
 
 from agent.backends import Message, ToolCall
-from agent.context import ContextTooSmall, context_units
+from agent.context import ContextTooSmall
+from agent.context_budget import context_tokens
 from agent.context_v5 import transfer
 from agent.engine_v5 import EngineV5Policy
 from agent.persistence import snapshot_runtime, restore_runtime, PersistenceError, configuration
@@ -24,7 +25,7 @@ class ContextV5Tests(unittest.TestCase):
         before = deepcopy(history)
         view, info = transfer(history, [], 2300, 500, working_state=state)
         self.assertEqual(history, before)
-        self.assertLessEqual(context_units(view, []), 1800)
+        self.assertLessEqual(context_tokens(view, []), 1800)
         self.assertEqual([m.role for m in view], ['system', 'user', 'assistant', 'tool', 'user'])
         snapshot = json.loads(view[-1].content.split('\n',1)[1])
         for k,v in state.items(): self.assertEqual(snapshot[k], v)
