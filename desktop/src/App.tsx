@@ -3,6 +3,7 @@ import { compatibleEffort, thinkingKey } from "./modelThinking";
 import { shouldSubmitEnter, type EnterBehavior } from "./inputBehavior";
 import { ensureLocalModelLoaded } from "./modelLoading";
 import { observedModelShare, subagentTraces } from "./collaboration";
+import { classifyConversations, useConversationProjects } from "./projects";
 import { latestTask, errorAfterHealthyConnection } from "./domain";
 import {
   permissionModes,
@@ -132,16 +133,6 @@ import { Effort, demoEfforts } from "./components/Effort";
 import { Resizer } from "./components/Resizer";
 import { Modal } from "./components/Modal";
 const DeveloperTools = lazy(() => import("./components/DeveloperTools"));
-interface ProjectOrganization {
-  projects: { id: string; name: string; pinned: boolean }[];
-  assignments: Record<string, string>;
-  pinnedSessions: string[];
-}
-const emptyOrganization: ProjectOrganization = {
-  projects: [],
-  assignments: {},
-  pinnedSessions: [],
-};
 const emptyProfile: NativeProfile = {
   home: "",
   cli: "",
@@ -353,62 +344,15 @@ export default function App() {
     ),
     [preferenceSaving, setPreferenceSaving] = useState(false),
     [preferenceUnsaved, setPreferenceUnsaved] = useState(false),
-    [organizations, setOrganizations] = useState<Record<string, ProjectOrganization>>(
-      () => stored("lp.projectOrganization.v1", {}),
-    ),
     [glass, setGlass] = useState(stored("lp.glass", true)),
     [glassStatus, setGlassStatus] = useState("等待原生外观检查");
   const persistQueue = useRef(Promise.resolve()),
     preferenceWriteVersion = useRef(0),
     restoreDone = useRef(false);
   const scope = `${profile.home}|${profile.origin}|${health?.client_subject || ""}`;
-  const organization = organizations[scope] || emptyOrganization;
+  const { organization, createProject, renameProject, toggleProjectPinned,
+    toggleConversationPinned, assignConversation } = useConversationProjects(scope);
   const supportedRouting = routingSupported(health, routingCaps);
-  useEffect(() => {
-    localStorage.setItem("lp.projectOrganization.v1", JSON.stringify(organizations));
-  }, [organizations]);
-  function updateOrganization(change: (previous: ProjectOrganization) => ProjectOrganization) {
-    setOrganizations((all) => ({
-      ...all,
-      [scope]: change(all[scope] || emptyOrganization),
-    }));
-  }
-  function createProject() {
-    const name = window.prompt("新项目名称（可将会话归入该项目）")?.trim();
-    if (!name) return;
-    updateOrganization((old) => ({
-      ...old,
-      projects: [...old.projects, { id: crypto.randomUUID(), name: name.slice(0, 60), pinned: false }],
-    }));
-  }
-  function toggleProjectPinned(id: string) {
-    updateOrganization((old) => ({
-      ...old, projects: old.projects.map((project) =>
-        project.id === id ? { ...project, pinned: !project.pinned } : project),
-    }));
-  }
-  function renameProject(id: string, currentName: string) {
-    const name = window.prompt("重命名项目", currentName)?.trim();
-    if (!name) return;
-    updateOrganization((old) => ({
-      ...old, projects: old.projects.map((project) =>
-        project.id === id ? { ...project, name: name.slice(0, 60) } : project),
-    }));
-  }
-  function toggleConversationPinned(id: string) {
-    updateOrganization((old) => ({
-      ...old,
-      pinnedSessions: old.pinnedSessions.includes(id)
-        ? old.pinnedSessions.filter((session) => session !== id)
-        : [...old.pinnedSessions, id],
-    }));
-  }
-  function assignConversation(id: string, projectId: string) {
-    updateOrganization((old) => ({
-      ...old,
-      assignments: { ...old.assignments, [id]: projectId },
-    }));
-  }
   const effectiveTheme =
     theme === "system" ? (systemDark ? "dark" : "light") : theme;
   useEffect(() => {
@@ -1719,16 +1663,8 @@ export default function App() {
   const grouped = latestConversations(tasks).filter((t) =>
     matchedSessions.has(t.session_id),
   );
-  const pinnedIds = new Set(organization.pinnedSessions);
-  const pinnedConversations = grouped.filter((t) => pinnedIds.has(t.session_id));
-  const otherConversations = grouped.filter((t) => !pinnedIds.has(t.session_id));
-  const orderedProjects = [...organization.projects].sort(
-    (a, b) => Number(b.pinned) - Number(a.pinned) || a.name.localeCompare(b.name),
-  );
-  const assignedProjects = new Set(orderedProjects.map((project) => project.id));
-  const uncategorized = otherConversations.filter(
-    (t) => !assignedProjects.has(organization.assignments[t.session_id]),
-  );
+  const { pinnedIds, pinnedConversations, otherConversations, orderedProjects,
+    assignedProjects, uncategorized } = classifyConversations(grouped, organization);
   function conversationRow(t: Task) {
     const pinned = pinnedIds.has(t.session_id);
     return (
