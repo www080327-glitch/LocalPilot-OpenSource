@@ -137,7 +137,8 @@ class CooperativeController:
             context_tokens=budget['total_tokens'],
             local_context=local.model_info.effective_context if local else 0, bucket=bucket,
             profile=self.profiles['buckets'].get(bucket, {}), escalated=state['escalated'],
-            cloud_allowed=h.policy.egress.mode == 'CLOUD_ALLOWED' and not r.hard_data_policy.local_only,
+            cloud_allowed=not r.hard_data_policy.local_only and (
+                h.policy.egress.mode == 'CLOUD_ALLOWED' or h.kind(h.initial_backend_id) == 'cloud'),
             local_queue_seconds=getattr(local, 'queue_seconds_estimate', None),
             verification_failed=bool(r._completion and r._completion.get('v5_repairs')))
         target = local_alias if d['target'] == 'local' else cloud_alias
