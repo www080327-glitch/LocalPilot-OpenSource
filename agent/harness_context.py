@@ -34,7 +34,7 @@ def trim_optional_state(state):
 
 
 def transfer_with_optional_projection(messages,tools,window,output_reserve,*,enabled=False,**kwargs):
-    """Same byte admission and output guard; fail closed if critical state fails."""
+    """Token-denominated context admission; canonical byte ledger remains unchanged."""
     state=kwargs.get('working_state');reductions=0
     for _ in range(193):
         try:
@@ -42,7 +42,7 @@ def transfer_with_optional_projection(messages,tools,window,output_reserve,*,ena
             if reductions:
                 info={**(info or {}),'optional_completed_context_entries_omitted':reductions,
                     'canonical_history_changed':False,'critical_obligations_changed':False,
-                    'estimator':'utf8_bytes_conservative_not_measured_tokens'}
+                    'estimator':'mixed_text_estimate_v1'}
             return view,info
         except ContextTooSmall:
             if not enabled:raise
