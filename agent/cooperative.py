@@ -8,7 +8,7 @@ from dataclasses import asdict, dataclass
 import math
 
 from .adaptive import wilson
-from .context import context_units
+from .context_budget import request_budget
 from .hybrid import sha
 from .routing import parse_policy
 
@@ -16,14 +16,14 @@ from .routing import parse_policy
 @dataclass(frozen=True)
 class CooperativePolicy:
     mode: str = 'balanced'
-    max_local_requests: int = 2
+    max_local_requests: int = 8
     max_stagnation: int = 2
     max_tool_errors: int = 1
     minimum_samples: int = 20
     quality_floor: float = .95
     max_local_queue_seconds: float = 10
     # Ablations are frozen in the configuration/recovery fingerprint.
-    use_calibration: bool = True
+    use_calibration: bool = False
     use_failure_escalation: bool = True
     use_queue_prediction: bool = True
     use_token_budget: bool = True
@@ -52,9 +52,9 @@ def task_bucket(task):
 
 
 def decide(policy, *, current, local_requests, tool_errors, stagnation,
-           context_bytes, local_context, bucket, profile, escalated=False,
+           context_tokens, local_context, bucket, profile, escalated=False,
            cloud_allowed=True, local_queue_seconds=None, verification_failed=False):
-    """Return a single target and a reason; never invokes both providers."""
+    """Return a single target using a token-denominated context budget."""
     mode = parse_policy(policy.mode).value
     def result(target, reason, **extra):
         return {'target': target, 'reason': reason, 'bucket': bucket,
@@ -65,7 +65,7 @@ def decide(policy, *, current, local_requests, tool_errors, stagnation,
     # One-way hysteresis: never oscillate back to local within the task.
     if escalated or current == 'cloud' and local_requests:
         return result('cloud', 'route_hysteresis')
-    if policy.use_token_budget and context_bytes > local_context:
+    if policy.use_token_budget and context_tokens > local_context:
         return result('cloud', 'local_context_insufficient')
     if policy.use_failure_escalation and (verification_failed or tool_errors >= policy.max_tool_errors or stagnation >= policy.max_stagnation):
         return result('cloud', 'verification_failed' if verification_failed else 'tool_error' if tool_errors else 'no_progress')
@@ -82,11 +82,10 @@ def decide(policy, *, current, local_requests, tool_errors, stagnation,
                       success_interval_95=interval, development_samples=n)
     if mode == 'balanced':
         local = bucket == 'simple' and (calibrated if policy.use_calibration else True)
-        # No invented confidence for unseen buckets: retain quality priority.
-        return result('local' if local else 'cloud', 'calibrated_cost_choice' if local else 'insufficient_local_quality_evidence',
+        # An uncalibrated trial is not a measured quality claim.
+        return result('local' if local else 'cloud', ('calibrated_cost_choice' if calibrated else 'bounded_local_trial') if local else ('insufficient_local_quality_evidence' if bucket == 'simple' else 'cloud_complexity_priority'),
                       success_interval_95=interval, development_samples=n)
-    return result('cloud' if bucket == 'complex' else 'local',
-                  'difficulty_early_escalation' if bucket == 'complex' else 'bounded_local_trial')
+    return result('local', 'bounded_local_trial')
 
 
 class CooperativeController:
@@ -113,7 +112,7 @@ class CooperativeController:
 
     def configuration(self):
         return {'policy': asdict(self.policy), 'profiles': self.profiles,
-                'revision': 1, 'task_predictor': 'declared_lexical_heuristic_v1'}
+                'revision': 2, 'task_predictor': 'declared_lexical_heuristic_v1'}
 
     def before_request(self):
         r, h = self.runtime, self.runtime.hybrid
@@ -131,16 +130,18 @@ class CooperativeController:
         cloud_alias = next((a for a, b in h.catalog.items() if not b.is_local), None)
         local = h.catalog.get(local_alias)
         bucket = task_bucket(r.working.task)
+        budget = request_budget(r.messages, r._schemas(), r.budgets.max_output_tokens,
+            tokenizer=getattr(local, 'tokenizer', None))
         d = decide(self.policy, current=h.kind(h.state['backend_id']), local_requests=local_requests,
             tool_errors=errors, stagnation=r.working.no_progress,
-            context_bytes=context_units(r.messages, r._schemas()) + r.budgets.max_output_tokens * 16 + 8192,
+            context_tokens=budget['total_tokens'],
             local_context=local.model_info.effective_context if local else 0, bucket=bucket,
             profile=self.profiles['buckets'].get(bucket, {}), escalated=state['escalated'],
             cloud_allowed=h.policy.egress.mode == 'CLOUD_ALLOWED' and not r.hard_data_policy.local_only,
             local_queue_seconds=getattr(local, 'queue_seconds_estimate', None),
             verification_failed=bool(r._completion and r._completion.get('v5_repairs')))
         target = local_alias if d['target'] == 'local' else cloud_alias
-        d.update(turn_id=r.turn_id, step=r._attempts, profile_sha256=sha(self.profiles),
+        d.update(context_budget=budget, turn_id=r.turn_id, step=r._attempts, profile_sha256=sha(self.profiles),
                  backend_id=target, outcome='retained')
         if target is None:
             d['outcome'] = 'target_unavailable'

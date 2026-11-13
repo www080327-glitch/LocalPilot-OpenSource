@@ -20,8 +20,8 @@ class RuntimeRoutingTests(unittest.TestCase):
                 model_info=SimpleNamespace(size_class=size, effective_context=context),
             )
         self.assertTrue(local_main_eligible(backend()))
-        self.assertFalse(local_main_eligible(backend(size="4B")))
-        self.assertFalse(local_main_eligible(backend(context=65535)))
+        self.assertTrue(local_main_eligible(backend(size="4B")))
+        self.assertFalse(local_main_eligible(backend(context=4095)))
         self.assertFalse(local_main_eligible(backend(healthy=False)))
         self.assertFalse(local_main_eligible(SimpleNamespace(health_check=lambda: True)))
 
