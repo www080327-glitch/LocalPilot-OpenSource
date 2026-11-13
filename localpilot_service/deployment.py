@@ -70,19 +70,33 @@ def build(config_path):
         cooperative_policy=None
         cooperative_profiles=None
         if cooperation is not None:
-            if (not isinstance(cooperation,dict) or set(cooperation)-{'cloud_route','optimizer','profiles'} or 'cloud_route' not in cooperation
-                    or kind not in {'omlx','vllm','local-openai'} or spec.get('managed_local_model')):
-                raise ValueError('Cooperation requires a registered local primary and exact cloud_route')
+            if (not isinstance(cooperation,dict) or set(cooperation)-{'cloud_route','local_route','optimizer','profiles'}
+                    or ('cloud_route' in cooperation) == ('local_route' in cooperation)
+                    or spec.get('managed_local_model') or spec.get('reasoning_only')):
+                raise ValueError('Cooperation requires exactly one registered partner route and a tool-capable primary')
+            partner_is_local='local_route' in cooperation
+            if partner_is_local:
+                if kind not in {'deepseek','deepseek-native','remote-openai','remote-vllm'}:
+                    raise ValueError('A local worker partner requires a cloud primary')
+                partner_spec=config['routes'].get(cooperation['local_route'])
+                if (not partner_spec or partner_spec['backend']['kind'] not in {'omlx','vllm','local-openai'}
+                        or partner_spec.get('managed_local_model')):
+                    raise ValueError('Local cooperation partner must be a registered unmanaged local inference route')
+            else:
+                if kind not in {'omlx','vllm','local-openai'}:
+                    raise ValueError('A cloud partner requires a local primary')
+                partner_spec=config['routes'].get(cooperation['cloud_route'])
+                if not partner_spec or partner_spec['backend']['kind'] not in {'deepseek','deepseek-native'}:
+                    raise ValueError('Cooperation partner must be a registered DeepSeek provider')
+            if Path(partner_spec['workspace']).expanduser().resolve()!=workspace:
+                raise ValueError('Cooperation partners must use the same workspace')
             if 'optimizer' in cooperation:
                 from agent.cooperative import CooperativePolicy
                 cooperative_policy=CooperativePolicy(**cooperation['optimizer'])
                 cooperative_profiles=cooperation.get('profiles')
-            elif kind!='omlx' or set(cooperation)!={'cloud_route'}:
-                raise ValueError('Legacy cooperation requires its existing oMLX contract')
-            partner=config['routes'].get(cooperation['cloud_route'])
-            if not partner or partner['backend']['kind'] not in {'deepseek','deepseek-native'} or Path(partner['workspace']).expanduser().resolve()!=workspace:
-                raise ValueError('Cooperation partner must be a registered DeepSeek provider in the same workspace')
-            partner={**partner['backend'],'_host_thinking':partner.get('thinking')}
+            elif partner_is_local or kind!='omlx' or set(cooperation)!={'cloud_route'}:
+                raise ValueError('Non-legacy cooperation requires a typed optimizer')
+            partner={**partner_spec['backend'],'_host_thinking':partner_spec.get('thinking')}
         egress = spec.get("cloud_egress", "REQUIRES_APPROVAL" if cloud or partner else "LOCAL_ONLY")
         if not cloud and not partner and egress != "LOCAL_ONLY":
             raise ValueError("Local route must retain LOCAL_ONLY egress")
@@ -206,17 +220,31 @@ def build(config_path):
             from agent.engine_v5 import EngineV5Policy
             secondary=None
             if partner:
-                cls=ServiceDeepSeekNativeBackend if partner['kind']=='deepseek-native' else ServiceDeepSeekBackend
-                secondary=cls(model=partner['model'],key_file=partner.get('key_file'),
-                    api_key=os.environ.get(partner['api_key_env']) if partner.get('api_key_env') else None,
-                    base_url=partner.get('base_url','https://api.deepseek.com/anthropic' if partner['kind']=='deepseek-native' else 'https://api.deepseek.com'),
-                    effective_context=partner.get('context_budget',131072),timeout=partner.get('timeout',45),data_policy=dp,
-                    generation_parameters=partner.get('generation_parameters'))
-                if partner.get('_host_thinking') is not None:
-                    from dataclasses import replace
-                    if partner['_host_thinking'] not in secondary.capabilities.supported_thinking_efforts:raise ValueError('Partner thinking is unsupported')
-                    secondary.capabilities=replace(secondary.capabilities,default_thinking_effort=partner['_host_thinking'])
-                    secondary.service_contract['default_thinking']=partner['_host_thinking']
+                if partner['kind'] in {'deepseek','deepseek-native'}:
+                    cls=ServiceDeepSeekNativeBackend if partner['kind']=='deepseek-native' else ServiceDeepSeekBackend
+                    secondary=cls(model=partner['model'],key_file=partner.get('key_file'),
+                        api_key=os.environ.get(partner['api_key_env']) if partner.get('api_key_env') else None,
+                        base_url=partner.get('base_url','https://api.deepseek.com/anthropic' if partner['kind']=='deepseek-native' else 'https://api.deepseek.com'),
+                        effective_context=partner.get('context_budget',131072),timeout=partner.get('timeout',45),data_policy=dp,
+                        generation_parameters=partner.get('generation_parameters'))
+                    if partner.get('_host_thinking') is not None:
+                        from dataclasses import replace
+                        if partner['_host_thinking'] not in secondary.capabilities.supported_thinking_efforts:raise ValueError('Partner thinking is unsupported')
+                        secondary.capabilities=replace(secondary.capabilities,default_thinking_effort=partner['_host_thinking'])
+                        secondary.service_contract['default_thinking']=partner['_host_thinking']
+                else:
+                    pc=partner.get('capabilities',{})
+                    partner_type=ServiceVLLMBackend if partner['kind']=='vllm' else ServiceOMLXBackend if partner['kind']=='omlx' else ServiceOpenAIBackend
+                    secondary=partner_type(api_key=os.environ.get(partner['api_key_env']) if partner.get('api_key_env') else None,
+                        base_url=partner['base_url'],model=partner['model'],
+                        effective_context=partner.get('context_budget',131072),timeout=partner.get('timeout',30),
+                        allow_remote=False,supports_tool_calling=pc.get('tool_calling',partner['kind']!='vllm'),
+                        supports_streaming=pc.get('streaming',True),supports_vision=pc.get('vision',False),
+                        supports_reasoning=pc.get('reasoning'),reasoning_efforts=partner.get('reasoning_efforts',()),
+                        include_stream_usage=partner.get('include_stream_usage',partner['kind'] in {'omlx','vllm'}),
+                        chat_template_kwargs=partner.get('chat_template_kwargs'),
+                        generation_parameters=partner.get('generation_parameters'))
+                    secondary.is_local=True
             computer = None
             if computer_config is not None:
                 registry=ToolRegistry(w,permission_mode=p,capabilities=cap,data_policy=dp,tool_profile=tool_profile)
@@ -232,13 +260,13 @@ def build(config_path):
                 def execution_check(root,projection,_old=old_execution,_computer=computer):
                     ui=_computer.host_verification(root)
                     return _old(root,projection) if ui.status=='passed' and _old else ui
-            runtime = AgentSession(registry, cloud_backend=secondary or (backend if is_cloud else None),
-                local_backend=None if is_cloud else backend, data_policy=dp,
-                policy=cooperative_policy.mode if cooperative_policy else "local-first" if partner else "cloud-only" if is_cloud else "local-only", thinking=thinking, budgets=budgets,
+            runtime = AgentSession(registry, cloud_backend=(backend if is_cloud else secondary),
+                local_backend=(secondary if is_cloud and partner else None if is_cloud else backend), data_policy=dp,
+                policy=cooperative_policy.mode if cooperative_policy else "cloud-first" if is_cloud and partner else "local-first" if partner else "cloud-only" if is_cloud else "local-only", thinking=thinking, budgets=budgets,
                 prompt_profile=prompt_profile, runtime_tools=not reasoning_only,
                 computer_runtime=computer,
                 hybrid_policy=HybridPolicy(CloudEgressPolicy(ep, paths), automatic_failover=bool(cooperative_policy and cooperative_policy.mode not in {'local-only','cloud-only'})) if computer is None else None,
-                hybrid_backends={"selected": backend, **({'cloud':secondary} if secondary else {})} if computer is None else None, hybrid_primary="selected" if computer is None else None,
+                hybrid_backends={"selected": backend, **({('local' if is_cloud else 'cloud'):secondary} if secondary else {})} if computer is None else None, hybrid_primary="selected" if computer is None else None,
                 cooperative_policy=cooperative_policy, cooperative_profiles=cooperative_profiles,
                 engine_policy=EngineV5Policy() if engine == 'v5' else None,
                 strict_task=strict_task, completion_check=execution_check,
