@@ -14,7 +14,7 @@ const catalog = (entry: object) => ({
   models: { models: [{ id: "weights", size_bytes: 1024 ** 3, ...entry }] },
 });
 describe("model selector uses runtime-capable deployed routes", () => {
-  const ready = { ...model, capabilities: ["tool_calling", "streaming"] };
+  const ready = { ...model, cloud_egress: "LOCAL_ONLY", capabilities: ["tool_calling", "streaming"] };
   const choices = [
     ready,
     { ...ready, id: "downloading", deployment_status: "loading" },
