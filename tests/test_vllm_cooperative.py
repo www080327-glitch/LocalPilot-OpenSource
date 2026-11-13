@@ -160,6 +160,19 @@ class VLLMTests(unittest.TestCase):
             self.assertEqual(len(b._responses),0)
         finally:server.close()
 
+    def test_vllm_short_chinese_request_fits_real_32k_context_admission(self):
+        backend = VLLMBackend(base_url='http://127.0.0.1:9/v1', model='fixture-local',
+                              effective_context=32768, supports_tool_calling=True)
+        payload = backend._payload([Message('user','你好')], [], 2048)
+        self.assertEqual(payload['max_tokens'],2048)
+        self.assertEqual(payload['messages'][0]['content'],'你好')
+
+    def test_vllm_still_rejects_real_context_overflow_before_network(self):
+        backend = VLLMBackend(base_url='http://127.0.0.1:9/v1', model='fixture-local',
+                              effective_context=32768)
+        with self.assertRaises(LocalBackendError):
+            backend._payload([Message('user','a'*110000)], [], 2048)
+
     def test_remote_vllm_remains_cloud_in_five_mode_selection(self):
         from localpilot_service.routing import select_route
         catalog={'remote':{'adapter':'remote-vllm','cloud_egress':'CLOUD_ALLOWED','model':'model'}}
@@ -169,7 +182,7 @@ class VLLMTests(unittest.TestCase):
     def test_capability_and_context_fail_before_http(self):
         b=VLLMBackend(base_url='http://127.0.0.1:9/v1',model='frozen',effective_context=1000)
         with self.assertRaises(ValueError):b.request([Message('user','hi')],tools=[{}],max_tokens=2)
-        with self.assertRaises(LocalBackendError):b.request([Message('user','x'*2000)],max_tokens=2)
+        with self.assertRaises(LocalBackendError):b.request([Message('user','x'*5000)],max_tokens=2)
         DataPolicy(local_only=True).check_backend(b)
         with self.assertRaises(ValueError):VLLMBackend(base_url='http://192.0.2.1/v1',model='frozen',allow_remote=True)
         remote=VLLMBackend(base_url='https://192.0.2.1/v1',model='frozen',allow_remote=True,api_key='example')
