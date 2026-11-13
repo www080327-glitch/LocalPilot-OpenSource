@@ -820,17 +820,17 @@ export default function App() {
       const id = payload.taskId;
       if (payload.kind === "event") {
         const e = payload.data as StreamEvent;
-        setEvents((old) => ({
-          ...old,
-          [id]: [
-            ...(old[id] || []).filter((v) => v.sequence !== e.sequence),
-            e,
-          ]
-            .filter((v, index, all) =>
-              eventName(v) !== "TextDelta" || index >= all.length - 50,
-            )
-            .slice(-500),
-        }));
+        // Text deltas already accumulate in delta; they are not timeline
+        // facts and keeping a second copy re-renders the entire event list.
+        if (!(e.type === "runtime.event" && e.data.type === "TextDelta")) {
+          setEvents((old) => ({
+            ...old,
+            [id]: [
+              ...(old[id] || []).filter((v) => v.sequence !== e.sequence),
+              e,
+            ].slice(-500),
+          }));
+        }
         if (e.type === "task.status" || e.type === "task.created")
           updateTask(e.data as Task);
         if (e.type === "runtime.event" && e.sequence > (streamedSequence.current[id] || 0)) {
