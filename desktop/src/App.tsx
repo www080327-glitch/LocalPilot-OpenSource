@@ -844,7 +844,20 @@ export default function App() {
             }));
         }
       }
-      if (payload.kind === "snapshot") updateTask(payload.data);
+      if (payload.kind === "snapshot") {
+        const snapshot = payload.data as Task;
+        updateTask(snapshot);
+        if (payload.reconciled && snapshot.status === "running" &&
+            typeof snapshot.streamed_text === "string") {
+          // The retained SSE range did not include the full response. Seed
+          // the live accumulator with Core's current text and resume after
+          // its authoritative sequence instead of displaying a tail fragment.
+          streamedSequence.current[id] = Math.max(
+            streamedSequence.current[id] || 0, snapshot.last_event_id || 0,
+          );
+          setDelta((old) => ({ ...old, [id]: snapshot.streamed_text || "" }));
+        }
+      }
       if (
         id === selectedRef.current &&
         [
