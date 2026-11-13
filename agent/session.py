@@ -1379,7 +1379,7 @@ class AgentSession:
             retained_resume = False
             if self.controls.working_state:
                 if self.computer:
-                    output_reserve = self._request_output_tokens + 64
+                    output_reserve = self._request_output_tokens + max(64, window // 50)
                     prefix_units = context_tokens([m for m in self.messages if m.role == "system"], schemas,
                                                   tokenizer=getattr(backend, 'tokenizer', None))
                     # Space for the serialized state Message header/framing.
@@ -1434,7 +1434,7 @@ class AgentSession:
                         'slots': recovery_slots if self.finalization_policy else 1,
                         'output_units': output_reserves if self.finalization_policy else self._request_output_tokens * 16}
             view, compacted = transfer(request_messages, schemas, window,
-                self._request_output_tokens + 64,
+                self._request_output_tokens + max(64, window // 50),
                 plan=self.active_plan, goals=self._goal_records(),
                 working_state=state_view,
                 final_only=self._finalizing,
