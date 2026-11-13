@@ -119,7 +119,11 @@ def build(config_path):
         if partner and egress!='REQUIRES_APPROVAL' and not (cooperative_policy and egress=='CLOUD_ALLOWED'):
             raise ValueError('Cooperation requires an explicit host cloud-egress grant')
         hard_policy = DataPolicy(local_only=not (cloud or partner))
-        budget = SessionBudgets(**spec.get("budgets", {}))
+        budget_values = dict(spec.get("budgets", {}))
+        if cloud and cooperative_policy and partner_is_local:
+            # A cloud-primary local trial needs two hops to return on failure.
+            budget_values.setdefault("max_primary_switches_per_turn", 2)
+        budget = SessionBudgets(**budget_values)
         capability_values = spec.get("capabilities", {})
         if (not isinstance(capability_values, dict) or set(capability_values) - {"read", "write", "execute", "read_only"}
                 or any(type(v) is not bool for v in capability_values.values())):
