@@ -730,6 +730,7 @@ class TaskService:
             'user_input':question,**metadata,'pause_requested':session.active_task==task.id and session.runtime._host_pause_requested,
             "model": task.model, "previous_task_id": task.previous_task_id, "created_at": task.created_at,
             "status": task.status, "quiescent": not task.executing and not task.control_pending, "result": task.result,
+            "streamed_text": task.pending_text if task.executing else "",
             "required_action": task.required_action, "error": task.error, "output": task.output,
             "tools": task.tools, "goals": task.goals, "subagents": task.subagents, "computer": task.computer,
             "completion": (task.result or {}).get('completion'),
