@@ -338,9 +338,11 @@ export default function App() {
       window.matchMedia("(prefers-color-scheme: dark)").matches,
     ),
     [preferenceSaving, setPreferenceSaving] = useState(false),
+    [preferenceUnsaved, setPreferenceUnsaved] = useState(false),
     [glass, setGlass] = useState(stored("lp.glass", true)),
     [glassStatus, setGlassStatus] = useState("等待原生外观检查");
   const persistQueue = useRef(Promise.resolve()),
+    preferenceWriteVersion = useRef(0),
     restoreDone = useRef(false);
   const scope = `${profile.home}|${profile.origin}|${health?.client_subject || ""}`;
   const supportedRouting = routingSupported(health, routingCaps);
@@ -491,24 +493,25 @@ export default function App() {
         scope,
       },
     }));
-    if (desktop && connected) {
+    if (desktop && connected && currentTask?.session_id) {
+      const version = ++preferenceWriteVersion.current;
+      const sessionId = currentTask.session_id;
       setPreferenceSaving(true);
-      persistQueue.current = persistQueue.current
-        .then(() =>
-          call("session_preferences", {
-            sessionId: currentTask?.session_id || chatId,
-            value,
-          }),
-        )
-        .then(() => {
-          setPreferenceSaving(false);
-        })
-        .catch((e) => {
-          showError(e);
-          setPreferenceSaving(false);
-          throw e;
-        });
-      persistQueue.current.catch(() => {});
+      setPreferenceUnsaved(true);
+      // A failed save must not poison the queue for later changes or task sends.
+      persistQueue.current = persistQueue.current.catch(() => {}).then(async () => {
+        try {
+          await call("session_preferences", { sessionId, value });
+          if (version === preferenceWriteVersion.current) {
+            setPreferenceUnsaved(false);
+            setError((old) => old.startsWith("会话偏好未保存：") ? "" : old);
+          }
+        } catch (e) {
+          showError("会话偏好未保存：" + String(e));
+        } finally {
+          if (version === preferenceWriteVersion.current) setPreferenceSaving(false);
+        }
+      });
     }
   }
   const [enterBehavior, setEnterBehavior] = useState<EnterBehavior>(() =>
@@ -902,7 +905,9 @@ export default function App() {
       return;
     }
     const id = `draft-${crypto.randomUUID()}`;
-    persistQueue.current = Promise.resolve();
+    ++preferenceWriteVersion.current;
+    setPreferenceSaving(false);
+    setPreferenceUnsaved(false);
     setChatId(id);
     setSessionPrefs({ ...globals.defaults });
     setModel(defaultModel || (supportedRouting ? "__auto__" : ""));
@@ -922,6 +927,9 @@ export default function App() {
     composer.current?.focus();
   }
   function openTask(t: Task) {
+    ++preferenceWriteVersion.current;
+    setPreferenceSaving(false);
+    setPreferenceUnsaved(false);
     setError("");
     setPermissionOpen(false);
     setPreferenceOpen(false);
@@ -2087,7 +2095,7 @@ export default function App() {
               <span>{preferenceLabel(sessionPrefs)}</span>
               <ChevronDown size={12} />
             </button>
-            <span>{preferenceSaving ? "正在保存…" : "仅此会话"}</span>
+            <span>{preferenceSaving ? "正在保存…" : preferenceUnsaved ? "偏好未保存" : "仅此会话"}</span>
           </div>
           {preferenceOpen && (
             <Popover
