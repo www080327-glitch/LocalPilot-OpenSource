@@ -2384,7 +2384,7 @@ class AgentSession:
         self.state = SessionState.WAITING_SUBAGENT
         self._emit("SubagentStarted", id=worker_id, backend=target, tier=tier,
                    provider=getattr(backend, "provider", "unknown"), model=self._model_name(backend),
-                   read_only=read_only, budgets=asdict(budgets))
+                   task=args["task"], read_only=read_only, budgets=asdict(budgets))
         child = AgentSession(registry, backend=backend,
             local_backend=self.local_backend if self.hybrid else None, cloud_backend=self.cloud_backend if self.hybrid else None,
             cloud_worker_backends=self.cloud_worker_backends if self.hybrid else None,
@@ -2409,7 +2409,7 @@ class AgentSession:
         child._ledger_parent, child._worker_id = self, worker_id
         record = {"id": worker_id, "turn_id": self.turn_id, "backend": target, "tier": tier,
                   "provider": getattr(backend, "provider", "unknown"),
-                  "configured_model": self._model_name(backend), "status": "running",
+                  "configured_model": self._model_name(backend), "status": "running", "task": args["task"],
                   "permission_mode": self.permission_mode, "read_only": read_only,
                   "workspace": str(self.workspace), "depth": child.depth}
         if self.hybrid:
@@ -2426,7 +2426,7 @@ class AgentSession:
             if isinstance(child.registry.gateway.judge, LocalSafetyJudge):
                 child.registry.gateway.judge.request_context = lambda c=child: c._scheduler.model_slot(c, c.local_backend)
         if async_mode:
-            record.update({'async':True, 'status':'queued', 'task':args['task'], 'call':call.to_dict(),
+            record.update({'async':True, 'status':'queued', 'call':call.to_dict(),
                 'reservation':{'_attempts':budgets.max_steps, '_tool_proposals':budgets.max_tool_calls,
                                '_token_units':budgets.max_token_units}, 'collected':False,
                 'queued_at':time.time(), 'timeline':[]})
