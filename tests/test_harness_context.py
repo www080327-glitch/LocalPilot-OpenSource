@@ -3,7 +3,8 @@ from copy import deepcopy
 import json
 import unittest
 from agent.backends import Message
-from agent.context import ContextTooSmall,context_units
+from agent.context import ContextTooSmall
+from agent.context_budget import context_tokens
 from agent.finalization import sha
 from agent.harness_context import trim_optional_state,transfer_with_optional_projection
 
@@ -31,7 +32,7 @@ class HarnessContextControls(unittest.TestCase):
         original=fixture();messages=[Message('system','Host limits remain authoritative')]
         with self.assertRaises(ContextTooSmall):transfer_with_optional_projection(messages,[],5000,1000,working_state=original)
         view,info=transfer_with_optional_projection(messages,[],5000,1000,working_state=original,enabled=True)
-        self.assertLessEqual(context_units(view,[]),4000)
+        self.assertLessEqual(context_tokens(view,[]),4000)
         self.assertGreater(info['optional_completed_context_entries_omitted'],0)
         state=json.loads(view[-1].content.split('\n',1)[1])
         self.assertEqual(state['failed_unknown_actions'],original['failed_unknown_actions'])
