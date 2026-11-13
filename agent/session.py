@@ -2324,10 +2324,16 @@ class AgentSession:
         if backend is None or (target == "local" and not backend.health_check()):
             return self._payload({"status": "unavailable", "tier": tier,
                 "reason": "Worker backend unavailable; check provider API credentials and model access."})
-        if self.thinking_mode is not None and self.thinking_mode not in getattr(getattr(backend, "capabilities", None), "supported_thinking_efforts", ()):
-            return self._payload({"status": "denied", "reason":
-                f"Worker {self._model_name(backend)} does not support thinking '{self.thinking_mode}'."})
-        if target == "cloud" and not approved:
+        supported_efforts = getattr(getattr(backend, "capabilities", None), "supported_thinking_efforts", ())
+        worker_thinking = self.thinking_mode if self.thinking_mode in supported_efforts else None
+        # Child models negotiate their own thinking mode; the parent's setting
+        # is not a reason to reject an otherwise available cross-model worker.
+        cloud_already_authorized = (
+            getattr(self, "_desktop_cloud_context", False)
+            and self.hybrid is not None
+            and self.hybrid.policy.egress.mode == "CLOUD_ALLOWED"
+        )
+        if target == "cloud" and not approved and not cloud_already_authorized:
             self.pending_approval = {"kind": "delegate", "call": deepcopy(call), "task": args["task"],
                 "tier": tier, "provider": getattr(backend, "provider", "unknown"),
                 "configured_model": self._model_name(backend),
@@ -2374,13 +2380,13 @@ class AgentSession:
         self.state = SessionState.WAITING_SUBAGENT
         self._emit("SubagentStarted", id=worker_id, backend=target, tier=tier,
                    provider=getattr(backend, "provider", "unknown"), model=self._model_name(backend),
-                   read_only=read_only, budgets=asdict(budgets))
+                   read_only=read_only, thinking=worker_thinking, budgets=asdict(budgets))
         child = AgentSession(registry, backend=backend,
             local_backend=self.local_backend if self.hybrid else None, cloud_backend=self.cloud_backend if self.hybrid else None,
             cloud_worker_backends=self.cloud_worker_backends if self.hybrid else None,
             policy=self.routing_policy if self.hybrid else "local-only" if target == "local" else "cloud-only",
             budgets=budgets, data_policy=DataPolicy(local_only=self.hard_data_policy.local_only if self.hybrid else target == "local"),
-            thinking=self.thinking_mode,
+            thinking=worker_thinking,
             reasoning=self.reasoning_mode,
             streaming=self.streaming, runtime_tools=False, legacy=False, depth=self.depth + 1,
             event_callback=lambda event: self._emit("SubagentEvent", id=worker_id, event=event.to_dict()),
