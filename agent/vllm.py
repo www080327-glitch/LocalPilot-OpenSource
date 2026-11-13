@@ -3,7 +3,7 @@ import json
 import socket
 import threading
 from .backends import Message
-from .context import context_units
+from .context_budget import request_budget
 from .local_http import LocalBackendError, LocalHTTPBackend
 
 
@@ -34,9 +34,9 @@ class VLLMBackend(LocalHTTPBackend):
             raise ValueError('vLLM tool parser has not been declared by the host')
         if stream and not self.capabilities.supports_streaming:
             raise ValueError('vLLM streaming is not declared')
-        # This intentionally uses LP's conservative byte admission, not a token
-        # estimate mislabeled as tokenizer output. The server checks tokens too.
-        if context_units(messages, tools) + (max_tokens or 0) * 16 > self.model_info.effective_context:
+        budget = request_budget(messages, tools, max_tokens or 0,
+                                tokenizer=getattr(self, 'tokenizer', None))
+        if budget['total_tokens'] > self.model_info.effective_context:
             raise LocalBackendError('vLLM context admission exceeded', retryable=False)
         payload = super()._payload(messages, tools, max_tokens, stream, thinking)
         payload.update(self.generation_parameters)
