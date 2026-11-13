@@ -2939,7 +2939,11 @@ export default function App() {
                     <div className="collaboration-child-details">
                       <p>子代理 ID：{child.id}</p>
                       <p>实际提供方：{child.provider}</p>
-                      <p>模型：{child.model}</p>
+                      <p>配置模型：{child.model}</p>
+                      {child.reportedModels.length > 0 && (
+                        <p>提供方实际返回的模型：{child.reportedModels.join("、")}</p>
+                      )}
+                      {child.task && <p>委派任务：{child.task}</p>}
                       {child.steps.length ? (
                         <ol className="collaboration-child-steps">
                           {child.steps.slice(-20).map((step) => (
