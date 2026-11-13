@@ -69,7 +69,7 @@ export function observedModelShare(
   };
 }
 
-export function subagentTraces(events: StreamEvent[]): ChildTrace[] {
+export function subagentTraces(events: StreamEvent[], task?: Task | null): ChildTrace[] {
   const children = new Map<string, ChildTrace>();
   for (const event of [...events].sort((a, b) => a.sequence - b.sequence)) {
     const { type, data } = payload(event);
@@ -110,6 +110,22 @@ export function subagentTraces(events: StreamEvent[]): ChildTrace[] {
         child.steps.push({ sequence: event.sequence, label: "异常 · " + (d.error_type || "未知") });
       }
     }
+  }
+  // The persisted task snapshot is authoritative when earlier SSE events are
+  // no longer retained, or when a completed child is opened after GUI restart.
+  for (const row of task?.subagents || []) {
+    if (typeof row.id !== "string") continue;
+    const existing = children.get(row.id);
+    const source = row.backend === "local" || row.backend === "cloud"
+      ? row.backend : existing?.source || "unknown";
+    children.set(row.id, {
+      id: row.id,
+      source,
+      model: row.configured_model || existing?.model || "未记录",
+      provider: row.provider || existing?.provider || "未知",
+      status: row.status || existing?.status || "unknown",
+      steps: existing?.steps || [],
+    });
   }
   return [...children.values()];
 }
