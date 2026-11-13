@@ -3,6 +3,7 @@ import { compatibleEffort, thinkingKey } from "./modelThinking";
 import { shouldSubmitEnter, type EnterBehavior } from "./inputBehavior";
 import { ensureLocalModelLoaded } from "./modelLoading";
 import { latestTask, errorAfterHealthyConnection } from "./domain";
+import { availableAgentModels } from "./modelAvailability";
 import {
   permissionModes,
   permissionNames,
@@ -493,22 +494,19 @@ export default function App() {
     }));
     if (desktop && connected) {
       setPreferenceSaving(true);
-      persistQueue.current = persistQueue.current
+      const save = persistQueue.current
+        .catch(() => {})
         .then(() =>
           call("session_preferences", {
             sessionId: currentTask?.session_id || chatId,
             value,
           }),
         )
-        .then(() => {
-          setPreferenceSaving(false);
-        })
-        .catch((e) => {
-          showError(e);
-          setPreferenceSaving(false);
-          throw e;
-        });
-      persistQueue.current.catch(() => {});
+        .catch(showError);
+      const settled = save.then(() => {
+        if (persistQueue.current === settled) setPreferenceSaving(false);
+      });
+      persistQueue.current = settled;
     }
   }
   const [enterBehavior, setEnterBehavior] = useState<EnterBehavior>(() =>
@@ -530,6 +528,9 @@ export default function App() {
     ? previewTask
     : tasks.find((t) => t.id === selected);
   const actualModels = preview ? previewModels : models;
+  const usableModels = availableAgentModels(actualModels).filter((m) =>
+    sourceAllows(sessionPrefs, m),
+  );
   const chosen = actualModels.find((m) => m.id === model);
   const [modelEfforts, setModelEfforts] = useState<Record<string, string>>(() =>
     stored("lp.modelEfforts", {}),
@@ -637,6 +638,7 @@ export default function App() {
       ]);
       if (sequence !== refreshSequence.current) return;
       setModels(m.models || []);
+      const selectable = availableAgentModels(m.models || []);
       let automaticSupported = false;
       try {
         const cap = await call<Json>("routing_capabilities");
@@ -662,14 +664,11 @@ export default function App() {
       setModel(
         (old) =>
           ((old === "__auto__" && automaticSupported) ||
-          m.models?.some((v: Model) => v.id === old)
+          selectable.some((v) => v.id === old)
             ? old
             : "") ||
           (automaticSupported ? "__auto__" : "") ||
-          m.models?.find(
-            (v: Model) => v.deployment_status === "ready" && !v.reasoning_only,
-          )?.id ||
-          m.models?.[0]?.id ||
+          selectable[0]?.id ||
           "",
       );
       try {
@@ -2323,7 +2322,7 @@ export default function App() {
                         onClose={() => setModelOpen(false)}
                       >
                         <div className="menu-label">
-                          选择模型<span>已下载的本地模型自动加载</span>
+                          选择模型<span>仅显示当前可用的标准 Agent 路由；其他模型在模型库</span>
                         </div>
                         {supportedRouting && (
                           <button
@@ -2335,8 +2334,8 @@ export default function App() {
                             Core 自动选择 · 已协商 1.0
                           </button>
                         )}
-                        {actualModels.length ? (
-                          actualModels.map((m) => (
+                        {usableModels.length ? (
+                          usableModels.map((m) => (
                             <button
                               key={m.id}
                               disabled={
