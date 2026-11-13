@@ -1112,6 +1112,26 @@ export default function App() {
   async function selectModel(id: string) {
     if (modelLoadLock.current || busy) return;
     const target = actualModels.find((m) => m.id === id);
+    if (!target || !selectableModels.some((m) => m.id === id)) {
+      setError("此模型尚不能执行标准 Agent 任务。请在模型库检查可用性。");
+      return;
+    }
+    if (!preview && currentTask && currentTask.model !== id) {
+      // A newly selected Core route creates a new backend Session. Do not
+      // present the previous UI messages as if they were handed to that model.
+      const draftId = `draft-${crypto.randomUUID()}`;
+      ++preferenceWriteVersion.current;
+      setPreferenceSaving(false);
+      setPreferenceUnsaved(false);
+      setChatId(draftId);
+      setSelected(null);
+      setMessages([]);
+      setInput("");
+      setDelta({});
+      setRight(false);
+      localStorage.removeItem("lp.currentTask");
+      setToast("已为新模型建立独立会话；之前的对话仍在左侧，历史未交接。");
+    }
     setModelOpen(false);
     setError("");
     if (
@@ -2373,10 +2393,6 @@ export default function App() {
                                   : undefined
                               }
                               onClick={() => {
-                                if (currentTask && currentTask.model !== m.id)
-                                  setToast(
-                                    "模型改变后，下一条消息将创建新 Session",
-                                  );
                                 void selectModel(m.id);
                               }}
                               className={model === m.id ? "selected" : ""}
