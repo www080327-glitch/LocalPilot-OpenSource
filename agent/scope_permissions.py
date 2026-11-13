@@ -41,6 +41,10 @@ def workspace_arguments(registry, name, args):
     result = deepcopy(args)
     for owner, key in targets(name, result):
         p = Path(owner[key])
+        if registry.scope_policy['mode'] == 'full' and registry.scope_policy.get('revision') == 3:
+            # Full access follows the user's chosen filesystem aliases.
+            p = p.resolve(strict=False) if p.is_absolute() else (registry.workspace_root / p).resolve(strict=False)
+            owner[key] = str(p)
         if p.is_absolute() and p.is_relative_to(registry.workspace_root):
             owner[key] = str(p.relative_to(registry.workspace_root))
     return result
@@ -68,6 +72,8 @@ def proposal(registry, name, args):
         if not isinstance(value, str) or not value or len(value) > 4096 or '\x00' in value:
             raise ValueError('Invalid file target')
         p = Path(os.path.abspath(root / value))
+        if policy['mode'] == 'full' and policy.get('revision') == 3:
+            p = p.resolve(strict=False)
         if policy.get('revision')!=3 and policy['mode'] != 'full' and (sensitive_path(p) or any(p == Path(v) or p.is_relative_to(v) for v in policy['private_roots'])):
             raise PermissionError('Protected or private service resource')
         outside |= not p.is_relative_to(root)
