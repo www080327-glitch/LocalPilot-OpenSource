@@ -6,6 +6,8 @@ import { latestTask, errorAfterHealthyConnection } from "./domain";
 import { availableAgentModels } from "./modelAvailability";
 import { summarizeCollaboration } from "./collaboration";
 import { CollaborationStrip, CollaborationPanel } from "./components/Collaboration";
+import { ProjectHistory } from "./components/ProjectHistory";
+import { groupConversations } from "./projects";
 import {
   permissionModes,
   permissionNames,
@@ -172,6 +174,25 @@ const markdownComponents = {
   img: () => <span className="muted">[远程图片未加载]</span>,
 };
 export default function App() {
+  const [projectNames, setProjectNames] = useState<string[]>(() => stored("lp.projects.v1", []));
+  const [sessionProjects, setSessionProjects] = useState<Record<string, string>>(
+    () => stored("lp.sessionProjects.v1", {}),
+  );
+  const [pinnedProjects, setPinnedProjects] = useState<string[]>(
+    () => stored("lp.pinnedProjects.v1", []),
+  );
+  const [pinnedSessions, setPinnedSessions] = useState<string[]>(
+    () => stored("lp.pinnedSessions.v1", []),
+  );
+  const [activeProject, setActiveProject] = useState("");
+  const [projectEditor, setProjectEditor] = useState<{ kind: "create" | "move"; sessionId?: string } | null>(null);
+  const [projectName, setProjectName] = useState("");
+  useEffect(() => {
+    localStorage.setItem("lp.projects.v1", JSON.stringify(projectNames));
+    localStorage.setItem("lp.sessionProjects.v1", JSON.stringify(sessionProjects));
+    localStorage.setItem("lp.pinnedProjects.v1", JSON.stringify(pinnedProjects));
+    localStorage.setItem("lp.pinnedSessions.v1", JSON.stringify(pinnedSessions));
+  }, [projectNames, sessionProjects, pinnedProjects, pinnedSessions]);
   const [profile, setProfile] = useState(emptyProfile),
     [health, setHealth] = useState<Json | null>(null),
     [compHealth, setCompHealth] = useState<Json | null>(null),
@@ -924,6 +945,7 @@ export default function App() {
     composer.current?.focus();
   }
   function openTask(t: Task) {
+    setActiveProject(sessionProjects[t.session_id] || profile.workspace.split("/").filter(Boolean).pop() || "默认项目");
     setError("");
     setPermissionOpen(false);
     setPreferenceOpen(false);
@@ -1381,6 +1403,10 @@ export default function App() {
           return next;
         });
         setChatId(t.session_id);
+        setSessionProjects((old) => ({
+          ...old,
+          [t.session_id]: old[t.session_id] || activeProject || profile.workspace.split("/").filter(Boolean).pop() || "默认项目",
+        }));
         localStorage.setItem("lp.currentTask", JSON.stringify(t.id));
         updateTask(t);
         setTurns((old) => ({ ...old, [t.id]: { input: question, model } }));
@@ -1599,6 +1625,29 @@ export default function App() {
   const grouped = latestConversations(tasks).filter((t) =>
     matchedSessions.has(t.session_id),
   );
+  const projectRoot = profile.workspace.split("/").filter(Boolean).pop() || "默认项目";
+  const projectGroups = groupConversations(
+    grouped, projectNames, sessionProjects, pinnedProjects, pinnedSessions, projectRoot,
+  ).filter((group) => !query || group.tasks.length > 0);
+  const togglePinProject = (name: string) => setPinnedProjects((old) =>
+    old.includes(name) ? old.filter((v) => v !== name) : [...old, name],
+  );
+  const togglePinSession = (id: string) => setPinnedSessions((old) =>
+    old.includes(id) ? old.filter((v) => v !== id) : [...old, id],
+  );
+  const openProjectEditor = (kind: "create" | "move", sessionId?: string) => {
+    setProjectEditor({ kind, sessionId });
+    setProjectName(kind === "move" && sessionId ? sessionProjects[sessionId] || projectRoot : "");
+  };
+  const saveProject = () => {
+    const name = projectName.trim().slice(0, 60);
+    if (!name) return;
+    setProjectNames((old) => old.includes(name) ? old : [...old, name]);
+    if (projectEditor?.kind === "move" && projectEditor.sessionId)
+      setSessionProjects((old) => ({ ...old, [projectEditor.sessionId!]: name }));
+    setActiveProject(name);
+    setProjectEditor(null);
+  };
   const outputBlocked =
     busy || (!preview && !!currentTask && !terminal.has(currentTask.status));
   const plans: Json[] = Array.isArray(currentTask?.goals)
@@ -1682,14 +1731,11 @@ export default function App() {
             <ChevronDown size={13} />
           </button>
           <div className="sidebar-section">
-            <span>最近会话</span>
-            <button
-              className="icon-btn"
-              aria-label="刷新任务列表"
-              onClick={() => refresh().catch(showError)}
-            >
-              <RefreshCw size={12} />
-            </button>
+            <span>项目与会话</span>
+            <button className="icon-btn" aria-label="创建项目" title="创建项目"
+              onClick={() => openProjectEditor("create")}><Plus size={13} /></button>
+            <button className="icon-btn" aria-label="刷新任务列表"
+              onClick={() => refresh().catch(showError)}><RefreshCw size={12} /></button>
           </div>
           <nav className="task-list" aria-label="任务历史">
             {!preview &&
@@ -1737,28 +1783,19 @@ export default function App() {
                   不会被保存为真实历史
                 </div>
               </>
-            ) : grouped.length ? (
-              grouped.map((t) => (
-                <button
-                  className={`task-row ${currentTask?.session_id === t.session_id ? "selected" : ""}`}
-                  key={t.id}
-                  onClick={() => openTask(t)}
-                >
-                  <MessageSquare size={14} />
-                  <span>
-                    {conversationTitle(
-                      t,
-                      tasks,
-                      stored<Record<string, string>>("lp.titles", {}),
-                      turns,
-                    )}
-                    <small>{label(t.status)}</small>
-                  </span>
-                  <i
-                    className={`task-dot ${t.status === "completed" ? "good" : isUnknown(t) || t.status.includes("requires") ? "warn" : ""}`}
-                  />
-                </button>
-              ))
+            ) : grouped.length || (!query && projectGroups.length) ? (
+              <ProjectHistory
+                groups={projectGroups}
+                allTasks={tasks}
+                turns={turns}
+                titles={stored<Record<string, string>>("lp.titles", {})}
+                currentSession={currentTask?.session_id}
+                pinnedSessions={pinnedSessions}
+                onOpen={openTask}
+                onPinProject={togglePinProject}
+                onPinSession={togglePinSession}
+                onMoveSession={(id) => openProjectEditor("move", id)}
+              />
             ) : (
               <div className="sidebar-empty">
                 {query ? (
@@ -2977,6 +3014,21 @@ export default function App() {
             </button>
           </footer>
         </aside>
+      )}
+      {projectEditor && (
+        <Modal title={projectEditor.kind === "create" ? "新建项目" : "移动会话到项目"}
+          onClose={() => setProjectEditor(null)}>
+          <label className="field-label">项目名称
+            <input aria-label="项目名称" autoFocus value={projectName}
+              onChange={(event) => setProjectName(event.target.value)}
+              list="localpilot-project-options" maxLength={60} />
+          </label>
+          <datalist id="localpilot-project-options">
+            {[projectRoot, ...projectNames].map((name) => <option key={name} value={name} />)}
+          </datalist>
+          <button className="primary" disabled={!projectName.trim()}
+            onClick={saveProject}>保存</button>
+        </Modal>
       )}
       {developerOpen && (
         <Modal
