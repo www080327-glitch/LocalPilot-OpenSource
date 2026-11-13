@@ -3,6 +3,11 @@ import { compatibleEffort, thinkingKey } from "./modelThinking";
 import { shouldSubmitEnter, type EnterBehavior } from "./inputBehavior";
 import { ensureLocalModelLoaded } from "./modelLoading";
 import { latestTask, errorAfterHealthyConnection } from "./domain";
+import { availableAgentModels } from "./modelAvailability";
+import { summarizeCollaboration } from "./collaboration";
+import { CollaborationStrip, CollaborationPanel } from "./components/Collaboration";
+import { ProjectHistory } from "./components/ProjectHistory";
+import { groupConversations } from "./projects";
 import {
   permissionModes,
   permissionNames,
@@ -169,6 +174,25 @@ const markdownComponents = {
   img: () => <span className="muted">[远程图片未加载]</span>,
 };
 export default function App() {
+  const [projectNames, setProjectNames] = useState<string[]>(() => stored("lp.projects.v1", []));
+  const [sessionProjects, setSessionProjects] = useState<Record<string, string>>(
+    () => stored("lp.sessionProjects.v1", {}),
+  );
+  const [pinnedProjects, setPinnedProjects] = useState<string[]>(
+    () => stored("lp.pinnedProjects.v1", []),
+  );
+  const [pinnedSessions, setPinnedSessions] = useState<string[]>(
+    () => stored("lp.pinnedSessions.v1", []),
+  );
+  const [activeProject, setActiveProject] = useState("");
+  const [projectEditor, setProjectEditor] = useState<{ kind: "create" | "move"; sessionId?: string } | null>(null);
+  const [projectName, setProjectName] = useState("");
+  useEffect(() => {
+    localStorage.setItem("lp.projects.v1", JSON.stringify(projectNames));
+    localStorage.setItem("lp.sessionProjects.v1", JSON.stringify(sessionProjects));
+    localStorage.setItem("lp.pinnedProjects.v1", JSON.stringify(pinnedProjects));
+    localStorage.setItem("lp.pinnedSessions.v1", JSON.stringify(pinnedSessions));
+  }, [projectNames, sessionProjects, pinnedProjects, pinnedSessions]);
   const [profile, setProfile] = useState(emptyProfile),
     [health, setHealth] = useState<Json | null>(null),
     [compHealth, setCompHealth] = useState<Json | null>(null),
@@ -493,22 +517,19 @@ export default function App() {
     }));
     if (desktop && connected) {
       setPreferenceSaving(true);
-      persistQueue.current = persistQueue.current
+      const save = persistQueue.current
+        .catch(() => {})
         .then(() =>
           call("session_preferences", {
             sessionId: currentTask?.session_id || chatId,
             value,
           }),
         )
-        .then(() => {
-          setPreferenceSaving(false);
-        })
-        .catch((e) => {
-          showError(e);
-          setPreferenceSaving(false);
-          throw e;
-        });
-      persistQueue.current.catch(() => {});
+        .catch(showError);
+      const settled = save.then(() => {
+        if (persistQueue.current === settled) setPreferenceSaving(false);
+      });
+      persistQueue.current = settled;
     }
   }
   const [enterBehavior, setEnterBehavior] = useState<EnterBehavior>(() =>
@@ -530,6 +551,9 @@ export default function App() {
     ? previewTask
     : tasks.find((t) => t.id === selected);
   const actualModels = preview ? previewModels : models;
+  const usableModels = availableAgentModels(actualModels).filter((m) =>
+    sourceAllows(sessionPrefs, m),
+  );
   const chosen = actualModels.find((m) => m.id === model);
   const [modelEfforts, setModelEfforts] = useState<Record<string, string>>(() =>
     stored("lp.modelEfforts", {}),
@@ -569,6 +593,7 @@ export default function App() {
         (chosen.adapter === "deepseek" || chosen.cloud_egress !== "LOCAL_ONLY");
   const effectiveMessages = preview ? previewMessages : messages;
   const activeEvents = preview ? previewEvents : events[selected || ""] || [];
+  const collaboration = summarizeCollaboration(preview ? [] : activeEvents);
   const dims = dimensions(currentTask),
     usage = usageOf(currentTask);
   const connected = !!health && compatible(health);
@@ -637,6 +662,7 @@ export default function App() {
       ]);
       if (sequence !== refreshSequence.current) return;
       setModels(m.models || []);
+      const selectable = availableAgentModels(m.models || []);
       let automaticSupported = false;
       try {
         const cap = await call<Json>("routing_capabilities");
@@ -662,14 +688,11 @@ export default function App() {
       setModel(
         (old) =>
           ((old === "__auto__" && automaticSupported) ||
-          m.models?.some((v: Model) => v.id === old)
+          selectable.some((v) => v.id === old)
             ? old
             : "") ||
           (automaticSupported ? "__auto__" : "") ||
-          m.models?.find(
-            (v: Model) => v.deployment_status === "ready" && !v.reasoning_only,
-          )?.id ||
-          m.models?.[0]?.id ||
+          selectable[0]?.id ||
           "",
       );
       try {
@@ -922,6 +945,7 @@ export default function App() {
     composer.current?.focus();
   }
   function openTask(t: Task) {
+    setActiveProject(sessionProjects[t.session_id] || profile.workspace.split("/").filter(Boolean).pop() || "默认项目");
     setError("");
     setPermissionOpen(false);
     setPreferenceOpen(false);
@@ -1089,6 +1113,14 @@ export default function App() {
   async function selectModel(id: string) {
     if (modelLoadLock.current || busy) return;
     const target = actualModels.find((m) => m.id === id);
+    if (!preview && currentTask && currentTask.model !== id) {
+      // A new backend Session has no previous canonical history. Do not keep
+      // rendering the old conversation as if the selected model had received it.
+      const draftInput = input;
+      newChat();
+      setInput(draftInput);
+      setToast("已为新模型创建新会话；旧聊天仍在历史，前文不会自动传给新模型。");
+    }
     setModelOpen(false);
     setError("");
     if (
@@ -1209,9 +1241,12 @@ export default function App() {
           (model === "__auto__" || currentTask?.model === model)
             ? currentTask?.session_id || null
             : null;
-        if (scopedPending.length > 0)
+        if (
+          useSession &&
+          scopedPending.some((v) => v.session_id === useSession)
+        )
           throw new Error(
-            "有提交状态未确认的原请求，请先使用恢复原请求，避免创建重复任务。",
+            "当前会话有未确认的原请求。请先恢复它；其它独立会话仍可使用。",
           );
         let effectiveModel = model;
         const caps = health?.compatibility?.capabilities || [];
@@ -1376,6 +1411,10 @@ export default function App() {
           return next;
         });
         setChatId(t.session_id);
+        setSessionProjects((old) => ({
+          ...old,
+          [t.session_id]: old[t.session_id] || activeProject || profile.workspace.split("/").filter(Boolean).pop() || "默认项目",
+        }));
         localStorage.setItem("lp.currentTask", JSON.stringify(t.id));
         updateTask(t);
         setTurns((old) => ({ ...old, [t.id]: { input: question, model } }));
@@ -1594,6 +1633,29 @@ export default function App() {
   const grouped = latestConversations(tasks).filter((t) =>
     matchedSessions.has(t.session_id),
   );
+  const projectRoot = profile.workspace.split("/").filter(Boolean).pop() || "默认项目";
+  const projectGroups = groupConversations(
+    grouped, projectNames, sessionProjects, pinnedProjects, pinnedSessions, projectRoot,
+  ).filter((group) => !query || group.tasks.length > 0);
+  const togglePinProject = (name: string) => setPinnedProjects((old) =>
+    old.includes(name) ? old.filter((v) => v !== name) : [...old, name],
+  );
+  const togglePinSession = (id: string) => setPinnedSessions((old) =>
+    old.includes(id) ? old.filter((v) => v !== id) : [...old, id],
+  );
+  const openProjectEditor = (kind: "create" | "move", sessionId?: string) => {
+    setProjectEditor({ kind, sessionId });
+    setProjectName(kind === "move" && sessionId ? sessionProjects[sessionId] || projectRoot : "");
+  };
+  const saveProject = () => {
+    const name = projectName.trim().slice(0, 60);
+    if (!name) return;
+    setProjectNames((old) => old.includes(name) ? old : [...old, name]);
+    if (projectEditor?.kind === "move" && projectEditor.sessionId)
+      setSessionProjects((old) => ({ ...old, [projectEditor.sessionId!]: name }));
+    setActiveProject(name);
+    setProjectEditor(null);
+  };
   const outputBlocked =
     busy || (!preview && !!currentTask && !terminal.has(currentTask.status));
   const plans: Json[] = Array.isArray(currentTask?.goals)
@@ -1677,14 +1739,11 @@ export default function App() {
             <ChevronDown size={13} />
           </button>
           <div className="sidebar-section">
-            <span>最近会话</span>
-            <button
-              className="icon-btn"
-              aria-label="刷新任务列表"
-              onClick={() => refresh().catch(showError)}
-            >
-              <RefreshCw size={12} />
-            </button>
+            <span>项目与会话</span>
+            <button className="icon-btn" aria-label="创建项目" title="创建项目"
+              onClick={() => openProjectEditor("create")}><Plus size={13} /></button>
+            <button className="icon-btn" aria-label="刷新任务列表"
+              onClick={() => refresh().catch(showError)}><RefreshCw size={12} /></button>
           </div>
           <nav className="task-list" aria-label="任务历史">
             {!preview &&
@@ -1732,28 +1791,19 @@ export default function App() {
                   不会被保存为真实历史
                 </div>
               </>
-            ) : grouped.length ? (
-              grouped.map((t) => (
-                <button
-                  className={`task-row ${currentTask?.session_id === t.session_id ? "selected" : ""}`}
-                  key={t.id}
-                  onClick={() => openTask(t)}
-                >
-                  <MessageSquare size={14} />
-                  <span>
-                    {conversationTitle(
-                      t,
-                      tasks,
-                      stored<Record<string, string>>("lp.titles", {}),
-                      turns,
-                    )}
-                    <small>{label(t.status)}</small>
-                  </span>
-                  <i
-                    className={`task-dot ${t.status === "completed" ? "good" : isUnknown(t) || t.status.includes("requires") ? "warn" : ""}`}
-                  />
-                </button>
-              ))
+            ) : grouped.length || (!query && projectGroups.length) ? (
+              <ProjectHistory
+                groups={projectGroups}
+                allTasks={tasks}
+                turns={turns}
+                titles={stored<Record<string, string>>("lp.titles", {})}
+                currentSession={currentTask?.session_id}
+                pinnedSessions={pinnedSessions}
+                onOpen={openTask}
+                onPinProject={togglePinProject}
+                onPinSession={togglePinSession}
+                onMoveSession={(id) => openProjectEditor("move", id)}
+              />
             ) : (
               <div className="sidebar-empty">
                 {query ? (
@@ -1890,7 +1940,7 @@ export default function App() {
           <div className="pending-banner">
             <ShieldAlert size={15} />
             <span>
-              {scopedPending.length} 个原请求尚未确认。恢复会复用原键和原请求。
+              {scopedPending.length} 个原请求尚未确认；可恢复原请求，其它独立会话可继续。
             </span>
             <button
               className="text-btn"
@@ -2323,20 +2373,20 @@ export default function App() {
                         onClose={() => setModelOpen(false)}
                       >
                         <div className="menu-label">
-                          选择模型<span>已下载的本地模型自动加载</span>
+                          选择模型<span>仅显示当前可用的标准 Agent 路由；其他模型在模型库</span>
                         </div>
                         {supportedRouting && (
                           <button
                             onClick={() => {
-                              setModel("__auto__");
+                              void selectModel("__auto__");
                               setModelOpen(false);
                             }}
                           >
                             Core 自动选择 · 已协商 1.0
                           </button>
                         )}
-                        {actualModels.length ? (
-                          actualModels.map((m) => (
+                        {usableModels.length ? (
+                          usableModels.map((m) => (
                             <button
                               key={m.id}
                               disabled={
@@ -2348,10 +2398,6 @@ export default function App() {
                                   : undefined
                               }
                               onClick={() => {
-                                if (currentTask && currentTask.model !== m.id)
-                                  setToast(
-                                    "模型改变后，下一条消息将创建新 Session",
-                                  );
                                 void selectModel(m.id);
                               }}
                               className={model === m.id ? "selected" : ""}
@@ -2506,6 +2552,13 @@ export default function App() {
             </span>
           </div>
         </div>
+        <CollaborationStrip
+          usage={collaboration}
+          open={() => {
+            setRight(true);
+            setTab("collaboration");
+          }}
+        />
       </main>
       {right && (
         <aside className="inspector">
@@ -2592,6 +2645,14 @@ export default function App() {
                 onClick={() => setTab("diff")}
               >
                 Diff
+              </button>
+              <button
+                role="tab"
+                aria-selected={tab === "collaboration"}
+                className={tab === "collaboration" ? "selected" : ""}
+                onClick={() => setTab("collaboration")}
+              >
+                协同
               </button>
             </div>
             {tab === "activity" ? (
@@ -2845,6 +2906,8 @@ export default function App() {
                   )}
                 </section>
               </>
+            ) : tab === "collaboration" ? (
+              <CollaborationPanel usage={collaboration} />
             ) : (
               <section className="inspector-section">
                 {diffsOf(currentTask).length ? (
@@ -2955,6 +3018,21 @@ export default function App() {
             </button>
           </footer>
         </aside>
+      )}
+      {projectEditor && (
+        <Modal title={projectEditor.kind === "create" ? "新建项目" : "移动会话到项目"}
+          onClose={() => setProjectEditor(null)}>
+          <label className="field-label">项目名称
+            <input aria-label="项目名称" autoFocus value={projectName}
+              onChange={(event) => setProjectName(event.target.value)}
+              list="localpilot-project-options" maxLength={60} />
+          </label>
+          <datalist id="localpilot-project-options">
+            {[projectRoot, ...projectNames].map((name) => <option key={name} value={name} />)}
+          </datalist>
+          <button className="primary" disabled={!projectName.trim()}
+            onClick={saveProject}>保存</button>
+        </Modal>
       )}
       {developerOpen && (
         <Modal

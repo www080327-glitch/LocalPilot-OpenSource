@@ -8,6 +8,19 @@ class ContextTooSmall(ValueError):
     pass
 
 
+def estimated_context_tokens(messages, tools):
+    """Token-budget fallback when a backend tokenizer is unavailable.
+
+    The original context_units() intentionally measures UTF-8 bytes for legacy
+    admission. Never compare that byte count directly with a model's token limit.
+    """
+    body = json.dumps([m.to_dict(include_reasoning=True) for m in messages], ensure_ascii=False)
+    schema = json.dumps(tools, ensure_ascii=False)
+    payload = body + schema
+    non_ascii = sum(ord(char) > 127 for char in payload)
+    return non_ascii + (len(payload) - non_ascii + 2) // 3
+
+
 def context_units(messages, tools):
     # UTF-8 byte count is a deliberately conservative token admission estimate.
     return len(json.dumps([m.to_dict(include_reasoning=True) for m in messages], ensure_ascii=False).encode()) + len(json.dumps(tools, ensure_ascii=False).encode())

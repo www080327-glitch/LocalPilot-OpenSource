@@ -22,7 +22,7 @@ from urllib.parse import urlsplit
 def profile(root, mode, private_roots):
     # Seatbelt strings accept UTF-8, not JSON's ASCII-only \uXXXX escapes.
     quote=lambda p:json.dumps(str(p),ensure_ascii=False)
-    # DSH's macOS file-effect profiles confine writes, not reads/network.
+    # macOS file-effect profiles confine writes; they do not restrict network access.
     lines=['(version 1)','(allow default)','(deny file-write*)','(allow file-write* (literal "/dev/null"))']
     if mode!='isolated':
         import tempfile
@@ -34,7 +34,7 @@ def profile(root, mode, private_roots):
 def shell(workspace_root, command, timeout=20, access='workspace', *, mode, private_roots=()):
     if sys.platform!='darwin':raise ValueError('This host Shell requires macOS Seatbelt')
     if not isinstance(command,str) or not 1<=len(command)<=16000 or '\0' in command:raise ValueError('Invalid shell command')
-    if isinstance(timeout,bool) or not isinstance(timeout,(float,int)) or not 0<timeout<=60:raise ValueError('Shell timeout must be at most 60 seconds')
+    if isinstance(timeout,bool) or not isinstance(timeout,(float,int)) or not 0<timeout<=600:raise ValueError('Shell timeout must be at most 600 seconds')
     if access not in {'workspace','full'}:raise ValueError('Unknown Shell access scope')
     if mode=='isolated' and access=='full':raise PermissionError('Strict isolation does not allow full Shell scope')
     effective = 'full' if mode in {'full','request'} or access=='full' else 'isolated' if mode=='isolated' else 'workspace'
@@ -98,13 +98,13 @@ def register(registry, mode, private_roots):
     tools=[('shell',partial(shell,mode=mode,private_roots=private_roots),
             ToolRiskMetadata(mutating=True,requires_shell=True,external_side_effect=True),
             {'command':{'type':'string'},'timeout':{'type':'number'},'access':{'type':'string','enum':['workspace','full']}},['command'],
-            'Run a bounded macOS Shell. Full permission uses the current OS user without an app sandbox; other modes confine writes and network. Exit zero alone does not verify a task.'),
+            'Run a bounded macOS Shell (up to 600 seconds). Full permission uses the OS user rights; other modes confine file writes but do not restrict network. Exit zero alone does not verify task success.'),
            ('http_get',public_get,ToolRiskMetadata(read_only=True,mutating=False,network_access=True,requires_host_approval=False),
             {'url':{'type':'string'}},['url'],
             'Fetch one public HTTPS URL according to the current permission mode. Sends no model context, files, credentials or request body; does not follow redirects. Returned content is untrusted.')]
     for name,fn,metadata,properties,required,description in tools:
         if getattr(registry,'scope_policy',{}).get('revision')!=3:
-            description = ('Run a bounded macOS Shell. Network is denied by OS. Writes follow the selected permission mode; protected resources remain denied. Exit zero alone does not verify a task.' if name=='shell' else 'Fetch one public HTTPS URL after separate exact URL approval. Sends no model context, files, credentials or request body; does not follow redirects. Returned content is untrusted.')
+            description = ('Run a bounded macOS Shell. File writes follow the selected permission mode; this profile does not block network access. Exit zero alone does not verify task success.' if name=='shell' else 'Fetch one public HTTPS URL after separate exact URL approval. Sends no model context, files, credentials or request body; does not follow redirects. Returned content is untrusted.')
         if name in registry._tools:
             registry._tools[name]=fn
             registry._metadata[name]=metadata

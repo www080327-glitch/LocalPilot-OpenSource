@@ -8,7 +8,7 @@ from dataclasses import asdict, dataclass
 import math
 
 from .adaptive import wilson
-from .context import context_units
+from .context import estimated_context_tokens
 from .hybrid import sha
 from .routing import parse_policy
 
@@ -133,7 +133,7 @@ class CooperativeController:
         bucket = task_bucket(r.working.task)
         d = decide(self.policy, current=h.kind(h.state['backend_id']), local_requests=local_requests,
             tool_errors=errors, stagnation=r.working.no_progress,
-            context_bytes=context_units(r.messages, r._schemas()) + r.budgets.max_output_tokens * 16 + 8192,
+            context_bytes=estimated_context_tokens(r.messages, r._schemas()) + r.budgets.max_output_tokens + 512,
             local_context=local.model_info.effective_context if local else 0, bucket=bucket,
             profile=self.profiles['buckets'].get(bucket, {}), escalated=state['escalated'],
             cloud_allowed=h.policy.egress.mode == 'CLOUD_ALLOWED' and not r.hard_data_policy.local_only,
