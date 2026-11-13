@@ -660,6 +660,7 @@ export default function App() {
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
   const taskSnapshots = useRef<Record<string, Task>>({});
+  const streamedSequence = useRef<Record<string, number>>({});
   const updateTask = useCallback((t: Task) => {
     if (latestTask(taskSnapshots.current[t.id], t) !== t) return;
     taskSnapshots.current[t.id] = t;
@@ -698,6 +699,7 @@ export default function App() {
         setTurns({});
         setTasks([]);
         taskSnapshots.current = {};
+        streamedSequence.current = {};
         setSelected(null);
         setMessages([]);
         setEvents({});
@@ -885,11 +887,16 @@ export default function App() {
           [id]: [
             ...(old[id] || []).filter((v) => v.sequence !== e.sequence),
             e,
-          ].slice(-250),
+          ]
+            .filter((v, index, all) =>
+              eventName(v) !== "TextDelta" || index >= all.length - 50,
+            )
+            .slice(-500),
         }));
         if (e.type === "task.status" || e.type === "task.created")
           updateTask(e.data as Task);
-        if (e.type === "runtime.event") {
+        if (e.type === "runtime.event" && e.sequence > (streamedSequence.current[id] || 0)) {
+          streamedSequence.current[id] = e.sequence;
           if (e.data.type === "ModelResponseStarted")
             setDelta((old) => ({ ...old, [id]: "" }));
           if (e.data.type === "TextDelta")
@@ -1129,6 +1136,7 @@ export default function App() {
         setDelta({});
         setTasks([]);
         taskSnapshots.current = {};
+        streamedSequence.current = {};
         setModels([]);
         setTurns({});
         setPending([]);
