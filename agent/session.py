@@ -15,6 +15,7 @@ from .persistence import PersistenceError
 from .hybrid import HybridController, HybridPolicy, CloudEgressApprovalNeeded
 from .backends import BackendCapabilities, BackendResponse, LocalBackend, Message, ToolCall
 from .context import transfer_context, context_units, ContextTooSmall
+from .context_budget import request_budget, context_tokens
 from .events import EventStream
 from .goals import GoalStore
 from .judge import LocalSafetyJudge
@@ -1378,8 +1379,9 @@ class AgentSession:
             retained_resume = False
             if self.controls.working_state:
                 if self.computer:
-                    output_reserve = self._output_guard if self.controls.reserve else self.budgets.max_output_tokens
-                    prefix_units = context_units([m for m in self.messages if m.role == "system"], schemas)
+                    output_reserve = self._request_output_tokens + 64
+                    prefix_units = context_tokens([m for m in self.messages if m.role == "system"], schemas,
+                                                  tokenizer=getattr(backend, 'tokenizer', None))
                     # Space for the serialized state Message header/framing.
                     # Reduce optional old evidence, never the output/final reserve
                     # or the critical task/control/current observation fields.
@@ -1432,13 +1434,14 @@ class AgentSession:
                         'slots': recovery_slots if self.finalization_policy else 1,
                         'output_units': output_reserves if self.finalization_policy else self._request_output_tokens * 16}
             view, compacted = transfer(request_messages, schemas, window,
-                self._request_output_tokens * 16 if self.controls.reserve else self._request_output_tokens,
+                self._request_output_tokens + 64,
                 plan=self.active_plan, goals=self._goal_records(),
                 working_state=state_view,
                 final_only=self._finalizing,
                 stable_history_prefix=bool((self.harness_policy and self.harness_policy.cache_stable_prefix)
                     or getattr(backend, "service_cache_stable_prefix", False)),
-                enabled=bool(self.harness_policy and self.hybrid and backend.is_local and not self._finalizing), **v5_options)
+                enabled=bool(self.harness_policy and self.hybrid and backend.is_local and not self._finalizing),
+                tokenizer=getattr(backend, 'tokenizer', None), **v5_options)
         except ContextTooSmall:
             if self.controls.reserve and not self._finalizing:
                 self._enter_finalizing("context_reserve")
@@ -1472,6 +1475,10 @@ class AgentSession:
                 if self.hybrid.fallback(error, False):
                     return self._model_request()
                 raise
+        context_budget = request_budget(view, schemas, self._request_output_tokens,
+                                        tokenizer=getattr(backend, 'tokenizer', None))
+        if context_budget['total_tokens'] > window:
+            raise ContextTooSmall("Projected model input and output exceed the model's token window.")
         request_units = context_units(view, schemas)
         output_charge = self._request_output_tokens * 16 if self.controls.reserve else self._request_output_tokens
         limit = (self.budgets.max_token_units if self._finalizing else self._exploration_limit) - self._reserved_child_budget('_token_units')
@@ -1488,10 +1495,11 @@ class AgentSession:
             self._debug({"event": "thinking_mode_mapped", "requested": effort,
                          "effective": "provider_default", "reason": "unsupported_reasoning_effort"})
         self._emit("ModelRequestStarted", primary=self.primary, model=self.current_primary_model, thinking=effort, phase="finalizing" if self._finalizing else "exploring", role="worker" if self.depth else "parent")
-        self._emit('ModelBudgetEstimated', estimator='utf8_bytes_conservative_not_measured_tokens',
-            context_capacity_units=window, request_units=request_units,
-            remaining_context_units=window - request_units - self._request_output_tokens * 16,
+        self._emit('ModelBudgetEstimated', estimator=context_budget['estimator'],
+            context_capacity_units=window, request_units=context_budget['input_tokens'],
+            remaining_context_units=window - context_budget['total_tokens'],
             remaining_turn_units=self.budgets.max_token_units - self._token_units,
+            legacy_turn_request_bytes=request_units, estimated_context_tokens=context_budget,
             max_output_tokens=self._request_output_tokens, protected_final_units=self._final_reserve)
         self._debug({"event": "model_request", "step": len(self._usage) + 1})
         started = time.perf_counter()
