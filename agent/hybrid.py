@@ -536,7 +536,7 @@ class HybridController:
         # Check the target model's context in tokens, without changing the
         # legacy byte-denominated per-turn resource ledger.
         transfer_with_optional_projection(self.project_messages(r.messages, alias), None if r._finalizing else r._schemas(),
-            backend.model_info.effective_context, r.budgets.max_output_tokens + 64,
+            backend.model_info.effective_context, r.budgets.max_output_tokens + max(64, backend.model_info.effective_context // 50),
             working_state=self.contract(backend), final_only=r._finalizing,
             tokenizer=getattr(backend, 'tokenizer', None),
             enabled=bool(r.harness_policy and backend.is_local and not r._finalizing))
