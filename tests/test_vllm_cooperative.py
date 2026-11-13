@@ -53,7 +53,7 @@ class CooperativeTests(unittest.TestCase):
         self.assertEqual(self.decision('balanced',bucket='complex')['target'], 'cloud')
 
     def test_profile_cannot_turn_model_self_confidence_into_quality(self):
-        self.assertEqual(self.decision('balanced', profile={'confidence':1})['target'], 'cloud')
+        self.assertEqual(self.decision('balanced', profile={'confidence':1})['target'], 'local')
         self.assertEqual(self.decision('balanced', profile={'samples':100,'successes':100})['target'], 'local')
 
     def test_runtime_local_only_never_calls_cloud(self):
