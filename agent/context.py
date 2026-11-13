@@ -90,4 +90,4 @@ def transfer_context(messages, tools, window, output_reserve, *, plan=None, goal
         # state after complete history groups, before cloud authorization.
         result = system + recent + [state_message]
     return result, {"original_estimated_units": original, "transferred_estimated_units": count(result),
-                    "estimator": "utf8_bytes_conservative_not_measured_tokens", "omitted_messages": len(messages) - len(system) - len(recent)}
+                    "estimator": "mixed_text_estimate_v1", "omitted_messages": len(messages) - len(system) - len(recent)}
