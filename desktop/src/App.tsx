@@ -1113,6 +1113,14 @@ export default function App() {
   async function selectModel(id: string) {
     if (modelLoadLock.current || busy) return;
     const target = actualModels.find((m) => m.id === id);
+    if (!preview && currentTask && currentTask.model !== id) {
+      // A new backend Session has no previous canonical history. Do not keep
+      // rendering the old conversation as if the selected model had received it.
+      const draftInput = input;
+      newChat();
+      setInput(draftInput);
+      setToast("已为新模型创建新会话；旧聊天仍在历史，前文不会自动传给新模型。");
+    }
     setModelOpen(false);
     setError("");
     if (
@@ -2370,7 +2378,7 @@ export default function App() {
                         {supportedRouting && (
                           <button
                             onClick={() => {
-                              setModel("__auto__");
+                              void selectModel("__auto__");
                               setModelOpen(false);
                             }}
                           >
@@ -2390,10 +2398,6 @@ export default function App() {
                                   : undefined
                               }
                               onClick={() => {
-                                if (currentTask && currentTask.model !== m.id)
-                                  setToast(
-                                    "模型改变后，下一条消息将创建新 Session",
-                                  );
                                 void selectModel(m.id);
                               }}
                               className={model === m.id ? "selected" : ""}
