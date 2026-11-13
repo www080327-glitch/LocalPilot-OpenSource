@@ -2091,7 +2091,7 @@ export default function App() {
                             delta[m.taskId || ""],
                           )}
                         </ReactMarkdown>
-                        {!m.text && !delta[m.taskId || ""] && (
+                        {!replyText(m, tasks.find((t) => t.id === m.taskId), delta[m.taskId || ""]) && (
                           <span className="thinking">
                             <i />
                             <i />
