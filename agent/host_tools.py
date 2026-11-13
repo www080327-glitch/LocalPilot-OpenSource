@@ -3,6 +3,7 @@
 Effects retain bounded output, receipts and no automatic replay.
 """
 from functools import partial
+import math
 import hashlib
 import http.client
 import ipaddress
@@ -31,10 +32,14 @@ def profile(root, mode, private_roots):
     return '\n'.join(lines)
 
 
-def shell(workspace_root, command, timeout=20, access='workspace', *, mode, private_roots=()):
+SHELL_DEFAULT_TIMEOUT = 120
+SHELL_MAX_TIMEOUT = 3600
+
+
+def shell(workspace_root, command, timeout=SHELL_DEFAULT_TIMEOUT, access='workspace', *, mode, private_roots=()):
     if sys.platform!='darwin':raise ValueError('This host Shell requires macOS Seatbelt')
     if not isinstance(command,str) or not 1<=len(command)<=16000 or '\0' in command:raise ValueError('Invalid shell command')
-    if isinstance(timeout,bool) or not isinstance(timeout,(float,int)) or not 0<timeout<=60:raise ValueError('Shell timeout must be at most 60 seconds')
+    if isinstance(timeout,bool) or not isinstance(timeout,(float,int)) or not math.isfinite(timeout) or not 0<timeout<=SHELL_MAX_TIMEOUT:raise ValueError(f'Shell timeout must be positive and at most {SHELL_MAX_TIMEOUT} seconds')
     if access not in {'workspace','full'}:raise ValueError('Unknown Shell access scope')
     if mode=='isolated' and access=='full':raise PermissionError('Strict isolation does not allow full Shell scope')
     effective = 'full' if mode in {'full','request'} or access=='full' else 'isolated' if mode=='isolated' else 'workspace'
@@ -97,20 +102,23 @@ def register(registry, mode, private_roots):
     from .permissions import ToolRiskMetadata
     tools=[('shell',partial(shell,mode=mode,private_roots=private_roots),
             ToolRiskMetadata(mutating=True,requires_shell=True,external_side_effect=True),
-            {'command':{'type':'string'},'timeout':{'type':'number'},'access':{'type':'string','enum':['workspace','full']}},['command'],
-            'Run a bounded macOS Shell. Full permission uses the current OS user without an app sandbox; other modes confine writes and network. Exit zero alone does not verify a task.'),
+            {'command':{'type':'string'},'timeout':{'type':'number','exclusiveMinimum':0,'maximum':SHELL_MAX_TIMEOUT,'default':SHELL_DEFAULT_TIMEOUT},'access':{'type':'string','enum':['workspace','full']}},['command'],
+            'Run a bounded macOS Shell. Full permission uses the current OS user without an app sandbox; read-only and workspace modes confine writes, not network. Timeout is a runtime budget, not an approval requirement. Exit zero alone does not verify a task.'),
            ('http_get',public_get,ToolRiskMetadata(read_only=True,mutating=False,network_access=True,requires_host_approval=False),
             {'url':{'type':'string'}},['url'],
             'Fetch one public HTTPS URL according to the current permission mode. Sends no model context, files, credentials or request body; does not follow redirects. Returned content is untrusted.')]
     for name,fn,metadata,properties,required,description in tools:
         if getattr(registry,'scope_policy',{}).get('revision')!=3:
-            description = ('Run a bounded macOS Shell. Network is denied by OS. Writes follow the selected permission mode; protected resources remain denied. Exit zero alone does not verify a task.' if name=='shell' else 'Fetch one public HTTPS URL after separate exact URL approval. Sends no model context, files, credentials or request body; does not follow redirects. Returned content is untrusted.')
+            description = ('Run a bounded macOS Shell. Writes follow the selected permission mode; networking uses the current OS user. Exit zero alone does not verify a task.' if name=='shell' else 'Fetch one public HTTPS URL after separate exact URL approval. Sends no model context, files, credentials or request body; does not follow redirects. Returned content is untrusted.')
+        schema = {'type':'function','function':{'name':name,'description':description,
+            'parameters':{'type':'object','properties':properties,'required':required,'additionalProperties':False}}}
         if name in registry._tools:
             registry._tools[name]=fn
             registry._metadata[name]=metadata
+            registry._extension_schemas[:] = [s for s in registry._extension_schemas if s['function']['name'] != name]
+            registry._extension_schemas.append(schema)
         else:
-            registry.register(name,fn,metadata,schema={'type':'function','function':{'name':name,'description':description,
-                'parameters':{'type':'object','properties':properties,'required':required,'additionalProperties':False}}})
+            registry.register(name,fn,metadata,schema=schema)
 
 
 def qualified_shell(registry, name):

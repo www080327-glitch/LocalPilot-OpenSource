@@ -41,9 +41,19 @@ def workspace_arguments(registry, name, args):
     result = deepcopy(args)
     for owner, key in targets(name, result):
         p = Path(owner[key])
+        if registry.scope_policy.get('revision') == 3:
+            p = _canonical_target(registry.workspace_root, p, name)
+            owner[key] = str(p)
         if p.is_absolute() and p.is_relative_to(registry.workspace_root):
             owner[key] = str(p.relative_to(registry.workspace_root))
     return result
+
+
+def _canonical_target(root, path, name):
+    path = Path(os.path.abspath(root / path))
+    # Resolve directory aliases (including macOS /tmp) before scope decisions.
+    # A mutation must not silently change from replacing a link to its referent.
+    return path.resolve() if name in READ_TOOLS else path.parent.resolve() / path.name
 
 
 def proposal(registry, name, args):
@@ -68,6 +78,8 @@ def proposal(registry, name, args):
         if not isinstance(value, str) or not value or len(value) > 4096 or '\x00' in value:
             raise ValueError('Invalid file target')
         p = Path(os.path.abspath(root / value))
+        if policy.get('revision') == 3:
+            p = _canonical_target(root, p, name)
         if policy.get('revision')!=3 and policy['mode'] != 'full' and (sensitive_path(p) or any(p == Path(v) or p.is_relative_to(v) for v in policy['private_roots'])):
             raise PermissionError('Protected or private service resource')
         outside |= not p.is_relative_to(root)
