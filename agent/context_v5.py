@@ -4,7 +4,7 @@ import hashlib
 import json
 
 from .backends import Message
-from .context import ContextTooSmall
+from .context import ContextTooSmall, context_units
 from .context_budget import context_tokens
 
 
@@ -54,19 +54,24 @@ def transfer(messages, tools, window, output_reserve, *, working_state=None,
                        + json.dumps(state, sort_keys=True, ensure_ascii=False, separators=(',', ':')))
     current = tail()
     minimum = system + [current]
+    delivery_input_bytes = None
     if final_only and delivery_budget is not None:
-        # Share remaining admission across the remaining delivery attempts.
-        # Preserve critical state even if only one attempt can still fit, and
-        # cap this request before adding history. Never borrow output allowance.
-        remaining = delivery_budget['remaining']
-        fair_input = max(0, (remaining - delivery_budget['output_units']) // delivery_budget['slots'])
-        budget = min(budget, remaining - output_reserve,
-                     max(count(minimum) + 512, fair_input))
-    if count(minimum) > budget:
+        # The finalization ledger is byte-denominated; the model window is
+        # token-denominated. Check both independently.
+        remaining_bytes = delivery_budget['remaining'] - delivery_budget['output_units']
+        fair_bytes = max(0, remaining_bytes // delivery_budget['slots'])
+        delivery_input_bytes = min(remaining_bytes,
+            max(context_units(minimum, tools) + 512, fair_bytes))
+
+    def fits(items):
+        return count(items) <= budget and (
+            delivery_input_bytes is None or context_units(items, tools) <= delivery_input_bytes)
+
+    if not fits(minimum):
         raise ContextTooSmall('V5 protected task, obligations and current evidence exceed context; no silent truncation')
     full = system + history + [current]
     original = count(full)
-    if original <= budget:
+    if fits(full):
         return full, None
     # Build groups only at legal tool-pair boundaries. Canonical histories with
     # missing results are rejected rather than compacted into apparently valid
@@ -90,19 +95,19 @@ def transfer(messages, tools, window, output_reserve, *, working_state=None,
         'history_sha256': hashlib.sha256(json.dumps([m.to_dict(include_reasoning=True) for m in history], sort_keys=True).encode()).hexdigest(),
         'rule': 'Earlier history omitted from this view only; canonical SQLite and receipts are intact. Re-read missing bodies before relying on them.'}
     current = tail(); recent = []
-    if count(system + [current]) > budget: raise ContextTooSmall('V5 compaction notice cannot fit')
+    if not fits(system + [current]): raise ContextTooSmall('V5 compaction notice cannot fit')
     for group in reversed(groups):
-        if count(system + group + recent + [current]) > budget: break
+        if not fits(system + group + recent + [current]): break
         recent = group + recent
     state['context_omissions']['messages'] = len(history) - len(recent)
     checkpoint = [Message('user', 'Earlier context was compacted. The trailing current Host state retains the original task and obligations; earlier file bodies are unavailable.')]
-    while recent and count(system + checkpoint + recent + [tail()]) > budget:
+    while recent and not fits(system + checkpoint + recent + [tail()]):
         # Drop a complete oldest retained group, never an individual tool result.
         first = next((g for g in groups if g and g[0] is recent[0]), None)
         if first is None: raise ContextTooSmall('V5 compaction group identity lost')
         recent = recent[len(first):]
         state['context_omissions']['messages'] = len(history) - len(recent)
-    if count(system + checkpoint + [tail()]) > budget:
+    if not fits(system + checkpoint + [tail()]):
         raise ContextTooSmall('V5 compaction checkpoint cannot fit')
     result = system + checkpoint + recent + [tail()]
     return result, {'original_estimated_units': original, 'transferred_estimated_units': count(result),
