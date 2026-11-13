@@ -4,7 +4,8 @@ import hashlib
 import json
 
 from .backends import Message
-from .context import ContextTooSmall, context_units
+from .context import ContextTooSmall
+from .context_budget import context_tokens
 
 
 def host_state(runtime, state, tools):
@@ -41,10 +42,11 @@ def transfer(messages, tools, window, output_reserve, *, working_state=None,
     Compaction retains the full protected task/control/evidence snapshot and
     newest balanced groups. No summary is allowed to authorize a tool. A final
     request retains useful observations when they fit instead of dropping all
-    bodies. UTF-8 admission remains conservative and explicit.
+    bodies. Context-window admission uses an explicitly labeled token estimate.
     """
     state = deepcopy(working_state or {})
     budget = window - output_reserve
+    count = lambda items: context_tokens(items, tools, tokenizer=unused.get('tokenizer'))
     system = [m for m in messages if m.role == 'system'][-1:]
     history = [m for m in messages if m.role != 'system']
     def tail():
@@ -59,11 +61,11 @@ def transfer(messages, tools, window, output_reserve, *, working_state=None,
         remaining = delivery_budget['remaining']
         fair_input = max(0, (remaining - delivery_budget['output_units']) // delivery_budget['slots'])
         budget = min(budget, remaining - output_reserve,
-                     max(context_units(minimum, tools) + 512, fair_input))
-    if context_units(minimum, tools) > budget:
+                     max(count(minimum) + 512, fair_input))
+    if count(minimum) > budget:
         raise ContextTooSmall('V5 protected task, obligations and current evidence exceed context; no silent truncation')
     full = system + history + [current]
-    original = context_units(full, tools)
+    original = count(full)
     if original <= budget:
         return full, None
     # Build groups only at legal tool-pair boundaries. Canonical histories with
@@ -88,22 +90,22 @@ def transfer(messages, tools, window, output_reserve, *, working_state=None,
         'history_sha256': hashlib.sha256(json.dumps([m.to_dict(include_reasoning=True) for m in history], sort_keys=True).encode()).hexdigest(),
         'rule': 'Earlier history omitted from this view only; canonical SQLite and receipts are intact. Re-read missing bodies before relying on them.'}
     current = tail(); recent = []
-    if context_units(system + [current], tools) > budget: raise ContextTooSmall('V5 compaction notice cannot fit')
+    if count(system + [current]) > budget: raise ContextTooSmall('V5 compaction notice cannot fit')
     for group in reversed(groups):
-        if context_units(system + group + recent + [current], tools) > budget: break
+        if count(system + group + recent + [current]) > budget: break
         recent = group + recent
     state['context_omissions']['messages'] = len(history) - len(recent)
     checkpoint = [Message('user', 'Earlier context was compacted. The trailing current Host state retains the original task and obligations; earlier file bodies are unavailable.')]
-    while recent and context_units(system + checkpoint + recent + [tail()], tools) > budget:
+    while recent and count(system + checkpoint + recent + [tail()]) > budget:
         # Drop a complete oldest retained group, never an individual tool result.
         first = next((g for g in groups if g and g[0] is recent[0]), None)
         if first is None: raise ContextTooSmall('V5 compaction group identity lost')
         recent = recent[len(first):]
         state['context_omissions']['messages'] = len(history) - len(recent)
-    if context_units(system + checkpoint + [tail()], tools) > budget:
+    if count(system + checkpoint + [tail()]) > budget:
         raise ContextTooSmall('V5 compaction checkpoint cannot fit')
     result = system + checkpoint + recent + [tail()]
-    return result, {'original_estimated_units': original, 'transferred_estimated_units': context_units(result, tools),
-                    'estimator': 'utf8_bytes_conservative_not_measured_tokens',
+    return result, {'original_estimated_units': original, 'transferred_estimated_units': count(result),
+                    'estimator': 'mixed_text_estimate_v1',
                     'omitted_messages': len(history) - len(recent), 'projection': 'localpilot_v5_v1',
                     'reason': 'delivery_admission_share' if delivery_budget is not None else 'context_pressure'}
