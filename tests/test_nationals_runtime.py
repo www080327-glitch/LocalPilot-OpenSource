@@ -49,6 +49,15 @@ class RoutingAdmissionTests(unittest.TestCase):
         self.assertEqual(view[1], history[1])
         self.assertLess(context_tokens(view, []), 32768 - 2048 - 655)
 
+    def test_unmeasured_chinese_fallback_is_not_utf8_byte_count(self):
+        # Without a backend tokenizer, budget admission must remain explicitly
+        # estimated and must not charge three whole tokens per CJK character.
+        text = '人工智能' * 1200
+        budget = request_budget([Message('user', text)], [], 2048)
+        self.assertEqual(budget['estimator'], 'mixed_text_estimate_v1')
+        self.assertFalse(budget['measured'])
+        self.assertLess(budget['input_tokens'], len(text.encode('utf-8')))
+
     def test_tool_schema_is_counted(self):
         messages = [Message('user', 'hello')]
         small = request_budget(messages, [], 2048)
