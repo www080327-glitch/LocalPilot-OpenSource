@@ -1217,9 +1217,11 @@ export default function App() {
           (model === "__auto__" || currentTask?.model === model)
             ? currentTask?.session_id || null
             : null;
-        if (scopedPending.length > 0)
+        if (useSession && scopedPending.some(
+          (v) => v.body?.session_id === useSession,
+        ))
           throw new Error(
-            "有提交状态未确认的原请求，请先使用恢复原请求，避免创建重复任务。",
+            "此 Session 有提交结果未知的旧请求，请先查询或恢复原请求。其他会话仍可独立执行。",
           );
         let effectiveModel = model;
         const caps = health?.compatibility?.capabilities || [];
