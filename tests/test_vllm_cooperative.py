@@ -33,7 +33,7 @@ class Scripted:
 class CooperativeTests(unittest.TestCase):
     def decision(self, mode='local-first', **updates):
         fields = dict(current='local', local_requests=0, tool_errors=0, stagnation=0,
-            context_bytes=1000, local_context=65536, bucket='simple', profile={})
+            context_tokens=1000, local_context=65536, bucket='simple', profile={})
         fields.update(updates)
         return decide(CooperativePolicy(mode=mode), **fields)
 
@@ -42,15 +42,15 @@ class CooperativeTests(unittest.TestCase):
             self.assertEqual(self.decision(mode, cloud_allowed=False, tool_errors=5, bucket='complex')['target'], 'local')
 
     def test_unseen_quality_never_claims_calibration(self):
-        self.assertEqual(self.decision('balanced')['target'], 'cloud')
+        self.assertEqual(self.decision('balanced')['target'], 'local')
         self.assertEqual(self.decision('cloud-first')['target'], 'cloud')
         self.assertEqual(self.decision()['target'], 'local')
 
     def test_early_exit_and_hysteresis(self):
-        self.assertEqual(self.decision(local_requests=2)['reason'], 'local_trial_budget_exhausted')
+        self.assertEqual(self.decision(local_requests=8)['reason'], 'local_trial_budget_exhausted')
         self.assertEqual(self.decision(tool_errors=1)['reason'], 'tool_error')
         self.assertEqual(self.decision(escalated=True)['reason'], 'route_hysteresis')
-        self.assertEqual(self.decision(bucket='complex')['target'], 'cloud')
+        self.assertEqual(self.decision('balanced',bucket='complex')['target'], 'cloud')
 
     def test_profile_cannot_turn_model_self_confidence_into_quality(self):
         self.assertEqual(self.decision('balanced', profile={'confidence':1})['target'], 'cloud')
