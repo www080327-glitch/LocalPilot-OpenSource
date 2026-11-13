@@ -1140,6 +1140,20 @@ export default function App() {
   }
   const [loadingModel, setLoadingModel] = useState("");
   const modelLoadLock = useRef(false);
+  function detachForRouteChange() {
+    // Core binds a model to its backend Session. Preserve the old conversation
+    // and unsent composer text rather than pretending history was transferred.
+    const draftId = `draft-${crypto.randomUUID()}`;
+    ++preferenceWriteVersion.current;
+    setPreferenceSaving(false);
+    setPreferenceUnsaved(false);
+    setChatId(draftId);
+    setSelected(null);
+    setMessages([]);
+    setDelta({});
+    setRight(false);
+    localStorage.removeItem("lp.currentTask");
+  }
   async function selectModel(id: string) {
     if (modelLoadLock.current || busy) return;
     const target = actualModels.find((m) => m.id === id);
@@ -1166,20 +1180,7 @@ export default function App() {
       }
     }
     const startsNewConversation = !preview && currentTask && currentTask.model !== id;
-    if (startsNewConversation) {
-      // Changing the Core route creates a different backend Session; the old
-      // canonical history was not migrated and must not be shown as continuous.
-      const draftId = `draft-${crypto.randomUUID()}`;
-      ++preferenceWriteVersion.current;
-      setPreferenceSaving(false);
-      setPreferenceUnsaved(false);
-      setChatId(draftId);
-      setSelected(null);
-      setMessages([]);
-      setDelta({});
-      setRight(false);
-      localStorage.removeItem("lp.currentTask");
-    }
+    if (startsNewConversation) detachForRouteChange();
     if (
       chosen &&
       sessionPrefs.effort &&
@@ -2482,11 +2483,16 @@ export default function App() {
                         {supportedRouting && (
                           <button
                             onClick={() => {
+                              if (!preview && currentTask && model !== "__auto__") {
+                                detachForRouteChange();
+                                setToast("自动路由将在新会话首次发送时选择模型；旧会话未迁移。");
+                              }
                               setModel("__auto__");
+                              setSessionPrefs((old) => ({ ...old, effort: null }));
                               setModelOpen(false);
                             }}
                           >
-                            Core 自动选择 · 已协商 1.0
+                            Core 自动选择 · 新会话选路
                           </button>
                         )}
                         {selectableModels.length ? (
