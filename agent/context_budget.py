@@ -27,8 +27,10 @@ def _input_tokens(messages, tools, tokenizer):
     text = json.dumps([messages, tools], ensure_ascii=False, separators=(',', ':'))
     ascii_count = sum(char.isascii() for char in text)
     non_ascii_bytes = sum(len(char.encode('utf-8')) for char in text if not char.isascii())
-    # Deliberately labeled heuristic, not provider usage or a context-fit guarantee.
-    estimate = math.ceil(ascii_count / 3) + non_ascii_bytes + 8 * len(messages)
+    # Non-ASCII UTF-8 bytes are not tokens. Charging 3 tokens per common
+    # Chinese character needlessly evicts local context; use a rough 2-byte
+    # fallback unit, while marking the result as unmeasured.
+    estimate = math.ceil(ascii_count / 3) + math.ceil(non_ascii_bytes / 2) + 8 * len(messages)
     return estimate, 'mixed_text_estimate_v1'
 
 
