@@ -52,6 +52,13 @@ class CloudLocalPartnershipTests(unittest.TestCase):
                     self.assertTrue(session.hybrid.catalog['local'].is_local)
                     self.assertEqual(session.hybrid.kind('selected'), 'cloud')
                     self.assertIs(session.hybrid.resolve('local')[1], session.local_backend)
+                    self.assertEqual(session.budgets.max_primary_switches_per_turn, 2)
+                    # The selected cloud route is usable even though extra
+                    # cloud egress still requires the existing host authorization.
+                    session.cooperative.before_request()
+                    self.assertEqual(session.hybrid.state['backend_id'], 'selected')
+                    self.assertEqual(session.hybrid.state['cooperative']['decisions'][-1]['reason'],
+                                     'cloud_quality_priority')
                 finally:
                     server.service.shutdown()
                     server.server_close()
