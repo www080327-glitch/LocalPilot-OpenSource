@@ -2,6 +2,7 @@ import { latestConversations, conversationTitle } from "./conversations";
 import { compatibleEffort, thinkingKey } from "./modelThinking";
 import { shouldSubmitEnter, type EnterBehavior } from "./inputBehavior";
 import { ensureLocalModelLoaded } from "./modelLoading";
+import { observedModelShare, subagentTraces } from "./collaboration";
 import { latestTask, errorAfterHealthyConnection } from "./domain";
 import {
   permissionModes,
@@ -641,6 +642,15 @@ export default function App() {
         (chosen.adapter === "deepseek" || chosen.cloud_egress !== "LOCAL_ONLY");
   const effectiveMessages = preview ? previewMessages : messages;
   const activeEvents = preview ? previewEvents : events[selected || ""] || [];
+  const modelShare = observedModelShare(tasks, currentTask, activeEvents);
+  const childTraces = subagentTraces(activeEvents);
+  const runningChildren = childTraces.filter(
+    (child) => child.status === "running" || child.status === "queued",
+  );
+  const openCollaborators = () => {
+    setRight(true);
+    setTab("agents");
+  };
   const dims = dimensions(currentTask),
     usage = usageOf(currentTask);
   const connected = !!health && compatible(health);
@@ -2215,6 +2225,14 @@ export default function App() {
           </button>
         )}
         <div className="composer-area">
+          {!preview && runningChildren.length > 0 && (
+            <button className="active-subagent-banner" onClick={openCollaborators}>
+              <Layers size={14} />
+              {runningChildren.length} 个子代理正在运行 ·
+              {runningChildren.map((child) => child.model).join("、")}
+              <ChevronRight size={13} />
+            </button>
+          )}
           {currentTask?.status === "requires_approval" &&
             currentTask.required_action &&
             !isUnknown(currentTask) &&
@@ -2672,6 +2690,19 @@ export default function App() {
             </div>
           </div>
           <div className="composer-caption">
+            <button
+              className="collaboration-meter"
+              aria-label="查看本地、云端调用占比及子代理"
+              onClick={openCollaborators}
+            >
+              <Layers size={12} />
+              {modelShare.observed > 0
+                ? `本地 ${modelShare.localPercent}%（${modelShare.local}） · 云端 ${modelShare.cloudPercent}%（${modelShare.cloud}）`
+                : "本地/云端占比：暂无真实调用记录"}
+              {modelShare.unknown > 0 && ` · 来源未知 ${modelShare.unknown}`}
+              {childTraces.length > 0 && ` · 子代理 ${childTraces.length}`}
+              <ChevronRight size={12} />
+            </button>
             <span>
               <ShieldCheck size={11} />
               {preview
@@ -2757,6 +2788,14 @@ export default function App() {
                 onClick={() => setTab("activity")}
               >
                 进度
+              </button>
+              <button
+                role="tab"
+                aria-selected={tab === "agents"}
+                className={tab === "agents" ? "selected" : ""}
+                onClick={() => setTab("agents")}
+              >
+                协同 {childTraces.length || ""}
               </button>
               <button
                 role="tab"
@@ -2928,6 +2967,55 @@ export default function App() {
                   )}
                 </section>
               </>
+            ) : tab === "agents" ? (
+              <section className="inspector-section">
+                <h3><Layers size={15} /> 实际模型协同</h3>
+                <p className="micro muted">
+                  按本会话已经记录的模型请求次数统计；不把静态路由或缺失来源当成真实模型调用。
+                  失败请求也计入调用次数。实际 API 费用需另行核对。
+                </p>
+                {modelShare.observed > 0 ? (
+                  <>
+                    <div className="collaboration-percentages">
+                      <span>本地 {modelShare.localPercent}% · {modelShare.local} 次</span>
+                      <span>云端 {modelShare.cloudPercent}% · {modelShare.cloud} 次</span>
+                    </div>
+                    <div className="collaboration-bar" aria-label="已记录模型调用占比">
+                      <span className="collaboration-local" style={{ width: `${modelShare.localPercent}%` }} />
+                      <span className="collaboration-cloud" style={{ width: `${modelShare.cloudPercent}%` }} />
+                    </div>
+                  </>
+                ) : (
+                  <p className="muted micro">暂无可核对的本地/云端调用次数。</p>
+                )}
+                {modelShare.unknown > 0 && (
+                  <p className="muted micro">另有 {modelShare.unknown} 次调用没有可信来源分类，未计入百分比。</p>
+                )}
+                <h3><Layers size={15} /> 子代理 · {childTraces.length}</h3>
+                {childTraces.length ? childTraces.map((child) => (
+                  <details className="tool-call" key={child.id} open={child.status === "running"}>
+                    <summary>
+                      <ChevronRight size={12} />
+                      <span>{child.source === "local" ? "本地" : child.source === "cloud" ? "云端" : "来源未知"} · {child.model}</span>
+                      <span>{label(child.status)}</span>
+                    </summary>
+                    <div className="collaboration-child-details">
+                      <p>子代理 ID：{child.id}</p>
+                      <p>实际提供方：{child.provider}</p>
+                      <p>模型：{child.model}</p>
+                      {child.steps.length ? (
+                        <ol className="collaboration-child-steps">
+                          {child.steps.slice(-20).map((step) => (
+                            <li key={step.sequence}>{step.label}</li>
+                          ))}
+                        </ol>
+                      ) : <p>尚无可展示的执行步骤。</p>}
+                    </div>
+                  </details>
+                )) : (
+                  <p className="muted micro">当前任务未观察到子代理创建事件；不能据此宣称已经执行了跨模型委派。</p>
+                )}
+              </section>
             ) : tab === "evidence" ? (
               <>
                 <section className="inspector-section">
