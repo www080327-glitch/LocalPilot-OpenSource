@@ -2494,7 +2494,7 @@ export default function App() {
                               className={model === m.id ? "selected" : ""}
                             >
                               <span>
-                                {m.adapter === "deepseek" ? (
+                                {["deepseek", "deepseek-native", "remote-openai", "remote-vllm"].includes(m.adapter) ? (
                                   <Cloud size={16} />
                                 ) : (
                                   <Monitor size={16} />
