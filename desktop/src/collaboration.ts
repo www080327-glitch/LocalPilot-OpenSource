@@ -39,21 +39,27 @@ export function observedModelShare(
     : [];
   for (const task of sessionTasks) {
     const summary = task.result?.runtime_metrics?.hybrid;
-    if (summary?.by_backend) {
+    if (task.id === currentTask?.id && !task.quiescent) {
+      // A running task can have an older checkpoint summary. Its current
+      // observed requests come from SSE, including delegated child events.
+      for (const event of currentEvents) {
+        const item = payload(event);
+        const usage = item.type === "HybridModelUsage"
+          ? item.data.usage
+          : item.type === "SubagentEvent" && item.data.event?.type === "HybridModelUsage"
+            ? item.data.event.data?.usage
+            : null;
+        if (!usage) continue;
+        if (usage.kind === "local") local += 1;
+        else if (usage.kind === "cloud") cloud += 1;
+        else unknown += 1;
+      }
+    } else if (summary?.by_backend) {
       for (const row of Object.values(summary.by_backend) as Json[]) {
         const calls = typeof row.calls === "number" && row.calls >= 0 ? row.calls : 0;
         if (row.kind === "local") local += calls;
         else if (row.kind === "cloud") cloud += calls;
         else unknown += calls;
-      }
-    } else if (task.id === currentTask?.id && !task.quiescent) {
-      // Live events are temporary evidence until the task's durable summary arrives.
-      for (const event of currentEvents) {
-        const item = payload(event);
-        if (item.type !== "HybridModelUsage") continue;
-        if (item.data.usage?.kind === "local") local += 1;
-        else if (item.data.usage?.kind === "cloud") cloud += 1;
-        else unknown += 1;
       }
     } else if (Array.isArray(task.result?.model_calls)) {
       // A plain non-hybrid model call carries no authenticated provider location.
