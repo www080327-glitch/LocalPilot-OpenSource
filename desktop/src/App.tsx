@@ -533,6 +533,13 @@ export default function App() {
     ? previewTask
     : tasks.find((t) => t.id === selected);
   const actualModels = preview ? previewModels : models;
+  const selectableModels = actualModels.filter(
+    (m) =>
+      m.deployment_status === "ready" &&
+      !m.reasoning_only &&
+      m.capabilities?.includes("tool_calling") &&
+      (preview || sourceAllows(sessionPrefs, m)),
+  );
   const chosen = actualModels.find((m) => m.id === model);
   const [modelEfforts, setModelEfforts] = useState<Record<string, string>>(() =>
     stored("lp.modelEfforts", {}),
@@ -665,14 +672,22 @@ export default function App() {
       setModel(
         (old) =>
           ((old === "__auto__" && automaticSupported) ||
-          m.models?.some((v: Model) => v.id === old)
+          m.models?.some(
+            (v: Model) =>
+              v.id === old &&
+              v.deployment_status === "ready" &&
+              !v.reasoning_only &&
+              v.capabilities?.includes("tool_calling"),
+          )
             ? old
             : "") ||
           (automaticSupported ? "__auto__" : "") ||
           m.models?.find(
-            (v: Model) => v.deployment_status === "ready" && !v.reasoning_only,
+            (v: Model) =>
+              v.deployment_status === "ready" &&
+              !v.reasoning_only &&
+              v.capabilities?.includes("tool_calling"),
           )?.id ||
-          m.models?.[0]?.id ||
           "",
       );
       try {
@@ -2333,7 +2348,7 @@ export default function App() {
                         onClose={() => setModelOpen(false)}
                       >
                         <div className="menu-label">
-                          选择模型<span>已下载的本地模型自动加载</span>
+                          选择模型<span>仅展示已就绪、支持工具的路由</span>
                         </div>
                         {supportedRouting && (
                           <button
@@ -2345,8 +2360,8 @@ export default function App() {
                             Core 自动选择 · 已协商 1.0
                           </button>
                         )}
-                        {actualModels.length ? (
-                          actualModels.map((m) => (
+                        {selectableModels.length ? (
+                          selectableModels.map((m) => (
                             <button
                               key={m.id}
                               disabled={
@@ -2390,7 +2405,7 @@ export default function App() {
                             </button>
                           ))
                         ) : (
-                          <div className="menu-empty">连接后读取模型注册表</div>
+                          <div className="menu-empty">无可用标准 Agent；请先在模型库加载或配置模型。</div>
                         )}
                         <button
                           onClick={() => {
@@ -2401,7 +2416,7 @@ export default function App() {
                           模型详情、加载与设置 →
                         </button>
                         <p>
-                          本地状态来自服务；云端上下文以 Provider 声明为准。
+                          不可用及未加载模型仍可在模型库检查或加载。
                         </p>
                       </Popover>
                     )}
