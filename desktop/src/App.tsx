@@ -643,7 +643,7 @@ export default function App() {
   const effectiveMessages = preview ? previewMessages : messages;
   const activeEvents = preview ? previewEvents : events[selected || ""] || [];
   const modelShare = observedModelShare(tasks, currentTask, activeEvents);
-  const childTraces = subagentTraces(activeEvents);
+  const childTraces = subagentTraces(activeEvents, currentTask);
   const runningChildren = childTraces.filter(
     (child) => child.status === "running" || child.status === "queued",
   );
