@@ -1134,9 +1134,28 @@ export default function App() {
       setError("此模型尚不能执行标准 Agent 任务。请在模型库检查可用性。");
       return;
     }
-    if (!preview && currentTask && currentTask.model !== id) {
-      // A newly selected Core route creates a new backend Session. Do not
-      // present the previous UI messages as if they were handed to that model.
+    setModelOpen(false);
+    setError("");
+    if (!preview && target.adapter === "omlx") {
+      modelLoadLock.current = true;
+      setLoadingModel(target.model);
+      try {
+        await ensureLocalModelLoaded(target, call);
+        await refresh();
+      } catch (e) {
+        // Loading did not succeed: keep the original conversation and model.
+        showError(e);
+        setLibraryOpen(true);
+        return;
+      } finally {
+        setLoadingModel("");
+        modelLoadLock.current = false;
+      }
+    }
+    const startsNewConversation = !preview && currentTask && currentTask.model !== id;
+    if (startsNewConversation) {
+      // Changing the Core route creates a different backend Session; the old
+      // canonical history was not migrated and must not be shown as continuous.
       const draftId = `draft-${crypto.randomUUID()}`;
       ++preferenceWriteVersion.current;
       setPreferenceSaving(false);
@@ -1147,10 +1166,7 @@ export default function App() {
       setDelta({});
       setRight(false);
       localStorage.removeItem("lp.currentTask");
-      setToast("已为新模型建立独立会话；之前的对话仍在左侧，历史未交接。");
     }
-    setModelOpen(false);
-    setError("");
     if (
       chosen &&
       sessionPrefs.effort &&
@@ -1161,7 +1177,7 @@ export default function App() {
         [thinkingKey(chosen)]: sessionPrefs.effort!,
       }));
     }
-    if (target && !preview)
+    if (!preview)
       setSessionPrefs((old) => ({
         ...old,
         effort: compatibleEffort(
@@ -1171,26 +1187,11 @@ export default function App() {
             : modelEfforts[thinkingKey(target)],
         ),
       }));
-    if (!target || preview || target.adapter !== "omlx") {
-      setModel(id);
-      return;
-    }
-    modelLoadLock.current = true;
     setModel(id);
-    setLoadingModel(target.model);
-    setError("");
-    try {
-      await ensureLocalModelLoaded(target, call);
-      await refresh();
+    if (startsNewConversation)
+      setToast("已为新模型建立独立会话；之前的对话仍在左侧，历史未交接。");
+    else if (!preview && target.adapter === "omlx")
       setToast("模型已加载，可以发送任务。");
-    } catch (e) {
-      showError(e);
-      // Keep the chosen route visible; do not silently switch providers.
-      setLibraryOpen(true);
-    } finally {
-      setLoadingModel("");
-      modelLoadLock.current = false;
-    }
   }
   async function send(cloud = false) {
     if (
