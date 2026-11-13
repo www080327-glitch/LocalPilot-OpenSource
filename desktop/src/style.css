@@ -3821,3 +3821,29 @@ html[data-pet-part="character"] button:active:not(:disabled) {
 .collaboration-agent dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; font-size: 11px; }
 .collaboration-agent dt { color: var(--subtle); }
 .collaboration-agent dd { overflow-wrap: anywhere; margin: 0; }
+
+.project-groups { display: grid; gap: 8px; padding-bottom: 10px; }
+.project-group { min-width: 0; }
+.project-group-heading {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 5px 10px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.project-group-heading strong {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.project-group-heading button { color: var(--subtle); }
+.project-task-row { display: flex; align-items: center; gap: 2px; min-width: 0; border-radius: 7px; }
+.project-task-row > .task-row { flex: 1; width: auto; min-width: 0; margin: 2px 0; }
+.project-row-action { opacity: 0; padding: 4px 2px; }
+.project-task-row:hover .project-row-action, .project-row-action:focus-visible { opacity: 1; }
+.project-task-row .project-row-action:has(svg[fill="currentColor"]) { opacity: 1; }
