@@ -30,9 +30,9 @@ class HarnessContextControls(unittest.TestCase):
 
     def test_same_context_and_output_limits_with_explicit_loss_index(self):
         original=fixture();messages=[Message('system','Host limits remain authoritative')]
-        with self.assertRaises(ContextTooSmall):transfer_with_optional_projection(messages,[],5000,1000,working_state=original)
-        view,info=transfer_with_optional_projection(messages,[],5000,1000,working_state=original,enabled=True)
-        self.assertLessEqual(context_tokens(view,[]),4000)
+        with self.assertRaises(ContextTooSmall):transfer_with_optional_projection(messages,[],3000,1000,working_state=original)
+        view,info=transfer_with_optional_projection(messages,[],3000,1000,working_state=original,enabled=True)
+        self.assertLessEqual(context_tokens(view,[]),2000)
         self.assertGreater(info['optional_completed_context_entries_omitted'],0)
         state=json.loads(view[-1].content.split('\n',1)[1])
         self.assertEqual(state['failed_unknown_actions'],original['failed_unknown_actions'])
@@ -41,7 +41,7 @@ class HarnessContextControls(unittest.TestCase):
 
     def test_critical_overflow_refuses_instead_of_truncating_task(self):
         original=fixture();original['completed_steps']=[];original['current_goal']='critical '*2000
-        with self.assertRaises(ContextTooSmall):transfer_with_optional_projection([],[],5000,1000,working_state=original,enabled=True)
+        with self.assertRaises(ContextTooSmall):transfer_with_optional_projection([],[],3000,1000,working_state=original,enabled=True)
         self.assertEqual(len(original['current_goal']),len('critical '*2000))
 
     def test_unknown_is_never_an_optional_completed_row(self):
