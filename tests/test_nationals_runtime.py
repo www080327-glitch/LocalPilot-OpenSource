@@ -7,7 +7,10 @@ import unittest
 from unittest.mock import patch
 
 from agent.backends import Message, ModelInfo
-from agent.context_budget import request_budget
+from agent.context_budget import request_budget, context_tokens
+from agent.context import transfer_context
+from agent.context_v5 import transfer as v5_transfer
+from agent.backends import ToolCall
 from agent.cooperative import CooperativePolicy, decide
 from agent.host_tools import shell, register, SHELL_MAX_TIMEOUT
 from agent.registry import create_default_registry
@@ -27,6 +30,24 @@ class RoutingAdmissionTests(unittest.TestCase):
         self.assertLess(budget['total_tokens'], 32768)
         self.assertEqual(self.decide(context_tokens=budget['total_tokens'])['target'], 'local')
         self.assertFalse(budget['measured'])
+
+    def test_context_projection_uses_tokens_and_keeps_complete_tool_groups(self):
+        history = [Message('system', 'You are a helpful agent.'),
+                   Message('user', '你好'),
+                   Message('assistant', tool_calls=[ToolCall('receipt', 'read_file', '{"path":"a.txt"}')]),
+                   Message('tool', 'observed result', tool_call_id='receipt')]
+        view, notice = transfer_context(history, [], 32768, 2048)
+        self.assertIsNone(notice)
+        self.assertEqual(view, history)
+        self.assertLess(context_tokens(view, []) + 2048 + 64, 32768)
+
+    def test_v5_small_local_window_admits_short_chinese_request(self):
+        history = [Message('system', '系统提示'), Message('user', '你好')]
+        view, notice = v5_transfer(history, [], 32768, 2048 + 655,
+                                   working_state={'original_task': '你好', 'pending_obligations': []})
+        self.assertIsNone(notice)
+        self.assertEqual(view[1], history[1])
+        self.assertLess(context_tokens(view, []), 32768 - 2048 - 655)
 
     def test_tool_schema_is_counted(self):
         messages = [Message('user', 'hello')]
