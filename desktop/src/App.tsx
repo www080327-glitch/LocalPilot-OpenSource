@@ -1144,7 +1144,6 @@ export default function App() {
       setChatId(draftId);
       setSelected(null);
       setMessages([]);
-      setInput("");
       setDelta({});
       setRight(false);
       localStorage.removeItem("lp.currentTask");
