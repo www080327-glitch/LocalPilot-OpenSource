@@ -5,7 +5,7 @@ import tempfile
 import unittest
 
 from agent.backends import Message, ToolCall
-from agent.context import ContextTooSmall
+from agent.context import ContextTooSmall, context_units
 from agent.context_budget import context_tokens
 from agent.context_v5 import transfer
 from agent.engine_v5 import EngineV5Policy
@@ -48,6 +48,18 @@ class ContextV5Tests(unittest.TestCase):
         second, _ = transfer(messages, [], 5000, 500, working_state={'budget': 2})
         self.assertEqual(first[:-1], second[:len(first)-1])
         self.assertEqual(len(messages), 3)
+
+    def test_final_delivery_budget_is_bytes_not_context_tokens(self):
+        # ASCII text can fit the model's token window while exceeding the
+        # separate, byte-denominated finalization delivery allowance.
+        messages = [Message('system', 'fixed'), Message('user', 'a' * 1600)]
+        view, info = transfer(messages, [], 10000, 500,
+            final_only=True, working_state={'original_task': 'deliver'},
+            delivery_budget={'remaining': 1300, 'output_units': 400, 'slots': 1})
+        self.assertIsNotNone(info)
+        self.assertEqual(info['omitted_messages'], 1)
+        self.assertLessEqual(context_units(view, []), 900)
+        self.assertLessEqual(context_tokens(view, []), 9500)
 
     def test_checkpoint_engine_identity_and_stable_prompt(self):
         with tempfile.TemporaryDirectory() as directory:
