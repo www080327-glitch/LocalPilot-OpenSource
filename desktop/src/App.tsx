@@ -4,6 +4,8 @@ import { shouldSubmitEnter, type EnterBehavior } from "./inputBehavior";
 import { ensureLocalModelLoaded } from "./modelLoading";
 import { latestTask, errorAfterHealthyConnection } from "./domain";
 import { availableAgentModels } from "./modelAvailability";
+import { summarizeCollaboration } from "./collaboration";
+import { CollaborationStrip, CollaborationPanel } from "./components/Collaboration";
 import {
   permissionModes,
   permissionNames,
@@ -570,6 +572,7 @@ export default function App() {
         (chosen.adapter === "deepseek" || chosen.cloud_egress !== "LOCAL_ONLY");
   const effectiveMessages = preview ? previewMessages : messages;
   const activeEvents = preview ? previewEvents : events[selected || ""] || [];
+  const collaboration = summarizeCollaboration(preview ? [] : activeEvents);
   const dims = dimensions(currentTask),
     usage = usageOf(currentTask);
   const connected = !!health && compatible(health);
@@ -2508,6 +2511,13 @@ export default function App() {
             </span>
           </div>
         </div>
+        <CollaborationStrip
+          usage={collaboration}
+          open={() => {
+            setRight(true);
+            setTab("collaboration");
+          }}
+        />
       </main>
       {right && (
         <aside className="inspector">
@@ -2594,6 +2604,14 @@ export default function App() {
                 onClick={() => setTab("diff")}
               >
                 Diff
+              </button>
+              <button
+                role="tab"
+                aria-selected={tab === "collaboration"}
+                className={tab === "collaboration" ? "selected" : ""}
+                onClick={() => setTab("collaboration")}
+              >
+                协同
               </button>
             </div>
             {tab === "activity" ? (
@@ -2847,6 +2865,8 @@ export default function App() {
                   )}
                 </section>
               </>
+            ) : tab === "collaboration" ? (
+              <CollaborationPanel usage={collaboration} />
             ) : (
               <section className="inspector-section">
                 {diffsOf(currentTask).length ? (
