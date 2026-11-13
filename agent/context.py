@@ -9,8 +9,8 @@ class ContextTooSmall(ValueError):
     pass
 
 
-def count(messages):
-    # UTF-8 byte count is a deliberately conservative token admission estimate.
+def context_units(messages, tools):
+    # Legacy turn-budget accounting is byte-denominated, not a model context-window token count.
     return len(json.dumps([m.to_dict(include_reasoning=True) for m in messages], ensure_ascii=False).encode()) + len(json.dumps(tools, ensure_ascii=False).encode())
 
 
@@ -53,7 +53,7 @@ def transfer_context(messages, tools, window, output_reserve, *, plan=None, goal
     if working_state is not None:
         prefix = system + [state_message]
         if count(prefix) > budget:
-            raise ContextTooSmall("Target context cannot fit critical working state and output byte reserve.")
+            raise ContextTooSmall("Target context cannot fit critical working state and output token reserve.")
         history = history[:-1]
     receipts = []
     for message in [m for m in history if m.role == "tool"][-3:]:
