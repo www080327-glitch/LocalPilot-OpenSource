@@ -1,7 +1,7 @@
 import { latestConversations, conversationTitle } from "./conversations";
 import { compatibleEffort, thinkingKey } from "./modelThinking";
 import { shouldSubmitEnter, type EnterBehavior } from "./inputBehavior";
-import { ensureLocalModelLoaded } from "./modelLoading";
+import { ensureLocalModelLoaded, usableAgentModels } from "./modelLoading";
 import { observedModelShare, subagentTraces } from "./collaboration";
 import { classifyConversations, useConversationProjects } from "./projects";
 import { latestTask, errorAfterHealthyConnection } from "./domain";
@@ -540,13 +540,7 @@ export default function App() {
     ? previewTask
     : tasks.find((t) => t.id === selected);
   const actualModels = preview ? previewModels : models;
-  const selectableModels = actualModels.filter(
-    (m) =>
-      m.deployment_status === "ready" &&
-      !m.reasoning_only &&
-      m.capabilities?.includes("tool_calling") &&
-      (preview || sourceAllows(sessionPrefs, m)),
-  );
+  const selectableModels = usableAgentModels(actualModels, sessionPrefs, preview);
   const chosen = actualModels.find((m) => m.id === model);
   const [modelEfforts, setModelEfforts] = useState<Record<string, string>>(() =>
     stored("lp.modelEfforts", {}),
