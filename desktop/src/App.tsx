@@ -1701,6 +1701,60 @@ export default function App() {
   const grouped = latestConversations(tasks).filter((t) =>
     matchedSessions.has(t.session_id),
   );
+  const pinnedIds = new Set(organization.pinnedSessions);
+  const pinnedConversations = grouped.filter((t) => pinnedIds.has(t.session_id));
+  const otherConversations = grouped.filter((t) => !pinnedIds.has(t.session_id));
+  const orderedProjects = [...organization.projects].sort(
+    (a, b) => Number(b.pinned) - Number(a.pinned) || a.name.localeCompare(b.name),
+  );
+  const assignedProjects = new Set(orderedProjects.map((project) => project.id));
+  const uncategorized = otherConversations.filter(
+    (t) => !assignedProjects.has(organization.assignments[t.session_id]),
+  );
+  function conversationRow(t: Task) {
+    const pinned = pinnedIds.has(t.session_id);
+    return (
+      <div className="conversation-entry" key={t.id}>
+        <button
+          className={`task-row ${currentTask?.session_id === t.session_id ? "selected" : ""}`}
+          onClick={() => openTask(t)}
+        >
+          <MessageSquare size={14} />
+          <span>
+            {conversationTitle(
+              t,
+              tasks,
+              stored<Record<string, string>>("lp.titles", {}),
+              turns,
+            )}
+            <small>{label(t.status)}</small>
+          </span>
+          <i className={`task-dot ${t.status === "completed" ? "good" : isUnknown(t) || t.status.includes("requires") ? "warn" : ""}`} />
+        </button>
+        <button
+          className={`conversation-pin ${pinned ? "active" : ""}`}
+          aria-label={pinned ? "取消置顶会话" : "置顶会话"}
+          title={pinned ? "取消置顶" : "置顶"}
+          onClick={() => toggleConversationPinned(t.session_id)}
+        >
+          <Pin size={12} />
+        </button>
+        <select
+          className="conversation-project"
+          aria-label="选择会话所属项目"
+          title="将会话归类到项目"
+          value={assignedProjects.has(organization.assignments[t.session_id])
+            ? organization.assignments[t.session_id] : ""}
+          onChange={(e) => assignConversation(t.session_id, e.target.value)}
+        >
+          <option value="">未分类</option>
+          {orderedProjects.map((project) => (
+            <option key={project.id} value={project.id}>{project.name}</option>
+          ))}
+        </select>
+      </div>
+    );
+  }
   const outputBlocked =
     busy || (!preview && !!currentTask && !terminal.has(currentTask.status));
   const plans: Json[] = Array.isArray(currentTask?.goals)
@@ -1784,7 +1838,15 @@ export default function App() {
             <ChevronDown size={13} />
           </button>
           <div className="sidebar-section">
-            <span>最近会话</span>
+            <span>项目与会话</span>
+            <button
+              className="icon-btn"
+              aria-label="创建项目"
+              title="创建项目"
+              onClick={createProject}
+            >
+              <FolderPlus size={13} />
+            </button>
             <button
               className="icon-btn"
               aria-label="刷新任务列表"
@@ -1839,28 +1901,44 @@ export default function App() {
                   不会被保存为真实历史
                 </div>
               </>
-            ) : grouped.length ? (
-              grouped.map((t) => (
-                <button
-                  className={`task-row ${currentTask?.session_id === t.session_id ? "selected" : ""}`}
-                  key={t.id}
-                  onClick={() => openTask(t)}
-                >
-                  <MessageSquare size={14} />
-                  <span>
-                    {conversationTitle(
-                      t,
-                      tasks,
-                      stored<Record<string, string>>("lp.titles", {}),
-                      turns,
-                    )}
-                    <small>{label(t.status)}</small>
-                  </span>
-                  <i
-                    className={`task-dot ${t.status === "completed" ? "good" : isUnknown(t) || t.status.includes("requires") ? "warn" : ""}`}
-                  />
-                </button>
-              ))
+            ) : grouped.length || orderedProjects.length ? (
+              <>
+                {pinnedConversations.length > 0 && (
+                  <div className="sidebar-group-label">置顶会话</div>
+                )}
+                {pinnedConversations.map(conversationRow)}
+                {orderedProjects.map((project) => (
+                  <div className="sidebar-project-group" key={project.id}>
+                    <div className="sidebar-group-label">
+                      <Folder size={12} />
+                      <span>{project.name}</span>
+                      <button
+                        className={`conversation-pin ${project.pinned ? "active" : ""}`}
+                        title={project.pinned ? "取消置顶项目" : "置顶项目"}
+                        aria-label={project.pinned ? "取消置顶项目" : "置顶项目"}
+                        onClick={() => toggleProjectPinned(project.id)}
+                      >
+                        <Pin size={12} />
+                      </button>
+                      <button
+                        className="conversation-pin"
+                        title="重命名项目"
+                        aria-label="重命名项目"
+                        onClick={() => renameProject(project.id, project.name)}
+                      >
+                        <Pencil size={12} />
+                      </button>
+                    </div>
+                    {otherConversations
+                      .filter((t) => organization.assignments[t.session_id] === project.id)
+                      .map(conversationRow)}
+                  </div>
+                ))}
+                {uncategorized.length > 0 && (
+                  <div className="sidebar-group-label">未分类</div>
+                )}
+                {uncategorized.map(conversationRow)}
+              </>
             ) : (
               <div className="sidebar-empty">
                 {query ? (
