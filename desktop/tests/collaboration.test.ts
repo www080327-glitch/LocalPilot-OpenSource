@@ -62,16 +62,19 @@ describe("collaboration is evidence-driven", () => {
       ...task("task-2", null),
       subagents: [{
         id: "7.2", backend: "local", configured_model: "Qwen-Local",
-        provider: "oMLX", status: "completed",
+        provider: "oMLX", status: "completed", task: "Inspect README",
+        reported_models: ["Qwen-Local-v2"],
+        receipts: [{ name: "read_file", payload: { ok: true } }],
       }],
     };
     const traces = subagentTraces([], completed);
     expect(traces).toHaveLength(1);
     expect(traces[0]).toMatchObject({
       source: "local", id: "7.2", model: "Qwen-Local",
-      provider: "oMLX", status: "completed",
+      provider: "oMLX", status: "completed", task: "Inspect README",
+      reportedModels: ["Qwen-Local-v2"],
     });
-    expect(traces[0].steps).toEqual([]);
+    expect(traces[0].steps.map((step) => step.label)).toEqual(["工具收据 · read_file（完成）"]);
   });
 
   it("does not infer worker source when the start event was not retained", () => {
