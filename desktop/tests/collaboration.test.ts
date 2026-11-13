@@ -57,6 +57,23 @@ describe("collaboration is evidence-driven", () => {
     ]);
   });
 
+  it("restores child identity and source from durable TaskService snapshots", () => {
+    const completed = {
+      ...task("task-2", null),
+      subagents: [{
+        id: "7.2", backend: "local", configured_model: "Qwen-Local",
+        provider: "oMLX", status: "completed",
+      }],
+    };
+    const traces = subagentTraces([], completed);
+    expect(traces).toHaveLength(1);
+    expect(traces[0]).toMatchObject({
+      source: "local", id: "7.2", model: "Qwen-Local",
+      provider: "oMLX", status: "completed",
+    });
+    expect(traces[0].steps).toEqual([]);
+  });
+
   it("does not infer worker source when the start event was not retained", () => {
     const traces = subagentTraces([
       event(7, "SubagentFailed", { id: "2.1", status: "failed", configured_model: "Cloud-X" }),
