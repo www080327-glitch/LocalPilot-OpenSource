@@ -15,6 +15,8 @@ export interface ChildTrace {
   model: string;
   provider: string;
   status: string;
+  task: string | null;
+  reportedModels: string[];
   steps: { sequence: number; label: string }[];
 }
 
@@ -83,6 +85,8 @@ export function subagentTraces(events: StreamEvent[], task?: Task | null): Child
         model: typeof data.model === "string" ? data.model : (data.configured_model || "未记录"),
         provider: data.provider || "未知",
         status: type === "SubagentStarted" ? "running" : "unknown",
+        task: typeof data.task === "string" ? data.task : null,
+        reportedModels: Array.isArray(data.reported_models) ? data.reported_models : [],
         steps: [],
       };
       children.set(data.id, child);
@@ -92,9 +96,12 @@ export function subagentTraces(events: StreamEvent[], task?: Task | null): Child
       child.source = data.backend === "local" || data.backend === "cloud" ? data.backend : "unknown";
       child.model = data.model || child.model;
       child.provider = data.provider || child.provider;
+      child.task = data.task || child.task;
     } else if (type === "SubagentCompleted" || type === "SubagentFailed") {
       child.status = data.status || (type === "SubagentCompleted" ? "completed" : "failed");
       child.model = data.configured_model || child.model;
+      child.reportedModels = Array.isArray(data.reported_models)
+        ? data.reported_models : child.reportedModels;
     } else {
       const nested = data.event;
       if (!nested || typeof nested.type !== "string") continue;
@@ -124,7 +131,16 @@ export function subagentTraces(events: StreamEvent[], task?: Task | null): Child
       model: row.configured_model || existing?.model || "未记录",
       provider: row.provider || existing?.provider || "未知",
       status: row.status || existing?.status || "unknown",
-      steps: existing?.steps || [],
+      task: row.task || existing?.task || null,
+      reportedModels: Array.isArray(row.reported_models)
+        ? row.reported_models : existing?.reportedModels || [],
+      steps: existing?.steps?.length
+        ? existing.steps
+        : (row.receipts || []).map((receipt: Json, index: number) => ({
+            sequence: index + 1,
+            label: "工具收据 · " + (receipt.name || "未知")
+              + (receipt.payload?.ok === true ? "（完成）" : "（未成功）"),
+          })),
     });
   }
   return [...children.values()];
