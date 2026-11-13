@@ -1447,9 +1447,14 @@ async fn stream_task(app: tauri::AppHandle, p: Profile, id: String, mut cursor: 
         Ok(d) => d.join(format!("cursor-{id}.json")),
         Err(_) => return,
     };
-    if let Ok(v) = private_json(&cursor_path) {
-        if v["origin"] == p.origin {
-            cursor = cursor.max(v["after"].as_u64().unwrap_or(0));
+    // An explicit after=0 is a replay request from a fresh GUI. Its in-memory
+    // text/events are empty even if the native cursor survived a prior launch.
+    // Preserve the durable cursor only for an explicit incremental resume.
+    if cursor != 0 {
+        if let Ok(v) = private_json(&cursor_path) {
+            if v["origin"] == p.origin {
+                cursor = cursor.max(v["after"].as_u64().unwrap_or(0));
+            }
         }
     }
     for attempt in 0..6u32 {
