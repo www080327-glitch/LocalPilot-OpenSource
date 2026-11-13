@@ -76,6 +76,9 @@ import {
   ArrowDown,
   LoaderCircle,
   Download,
+  Pin,
+  FolderPlus,
+  Pencil,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { DocumentLink, documentUrl } from "./documentReferences";
@@ -128,6 +131,16 @@ import { Effort, demoEfforts } from "./components/Effort";
 import { Resizer } from "./components/Resizer";
 import { Modal } from "./components/Modal";
 const DeveloperTools = lazy(() => import("./components/DeveloperTools"));
+interface ProjectOrganization {
+  projects: { id: string; name: string; pinned: boolean }[];
+  assignments: Record<string, string>;
+  pinnedSessions: string[];
+}
+const emptyOrganization: ProjectOrganization = {
+  projects: [],
+  assignments: {},
+  pinnedSessions: [],
+};
 const emptyProfile: NativeProfile = {
   home: "",
   cli: "",
@@ -339,13 +352,62 @@ export default function App() {
     ),
     [preferenceSaving, setPreferenceSaving] = useState(false),
     [preferenceUnsaved, setPreferenceUnsaved] = useState(false),
+    [organizations, setOrganizations] = useState<Record<string, ProjectOrganization>>(
+      () => stored("lp.projectOrganization.v1", {}),
+    ),
     [glass, setGlass] = useState(stored("lp.glass", true)),
     [glassStatus, setGlassStatus] = useState("等待原生外观检查");
   const persistQueue = useRef(Promise.resolve()),
     preferenceWriteVersion = useRef(0),
     restoreDone = useRef(false);
   const scope = `${profile.home}|${profile.origin}|${health?.client_subject || ""}`;
+  const organization = organizations[scope] || emptyOrganization;
   const supportedRouting = routingSupported(health, routingCaps);
+  useEffect(() => {
+    localStorage.setItem("lp.projectOrganization.v1", JSON.stringify(organizations));
+  }, [organizations]);
+  function updateOrganization(change: (previous: ProjectOrganization) => ProjectOrganization) {
+    setOrganizations((all) => ({
+      ...all,
+      [scope]: change(all[scope] || emptyOrganization),
+    }));
+  }
+  function createProject() {
+    const name = window.prompt("新项目名称（可将会话归入该项目）")?.trim();
+    if (!name) return;
+    updateOrganization((old) => ({
+      ...old,
+      projects: [...old.projects, { id: crypto.randomUUID(), name: name.slice(0, 60), pinned: false }],
+    }));
+  }
+  function toggleProjectPinned(id: string) {
+    updateOrganization((old) => ({
+      ...old, projects: old.projects.map((project) =>
+        project.id === id ? { ...project, pinned: !project.pinned } : project),
+    }));
+  }
+  function renameProject(id: string, currentName: string) {
+    const name = window.prompt("重命名项目", currentName)?.trim();
+    if (!name) return;
+    updateOrganization((old) => ({
+      ...old, projects: old.projects.map((project) =>
+        project.id === id ? { ...project, name: name.slice(0, 60) } : project),
+    }));
+  }
+  function toggleConversationPinned(id: string) {
+    updateOrganization((old) => ({
+      ...old,
+      pinnedSessions: old.pinnedSessions.includes(id)
+        ? old.pinnedSessions.filter((session) => session !== id)
+        : [...old.pinnedSessions, id],
+    }));
+  }
+  function assignConversation(id: string, projectId: string) {
+    updateOrganization((old) => ({
+      ...old,
+      assignments: { ...old.assignments, [id]: projectId },
+    }));
+  }
   const effectiveTheme =
     theme === "system" ? (systemDark ? "dark" : "light") : theme;
   useEffect(() => {
