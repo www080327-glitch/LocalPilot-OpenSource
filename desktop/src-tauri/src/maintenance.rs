@@ -94,8 +94,8 @@ fn release_url(s: &str) -> bool {
         && u.password().is_none()
         && u.query().is_none()
         && u.fragment().is_none()
-        && u.path()
-            .starts_with("/www080327-glitch/LocalPilot-OpenSource/releases/")
+        && (u.path() == "/www080327-glitch/LocalPilot-OpenSource/releases"
+            || u.path().starts_with("/www080327-glitch/LocalPilot-OpenSource/releases/"))
         && !u.path().contains("..")
 }
 fn select_release(rows: &Value, current: &str) -> Result<Value, String> {
@@ -702,6 +702,9 @@ mod tests {
         ));
         assert!(release_url(
             "https://github.com/www080327-glitch/LocalPilot-OpenSource/releases/download/desktop-v5.0.0/LocalPilot-5.0.0-arm64.dmg"
+        ));
+        assert!(release_url(
+            "https://github.com/www080327-glitch/LocalPilot-OpenSource/releases"
         ));
     }
     #[test]
