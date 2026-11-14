@@ -281,7 +281,7 @@ class RuntimeSessionTests(unittest.TestCase):
         self.assertNotIn("MAIN SECRET", str(local.calls))
         self.assertEqual(session.subagents[0]["depth"], 1)
 
-    def test_delegate_rejects_unsupported_worker_thinking_without_remap(self):
+    def test_delegate_uses_worker_default_for_unsupported_parent_thinking(self):
         delegation = call("delegate", {"task": "inspect", "backend_preference": "local"})
         cloud = ScriptBackend(response(None, delegation), response("handled"))
         local = ScriptBackend(response("unused"), local=True)
@@ -289,8 +289,9 @@ class RuntimeSessionTests(unittest.TestCase):
             supported_thinking_efforts=("none",), default_thinking_effort="none")
         session = self.session(cloud, local, thinking="max")
         self.assertEqual(session.run_turn("delegate").text, "handled")
-        self.assertFalse(local.calls)
-        self.assertIn("does not support thinking 'max'", cloud.calls[-1]["messages"][-1].content)
+        self.assertEqual(local.calls[0]['thinking'], 'none')
+        self.assertIn('unused', cloud.calls[-1]['messages'][-1].content)
+        self.assertIn('SubagentThinkingDefaulted', [event.type for event in self.events])
 
     def test_worker_permission_ceiling_and_depth(self):
         delegation = call("delegate", {"task": "write", "backend_preference": "local", "read_only": True})

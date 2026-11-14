@@ -59,7 +59,7 @@ class ProductIntegrationTests(unittest.TestCase):
         with patch('agent.omlx.sys.platform','darwin'),patch('agent.omlx.subprocess.run') as command:
             command.return_value.stdout='lowpowermode 1'
             with patch.object(backend,'inspect_service',return_value={'models':[{'id':'large','loaded':True,'deployment_status':'ready','size_bytes':30*1024**3}]}):
-                with self.assertRaisesRegex(LocalBackendError,'low-power policy'):backend._admit()
+                with self.assertRaisesRegex(LocalBackendError,'低电量模式'):backend._admit()
 
     def test_api_preferences_are_durable_idempotent_and_isolated(self):
         model=MockServer()
