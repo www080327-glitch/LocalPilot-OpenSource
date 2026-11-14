@@ -33,7 +33,7 @@
 
 `LP_GUI_USE_INSTALLED_DEPS=1 LP_GUI_TEST_CONFIG=<隔离配置> CARGO_BUILD_JOBS=1 desktop/scripts/build-macos.sh`：首次因根 README 缺少组件版本被 `check-candidate-versions.py` 阻止，补充明确的源码版本后检查通过。另一次构建因配置使用未列入测试目录保护的 Bundle ID 而主动中止，没有启动该构建。改用受保护的 `io.localpilot.desktop.test` 和 `LocalPilot Test` 后构建成功；签名为 ad-hoc、未公证，DMG 校验通过，清单源码 `ed50eb39b4c62a9cf0858f497d6872cf1937d620`、无已跟踪脏改动。测试构建归档在本机独立版本目录，不是 GitHub Release。
 
-使用新建的受保护测试根目录启动构建槽 APP；首次设置选择准备独立组件，未连接已发现的旧安装、未输入云密钥、未下载模型。界面报告 Core 已连接；测试根目录的 CLI 状态返回 Core `ready`、版本 `5.0.0b21`，Companion `running`、版本 `0.5.7b3`。退出 GUI 后 Core 和 Companion 仍在测试目录运行；重新启动 GUI 后首次向导不再出现，界面重新显示 Core 已连接。没有提交任务，因此这些观察不证明 Session/任务恢复。模型选择器显示“无可用标准 Agent”，推荐模型下载约 15 GB，而当时磁盘可用空间约 7 GiB，故模型加载及依赖真实模型的验收 NOT_RUN。日常 APP 没有替换；现有安装脚本只接受日常 Bundle ID，不能用它声称独立测试 APP 已安装。
+使用新建的受保护测试根目录启动构建槽 APP；首次设置选择准备独立组件，未连接已发现的旧安装、未输入云密钥、未下载模型。界面报告 Core 已连接；测试根目录的 CLI 状态返回 Core `ready`、版本 `5.0.0b21`，Companion `running`、版本 `0.5.7b3`。退出 GUI 后 Core 和 Companion 仍在测试目录运行；重新启动 GUI 后首次向导不再出现，界面重新显示 Core 已连接。没有提交任务，因此这些观察不证明 Session/任务恢复。模型选择器显示“无可用标准 Agent”，推荐模型下载约 15 GB，而当时磁盘可用空间约 7 GiB，故模型加载及依赖真实模型的验收 NOT_RUN。只读查看本机 oMLX 默认模型目录，四个条目均未发现 safetensors 权重；机器另有既存 oMLX 服务，未连接、停止或改动它。日常 APP 没有替换；现有安装脚本只接受日常 Bundle ID，不能用它声称独立测试 APP 已安装。
 
 ## 未完成
 
