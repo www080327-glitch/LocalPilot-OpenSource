@@ -24,7 +24,7 @@
 
 原生工作区验收见 `docs/evidence/nationals-20261113-acceptance/RESULTS.md`（当时 HEAD 为 `dcfe21d`，不能把旧结果当后续改动通过）。已确认当时：指定 Python 93 PASS；Vitest 49 PASS；TS build PASS；Rust 40 PASS/3 IGNORE（用空资源目录仅证明测试构建）；`test_host_tools` 4 FAIL/1 ERROR；浏览器 UI 17 PASS/8 FAIL；真实 APP、真实模型、SSE 409 原生全链路 NOT_RUN。
 
-本轮在其后修改：`desktop/src/App.tsx` 空白新会话也重置会话偏好；`tests/test_host_tools.py` 对 Full 当前系统用户读写/联网的旧断言与系统临时目录外的写入夹具做针对性更新；`tests/test_vllm_cooperative.py` 将未发布的 `benchmarks` 依赖隔离为**显式 SKIP**，其余公开 Runtime/VLLM/Cooperative 测试不再因导入整个套件失败；`desktop/tests/ui/channels.spec.ts` 走新版高级渠道入口；`desktop/tests/ui/installation.spec.ts` 跟随当前安装按钮与高级工作区入口。**全部是新增提交，仍 NOT_RETESTED，不得改写以前的验收结果。**
+本轮在其后修改：`desktop/src/App.tsx` 空白新会话也重置会话偏好；`tests/test_host_tools.py` 对 Full 当前系统用户读写/联网的旧断言与系统临时目录外的写入夹具做针对性更新，并将 Workspace 模式内 Shell 免审批、Request 模式拒绝动作必须审批、Full `http_get` 真实 PermissionGateway 准入分别测试；`tests/test_vllm_cooperative.py` 将未发布的 `benchmarks` 依赖隔离为**显式 SKIP**，其余公开 Runtime/VLLM/Cooperative 测试不再因导入整个套件失败；`desktop/tests/ui/channels.spec.ts` 走新版高级渠道入口；`desktop/tests/ui/installation.spec.ts` 跟随当前安装按钮与高级工作区入口。**全部是新增提交，仍 NOT_RETESTED，不得改写以前的验收结果。**
 
 下一轮执行顺序：
 
