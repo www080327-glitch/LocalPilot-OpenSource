@@ -26,3 +26,5 @@
 这是受管缓存的容量预留与准入约束。条目淘汰交给实际 oMLX 的 LRU；产品不扫描陌生目录，也没有删除接口。共享 oMLX/HuggingFace、权重、活动记忆、任务/收据、凭据、APP 和发行/回滚归档不进入自动清理。50 GiB 是上限，不代表当前磁盘可分配 50 GiB。已有外部服务没有被接管。已加载数组的引用由 Provider 保留，磁盘缓存文件可被 LRU 淘汰；这不承诺缓存永不失效或任意 Provider 均有相同语义。
 
 模型预算对照使用同一个本地传输与精确的已安装 oMLX 模板/tokenizer 规范化，禁止隐藏传输重试。Terminus2 保留官方任务循环、parser 和 tmux，替换其 LLM transport，因此报告必须称为“Terminus2 + measured product transport”，不能称为原样官方产品成绩。API 计费为本地零费用，硬件和能源成本未计量。
+
+旧 Provider 在受管私有宿主根下创建的 `prefix-cache` 可能是 755。升级只对该固定、非链接且本用户拥有的缓存子目录收紧为 700，保留全部块内容，再做容量准入；不会因此接管任意共享目录。Suite 检查请求为 `{"version":1,"operation":"cache_budget","args":{}}`。

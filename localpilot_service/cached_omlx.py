@@ -68,8 +68,14 @@ class CachedOmlxHost:
         if self.root.is_symlink() or self.root.stat().st_mode&0o077:
             raise ValueError("Cached host directory must be private")
         from .cache_budget import reserve
+        cache_root = self.root/'prefix-cache'
+        # Older oMLX created this child as 755 under our private host root.
+        # Keep its blocks while making the newly registered cache private.
+        if (not cache_root.is_symlink() and cache_root.is_dir()
+                and cache_root.stat().st_uid == os.getuid()):
+            cache_root.chmod(0o700)
         self.cache_bytes = spec.get('cache_bytes',2000000000)
-        self.cache_reservation = reserve(self.root/'prefix-cache',self.cache_bytes)
+        self.cache_reservation = reserve(cache_root,self.cache_bytes)
         save(self.root/'cache-ownership.json',{'version':1,'kind':'LOCALPILOT_REBUILDABLE_PREFIX_CACHE',
             'cache_root':str((self.root/'prefix-cache').resolve()),**self.cache_reservation})
         self.token=secrets.token_urlsafe(32)

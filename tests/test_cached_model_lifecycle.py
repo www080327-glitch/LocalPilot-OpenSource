@@ -28,6 +28,17 @@ class LifecycleTests(unittest.TestCase):
                 with self.host.lease('one',client_subject='companion',control_ticket='t'*32):pass
         self.assertEqual(self.host.active,0)
 
+    def test_existing_provider_cache_is_preserved_and_made_private(self):
+        cache=self.host.root/'prefix-cache'
+        block=cache/'existing-kv-block';block.write_bytes(b'KEEP EXISTING PROVIDER CACHE')
+        cache.chmod(0o755)
+        with patch.object(module,'SNAPSHOT',self.snapshot),patch.object(module,'BINARY','/usr/bin/true'),patch.object(module.sys,'platform','darwin'):
+            reopened=module.CachedOmlxHost({'snapshot':str(self.snapshot)},self.host.root)
+        self.assertEqual(cache.stat().st_mode & 0o777,0o700)
+        self.assertEqual(block.read_bytes(),b'KEEP EXISTING PROVIDER CACHE')
+        self.assertEqual(reopened.cache_reservation['maximum_bytes'],2000000000)
+        reopened.close()
+
     def test_battery_permission_is_not_memory_override(self):
         self.host._ensure=Mock()
         grant={'client_subject':'companion','expires_at':time.time()+60,'allow_on_battery':True}
