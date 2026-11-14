@@ -35,6 +35,28 @@
 5. 原生 GUI 的 SSE 409、模型加载失败、Auto Route、子代理取消、Shell 用户取消/UNKNOWN 幂等，完整验证并记录实际日志。云主→本地子、本地主→云端子、Cooperative Local→Cloud 用**真实模型**评估后再对节费/成功率作声明。
 6. 同会话模型迁移、在线模型健康、GUI/Core/Channels 一次升级回滚、50GiB 真正受管可重建缓存预算、Runtime/前端减法式解耦仍待独立实现。优先解决 PR #1 回归阻塞；架构/升级/磁盘等大改不悄悄扩成一个 PR。
 
+## 2026-11-14 最新复测与后续静态修复（需要立即复测）
+
+最新上一轮 macOS 验收实测见 `docs/evidence/nationals-20261114-retest/RESULTS.md`。当时：权限/Shell 和 Cooperative 30 PASS/3 SKIP、指定 Python 107 PASS/3 SKIP；全量 Python **1884 项、20 failures、80 errors、52 skipped**；Vitest 49 PASS、TS/Vite PASS、Rust 40 PASS/3 ignored（空资源目录仅供受限编译）、Playwright 25 PASS（合成浏览器）。真实原生 APP、模型、SSE 409、升级回滚未验收。**此后新增提交尚未重新运行以上任一测试，仍标记 NOT_RETESTED。**
+
+本轮补充的可审计修复：
+
+- `agent/registry.py`：`dispatch_access` 仅在明确的 Full gateway 模式开启，不再因 `scope_revision=3` 就解锁受保护文件检查；否则 Request/Workspace 也可能读取 `.env`。
+- `agent/scope_permissions.py`：rev3 工作区外访问提议也继续检查敏感路径和 private roots；原先 `revision!=3` 条件造成跳过。
+- `tests/test_desktop_permission_v3.py`：Request/Workspace/Isolated 都不能通过 rev3 在工作区内外读取 `.env`；明确 Full 是不同的主机授权。
+- `agent/context_v5.py`：完整 Host state（含原任务、未决义务、历史遗漏哈希）在 token/byte 窗口内时，不再因冗余的独立 compaction checkpoint 不够空间而报过窗；省略 notice 保留在原有受保护状态中，并用边界测试验证。
+- `agent/context.py`、`agent/context_v5.py`、`agent/harness_context.py`：在确实使用 backend chat template 做 token 计数时，压缩报告不再错误标成 mixed-text fallback；新增有 tokenizer 的压缩及 optional-state 回归。
+
+**Work 第一优先级：** 从 Mac 工作树读取原始 `docs/evidence/nationals-20261114-retest/python-full-venv.log`，对 20 failures/80 errors **逐项分类实际用例与根因**（文档依赖/未公开 benchmark/权限边界/上下文压缩/恢复/并发及其他）；不要把没有 traceback 的缺陷推断为已修复。先复跑下面的定向组，再完整全量；任何失败先修原因再重跑：
+
+```bash
+python3 -m unittest tests.test_desktop_permission_v3 tests.test_scope_escalation tests.test_host_tools tests.test_context_v5 tests.test_v49_context_cache tests.test_harness_context tests.test_computer_runtime tests.test_finalization_recovery tests.test_native_recovery_v3
+```
+
+关于 Full：明确区分**主机系统用户文件权限**、`private_roots` 的宿主专用数据（如凭据）、`DataPolicy` 云出站授权和 Shell Seatbelt 仅约束写入的事实。旧 Full 对 `.env` 的允许用例与旧凭据硬边界测试存在产品契约冲突，不能直接删掉全部安全测试或反向更改产品权限。先记录精确失败调用链及可复现的权限影响，再就真正跨越已承诺硬边界的行为做最小修正；不要未经批准添加全新应用沙箱或额外权限确认。
+
+**磁盘与发布仍阻塞：** 上次剩余约 1.3 GiB；`LocalPilot-Qualification` 约 8.4 GiB 暂不能证明每项可安全回收。不要清理、不打包空的 `bundled-backends`、不覆盖日常 APP、保持 PR Draft。
+
 ## 第一阶段：先完成静态/构建与测试验收
 
 在**完整 Git 检出**、现有仓库工具链与可明确证明的独立执行环境中，先执行：
