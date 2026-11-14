@@ -23,6 +23,22 @@ CARGO_BUILD_JOBS=1 cargo test --manifest-path src-tauri/Cargo.toml
 
 特别核对 `.localpilot/secrets` 的真实工具读取、Full 普通 dotfile、Full 未分类风险必须审批、13 个 benchmark 在公开检出中明确跳过，Rust 公共 Release URL 检查和真实稳定版缺失时的状态。注意 Rust 仍用空 `bundled-backends` 编译仅算受限测试，**不具备打包发行资格**。所有新运行结果独立记录日期、SHA、PASS/FAIL/SKIP 和真实限制。
 
+## 2026-11-14：后续自助修复与 Work 最小待办（最新）
+
+本轮之后又在同一 Draft PR 做了两个可直接确认的源代码修复（但**尚未复测最新 HEAD**）：
+
+1. `scripts/aic_summarize.py` 原来在模块导入时就加载历史 `benchmarks.hybrid_accounting.CostLedger`，这使本可独立运行的 `tests/test_aic_score_audit.py` 也被整体 SKIP。现把 CostLedger 仅在历史报告 CLI 的 `main()` 内导入，删除该评分测试的 SKIP 入口。剩余 **12 个**确实依赖缺失历史 benchmark 的测试模块仍显式 SKIP/NOT_RUN。迁移安全公开历史源码见 [#3](https://github.com/www080327-glitch/LocalPilot-OpenSource/issues/3)。
+2. `desktop/src-tauri/src/maintenance.rs` 查询公开 GitHub 成功但无稳定 GUI Release 时，原先返回网络/状态 `UNKNOWN`；现在区分 `NO_STABLE_RELEASE`，公开页面仍可打开，不允许在没有真实正式制品时进行本地安装包校验。前端 `VersionManagement.tsx` 显示“尚无正式版”，不把 RC/Draft 冒充 Latest。这个新状态与 TS/Rust 改动仍须实际运行验证。
+
+剩余有清晰 GitHub 任务跟踪：
+
+- [#5｜P0 全量回归、macOS 独立 APP、SSE 409 / 取消 / 恢复验收](https://github.com/www080327-glitch/LocalPilot-OpenSource/issues/5)
+- [#6｜P1 同会话跨模型迁移与真实云本双向协同/在线健康](https://github.com/www080327-glitch/LocalPilot-OpenSource/issues/6)
+- [#7｜P1/P2 一次升级回滚、50GiB 真正受管缓存、减法式清理](https://github.com/www080327-glitch/LocalPilot-OpenSource/issues/7)
+- [#4｜已核验历史版本迁入公开 GitHub Release](https://github.com/www080327-glitch/LocalPilot-OpenSource/issues/4)
+
+**Work 先做 #5**。最新 HEAD 尚无 CI，不要引用 `c3c8dc9` 的 “1913 项 / 5 FAIL / 13 ERROR” 作为新 HEAD 的复测结果。新 HEAD 应证明 Full 的服务凭据读取边界、Full 未分类风险只能单次批准、12 个 benchmark 模块 SKIP、独立 score-audit 模块真正 PASS、UI/Rust Release 没有稳定版时不误报 UNKNOWN。所有真实运行命令、源码 SHA 和结果保留在 Mac 验收目录，脱敏摘要写到 GitHub PR。
+
 ## 仓库与保护边界
 
 - 产品主线：`www080327-glitch/LocalPilot-OpenSource`，目标 PR **#1**，head `fix/nationals-runtime-ux-20261113`，base `main`。
