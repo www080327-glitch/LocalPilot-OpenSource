@@ -45,7 +45,7 @@ class LocalPilotHarborAgent(BaseAgent):
                  provider_kind="local-openai", api_key_env=None,
                  context_tokens=65536, max_steps=24, max_tool_calls=40,
                  max_token_units=1000000, max_output_tokens=2048,
-                 model_timeout=120, chat_template_kwargs=None, **kwargs):
+                 model_timeout=120, chat_template_kwargs=None, model_budget=None, **kwargs):
         if provider_kind not in {"local-openai", "remote-openai", "deepseek-native"}:
             raise ValueError("Use an explicit local-openai, remote-openai or deepseek-native provider")
         if api_key_env is not None and (not isinstance(api_key_env, str) or not api_key_env.isidentifier()):
@@ -72,10 +72,18 @@ class LocalPilotHarborAgent(BaseAgent):
                 api_key=key, data_policy=self.data_policy, effective_context=context_tokens,
                 timeout=model_timeout, generation_parameters={"temperature": 0})
         else:
-            self.backend = ServiceOpenAIBackend(base_url=endpoint, model=model_name,
+            backend_type = ServiceOpenAIBackend
+            extra = {}
+            if model_budget is not None:
+                if provider_kind != 'local-openai':
+                    raise ValueError('Measured model budgets require the local tokenizer transport')
+                from scripts.harbor_model_budget import BudgetedLocalBackend
+                backend_type = BudgetedLocalBackend
+                extra = {'model_budget':model_budget, 'budget_log':Path(logs_dir)/'model-budget.jsonl'}
+            self.backend = backend_type(base_url=endpoint, model=model_name,
                 api_key=key, allow_remote=cloud, effective_context=context_tokens,
                 timeout=model_timeout, supports_streaming=True, include_stream_usage=True,
-                chat_template_kwargs=chat_template_kwargs, generation_parameters={"temperature": 0})
+                chat_template_kwargs=chat_template_kwargs, generation_parameters={"temperature": 0}, **extra)
         self.backend.is_local = not cloud
         self.cloud = cloud
         self.container_cwd = None
@@ -161,3 +169,6 @@ class LocalPilotHarborAgent(BaseAgent):
             return session.run_turn(instruction)
         finally:
             session.close()
+            close = getattr(session.current_backend, 'close_counter', None)
+            if close:
+                close()
