@@ -39,7 +39,7 @@ class CapabilityPolicy:
 def sensitive_path(path):
     from .permission_context import full_access
     parts = Path(path).parts
-    # Service credential storage is never model tool data, including in Full.
+    # Built-in file tools block credentials even in Full; Shell has separate OS rights.
     if any(parts[i:i + 2] == ('.localpilot', 'secrets') for i in range(len(parts))):
         return True
     if full_access(): return False
