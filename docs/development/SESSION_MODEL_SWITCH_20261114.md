@@ -75,3 +75,8 @@ GUI 用例位于 `desktop/tests/ui/pa-model-switch.spec.ts`，使用明确标注
 6. 子代理树迁移目前应得到明确不支持；记录为限制，不能写成“任意模型会话迁移通过”。
 
 原生 SSE、真实模型加载/质量、macOS 权限与外部服务资源占用均不由上述 Linux 测试证明。
+
+
+## Mac 续测
+
+真实本地→云端→本地、同 Session 历史模型/收据保留和 child tree 拒绝已验证。原生重开发现既有 Session 草稿未持久化，已补保存/恢复并在最后 APP 再次重开验证；详见 [Mac 验收](../evidence/nationals-20261114-pa-mac/RESULTS.md)。

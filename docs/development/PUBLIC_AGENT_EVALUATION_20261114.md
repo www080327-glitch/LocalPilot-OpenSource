@@ -4,7 +4,7 @@
 
 `scripts/public_agent_eval.py` 提供任务预注册、官方 Harbor 作业生成/启动、逐任务结果导入和配对比较。它不自建题库、不替换官方验证器、不把软件回归测试计为模型成功率。
 
-本轮没有运行真实模型或 Docker 基准，没有产生 Terminal-Bench、AA 或其他榜单成绩。单元测试使用明确标注的解析器夹具，只验证导入和统计行为。新增薄适配器 `scripts.localpilot_harbor:LocalPilotHarborAgent`：主机上的现有 V5 `AgentSession` 通过官方 `environment.exec` 执行任务容器 Shell，仅注册该容器工具，不注册 Mac 文件或 Shell 工具。官方 Docker smoke 尚未完成，因此不能称为真实容器资格通过。 已有 `scripts/aic_test.py` 的产品回归、历史 adapted BFCL 和新的公开基准必须分别报告。
+2026-11-15 的 Mac 续测已在真实 Docker 容器完成官方 hello-world 开发 smoke，严格审计 LocalPilot 1 PASS、Nop 1 FAIL；它不是 Terminal-Bench 或 AA 榜单成绩。`scripts.localpilot_harbor:LocalPilotHarborAgent` 使用现有 V5 `AgentSession`，通过官方 `environment.exec` 执行任务容器 Shell，仅注册该容器工具，不注册 Mac 文件或 Shell 工具。受控解析器单测、产品回归、历史 adapted BFCL、开发 smoke 与正式比较分别报告，详见文末 Mac 记录。
 
 本接口按以下官方源码审查：
 
@@ -185,10 +185,15 @@ LOCALPILOT_HARBOR_CONTRACT=1 /absolute/eval/schema-venv/bin/python \
 
 ## Mac 续接的容器适配器
 
-固定 Harbor 版本不变。`agent.import_path` 使用 `scripts.localpilot_harbor:LocalPilotHarborAgent`，在仓库根目录启动评估；`agent.kwargs` 必须提前冻结 `endpoint`、`provider_kind`（`local-openai`/`remote-openai`）、`api_key_env`（变量名称）、上下文及步骤/工具/token/输出/请求超时预算。模型 ID 原样传给已配置服务。API 密钥只从指定环境变量读取，不能放入 JSON。云端要求 HTTPS 和明确凭据。
+固定 Harbor 版本不变。`agent.import_path` 使用 `scripts.localpilot_harbor:LocalPilotHarborAgent`，在仓库根目录启动评估；`agent.kwargs` 必须提前冻结 `endpoint`、`provider_kind`（`local-openai`/`remote-openai`/`deepseek-native`）、`api_key_env`（变量名称）、上下文及步骤/工具/token/输出/请求超时预算。模型 ID 原样传给已配置服务。API 密钥只从指定环境变量读取，不能放入 JSON。云端要求 HTTPS 和明确凭据。
 
 该适配器使用产品 Runtime 的权限、工具收据、V5 完成状态与一次请求预算，不另写执行循环。Harbor 提供容器 cwd 与命令执行边界；工具参数中的宿主 workspace 仅是空注册表身份，不作为执行目标。任务文件不上传到宿主工具目录。子 Agent、MCP、Skills 和原轨迹导入尚未在此适配器资格验证，明确禁用或拒绝。官方 verifier 仍是任务结果来源。
 
 用量仅在所有已完成请求均有对应字段且没有失败请求时汇总；缓存 token 是输入 token 子集。实际价格未绑定，`cost_usd` 保持未知。Harbor 取消会向 Runtime 请求停止；官方 `exec` 无统一可移植的远端子进程停止回执，取消时明确记录容器进程状态未确认，依赖 Harbor 销毁环境，不能宣称取消已完成。
 
-5 项可选官方 API 契约测试包括真实 loopback HTTP 和实际 AgentSession 工具调用；其中容器 API 使用明确命名的协议 fixture。它们不是 Docker 任务或模型得分。Mac 本机没有 Docker 可执行程序，预注册 smoke 应保留 NOT_RUN 全分母；在真实 smoke 成功前不冻结正式比较或发布成绩。
+6 项可选官方 API 契约测试包括真实 loopback HTTP 和实际 AgentSession 工具调用；其中容器 API 使用明确命名的协议 fixture。它们不是 Docker 任务或模型得分。最初缺 Docker 的启动失败保留 NOT_RUN；随后安装隔离 VM/工具并完成真实 smoke，全部中间 FAIL/ERROR 保留。正式候选在 smoke 成功后冻结 534 次计划，尚未执行或发布成绩。
+
+
+## 2026-11-15 Mac 真实执行
+
+原生云端后端与正式 Runtime 已在官方任务容器实际执行；官方 verifier 与严格结果、全部失败历史及 89×2×3 候选冻结见 [Mac 验收](../evidence/nationals-20261114-pa-mac/RESULTS.md)。本轮因内存提醒不再加载 35B；未把受控 API 测试或单个 smoke 写成官方榜单分数。

@@ -1,5 +1,7 @@
 # PA 与主 Agent 接入检查（2026-11-14）
 
+> Mac 后续：真实原生、模型与失败回滚的新证据见 [Mac 验收](../evidence/nationals-20261114-pa-mac/RESULTS.md)。下文是本轮初始接入状态，不能覆盖该后续记录。
+
 基线是公开 Draft PR #1 的 `94e0e6ff2c8da974d20530d7a0faa50844d052f4`。本轮是该候选之上的源码修复与隔离验收准备；不是新 Release，也不能替代真实模型和 macOS APP 验收。
 
 ## 采用现有 Runtime 的分工
