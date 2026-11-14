@@ -232,7 +232,7 @@ class TaskService:
                 migration = getattr(self, 'configuration_migration', None)
                 if migration is None or not migration(runtime, payload):
                     raise PersistenceError("Host configuration changed; explicit migration required")
-                migrated.append(sid)
+                migrated.append((sid,getattr(migration,'checkpoint_point','host_restore_private_paths_rebased')))
             if self.scheduler:
                 runtime._state_condition, runtime._scheduler = self.condition, self.scheduler
                 runtime._scheduler_owner = sid
@@ -259,8 +259,8 @@ class TaskService:
                     self.tasks[session.active_task].generation != session.task_generation):
                 raise PersistenceError("Active task generation mismatch")
             self._attach_persistence(session)
-        for sid in migrated:
-            self._checkpoint(sid, 'host_restore_private_paths_rebased')
+        for sid,point in migrated:
+            self._checkpoint(sid, point)
         for session in self.sessions.values():
             if not session.active_task:
                 continue

@@ -132,6 +132,9 @@ class LocalPilotHarborAgent(BaseAgent):
         context.metadata = {"runtime": "AgentSession", "engine": "v5",
             "tool_target": "harbor_task_environment", "budgets": asdict(self.budgets),
             "cost_status": "UNKNOWN", "subagents": "disabled_in_this_adapter"}
+        if not self.cloud:
+            context.cost_usd = 0
+            context.metadata['cost_status'] = 'LOCAL_API_ZERO_HARDWARE_AND_ENERGY_UNMEASURED'
         worker = asyncio.create_task(asyncio.to_thread(self._run_session, session, instruction))
         worker.add_done_callback(lambda done: done.exception() if not done.cancelled() else None)
         try:

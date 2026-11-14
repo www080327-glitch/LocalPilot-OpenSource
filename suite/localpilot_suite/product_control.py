@@ -196,6 +196,11 @@ def dispatch(home,body):
             values[args['model']]=args['value'];save(path,values)
         return {'models':values,'cache_effect':'preference_only; backend shared cache has no per-model control'}
 
+    if op=='cache_budget':
+        if args:raise ValueError('Cache budget inspection takes no path or deletion arguments')
+        from localpilot_service.cache_budget import status
+        return status()
+
     if op=='workspace_grants':
         client,health=operator(home)
         return client.request('/localpilot/v1/workspace-grants',{'client_subject':health['client_subject'],**args})

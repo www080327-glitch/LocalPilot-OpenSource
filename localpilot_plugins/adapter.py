@@ -129,14 +129,23 @@ def configure_session(runtime, home, *, skill_home=None, skills=()):
         from .skills import SkillRegistry
         registry = SkillRegistry(skill_home, runtime.workspace)
         allowed = {entry["id"] + ":" + entry["scope"] for entry in skills}
-        selected, catalog = {}, []
+        selected, legacy_selected, catalog = {}, {}, []
         for skill in sorted(allowed):
             name, scope = skill.rsplit(":", 1)
             bundle = registry.load(name, scope, runtime.registry._tools)
             selected[skill] = digest(bundle)
+            # Pre-catalog receipts omitted these two metadata fields. This
+            # projection permits exact restore comparison without rewriting them.
+            legacy_bundle = deepcopy(bundle)
+            for entry in legacy_bundle['skills']:
+                entry.pop('description')
+                entry.pop('bundle_sha256')
+            legacy_selected[skill] = digest(legacy_bundle)
             manifest = next(item for item in bundle["skills"] if item["id"] == name)
             catalog.append({"skill": skill, "version": manifest["version"],
                             "description": manifest["description"], "bundle_sha256": selected[skill]})
+        runtime._selected_skill_bundle_digests = dict(selected)
+        runtime._selected_skill_legacy_bundle_digests = legacy_selected
 
         def load_skill(*, workspace_root, skill):
             if skill not in allowed:

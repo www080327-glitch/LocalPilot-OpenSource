@@ -21,7 +21,7 @@ from .verification import configured_verifier, configured_execution_check
 
 def build(config_path):
     config = private_json(config_path)
-    if config.get("schema_version") != 1 or set(config) - {"schema_version", "host", "port", "data_dir", "log_dir", "clients", "routes", "max_sessions", "max_tasks", "max_handlers", "restore_path_migration", "async_policy"}:
+    if config.get("schema_version") != 1 or set(config) - {"schema_version", "host", "port", "data_dir", "log_dir", "clients", "routes", "max_sessions", "max_tasks", "max_handlers", "restore_path_migration", "restore_skill_catalog_migration", "async_policy"}:
         raise ValueError("Unsupported service configuration schema")
     async_policy = None
     if "async_policy" in config:
@@ -346,10 +346,11 @@ def build(config_path):
     try:
         from .documents import DocumentEngine
         documents = DocumentEngine(data / 'documents-v2')
-        from .restore_migration import path_migration
+        from .restore_migration import path_migration, skill_catalog_migration
+        migration=skill_catalog_migration(config.get('restore_skill_catalog_migration'),config.get('restore_path_migration')) or path_migration(config.get('restore_path_migration'))
         service = TaskService(routes, persistence=data / "runtime.sqlite3", auto_resume=False,
             async_policy=async_policy,
-            configuration_migration=path_migration(config.get('restore_path_migration')),
+            configuration_migration=migration,
             session_initializer=documents.initialize_session,
             resource_finalizer=documents.close,
             max_sessions=config.get("max_sessions", 64), max_tasks=config.get("max_tasks", 512))
