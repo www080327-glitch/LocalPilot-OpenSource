@@ -4,7 +4,7 @@
 
 `scripts/public_agent_eval.py` 提供任务预注册、官方 Harbor 作业生成/启动、逐任务结果导入和配对比较。它不自建题库、不替换官方验证器、不把软件回归测试计为模型成功率。
 
-本轮没有运行真实模型或 Docker 基准，没有产生 Terminal-Bench、AA 或其他榜单成绩。单元测试使用明确标注的解析器夹具，只验证导入和统计行为。**LocalPilot 的 Harbor 容器执行适配器尚未实现，仍须由 Work 连接真实 Runtime 后验收。** 已有 `scripts/aic_test.py` 的产品回归、历史 adapted BFCL 和新的公开基准必须分别报告。
+本轮没有运行真实模型或 Docker 基准，没有产生 Terminal-Bench、AA 或其他榜单成绩。单元测试使用明确标注的解析器夹具，只验证导入和统计行为。新增薄适配器 `scripts.localpilot_harbor:LocalPilotHarborAgent`：主机上的现有 V5 `AgentSession` 通过官方 `environment.exec` 执行任务容器 Shell，仅注册该容器工具，不注册 Mac 文件或 Shell 工具。官方 Docker smoke 尚未完成，因此不能称为真实容器资格通过。 已有 `scripts/aic_test.py` 的产品回归、历史 adapted BFCL 和新的公开基准必须分别报告。
 
 本接口按以下官方源码审查：
 
@@ -182,3 +182,13 @@ LOCALPILOT_HARBOR_CONTRACT=1 /absolute/eval/schema-venv/bin/python \
 结果为 **20 PASS、0 SKIP**，1.207 秒。契约测试读取已安装 Harbor 的实际源码位置并核对完整 Git SHA 和包版本，将作业配置、逐任务结果与作业汇总交给官方 `JobConfig`、`TrialResult`、`JobStats`、`JobResult` 校验和序列化，再导入本审计器。它验证官方默认字段、序列化结构和此接口兼容，仍然使用解析器夹具。
 
 这个最小 schema 环境不包含完整 Harbor 执行依赖，不能直接用于运行模型或 Docker。正式 Work 环境应按前文完整安装并单独记录端到端运行结果。两类验证不得混成同一能力成功率。
+
+## Mac 续接的容器适配器
+
+固定 Harbor 版本不变。`agent.import_path` 使用 `scripts.localpilot_harbor:LocalPilotHarborAgent`，在仓库根目录启动评估；`agent.kwargs` 必须提前冻结 `endpoint`、`provider_kind`（`local-openai`/`remote-openai`）、`api_key_env`（变量名称）、上下文及步骤/工具/token/输出/请求超时预算。模型 ID 原样传给已配置服务。API 密钥只从指定环境变量读取，不能放入 JSON。云端要求 HTTPS 和明确凭据。
+
+该适配器使用产品 Runtime 的权限、工具收据、V5 完成状态与一次请求预算，不另写执行循环。Harbor 提供容器 cwd 与命令执行边界；工具参数中的宿主 workspace 仅是空注册表身份，不作为执行目标。任务文件不上传到宿主工具目录。子 Agent、MCP、Skills 和原轨迹导入尚未在此适配器资格验证，明确禁用或拒绝。官方 verifier 仍是任务结果来源。
+
+用量仅在所有已完成请求均有对应字段且没有失败请求时汇总；缓存 token 是输入 token 子集。实际价格未绑定，`cost_usd` 保持未知。Harbor 取消会向 Runtime 请求停止；官方 `exec` 无统一可移植的远端子进程停止回执，取消时明确记录容器进程状态未确认，依赖 Harbor 销毁环境，不能宣称取消已完成。
+
+5 项可选官方 API 契约测试包括真实 loopback HTTP 和实际 AgentSession 工具调用；其中容器 API 使用明确命名的协议 fixture。它们不是 Docker 任务或模型得分。Mac 本机没有 Docker 可执行程序，预注册 smoke 应保留 NOT_RUN 全分母；在真实 smoke 成功前不冻结正式比较或发布成绩。
