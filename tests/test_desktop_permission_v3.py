@@ -54,7 +54,7 @@ class PermissionV3Tests(unittest.TestCase):
                 registry=self.runtime(mode).registry
                 # In-scope file dispatch and out-of-scope one-shot proposals
                 # must not inherit Full solely from scope_revision=3.
-                with self.assertRaises(ValueError):
+                with self.assertRaises(PermissionError):
                     registry.call('read_file',{'path':'.env'})
                 with self.assertRaises(PermissionError):
                     registry.call('read_file',{'path':str(outside/'.env')})
