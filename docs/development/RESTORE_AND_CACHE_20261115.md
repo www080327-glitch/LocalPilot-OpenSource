@@ -21,7 +21,7 @@
 
 复测使用真正旧 checkout 创建的数据库，覆盖无计划拒绝、指定计划恢复、原 journal 保留、同键不再执行、UNKNOWN 不重放，以及错误 Session/摘要/bundle、权限变化、已加载 Skill 正文变更拒绝。设置 `LOCALPILOT_LEGACY_SOURCE` 为固定 `94e0e6f` checkout 后执行 `tests.test_restore_skill_catalog_migration`；没有旧源码时明确 SKIP。
 
-受管 `CachedModelHost` 在启动前为自己的 `prefix-cache` 预留容量。`cached_model_host.cache_bytes` 是正整数字节，默认保持原 2,000,000,000 字节。所有受管根的最大容量之和不得超过 50 GiB；同一根不能静默改变容量。登记册默认位于 `~/.local/share/localpilot-owned-cache-budget`，隔离服务可用 `LOCALPILOT_CACHE_BUDGET_HOME` 指定独立位置。Suite 的 product `cache_budget` 操作返回登记根、实际逻辑字节和额度。
+受管 `CachedModelHost` 在启动前为自己的 `prefix-cache` 预留容量。`cached_model_host.cache_bytes` 是正整数字节，默认登记 2,000,000,000 字节（十进制 2 GB）。旧 Provider CLI 的 `2GB` 实际按 2 GiB 解析；若要保留该容量，第一次登记时显式配置 `cache_bytes: 2147483648`。所有受管根的最大容量之和不得超过 50 GiB；同一根不能静默改变容量。登记册默认位于 `~/.local/share/localpilot-owned-cache-budget`，隔离服务可用 `LOCALPILOT_CACHE_BUDGET_HOME` 指定独立位置。Suite 的 product `cache_budget` 操作返回登记根、实际逻辑字节和额度。
 
 这是受管缓存的容量预留与准入约束。条目淘汰交给实际 oMLX 的 LRU；产品不扫描陌生目录，也没有删除接口。共享 oMLX/HuggingFace、权重、活动记忆、任务/收据、凭据、APP 和发行/回滚归档不进入自动清理。50 GiB 是上限，不代表当前磁盘可分配 50 GiB。已有外部服务没有被接管。已加载数组的引用由 Provider 保留，磁盘缓存文件可被 LRU 淘汰；这不承诺缓存永不失效或任意 Provider 均有相同语义。
 

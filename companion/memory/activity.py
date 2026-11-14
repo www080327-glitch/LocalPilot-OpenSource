@@ -5,6 +5,7 @@ import re
 import time
 
 from .presentation import APP_NAMES
+from .observations import static_text_excerpt
 
 
 def requested_activity_day(question):
@@ -34,9 +35,7 @@ def activity_digest(memory, day="today", limit=30, now=None):
         app = obj.get("app") or APP_NAMES.get(bundle, bundle)
         kind = row["kind"]
         if kind == "ax.snapshot":
-            texts = list(dict.fromkeys(n["text"].strip() for n in proof.get("nodes", [])
-                         if n.get("role") == "AXStaticText" and isinstance(n.get("text"), str) and n["text"].strip()))
-            text = "；".join(texts)[:600] or "没有保留可读静态文字，无法概括正文。"
+            text = static_text_excerpt(proof) or "没有保留可读静态文字，无法概括正文。"
             label = (app or "应用") + " · " + (proof.get("window_title") or "标题未读取")
         elif row["source"] == "file_observer":
             label = "文件记录 · " + Path(row["source_reference"]).name

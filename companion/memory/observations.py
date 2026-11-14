@@ -98,6 +98,12 @@ def _flatten(value):
     return str(value) if value is not None else ""
 
 
+def static_text_excerpt(evidence, limit=600):
+    texts = dict.fromkeys(node['text'].strip() for node in evidence.get('nodes', [])
+        if node.get('role') == 'AXStaticText' and isinstance(node.get('text'), str) and node['text'].strip())
+    return '；'.join(texts)[:limit]
+
+
 def _tokens(text):
     lower = text.casefold()
     latin = re.findall(r"[a-z0-9_]+", lower)
@@ -497,6 +503,15 @@ class ObservationMemory:
         out = []
         for *_, row in ranked:
             packed = {key: row[key] for key in ("id", "kind", "timestamp", "first_timestamp", "source", "source_reference", "version_id", "object", "summary", "confidence", "sensitivity", "epistemic", "evidence_epistemic", "evidence_type", "provenance", "important", "expires_at", "project", "task_id", "occurrences", "occurrence_archive", "raw_state", "evidence_digest", "claim", "derived_from")}
+            if (row['source'] == 'accessibility' and row['kind'] == 'ax.snapshot'
+                    and row['raw_state'] == 'raw' and row['object'].get('content_authorized') is True):
+                excerpt = static_text_excerpt(row['evidence'])
+                if excerpt:
+                    # Raw AX metadata can precede text by thousands of bytes.
+                    # A bounded model excerpt must retain observed text without
+                    # promoting a partial window read into task completion.
+                    packed['summary'] = ('只读窗口文字（' + row['evidence'].get('read_status', 'UNKNOWN')
+                        + '，任务状态未知）：' + excerpt)
             packed["conflicts"] = self.conflicts(row["id"], now)
             packed["retrieval_method"] = "sqlite_fts5_bm25_local_alias" if self.fts_available else "bounded_lexical_local_alias"
             if len(_dump(out + [packed])) <= max_chars:
