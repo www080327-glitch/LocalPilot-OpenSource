@@ -3,6 +3,7 @@ import asyncio
 import importlib.util
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
+import os
 from pathlib import Path
 import tempfile
 import threading
@@ -11,6 +12,25 @@ import unittest
 
 @unittest.skipUnless(importlib.util.find_spec('harbor'), 'Pinned Harbor evaluation environment required')
 class HarborAdapterTests(unittest.IsolatedAsyncioTestCase):
+    async def test_native_messages_uses_the_existing_product_backend(self):
+        from localpilot_service.backend_contract import ServiceDeepSeekNativeBackend
+        from scripts.localpilot_harbor import LocalPilotHarborAgent
+        key = 'LOCALPILOT_HARBOR_FIXTURE_CREDENTIAL'
+        previous = os.environ.get(key)
+        os.environ[key] = 'fixture-only-not-valid'
+        try:
+            with tempfile.TemporaryDirectory() as directory:
+                agent = LocalPilotHarborAgent(directory, 'deepseek-flash',
+                    endpoint='https://api.deepseek.com/anthropic', provider_kind='deepseek-native', api_key_env=key)
+                self.assertIsInstance(agent.backend, ServiceDeepSeekNativeBackend)
+                self.assertFalse(agent.backend.is_local)
+                self.assertFalse(agent.data_policy.local_only)
+        finally:
+            if previous is None:
+                del os.environ[key]
+            else:
+                os.environ[key] = previous
+
     async def test_official_base_agent_and_configured_product_backend(self):
         from harbor.agents.base import BaseAgent
         from localpilot_service.backend_contract import ServiceOpenAIBackend

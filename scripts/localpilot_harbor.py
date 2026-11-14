@@ -17,7 +17,7 @@ from agent.policy import DataPolicy
 from agent.registry import ToolRegistry
 from agent.retry import RetryPolicy
 from agent.session import AgentSession, SessionBudgets
-from localpilot_service.backend_contract import ServiceOpenAIBackend
+from localpilot_service.backend_contract import ServiceDeepSeekNativeBackend, ServiceOpenAIBackend
 
 
 class ContainerShell:
@@ -46,14 +46,14 @@ class LocalPilotHarborAgent(BaseAgent):
                  context_tokens=65536, max_steps=24, max_tool_calls=40,
                  max_token_units=1000000, max_output_tokens=2048,
                  model_timeout=120, chat_template_kwargs=None, **kwargs):
-        if provider_kind not in {"local-openai", "remote-openai"}:
-            raise ValueError("Use an explicit local-openai or remote-openai provider")
+        if provider_kind not in {"local-openai", "remote-openai", "deepseek-native"}:
+            raise ValueError("Use an explicit local-openai, remote-openai or deepseek-native provider")
         if api_key_env is not None and (not isinstance(api_key_env, str) or not api_key_env.isidentifier()):
             raise ValueError("api_key_env must name an environment variable")
         key = os.environ.get(api_key_env) if api_key_env else None
         if api_key_env and not key:
             raise ValueError("Configured model credential is absent")
-        cloud = provider_kind == "remote-openai"
+        cloud = provider_kind != "local-openai"
         if cloud and (not key or not endpoint.startswith("https://")):
             raise ValueError("Remote inference requires HTTPS and a configured credential")
         if kwargs.get("mcp_servers") or kwargs.get("skills_dir") or kwargs.get("load_trajectory"):
@@ -65,10 +65,17 @@ class LocalPilotHarborAgent(BaseAgent):
             max_token_units=max_token_units, max_output_tokens=max_output_tokens,
             max_subagents_per_turn=0)
         self.data_policy = DataPolicy(local_only=not cloud)
-        self.backend = ServiceOpenAIBackend(base_url=endpoint, model=model_name,
-            api_key=key, allow_remote=cloud, effective_context=context_tokens,
-            timeout=model_timeout, supports_streaming=True, include_stream_usage=True,
-            chat_template_kwargs=chat_template_kwargs, generation_parameters={"temperature": 0})
+        if provider_kind == "deepseek-native":
+            if chat_template_kwargs:
+                raise ValueError("Native Messages does not accept local chat template overrides")
+            self.backend = ServiceDeepSeekNativeBackend(base_url=endpoint, model=model_name,
+                api_key=key, data_policy=self.data_policy, effective_context=context_tokens,
+                timeout=model_timeout, generation_parameters={"temperature": 0})
+        else:
+            self.backend = ServiceOpenAIBackend(base_url=endpoint, model=model_name,
+                api_key=key, allow_remote=cloud, effective_context=context_tokens,
+                timeout=model_timeout, supports_streaming=True, include_stream_usage=True,
+                chat_template_kwargs=chat_template_kwargs, generation_parameters={"temperature": 0})
         self.backend.is_local = not cloud
         self.cloud = cloud
         self.container_cwd = None
