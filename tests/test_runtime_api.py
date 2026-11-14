@@ -182,6 +182,31 @@ class APITests(unittest.TestCase):
         self.assertEqual(completed["streamed_text"], "")
         self.assertEqual(completed["result"]["text"], "hello 世界")
 
+    def test_expired_sse_reconciles_live_text_and_resumes_new_events_over_http(self):
+        self.service.max_events = 2
+        self.backend = StreamBackend()
+        task = self.responses("resume across SSE retention gap", background=True)
+        self.assertTrue(self.backend.first.wait(2))
+        path = f'/localpilot/v1/tasks/{task["id"]}/events'
+        try:
+            self.assert_http(409, path + '?after=0', None)
+            checkpoint = self.client.request(f'/localpilot/v1/tasks/{task["id"]}')
+            self.assertEqual(checkpoint['status'], 'running')
+            self.assertEqual(checkpoint['streamed_text'], 'hello ')
+            cursor = checkpoint['last_event_id']
+            # Only future events matter after the client has taken the full
+            # authenticated snapshot. Keep enough retention for the test tail.
+            self.service.max_events = 4096
+        finally:
+            self.backend.release.set()
+        completed = self.task(task)
+        resumed = list(self.client.stream(path, last_event_id=cursor))
+        text = [e['data']['data']['data']['text'] for e in resumed
+                if e['data']['type'] == 'runtime.event' and e['data']['data']['type'] == 'TextDelta']
+        self.assertEqual(text, ['世界'])
+        self.assertEqual(completed['result']['text'], 'hello 世界')
+        self.assertEqual(len(self.backend.requests), 1)
+
     def test_chat_stateless_history_and_persistent_stream(self):
         self.backend = Backend(answer("first"), answer("second"))
         first = self.client.request("/v1/chat/completions", {"messages": [
