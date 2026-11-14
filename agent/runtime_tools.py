@@ -7,7 +7,7 @@ def schema(name, description, properties, required=()):
 
 
 RUNTIME_SCHEMAS = [
-    schema("request_model_switch", "Request a primary model switch. Runtime policy and real user confirmation are required.", {
+    schema("request_model_switch", "Request a primary model switch within host routing and authorization. Full permission reuses an existing cloud-egress grant; it cannot grant one.", {
         "target": {"type": "string", "enum": ["local", "cloud"]}, "reason": {"type": "string"},
         "task_complexity": {"type": "string", "enum": ["very_simple", "simple", "complex"]},
         "scope": {"type": "string", "enum": ["turn", "session"]}}, ["target", "reason", "task_complexity"]),

@@ -130,7 +130,11 @@ class V01Tests(unittest.TestCase):
         suite,_=load_suite();a,_,fa=build_store(self.root/'a');b,_,fb=build_store(self.root/'b')
         try:
             self.assertEqual([hashlib.sha256(f.read_bytes()).hexdigest() for f in fa],[hashlib.sha256(f.read_bytes()).hexdigest() for f in fb])
-            result=retrieval_comparison(a,suite);self.assertTrue(result['retain_bm25'])
+            result=retrieval_comparison(a,suite)
+            self.assertGreater(result['bm25']['recall'],result['lexical']['recall'])
+            self.assertGreaterEqual(result['bm25']['precision'],result['lexical']['precision'])
+            # retain_bm25 also gates measured wall time; shared-host timing is a
+            # benchmark result, not a deterministic unit-test expectation.
         finally:a.close();b.close()
     def test_comparison_rejects_fixture_or_prompt_drift(self):
         from companion.benchmark.compare import compare

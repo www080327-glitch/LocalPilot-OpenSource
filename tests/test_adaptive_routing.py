@@ -147,7 +147,7 @@ class RuntimeControls(unittest.TestCase):
 
     def test_child_route_is_frozen_for_approval_and_explicit_id(self):
         self.local=Local(answer(None,call('delegate',{'task':'bounded','backend_preference':'cloud','backend_id':'cloud','read_only':True},'spawn')))
-        r=self.factory(self.auto(),primary='local');v=r.run_turn('work');self.assertEqual(v.status,'approval_required')
+        r=self.factory(self.auto(),primary='local',permission='approve-mutations');v=r.run_turn('work');self.assertEqual(v.status,'approval_required')
         d=r.adaptive.state['decisions'][-1];self.assertEqual(d['selected'],'cloud')
         r.adaptive.profiles['models']['cloud']['available']=False
         self.assertIs(r.adaptive.decide('child','spawn',current='cloud'),d)

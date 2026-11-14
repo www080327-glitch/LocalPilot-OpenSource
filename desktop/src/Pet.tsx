@@ -51,6 +51,7 @@ export default function Pet() {
     [text, setText] = useState(""),
     [busy, setBusy] = useState(false),
     [draft, setDraft] = useState(""),
+    [acknowledgement, setAcknowledgement] = useState(""),
     [error, setError] = useState(""),
     [snapshot, setSnapshot] = useState<any>(null),
     [memory, setMemory] = useState(true),
@@ -129,8 +130,10 @@ export default function Pet() {
         .then(acceptTask)
         .catch(() => {});
       void sub("pet-stream", (v) => {
-        if (v.id === current.current && v.data.event === "draft")
-          setDraft((t) => t + v.data.text);
+        if (v.id !== current.current) return;
+        if (v.data.event === "accepted")
+          setAcknowledgement(v.data.text || "收到，正在处理。");
+        else if (v.data.event === "draft") setDraft((t) => t + v.data.text);
       });
       void sub("task-stream", (v) => {
         if (v.taskId !== taskId.current) return;
@@ -369,6 +372,7 @@ export default function Pet() {
     setText("");
     setError("");
     setDraft("");
+    setAcknowledgement("");
     setBusy(true);
     setView("chat");
     setMessages((m) => [...m, { role: "user", text: q }]);
@@ -400,6 +404,7 @@ export default function Pet() {
     } finally {
       setBusy(false);
       setDraft("");
+      setAcknowledgement("");
       current.current = "";
     }
   }
@@ -534,7 +539,7 @@ export default function Pet() {
             ))}
             {busy && (
               <article className="pet-message assistant">
-                <p>{draft || "让我想一想…"}</p>
+                <p role="status">{draft || acknowledgement || "让我想一想…"}</p>
                 {draft && <small>正在生成，完成后核对</small>}
               </article>
             )}

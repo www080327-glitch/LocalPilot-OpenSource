@@ -28,6 +28,7 @@ export interface Model {
   reasoning_only?: boolean;
   cloud_egress?: string;
   provenance?: string;
+  health_observation?: Json;
   reasoning_efforts?: string[];
   default_reasoning_effort?: string;
   reasoning_toggle?: { supported: boolean; default: boolean; model: string };
@@ -38,6 +39,7 @@ export interface Task extends Json {
   status: string;
   quiescent: boolean;
   model?: string;
+  session_model?: string;
   result: Json | null;
   tools: Json[];
   required_action: Json | null;

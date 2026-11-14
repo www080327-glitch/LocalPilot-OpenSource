@@ -152,7 +152,7 @@ class OMLXBackend(LocalHTTPBackend):
                         files_present=any(p.stat().st_size>0 for p in directory.glob('*.safetensors') if p.is_file())
                 except (OSError,ValueError,KeyError,TypeError):files_present=False
             entries.append({'id': model['id'], 'downloaded': files_present is not False, 'files_present':files_present,
-                'loaded': d.get('loaded', model['id'] in status.get('loaded_models', [])),
+                'loaded': d.get('loaded', model['id'] in status['loaded_models'] if isinstance(status.get('loaded_models'), list) else None),
                 'thinking_default':d.get('thinking_default'),
                 'deployment_status': 'not_deployed' if files_present is False else ('loading' if d.get('is_loading') else 'ready'),
                 'context_budget': d.get('max_context_window') or model.get('max_model_len'),

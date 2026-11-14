@@ -381,7 +381,8 @@ class TaskService:
             session = self._session(session_id)
             return {"id": session.id, "object": "localpilot.session", "model": session.model,
                     "state": "closed" if session.closed else session.runtime.state.value,
-                    "active_task_id": session.active_task, "last_task_id": session.last_task, "desktop_options": session.desktop_options}
+                    "active_task_id": session.active_task, "last_task_id": session.last_task, "desktop_options": session.desktop_options,
+                    "thinking": self._execution_metadata(session)['thinking']}
 
     def create_task(self, request, *, owner_subject=None, service_metadata=None):
         self._available()
@@ -728,7 +729,7 @@ class TaskService:
         except (ValueError,TypeError):pass
         return deepcopy({"id": task.id, "object": "localpilot.task", "session_id": task.session_id,
             'user_input':question,**metadata,'pause_requested':session.active_task==task.id and session.runtime._host_pause_requested,
-            "model": task.model, "previous_task_id": task.previous_task_id, "created_at": task.created_at,
+            "model": task.model, "session_model": session.model, "previous_task_id": task.previous_task_id, "created_at": task.created_at,
             "status": task.status, "quiescent": not task.executing and not task.control_pending, "result": task.result,
             "streamed_text": task.pending_text if task.executing else "",
             "required_action": task.required_action, "error": task.error, "output": task.output,

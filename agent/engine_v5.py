@@ -40,6 +40,12 @@ def prompt(runtime):
         text += prompt_for(runtime.registry)
     if runtime.computer:
         text += '\n' + runtime.computer.agent_prompt
+    if runtime.async_policy and runtime.runtime_tools:
+        text += ('\nAcknowledge a substantial request promptly, then delegate bounded independent work '
+                 'with mode=async. Continue parent-owned work while children run. Use child_status '
+                 'and wait_children to collect actual outcomes before the final report. Report blockers '
+                 'and partial results promptly; starting a child is not proof of completion. '
+                 'Use direct execution for simple tasks; extra agents are not a quality guarantee.')
     return text + ('\nHost delivery format: ' + runtime.delivery_instruction if runtime.delivery_instruction else '')
 
 

@@ -144,6 +144,7 @@ enum CompanionPresentation {
         let verified = current["goal_verified"] as? Bool == true
         let display = current["unknown_mutation"] as? Bool == true ? "UNKNOWN：副作用待核对" : state == "completed" && !verified ? "运行结束 · 目标尚未验证" : readableState(state)
         var text = "状态：\(display)"
+        if let feedback = (row["feedback"] as? JSONObject)?["text"] as? String { text += "\n\(feedback)" }
         text += "\n验收：\(value(current, "verification_status", fallback: "not_run")) · 工程：\(value(current, "engineering_status", fallback: "unverified"))"
         if row["connection_error"] != nil { text += "\n服务暂时断线，保留最后权威任务状态。" }
         if let progress = current["progress_text"] as? String, !progress.isEmpty { text += "\n流式进度（尚未验收）：\(progress)" }

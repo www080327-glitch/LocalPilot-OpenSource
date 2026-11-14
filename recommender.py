@@ -278,7 +278,9 @@ def recommend(
     if os_name != "macOS":
         return {"status": "unsupported", "reason": "Only macOS is in the current platform scope."}
     if arch not in {"arm64", "aarch64"}:
-        return {"status": "deferred", "reason": "Intel Mac support is deferred; MLX requires Apple Silicon."}
+        return {"status": "deferred", "reason": "MLX requires Apple Silicon. Configure a local OpenAI-compatible CPU/Metal endpoint or a cloud route on Intel Mac; its native APP qualification is pending.",
+                "local_backend_alternative": "local-openai", "acceleration": "provider_selected",
+                "mps_availability": "NOT_PROBED"}
     if memory_gb is None or memory_gb <= 0:
         return None
 

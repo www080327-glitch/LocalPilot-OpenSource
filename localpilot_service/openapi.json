@@ -3482,6 +3482,128 @@
           }
         }
       }
+    },
+    "/localpilot/v1/model-health": {
+      "post": {
+        "operationId": "probeModelHealth",
+        "summary": "Explicit read-only discovery for an authorized model route; no inference or loading",
+        "security": [
+          {
+            "clientToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "model"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Observed endpoint/authentication/model discovery; inference and tools remain NOT_PROBED"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "403": {
+            "description": "Read scope required"
+          },
+          "404": {
+            "description": "Route not registered for this client"
+          }
+        }
+      }
+    },
+    "/localpilot/v1/desktop-sessions/{id}/model": {
+      "post": {
+        "operationId": "switchDesktopSessionModel",
+        "summary": "Host changes an idle compatible Session model while retaining history and receipts",
+        "security": [
+          {
+            "clientToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "client_subject",
+                  "model",
+                  "expected_model",
+                  "source"
+                ],
+                "properties": {
+                  "client_subject": {
+                    "type": "string"
+                  },
+                  "model": {
+                    "type": "string"
+                  },
+                  "expected_model": {
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "reasoning_effort": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Checkpointed same Session with selected model; old task models unchanged"
+          },
+          "400": {
+            "description": "Invalid selection"
+          },
+          "403": {
+            "description": "Host operator control and owner binding required"
+          },
+          "404": {
+            "description": "Unknown session or route"
+          },
+          "409": {
+            "description": "Busy, closed, UNKNOWN, incompatible contract, stale selection or unsupported thinking"
+          },
+          "503": {
+            "description": "Candidate or durable checkpoint unavailable; inspect current state before retry"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3764,6 +3886,10 @@
                 "minimum": 0
               }
             }
+          },
+          "session_model": {
+            "type": "string",
+            "description": "Current Session model alias; task.model preserves the model at submission"
           }
         }
       },

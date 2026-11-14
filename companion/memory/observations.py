@@ -422,6 +422,32 @@ class ObservationMemory:
                 out.append(dict(conflict) | {"older_value": old["claim"]["claim_value"], "newer_value": new["claim"]["claim_value"]})
         return out
 
+    def timeline(self, since, until, limit=50, now=None):
+        since, until = _number(since, "since"), _number(until, "until")
+        if since >= until or type(limit) is not int or not 1 <= limit <= 100:
+            raise ValueError("Invalid observation timeline range or limit")
+        now = time.time() if now is None else _number(now, "now")
+        # Use occurrence time: an identical window can be observed on several days.
+        # Archived occurrence tokens cannot reconstruct an exact historical timeline.
+        candidates = self.db.execute("""
+            SELECT e.*,max(o.timestamp) AS observed_at,min(o.timestamp) AS observed_since,
+                   count(*) AS retained_occurrences
+            FROM observation_events e JOIN observation_occurrences o ON o.memory_id=e.id
+            WHERE o.timestamp>=? AND o.timestamp<?
+            GROUP BY e.id ORDER BY observed_at DESC,e.id LIMIT 2000
+            """, (since, until)).fetchall()
+        rows = []
+        for candidate in candidates:
+            row = self._decode(dict(candidate))
+            if not self._current(row, now) or not self.source_allowed(row):
+                continue
+            row.update(timestamp=candidate["observed_at"], observed_since=candidate["observed_since"],
+                       retained_occurrences=candidate["retained_occurrences"])
+            rows.append(row)
+            if len(rows) >= limit:
+                break
+        return rows
+
     def retrieve(self, query, limit=5, max_chars=4000, context=None, now=None):
         _text(query, "query", 2048)
         if type(limit) is not int or not 1 <= limit <= 50 or type(max_chars) is not int or not 128 <= max_chars <= 32000:

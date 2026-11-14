@@ -47,7 +47,7 @@ class NoticePolicy:
         now = time.time() if now is None else now
         expire_notices(self.store, now)
         level = self.store.get("proactive_level", self.config.proactive_level)
-        if level == "off" or (level == "low" and kind not in {"deadline", "repeated_error", "localpilot_completed", "explicit_reminder", "startup", "morning"}):
+        if level == "off" or (level == "low" and kind not in {"deadline", "repeated_error", "localpilot_completed", "localpilot_attention", "explicit_reminder", "greeting", "startup", "morning", "evening"}):
             return False
         if self.quiet(now):
             return False

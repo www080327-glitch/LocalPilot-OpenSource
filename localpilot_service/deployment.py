@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 
+from agent.async_runtime import AsyncPolicy, policy_snapshot
 from agent.backends import LocalBackend
 from agent.hybrid import CloudEgressPolicy, HybridPolicy
 from agent.policy import DataPolicy
@@ -20,8 +21,16 @@ from .verification import configured_verifier, configured_execution_check
 
 def build(config_path):
     config = private_json(config_path)
-    if config.get("schema_version") != 1 or set(config) - {"schema_version", "host", "port", "data_dir", "log_dir", "clients", "routes", "max_sessions", "max_tasks", "max_handlers", "restore_path_migration"}:
+    if config.get("schema_version") != 1 or set(config) - {"schema_version", "host", "port", "data_dir", "log_dir", "clients", "routes", "max_sessions", "max_tasks", "max_handlers", "restore_path_migration", "async_policy"}:
         raise ValueError("Unsupported service configuration schema")
+    async_policy = None
+    if "async_policy" in config:
+        if not isinstance(config["async_policy"], dict):
+            raise ValueError("async_policy must contain host resource limits")
+        try:
+            async_policy = AsyncPolicy(**config["async_policy"])
+        except TypeError as exc:
+            raise ValueError("Unknown async_policy resource limit") from exc
     data = Path(config["data_dir"]).expanduser().resolve()
     logs = Path(config.get("log_dir", str(data / "logs"))).expanduser().resolve()
     for folder in (data, logs):
@@ -153,6 +162,8 @@ def build(config_path):
             raise ValueError("cache_stable_prefix must be a host boolean")
         computer_config = spec.get('computer_use')
         if computer_config is not None:
+            if async_policy:
+                raise ValueError('Async children and native Computer Use require separate services')
             if engine != 'v5' or partner or reasoning_only:
                 raise ValueError('Computer Use requires V5, tools, and one inference backend')
             if not isinstance(computer_config,dict) or not Path(computer_config.get('evidence_directory','')).expanduser().resolve().is_relative_to(data):
@@ -274,6 +285,7 @@ def build(config_path):
                 cooperative_policy=cooperative_policy, cooperative_profiles=cooperative_profiles,
                 engine_policy=EngineV5Policy() if engine == 'v5' else None,
                 strict_task=strict_task, completion_check=execution_check,
+                async_policy=async_policy,
                 event_callback=callback, retry_policy=RetryPolicy(max_attempts=2 if engine == 'v5' or b.get("agent_engine") == "deepseek_optimized" else 1), verification_callback=session_verifier)
             runtime._workspace_grants=workspace_grants
             if plugins is not None:
@@ -294,6 +306,8 @@ def build(config_path):
             "cloud_egress_paths":list(spec.get('cloud_egress_paths',())),
             "tool_capabilities":capability_values,"workspace":str(workspace),"permission_mode":permission,"budgets":spec.get("budgets",{}),
             "reasoning_efforts":[], "thinking_scope":"host_route_configuration"}
+        if async_policy:
+            catalog[name]["orchestration"] = {"mode": "async_children", "limits": policy_snapshot(async_policy)}
         if kind in {'vllm','remote-vllm'}:
             catalog[name]['capabilities']=[key for key,enabled in {
                 'streaming':bc.get('streaming',True),'tool_calling':bc.get('tool_calling',False),
@@ -306,11 +320,13 @@ def build(config_path):
     # Validate host route/capability configuration before accepting any task.
     # Construction performs no inference or model loading.
     model_backends = {}
+    inference_backends = {}
     for route_name, factory in routes.items():
         if catalog[route_name]["adapter"] == "unavailable":
             continue  # Deliberately undeployed routes remain valid registry entries.
         try:
             probe = factory(lambda event: None)
+            inference_backends[route_name] = probe.current_backend
             if catalog[route_name]['adapter'] == 'omlx':
                 model_backends[route_name] = probe.current_backend
             catalog[route_name]['reasoning_efforts']=list(probe.current_backend.capabilities.supported_thinking_efforts)
@@ -332,6 +348,7 @@ def build(config_path):
         documents = DocumentEngine(data / 'documents-v2')
         from .restore_migration import path_migration
         service = TaskService(routes, persistence=data / "runtime.sqlite3", auto_resume=False,
+            async_policy=async_policy,
             configuration_migration=path_migration(config.get('restore_path_migration')),
             session_initializer=documents.initialize_session,
             resource_finalizer=documents.close,
@@ -342,6 +359,7 @@ def build(config_path):
         server.workspace_grants=workspace_grants
         server.model_hosts=model_hosts
         server.model_backends=model_backends
+        server.inference_backends=inference_backends
         from .model_resources import ModelResources
         server.model_resources=ModelResources(server,data/'model-resource-operations.json')
         server.resources.set_path(data/"resource-control.json")

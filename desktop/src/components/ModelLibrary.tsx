@@ -44,7 +44,8 @@ export function ModelLibrary({
     [cache, setCache] = useState(false),
     [preferences, setPreferences] = useState<Json>({}),
     [typedName, setTypedName] = useState(""),
-    [verification, setVerification] = useState<Json | null>(null);
+    [verification, setVerification] = useState<Json | null>(null),
+    [health, setHealth] = useState<Record<string, Json>>({});
   async function product(operation: string, args: Json = {}) {
     return call<Json>("product_control", { operation, args });
   }
@@ -121,6 +122,19 @@ export function ModelLibrary({
     setTopP("");
     setFavorite(preferences[m.id]?.favorite || false);
     setCache(preferences[m.id]?.cache_prefix || false);
+  }
+  async function checkConnection(model: string) {
+    setBusy(true);
+    setError("");
+    try {
+      const observation = await product("model_health", { model });
+      setHealth((old) => ({ ...old, [model]: observation }));
+      await onChanged?.();
+    } catch (e) {
+      setError(String(e));
+    } finally {
+      setBusy(false);
+    }
   }
   const rec = hardware?.recommendation;
   return (
@@ -269,7 +283,8 @@ export function ModelLibrary({
           </article>
         ) : (
           <p className="library-empty">
-            当前硬件没有可确认的推荐模型。可跳过本地下载使用云端。
+            {hardware?.recommendation_status?.reason ||
+              "当前硬件没有可确认的推荐模型。可跳过本地下载使用云端。"}
           </p>
         ))}
       {["已下载", "正在运行"].includes(tab) && (
@@ -298,7 +313,11 @@ export function ModelLibrary({
                       <span className={m.loaded ? "status good" : "status"}>
                         {m.loaded ? "已加载" : "未加载"}
                       </span>{" "}
-                      · {m.files_present === false ? "权重文件不完整，请重新下载" : "已发现本地文件"} ·{" "}
+                      ·{" "}
+                      {m.files_present === false
+                        ? "权重文件不完整，请重新下载"
+                        : "已发现本地文件"}{" "}
+                      ·{" "}
                       {m.quantization?.bits
                         ? `${m.quantization.bits} bit`
                         : "量化未知"}
@@ -312,7 +331,11 @@ export function ModelLibrary({
                     <>
                       <button
                         className="secondary"
-                        disabled={busy || !manager?.resources_supported || (!m.loaded && m.files_present === false)}
+                        disabled={
+                          busy ||
+                          !manager?.resources_supported ||
+                          (!m.loaded && m.files_present === false)
+                        }
                         onClick={() =>
                           setConfirm({
                             operation: m.loaded ? "unload" : "load",
@@ -354,22 +377,38 @@ export function ModelLibrary({
           )}
           {models
             .filter((m) => m.adapter !== "omlx")
-            .map((m) => (
-              <article className="library-model" key={m.id}>
-                <Cloud size={18} />
-                <div>
-                  <strong>{m.model}</strong>
-                  <p>
-                    {m.adapter} · {label(m.deployment_status)} · 最大声明上下文{" "}
-                    {m.context_budget || "未知"}
-                  </p>
-                  <p>
-                    思考档位{" "}
-                    {m.reasoning_efforts?.join("、") || "由 Provider 配置"}
-                  </p>
-                </div>
-              </article>
-            ))}
+            .map((m) => {
+              const observed = health[m.id] || m.health_observation;
+              return (
+                <article className="library-model" key={m.id}>
+                  <Cloud size={18} />
+                  <div>
+                    <strong>{m.model}</strong>
+                    <p>
+                      {m.adapter} · {label(m.deployment_status)} ·
+                      最大声明上下文 {m.context_budget || "未知"}
+                    </p>
+                    <p>
+                      思考档位{" "}
+                      {m.reasoning_efforts?.join("、") || "由 Provider 配置"}
+                    </p>
+                    <p aria-live="polite">
+                      {observed
+                        ? `连接${observed.endpoint_reachable === true ? "可达" : observed.endpoint_reachable === false ? "失败" : "未确认"} · 模型${observed.model_listed === true ? "已列出" : observed.model_listed === false ? "未列出" : "未确认"} · 发现鉴权${observed.authentication === "ACCEPTED" ? "请求已接受" : observed.authentication === "REJECTED" ? "失败" : observed.authentication === "NOT_REQUIRED" ? "未携带凭据" : "未确认"}`
+                        : "连接尚未检查"}
+                      {" · 推理和工具执行仍需实际任务验证"}
+                    </p>
+                  </div>
+                  <button
+                    className="secondary"
+                    disabled={!desktop || busy || m.adapter === "unavailable"}
+                    onClick={() => void checkConnection(m.id)}
+                  >
+                    检查连接
+                  </button>
+                </article>
+              );
+            })}
         </>
       )}
       {tab === "下载任务" && (
