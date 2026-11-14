@@ -68,13 +68,13 @@ class PermissionV3Tests(unittest.TestCase):
         private.mkdir(parents=True)
         (private/'cloud.key').write_text('LOCALPILOT_TEST_SECRET')
         for name in ('read_file', 'file_info'):
-            with self.assertRaises(ValueError):
+            with self.assertRaises(PermissionError):
                 registry.call(name, {'path':'.localpilot/secrets/cloud.key'})
         alias=self.workspace/'alias.key'
         alias.symlink_to(private/'cloud.key')
-        with self.assertRaises(ValueError):
+        with self.assertRaises(PermissionError):
             registry.call('read_file', {'path':'alias.key'})
-        with self.assertRaises(ValueError):
+        with self.assertRaises(PermissionError):
             registry.call('apply_patch', self.patch('.localpilot/secrets/new.key'))
 
     def test_full_outside_scope_does_not_expose_service_credentials(self):
