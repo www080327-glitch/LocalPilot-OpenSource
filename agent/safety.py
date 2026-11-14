@@ -38,9 +38,12 @@ class CapabilityPolicy:
 
 def sensitive_path(path):
     from .permission_context import full_access
-    if full_access(): return False
     parts = Path(path).parts
-    return any(parts[i:i + 2] == ('.localpilot', 'secrets') for i in range(len(parts))) or any(part in {".git", ".ssh", ".env"} or
+    # Service credential storage is never model tool data, including in Full.
+    if any(parts[i:i + 2] == ('.localpilot', 'secrets') for i in range(len(parts))):
+        return True
+    if full_access(): return False
+    return any(part in {".git", ".ssh", ".env"} or
                (part.startswith(".env.") and part != ".env.example")
                for part in parts)
 
@@ -131,10 +134,11 @@ class PermissionGateway:
             status = "denied"
         elif isinstance(metadata, ToolRiskMetadata) and metadata.requires_host_approval:
             status = "approval_required"
+        elif risk not in {"low","medium","high","critical"}:
+            # Full removes routine approval prompts, not the unknown-risk floor.
+            status = "approval_required"
         elif self.mode == PermissionMode.FULL_PERMISSION.value:
             status = "allowed"
-        elif risk not in {"low","medium","high","critical"}:
-            status = "approval_required"
         elif new_mode:
             status = self._new_mode_status(operation, risk, reasons, resource, read_only, metadata)
         elif self.mode == "all_confirm":
