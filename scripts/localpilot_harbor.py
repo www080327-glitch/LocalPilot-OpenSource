@@ -118,7 +118,9 @@ class LocalPilotHarborAgent(BaseAgent):
             permission_mode="full-permission", budgets=self.budgets,
             engine_policy=EngineV5Policy(), retry_policy=RetryPolicy(max_attempts=1),
             event_callback=self._record_event,
-            system_prompt="You are LocalPilot. Work only through the shell tool in the task container. The container working directory is " + self.container_cwd + ".")
+            system_prompt="You are LocalPilot. Work only through the shell tool in the task container. The container working directory is " + self.container_cwd + ". "
+                "Do not assume Python or other optional programs are installed. Check availability with command -v NAME || true before using them. "
+                "Keep mutations and optional verification in separate shell calls: a later command failure leaves earlier effects uncertain. Never repeat an uncertain mutation.")
         context.metadata = {"runtime": "AgentSession", "engine": "v5",
             "tool_target": "harbor_task_environment", "budgets": asdict(self.budgets),
             "cost_status": "UNKNOWN", "subagents": "disabled_in_this_adapter"}
