@@ -709,6 +709,9 @@ mod tests {
         let mut a = row("desktop-v9.0.0");
         a["draft"] = json!(true);
         assert!(select_release(&json!([a]), "0.2.0").is_err());
+        let mut candidate = row("desktop-v9.0.0");
+        candidate["prerelease"] = json!(true);
+        assert!(select_release(&json!([candidate]), "0.2.0").is_err());
         assert_eq!(
             select_release(&json!([row("desktop-v0.2.0")]), "0.2.1-dev.1").unwrap()["status"],
             "LOCAL_AHEAD"
