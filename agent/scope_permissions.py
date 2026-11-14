@@ -11,6 +11,7 @@ from pathlib import Path
 import stat
 from .safe_files import inspect_file
 from .safety import READ_TOOLS, sensitive_path
+from .permission_context import dispatch_access
 
 FILE_TOOLS = READ_TOOLS | {'make_directory', 'move_file', 'copy_file', 'apply_patch'}
 MODES = {'isolated', 'request', 'workspace', 'full'}
@@ -80,7 +81,10 @@ def proposal(registry, name, args):
         p = Path(os.path.abspath(root / value))
         if policy.get('revision') == 3:
             p = _canonical_target(root, p, name)
-        if sensitive_path(p) or (policy['mode'] != 'full' and any(p == Path(v) or p.is_relative_to(v) for v in policy['private_roots'])):
+        # Session preflight runs before registry dispatch establishes Full access.
+        with dispatch_access(registry.gateway.mode == 'full-permission'):
+            protected = sensitive_path(p)
+        if protected or (policy['mode'] != 'full' and any(p == Path(v) or p.is_relative_to(v) for v in policy['private_roots'])):
             raise PermissionError('Protected or private service resource')
         outside |= not p.is_relative_to(root)
         owner[key] = str(p.relative_to('/'))

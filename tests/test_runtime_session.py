@@ -264,13 +264,19 @@ class RuntimeSessionTests(unittest.TestCase):
 
     def test_full_permission_preserves_hard_boundaries(self):
         for name, args in (("read_file", {"path": "../secret"}),
-                           ("read_file", {"path": ".localpilot/secrets/credential"}),
-                           ("execute", {"argv": ["rm", "note.txt"]})):
+                           ("read_file", {"path": ".localpilot/secrets/credential"})):
             cloud = ScriptBackend(response(None, call(name, args)), response("denied"))
             session = self.session(cloud, permission_mode="full-permission", capabilities=CapabilityPolicy(execute=True))
             session.run_turn("try")
             self.assertFalse(session.tool_history[0]["payload"]["ok"])
         self.assertTrue((self.root / "note.txt").exists())
+
+    def test_full_permission_execute_uses_host_user_rights(self):
+        cloud = ScriptBackend(response(None, call("execute", {"argv": ["rm", "note.txt"]})), response("removed"))
+        session = self.session(cloud, permission_mode="full-permission", capabilities=CapabilityPolicy(execute=True))
+        session.run_turn("remove the test file")
+        self.assertTrue(session.tool_history[0]["payload"]["ok"])
+        self.assertFalse((self.root / "note.txt").exists())
 
     def test_hard_data_policy_cannot_be_changed(self):
         session = self.session(data_policy=DataPolicy(local_only=True), policy="local-only")
