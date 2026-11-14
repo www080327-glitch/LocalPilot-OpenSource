@@ -9,7 +9,7 @@ from pathlib import Path
 from statistics import median
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from benchmarks.hybrid_accounting import CostLedger
+
 
 ROOT=Path(__file__).resolve().parents[1];E=ROOT/'docs/evidence/aic-final-20261029'
 NAMES={'A':'DSH 云端','B':'LP 完全云端','C':'LP 云端优先','D':'LP 平衡','E':'LP 本地优先','F':'LP 完全本地','G':'DSH 本地'}
@@ -101,6 +101,8 @@ def assess_strict(row):
 
 
 def main():
+    # Only the historical CLI report needs the unpublished benchmark ledger.
+    from benchmarks.hybrid_accounting import CostLedger
     p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True)
     p.add_argument('--run',default='bfcl-evaluation-final1');p.add_argument('--protocol',default='bfcl-protocol-final.json');a=p.parse_args()
     phase_ledgers=[{'path':p.name,**CostLedger(p).snapshot()} for p in sorted((ROOT/'.aic-runtime').glob('cloud-ledger*.sqlite3'))]
