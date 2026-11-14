@@ -72,6 +72,20 @@ export function replyText(
     return delta ?? task.streamed_text ?? m.text ?? "";
   return m.text || delta || "";
 }
+// A gap snapshot must not overwrite text from a newer live SSE event.
+export function reconciledStreamText(
+  task: Task,
+  lastSeenSequence: number,
+  reconciled: boolean,
+): string | null {
+  return reconciled &&
+    task.status === "running" &&
+    !task.quiescent &&
+    typeof task.streamed_text === "string" &&
+    task.last_event_id >= lastSeenSequence
+    ? task.streamed_text
+    : null;
+}
 export interface StreamEvent {
   sequence: number;
   type: string;
