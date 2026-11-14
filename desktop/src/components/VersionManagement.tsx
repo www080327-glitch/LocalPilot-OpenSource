@@ -181,8 +181,8 @@ export function VersionManagement({
         </button>
       </div>
       <p className="micro muted">
-        私有仓库需要本机已安装并登录 GitHub
-        CLI。只有点击登录检查才调用现有登录；Token 不传给页面。
+        正式版本从公开 LocalPilot-OpenSource 仓库核对，无需登录。
+        可选使用本机 GitHub CLI 登录查询；Token 不传给页面，未验证的预发布不会提示为正式更新。
       </p>
       {busy && <p role="status">正在读取，请稍候…</p>}
       {release && (
