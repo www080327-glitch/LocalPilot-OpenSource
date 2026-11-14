@@ -31,6 +31,23 @@ class ContextV5Tests(unittest.TestCase):
         for k,v in state.items(): self.assertEqual(snapshot[k], v)
         self.assertGreater(info['omitted_messages'], 0)
 
+    def test_protected_snapshot_fits_even_without_redundant_checkpoint(self):
+        messages = [Message('system', 'host constraints'), Message('user', 'older ' * 5000)]
+        state = {'original_task':'do the task', 'unknown_receipts':['receipt-1']}
+        # Derive the boundary from an actual compacted view; the new narrow
+        # request can retain its Host state but not a second prose checkpoint.
+        wide, _ = transfer(messages, [], 2000, 200, working_state=state)
+        self.assertIn('context_omissions', wide[-1].content)
+        minimum = context_tokens([wide[0], wide[-1]], [])
+        narrow, info = transfer(messages, [], minimum + 200, 200, working_state=state)
+        self.assertEqual([m.role for m in narrow], ['system', 'user'])
+        self.assertEqual(context_tokens(narrow, []), minimum)
+        tail = json.loads(narrow[-1].content.split('\n', 1)[1])
+        self.assertEqual(tail['original_task'], 'do the task')
+        self.assertEqual(tail['unknown_receipts'], ['receipt-1'])
+        self.assertEqual(tail['context_omissions']['messages'], 1)
+        self.assertEqual(info['omitted_messages'], 1)
+
     def test_critical_overflow_never_truncates_authority(self):
         with self.assertRaises(ContextTooSmall):
             transfer([], [], 1000, 200, working_state={'original_task':'x'*10000})
