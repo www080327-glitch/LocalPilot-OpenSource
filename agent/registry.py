@@ -138,7 +138,7 @@ class ToolRegistry:
                 return self._bound_result(decision)
         elif name not in {"execute", "apply_patch"}:
             metadata = self.metadata(name)
-            if not self._metadata_declared.get(name,False) and self.gateway.mode in {'assist-low-risk','assist-high-risk','full-permission'}:
+            if not self._metadata_declared.get(name,False) and self.gateway.mode in {'assist-low-risk','assist-high-risk'}:
                 metadata=replace(metadata,requires_host_approval=True)
             host_constraint = getattr(function, "_requires_host_approval", None)
             if host_constraint is not None and host_constraint():

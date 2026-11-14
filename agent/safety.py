@@ -129,11 +129,11 @@ class PermissionGateway:
             reasons = [*reasons, "Read-only plan or capability forbids mutation."]
         if blocked:
             status = "denied"
+        elif isinstance(metadata, ToolRiskMetadata) and metadata.requires_host_approval:
+            status = "approval_required"
         elif self.mode == PermissionMode.FULL_PERMISSION.value:
             status = "allowed"
         elif risk not in {"low","medium","high","critical"}:
-            status = "approval_required"
-        elif isinstance(metadata, ToolRiskMetadata) and metadata.requires_host_approval:
             status = "approval_required"
         elif new_mode:
             status = self._new_mode_status(operation, risk, reasons, resource, read_only, metadata)
