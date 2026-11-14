@@ -39,6 +39,18 @@ class HarnessContextControls(unittest.TestCase):
         self.assertEqual(state['pending_obligations'],original['pending_obligations'])
         self.assertEqual(len(original['completed_steps']),8)
 
+    def test_optional_projection_keeps_chat_template_provenance(self):
+        class Template:
+            def apply_chat_template(self, messages, **kwargs):
+                chars = sum(len(str(row.get('content') or '')) for row in messages)
+                return list(range(max(1, chars // 2)))
+        view, info = transfer_with_optional_projection(
+            [Message('system', 'Host limits')], [], 3000, 1000,
+            working_state=fixture(), enabled=True, tokenizer=Template())
+        self.assertGreater(info['optional_completed_context_entries_omitted'], 0)
+        self.assertEqual(info['estimator'], 'backend_chat_template')
+        self.assertTrue(view[-1].content.startswith('Host working state'))
+
     def test_critical_overflow_refuses_instead_of_truncating_task(self):
         original=fixture();original['completed_steps']=[];original['current_goal']='critical '*2000
         with self.assertRaises(ContextTooSmall):transfer_with_optional_projection([],[],3000,1000,working_state=original,enabled=True)
