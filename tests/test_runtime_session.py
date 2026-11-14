@@ -263,7 +263,8 @@ class RuntimeSessionTests(unittest.TestCase):
         self.assertFalse(session.registry.gateway.plan_read_only)
 
     def test_full_permission_preserves_hard_boundaries(self):
-        for name, args in (("read_file", {"path": "../secret"}), ("read_file", {"path": ".env"}),
+        for name, args in (("read_file", {"path": "../secret"}),
+                           ("read_file", {"path": ".localpilot/secrets/credential"}),
                            ("execute", {"argv": ["rm", "note.txt"]})):
             cloud = ScriptBackend(response(None, call(name, args)), response("denied"))
             session = self.session(cloud, permission_mode="full-permission", capabilities=CapabilityPolicy(execute=True))
