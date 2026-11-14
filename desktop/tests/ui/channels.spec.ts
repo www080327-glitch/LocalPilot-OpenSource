@@ -22,6 +22,9 @@ test.beforeEach(async ({ page }) => {
     }),
   );
   await page.goto("/tests/ui/channel-fixture.html");
+  // QQ and manual channel controls now live under an explicitly advanced
+  // section; keep exercising the real current UI instead of a hidden panel.
+  await page.getByText("高级 · QQ、权限与连接诊断", { exact: true }).click();
 });
 test("synthetic native controls: installed is not connected, no automatic login or start", async ({
   page,
