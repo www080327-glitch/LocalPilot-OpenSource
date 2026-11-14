@@ -29,6 +29,12 @@
 
 四个组件 wheel 重新从当前源码构建，Core、Companion、Suite、Channels 的 136、78、17、7 个 Python 文件分别与源码一致。使用 34 项官方下载并核验的第三方 wheel 和本地构建的 watchdog，加 Python 3.14.6 和固定 Node 22.23.4，运行现有 prepare 与 check 脚本：PASS；39 个 wheel、组件版本、2128 个可移植字节码文件通过检查。资源复制到独立路径后，实际启动 Suite 版本命令、导入四组件、watchdog FSEvents 和运行 Node --version 均 PASS。Node 固定压缩包 SHA-256 `c9e1dbc748b33ed2d14f42445191ecaf14c56259c7a9a26d0042c49ec2b66428`。这些结果仍不等于原生产品验收。
 
+## 独立原生应用
+
+`LP_GUI_USE_INSTALLED_DEPS=1 LP_GUI_TEST_CONFIG=<隔离配置> CARGO_BUILD_JOBS=1 desktop/scripts/build-macos.sh`：首次因根 README 缺少组件版本被 `check-candidate-versions.py` 阻止，补充明确的源码版本后检查通过。另一次构建因配置使用未列入测试目录保护的 Bundle ID 而主动中止，没有启动该构建。改用受保护的 `io.localpilot.desktop.test` 和 `LocalPilot Test` 后构建成功；签名为 ad-hoc、未公证，DMG 校验通过，清单源码 `ed50eb39b4c62a9cf0858f497d6872cf1937d620`、无已跟踪脏改动。测试构建归档在本机独立版本目录，不是 GitHub Release。
+
+使用新建的受保护测试根目录启动构建槽 APP；首次设置选择准备独立组件，未连接已发现的旧安装、未输入云密钥、未下载模型。界面报告 Core 已连接；测试根目录的 CLI 状态返回 Core `ready`、版本 `5.0.0b21`，Companion `running`、版本 `0.5.7b3`。退出 GUI 后 Core 和 Companion 仍在测试目录运行；重新启动 GUI 后首次向导不再出现，界面重新显示 Core 已连接。没有提交任务，因此这些观察不证明 Session/任务恢复。模型选择器显示“无可用标准 Agent”，推荐模型下载约 15 GB，而当时磁盘可用空间约 7 GiB，故模型加载及依赖真实模型的验收 NOT_RUN。日常 APP 没有替换；现有安装脚本只接受日常 Bundle ID，不能用它声称独立测试 APP 已安装。
+
 ## 未完成
 
-独立 APP 构建、首装/模型、四档权限、原生取消与恢复、SSE 409 原生全链路、组件升级回滚均 NOT_RUN。Issue #6/#7 的同会话迁移、真实云本协同、在线健康、统一升级与 50 GiB 受管预算仍未完成。不得把现有测试标成这些验收的 PASS；不发布 Release、不合并 Draft、不替换日常 APP。
+真实模型加载、四档权限、原生取消与 UNKNOWN、任务及 Session 恢复、SSE 409 原生全链路、独立 APP 首次安装、安装或升级失败回滚均 NOT_RUN。Issue #6/#7 的同会话迁移、真实云本协同、在线健康、统一升级与 50 GiB 受管预算仍未完成。不得把现有测试标成这些验收的 PASS；不发布 Release、不合并 Draft、不替换日常 APP。
