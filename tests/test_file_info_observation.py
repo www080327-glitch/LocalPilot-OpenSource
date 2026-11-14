@@ -88,6 +88,7 @@ class FileInfoObservationTests(unittest.TestCase):
                           ('apply_patch',{'changes':[{'operation':'create','path':'.localpilot/secrets/new.key','content':'denied'}]})]:
             with self.assertRaises(ValueError):self.registry.call(tool,args)
         self.assertFalse(search_text(self.root,'PRIVATE_FIXTURE_TOKEN'))
+        self.assertFalse(self.registry.call('search_text',{'query':'PRIVATE_FIXTURE_TOKEN'}))
         self.assertEqual(key.read_text(),'PRIVATE_FIXTURE_TOKEN')
 
     def test_symlink_to_project_credential_namespace_is_denied(self):
