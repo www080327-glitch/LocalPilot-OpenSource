@@ -6,6 +6,8 @@
 
 LocalPilot 采用 Apache 2.0 开源协议，致力于让强大、易用且低成本的 AI Agent 走进更多人的生活。
 
+**源码公开、历史留在 GitHub**：本仓库是后续产品开发的公开源码入口。已验证的历史安装包与源码版本保存在 [GitHub Releases](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases)；开发中改动保存在 Git 分支与 PR。仅为真实测试或构建保留本机工作树，不把本机旧 APP 当作历史发行数据库。具体规则见 [公开源码和历史版本约定](docs/development/GITHUB_RELEASE_HISTORY_POLICY.md)。
+
 ## 当前发行
 
 [下载 macOS 安装包](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases)。发布页提供 PKG、安装说明和 SHA256 校验文件。
