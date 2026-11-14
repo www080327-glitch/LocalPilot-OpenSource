@@ -44,3 +44,9 @@ class ActivePowerRecommendationTests(unittest.TestCase):
         value=self.observe(after='Battery Power')
         self.assertFalse(value['recommendation']['power_compatible'])
         self.assertEqual(value['hardware']['active_power_source'],'UNKNOWN')
+
+    def test_hardware_recommendation_accepts_core_minimum_below_first_tier(self):
+        with tempfile.TemporaryDirectory() as folder, patch('hardware.get_hardware',return_value={'os':'macOS','arch':'arm64','chip':'Apple test'}), patch('psutil.virtual_memory',return_value=SimpleNamespace(total=64*1024**3,available=48*1024**3)), patch('localpilot_suite.product_control.subprocess.run',side_effect=OSError('unavailable')), patch('localpilot_suite.product_control.backend_settings',side_effect=ValueError('no model')), patch('localpilot_suite.product_control.installation_state',return_value='first_launch'):
+            result=hardware(Path(folder))
+        self.assertIsNotNone(result['recommendation'])
+        self.assertGreaterEqual(result['recommendation']['context_length'],result['agent_constraints']['minimum_context'])

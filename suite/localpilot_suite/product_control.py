@@ -108,8 +108,11 @@ def hardware(home):
         base,settings=backend_settings();observed=discover_omlx(base+'/v1',settings.get('auth',{}).get('api_key'));hw['models']=observed;hw['backends']=['omlx']
     except Exception:hw['models']=[];hw['backends']=[]
     from localpilot_service.protocol import local_agent_constraints
+    from catalog import CONTEXT_LENGTHS
     constraints=local_agent_constraints()
-    r=recommend(vm.total/1024**3,available_memory_gb=vm.available/1024**3,context_k=constraints['minimum_context']//1024,minimum_context_k=constraints['minimum_context']//1024,excluded_size_classes=constraints['excluded_size_classes'],os_name=hw['os'],arch=hw['arch'],chip=hw['chip'])
+    minimum_context_k=(constraints['minimum_context']+1023)//1024
+    context_k=next((tier for tier in CONTEXT_LENGTHS if tier>=minimum_context_k),None)
+    r=recommend(vm.total/1024**3,available_memory_gb=vm.available/1024**3,context_k=context_k,minimum_context_k=minimum_context_k,excluded_size_classes=constraints['excluded_size_classes'],os_name=hw['os'],arch=hw['arch'],chip=hw['chip']) if context_k else None
     if r:
         r['download_bytes_estimate']=round(r['model']['artifact_gb']*1024**3);r['disk_compatible']=r['download_bytes_estimate']+2*1024**3<=disk.free
         r['power_compatible']=hw.get('active_low_power_mode') is False or r['download_bytes_estimate']<=1500000000
