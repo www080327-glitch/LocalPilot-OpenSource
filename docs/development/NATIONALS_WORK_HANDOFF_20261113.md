@@ -6,7 +6,7 @@
 
 最新 Mac 已记录的完整 `c3c8dc9` 复测为 **1913 项，5 FAIL、13 ERROR、51 SKIP**。这只是旧 HEAD 的实际结果，以下新提交**尚未重新执行真实仓库回归**，绝不将其标成 PASS。
 
-- 五项剩余失败已给出明确的分层修复：`agent/safety.py` 把 `.localpilot/secrets` 作为任何权限模式下的宿主凭据硬边界，同时允许已明确选择 Full 的普通 `.env`/dotfiles 依照 macOS 用户权限读取；`agent/scope_permissions.py` 在工作区外的一次性访问也执行凭据路径拒绝；`PermissionGateway.decide` 对未知 risk 即使 Full 也要求审批。已针对 file_info/search_text/read_file/apply_patch、符号链接、Session、rev3 scope 的真实代码路径补测试。**不要把“Full 能读取普通 .env”误读为“Full 能读取服务凭据”。**
+- 五项剩余失败已给出明确的分层修复：`agent/safety.py` 把 `.localpilot/secrets` 作为任何权限模式下的宿主凭据硬边界，同时允许已明确选择 Full 的普通 `.env`/dotfiles 依照 macOS 用户权限读取；`agent/scope_permissions.py` 在工作区外的一次性访问也执行凭据路径拒绝；`PermissionGateway.decide` 对未知 risk 即使 Full 也要求审批。已针对 file_info/search_text/read_file/apply_patch、符号链接、Session、rev3 scope 的真实代码路径补测试。**此限制针对内置文件工具；Full Shell 仍是当前 macOS 用户的 OS 权限，并非独立文件读取沙箱。不要把模型文件工具的拒绝误读为对任意 Shell 命令的沙箱保证。**
 - 公开源树缺 `benchmarks`：13 个历史 benchmark 测试模块新增统一的 `tests.optional_benchmarks.require_benchmarks()`，无包时 `unittest` 标记 **SKIP / NOT_RUN** 而不是导入 ERROR；有包时运行原测试，不跳过真实运行失败。已单独在临时 unittest 夹具中验证 `SkipTest` 导入期间会被统计为 skipped，**未运行公开仓库完整 1913 测试**。缺少的 benchmark 本身仍未迁入公开树，见 [Issue #3](https://github.com/www080327-glitch/LocalPilot-OpenSource/issues/3)。
 - 公开源码和历史：本仓库实际为 **Public**。新的正式发行只按 GitHub Tags/Releases 追溯。原私有历史仓库只作参考；需先审查凭据、隐藏评测、第三方许可证，不能直接整体公开。GitHub Release 历史回填见 [Issue #4](https://github.com/www080327-glitch/LocalPilot-OpenSource/issues/4)。
 - GUI 更新器 `desktop/src-tauri/src/maintenance.rs` 不再请求旧私有 GitHub Release 或信任旧下载域路径；已转到本公开仓库，且预发布和 Draft 仍不可成为稳定自动更新。已同步更新 `VersionManagement.tsx` 文案和 Rust URL/预发布测试。**当前公开 Release 只有 RC 预发布可确认，不应伪造稳定最新版**；旧 `desktop/recommended-release.json` 留作历史 5.0.0 来源证据。
