@@ -117,13 +117,19 @@ class RuntimeSessionTests(unittest.TestCase):
                 expected = "local" if policy == "local-first" else "cloud"
                 self.assertEqual(session.run_turn("hi").text, expected)
 
-    def test_ineligible_models_never_primary(self):
+    def test_small_local_models_can_be_primary(self):
         for size, context in (("4B", 131072), ("9B", 131072), ("27B", 32768)):
             with self.subTest(size=size, context=context):
-                local = ScriptBackend(response("bad"), local=True, size=size, context=context)
+                local = ScriptBackend(response("local"), local=True, size=size, context=context)
                 session = self.session(ScriptBackend(response("cloud")), local, policy="local-only")
-                self.assertEqual(session.run_turn("hi").status, "error")
-                self.assertFalse(local.calls)
+                self.assertEqual(session.run_turn("hi").text, "local")
+                self.assertEqual(len(local.calls), 1)
+
+    def test_local_model_below_context_floor_never_runs(self):
+        local = ScriptBackend(response("bad"), local=True, context=4095)
+        session = self.session(ScriptBackend(response("cloud")), local, policy="local-only")
+        self.assertEqual(session.run_turn("hi").status, "error")
+        self.assertFalse(local.calls)
 
     def test_local_retry_exhaustion_fallback_is_visible(self):
         local = ScriptBackend(*[TimeoutError("transient") for _ in range(4)], local=True)
@@ -257,13 +263,20 @@ class RuntimeSessionTests(unittest.TestCase):
         self.assertFalse(session.registry.gateway.plan_read_only)
 
     def test_full_permission_preserves_hard_boundaries(self):
-        for name, args in (("read_file", {"path": "../secret"}), ("read_file", {"path": ".env"}),
-                           ("execute", {"argv": ["rm", "note.txt"]})):
+        for name, args in (("read_file", {"path": "../secret"}),
+                           ("read_file", {"path": ".localpilot/secrets/credential"})):
             cloud = ScriptBackend(response(None, call(name, args)), response("denied"))
             session = self.session(cloud, permission_mode="full-permission", capabilities=CapabilityPolicy(execute=True))
             session.run_turn("try")
             self.assertFalse(session.tool_history[0]["payload"]["ok"])
         self.assertTrue((self.root / "note.txt").exists())
+
+    def test_full_permission_execute_uses_host_user_rights(self):
+        cloud = ScriptBackend(response(None, call("execute", {"argv": ["rm", "note.txt"]})), response("removed"))
+        session = self.session(cloud, permission_mode="full-permission", capabilities=CapabilityPolicy(execute=True))
+        session.run_turn("remove the test file")
+        self.assertTrue(session.tool_history[0]["payload"]["ok"])
+        self.assertFalse((self.root / "note.txt").exists())
 
     def test_hard_data_policy_cannot_be_changed(self):
         session = self.session(data_policy=DataPolicy(local_only=True), policy="local-only")
@@ -281,7 +294,7 @@ class RuntimeSessionTests(unittest.TestCase):
         self.assertNotIn("MAIN SECRET", str(local.calls))
         self.assertEqual(session.subagents[0]["depth"], 1)
 
-    def test_delegate_rejects_unsupported_worker_thinking_without_remap(self):
+    def test_delegate_uses_worker_default_for_unsupported_parent_thinking(self):
         delegation = call("delegate", {"task": "inspect", "backend_preference": "local"})
         cloud = ScriptBackend(response(None, delegation), response("handled"))
         local = ScriptBackend(response("unused"), local=True)
@@ -289,8 +302,9 @@ class RuntimeSessionTests(unittest.TestCase):
             supported_thinking_efforts=("none",), default_thinking_effort="none")
         session = self.session(cloud, local, thinking="max")
         self.assertEqual(session.run_turn("delegate").text, "handled")
-        self.assertFalse(local.calls)
-        self.assertIn("does not support thinking 'max'", cloud.calls[-1]["messages"][-1].content)
+        self.assertEqual(local.calls[0]['thinking'], 'none')
+        self.assertIn('unused', cloud.calls[-1]['messages'][-1].content)
+        self.assertIn('SubagentThinkingDefaulted', [event.type for event in self.events])
 
     def test_worker_permission_ceiling_and_depth(self):
         delegation = call("delegate", {"task": "write", "backend_preference": "local", "read_only": True})
@@ -414,7 +428,7 @@ class RuntimeSessionTests(unittest.TestCase):
         self.assertFalse(session.tool_history)
 
     def test_context_compaction_keeps_history_and_pairs(self):
-        backend = ScriptBackend(response("ok"), context=24000)
+        backend = ScriptBackend(response("ok"), context=10000)
         session = self.session(backend, budgets=SessionBudgets(max_output_tokens=256))
         session.messages.extend([Message("user", "old" * 10000), Message("assistant", "prior")])
         session.run_turn("latest question")

@@ -146,7 +146,9 @@ class SuiteCLITests(unittest.TestCase):
                 self.assertEqual(len(backend.requests),1)
                 child=psutil.Process(first['pid']);self.assertNotIn('DEEPSEEK_API_KEY',child.environ())
                 backend.release.set();self.service.wait(first['task_id'])
-                child.wait(timeout=21)
+                controller=cli._controller_children[str(control)]
+                self.assertEqual(controller.pid,first['pid'])
+                self.assertEqual(controller.wait(timeout=21),0)
                 self.assertEqual(json.loads(control.read_text())['state'],'finished')
         finally:backend.release.set()
 

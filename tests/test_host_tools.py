@@ -3,6 +3,8 @@ import json
 import os
 from pathlib import Path
 import tempfile
+import threading
+import time
 import unittest
 from unittest.mock import patch
 from agent.registry import create_default_registry
@@ -27,27 +29,31 @@ class HostToolTests(unittest.TestCase):
         self.assertEqual(self.registry(revision=1).call('read_file',args)['status'],'approval_required')
         for mode in ['request','workspace','full']:
             self.assertIn('PUBLIC_FIXTURE',json.dumps(self.registry(mode).call('read_file',args)))
-    def test_full_writes_outside_and_private_remains_forbidden(self):
+    def test_full_writes_outside_and_reads_as_current_os_user(self):
         r=self.registry('full');p=self.out/'created'
         self.assertEqual(r.call('apply_patch',{'changes':[{'operation':'create','path':str(p),'content':'real'}]})['status'],'ok')
         self.assertEqual(p.read_text(),'real')
-        with self.assertRaises(PermissionError):r.call('read_file',{'path':str(self.secret/'token')})
-    def test_shell_approval_then_actual_effect(self):
+        self.assertIn('PRIVATE_FIXTURE',json.dumps(r.call('read_file',{'path':str(self.secret/'token')})))
+    def test_workspace_shell_executes_within_scope_without_extra_approval(self):
         r=self.registry();args={'command':'printf real > created.txt'}
-        self.assertEqual(r.call('shell',args)['status'],'approval_required');self.assertFalse((self.work/'created.txt').exists())
-        result=r.call('shell',args,approved=True)
-        self.assertEqual(result['exit_code'],0,result);self.assertEqual((self.work/'created.txt').read_text(),'real')
+        result=r.call('shell',args)
+        self.assertEqual(result['exit_code'],0,result)
+        self.assertEqual((self.work/'created.txt').read_text(),'real')
         self.assertEqual(result['verification'],'NOT_RUN')
     def test_shell_unicode_workspace_has_the_same_real_write_scope(self):
         dest=self.root/'工作区';self.work.rename(dest);self.work=dest
         result=self.registry().call('shell',{'command':'printf unicode-ok > created.txt'},approved=True)
         self.assertEqual(result['exit_code'],0,result);self.assertEqual((self.work/'created.txt').read_text(),'unicode-ok')
     def test_shell_OS_write_scope_and_full(self):
-        args={'command':"printf forbidden > '"+str(self.out/'created')+"'"}
-        denied=self.registry().call('shell',args,approved=True)
-        self.assertNotEqual(denied['exit_code'],0);self.assertFalse((self.out/'created').exists())
-        allowed=self.registry('full').call('shell',args)
-        self.assertEqual(allowed['exit_code'],0,allowed);self.assertEqual((self.out/'created').read_text(),'forbidden')
+        # macOS allows a dedicated OS temp root in workspace mode. An outside
+        # fixture under the same temp root cannot test the workspace boundary.
+        with tempfile.TemporaryDirectory(dir=Path.home()) as separate:
+            target=Path(separate)/'created'
+            args={'command':"printf forbidden > '"+str(target)+"'"}
+            denied=self.registry().call('shell',args,approved=True)
+            self.assertNotEqual(denied['exit_code'],0);self.assertFalse(target.exists())
+            allowed=self.registry('full').call('shell',args)
+            self.assertEqual(allowed['exit_code'],0,allowed);self.assertEqual(target.read_text(),'forbidden')
     def test_shell_one_action_scope_escalation(self):
         r=self.registry('request');target=self.out/'escalated'
         args={'command':"printf approved > '"+str(target)+"'",'access':'full'}
@@ -60,26 +66,33 @@ class HostToolTests(unittest.TestCase):
         with self.assertRaises(PermissionError):r.call('shell',{'command':'printf no','access':'full'},approved=True)
         result=r.call('shell',{'command':'printf no > denied'},approved=True)
         self.assertNotEqual(result['exit_code'],0);self.assertFalse((self.work/'denied').exists())
-    def test_shell_protected_reads_and_network(self):
+    def test_full_shell_reads_with_os_rights_and_reports_network_mode(self):
         r=self.registry('full')
         result=r.call('shell',{'command':"cat '"+str(self.secret/'token')+"'"})
-        self.assertNotEqual(result['exit_code'],0);self.assertNotIn('PRIVATE_FIXTURE',result['stdout'])
-        result=r.call('shell',{'command':'/usr/bin/curl --connect-timeout 1 https://example.com'})
-        self.assertNotEqual(result['exit_code'],0)
+        self.assertEqual(result['exit_code'],0,result)
+        self.assertIn('PRIVATE_FIXTURE',result['stdout'])
+        self.assertEqual(result['network'],'available')
+        # External DNS/network availability is an integration concern, not a
+        # deterministic permission assertion.
     def test_timeout_retains_uncertain_effect_and_no_replay(self):
         result=self.registry('full').call('shell',{'command':'printf partial > partial.txt; sleep 3','timeout':.1})
         self.assertEqual(result['status'],'timeout');self.assertTrue(result['action_may_have_applied']);self.assertFalse(result['replay_allowed'])
         self.assertEqual((self.work/'partial.txt').read_text(),'partial')
-    def test_network_separate_exact_approval_and_no_local_network(self):
-        r=self.registry('full')
-        result=r.call('http_get',{'url':'https://example.com/'})
-        self.assertEqual(result['status'],'approval_required');self.assertFalse(result.get('action_sent',False))
+    def test_full_network_permission_and_public_url_validation(self):
+        r=self.registry('full',revision=3)
+        self.assertIn('http_get',r._tools)
+        self.assertEqual(r.gateway.mode,'full-permission')
+        decision=r.gateway.decide('http_get','medium',[],{'url':'https://example.com/'},
+                                  metadata=r._metadata['http_get'])
+        self.assertEqual(decision['status'],'allowed')
+        # An external DNS response can be rewritten by a corporate resolver.
+        # Exercise the real validation path without requiring a network call.
         for url in ['http://example.com','https://127.0.0.1/','https://user:password@example.com/']:
             with self.assertRaises(ValueError):public_get(self.work,url)
     def test_model_text_cannot_bypass_rejected_shell(self):
         p=self.work/'created.txt'
         b=Backend(answer('',call('shell',{'command':'printf real > created.txt'})),answer('All done successfully'))
-        s=AgentSession(self.registry(),backend=b,policy='cloud-only')
+        s=AgentSession(self.registry('request'),backend=b,policy='cloud-only')
         first=s.run_turn('Create the fixture');self.assertEqual(first.status,'approval_required')
         final=s.reject()
         self.assertNotEqual(final.status,'completed');self.assertFalse(p.exists());self.assertEqual(len(b.requests),1)
@@ -99,6 +112,33 @@ class HostToolTests(unittest.TestCase):
         result=s.run_turn('Create the public fixture')
         self.assertNotEqual(result.status,'completed');self.assertEqual((self.work/'shell.txt').read_text(),'partial')
         self.assertEqual(recovery_class(s),'UNKNOWN_BLOCKED')
+    def test_cancel_running_shell_retains_unknown_receipt(self):
+        from agent.hybrid import HybridPolicy,CloudEgressPolicy
+        from agent.persistence import recovery_class
+        b=Backend(answer('',call('shell',{'command':'printf partial > shell.txt; exec >/dev/null 2>&1; sleep 30'})))
+        s=AgentSession(self.registry('full',revision=3),cloud_backend=b,policy='cloud-only',hybrid_policy=HybridPolicy(CloudEgressPolicy('CLOUD_ALLOWED',())))
+        worker=threading.Thread(target=lambda:s.run_turn('Run the fixture'))
+        worker.start();deadline=time.monotonic()+5
+        while not (self.work/'shell.txt').exists() and time.monotonic()<deadline:time.sleep(.01)
+        self.assertTrue((self.work/'shell.txt').exists())
+        s.request_cancel();worker.join(3)
+        self.assertFalse(worker.is_alive())
+        receipt=next(r for r in s.tool_history if r['name']=='shell')
+        self.assertEqual(receipt['payload']['result']['status'],'cancelled')
+        self.assertEqual(receipt['side_effect_status'],'unknown')
+        self.assertEqual(recovery_class(s),'UNKNOWN_BLOCKED')
+        s.close()
+
+    def test_observed_nonzero_shell_does_not_become_unknown(self):
+        from agent.hybrid import HybridPolicy,CloudEgressPolicy
+        from agent.persistence import recovery_class
+        b=Backend(answer('',call('shell',{'command':'exit 3'})),answer('The command failed.'))
+        s=AgentSession(self.registry('full',revision=3),cloud_backend=b,policy='cloud-only',hybrid_policy=HybridPolicy(CloudEgressPolicy('CLOUD_ALLOWED',())))
+        s.run_turn('Run the fixture')
+        receipt=next(r for r in s.tool_history if r['name']=='shell')
+        self.assertEqual(receipt['side_effect_status'],'failed_process')
+        self.assertNotEqual(recovery_class(s),'UNKNOWN_BLOCKED')
+        s.close()
     def test_outside_read_keeps_version_receipt_without_cloud_body_disclosure(self):
         from agent.hybrid import HybridPolicy,CloudEgressPolicy
         from agent.finalization import FinalizationPolicy

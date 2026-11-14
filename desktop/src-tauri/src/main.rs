@@ -82,6 +82,12 @@ fn pending_in_scope(v: &Value, origin: &str, subject: &Value) -> bool {
         && v["origin"] == origin
         && v["subject"] == *subject
 }
+fn pending_blocks_session(v: &Value, origin: &str, subject: &Value, session: &Value) -> bool {
+    // An unresolved request blocks its own session, not unrelated new sessions.
+    session.is_string()
+        && pending_in_scope(v, origin, subject)
+        && v["body"]["session_id"] == *session
+}
 #[derive(Debug)]
 struct TaskTransportError {
     message: String,
@@ -1283,9 +1289,9 @@ async fn submit_task(
             .flatten()
         {
             if let Ok(rec) = private_json(&file.path()) {
-                if pending_in_scope(&rec, &p.origin, &health["client_subject"]) {
+                if pending_blocks_session(&rec, &p.origin, &health["client_subject"], &body["session_id"]) {
                     return Err(fail(
-                        "存在提交状态未确认的原请求。请恢复原请求，禁止另建重复任务。",
+                        "此 Session 存在提交状态未确认的原请求；请先查询或恢复原请求。",
                     ));
                 }
             }
@@ -1441,9 +1447,14 @@ async fn stream_task(app: tauri::AppHandle, p: Profile, id: String, mut cursor: 
         Ok(d) => d.join(format!("cursor-{id}.json")),
         Err(_) => return,
     };
-    if let Ok(v) = private_json(&cursor_path) {
-        if v["origin"] == p.origin {
-            cursor = cursor.max(v["after"].as_u64().unwrap_or(0));
+    // An explicit after=0 is a replay request from a fresh GUI. Its in-memory
+    // text/events are empty even if the native cursor survived a prior launch.
+    // Preserve the durable cursor only for an explicit incremental resume.
+    if cursor != 0 {
+        if let Ok(v) = private_json(&cursor_path) {
+            if v["origin"] == p.origin {
+                cursor = cursor.max(v["after"].as_u64().unwrap_or(0));
+            }
         }
     }
     for attempt in 0..6u32 {
@@ -2512,6 +2523,18 @@ mod tests {
         v["status"] = json!("rejected");
         assert!(!pending_in_scope(&v, "http://127.0.0.1:1", &json!("a")));
     }
+    #[test]
+    fn unrelated_sessions_do_not_inherit_pending_submission_quarantine() {
+        let record = json!({"origin":"http://127.0.0.1:1","subject":"a","task_id":null,
+            "status":"unknown","body":{"session_id":"session-A","input":"write a file"}});
+        let origin = "http://127.0.0.1:1";
+        let subject = json!("a");
+        assert!(pending_blocks_session(&record, origin, &subject, &json!("session-A")));
+        assert!(!pending_blocks_session(&record, origin, &subject, &json!("session-B")));
+        assert!(!pending_blocks_session(&record, origin, &subject, &Value::Null));
+        assert!(!pending_blocks_session(&record, origin, &json!("b"), &json!("session-A")));
+    }
+
     #[test]
     #[ignore = "starts released Core HTTP with a scripted model; set LP_GUI_TEST_PYTHON"]
     fn real_core_recovery_and_identity() {

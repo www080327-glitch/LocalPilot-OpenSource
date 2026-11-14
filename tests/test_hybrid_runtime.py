@@ -473,7 +473,7 @@ class HybridRuntimeTests(unittest.TestCase):
         self.assertIsNone(r.hybrid.completed_patch({'changes': [{'operation': 'create', 'path': 'once.txt', 'content': 'proof'}]}))
 
     def test_failed_small_context_switch_is_denied_without_closing_local_session(self):
-        self.cloud.model_info = replace(self.cloud.model_info, effective_context=12000)
+        self.cloud.model_info = replace(self.cloud.model_info, effective_context=4096)
         self.local = Local(answer(None, call('request_model_switch', {'target': 'cloud', 'reason': 'review', 'task_complexity': 'complex'}, 's')), answer('continue local safely'))
         r = self.factory(); r.run_turn('work'); result = r.approve()
         self.assertEqual(result.status, 'completed')
@@ -517,8 +517,8 @@ class HybridRuntimeTests(unittest.TestCase):
             return answer('child complete')
         class RoutedLocal(Local):
             def request(this, messages, **kwargs):
-                from benchmarks.hybrid_runtime import handoff
-                goal = handoff(messages)['current_goal']
+                host = next(m.content for m in messages if m.role == 'user' and (m.content or '').startswith('Host working state'))
+                goal = json.loads(host.split('\n', 1)[1])['model_handoff']['current_goal']
                 if goal == 'controlled work':
                     if not any(c.name == 'delegate' for m in messages for c in m.tool_calls):
                         return answer(None, spawn('cloud', task='C', id='c', read_only=True, async_=True),

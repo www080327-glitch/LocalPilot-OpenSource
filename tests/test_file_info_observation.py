@@ -32,9 +32,14 @@ class FileInfoObservationTests(unittest.TestCase):
         r=create_default_registry(self.root,capabilities=CapabilityPolicy(read=False))
         self.assertEqual(r.call('file_info',{'path':'new.txt'})['status'],'denied')
 
-    def test_absent_outside_and_sensitive_paths_still_rejected(self):
-        for name in ['../outside','.git/missing','.env','.ssh/missing']:
+    def test_path_traversal_and_credentials_remain_blocked_in_full(self):
+        for name in ['../outside','.localpilot/secrets/missing.key']:
             with self.assertRaises(ValueError):self.registry.call('file_info',{'path':name})
+
+    def test_full_mode_can_inspect_ordinary_dotfiles_with_os_rights(self):
+        for name in ['.git/missing', '.env', '.ssh/missing']:
+            observed = self.registry.call('file_info', {'path':name})
+            self.assertIs(observed['exists'], False)
 
     def test_escaping_symlink_still_rejected(self):
         (self.root/'escape').symlink_to(self.root.parent/'outside-missing')
@@ -83,6 +88,7 @@ class FileInfoObservationTests(unittest.TestCase):
                           ('apply_patch',{'changes':[{'operation':'create','path':'.localpilot/secrets/new.key','content':'denied'}]})]:
             with self.assertRaises(ValueError):self.registry.call(tool,args)
         self.assertFalse(search_text(self.root,'PRIVATE_FIXTURE_TOKEN'))
+        self.assertFalse(self.registry.call('search_text',{'query':'PRIVATE_FIXTURE_TOKEN'}))
         self.assertEqual(key.read_text(),'PRIVATE_FIXTURE_TOKEN')
 
     def test_symlink_to_project_credential_namespace_is_denied(self):

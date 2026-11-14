@@ -45,6 +45,46 @@ class PermissionV3Tests(unittest.TestCase):
         payload=[m.content for m in backend.requests[-1]['messages'] if m.role=='tool']
         self.assertTrue(any('DEMO_PLACEHOLDER' in str(value) for value in payload))
         self.assertFalse(any('body_withheld' in str(value) for value in payload))
+    def test_revision_three_does_not_grant_sensitive_reads_to_lower_modes(self):
+        (self.workspace/'.env').write_text('HOST_ONLY_TEST_CREDENTIAL')
+        outside=self.root/'outside';outside.mkdir()
+        (outside/'.env').write_text('EXTERNAL_HOST_ONLY_TEST_CREDENTIAL')
+        for mode in ('isolated','request','workspace'):
+            with self.subTest(mode=mode):
+                registry=self.runtime(mode).registry
+                # In-scope file dispatch and out-of-scope one-shot proposals
+                # must not inherit Full solely from scope_revision=3.
+                with self.assertRaises(PermissionError):
+                    registry.call('read_file',{'path':'.env'})
+                with self.assertRaises(PermissionError):
+                    registry.call('read_file',{'path':str(outside/'.env')})
+        # Full is an explicit OS-user permission tier, not a protocol revision.
+        full=self.runtime('full').registry
+        self.assertEqual(full.call('read_file',{'path':'.env'}),'HOST_ONLY_TEST_CREDENTIAL')
+
+    def test_full_never_exposes_service_owned_credentials(self):
+        registry=self.runtime('full').registry
+        private=self.workspace/'.localpilot'/'secrets'
+        private.mkdir(parents=True)
+        (private/'cloud.key').write_text('LOCALPILOT_TEST_SECRET')
+        for name in ('read_file', 'file_info'):
+            with self.assertRaises(PermissionError):
+                registry.call(name, {'path':'.localpilot/secrets/cloud.key'})
+        alias=self.workspace/'alias.key'
+        alias.symlink_to(private/'cloud.key')
+        with self.assertRaises(PermissionError):
+            registry.call('read_file', {'path':'alias.key'})
+        with self.assertRaises(PermissionError):
+            registry.call('apply_patch', self.patch('.localpilot/secrets/new.key'))
+
+    def test_full_outside_scope_does_not_expose_service_credentials(self):
+        registry=self.runtime('full').registry
+        private=self.root/'outside'/'.localpilot'/'secrets'
+        private.mkdir(parents=True)
+        (private/'cloud.key').write_text('LOCALPILOT_TEST_SECRET')
+        with self.assertRaises(PermissionError):
+            registry.call('read_file', {'path':str(private/'cloud.key')})
+
     def test_workspace_writes_inside_and_asks_outside(self):
         registry=self.runtime('workspace').registry
         registry.call('apply_patch', self.patch('inside.txt'))

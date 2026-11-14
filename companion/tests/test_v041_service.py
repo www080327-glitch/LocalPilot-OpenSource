@@ -1,5 +1,6 @@
 """Reader recovery and historical window privacy; no desktop access."""
 from pathlib import Path
+from datetime import datetime, timezone
 from io import BytesIO
 import json
 import tempfile
@@ -102,7 +103,7 @@ class ReaderServiceTests(unittest.TestCase):
         c.native_observation_enabled=True; c.native_ax_enabled=True
         c.native_app_allowlist=("com.example.synthetic",)
         self.app.privacy.authorize(True)
-        raw={"source":"macos.ax","kind":"ax.snapshot","timestamp":"2026-10-11T00:00:00Z", "object":{"bundle_id":"com.example.synthetic"},
+        raw={"source":"macos.ax","kind":"ax.snapshot","timestamp":datetime.now(timezone.utc).isoformat(), "object":{"bundle_id":"com.example.synthetic"},
             "evidence":{"read_status":"READ_FAILED","complete":False,"read_errors":[{
                 "attribute":"AXChildren","path":[0,1,2],"scope":"AXWindows","structural":True,
                 "status":"READ_FAILED","error":-25204,"reason":"AX_attribute_read_failed",
@@ -142,7 +143,7 @@ class ReaderServiceTests(unittest.TestCase):
             row={"id":i,"parent":0,"role":"AXStaticText","children_read_status":"READ_SUCCESS_EMPTY"}
             if i<=8: row["text"]="合成文本"*125
             nodes.append(row)
-        raw={"source":"macos.ax","kind":"ax.snapshot","timestamp":"2026-10-11T00:00:00Z",
+        raw={"source":"macos.ax","kind":"ax.snapshot","timestamp":datetime.now(timezone.utc).isoformat(),
             "object":{"bundle_id":"com.example.synthetic"},"evidence":{"nodes":nodes,
             "read_status":"READ_SUCCESS_NONEMPTY","complete":True,"structural_complete":True}}
         reader=NativeObserver(c,self.app.enqueue_native)

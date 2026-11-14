@@ -189,7 +189,7 @@ class HybridController:
             'context_budget': {'model': r._model_name(backend),
                 'capacity_units': backend.model_info.effective_context,
                 'output_token_ceiling': r.budgets.max_output_tokens,
-                'estimator': 'utf8_bytes_conservative_not_measured_tokens'},
+                'estimator': 'mixed_text_estimate_v1'},
             'finalization': deepcopy(r._completion and {k: r._completion.get(k)
                 for k in ('execution', 'delivery', 'attempts', 'obligations')}),
             'verification_status': r._verification_status,
@@ -533,11 +533,12 @@ class HybridController:
             raise ValueError('Handoff requires drained proposal queue')
         r._effective_thinking(backend)
         from .harness_context import transfer_with_optional_projection
-        # Recalculate target admission before committing a route change. This
-        # remains a conservative byte estimate, never a tokenizer measurement.
+        # Check the target model's context in tokens, without changing the
+        # legacy byte-denominated per-turn resource ledger.
         transfer_with_optional_projection(self.project_messages(r.messages, alias), None if r._finalizing else r._schemas(),
-            backend.model_info.effective_context, r.budgets.max_output_tokens * 16,
+            backend.model_info.effective_context, r.budgets.max_output_tokens + max(64, backend.model_info.effective_context // 50),
             working_state=self.contract(backend), final_only=r._finalizing,
+            tokenizer=getattr(backend, 'tokenizer', None),
             enabled=bool(r.harness_policy and backend.is_local and not r._finalizing))
         if r.adaptive:
             r.adaptive.check_switch(alias)
@@ -587,7 +588,7 @@ class HybridController:
                 self.check_target(alias)
                 if not backend.capabilities.supports_tool_calling and not self.runtime._finalizing:
                     reason = 'tool_capability'
-                elif backend.model_info.effective_context <= self.runtime.budgets.max_output_tokens * 16 + 4096:
+                elif backend.model_info.effective_context <= self.runtime.budgets.max_output_tokens + 256:
                     reason = 'context_budget'
                 elif backend.is_local and not backend.health_check():
                     reason = 'unavailable'

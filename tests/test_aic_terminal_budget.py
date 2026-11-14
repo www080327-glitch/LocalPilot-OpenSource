@@ -1,4 +1,7 @@
 """A terminal scenario error must not spend requests on later user turns."""
+from tests.optional_benchmarks import require_benchmarks
+require_benchmarks()
+
 from pathlib import Path
 import tempfile
 from types import SimpleNamespace

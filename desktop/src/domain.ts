@@ -47,6 +47,7 @@ export interface Task extends Json {
   receipt_summary?: Json;
   recovery?: Json;
   output?: Json[];
+  streamed_text?: string;
 }
 export interface NativeProfile {
   home: string;
@@ -67,9 +68,23 @@ export function replyText(
   task: Task | undefined,
   delta: string | undefined,
 ) {
-  if (task?.status === "running" && !task.quiescent && delta !== undefined)
-    return delta;
+  if (task?.status === "running" && !task.quiescent)
+    return delta ?? task.streamed_text ?? m.text ?? "";
   return m.text || delta || "";
+}
+// A gap snapshot must not overwrite text from a newer live SSE event.
+export function reconciledStreamText(
+  task: Task,
+  lastSeenSequence: number,
+  reconciled: boolean,
+): string | null {
+  return reconciled &&
+    task.status === "running" &&
+    !task.quiescent &&
+    typeof task.streamed_text === "string" &&
+    task.last_event_id >= lastSeenSequence
+    ? task.streamed_text
+    : null;
 }
 export interface StreamEvent {
   sequence: number;

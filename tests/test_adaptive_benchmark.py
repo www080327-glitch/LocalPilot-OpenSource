@@ -1,4 +1,7 @@
 """Independent oracle and contamination-boundary controls."""
+from tests.optional_benchmarks import require_benchmarks
+require_benchmarks()
+
 import json,tempfile,unittest
 from pathlib import Path
 from benchmarks.adaptive_tasks import tasks,build,verify_artifacts,check_code

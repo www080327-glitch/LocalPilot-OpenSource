@@ -6,6 +6,12 @@
 
 LocalPilot 采用 Apache 2.0 开源协议，致力于让强大、易用且低成本的 AI Agent 走进更多人的生活。
 
+**源码公开、历史留在 GitHub**：本仓库是后续产品开发的公开源码入口。已验证的历史安装包与源码版本保存在 [GitHub Releases](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases)；开发中改动保存在 Git 分支与 PR。仅为真实测试或构建保留本机工作树，不把本机旧 APP 当作历史发行数据库。具体规则见 [公开源码和历史版本约定](docs/development/GITHUB_RELEASE_HISTORY_POLICY.md)。
+
+## 当前源码组件版本
+
+本源码树包含 Desktop 5.0.1-rc.7、Core 5.0.0b21+channels.3、Suite 0.2.0b26 和 Companion 0.5.7b3。源码版本不代表已经发布或通过原生安装验收；可用发行资产以 GitHub Releases 为准。
+
 ## 当前发行
 
 [下载 macOS 安装包](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases)。发布页提供 PKG、安装说明和 SHA256 校验文件。
@@ -71,7 +77,7 @@ LocalPilot 采用 Apache 2.0 开源协议，致力于让强大、易用且低成
 | 工作区写入 | 自动处理工作文件夹内的文件，超出范围的修改先询问。 |
 | 完全权限 | 使用当前 macOS 用户的读写、Shell 和联网权限，APP 内不再重复询问批准。 |
 
-macOS 本身的文件访问授权仍由系统控制。命令报错会保留错误信息，Agent 可以检查现状、修正命令；执行结果确实无法确认时，不会自动重做原操作。
+macOS 本身的文件访问授权仍由系统控制。**完全权限下的 Shell 使用当前 macOS 用户权限，并不是独立的文件读取沙箱**；内置文件工具仍阻止直接访问 `.localpilot/secrets` 凭据目录，但不能把这项限制误认为 Shell 也无法访问系统用户可读取的文件。云端出站授权与文件权限分别控制。命令报错会保留错误信息，Agent 可以检查现状、修正命令；执行结果确实无法确认时，不会自动重做原操作。
 
 ## 在微信里使用
 

@@ -6,6 +6,7 @@ import unittest
 
 from agent.backends import Message, ToolCall
 from agent.context import ContextTooSmall, context_units
+from agent.context_budget import context_tokens
 from agent.context_v5 import transfer
 from agent.engine_v5 import EngineV5Policy
 from agent.persistence import snapshot_runtime, restore_runtime, PersistenceError, configuration
@@ -24,11 +25,39 @@ class ContextV5Tests(unittest.TestCase):
         before = deepcopy(history)
         view, info = transfer(history, [], 2300, 500, working_state=state)
         self.assertEqual(history, before)
-        self.assertLessEqual(context_units(view, []), 1800)
+        self.assertLessEqual(context_tokens(view, []), 1800)
         self.assertEqual([m.role for m in view], ['system', 'user', 'assistant', 'tool', 'user'])
         snapshot = json.loads(view[-1].content.split('\n',1)[1])
         for k,v in state.items(): self.assertEqual(snapshot[k], v)
         self.assertGreater(info['omitted_messages'], 0)
+
+    def test_protected_snapshot_fits_even_without_redundant_checkpoint(self):
+        messages = [Message('system', 'host constraints'), Message('user', 'older ' * 5000)]
+        state = {'original_task':'do the task', 'unknown_receipts':['receipt-1']}
+        # Derive the boundary from an actual compacted view; the new narrow
+        # request can retain its Host state but not a second prose checkpoint.
+        wide, _ = transfer(messages, [], 2000, 200, working_state=state)
+        self.assertIn('context_omissions', wide[-1].content)
+        minimum = context_tokens([wide[0], wide[-1]], [])
+        narrow, info = transfer(messages, [], minimum + 200, 200, working_state=state)
+        self.assertEqual([m.role for m in narrow], ['system', 'user'])
+        self.assertEqual(context_tokens(narrow, []), minimum)
+        tail = json.loads(narrow[-1].content.split('\n', 1)[1])
+        self.assertEqual(tail['original_task'], 'do the task')
+        self.assertEqual(tail['unknown_receipts'], ['receipt-1'])
+        self.assertEqual(tail['context_omissions']['messages'], 1)
+        self.assertEqual(info['omitted_messages'], 1)
+
+    def test_compaction_reports_chat_template_when_it_was_used(self):
+        class Template:
+            def apply_chat_template(self, messages, **kwargs):
+                return list(range(max(1, sum(len(str(m.get('content') or '')) for m in messages) // 4)))
+        messages = [Message('system', 'rules'), Message('user', 'long ' * 5000)]
+        _, info = transfer(messages, [], 2200, 200,
+                           working_state={'original_task':'preserve'},
+                           tokenizer=Template())
+        self.assertEqual(info['estimator'], 'backend_chat_template')
+        self.assertEqual(info['omitted_messages'], 1)
 
     def test_critical_overflow_never_truncates_authority(self):
         with self.assertRaises(ContextTooSmall):
@@ -47,6 +76,18 @@ class ContextV5Tests(unittest.TestCase):
         second, _ = transfer(messages, [], 5000, 500, working_state={'budget': 2})
         self.assertEqual(first[:-1], second[:len(first)-1])
         self.assertEqual(len(messages), 3)
+
+    def test_final_delivery_budget_is_bytes_not_context_tokens(self):
+        # ASCII text can fit the model's token window while exceeding the
+        # separate, byte-denominated finalization delivery allowance.
+        messages = [Message('system', 'fixed'), Message('user', 'a' * 1600)]
+        view, info = transfer(messages, [], 10000, 500,
+            final_only=True, working_state={'original_task': 'deliver'},
+            delivery_budget={'remaining': 1300, 'output_units': 400, 'slots': 1})
+        self.assertIsNotNone(info)
+        self.assertEqual(info['omitted_messages'], 1)
+        self.assertLessEqual(context_units(view, []), 900)
+        self.assertLessEqual(context_tokens(view, []), 9500)
 
     def test_checkpoint_engine_identity_and_stable_prompt(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -15,6 +15,7 @@ from .persistence import PersistenceError
 from .hybrid import HybridController, HybridPolicy, CloudEgressApprovalNeeded
 from .backends import BackendCapabilities, BackendResponse, LocalBackend, Message, ToolCall
 from .context import transfer_context, context_units, ContextTooSmall
+from .context_budget import request_budget, context_tokens
 from .events import EventStream
 from .goals import GoalStore
 from .judge import LocalSafetyJudge
@@ -1378,8 +1379,9 @@ class AgentSession:
             retained_resume = False
             if self.controls.working_state:
                 if self.computer:
-                    output_reserve = self._output_guard if self.controls.reserve else self.budgets.max_output_tokens
-                    prefix_units = context_units([m for m in self.messages if m.role == "system"], schemas)
+                    output_reserve = self._request_output_tokens + max(64, window // 50)
+                    prefix_units = context_tokens([m for m in self.messages if m.role == "system"], schemas,
+                                                  tokenizer=getattr(backend, 'tokenizer', None))
                     # Space for the serialized state Message header/framing.
                     # Reduce optional old evidence, never the output/final reserve
                     # or the critical task/control/current observation fields.
@@ -1432,13 +1434,14 @@ class AgentSession:
                         'slots': recovery_slots if self.finalization_policy else 1,
                         'output_units': output_reserves if self.finalization_policy else self._request_output_tokens * 16}
             view, compacted = transfer(request_messages, schemas, window,
-                self._request_output_tokens * 16 if self.controls.reserve else self._request_output_tokens,
+                self._request_output_tokens + max(64, window // 50),
                 plan=self.active_plan, goals=self._goal_records(),
                 working_state=state_view,
                 final_only=self._finalizing,
                 stable_history_prefix=bool((self.harness_policy and self.harness_policy.cache_stable_prefix)
                     or getattr(backend, "service_cache_stable_prefix", False)),
-                enabled=bool(self.harness_policy and self.hybrid and backend.is_local and not self._finalizing), **v5_options)
+                enabled=bool(self.harness_policy and self.hybrid and backend.is_local and not self._finalizing),
+                tokenizer=getattr(backend, 'tokenizer', None), **v5_options)
         except ContextTooSmall:
             if self.controls.reserve and not self._finalizing:
                 self._enter_finalizing("context_reserve")
@@ -1472,6 +1475,10 @@ class AgentSession:
                 if self.hybrid.fallback(error, False):
                     return self._model_request()
                 raise
+        context_budget = request_budget(view, schemas, self._request_output_tokens,
+                                        tokenizer=getattr(backend, 'tokenizer', None))
+        if context_budget['total_tokens'] > window:
+            raise ContextTooSmall("Projected model input and output exceed the model's token window.")
         request_units = context_units(view, schemas)
         output_charge = self._request_output_tokens * 16 if self.controls.reserve else self._request_output_tokens
         limit = (self.budgets.max_token_units if self._finalizing else self._exploration_limit) - self._reserved_child_budget('_token_units')
@@ -1488,10 +1495,11 @@ class AgentSession:
             self._debug({"event": "thinking_mode_mapped", "requested": effort,
                          "effective": "provider_default", "reason": "unsupported_reasoning_effort"})
         self._emit("ModelRequestStarted", primary=self.primary, model=self.current_primary_model, thinking=effort, phase="finalizing" if self._finalizing else "exploring", role="worker" if self.depth else "parent")
-        self._emit('ModelBudgetEstimated', estimator='utf8_bytes_conservative_not_measured_tokens',
-            context_capacity_units=window, request_units=request_units,
-            remaining_context_units=window - request_units - self._request_output_tokens * 16,
+        self._emit('ModelBudgetEstimated', estimator=context_budget['estimator'],
+            context_capacity_units=window, request_units=context_budget['input_tokens'],
+            remaining_context_units=window - context_budget['total_tokens'],
             remaining_turn_units=self.budgets.max_token_units - self._token_units,
+            legacy_turn_request_bytes=request_units, estimated_context_tokens=context_budget,
             max_output_tokens=self._request_output_tokens, protected_final_units=self._final_reserve)
         self._debug({"event": "model_request", "step": len(self._usage) + 1})
         started = time.perf_counter()
@@ -1905,7 +1913,7 @@ class AgentSession:
 
     @staticmethod
     def _payload(result):
-        unsuccessful = isinstance(result, dict) and result.get("status") in {"denied", "unavailable", "approval_required", "timeout", "nonzero_exit", "error", "unknown", "UNKNOWN", "blocked"}
+        unsuccessful = isinstance(result, dict) and result.get("status") in {"denied", "unavailable", "approval_required", "timeout", "cancelled", "nonzero_exit", "error", "unknown", "UNKNOWN", "blocked"}
         payload = {"ok": not unsuccessful, "result": result}
         if unsuccessful:
             payload["error"] = {"type": result["status"], "message": "Tool operation did not complete successfully."}
@@ -2324,9 +2332,11 @@ class AgentSession:
         if backend is None or (target == "local" and not backend.health_check()):
             return self._payload({"status": "unavailable", "tier": tier,
                 "reason": "Worker backend unavailable; check provider API credentials and model access."})
-        if self.thinking_mode is not None and self.thinking_mode not in getattr(getattr(backend, "capabilities", None), "supported_thinking_efforts", ()):
-            return self._payload({"status": "denied", "reason":
-                f"Worker {self._model_name(backend)} does not support thinking '{self.thinking_mode}'."})
+        worker_efforts = getattr(getattr(backend, "capabilities", None), "supported_thinking_efforts", ())
+        child_thinking = self.thinking_mode if self.thinking_mode in worker_efforts else None
+        if self.thinking_mode is not None and child_thinking is None:
+            self._emit("SubagentThinkingDefaulted", backend=target, model=self._model_name(backend),
+                       requested=self.thinking_mode, effective="provider_default")
         if target == "cloud" and not approved:
             self.pending_approval = {"kind": "delegate", "call": deepcopy(call), "task": args["task"],
                 "tier": tier, "provider": getattr(backend, "provider", "unknown"),
@@ -2374,13 +2384,13 @@ class AgentSession:
         self.state = SessionState.WAITING_SUBAGENT
         self._emit("SubagentStarted", id=worker_id, backend=target, tier=tier,
                    provider=getattr(backend, "provider", "unknown"), model=self._model_name(backend),
-                   read_only=read_only, budgets=asdict(budgets))
+                   task=args["task"], read_only=read_only, budgets=asdict(budgets))
         child = AgentSession(registry, backend=backend,
             local_backend=self.local_backend if self.hybrid else None, cloud_backend=self.cloud_backend if self.hybrid else None,
             cloud_worker_backends=self.cloud_worker_backends if self.hybrid else None,
             policy=self.routing_policy if self.hybrid else "local-only" if target == "local" else "cloud-only",
             budgets=budgets, data_policy=DataPolicy(local_only=self.hard_data_policy.local_only if self.hybrid else target == "local"),
-            thinking=self.thinking_mode,
+            thinking=child_thinking,
             reasoning=self.reasoning_mode,
             streaming=self.streaming, runtime_tools=False, legacy=False, depth=self.depth + 1,
             event_callback=lambda event: self._emit("SubagentEvent", id=worker_id, event=event.to_dict()),
@@ -2399,7 +2409,7 @@ class AgentSession:
         child._ledger_parent, child._worker_id = self, worker_id
         record = {"id": worker_id, "turn_id": self.turn_id, "backend": target, "tier": tier,
                   "provider": getattr(backend, "provider", "unknown"),
-                  "configured_model": self._model_name(backend), "status": "running",
+                  "configured_model": self._model_name(backend), "status": "running", "task": args["task"],
                   "permission_mode": self.permission_mode, "read_only": read_only,
                   "workspace": str(self.workspace), "depth": child.depth}
         if self.hybrid:
@@ -2416,7 +2426,7 @@ class AgentSession:
             if isinstance(child.registry.gateway.judge, LocalSafetyJudge):
                 child.registry.gateway.judge.request_context = lambda c=child: c._scheduler.model_slot(c, c.local_backend)
         if async_mode:
-            record.update({'async':True, 'status':'queued', 'task':args['task'], 'call':call.to_dict(),
+            record.update({'async':True, 'status':'queued', 'call':call.to_dict(),
                 'reservation':{'_attempts':budgets.max_steps, '_tool_proposals':budgets.max_tool_calls,
                                '_token_units':budgets.max_token_units}, 'collected':False,
                 'queued_at':time.time(), 'timeline':[]})

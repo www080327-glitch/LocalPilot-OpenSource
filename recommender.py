@@ -190,8 +190,8 @@ def _score(option, performance, context_preference):
 def feasible_candidates(memory_gb, context_k, *, profiles=None, os_name="macOS", arch="arm64", chip=None,
                         minimum_context_k=None, excluded_size_classes=()):
     """Apply the original MLX admission rules before any ranking."""
-    if minimum_context_k is not None and (minimum_context_k not in CONTEXT_LENGTHS or minimum_context_k > context_k):
-        raise ValueError('minimum_context_k must be a supported tier at most context_k')
+    if minimum_context_k is not None and (type(minimum_context_k) is not int or not 0 < minimum_context_k <= context_k):
+        raise ValueError('minimum_context_k must be a positive integer at most context_k')
     if not isinstance(excluded_size_classes, (tuple, list)) or any(not isinstance(v, str) for v in excluded_size_classes):
         raise ValueError('Invalid excluded model classes')
     if context_k not in CONTEXT_LENGTHS:
@@ -258,8 +258,8 @@ def recommend(
     allowed_model_ids=None,
 ):
     """Recommend a 4-bit MLX configuration; never infer support from chip name."""
-    if minimum_context_k is not None and (minimum_context_k not in CONTEXT_LENGTHS or minimum_context_k>context_k):
-        raise ValueError('minimum_context_k must be a supported tier at most context_k')
+    if minimum_context_k is not None and (type(minimum_context_k) is not int or not 0 < minimum_context_k <= context_k):
+        raise ValueError('minimum_context_k must be a positive integer at most context_k')
     if not isinstance(excluded_size_classes,(tuple,list)) or any(not isinstance(v,str) for v in excluded_size_classes):raise ValueError('Invalid excluded model classes')
     if preference not in VALID_PERFORMANCE_PREFERENCES:
         raise ValueError("preference must be quality, speed, efficiency, or balanced")

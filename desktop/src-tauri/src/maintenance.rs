@@ -14,8 +14,8 @@ use std::{
 };
 use tauri::State;
 
-const REPO: &str = "https://github.com/www080327-glitch/LocalPilot";
-const RELEASES: &str = "https://api.github.com/repos/www080327-glitch/LocalPilot/releases";
+const REPO: &str = "https://github.com/www080327-glitch/LocalPilot-OpenSource";
+const RELEASES: &str = "https://api.github.com/repos/www080327-glitch/LocalPilot-OpenSource/releases";
 const MAX_BODY: usize = 4 * 1024 * 1024;
 #[derive(Default)]
 pub struct Maintenance {
@@ -94,8 +94,8 @@ fn release_url(s: &str) -> bool {
         && u.password().is_none()
         && u.query().is_none()
         && u.fragment().is_none()
-        && u.path()
-            .starts_with("/www080327-glitch/LocalPilot/releases/")
+        && (u.path() == "/www080327-glitch/LocalPilot-OpenSource/releases"
+            || u.path().starts_with("/www080327-glitch/LocalPilot-OpenSource/releases/"))
         && !u.path().contains("..")
 }
 fn select_release(rows: &Value, current: &str) -> Result<Value, String> {
@@ -171,7 +171,7 @@ async fn public_releases() -> Result<Value, String> {
             .map_err(|_| "GitHub 网络连接失败；状态 UNKNOWN，请检查网络后重试")?;
         let status = res.status();
         if !status.is_success() {
-            return Err(format!("GitHub HTTP {}；无法确认最新版本。404 可能需要私有仓库权限；可主动使用本机 GitHub 登录。",status.as_u16()));
+            return Err(format!("GitHub HTTP {}；无法确认最新版本。404 可能是公开 Release 不可用；请核对仓库页面。",status.as_u16()));
         }
         let mut stream = res.bytes_stream();
         let mut bytes = Vec::new();
@@ -204,7 +204,7 @@ async fn load_releases(authenticated: bool) -> Result<Value, String> {
                 "api",
                 "--hostname",
                 "github.com",
-                &format!("repos/www080327-glitch/LocalPilot/releases?per_page=100&page={page}"),
+                &format!("repos/www080327-glitch/LocalPilot-OpenSource/releases?per_page=100&page={page}"),
             ])
             .env("GH_PROMPT_DISABLED", "1");
             let s = run(cmd, 20, MAX_BODY).map_err(|_| {
@@ -230,7 +230,14 @@ pub async fn desktop_update_check(
     let result = load_releases(authenticated)
         .await
         .and_then(|v| select_release(&v, env!("CARGO_PKG_VERSION")));
-    let mut v = result.unwrap_or_else(|e| json!({"status":"UNKNOWN","error":e}));
+    let mut v = result.unwrap_or_else(|e| {
+        if e == "未发现正式 Desktop Release；Core/Suite Release 不参与 GUI 更新" {
+            json!({"status":"NO_STABLE_RELEASE","url":format!("{REPO}/releases"),
+                "error":"公开仓库目前没有正式 Desktop Release；预发布不会自动推荐"})
+        } else {
+            json!({"status":"UNKNOWN","error":e})
+        }
+    });
     v["checked_at"] = json!(stamp());
     v["source"] = json!(if authenticated {
         "github-cli-authenticated"
@@ -599,7 +606,8 @@ pub async fn desktop_open_release(
 #[tauri::command]
 pub async fn desktop_verify_archive(n: State<'_, Maintenance>) -> Result<Value, String> {
     let latest = n.latest.lock().unwrap().clone();
-    if latest["status"] == "UNKNOWN"
+    if !["CURRENT", "LOCAL_AHEAD", "UPDATE_AVAILABLE"]
+        .contains(&latest["status"].as_str().unwrap_or(""))
         || latest["checked_at"]
             .as_u64()
             .is_none_or(|t| stamp().saturating_sub(t) > 3600)
@@ -695,7 +703,16 @@ mod tests {
             "https://github.com.evil.test/www080327-glitch/LocalPilot/releases/"
         ));
         assert!(!release_url(
-            "https://github.com/www080327-glitch/LocalPilot/releases/?x=1"
+            "https://github.com/www080327-glitch/LocalPilot-OpenSource/releases/?x=1"
+        ));
+        assert!(!release_url(
+            "https://github.com/www080327-glitch/LocalPilot/releases/download/desktop-v5.0.0/LocalPilot-5.0.0-arm64.dmg"
+        ));
+        assert!(release_url(
+            "https://github.com/www080327-glitch/LocalPilot-OpenSource/releases/download/desktop-v5.0.0/LocalPilot-5.0.0-arm64.dmg"
+        ));
+        assert!(release_url(
+            "https://github.com/www080327-glitch/LocalPilot-OpenSource/releases"
         ));
     }
     #[test]
@@ -703,6 +720,9 @@ mod tests {
         let mut a = row("desktop-v9.0.0");
         a["draft"] = json!(true);
         assert!(select_release(&json!([a]), "0.2.0").is_err());
+        let mut candidate = row("desktop-v9.0.0");
+        candidate["prerelease"] = json!(true);
+        assert!(select_release(&json!([candidate]), "0.2.0").is_err());
         assert_eq!(
             select_release(&json!([row("desktop-v0.2.0")]), "0.2.1-dev.1").unwrap()["status"],
             "LOCAL_AHEAD"

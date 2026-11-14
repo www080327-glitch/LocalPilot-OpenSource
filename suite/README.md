@@ -1,6 +1,6 @@
 # LocalPilot Suite 0.2.0b21
 
-[官方推荐桌面下载：LocalPilot Desktop 5.0.0](https://github.com/www080327-glitch/LocalPilot/releases/latest) · [安装与边界](../docs/releases/desktop-5.0.0/INSTALL.md)。本页为独立 Suite CLI，模块版本不随 Desktop 版本号变化。
+[公开 GitHub 桌面历史版本与可用下载](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases) · [安装与边界](../docs/releases/desktop-5.0.0/INSTALL.md)。本页为独立 Suite CLI，模块版本不随 Desktop 版本号变化。
 
 Thin CLI and installation coordination for independently installed Core and Companion packages. This distribution contains no Agent Runtime or copied module source. It exposes `localpilot`; Core also works through `localpilot-core`, and Companion through `companion`.
 
