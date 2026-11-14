@@ -14,11 +14,26 @@
 
 1. 上下文 token 准入：`agent/context_budget.py`、`context.py`、`context_v5.py`、`session.py`、`hybrid.py`、`vllm.py` 等；旧 turn 字节账本保持独立。中文回退估算已比 UTF-8 每字节一 token 更积极。核对具体本地 tokenizer 支持率及过窗边界。
 2. Cooperative 有界本地试用，云端主模型可配本地伙伴，云端/本地双向委派复用已有 HybridController。已新增 cloud-primary route 的返回切换预算逻辑。
-3. 偏好保存失败恢复、UNKNOWN 只阻塞原 Session、符号链接与 Full 授权、Shell 长时限/Schema（**Shell 取消尚未完成**）。
+3. 偏好保存失败恢复、UNKNOWN 只阻塞原 Session、符号链接与 Full 授权、Shell 长时限/Schema；`dcfe21d` 已将 Session 手动取消信号接入 Shell 进程组停止，原生 GUI/子代理取消及 UNKNOWN 持久验收仍待完成。
 4. 显式跨模型切换仍采用明确的新会话，不虚构 canonical history 已迁移；本地模型加载失败不再先丢失当前会话；从显式路由选择 Core Auto 也会新开会话而非继续绑定旧模型。
 5. 项目组织/置顶、模型列表只展示 ready+tool_calling+来源允许的注册路由；注意 `ready` 并不是在线健康证明。
 6. 底部本地/云端**请求次数**占比与子代理侧栏，运行中统计包含 `SubagentEvent` 嵌套调用，完成后采用服务端持久汇总，不假装是 token/费用占比。
 7. SSE 重开 GUI 后支持 `after=0` 重放、事件序号去重；服务端任务快照在运行中暴露 `streamed_text`，过保留窗口的 `reconciled` 快照用于重建全文并续接新事件；工具不重放。
+
+## 2026-11-14 续接进度与下一次 Work 必办项
+
+原生工作区验收见 `docs/evidence/nationals-20261113-acceptance/RESULTS.md`（当时 HEAD 为 `dcfe21d`，不能把旧结果当后续改动通过）。已确认当时：指定 Python 93 PASS；Vitest 49 PASS；TS build PASS；Rust 40 PASS/3 IGNORE（用空资源目录仅证明测试构建）；`test_host_tools` 4 FAIL/1 ERROR；浏览器 UI 17 PASS/8 FAIL；真实 APP、真实模型、SSE 409 原生全链路 NOT_RUN。
+
+本轮在其后修改：`desktop/src/App.tsx` 空白新会话也重置会话偏好；`tests/test_host_tools.py` 对 Full 当前系统用户读写/联网的旧断言与系统临时目录外的写入夹具做针对性更新；`tests/test_vllm_cooperative.py` 将未发布的 `benchmarks` 依赖隔离为**显式 SKIP**，其余公开 Runtime/VLLM/Cooperative 测试不再因导入整个套件失败；`desktop/tests/ui/channels.spec.ts` 走新版高级渠道入口；`desktop/tests/ui/installation.spec.ts` 跟随当前安装按钮与高级工作区入口。**全部是新增提交，仍 NOT_RETESTED，不得改写以前的验收结果。**
+
+下一轮执行顺序：
+
+1. 先获取**新 HEAD**并查看本地 Work 测试路径 `/Users/perry_guo/Desktop/aic竞赛/LocalPilot-nationals-acceptance-20261113` 的状态。不要强制重置该工作树。用原始失败日志与新的运行结果逐项比较，分别记录每个失败测试的名字、断言、实际表现、根因和结果。
+2. 先在现有项目流程中重跑 `python3 -m unittest tests.test_host_tools tests.test_vllm_cooperative tests.test_nationals_runtime tests.test_runtime_api`，再执行 `cd desktop && npm test && npm run build && npm run test:ui`，补跑 Rust 与全套 Python。**尤其检查**权限 v2/v3 的兼容语义、不同位置的写入夹具、DNS 的环境映射与网络访问实际权限、ChannelSettings 的 4 个高级入口测试、空白新会话、安装新流程、权限 Popover 的 Escape 焦点恢复。
+3. 若测试仍失败，按**真实代码/真实 UX**逐项修复，不要仅删除断言。工作区写入 Shell 的临时目录例外须查清：Mac `TMPDIR` 可以用于程序正常临时文件，但不应把任意工作区外用户文件默认为已获全盘授权；先写一个真正位于临时根之外的 OS 写入对照，再决定是否需要最小源码更改。若有行为调整，说明对用户是否增加弹窗。
+4. **真实应用构建的阻塞**：先只读确认磁盘剩余（上次约 1.8 GiB）及每个目录归属，检查 `~/Library/Caches/LocalPilot-Qualification` 约 8.4 GiB 的内容、运行进程与引用关系；**不能仅凭目录名称删除**，需要向用户列明明确的可回收内容、影响、大小后取得许可。核验 `bundled-backends` 真实产物和图标来源，空目录绝不可作为发布物。构建独立 Bundle ID 的测试 APP，不覆盖每日使用版本。
+5. 原生 GUI 的 SSE 409、模型加载失败、Auto Route、子代理取消、Shell 用户取消/UNKNOWN 幂等，完整验证并记录实际日志。云主→本地子、本地主→云端子、Cooperative Local→Cloud 用**真实模型**评估后再对节费/成功率作声明。
+6. 同会话模型迁移、在线模型健康、GUI/Core/Channels 一次升级回滚、50GiB 真正受管可重建缓存预算、Runtime/前端减法式解耦仍待独立实现。优先解决 PR #1 回归阻塞；架构/升级/磁盘等大改不悄悄扩成一个 PR。
 
 ## 第一阶段：先完成静态/构建与测试验收
 
@@ -54,7 +69,7 @@ cargo test --manifest-path src-tauri/Cargo.toml
 
 - **同会话无损模型迁移**：已有 Session 的 canonical 消息、工具收据、未决任务和工作状态通过既有 Hybrid 交接路径转给新模型，不重演写操作；不能做到之前继续显式新建会话。
 - **真实可用模型列表**：配置 ready/文件已下载/进程已加载/Endpoint 活跃/支持工具调用/云端鉴权有效分别展示。在线健康不能假造，避免向用户承诺未探测的云 API；精简不是真正可执行的选项。
-- **Shell 手动取消**：沿现有 task cancellation + subprocess/process group 接线；区分已完成的非零退出、超时、UNKNOWN 写效果，不引入新的权限弹窗。
+- **Shell 手动取消真实体验**：已有 `dcfe21d` 代码与 bash/Session 定向测试；继续验收 GUI、子代理及跨重启 UNKNOWN，避免二次实现。
 - **单次组件升级**：GUI/Core/wheels/Channels 各自版本独立，用户只做一次“升级”，更新/兼容检查/失败回滚可见且原有数据安全。
 - **50GiB 受管可重建缓存预算**：先在用户 Mac 只读盘点每个目录的归属与可重建性；预算只覆盖 LocalPilot 自己拥有的缓存。优先复用现有淘汰机制，禁止误删模型、收据、备份或外部进程缓存。
 - **减法式重构**：App.tsx 的会话提交恢复、服务连接、消息任务事实逐步拆分；Session 初始化多代策略和 desktop_sessions 手工回滚按现有正常路径减法整理，不引入万能配置对象。权限、模型来源与低功耗选择解耦，保持四档体验。
