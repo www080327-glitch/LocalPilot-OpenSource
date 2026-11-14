@@ -82,6 +82,9 @@ class HostToolTests(unittest.TestCase):
         r=self.registry('full',revision=3)
         self.assertIn('http_get',r._tools)
         self.assertEqual(r.gateway.mode,'full-permission')
+        decision=r.gateway.decide('http_get','medium',[],{'url':'https://example.com/'},
+                                  metadata=r._metadata['http_get'])
+        self.assertEqual(decision['status'],'allowed')
         # An external DNS response can be rewritten by a corporate resolver.
         # Exercise the real validation path without requiring a network call.
         for url in ['http://example.com','https://127.0.0.1/','https://user:password@example.com/']:
