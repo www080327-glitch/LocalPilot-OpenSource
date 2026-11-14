@@ -945,10 +945,8 @@ export default function App() {
       setOnboarding(true);
       return;
     }
-    if (!preview && !selected && !input.trim() && !attachments.files.length) {
-      composer.current?.focus();
-      return;
-    }
+    // An explicit new chat resets this conversation's preferences even when
+    // no text was typed; empty drafts never become persisted task history.
     const id = `draft-${crypto.randomUUID()}`;
     ++preferenceWriteVersion.current;
     setPreferenceSaving(false);
