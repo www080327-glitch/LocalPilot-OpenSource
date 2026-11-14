@@ -80,7 +80,7 @@ def proposal(registry, name, args):
         p = Path(os.path.abspath(root / value))
         if policy.get('revision') == 3:
             p = _canonical_target(root, p, name)
-        if policy['mode'] != 'full' and (sensitive_path(p) or any(p == Path(v) or p.is_relative_to(v) for v in policy['private_roots'])):
+        if sensitive_path(p) or (policy['mode'] != 'full' and any(p == Path(v) or p.is_relative_to(v) for v in policy['private_roots'])):
             raise PermissionError('Protected or private service resource')
         outside |= not p.is_relative_to(root)
         owner[key] = str(p.relative_to('/'))
