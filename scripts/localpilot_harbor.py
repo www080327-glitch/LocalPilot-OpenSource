@@ -86,6 +86,7 @@ class LocalPilotHarborAgent(BaseAgent):
                 chat_template_kwargs=chat_template_kwargs, generation_parameters={"temperature": 0}, **extra)
         self.backend.is_local = not cloud
         self.cloud = cloud
+        self.measured_local = model_budget is not None and not cloud
         self.container_cwd = None
 
     @staticmethod
@@ -132,7 +133,7 @@ class LocalPilotHarborAgent(BaseAgent):
         context.metadata = {"runtime": "AgentSession", "engine": "v5",
             "tool_target": "harbor_task_environment", "budgets": asdict(self.budgets),
             "cost_status": "UNKNOWN", "subagents": "disabled_in_this_adapter"}
-        if not self.cloud:
+        if self.measured_local:
             context.cost_usd = 0
             context.metadata['cost_status'] = 'LOCAL_API_ZERO_HARDWARE_AND_ENERGY_UNMEASURED'
         worker = asyncio.create_task(asyncio.to_thread(self._run_session, session, instruction))
