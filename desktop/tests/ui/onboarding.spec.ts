@@ -45,14 +45,13 @@ test("independent sessions snapshot defaults; settings affect only future sessio
   await page
     .getByRole("button", { name: "模型来源 完全本地", exact: true })
     .click();
+  await page.getByRole("textbox", { name: "给 LocalPilot 发送消息" }).fill("保留这个草稿");
+  await expect(page.getByRole("navigation", { name: "任务历史" }).getByRole("button", { name: /保留这个草稿/ })).toBeVisible();
   await page.getByRole("button", { name: "新会话 ⌘ N", exact: true }).click();
   await expect(
     page.getByRole("button", { name: "调整本会话偏好" }),
   ).toContainText("本地优先");
-  const chats = page
-    .getByRole("navigation", { name: "任务历史" })
-    .getByRole("button");
-  await chats.first().click();
+  await page.getByRole("navigation", { name: "任务历史" }).getByRole("button", { name: /保留这个草稿/ }).click();
   await expect(
     page.getByRole("button", { name: "调整本会话偏好" }),
   ).toContainText("完全本地");

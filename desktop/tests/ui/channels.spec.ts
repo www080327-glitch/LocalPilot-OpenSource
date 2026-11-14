@@ -29,7 +29,7 @@ test.beforeEach(async ({ page }) => {
 test("synthetic native controls: installed is not connected, no automatic login or start", async ({
   page,
 }) => {
-  await expect(page.getByText("未安装", { exact: true })).toHaveCount(2);
+  await expect(page.locator(".channel-card").getByText("未安装", { exact: true })).toHaveCount(2);
   await page.getByRole("button", { name: "连接", exact: true }).first().click();
   await page.getByRole("button", { name: "同意下载并安装渠道组件" }).click();
   await expect(page.getByText("未配置", { exact: true })).toHaveCount(1);
