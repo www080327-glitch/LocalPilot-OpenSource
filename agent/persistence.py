@@ -364,7 +364,7 @@ def restore_runtime(runtime, data, *, conservative_interrupts=False):
             cloud_backend=runtime.cloud_backend if runtime.hybrid else None,
             cloud_worker_backends=runtime.cloud_worker_backends if runtime.hybrid else None,
             policy=runtime.routing_policy if runtime.hybrid else "local-only" if target == "local" else "cloud-only",
-            budgets=SessionBudgets(**child_data["budgets"]), thinking=runtime.thinking_mode,
+            budgets=SessionBudgets(**child_data["budgets"]), thinking=unpack(child_data["fields"])["thinking_mode"],
             reasoning=runtime.reasoning_mode, streaming=runtime.streaming, runtime_tools=False,
             depth=runtime.depth + 1, retry_policy=runtime.retry_policy, stabilization=runtime.controls,
             engine_policy=runtime.engine_policy,

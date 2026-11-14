@@ -53,6 +53,7 @@ class HybridRuntimeTests(unittest.TestCase):
         self.local = Local(answer('local final'))
         self.policy = HybridPolicy(CloudEgressPolicy('CLOUD_ALLOWED'))
         self.primary = 'local'
+        self.thinking = None
         self.mode = 'full-permission'
         self.async_policy = None
         self.services, self.runtimes = [], []
@@ -77,7 +78,7 @@ class HybridRuntimeTests(unittest.TestCase):
             local_backend=self.local, cloud_backend=self.cloud, policy='balanced', streaming=False,
             hybrid_policy=self.policy, hybrid_primary=self.primary,
             hybrid_backends={'local': self.local, 'cloud': self.cloud, **self.catalog_extra},
-            budgets=self.budgets, event_callback=cb, retry_policy=RetryPolicy(max_attempts=1),
+            budgets=self.budgets, thinking=self.thinking, event_callback=cb, retry_policy=RetryPolicy(max_attempts=1),
             stabilization=StabilizationControls(False, True, 'off', 0), async_policy=self.async_policy)
         self.runtimes.append(r)
         return r
@@ -90,6 +91,34 @@ class HybridRuntimeTests(unittest.TestCase):
         return s.wait(t['id'])
     def run_task(self, s):
         return s.wait(s.create_task(TaskRequest('controlled work'))['id'])
+
+    def test_restart_keeps_worker_default_thinking_distinct_from_parent(self):
+        self.primary, self.thinking = 'cloud', 'none'
+        self.async_policy = AsyncPolicy(max_local_model_requests=1)
+        self.cloud.capabilities = replace(self.cloud.capabilities,
+            supports_reasoning_effort=True, supported_thinking_efforts=('none',), default_thinking_effort='none')
+        (self.workspace/'marker.txt').write_text('CHILD-714')
+        self.cloud.steps = [answer(None, spawn('local', task='Read marker.txt', read_only=True)), answer('Collected CHILD-714')]
+        self.local.steps = [answer(None, call('read_file', {'path':'marker.txt'}, 'child-read')), answer('CHILD-714')]
+        service = self.service()
+        task = service.wait(service.create_task(TaskRequest('Read through the worker', idempotency_key='once'))['id'])
+        self.assertEqual(task['status'], 'completed')
+        runtime = service.sessions[task['session_id']].runtime
+        self.assertEqual(runtime.thinking_mode, 'none')
+        self.assertIsNone(runtime._children['1.1'].thinking_mode)
+        before = snapshot_runtime(runtime)
+        calls = (len(self.cloud.requests), len(self.local.requests))
+        service.suspend()
+        restored = self.service()
+        current = restored.sessions[task['session_id']].runtime
+        after = snapshot_runtime(current)
+        self.assertEqual(current.thinking_mode, 'none')
+        self.assertIsNone(current._children['1.1'].thinking_mode)
+        self.assertEqual(after['children']['1.1']['messages'], before['children']['1.1']['messages'])
+        self.assertEqual(restored.task_snapshot(task['id'])['tools'], task['tools'])
+        self.assertEqual(restored.create_task(TaskRequest('Read through the worker', idempotency_key='once'))['id'], task['id'])
+        self.assertEqual((len(self.cloud.requests), len(self.local.requests)), calls)
+
     def test_default_disabled_catalog_and_schema(self):
         r = AgentSession(create_default_registry(self.workspace), backend=self.cloud)
         self.assertNotIn('backend_id', r._schemas()[len(r.registry.schemas())]['function']['parameters']['properties'])
