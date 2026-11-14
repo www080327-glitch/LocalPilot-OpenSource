@@ -48,6 +48,17 @@ class ContextV5Tests(unittest.TestCase):
         self.assertEqual(tail['context_omissions']['messages'], 1)
         self.assertEqual(info['omitted_messages'], 1)
 
+    def test_compaction_reports_chat_template_when_it_was_used(self):
+        class Template:
+            def apply_chat_template(self, messages, **kwargs):
+                return list(range(max(1, sum(len(str(m.get('content') or '')) for m in messages) // 4)))
+        messages = [Message('system', 'rules'), Message('user', 'long ' * 5000)]
+        _, info = transfer(messages, [], 2200, 200,
+                           working_state={'original_task':'preserve'},
+                           tokenizer=Template())
+        self.assertEqual(info['estimator'], 'backend_chat_template')
+        self.assertEqual(info['omitted_messages'], 1)
+
     def test_critical_overflow_never_truncates_authority(self):
         with self.assertRaises(ContextTooSmall):
             transfer([], [], 1000, 200, working_state={'original_task':'x'*10000})
