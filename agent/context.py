@@ -2,7 +2,7 @@
 import json
 
 from .backends import Message
-from .context_budget import context_tokens
+from .context_budget import context_tokens, request_budget
 
 
 class ContextTooSmall(ValueError):
@@ -33,7 +33,7 @@ def transfer_context(messages, tools, window, output_reserve, *, plan=None, goal
                 raise ContextTooSmall("Target context cannot fit final working state and output token reserve.")
             return prefix, {"original_estimated_units": count(messages),
                             "transferred_estimated_units": count(prefix),
-                            "estimator": "mixed_text_estimate_v1", "omitted_messages": len(messages)}
+                            "estimator": request_budget(prefix, tools, 0, tokenizer=tokenizer)['estimator'], "omitted_messages": len(messages)}
         # Same state in compacted and uncompressed requests. Canonical history
         # remains untouched; do not duplicate it inside a compaction excerpt.
         messages = list(messages) + [state_message]
@@ -90,4 +90,4 @@ def transfer_context(messages, tools, window, output_reserve, *, plan=None, goal
         # state after complete history groups, before cloud authorization.
         result = system + recent + [state_message]
     return result, {"original_estimated_units": original, "transferred_estimated_units": count(result),
-                    "estimator": "mixed_text_estimate_v1", "omitted_messages": len(messages) - len(system) - len(recent)}
+                    "estimator": request_budget(result, tools, 0, tokenizer=tokenizer)['estimator'], "omitted_messages": len(messages) - len(system) - len(recent)}
