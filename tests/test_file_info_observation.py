@@ -32,9 +32,14 @@ class FileInfoObservationTests(unittest.TestCase):
         r=create_default_registry(self.root,capabilities=CapabilityPolicy(read=False))
         self.assertEqual(r.call('file_info',{'path':'new.txt'})['status'],'denied')
 
-    def test_absent_outside_and_sensitive_paths_still_rejected(self):
-        for name in ['../outside','.git/missing','.env','.ssh/missing']:
+    def test_path_traversal_and_credentials_remain_blocked_in_full(self):
+        for name in ['../outside','.localpilot/secrets/missing.key']:
             with self.assertRaises(ValueError):self.registry.call('file_info',{'path':name})
+
+    def test_full_mode_can_inspect_ordinary_dotfiles_with_os_rights(self):
+        for name in ['.git/missing', '.env', '.ssh/missing']:
+            observed = self.registry.call('file_info', {'path':name})
+            self.assertIs(observed['exists'], False)
 
     def test_escaping_symlink_still_rejected(self):
         (self.root/'escape').symlink_to(self.root.parent/'outside-missing')
