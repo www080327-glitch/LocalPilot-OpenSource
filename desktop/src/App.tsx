@@ -2475,7 +2475,7 @@ export default function App() {
                         onClose={() => setModelOpen(false)}
                       >
                         <div className="menu-label">
-                          选择模型<span>仅展示已就绪、支持工具的路由</span>
+                          选择模型<span>已配置且声明支持工具 · 在线状态未验证</span>
                         </div>
                         {supportedRouting && (
                           <button
