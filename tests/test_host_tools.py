@@ -89,7 +89,7 @@ class HostToolTests(unittest.TestCase):
     def test_model_text_cannot_bypass_rejected_shell(self):
         p=self.work/'created.txt'
         b=Backend(answer('',call('shell',{'command':'printf real > created.txt'})),answer('All done successfully'))
-        s=AgentSession(self.registry(),backend=b,policy='cloud-only')
+        s=AgentSession(self.registry('request'),backend=b,policy='cloud-only')
         first=s.run_turn('Create the fixture');self.assertEqual(first.status,'approval_required')
         final=s.reject()
         self.assertNotEqual(final.status,'completed');self.assertFalse(p.exists());self.assertEqual(len(b.requests),1)
