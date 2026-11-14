@@ -108,8 +108,12 @@ def transfer(messages, tools, window, output_reserve, *, working_state=None,
         recent = recent[len(first):]
         state['context_omissions']['messages'] = len(history) - len(recent)
     if not fits(system + checkpoint + [tail()]):
-        raise ContextTooSmall('V5 compaction checkpoint cannot fit')
-    result = system + checkpoint + recent + [tail()]
+        # The protected Host state still fits and already includes an explicit
+        # omissions count/hash/rule. Do not reject a legal context solely
+        # because a second, redundant prose checkpoint cannot fit.
+        result = system + [tail()]
+    else:
+        result = system + checkpoint + recent + [tail()]
     return result, {'original_estimated_units': original, 'transferred_estimated_units': count(result),
                     'estimator': 'mixed_text_estimate_v1',
                     'omitted_messages': len(history) - len(recent), 'projection': 'localpilot_v5_v1',
