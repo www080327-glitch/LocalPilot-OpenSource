@@ -1,0 +1,370 @@
+{
+  "record_type": "IN_PROGRESS_SNAPSHOT",
+  "at": "2026-11-15T04:18:21.973693+08:00",
+  "source_sha": "d2b2fae9ecff0d70385a48ac06716516965ce1c5",
+  "benchmark_source_sha": "1c06e975bb25aa39dbdc651aa1186ec9c8b11400",
+  "last_whole_app_source_sha": "5d8e791",
+  "live_companion_source_sha": "d2b2fae9ecff0d70385a48ac06716516965ce1c5",
+  "whole_app_rebuild_for_excerpt": "NOT_RUN_DISK_BLOCKED",
+  "core": {
+    "run": 1447,
+    "passed": 1373,
+    "failures": 0,
+    "errors": 0,
+    "skipped": [
+      {
+        "test": "test_adaptive_benchmark (unittest.loader.ModuleSkipped.test_adaptive_benchmark)",
+        "reason": "Historical benchmark implementation/fixtures are absent from the public source tree; NOT_RUN"
+      },
+      {
+        "test": "test_aic_terminal_budget (unittest.loader.ModuleSkipped.test_aic_terminal_budget)",
+        "reason": "Historical benchmark implementation/fixtures are absent from the public source tree; NOT_RUN"
+      },
+      {
+        "test": "test_benchmark (unittest.loader.ModuleSkipped.test_benchmark)",
+        "reason": "Historical benchmark implementation/fixtures are absent from the public source tree; NOT_RUN"
+      },
+      {
+        "test": "test_missing_bridge_modules_are_not_mistaken_for_an_installed_node_bridge (test_channel_suite_diagnostics.OptionalChannelDiagnosticsTests.test_missing_bridge_modules_are_not_mistaken_for_an_installed_node_bridge)",
+        "reason": "Installed candidate Suite wheel required"
+      },
+      {
+        "test": "test_missing_node_has_an_actionable_status (test_channel_suite_diagnostics.OptionalChannelDiagnosticsTests.test_missing_node_has_an_actionable_status)",
+        "reason": "Installed candidate Suite wheel required"
+      },
+      {
+        "test": "test_normal_uninstalled_suite_listing_never_probes_node (test_channel_suite_diagnostics.OptionalChannelDiagnosticsTests.test_normal_uninstalled_suite_listing_never_probes_node)",
+        "reason": "Installed candidate Suite wheel required"
+      },
+      {
+        "test": "test_old_node_is_rejected_without_touching_any_service (test_channel_suite_diagnostics.OptionalChannelDiagnosticsTests.test_old_node_is_rejected_without_touching_any_service)",
+        "reason": "Installed candidate Suite wheel required"
+      },
+      {
+        "test": "test_installed_adapter_start_query_sigterm_restart_and_safe_uninstall (test_channel_suite_integration.InstalledSuiteChannelTests.test_installed_adapter_start_query_sigterm_restart_and_safe_uninstall)",
+        "reason": "Requires installed Suite and explicit built optional wheel; POSIX lifecycle"
+      },
+      {
+        "test": "test_sigint_releases_adapter_sqlite_and_allows_explicit_restart (test_channel_suite_integration.InstalledSuiteChannelTests.test_sigint_releases_adapter_sqlite_and_allows_explicit_restart)",
+        "reason": "Requires installed Suite and explicit built optional wheel; POSIX lifecycle"
+      },
+      {
+        "test": "test_convergence (unittest.loader.ModuleSkipped.test_convergence)",
+        "reason": "Historical benchmark implementation/fixtures are absent from the public source tree; NOT_RUN"
+      },
+      {
+        "test": "test_dispatched_transport_failure_is_not_retried (test_harbor_adapter.HarborAdapterTests.test_dispatched_transport_failure_is_not_retried)",
+        "reason": "Pinned Harbor evaluation environment required"
+      },
+      {
+        "test": "test_invalid_provider_and_missing_credentials_fail_before_run (test_harbor_adapter.HarborAdapterTests.test_invalid_provider_and_missing_credentials_fail_before_run)",
+        "reason": "Pinned Harbor evaluation environment required"
+      },
+      {
+        "test": "test_native_messages_uses_the_existing_product_backend (test_harbor_adapter.HarborAdapterTests.test_native_messages_uses_the_existing_product_backend)",
+        "reason": "Pinned Harbor evaluation environment required"
+      },
+      {
+        "test": "test_official_base_agent_and_configured_product_backend (test_harbor_adapter.HarborAdapterTests.test_official_base_agent_and_configured_product_backend)",
+        "reason": "Pinned Harbor evaluation environment required"
+      },
+      {
+        "test": "test_product_session_drives_http_tool_call_through_environment_protocol (test_harbor_adapter.HarborAdapterTests.test_product_session_drives_http_tool_call_through_environment_protocol)",
+        "reason": "Pinned Harbor evaluation environment required"
+      },
+      {
+        "test": "test_shell_protocol_runs_on_the_harbor_loop_and_preserves_failure (test_harbor_adapter.HarborAdapterTests.test_shell_protocol_runs_on_the_harbor_loop_and_preserves_failure)",
+        "reason": "Pinned Harbor evaluation environment required"
+      },
+      {
+        "test": "test_real_stream_usage_is_budgeted (test_harbor_model_budget.MeasuredBudgetTests.test_real_stream_usage_is_budgeted)",
+        "reason": "Real local model budget qualification is opt-in"
+      },
+      {
+        "test": "test_real_usage_matches_tokenizer_and_second_request_is_blocked (test_harbor_model_budget.MeasuredBudgetTests.test_real_usage_matches_tokenizer_and_second_request_is_blocked)",
+        "reason": "Real local model budget qualification is opt-in"
+      },
+      {
+        "test": "test_reference_uses_shared_transport_without_litellm_retry (test_harbor_model_budget.MeasuredBudgetTests.test_reference_uses_shared_transport_without_litellm_retry)",
+        "reason": "Real local model budget qualification is opt-in"
+      },
+      {
+        "test": "test_tool_schema_and_tool_history_count_match_provider (test_harbor_model_budget.MeasuredBudgetTests.test_tool_schema_and_tool_history_count_match_provider)",
+        "reason": "Real local model budget qualification is opt-in"
+      },
+      {
+        "test": "test_mlx_benchmark (unittest.loader.ModuleSkipped.test_mlx_benchmark)",
+        "reason": "Historical benchmark implementation/fixtures are absent from the public source tree; NOT_RUN"
+      },
+      {
+        "test": "test_backend_length_maps_failed_and_not_openai_length (test_openai_compatibility_audit.CompatibilityAudit.test_backend_length_maps_failed_and_not_openai_length)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_cancel_stream_uses_nonstandard_terminal_event (test_openai_compatibility_audit.CompatibilityAudit.test_cancel_stream_uses_nonstandard_terminal_event)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_chat_raw_sse_done_exactly_once_and_last (test_openai_compatibility_audit.CompatibilityAudit.test_chat_raw_sse_done_exactly_once_and_last)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_chat_sdk_accumulator_includes_usage (test_openai_compatibility_audit.CompatibilityAudit.test_chat_sdk_accumulator_includes_usage)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_chat_stream_failure_raises_sdk_error (test_openai_compatibility_audit.CompatibilityAudit.test_chat_stream_failure_raises_sdk_error)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_chat_tool_return_cannot_accept_client_result (test_openai_compatibility_audit.CompatibilityAudit.test_chat_tool_return_cannot_accept_client_result)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_chat_usage_opt_in_wire_contract (test_openai_compatibility_audit.CompatibilityAudit.test_chat_usage_opt_in_wire_contract)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_client_timeout_detaches_without_retry_or_server_cancel (test_openai_compatibility_audit.CompatibilityAudit.test_client_timeout_detaches_without_retry_or_server_cancel)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_deadline_is_cooperative_and_uses_extension_reason (test_openai_compatibility_audit.CompatibilityAudit.test_deadline_is_cooperative_and_uses_extension_reason)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_disconnect_retrieve_native_reconnect_and_openai_replay_gap (test_openai_compatibility_audit.CompatibilityAudit.test_disconnect_retrieve_native_reconnect_and_openai_replay_gap)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_eight_concurrent_sessions_preserve_private_context (test_openai_compatibility_audit.CompatibilityAudit.test_eight_concurrent_sessions_preserve_private_context)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_http_errors_sdk_exceptions (test_openai_compatibility_audit.CompatibilityAudit.test_http_errors_sdk_exceptions)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_human_status_is_not_standard_chat_finish (test_openai_compatibility_audit.CompatibilityAudit.test_human_status_is_not_standard_chat_finish)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_idempotency_key_does_not_deduplicate (test_openai_compatibility_audit.CompatibilityAudit.test_idempotency_key_does_not_deduplicate)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_independent_sessions_and_same_session_busy (test_openai_compatibility_audit.CompatibilityAudit.test_independent_sessions_and_same_session_busy)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_malformed_requests_and_json (test_openai_compatibility_audit.CompatibilityAudit.test_malformed_requests_and_json)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_midstream_failure_preserves_partial_never_completed (test_openai_compatibility_audit.CompatibilityAudit.test_midstream_failure_preserves_partial_never_completed)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_multiturn_head_and_instruction_reset (test_openai_compatibility_audit.CompatibilityAudit.test_multiturn_head_and_instruction_reset)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_response_sdk_accumulator_and_internal_tool_rounds (test_openai_compatibility_audit.CompatibilityAudit.test_response_sdk_accumulator_and_internal_tool_rounds)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_response_sse_order_and_item_identity (test_openai_compatibility_audit.CompatibilityAudit.test_response_sse_order_and_item_identity)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_retention_gap_stream_error_shape (test_openai_compatibility_audit.CompatibilityAudit.test_retention_gap_stream_error_shape)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_sdk_text_and_usage (test_openai_compatibility_audit.CompatibilityAudit.test_sdk_text_and_usage)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_strict_sdk_response_schema_gap (test_openai_compatibility_audit.CompatibilityAudit.test_strict_sdk_response_schema_gap)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_tool_approval_is_host_extension (test_openai_compatibility_audit.CompatibilityAudit.test_tool_approval_is_host_extension)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_unknown_usage_is_null (test_openai_compatibility_audit.CompatibilityAudit.test_unknown_usage_is_null)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_unsupported_fields_rejected_before_backend (test_openai_compatibility_audit.CompatibilityAudit.test_unsupported_fields_rejected_before_backend)",
+        "reason": "optional official SDK is not installed"
+      },
+      {
+        "test": "test_official_harbor_schema_roundtrip (test_public_agent_eval.PublicAgentEvaluationTests.test_official_harbor_schema_roundtrip)",
+        "reason": "Optional contract check requires the pinned Harbor checkout and schema dependencies"
+      },
+      {
+        "test": "test_real_hybrid_accounting (unittest.loader.ModuleSkipped.test_real_hybrid_accounting)",
+        "reason": "Historical benchmark implementation/fixtures are absent from the public source tree; NOT_RUN"
+      },
+      {
+        "test": "test_approval_stream_waiting_auth_stale_and_once (test_runtime_api_sdk.SDKTests.test_approval_stream_waiting_auth_stale_and_once)",
+        "reason": "optional official OpenAI SDK is not installed"
+      },
+      {
+        "test": "test_ax_failure_stream_no_completed (test_runtime_api_sdk.SDKTests.test_ax_failure_stream_no_completed)",
+        "reason": "optional official OpenAI SDK is not installed"
+      },
+      {
+        "test": "test_backend_failure_stream_no_completed (test_runtime_api_sdk.SDKTests.test_backend_failure_stream_no_completed)",
+        "reason": "optional official OpenAI SDK is not installed"
+      },
+      {
+        "test": "test_backend_partial_stream_failure_preserves_text (test_runtime_api_sdk.SDKTests.test_backend_partial_stream_failure_preserves_text)",
+        "reason": "optional official OpenAI SDK is not installed"
+      },
+      {
+        "test": "test_cancel_inflight_sdk_retrieve_closes_session (test_runtime_api_sdk.SDKTests.test_cancel_inflight_sdk_retrieve_closes_session)",
+        "reason": "optional official OpenAI SDK is not installed"
+      },
+      {
+        "test": "test_chat_ax_failure_has_null_finish_and_human_extension (test_runtime_api_sdk.SDKTests.test_chat_ax_failure_has_null_finish_and_human_extension)",
+        "reason": "optional official OpenAI SDK is not installed"
+      },
+      {
+        "test": "test_chat_objects_stream_and_persistent_extension (test_runtime_api_sdk.SDKTests.test_chat_objects_stream_and_persistent_extension)",
+        "reason": "optional official OpenAI SDK is not installed"
+      },
+      {
+        "test": "test_client_disconnect_detaches_and_reconnects (test_runtime_api_sdk.SDKTests.test_client_disconnect_detaches_and_reconnects)",
+        "reason": "optional official OpenAI SDK is not installed"
+      },
+      {
+        "test": "test_deadline_waiting_approval_never_completed (test_runtime_api_sdk.SDKTests.test_deadline_waiting_approval_never_completed)",
+        "reason": "optional official OpenAI SDK is not installed"
+      },
+      {
+        "test": "test_human_takeover_resume_same_session_no_old_dispatch (test_runtime_api_sdk.SDKTests.test_human_takeover_resume_same_session_no_old_dispatch)",
+        "reason": "optional official OpenAI SDK is not installed"
+      },
+      {
+        "test": "test_persistent_previous_and_conversation_and_stale_head (test_runtime_api_sdk.SDKTests.test_persistent_previous_and_conversation_and_stale_head)",
+        "reason": "optional official OpenAI SDK is not installed"
+      },
+      {
+        "test": "test_reject_has_no_mutation (test_runtime_api_sdk.SDKTests.test_reject_has_no_mutation)",
+        "reason": "optional official OpenAI SDK is not installed"
+      },
+      {
+        "test": "test_responses_create_stream_is_incremental (test_runtime_api_sdk.SDKTests.test_responses_create_stream_is_incremental)",
+        "reason": "optional official OpenAI SDK is not installed"
+      },
+      {
+        "test": "test_responses_objects_retrieve_and_models (test_runtime_api_sdk.SDKTests.test_responses_objects_retrieve_and_models)",
+        "reason": "optional official OpenAI SDK is not installed"
+      },
+      {
+        "test": "test_responses_stream_helper_aggregates (test_runtime_api_sdk.SDKTests.test_responses_stream_helper_aggregates)",
+        "reason": "optional official OpenAI SDK is not installed"
+      },
+      {
+        "test": "test_stream_helper_tool_items_and_server_execution (test_runtime_api_sdk.SDKTests.test_stream_helper_tool_items_and_server_execution)",
+        "reason": "optional official OpenAI SDK is not installed"
+      },
+      {
+        "test": "test_runtime_stabilization (unittest.loader.ModuleSkipped.test_runtime_stabilization)",
+        "reason": "Historical benchmark implementation/fixtures are absent from the public source tree; NOT_RUN"
+      },
+      {
+        "test": "test_selector_mlp (unittest.loader.ModuleSkipped.test_selector_mlp)",
+        "reason": "Historical benchmark implementation/fixtures are absent from the public source tree; NOT_RUN"
+      },
+      {
+        "test": "test_strict_benchmark (unittest.loader.ModuleSkipped.test_strict_benchmark)",
+        "reason": "Historical benchmark implementation/fixtures are absent from the public source tree; NOT_RUN"
+      },
+      {
+        "test": "test_v48_benchmark (unittest.loader.ModuleSkipped.test_v48_benchmark)",
+        "reason": "Historical benchmark implementation/fixtures are absent from the public source tree; NOT_RUN"
+      },
+      {
+        "test": "test_v48_resource_controls (unittest.loader.ModuleSkipped.test_v48_resource_controls)",
+        "reason": "Historical benchmark implementation/fixtures are absent from the public source tree; NOT_RUN"
+      },
+      {
+        "test": "test_v49_accounting (unittest.loader.ModuleSkipped.test_v49_accounting)",
+        "reason": "Historical benchmark implementation/fixtures are absent from the public source tree; NOT_RUN"
+      },
+      {
+        "test": "test_concurrent_reservations_and_restart_cannot_exceed_ceiling (test_vllm_cooperative.LedgerTests.test_concurrent_reservations_and_restart_cannot_exceed_ceiling)",
+        "reason": "Benchmark cost ledger is not published in the product tree"
+      },
+      {
+        "test": "test_only_official_cache_usage_discounts_cost (test_vllm_cooperative.LedgerTests.test_only_official_cache_usage_discounts_cost)",
+        "reason": "Benchmark cost ledger is not published in the product tree"
+      },
+      {
+        "test": "test_token_observation_is_not_mutated_by_a_later_raw_cancel_stream (test_vllm_cooperative.VLLMTests.test_token_observation_is_not_mutated_by_a_later_raw_cancel_stream)",
+        "reason": "TimedBackend is in the missing benchmark package"
+      }
+    ],
+    "main_entry": "scripts/run_core_qualification.py",
+    "spawn_safe_entry": true
+  },
+  "companion": {
+    "run": 583,
+    "passed": 583,
+    "failures": 0,
+    "errors": 0
+  },
+  "native_slot_preserved": {
+    "sessions": 20,
+    "messages": 179,
+    "receipts": 56,
+    "unknown_receipts": 2,
+    "children": 9,
+    "tasks": 22
+  },
+  "formal": {
+    "all_planned": 534,
+    "study_sha256": "3e265ce3d7a12b84e8b770c10c3afc8c350a234df78f5c9d8164bcd9c32b3da1",
+    "statuses": {
+      "localpilot": {
+        "ERROR": 13,
+        "FAIL": 3,
+        "PASS": 1,
+        "NOT_RUN": 250
+      },
+      "terminus2": {
+        "NOT_RUN": 267
+      }
+    },
+    "audit_complete": false,
+    "issues": [
+      {
+        "kind": "job_provenance",
+        "job": "lp-c8e605b3eb35-localpilot-r1",
+        "reason": "Harbor job has not finished"
+      }
+    ],
+    "execution_state": "HELD_FOR_HOST_DISK: exact Harbor process SIGSTOP; current task Docker startup canceled; no successful attempt overwritten",
+    "official_leaderboard_result": false
+  },
+  "earlier_arm_only_study": {
+    "localpilot": {
+      "ERROR": 4,
+      "NOT_RUN": 263
+    },
+    "terminus2": {
+      "NOT_RUN": 267
+    }
+  },
+  "limitations": [
+    "Intel Mac unavailable",
+    "real personal meeting transcript/audio and full Codex history not authorized/available",
+    "native system sleep/wake not yet observed; only Test APP scope native events proven",
+    "child-tree model switching and async-policy migration remain unsupported",
+    "stock product-native-model comparison and tau2 not run"
+  ]
+}
