@@ -473,7 +473,7 @@ class HybridRuntimeTests(unittest.TestCase):
         self.assertIsNone(r.hybrid.completed_patch({'changes': [{'operation': 'create', 'path': 'once.txt', 'content': 'proof'}]}))
 
     def test_failed_small_context_switch_is_denied_without_closing_local_session(self):
-        self.cloud.model_info = replace(self.cloud.model_info, effective_context=12000)
+        self.cloud.model_info = replace(self.cloud.model_info, effective_context=4096)
         self.local = Local(answer(None, call('request_model_switch', {'target': 'cloud', 'reason': 'review', 'task_complexity': 'complex'}, 's')), answer('continue local safely'))
         r = self.factory(); r.run_turn('work'); result = r.approve()
         self.assertEqual(result.status, 'completed')
