@@ -517,8 +517,8 @@ class HybridRuntimeTests(unittest.TestCase):
             return answer('child complete')
         class RoutedLocal(Local):
             def request(this, messages, **kwargs):
-                from benchmarks.hybrid_runtime import handoff
-                goal = handoff(messages)['current_goal']
+                host = next(m.content for m in messages if m.role == 'user' and (m.content or '').startswith('Host working state'))
+                goal = json.loads(host.split('\n', 1)[1])['model_handoff']['current_goal']
                 if goal == 'controlled work':
                     if not any(c.name == 'delegate' for m in messages for c in m.tool_calls):
                         return answer(None, spawn('cloud', task='C', id='c', read_only=True, async_=True),
