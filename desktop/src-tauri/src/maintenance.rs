@@ -606,7 +606,8 @@ pub async fn desktop_open_release(
 #[tauri::command]
 pub async fn desktop_verify_archive(n: State<'_, Maintenance>) -> Result<Value, String> {
     let latest = n.latest.lock().unwrap().clone();
-    if latest["status"] == "UNKNOWN"
+    if !["CURRENT", "LOCAL_AHEAD", "UPDATE_AVAILABLE"]
+        .contains(&latest["status"].as_str().unwrap_or(""))
         || latest["checked_at"]
             .as_u64()
             .is_none_or(|t| stamp().saturating_sub(t) > 3600)
