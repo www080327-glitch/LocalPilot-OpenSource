@@ -5,7 +5,7 @@ import json
 
 from .backends import Message
 from .context import ContextTooSmall, context_units
-from .context_budget import context_tokens
+from .context_budget import context_tokens, request_budget
 
 
 def host_state(runtime, state, tools):
@@ -115,6 +115,6 @@ def transfer(messages, tools, window, output_reserve, *, working_state=None,
     else:
         result = system + checkpoint + recent + [tail()]
     return result, {'original_estimated_units': original, 'transferred_estimated_units': count(result),
-                    'estimator': 'mixed_text_estimate_v1',
+                    'estimator': request_budget(result, tools, 0, tokenizer=unused.get('tokenizer'))['estimator'],
                     'omitted_messages': len(history) - len(recent), 'projection': 'localpilot_v5_v1',
                     'reason': 'delivery_admission_share' if delivery_budget is not None else 'context_pressure'}
