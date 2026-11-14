@@ -14,8 +14,8 @@ use std::{
 };
 use tauri::State;
 
-const REPO: &str = "https://github.com/www080327-glitch/LocalPilot";
-const RELEASES: &str = "https://api.github.com/repos/www080327-glitch/LocalPilot/releases";
+const REPO: &str = "https://github.com/www080327-glitch/LocalPilot-OpenSource";
+const RELEASES: &str = "https://api.github.com/repos/www080327-glitch/LocalPilot-OpenSource/releases";
 const MAX_BODY: usize = 4 * 1024 * 1024;
 #[derive(Default)]
 pub struct Maintenance {
@@ -95,7 +95,7 @@ fn release_url(s: &str) -> bool {
         && u.query().is_none()
         && u.fragment().is_none()
         && u.path()
-            .starts_with("/www080327-glitch/LocalPilot/releases/")
+            .starts_with("/www080327-glitch/LocalPilot-OpenSource/releases/")
         && !u.path().contains("..")
 }
 fn select_release(rows: &Value, current: &str) -> Result<Value, String> {
@@ -171,7 +171,7 @@ async fn public_releases() -> Result<Value, String> {
             .map_err(|_| "GitHub 网络连接失败；状态 UNKNOWN，请检查网络后重试")?;
         let status = res.status();
         if !status.is_success() {
-            return Err(format!("GitHub HTTP {}；无法确认最新版本。404 可能需要私有仓库权限；可主动使用本机 GitHub 登录。",status.as_u16()));
+            return Err(format!("GitHub HTTP {}；无法确认最新版本。404 可能是公开 Release 不可用；请核对仓库页面。",status.as_u16()));
         }
         let mut stream = res.bytes_stream();
         let mut bytes = Vec::new();
@@ -204,7 +204,7 @@ async fn load_releases(authenticated: bool) -> Result<Value, String> {
                 "api",
                 "--hostname",
                 "github.com",
-                &format!("repos/www080327-glitch/LocalPilot/releases?per_page=100&page={page}"),
+                &format!("repos/www080327-glitch/LocalPilot-OpenSource/releases?per_page=100&page={page}"),
             ])
             .env("GH_PROMPT_DISABLED", "1");
             let s = run(cmd, 20, MAX_BODY).map_err(|_| {
@@ -695,7 +695,13 @@ mod tests {
             "https://github.com.evil.test/www080327-glitch/LocalPilot/releases/"
         ));
         assert!(!release_url(
-            "https://github.com/www080327-glitch/LocalPilot/releases/?x=1"
+            "https://github.com/www080327-glitch/LocalPilot-OpenSource/releases/?x=1"
+        ));
+        assert!(!release_url(
+            "https://github.com/www080327-glitch/LocalPilot/releases/download/desktop-v5.0.0/LocalPilot-5.0.0-arm64.dmg"
+        ));
+        assert!(release_url(
+            "https://github.com/www080327-glitch/LocalPilot-OpenSource/releases/download/desktop-v5.0.0/LocalPilot-5.0.0-arm64.dmg"
         ));
     }
     #[test]
