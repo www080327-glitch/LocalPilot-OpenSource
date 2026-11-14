@@ -414,7 +414,7 @@ class RuntimeSessionTests(unittest.TestCase):
         self.assertFalse(session.tool_history)
 
     def test_context_compaction_keeps_history_and_pairs(self):
-        backend = ScriptBackend(response("ok"), context=24000)
+        backend = ScriptBackend(response("ok"), context=10000)
         session = self.session(backend, budgets=SessionBudgets(max_output_tokens=256))
         session.messages.extend([Message("user", "old" * 10000), Message("assistant", "prior")])
         session.run_turn("latest question")
