@@ -7,6 +7,7 @@ const date = (v?: number) =>
 const bytes = (v?: number) => `${((v || 0) / 1024 / 1024).toFixed(1)} MB`;
 const labels: Record<string, string> = {
   UNKNOWN: "UNKNOWN · 无法确认",
+  NO_STABLE_RELEASE: "公开仓库尚无正式 Desktop Release",
   CURRENT: "与正式 GUI Release 相同",
   LOCAL_AHEAD: "本地维护版本领先于正式 Release",
   UPDATE_AVAILABLE: "有可用 GUI 更新",
@@ -80,7 +81,9 @@ export function VersionManagement({
           <dd>
             {release?.status === "UNKNOWN"
               ? "UNKNOWN"
-              : release?.version || "UNKNOWN · 尚未检查"}
+              : release?.status === "NO_STABLE_RELEASE"
+                ? "尚无正式版"
+                : release?.version || "UNKNOWN · 尚未检查"}
           </dd>
         </div>
         <div>
