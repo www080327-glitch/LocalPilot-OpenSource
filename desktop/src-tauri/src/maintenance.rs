@@ -230,7 +230,14 @@ pub async fn desktop_update_check(
     let result = load_releases(authenticated)
         .await
         .and_then(|v| select_release(&v, env!("CARGO_PKG_VERSION")));
-    let mut v = result.unwrap_or_else(|e| json!({"status":"UNKNOWN","error":e}));
+    let mut v = result.unwrap_or_else(|e| {
+        if e == "未发现正式 Desktop Release；Core/Suite Release 不参与 GUI 更新" {
+            json!({"status":"NO_STABLE_RELEASE","url":format!("{REPO}/releases"),
+                "error":"公开仓库目前没有正式 Desktop Release；预发布不会自动推荐"})
+        } else {
+            json!({"status":"UNKNOWN","error":e})
+        }
+    });
     v["checked_at"] = json!(stamp());
     v["source"] = json!(if authenticated {
         "github-cli-authenticated"
