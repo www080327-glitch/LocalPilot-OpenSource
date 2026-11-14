@@ -395,7 +395,6 @@ export default function App() {
   useEffect(() => {
     if (
       preview ||
-      !chatId.startsWith("draft-") ||
       !preferencesReady ||
       (desktop && (!historyReady || !restoreDone.current))
     )
@@ -403,6 +402,10 @@ export default function App() {
     setDrafts((old) => {
       if (!input.trim()) {
         if (!old[chatId]) return old;
+        if (!chatId.startsWith("draft-")) {
+          if (!old[chatId].input) return old;
+          return { ...old, [chatId]: { ...old[chatId], input: "" } };
+        }
         const next = { ...old };
         delete next[chatId];
         return next;
@@ -412,7 +415,9 @@ export default function App() {
         [chatId]: {
           preferences: sessionPrefs,
           model,
-          title: input.trim().split("\n")[0].slice(0, 32),
+          title: chatId.startsWith("draft-")
+            ? input.trim().split("\n")[0].slice(0, 32)
+            : old[chatId]?.title || "新会话",
           input,
           scope,
         },
@@ -504,6 +509,7 @@ export default function App() {
     setDrafts((old) => ({
       ...old,
       [chatId]: {
+        ...old[chatId],
         preferences: value,
         model,
         title: old[chatId]?.title || "新会话",
@@ -1003,6 +1009,7 @@ export default function App() {
     setChatId(t.session_id);
     localStorage.setItem("lp.currentTask", JSON.stringify(t.id));
     const cached = drafts[t.session_id];
+    setInput(cached?.scope === scope ? cached.input || "" : "");
     setSessionPrefs(
       cached?.scope === scope
         ? cached.preferences

@@ -81,6 +81,7 @@ test("explicit model switch keeps the conversation, draft and next task Session"
   await page.reload();
   await expect(picker).toContainText("Fixture B");
   await expect(page.locator(".conversation")).toContainText("Saved ORBIT.");
+  await expect(composer).toHaveValue("Keep this draft.");
   await composer.fill("Recall ORBIT.");
   await page.getByRole("button", { name: "发送消息", exact: true }).click();
   await expect(page.locator(".conversation")).toContainText("Continued ORBIT.");
