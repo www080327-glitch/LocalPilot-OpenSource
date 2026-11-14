@@ -12,6 +12,7 @@ dependencies = ["psutil>=7,<8", "pypdf>=6.1,<7", "Pillow>=11,<13", "defusedxml>=
 
 [project.optional-dependencies]
 documents = ["pypdf>=6.1,<7", "Pillow>=11,<13", "defusedxml>=0.7,<1"]
+test = ["python-docx>=1,<2", "openpyxl>=3,<4", "python-pptx>=1,<2", "reportlab>=4,<6"]
 
 plugins = ["mcp==1.26.0", "jsonschema==4.26.0", "packaging==26.0"]
 
