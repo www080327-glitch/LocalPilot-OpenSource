@@ -87,7 +87,7 @@ def proposal(registry, name, args):
         absolute.append(str(p))
     if not outside:
         return None
-    if policy['mode'] == 'isolated' and not read:
+    if policy['mode'] == 'isolated' and (not read or policy.get('revision') != 3):
         raise PermissionError('Strict isolation forbids access outside the workspace')
     resources = {}
     # Bind every existing ancestor by identity, reject symlinks before reads.
