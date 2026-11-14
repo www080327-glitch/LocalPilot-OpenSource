@@ -2,18 +2,24 @@
 
 测试源码基线 `3726d16c625d706b719d2b314cdf79b673b55148`，macOS arm64。原始日志只保留在本机，禁止提交公开仓库。以下自动化不是原生 APP 验收。
 
-- `python -W always::ResourceWarning -m unittest discover -v`：1921 项，1858 PASS、0 FAIL、0 ERROR、63 SKIP；历史 benchmark 缺失等 SKIP 并非通过。`tests.test_runtime_api.APITests.test_expired_sse_reconciles_live_text_and_resumes_new_events_over_http` PASS。运行结束报告一个仍在运行的 subprocess，正在独立追踪，不能凭 PID 推断来源。
+- `python -W always::ResourceWarning -m unittest discover -v`：1921 项，1858 PASS、0 FAIL、0 ERROR、63 SKIP；历史 benchmark 缺失等 SKIP 并非通过。`tests.test_runtime_api.APITests.test_expired_sse_reconciles_live_text_and_resumes_new_events_over_http` PASS。运行结束报告 subprocess ResourceWarning；后续追踪找到具体来源，见下文。
 - `cd desktop && npm test`：50 PASS、0 FAIL；包含 `reconciledStreamText` 测试。
 - `cd desktop && npm run build`：PASS（TypeScript/Vite 构建，无测试项计数）。
 - `cd desktop && npm run test:ui`：25 PASS、0 FAIL；浏览器合成桥，非原生 GUI。
 - `CARGO_BUILD_JOBS=1 cargo test --manifest-path desktop/src-tauri/Cargo.toml`：40 PASS、0 FAIL、3 ignored；构建时后端资源目录为空，仅限测试编译。
 - 新增 `companion.tests.test_file_observer_integration`：现有 Python 环境 1 PASS；下述源码编译 wheel 的独立环境 1 PASS。真实创建、删除文件并等待 Companion `FileObserver` 的系统事件。此测试是在上述全量基线运行后新增，未包含在上述 1921 项内。
 
+## subprocess ResourceWarning
+
+对 1922 项测试的独立追踪运行记录每个真实 `Popen` 的创建位置并将警告 PID 对照：来自 `tests.test_suite_cli.SuiteCLITests.test_managed_task_controller_survives_cli_return_and_retry_does_not_duplicate` 经 `localpilot_service.cli.ensure_controller` 启动的 `localpilot_service.task_control`。测试使用 `psutil.Process.wait` 等待控制器退出，但模块保存的 `Popen` 对象没有同步等待，解释器关闭时其 `returncode` 仍为空，从而发出警告；该次追踪结束后该 PID 已不存在。最小修复仅改测试，用同一个真实 `Popen` 对象等待并核对 PID 与退出码，继续检查真实心跳和幂等。定向运行 `python -W always::ResourceWarning -m unittest -v tests.test_suite_cli.SuiteCLITests.test_managed_task_controller_survives_cli_return_and_retry_does_not_duplicate`：1 PASS、0 FAIL、0 ERROR、0 SKIP，未出现该警告。修复后完整复测进行中。
+
 ## watchdog 审计
 
-`desktop/runtime-dependencies.json` 锁的是 watchdog 6.0.0 的 cp314 universal2 wheel，SHA-256 `df0771e22978c47029f34141bb9aa0a9b868191265d980766949aefc9080ff2c`。旧 APP 中相同文件的散列吻合；wheel 自报 `setuptools (84.2.0)`、cp314 universal2、Apache-2.0，附许可证；35 条 RECORD 中 34 条带哈希且全部吻合，RECORD 自身无哈希。没有 direct_url 来源记录。上述内容不能证明构建者或来源；公开仓库该锁最早随源码快照进入。
+`desktop/runtime-dependencies.json` 锁的是 watchdog 6.0.0 的 cp314 universal2 wheel，SHA-256 `df0771e22978c47029f34141bb9aa0a9b868191265d980766949aefc9080ff2c`。旧 APP 中相同文件的散列吻合；wheel 自报 `setuptools (84.2.0)`、cp314 universal2、Apache-2.0，附许可证；35 条 RECORD 中 34 条带哈希且全部吻合，RECORD 自身无哈希。没有 direct_url 来源记录。上述内容不能证明构建者或来源；公开仓库该锁最早随源码快照进入。35 项锁定第三方依赖中，34 项的文件名和哈希与 PyPI 官方清单一致，且已从官方文件服务下载并核对实际文件；唯一未能取得官方同名文件的是 watchdog。
 
-官方 PyPI 的 [6.0.0 文件](https://pypi.org/project/watchdog/6.0.0/#files) 不含 cp314 wheel。下载其官方源码分发包并核对 PyPI SHA-256 `9ddf7c82fda3ae8e24decda1338ede66e1c99883db93711d8fb941eaa2d8c282` 后，在独立 Python 3.14.6 venv 使用 setuptools 84.2.0、wheel 0.48.0、packaging 26.3 和 Apple clang 21 构建；生成的 cp314 universal2 wheel SHA-256 `a2f8ef30c58f158d7421a0996e4e2f3c8d9d66b1f731886c1ddbd6d2b3b2f86a`，扩展包含 arm64 和 x86_64。独立环境使用该产物运行上面的真实文件监听测试通过，实际观察者是 macOS FSEvents。构建工具及其下载来源尚未建立完整锁定与可复现证据；此产物不是官方发布的 wheel，尚未写入运行时锁，也不能证明 Intel 实机兼容。
+官方 PyPI 的 [6.0.0 文件](https://pypi.org/project/watchdog/6.0.0/#files) 不含 cp314 wheel。下载其官方源码分发包并核对 PyPI SHA-256 `9ddf7c82fda3ae8e24decda1338ede66e1c99883db93711d8fb941eaa2d8c282` 后，在独立 Python 3.14.6 venv 使用 setuptools 84.2.0、wheel 0.48.0、packaging 26.3 和 Apple clang 21 构建；生成的 cp314 universal2 wheel SHA-256 `a2f8ef30c58f158d7421a0996e4e2f3c8d9d66b1f731886c1ddbd6d2b3b2f86a`，扩展包含 arm64 和 x86_64。独立环境使用该产物运行上面的真实文件监听测试通过，实际观察者是 macOS FSEvents。随后将 setuptools、wheel、packaging 的官方 wheel 分别按 PyPI 哈希校验，另建环境再次编译，所得 wheel SHA-256 `902f22636a059b65b4192ffbbcaa8e8324565d13c358ec22fe7419332c2b9c3d`，同样通过真实文件创建与删除监听；两次产物的原生扩展字节不同，尚未证明位级可重复。构建输入和日志留在本机。此产物不是官方发布的 wheel，尚未写入运行时锁，也不能证明 Intel 实机兼容。
+
+候选 wheel 独立环境安装 34 项已校验依赖后，运行 `python -m unittest -v companion.tests.test_v01 companion.tests.test_file_observer_integration tests.test_runtime_api`：首次 80 项中 77 PASS、3 ERROR（测试夹具缺少 openpyxl 和 python-docx）；补充这些测试依赖后 79 PASS、1 ERROR（缺 reportlab）；再补充 reportlab 后 80 PASS、0 FAIL、0 ERROR、0 SKIP。安装测试夹具后核对 35 项运行时依赖版本均与现有锁一致。该定向结果不是原生 APP 验收。
 
 [官方 7.1.0 文件](https://pypi.org/project/watchdog/7.1.0/#files) 包含 cp314 universal2 wheel，SHA-256 `a0fdb62a48b5073ea3bcca29b9910f1cbde1026ab8bffb87a69b112bf6d97d1c`。现有 Companion 声明 `watchdog>=6,<7`，升级还须修改并验证组件依赖、监听和原生兼容；没有改变依赖。
 
