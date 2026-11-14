@@ -1,4 +1,7 @@
 """Independent completion gates protect against inflated benchmark headlines."""
+from tests.optional_benchmarks import require_benchmarks
+require_benchmarks()
+
 from copy import deepcopy
 import unittest
 from scripts.aic_summarize import assess_strict
