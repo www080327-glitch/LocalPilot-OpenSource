@@ -14,7 +14,14 @@ from agent.retry import RetryPolicy
 from agent.session import AgentSession, SessionBudgets
 from agent.vllm import VLLMBackend
 from agent.safety import CapabilityPolicy
-from benchmarks.hybrid_accounting import CostLedger, BudgetExceeded
+# The public product tree does not include the private benchmarking package.
+# Keep provider and routing regressions runnable; benchmark-only tests stay SKIP.
+try:
+    from benchmarks.hybrid_accounting import CostLedger, BudgetExceeded
+except ModuleNotFoundError as exc:
+    if exc.name not in {'benchmarks', 'benchmarks.hybrid_accounting'}:
+        raise
+    CostLedger = BudgetExceeded = None
 
 
 class Scripted:
@@ -118,7 +125,12 @@ class CooperativeTests(unittest.TestCase):
 
 class VLLMTests(unittest.TestCase):
     def test_token_observation_is_not_mutated_by_a_later_raw_cancel_stream(self):
-        from benchmarks.vllm_backend_qualification import TimedBackend
+        try:
+            from benchmarks.vllm_backend_qualification import TimedBackend
+        except ModuleNotFoundError as exc:
+            if exc.name not in {'benchmarks', 'benchmarks.vllm_backend_qualification'}:
+                raise
+            self.skipTest('TimedBackend is in the missing benchmark package')
         from tests.test_local_http_backend import MockServer,sse
         server=MockServer()
         try:
@@ -189,6 +201,7 @@ class VLLMTests(unittest.TestCase):
         with self.assertRaises(PermissionError):DataPolicy(local_only=True).check_backend(remote)
 
 
+@unittest.skipUnless(CostLedger is not None, 'Benchmark cost ledger is not published in the product tree')
 class LedgerTests(unittest.TestCase):
     def test_concurrent_reservations_and_restart_cannot_exceed_ceiling(self):
         with tempfile.TemporaryDirectory() as tmp:
