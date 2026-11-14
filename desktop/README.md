@@ -1,6 +1,6 @@
 # LocalPilot Desktop 5.0.0
 
-**官方推荐的 macOS arm64 下载版本**，桌宠实现沿用已人工复核的 dev.23-edge.4。完整桌面使用 `LocalPilot.app` / `io.localpilot.desktop`；配套独立 Core **5.0.0b20**、Suite **0.2.0b21**、Companion **0.5.7b2**。
+**历史 macOS arm64 5.0.0 版本说明（公开下载以 GitHub Release 实际资产为准）**，桌宠实现沿用已人工复核的 dev.23-edge.4。完整桌面使用 `LocalPilot.app` / `io.localpilot.desktop`；配套独立 Core **5.0.0b20**、Suite **0.2.0b21**、Companion **0.5.7b2**。
 
 [公开 GitHub 历史发行与可用下载](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases) · [源码与版本留存规则](../docs/development/GITHUB_RELEASE_HISTORY_POLICY.md)。历史 5.0.0 下载资产原属旧私有发行，尚未核验迁移到公开 Release；不要把新公开地址拼成未经验证的同名 DMG/ZIP。
 
