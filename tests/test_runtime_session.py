@@ -117,13 +117,19 @@ class RuntimeSessionTests(unittest.TestCase):
                 expected = "local" if policy == "local-first" else "cloud"
                 self.assertEqual(session.run_turn("hi").text, expected)
 
-    def test_ineligible_models_never_primary(self):
+    def test_small_local_models_can_be_primary(self):
         for size, context in (("4B", 131072), ("9B", 131072), ("27B", 32768)):
             with self.subTest(size=size, context=context):
-                local = ScriptBackend(response("bad"), local=True, size=size, context=context)
+                local = ScriptBackend(response("local"), local=True, size=size, context=context)
                 session = self.session(ScriptBackend(response("cloud")), local, policy="local-only")
-                self.assertEqual(session.run_turn("hi").status, "error")
-                self.assertFalse(local.calls)
+                self.assertEqual(session.run_turn("hi").text, "local")
+                self.assertEqual(len(local.calls), 1)
+
+    def test_local_model_below_context_floor_never_runs(self):
+        local = ScriptBackend(response("bad"), local=True, context=4095)
+        session = self.session(ScriptBackend(response("cloud")), local, policy="local-only")
+        self.assertEqual(session.run_turn("hi").status, "error")
+        self.assertFalse(local.calls)
 
     def test_local_retry_exhaustion_fallback_is_visible(self):
         local = ScriptBackend(*[TimeoutError("transient") for _ in range(4)], local=True)
