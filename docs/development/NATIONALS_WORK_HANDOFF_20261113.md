@@ -2,6 +2,26 @@
 
 > 本文是未完成工作及验收操作单，不是已通过测试的结果。以 GitHub 实时 HEAD 与真实运行环境为准，不能将任何 `NOT_RUN` 写成 `PASS`。
 
+## 2026-11-14：最新 1920 项全量通过后，剩余真正阻塞（请先看本节）
+
+最新已在 Mac 运行的测试来自分支 `776061975ab91c1a7cf3d08dd6fd3eeee5b718d6`：Python `unittest discover -v` **1920 项、0 FAIL、0 ERROR、63 SKIP**；其中 12 个历史 benchmark 模块是模块级 NOT_RUN，不能记为 12 个模型评估通过。权限及独立审计指定组 126 PASS；基线 Vitest 49、TS/Vite PASS、Playwright 25（浏览器合成桥）、Rust 40 PASS / 3 ignored（空打包资源）。详细实测记录在 `docs/evidence/nationals-20261114-current-validation/RESULTS.md`。测试退出仍有一项 `subprocess ResourceWarning`，根因未确认。**此记录只适用于相应源码 HEAD，后续提交尚未重新测试。**
+
+此后在 GitHub 上的补充修改：
+- `tests/test_runtime_api.py` 增加实际 `TaskService + HTTP + StreamBackend` 的 SSE 保留窗口溢出 409 → 已授权运行中快照完整 `streamed_text` → 以 `last_event_id` 续收新增 TextDelta、模型只执行一次的回归。它不是 Rust/Tauri 原生端到端验收。
+- `desktop/src/domain.ts`、`desktop/src/App.tsx` 与 `desktop/tests/domain.test.ts`：只有 `reconciled` 快照的 `last_event_id` 不早于 GUI 已观察 SSE 序号时，才替换流式正文，避免旧 409 快照回退较新文本；新增对应 Vitest 测试。
+- 模型菜单说明从“已就绪”修正为“**已配置且声明支持工具；在线状态未验证**”，防止把 Core 的 `operator_configuration_not_live_health` 说成真实 Endpoint 健康。
+- **离线打包具体 blocker**：`desktop/runtime-dependencies.json` 锁定 `watchdog-6.0.0-cp314-cp314-macosx_10_15_universal2.whl`、SHA256 `df0771e22978c47029f34141bb9aa0a9b868191265d980766949aefc9080ff2c`。截至本次核查，[官方 PyPI watchdog 6.0.0 文件清单](https://pypi.org/project/watchdog/6.0.0/#files) **没有 CPython 3.14 wheel**（该版本 2024 年发布，官方 macOS 构建仅见到 cp313）。因此镜像/官方索引不可能直接下载这份精确 wheel；旧 APP 的同哈希文件不能证明官方来源。详见 [Issue #8](https://github.com/www080327-glitch/LocalPilot-OpenSource/issues/8)。不能盲改锁定版本/哈希来“通过构建”。
+- 产品继续遵守公开 GitHub 单一源码主线：历史发布用**经过核验**的 Tags/Releases，短期本机工作树仅为真实构建和运行，未经审阅不搬迁旧私有仓库全历史。
+
+### Work 现在只处理仍未完成的真实工作
+
+1. 先核对**最新 PR HEAD**、本机 worktree 未提交内容及是否有并行任务。继续复测上述三处新测试和完整 Python/Vitest/TS/Playwright/Rust，记录新的实际结果，不能直接复用 `7760619` 的旧 PASS。
+2. **P0 打包来源修复**：按 Issue #8 审计锁文件里 watchdog cp314 轮子的来源/二进制标记。若来自可信的源代码本地构建，则建立源码 SHA、可重复构建命令、wheel 哈希与许可链；若选择升级到官方支持 cp314 的新版，先在实际 macOS 3.14 环境验证全部 Core/Companion 文件观察及原生功能后再调整依赖锁（生成文件走源头）。生成和检查**真实非空** `bundled-backends`，不得拿日常 APP 中来源未核实 wheel 冒充新候选。
+3. 在独立 macOS Bundle ID 测试槽验证原生任务/子代理取消和 UNKNOWN 收据、SSE 409 端到端（完整回复 + 新增事件）、重启恢复、四档真实文件与 Shell 边界、模型下载/加载和首次安装。只有真正完成测试的部分标记 PASS。
+4. 继续追踪 [Issue #6](https://github.com/www080327-glitch/LocalPilot-OpenSource/issues/6) 的同会话无损模型切换和**真实**本地↔云端双向协同，以及在线模型健康；[Issue #7](https://github.com/www080327-glitch/LocalPilot-OpenSource/issues/7) 的单次升级/回滚、50GiB 仅自有可重建缓存和减法式架构清理。大改另开聚焦 PR。
+5. `ResourceWarning` 根因仍未知：先从本机原始 `python-full-current.log` 或最新日志定位具体 Popen/进程及复现场景；必要时针对该测试在独立环境开启 Python 的 ResourceWarning 报错定位，不要猜测 PID 或引入无关子进程管理框架。
+6. 明确说明无法核验的每项受哪些真实条件阻塞。保留 Draft、main/Latest/日常 APP 和用户全部数据。不得私自删除 Mac 旧安装包或复制私有历史真值。
+
 ## 2026-11-14：公开主线与最后五项权限失败的后续修复（需复跑）
 
 最新 Mac 已记录的完整 `c3c8dc9` 复测为 **1913 项，5 FAIL、13 ERROR、51 SKIP**。这只是旧 HEAD 的实际结果，以下新提交**尚未重新执行真实仓库回归**，绝不将其标成 PASS。
