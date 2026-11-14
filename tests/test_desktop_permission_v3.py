@@ -62,6 +62,29 @@ class PermissionV3Tests(unittest.TestCase):
         full=self.runtime('full').registry
         self.assertEqual(full.call('read_file',{'path':'.env'}),'HOST_ONLY_TEST_CREDENTIAL')
 
+    def test_full_never_exposes_service_owned_credentials(self):
+        registry=self.runtime('full').registry
+        private=self.workspace/'.localpilot'/'secrets'
+        private.mkdir(parents=True)
+        (private/'cloud.key').write_text('LOCALPILOT_TEST_SECRET')
+        for name in ('read_file', 'file_info'):
+            with self.assertRaises(ValueError):
+                registry.call(name, {'path':'.localpilot/secrets/cloud.key'})
+        alias=self.workspace/'alias.key'
+        alias.symlink_to(private/'cloud.key')
+        with self.assertRaises(ValueError):
+            registry.call('read_file', {'path':'alias.key'})
+        with self.assertRaises(ValueError):
+            registry.call('apply_patch', self.patch('.localpilot/secrets/new.key'))
+
+    def test_full_outside_scope_does_not_expose_service_credentials(self):
+        registry=self.runtime('full').registry
+        private=self.root/'outside'/'.localpilot'/'secrets'
+        private.mkdir(parents=True)
+        (private/'cloud.key').write_text('LOCALPILOT_TEST_SECRET')
+        with self.assertRaises(PermissionError):
+            registry.call('read_file', {'path':str(private/'cloud.key')})
+
     def test_workspace_writes_inside_and_asks_outside(self):
         registry=self.runtime('workspace').registry
         registry.call('apply_patch', self.patch('inside.txt'))
