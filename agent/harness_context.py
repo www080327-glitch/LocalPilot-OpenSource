@@ -1,6 +1,7 @@
 """Opt-in request-view projection; canonical records and authority stay intact."""
 from copy import deepcopy
 from .context import ContextTooSmall,transfer_context
+from .context_budget import request_budget
 from .finalization import sha
 
 
@@ -42,7 +43,7 @@ def transfer_with_optional_projection(messages,tools,window,output_reserve,*,ena
             if reductions:
                 info={**(info or {}),'optional_completed_context_entries_omitted':reductions,
                     'canonical_history_changed':False,'critical_obligations_changed':False,
-                    'estimator':'mixed_text_estimate_v1'}
+                    'estimator':request_budget(view,tools,0,tokenizer=kwargs.get('tokenizer'))['estimator']}
             return view,info
         except ContextTooSmall:
             if not enabled:raise
