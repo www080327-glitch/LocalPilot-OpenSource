@@ -142,6 +142,14 @@ def validate_spec(spec):
     if type(execution["n_concurrent_trials"]) is not int or execution["n_concurrent_trials"] < 1:
         raise ValueError("n_concurrent_trials must be a positive integer")
     number(execution["timeout_multiplier"], "timeout_multiplier", positive=True)
+    cleanup = spec.get('owned_docker_cache_cleanup')
+    if cleanup is not None:
+        if (not isinstance(cleanup, dict) or set(cleanup) != {'plan_path','plan_sha256'}
+                or not isinstance(cleanup['plan_path'],str) or not Path(cleanup['plan_path']).is_absolute()
+                or not isinstance(cleanup['plan_sha256'],str) or not re.fullmatch('[0-9a-f]{64}',cleanup['plan_sha256'])
+                or hashlib.sha256(Path(cleanup['plan_path']).read_bytes()).hexdigest() != cleanup['plan_sha256']
+                or execution['n_concurrent_trials'] != 1):
+            raise ValueError('An exact reviewed Docker cache plan and sequential execution are required')
 
 
 def task_snapshot(repository, path):
@@ -239,8 +247,14 @@ def run_job(directory, arm, repeat, harbor_repository, python):
     entry = "import sys; sys.path.insert(0, sys.argv.pop(1)); from harbor.cli.main import app; app()"
     command = [python, "-c", entry, str(harbor_repository / "src"), "run", "--config",
                str(directory / "configs" / f"{job['name']}.json")]
+    cleanup = study['specification'].get('owned_docker_cache_cleanup')
+    if cleanup:
+        command.extend(['--plugin','scripts.harbor_owned_cache:OwnedDockerCachePlugin',
+            '--plugin-kwarg','plan_path='+cleanup['plan_path'],
+            '--plugin-kwarg','plan_sha256='+cleanup['plan_sha256']])
     receipt = {"study_sha256": study["sha256"], "job": job["name"],
-               "harbor_commit": study["harbor_commit"], "started_at": datetime.now(timezone.utc).isoformat()}
+               "harbor_commit": study["harbor_commit"], "started_at": datetime.now(timezone.utc).isoformat(),
+               "owned_docker_cache_cleanup":cleanup}
     write_json(directory / "launches" / f"{job['name']}.json", receipt)
     with (directory / "launches" / f"{job['name']}.log").open("x") as stream:
         result = subprocess.run(command, stdout=stream, stderr=subprocess.STDOUT, check=False)
