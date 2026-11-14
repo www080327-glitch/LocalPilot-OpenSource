@@ -1,0 +1,104 @@
+# 初始全量失败清单
+
+原始 traceback 保留在本机 `../nationals-20261114-retest/python-full-venv.log`。状态依据本轮定向和后续全量复测；未确认项明确标示。
+
+- `ERROR: test_formats_and_structure (companion.tests.test_companion.CompanionTests.test_formats_and_structure)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_index_dedup_delete_and_provenance (companion.tests.test_companion.CompanionTests.test_index_dedup_delete_and_provenance)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_memory_clear_pauses_reindex (companion.tests.test_companion.CompanionTests.test_memory_clear_pauses_reindex)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_revoked_scope_purges_document_sources (companion.tests.test_companion.CompanionTests.test_revoked_scope_purges_document_sources)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_cross_spreadsheet_text_conflict_is_recorded_and_exposed (companion.tests.test_v01.V01Tests.test_cross_spreadsheet_text_conflict_is_recorded_and_exposed)`：缺少依赖：openpyxl（虚拟环境已安装后复测）。
+- `ERROR: test_evaluation_corpus_reproducible_and_retrieval_gain (companion.tests.test_v01.V01Tests.test_evaluation_corpus_reproducible_and_retrieval_gain)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_sheet_and_slide_locations_follow_relationship_order (companion.tests.test_v01.V01Tests.test_sheet_and_slide_locations_follow_relationship_order)`：缺少依赖：openpyxl（虚拟环境已安装后复测）。
+- `ERROR: test_alias_scopes_do_not_cross_projects (companion.tests.test_v02.V02Tests.test_alias_scopes_do_not_cross_projects)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_candidate_filters_before_model (companion.tests.test_v02.V02Tests.test_candidate_filters_before_model)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_config_rejects_invalid_new_controls (companion.tests.test_v02.V02Tests.test_config_rejects_invalid_new_controls)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_cumulative_model_calls_survive_new_manager (companion.tests.test_v02.V02Tests.test_cumulative_model_calls_survive_new_manager)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_escalation_approval_not_overwritten_by_source_bytes (companion.tests.test_v02.V02Tests.test_escalation_approval_not_overwritten_by_source_bytes)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_feedback_more_changes_frequency_with_safety_caps (companion.tests.test_v02.V02Tests.test_feedback_more_changes_frequency_with_safety_caps)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_feedback_mute_help_and_duplicate_response (companion.tests.test_v02.V02Tests.test_feedback_mute_help_and_duplicate_response)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_feedback_not_needed_raises_threshold_and_backoff (companion.tests.test_v02.V02Tests.test_feedback_not_needed_raises_threshold_and_backoff)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_feedback_timeout_is_counted_once (companion.tests.test_v02.V02Tests.test_feedback_timeout_is_counted_once)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_holdout_and_v01_suite_frozen_reproducible (companion.tests.test_v02.V02Tests.test_holdout_and_v01_suite_frozen_reproducible)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_host_error_invitation_does_not_depend_on_model_json (companion.tests.test_v02.V02Tests.test_host_error_invitation_does_not_depend_on_model_json)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_host_scalar_answer_verified_and_unit_equivalence (companion.tests.test_v02.V02Tests.test_host_scalar_answer_verified_and_unit_equivalence)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_invalid_semantic_route_does_not_become_valid_local_decision (companion.tests.test_v02.V02Tests.test_invalid_semantic_route_does_not_become_valid_local_decision)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_missing_named_source_does_not_summarize_another_file (companion.tests.test_v02.V02Tests.test_missing_named_source_does_not_summarize_another_file)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_model_answer_no_citation_remains_unverified (companion.tests.test_v02.V02Tests.test_model_answer_no_citation_remains_unverified)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_model_answer_wrong_location_is_withheld (companion.tests.test_v02.V02Tests.test_model_answer_wrong_location_is_withheld)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_new_old_and_multi_project_retrieval (companion.tests.test_v02.V02Tests.test_new_old_and_multi_project_retrieval)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_normal_editing_cannot_be_promoted_without_evidence (companion.tests.test_v02.V02Tests.test_normal_editing_cannot_be_promoted_without_evidence)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_production_repeated_error_and_bulk_file_changes (companion.tests.test_v02.V02Tests.test_production_repeated_error_and_bulk_file_changes)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_retention_activity_and_notices_bounded (companion.tests.test_v02.V02Tests.test_retention_activity_and_notices_bounded)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_retention_current_permanent_recent_and_count (companion.tests.test_v02.V02Tests.test_retention_current_permanent_recent_and_count)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_retention_idempotent_and_reopen (companion.tests.test_v02.V02Tests.test_retention_idempotent_and_reopen)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_retention_ttl_current_protection_and_pending_pin (companion.tests.test_v02.V02Tests.test_retention_ttl_current_protection_and_pending_pin)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_route_casual_and_actual_operations (companion.tests.test_v02.V02Tests.test_route_casual_and_actual_operations)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_source_correct_wrong_cell_page_stale_fabricated_conflict (companion.tests.test_v02.V02Tests.test_source_correct_wrong_cell_page_stale_fabricated_conflict)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_source_reads_live_hash_without_file_event (companion.tests.test_v02.V02Tests.test_source_reads_live_hash_without_file_event)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_source_rejects_foreign_context_memory_id (companion.tests.test_v02.V02Tests.test_source_rejects_foreign_context_memory_id)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_source_scope_revoke (companion.tests.test_v02.V02Tests.test_source_scope_revoke)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_source_unsupported_does_not_upgrade_observation (companion.tests.test_v02.V02Tests.test_source_unsupported_does_not_upgrade_observation)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_synonym_owner_deadline_and_second_long_hit (companion.tests.test_v02.V02Tests.test_synonym_owner_deadline_and_second_long_hit)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_telemetry_all_fields_and_counts_not_last_twenty (companion.tests.test_v02.V02Tests.test_telemetry_all_fields_and_counts_not_last_twenty)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_v02_comparison_rejects_missing_identity_and_prompt_drift (companion.tests.test_v02.V02Tests.test_v02_comparison_rejects_missing_identity_and_prompt_drift)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_xlsx_same_value_wrong_field_column (companion.tests.test_v02.V02Tests.test_xlsx_same_value_wrong_field_column)`：缺少依赖：docx（虚拟环境已安装后复测）。
+- `ERROR: test_dense_valid_callback_is_trimmed_and_saved_with_partial_status (companion.tests.test_v041_service.ReaderServiceTests.test_dense_valid_callback_is_trimmed_and_saved_with_partial_status)`：固定日期超过观察记录保留期；已更新夹具并复测通过。
+- `ERROR: test_failed_subtree_path_survives_callback_queue_and_sqlite (companion.tests.test_v041_service.ReaderServiceTests.test_failed_subtree_path_survives_callback_queue_and_sqlite)`：固定日期超过观察记录保留期；已更新夹具并复测通过。
+- `ERROR: tests.test_adaptive_benchmark (unittest.loader._FailedTest.tests.test_adaptive_benchmark)`：缺少依赖：benchmarks（公开树缺失，NOT_RUN）。
+- `ERROR: tests.test_aic_score_audit (unittest.loader._FailedTest.tests.test_aic_score_audit)`：缺少依赖：benchmarks（公开树缺失，NOT_RUN）。
+- `ERROR: tests.test_aic_terminal_budget (unittest.loader._FailedTest.tests.test_aic_terminal_budget)`：缺少依赖：benchmarks（公开树缺失，NOT_RUN）。
+- `ERROR: tests.test_benchmark (unittest.loader._FailedTest.tests.test_benchmark)`：缺少依赖：benchmarks（公开树缺失，NOT_RUN）。
+- `ERROR: tests.test_convergence (unittest.loader._FailedTest.tests.test_convergence)`：缺少依赖：benchmarks（公开树缺失，NOT_RUN）。
+- `ERROR: test_batch_ingestion_retains_identity_and_cannot_be_done_by_client (tests.test_desktop_product.DesktopProductTests.test_batch_ingestion_retains_identity_and_cannot_be_done_by_client)`：磁盘资源门槛 413；补充空间后复测通过。
+- `ERROR: test_recommendation_does_not_fall_below_the_core_agent_context_gate (tests.test_desktop_product.DesktopProductTests.test_recommendation_does_not_fall_below_the_core_agent_context_gate)`：最低上下文与推荐档位校验冲突；已修复并定向通过。
+- `ERROR: test_batch_ingestion_retains_identity_and_cannot_be_done_by_client (tests.test_desktop_product.DesktopV5ProfileTests.test_batch_ingestion_retains_identity_and_cannot_be_done_by_client)`：磁盘资源门槛 413；补充空间后复测通过。
+- `ERROR: test_recommendation_does_not_fall_below_the_core_agent_context_gate (tests.test_desktop_product.DesktopV5ProfileTests.test_recommendation_does_not_fall_below_the_core_agent_context_gate)`：最低上下文与推荐档位校验冲突；已修复并定向通过。
+- `ERROR: test_budget_limits_source_and_authorization_isolation (tests.test_document_engine.EngineTests.test_budget_limits_source_and_authorization_isolation)`：缺少依赖：reportlab（虚拟环境已安装后复测）。
+- `ERROR: test_cancel_resume_restart_reindex_and_citation_stability (tests.test_document_engine.EngineTests.test_cancel_resume_restart_reindex_and_citation_stability)`：缺少依赖：reportlab（虚拟环境已安装后复测）。
+- `ERROR: test_folder_project_import_skips_credentials_and_never_executes (tests.test_document_engine.EngineTests.test_folder_project_import_skips_credentials_and_never_executes)`：缺少依赖：reportlab（虚拟环境已安装后复测）。
+- `ERROR: test_images_multiple_aspect_resolution_orientation_and_pixel_limit (tests.test_document_engine.EngineTests.test_images_multiple_aspect_resolution_orientation_and_pixel_limit)`：缺少依赖：reportlab（虚拟环境已安装后复测）。
+- `ERROR: test_large_attachment_catalog_is_paged_without_a_small_count_cap (tests.test_document_engine.EngineTests.test_large_attachment_catalog_is_paged_without_a_small_count_cap)`：缺少依赖：reportlab（虚拟环境已安装后复测）。
+- `ERROR: test_magic_beats_extension_unsupported_binary_and_json_validation (tests.test_document_engine.EngineTests.test_magic_beats_extension_unsupported_binary_and_json_validation)`：缺少依赖：reportlab（虚拟环境已安装后复测）。
+- `ERROR: test_multidocument_search_chinese_hybrid_and_source_symbols (tests.test_document_engine.EngineTests.test_multidocument_search_chinese_hybrid_and_source_symbols)`：缺少依赖：reportlab（虚拟环境已安装后复测）。
+- `ERROR: test_real_format_structure_and_independent_anchors (tests.test_document_engine.EngineTests.test_real_format_structure_and_independent_anchors)`：缺少依赖：reportlab（虚拟环境已安装后复测）。
+- `ERROR: test_registry_real_reads_and_gateway_does_not_trust_document_instructions (tests.test_document_engine.EngineTests.test_registry_real_reads_and_gateway_does_not_trust_document_instructions)`：缺少依赖：reportlab（虚拟环境已安装后复测）。
+- `ERROR: test_same_file_cache_dedup_and_independent_revocation (tests.test_document_engine.EngineTests.test_same_file_cache_dedup_and_independent_revocation)`：缺少依赖：reportlab（虚拟环境已安装后复测）。
+- `ERROR: test_vision_actual_pixel_packets_exact_cloud_grants_and_revocation (tests.test_document_engine.EngineTests.test_vision_actual_pixel_packets_exact_cloud_grants_and_revocation)`：缺少依赖：reportlab（虚拟环境已安装后复测）。
+- `ERROR: test_zip_list_and_unsafe_members_bomb_macros_entities (tests.test_document_engine.EngineTests.test_zip_list_and_unsafe_members_bomb_macros_entities)`：缺少依赖：reportlab（虚拟环境已安装后复测）。
+- `ERROR: tests.test_mlx_benchmark (unittest.loader._FailedTest.tests.test_mlx_benchmark)`：缺少依赖：benchmarks（公开树缺失，NOT_RUN）。
+- `ERROR: setUpClass (tests.test_plugin_ecosystem.PluginTests)`：插件可选依赖未就绪；安装声明的插件依赖后复测通过。
+- `ERROR: test_compatibility_dependency_version_and_update_revokes (tests.test_plugin_ecosystem.SkillTests.test_compatibility_dependency_version_and_update_revokes)`：缺少依赖：packaging（虚拟环境已安装后复测）。
+- `ERROR: test_explicit_discovery_scope_review_and_no_authority (tests.test_plugin_ecosystem.SkillTests.test_explicit_discovery_scope_review_and_no_authority)`：缺少依赖：packaging（虚拟环境已安装后复测）。
+- `ERROR: test_project_file_cannot_forge_native_skill_review (tests.test_plugin_ecosystem.SkillTests.test_project_file_cannot_forge_native_skill_review)`：缺少依赖：packaging（虚拟环境已安装后复测）。
+- `ERROR: test_tamper_missing_tool_and_dependency_cycle (tests.test_plugin_ecosystem.SkillTests.test_tamper_missing_tool_and_dependency_cycle)`：缺少依赖：packaging（虚拟环境已安装后复测）。
+- `ERROR: test_auth_expiry_and_native_rotation_no_secret_leak (tests.test_plugin_http.HTTPTests.test_auth_expiry_and_native_rotation_no_secret_leak)`：插件可选依赖未就绪；安装声明的插件依赖后复测通过。
+- `ERROR: test_catalog_drift_blocks_dispatch_then_version_change_requires_review (tests.test_plugin_http.HTTPTests.test_catalog_drift_blocks_dispatch_then_version_change_requires_review)`：插件可选依赖未就绪；安装声明的插件依赖后复测通过。
+- `ERROR: test_json_sse_session_and_protocol_headers (tests.test_plugin_http.HTTPTests.test_json_sse_session_and_protocol_headers)`：插件可选依赖未就绪；安装声明的插件依赖后复测通过。
+- `ERROR: test_oversized_http_is_contained (tests.test_plugin_http.HTTPTests.test_oversized_http_is_contained)`：插件可选依赖未就绪；安装声明的插件依赖后复测通过。
+- `ERROR: tests.test_real_hybrid_accounting (unittest.loader._FailedTest.tests.test_real_hybrid_accounting)`：缺少依赖：benchmarks（公开树缺失，NOT_RUN）。
+- `ERROR: tests.test_runtime_stabilization (unittest.loader._FailedTest.tests.test_runtime_stabilization)`：缺少依赖：benchmarks（公开树缺失，NOT_RUN）。
+- `ERROR: tests.test_selector_mlp (unittest.loader._FailedTest.tests.test_selector_mlp)`：缺少依赖：benchmarks（公开树缺失，NOT_RUN）。
+- `ERROR: tests.test_strict_benchmark (unittest.loader._FailedTest.tests.test_strict_benchmark)`：缺少依赖：benchmarks（公开树缺失，NOT_RUN）。
+- `ERROR: tests.test_v48_benchmark (unittest.loader._FailedTest.tests.test_v48_benchmark)`：缺少依赖：benchmarks（公开树缺失，NOT_RUN）。
+- `ERROR: tests.test_v48_resource_controls (unittest.loader._FailedTest.tests.test_v48_resource_controls)`：缺少依赖：benchmarks（公开树缺失，NOT_RUN）。
+- `ERROR: tests.test_v49_accounting (unittest.loader._FailedTest.tests.test_v49_accounting)`：缺少依赖：benchmarks（公开树缺失，NOT_RUN）。
+- `FAIL: test_compacted_resume_keeps_latest_read_as_complete_partial_tool_group (tests.test_computer_runtime.SessionComputerTests.test_compacted_resume_keeps_latest_read_as_complete_partial_tool_group)`：原测试窗口不触发新 token 压缩；收紧窗口并复测通过。
+- `FAIL: test_compacted_resume_preserves_latest_target_and_scoped_observation (tests.test_computer_runtime.SessionComputerTests.test_compacted_resume_preserves_latest_target_and_scoped_observation)`：原测试窗口不触发新 token 压缩；收紧窗口并复测通过。
+- `FAIL: test_absent_outside_and_sensitive_paths_still_rejected (tests.test_file_info_observation.FileInfoObservationTests.test_absent_outside_and_sensitive_paths_still_rejected)`：Full 敏感路径历史断言与现有 Full 语义冲突；待解决。
+- `FAIL: test_project_credential_namespace_is_not_model_tool_data (tests.test_file_info_observation.FileInfoObservationTests.test_project_credential_namespace_is_not_model_tool_data)`：Full 敏感路径历史断言与现有 Full 语义冲突；待解决。
+- `FAIL: test_symlink_to_project_credential_namespace_is_denied (tests.test_file_info_observation.FileInfoObservationTests.test_symlink_to_project_credential_namespace_is_denied)`：Full 敏感路径历史断言与现有 Full 语义冲突；待解决。
+- `FAIL: test_backend_admission_serializes_local_and_keeps_cloud_parallel (tests.test_hybrid_runtime.HybridRuntimeTests.test_backend_admission_serializes_local_and_keeps_cloud_parallel)`：测试引用未公开 benchmark；改为真实交接消息并复测通过。
+- `FAIL: test_failed_small_context_switch_is_denied_without_closing_local_session (tests.test_hybrid_runtime.HybridRuntimeTests.test_failed_small_context_switch_is_denied_without_closing_local_session)`：原目标窗口可容纳新 token 估算；缩小窗口后复测通过。
+- `FAIL: test_focus_always_approval_gated_even_full (tests.test_native_computer_use.NativeComputerTests.test_focus_always_approval_gated_even_full)`：Full 绕过明确主机批准；已修复并复测通过。
+- `FAIL: test_recovered_native_writes_require_approval_even_in_full_permission (tests.test_native_human_recovery.HumanRecoveryTests.test_recovered_native_writes_require_approval_even_in_full_permission)`：Full 绕过明确主机批准；已修复并复测通过。
+- `FAIL: test_recovery_approval_constraint_survives_successor_backend_recreation (tests.test_native_human_recovery.HumanRecoveryTests.test_recovery_approval_constraint_survives_successor_backend_recreation)`：Full 绕过明确主机批准；已修复并复测通过。
+- `FAIL: test_skill_cli_explicit_enable_and_disable (tests.test_plugin_cli.CLITests.test_skill_cli_explicit_enable_and_disable)`：插件可选依赖未就绪；安装声明的插件依赖后复测通过。
+- `FAIL: test_context_compaction_keeps_history_and_pairs (tests.test_runtime_session.RuntimeSessionTests.test_context_compaction_keeps_history_and_pairs)`：原测试窗口不触发新 token 压缩；收紧窗口并复测通过。
+- `FAIL: test_delegate_rejects_unsupported_worker_thinking_without_remap (tests.test_runtime_session.RuntimeSessionTests.test_delegate_rejects_unsupported_worker_thinking_without_remap)`：旧断言与子代理默认 thinking 行为冲突；已验证实际默认及事件。
+- `FAIL: test_full_permission_preserves_hard_boundaries (tests.test_runtime_session.RuntimeSessionTests.test_full_permission_preserves_hard_boundaries)`：Full 敏感路径历史断言与现有 Full 语义冲突；待解决。
+- `FAIL: test_ineligible_models_never_primary (tests.test_runtime_session.RuntimeSessionTests.test_ineligible_models_never_primary) (size='4B', context=131072)`：旧尺寸准入假设已改变；已测试小模型实际调用及上下文底线。
+- `FAIL: test_ineligible_models_never_primary (tests.test_runtime_session.RuntimeSessionTests.test_ineligible_models_never_primary) (size='9B', context=131072)`：旧尺寸准入假设已改变；已测试小模型实际调用及上下文底线。
+- `FAIL: test_ineligible_models_never_primary (tests.test_runtime_session.RuntimeSessionTests.test_ineligible_models_never_primary) (size='27B', context=32768)`：旧尺寸准入假设已改变；已测试小模型实际调用及上下文底线。
+- `FAIL: test_private_symlink_capability_and_plan_cannot_be_escalated (tests.test_scope_escalation.ScopeFiles.test_private_symlink_capability_and_plan_cannot_be_escalated)`：旧版隔离读取被新版本放宽；按 revision 修复并复测通过。
+- `FAIL: test_low_power_blocks_large_loaded_model_before_inference (tests.test_v5_product_integration.ProductIntegrationTests.test_low_power_blocks_large_loaded_model_before_inference)`：错误提示语言已变化；已按中文提示复测。
+- `FAIL: test_four_modes_and_hard_ceiling (tests.test_workspace_grants.FolderControls.test_four_modes_and_hard_ceiling)`：Full 未知风险返回 allowed 与测试冲突；待解决。
