@@ -4,7 +4,7 @@
 
 [公开 GitHub 历史发行与可用下载](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases) · [源码与版本留存规则](../docs/development/GITHUB_RELEASE_HISTORY_POLICY.md)。历史 5.0.0 下载资产原属旧私有发行，尚未核验迁移到公开 Release；不要把新公开地址拼成未经验证的同名 DMG/ZIP。
 
-[安装与回滚](../docs/releases/desktop-5.0.0/INSTALL.md) · [更新说明与验收边界](../docs/releases/desktop-5.0.0/RELEASE_NOTES.md) · [推荐版本清单](recommended-release.json) · [总说明](../README.md)
+[测试安装与回滚](../docs/development/MAC_PORTABILITY_20261114.md) · [当前源码与验收边界](../docs/development/PA_READINESS_20261114.md) · [推荐版本清单](recommended-release.json) · [总说明](../README.md)
 
 桌宠支持六个边缘 Anchor、缩回/重新探头、底部潜水鲸尾、真实左右拖动姿态、独立角色比例、透明穿透和局部原生 Liquid Glass。小气泡点击展开现有聊天窗；工具委派仍复用 Core 授权、提交账本和 SSE，不产生第二套 Runtime。个人角色素材与姿态包不随源码或制品分发。
 
@@ -12,7 +12,7 @@
 
 构建使用 `LP_GUI_USE_INSTALLED_DEPS=1 scripts/build-macos.sh`；先准备并核验 `src-tauri/bundled-backends/`。只有隔离原生验收才传 `LP_GUI_TEST_CONFIG=src-tauri/tauri.pet-test.conf.json`，该 Test 包不是默认下载。所有构建经过同一构建锁和一个 worker；发行目录只保留归档，签名 App 位于共享构建槽。
 
-本源码仓库已公开；仅已经过校验的发行资产在公开 Release 提供下载。macOS 15+；Liquid Glass 需要 macOS 26+，其它系统降级。签名为 ad-hoc，未公证；干净 Mac、多显示器、全部原生矩阵与模型质量未获完整验收。[历史集成证据](../docs/integration/20261025/ACCEPTANCE.md)与[桌宠验收](../docs/acceptance/edge-pet-20261026/ACCEPTANCE.md)保持版本边界。推荐发行不是全面生产认证，发布不会替换本机日常 App。
+本源码仓库已公开；仅已经过校验的发行资产在公开 Release 提供下载。macOS 15+；Liquid Glass 需要 macOS 26+，其它系统降级。签名为 ad-hoc，未公证；干净 Mac、多显示器、全部原生矩阵与模型质量未获完整验收。公开树中的[既有独立测试 APP 记录](../docs/evidence/nationals-20261114-head-retest/RESULTS.md)与[本轮 Companion 检查](../docs/development/COMPANION_PA_20261114.md)分别说明对应版本和限制；缺失的早期附件不作为本轮验收证据。推荐发行不是全面生产认证，发布不会替换本机日常 App。
 
 Channel GUI candidate: Desktop 5.0.1-rc.6; Core 5.0.0b20+channels.3; Suite 0.2.0b25; Companion 0.5.7b3; optional Channels 0.1.0a3. Final review: docs/acceptance/channels-final-review-20261028/ACCEPTANCE.md. The original seven-volume recovery set remains in docs/acceptance/channels-onboarding-20261027/RECOVERY_SET.json. Public installation and wipe admission remain NO_GO.
 

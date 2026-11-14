@@ -147,6 +147,7 @@ class SkillRegistry:
                 visit(dependency)
             stack.pop()
             loaded[current] = {"id": current, "version": manifest["version"],
+                "description": manifest["description"], "bundle_sha256": actual,
                 "instructions": value["instructions"], "inputs": manifest["inputs"], "outputs": manifest["outputs"]}
         visit(identifier(name))
         return {"status": "ok", "scope": scope, "skills": list(loaded.values()),

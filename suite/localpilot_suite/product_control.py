@@ -113,6 +113,9 @@ def hardware(home):
     minimum_context_k=(constraints['minimum_context']+1023)//1024
     context_k=next((tier for tier in CONTEXT_LENGTHS if tier>=minimum_context_k),None)
     r=recommend(vm.total/1024**3,available_memory_gb=vm.available/1024**3,context_k=context_k,minimum_context_k=minimum_context_k,excluded_size_classes=constraints['excluded_size_classes'],os_name=hw['os'],arch=hw['arch'],chip=hw['chip']) if context_k else None
+    recommendation_status = None
+    if r and r.get('status') in {'unsupported', 'deferred'}:
+        recommendation_status, r = r, None
     if r:
         r['download_bytes_estimate']=round(r['model']['artifact_gb']*1024**3);r['disk_compatible']=r['download_bytes_estimate']+2*1024**3<=disk.free
         r['power_compatible']=hw.get('active_low_power_mode') is False or r['download_bytes_estimate']<=1500000000
@@ -120,7 +123,7 @@ def hardware(home):
         if not r['power_compatible']:
             r['reason']+=(' 暂时无法确认当前电源策略。可稍后重新检测，或跳过本地模型。' if hw.get('active_low_power_mode') is None
                 else ' 当前低电量策略限制此大小模型的推理。可跳过本地模型，或在系统调整后重新检测。')
-    return {'version':1,'hardware':hw,'recommendation':r,'installation': installation_state(home),
+    return {'version':1,'hardware':hw,'recommendation':r,'recommendation_status':recommendation_status,'installation': installation_state(home),
         'omlx_installed':any((p/'oMLX.app').is_dir() for p in [Path('/Applications'),Path.home()/'Applications']),
         'core_configured':(home/'connection.json').exists(),'agent_constraints':constraints,'model_download_forced':False}
 
@@ -193,6 +196,11 @@ def dispatch(home,body):
             values[args['model']]=args['value'];save(path,values)
         return {'models':values,'cache_effect':'preference_only; backend shared cache has no per-model control'}
 
+    if op=='cache_budget':
+        if args:raise ValueError('Cache budget inspection takes no path or deletion arguments')
+        from localpilot_service.cache_budget import status
+        return status()
+
     if op=='workspace_grants':
         client,health=operator(home)
         return client.request('/localpilot/v1/workspace-grants',{'client_subject':health['client_subject'],**args})
@@ -204,6 +212,14 @@ def dispatch(home,body):
         if set(args) not in ({'session_id','agent_profile','expected_profile'},{'session_id','agent_profile','expected_profile','permission_mode','expected_permission_mode'}) or not isinstance(args['session_id'],str) or not re.fullmatch(r'sess_[A-Za-z0-9_-]{1,128}',args['session_id']):raise ValueError('Exact Desktop session required')
         client,health=operator(home)
         return client.request('/localpilot/v1/desktop-sessions/'+args['session_id']+'/profile',{'client_subject':health['client_subject'],**{k:v for k,v in args.items() if k!='session_id'}})
+    if op=='desktop_model':
+        if set(args)-{'session_id','model','expected_model','source','reasoning_effort'} or not {'session_id','model','expected_model','source'}<=set(args) or not isinstance(args['session_id'],str) or not re.fullmatch(r'sess_[A-Za-z0-9_-]{1,128}',args['session_id']):raise ValueError('Exact Desktop model selection required')
+        client,health=operator(home)
+        return client.request('/localpilot/v1/desktop-sessions/'+args['session_id']+'/model',{'client_subject':health['client_subject'],**{k:v for k,v in args.items() if k!='session_id'}})
+    if op=='model_health':
+        if set(args)!={'model'} or not isinstance(args['model'],str):raise ValueError('Exact registered model required')
+        from localpilot_service.cli import connection
+        return connection(home).request('/localpilot/v1/model-health',args)
     if op=='attachments':
         if set(args)!={'model','paths'}:raise ValueError('Exact selected file references required')
         client,health=operator(home)

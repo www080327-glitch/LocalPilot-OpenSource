@@ -243,6 +243,71 @@ class ServiceContractTests(unittest.TestCase):
         self.assertEqual(saved["last_status"]["status"], "running")
         self.assertIn("connection_error", saved)
 
+    def test_monitor_recovers_real_retention_gap_without_repeating_prefix_or_task(self):
+        from tests.test_runtime_api import StreamBackend
+        self.backend = StreamBackend()
+        self.service.max_events = 2
+        view = self.submit()
+        self.assertTrue(self.backend.first.wait(2))
+        task_id = view["task_id"]
+        expired = list(self.provider.stream(task_id, after=0))
+        self.assertEqual(expired[-1]["error"]["http_status"], 409)
+        fixture = self
+        class RetentionGapProvider(LocalPilotProvider):
+            def __init__(self, config):
+                super().__init__(config)
+                self.cursors = []
+                self.gaps = 0
+
+            def stream(self, task_id, *, after=0, **kwargs):
+                self.cursors.append(after)
+                if len(self.cursors) == 1:
+                    runtime = fixture.service._session(view["session_id"]).runtime
+                    for _ in range(3):
+                        runtime._emit("SyntheticProgress", reason="retention gap fixture")
+                else:
+                    fixture.service.max_events = 4096
+                    fixture.backend.release.set()
+                for frame in super().stream(task_id, after=after, **kwargs):
+                    if frame.get("error", {}).get("http_status") == 409:
+                        self.gaps += 1
+                    yield frame
+
+        provider = RetentionGapProvider(self.config)
+        app = Companion(self.config)
+        app.store.set("localpilot_tasks", {task_id:{"endpoint":self.config.localpilot_endpoint}})
+        try:
+            app.monitor_task(task_id, provider=provider)
+            _, received_id, snapshot = app.queue.get(timeout=2)
+            self.assertEqual(received_id, task_id)
+            self.assertEqual(snapshot["progress_text"], "hello ")
+            self.assertTrue(snapshot["progress_snapshot"])
+            app.receive_task_update(task_id, snapshot)
+            progress = [snapshot["progress_text"]]
+            deadline = time.monotonic() + 3
+            while time.monotonic() < deadline:
+                _, received_id, update = app.queue.get(timeout=2)
+                app.receive_task_update(received_id, update)
+                if update.get("progress_text"):
+                    progress.append(update["progress_text"])
+                if update.get("status") == "completed" and update.get("quiescent"):
+                    break
+            saved = app.store.get("localpilot_tasks")[task_id]["last_status"]
+            self.assertEqual(saved["status"], "completed")
+            self.assertEqual(saved["agent_response"], "hello 世界")
+            self.assertTrue(all(text in {"hello ", "hello 世界"} for text in progress), progress)
+            self.assertIn("hello 世界", progress)
+            self.assertEqual(provider.gaps, 1)
+            self.assertEqual(len(provider.cursors), 2)
+            self.assertGreater(provider.cursors[1], provider.cursors[0])
+            self.assertEqual(len(self.backend.requests), 1)
+        finally:
+            self.backend.release.set()
+            app.monitor_stop.set()
+            for thread in app.task_monitors.values():
+                thread.join(2)
+            app.channel.stop(); app.store.close(); app.lock.close()
+
     def test_result_written_to_real_sqlite_with_unverified_identity(self):
         app = self.host()
         view = self.done(self.submit())

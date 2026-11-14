@@ -6,6 +6,7 @@ import tempfile
 import threading
 import time
 import unittest
+import sys
 from unittest.mock import patch
 from agent.registry import create_default_registry
 from agent.scope_permissions import configure
@@ -34,16 +35,19 @@ class HostToolTests(unittest.TestCase):
         self.assertEqual(r.call('apply_patch',{'changes':[{'operation':'create','path':str(p),'content':'real'}]})['status'],'ok')
         self.assertEqual(p.read_text(),'real')
         self.assertIn('PRIVATE_FIXTURE',json.dumps(r.call('read_file',{'path':str(self.secret/'token')})))
+    @unittest.skipUnless(sys.platform == "darwin", "NOT_RUN: requires native macOS host Shell/Seatbelt")
     def test_workspace_shell_executes_within_scope_without_extra_approval(self):
         r=self.registry();args={'command':'printf real > created.txt'}
         result=r.call('shell',args)
         self.assertEqual(result['exit_code'],0,result)
         self.assertEqual((self.work/'created.txt').read_text(),'real')
         self.assertEqual(result['verification'],'NOT_RUN')
+    @unittest.skipUnless(sys.platform == "darwin", "NOT_RUN: requires native macOS host Shell/Seatbelt")
     def test_shell_unicode_workspace_has_the_same_real_write_scope(self):
         dest=self.root/'工作区';self.work.rename(dest);self.work=dest
         result=self.registry().call('shell',{'command':'printf unicode-ok > created.txt'},approved=True)
         self.assertEqual(result['exit_code'],0,result);self.assertEqual((self.work/'created.txt').read_text(),'unicode-ok')
+    @unittest.skipUnless(sys.platform == "darwin", "NOT_RUN: requires native macOS host Shell/Seatbelt")
     def test_shell_OS_write_scope_and_full(self):
         # macOS allows a dedicated OS temp root in workspace mode. An outside
         # fixture under the same temp root cannot test the workspace boundary.
@@ -54,6 +58,7 @@ class HostToolTests(unittest.TestCase):
             self.assertNotEqual(denied['exit_code'],0);self.assertFalse(target.exists())
             allowed=self.registry('full').call('shell',args)
             self.assertEqual(allowed['exit_code'],0,allowed);self.assertEqual(target.read_text(),'forbidden')
+    @unittest.skipUnless(sys.platform == "darwin", "NOT_RUN: requires native macOS host Shell/Seatbelt")
     def test_shell_one_action_scope_escalation(self):
         r=self.registry('request');target=self.out/'escalated'
         args={'command':"printf approved > '"+str(target)+"'",'access':'full'}
@@ -61,11 +66,13 @@ class HostToolTests(unittest.TestCase):
         result=r.call('shell',args,approved=True)
         self.assertEqual(result['exit_code'],0,result);self.assertEqual(target.read_text(),'approved')
         self.assertEqual(r.call('shell',{'command':'printf next'})['status'],'approval_required')
+    @unittest.skipUnless(sys.platform == "darwin", "NOT_RUN: requires native macOS host Shell/Seatbelt")
     def test_strict_shell_cannot_escalate_or_mutate(self):
         r=self.registry('isolated')
         with self.assertRaises(PermissionError):r.call('shell',{'command':'printf no','access':'full'},approved=True)
         result=r.call('shell',{'command':'printf no > denied'},approved=True)
         self.assertNotEqual(result['exit_code'],0);self.assertFalse((self.work/'denied').exists())
+    @unittest.skipUnless(sys.platform == "darwin", "NOT_RUN: requires native macOS host Shell/Seatbelt")
     def test_full_shell_reads_with_os_rights_and_reports_network_mode(self):
         r=self.registry('full')
         result=r.call('shell',{'command':"cat '"+str(self.secret/'token')+"'"})
@@ -74,6 +81,7 @@ class HostToolTests(unittest.TestCase):
         self.assertEqual(result['network'],'available')
         # External DNS/network availability is an integration concern, not a
         # deterministic permission assertion.
+    @unittest.skipUnless(sys.platform == "darwin", "NOT_RUN: requires native macOS host Shell/Seatbelt")
     def test_timeout_retains_uncertain_effect_and_no_replay(self):
         result=self.registry('full').call('shell',{'command':'printf partial > partial.txt; sleep 3','timeout':.1})
         self.assertEqual(result['status'],'timeout');self.assertTrue(result['action_may_have_applied']);self.assertFalse(result['replay_allowed'])
@@ -96,6 +104,7 @@ class HostToolTests(unittest.TestCase):
         first=s.run_turn('Create the fixture');self.assertEqual(first.status,'approval_required')
         final=s.reject()
         self.assertNotEqual(final.status,'completed');self.assertFalse(p.exists());self.assertEqual(len(b.requests),1)
+    @unittest.skipUnless(sys.platform == "darwin", "NOT_RUN: requires native macOS host Shell/Seatbelt")
     def test_hybrid_shell_uses_one_approval_and_the_actual_receipt(self):
         from agent.hybrid import HybridPolicy,CloudEgressPolicy
         b=Backend(answer('',call('shell',{'command':'printf hybrid-ok > shell.txt'})),answer('Done'))
@@ -104,6 +113,7 @@ class HostToolTests(unittest.TestCase):
         self.assertFalse((self.work/'shell.txt').exists())
         result=s.approve();self.assertEqual(result.status,'completed');self.assertEqual((self.work/'shell.txt').read_text(),'hybrid-ok')
         self.assertEqual(len([r for r in s.tool_history if r['name']=='shell']),1)
+    @unittest.skipUnless(sys.platform == "darwin", "NOT_RUN: requires native macOS host Shell/Seatbelt")
     def test_hybrid_uncertain_shell_never_becomes_completed(self):
         from agent.hybrid import HybridPolicy,CloudEgressPolicy
         from agent.persistence import recovery_class
@@ -112,6 +122,7 @@ class HostToolTests(unittest.TestCase):
         result=s.run_turn('Create the public fixture')
         self.assertNotEqual(result.status,'completed');self.assertEqual((self.work/'shell.txt').read_text(),'partial')
         self.assertEqual(recovery_class(s),'UNKNOWN_BLOCKED')
+    @unittest.skipUnless(sys.platform == "darwin", "NOT_RUN: requires native macOS host Shell/Seatbelt")
     def test_cancel_running_shell_retains_unknown_receipt(self):
         from agent.hybrid import HybridPolicy,CloudEgressPolicy
         from agent.persistence import recovery_class
@@ -129,6 +140,7 @@ class HostToolTests(unittest.TestCase):
         self.assertEqual(recovery_class(s),'UNKNOWN_BLOCKED')
         s.close()
 
+    @unittest.skipUnless(sys.platform == "darwin", "NOT_RUN: requires native macOS host Shell/Seatbelt")
     def test_observed_nonzero_shell_does_not_become_unknown(self):
         from agent.hybrid import HybridPolicy,CloudEgressPolicy
         from agent.persistence import recovery_class

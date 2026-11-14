@@ -277,6 +277,8 @@ class Companion:
         if event.get("evidence", {}).get("read_status") in {"READ_FAILED", "READ_PARTIAL", "UNKNOWN"}:
             self.count("native_incomplete_snapshots")
         if stored.get("new_occurrence", not stored.get("merged", False)):
+            if event["kind"] in {"system.did_wake", "system.screens_wake", "session.became_active", "app.activated"}:
+                self.scheduled_greeting(event["timestamp"])
             signal_event = self.workflow.accept(event, stored["id"])
             if signal_event:
                 signal_event["hour"] = datetime.fromtimestamp(event["timestamp"]).hour
@@ -314,7 +316,8 @@ class Companion:
                 if record.get("endpoint") == self.config.localpilot_endpoint and record.get("transport", {}).get("scope") == self.privacy.consent_id() and last.get("status") not in {"completed", "incomplete", "failed", "cancelled", "timed_out"}:
                     self.monitor_task(task_id, record.get("last_event_cursor", 0), record.get("cloud_approved") is True)
             if not self.stopping:
-                self.greet("startup")
+                hour = datetime.now().hour
+                self.greet("morning" if 5 <= hour < 12 else "evening" if 18 <= hour < 24 else "startup")
             while not self.stopping:
                 try:
                     item = self.queue.get(timeout=2 if self.pending else min(15, self.config.eco_unload_seconds) if self.power.active() and getattr(self.model, "child", None) else 30)
@@ -672,7 +675,7 @@ class Companion:
             return False
         if source == "companion_greeting_rule":
             return True
-        if source != "companion_model" or "observation_ids" not in metadata or "memory_ids" not in metadata:
+        if source not in {"companion_model", "companion_activity_digest"} or "observation_ids" not in metadata or "memory_ids" not in metadata:
             return False
         parents, observations = metadata["memory_ids"], metadata["observation_ids"]
         if not isinstance(parents, list) or not isinstance(observations, list) or len(parents)+len(observations) > 32:
@@ -682,23 +685,21 @@ class Companion:
             return False
         return all(self.observation_memory.is_current(mid) for mid in observations)
 
-    def greet(self, kind):
-        key = f"greeting:{kind}:{datetime.now().date()}"
-        if not self.policy.allowed("greeting", key):
+    def greet(self, kind, now=None):
+        now = time.time() if now is None else now
+        key = f"greeting:{kind}:{datetime.fromtimestamp(now).date()}"
+        if not self.policy.allowed("greeting", key, now):
             return
         fallback = {"startup":"你好，我是 Companion。需要时可以来找我。", "morning":"早上好，祝你今天顺利。", "evening":"晚上好，需要帮忙时可以来找我。"}[kind]
-        label = {"startup":"启动", "morning":"早晨", "evening":"晚上"}[kind]
-        result = self.model.complete([{"role":"system","content":SYSTEM}, {"role":"user","content":f"写一句简短{label}问候，不要提出任务或宣称观察到用户。"}], max_tokens=64) if self.model.available() and not self.power.active() else {"status":"unavailable"}
-        text = result.get("text", "")
-        good = result["status"] == "ok" and any(w in text for w in ("你好", "早上好", "晚上好", "您好")) and "确认" not in text and len(text) <= 120
-        self.emit_notice("greeting", key, text if good else fallback)
+        return self.emit_notice("greeting", key, fallback, now)
 
-    def scheduled_greeting(self):
-        hour = datetime.now().hour
-        if 8 <= hour < 10:
-            self.greet("morning")
-        elif 19 <= hour < 21:
-            self.greet("evening")
+    def scheduled_greeting(self, now=None):
+        now = time.time() if now is None else now
+        hour = datetime.fromtimestamp(now).hour
+        if 5 <= hour < 12:
+            return self.greet("morning", now)
+        if 18 <= hour < 24:
+            return self.greet("evening", now)
 
     def retrieve(self, question):
         # Conservative character budget; MLX worker also enforces the exact tokenizer budget.
@@ -819,6 +820,16 @@ class Companion:
             self.store.add("conversation", text, "companion_greeting_rule", epistemic="inferred", metadata={"role":"assistant"})
             return {"status":"ok", "text":text, "memories":[], "model":{"status":"not_called", "reason":"deterministic_greeting"}}
         memory_allowed = not getattr(self.store, "conversation_disabled", False)
+        from companion.memory.activity import requested_activity_day, activity_digest
+        activity_day = requested_activity_day(question)
+        if activity_day and not force_help and context_rows is None:
+            if not memory_allowed:
+                return {"status":"unavailable", "text":"记忆已关闭，暂不读取活动记录。", "model":{"status":"not_called"}}
+            result = activity_digest(self.observation_memory, activity_day)
+            self.store.add("conversation", question, "user_chat", metadata={"role":"user"})
+            self.store.add("conversation", result["text"], "companion_activity_digest", epistemic="inferred",
+                           metadata={"role":"assistant", "memory_ids":[], "observation_ids":[r["id"] for r in result["items"]]})
+            return result
         retrieved = self.retrieve(question) if memory_allowed else []
         # A prior question is a record of speech, not source evidence for its
         # answer. Keep history on disk and expose it only when explicitly asked.
@@ -1093,6 +1104,9 @@ class Companion:
             from companion.memory.presentation import context_text
             cards = self.visible_context()
             return {"status":"ok", "text":context_text(cards), "cards":cards}
+        if cmd == "activity_digest":
+            from companion.memory.activity import activity_digest
+            return activity_digest(self.observation_memory, data.get("day", "today"), data.get("limit", 30))
         if cmd == "review_context":
             cards = [c for c in self.visible_context() if c["text_chars"] >= 80 and time.time()-c["timestamp"] <= 1800][:3]
             if not cards:
@@ -1478,7 +1492,7 @@ class Companion:
     @staticmethod
     def task_summary(result):
         keys = {"status", "phase", "task_id", "session_id", "quiescent", "task_execution", "submission_id", "context_digest",
-                "automatic_retry", "automatic_resume", "cancel_requested", "last_event_id", "verification_status", "engineering_status", "evidence_level", "error", "semantic_status", "goal_verified", "unknown_mutation", "runtime_status", "deliverable_status", "retry_after_seconds", "connection_state", "progress_text", "reason", "reasoning_help_requested"}
+                "automatic_retry", "automatic_resume", "cancel_requested", "last_event_id", "verification_status", "engineering_status", "evidence_level", "error", "semantic_status", "goal_verified", "unknown_mutation", "runtime_status", "deliverable_status", "retry_after_seconds", "connection_state", "progress_text", "progress_snapshot", "reason", "reasoning_help_requested"}
         summary = {k:result[k] for k in keys if k in result and (type(result[k]) in (str, int, float, bool) or result[k] is None)}
         summary = sanitize(summary)
         if isinstance(result.get("agent_response"), str):
@@ -1541,16 +1555,8 @@ class Companion:
             try:
                 event = ObservationEvent.create("localpilot", "task_result", {"task_id":task_id}, proof,
                                                  source_reference="localpilot:task:"+task_id, important=True)
-                stored = self.observation_memory.add(event.to_dict() | {"occurrence_id":event.dedupe_key})
+                self.observation_memory.add(event.to_dict() | {"occurrence_id":event.dedupe_key})
                 result["memory_write"] = "stored"
-                if result.get("goal_verified") is True:
-                    nid = self.emit_notice("localpilot_completed", "completed:" + task_id,
-                        "LocalPilot 任务运行结束，配置的验收已通过，可以查看结果。")
-                    if nid:
-                        explanations = self.store.get("notice_explanations", {})
-                        explanations[nid] = {"reason":"authoritative_completed_and_quiescent", "observation_ids":[stored["id"]],
-                                             "task_id":task_id, "result_quality":"UNVERIFIED", "basis":"host_task_status"}
-                        self.store.set("notice_explanations", dict(list(explanations.items())[-100:]))
             except Exception as exc:
                 self.record_error("task_result_memory", exc)
                 result["memory_write"] = "failed"
@@ -1571,6 +1577,7 @@ class Companion:
             tasks[task_id].pop("connection_error", None)
         if type(result.get("last_event_id")) is int:
             tasks[task_id]["last_event_cursor"] = result["last_event_id"]
+        self.task_feedback(task_id, tasks[task_id], result)
         tasks[task_id]["last_checked_at"] = time.time()
         self.store.set("localpilot_tasks", tasks)
         self.controls.task_update(task_id,result)
@@ -1587,6 +1594,40 @@ class Companion:
         if result.get("quiescent") and result.get("status") in {"cancelled","timed_out"}:
             bindings=self.store.get("localpilot_conversations",{})
             self.store.set("localpilot_conversations",{k:v for k,v in bindings.items() if v.get("last_task_id")!=task_id})
+
+    def task_feedback(self, task_id, record, result):
+        status = result.get("status")
+        terminal = result.get("quiescent") and status in {"completed", "incomplete", "failed", "cancelled", "timed_out"}
+        attention = status in {"requires_approval", "requires_human"}
+        if not terminal and not attention:
+            return
+        if result.get("unknown_mutation"):
+            text = "LocalPilot 的执行结果尚不确定，请查看任务收据并核对；不会自动重做。"
+        elif status == "completed":
+            text = ("LocalPilot 已返回结果，配置的验收已通过。" if result.get("goal_verified") is True
+                    else "LocalPilot 已返回结果，任务目标尚未经独立验收，请查看回复。")
+        else:
+            text = {"incomplete":"LocalPilot 本轮尚未完成任务，请查看已完成部分和阻塞原因。",
+                    "failed":"LocalPilot 本轮执行失败，请查看错误与已产生的收据。",
+                    "cancelled":"LocalPilot 任务已停止，请查看停止前的结果与收据。",
+                    "timed_out":"LocalPilot 任务已超时并停止，请查看已产生的结果。",
+                    "requires_approval":"LocalPilot 正在等待已有权限流程中的批准，请查看待批准事项。",
+                    "requires_human":"LocalPilot 需要你接手，请查看任务中的具体原因。"}[status]
+        action = result.get("required_action") or {}
+        key = f"task-feedback:{task_id}:{status}:{action.get('id', '')}:{bool(result.get('unknown_mutation'))}:{bool(result.get('goal_verified'))}"
+        previous = record.get("feedback", {})
+        record["feedback"] = {"event_key":key, "text":text, "status":status, "task_id":task_id, "quiescent":bool(result.get("quiescent")),
+                              "goal_verified":result.get("goal_verified") is True, "unknown_mutation":bool(result.get("unknown_mutation"))}
+        if previous.get("event_key") == key and previous.get("notice_id"):
+            record["feedback"]["notice_id"] = previous["notice_id"]
+        kind = "localpilot_completed" if terminal else "localpilot_attention"
+        nid = self.emit_notice(kind, key, text)
+        if nid:
+            record["feedback"]["notice_id"] = nid
+            explanations = self.store.get("notice_explanations", {})
+            explanations[nid] = {"reason":"authoritative_task_status", "task_id":task_id,
+                                 "status":status, "basis":"host_task_status", "result_quality":"UNVERIFIED"}
+            self.store.set("notice_explanations", dict(list(explanations.items())[-100:]))
 
     def monitor_task(self, task_id, after=0, cloud_approved=False, provider=None):
         """Read-only monitoring of an already authorized task, with no tool approval."""
@@ -1610,16 +1651,24 @@ class Companion:
                     self.queue.put_nowait(("task_update", task_id, self.task_summary(view)))
                 except Full:
                     pass  # Reconnect snapshot remains authoritative.
+            def reconcile(view):
+                nonlocal cursor, progress
+                sequence = view.get("last_event_id")
+                if view.get("progress_snapshot") is True and type(sequence) is int and sequence >= cursor:
+                    progress = view["progress_text"]
+                    cursor = sequence
+                deliver(view)
             while not stop_event.is_set():
                 # Snapshot precedes each subscription, including after a disconnect.
                 view = provider.status(task_id, cloud_approved=cloud_approved)
-                deliver(view)
+                reconcile(view)
                 if view.get("quiescent") and view.get("status") in {"completed", "incomplete", "failed", "cancelled", "timed_out"}:
                     # Still replay the first subscription to preserve available events.
                     if cursor:
                         return
                 unavailable = view.get("status") in {"unavailable", "approval_required"}
                 delay = max(30, view.get("retry_after_seconds", 0))
+                resubscribe = False
                 if not unavailable:
                     for frame in provider.stream(task_id, after=cursor, cloud_approved=cloud_approved):
                         if stop_event.is_set():
@@ -1636,14 +1685,20 @@ class Companion:
                             update = frame.get("task_status") or {"last_event_id":cursor, "progress_text":progress}
                             deliver(update | {"last_event_id":cursor})
                         elif frame.get("error", {}).get("http_status") == 409:
+                            previous_cursor = cursor
                             fresh = provider.status(task_id, cloud_approved=cloud_approved)
-                            deliver(fresh)
+                            reconcile(fresh)
                             if fresh.get("task_id") and fresh.get("status") not in {"unavailable", "approval_required"}:
-                                cursor = fresh.get("last_event_id", cursor)
-                                deliver({"last_event_id":cursor})
+                                next_cursor = fresh.get("last_event_id", cursor)
+                                cursor = max(cursor, next_cursor)
+                                resubscribe = cursor > previous_cursor
+                                view = fresh
+                                break
                         delay = max(delay, frame.get("retry_after_seconds", 0))
                 if view.get("quiescent") and view.get("status") in {"completed", "incomplete", "failed", "cancelled", "timed_out"}:
                     return
+                if resubscribe:
+                    continue
                 if stop_event.wait(delay):
                     return
         thread = threading.Thread(target=run, name="CompanionTaskMonitor", daemon=True)

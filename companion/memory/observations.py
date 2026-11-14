@@ -98,6 +98,12 @@ def _flatten(value):
     return str(value) if value is not None else ""
 
 
+def static_text_excerpt(evidence, limit=600):
+    texts = dict.fromkeys(node['text'].strip() for node in evidence.get('nodes', [])
+        if node.get('role') == 'AXStaticText' and isinstance(node.get('text'), str) and node['text'].strip())
+    return '；'.join(texts)[:limit]
+
+
 def _tokens(text):
     lower = text.casefold()
     latin = re.findall(r"[a-z0-9_]+", lower)
@@ -422,6 +428,32 @@ class ObservationMemory:
                 out.append(dict(conflict) | {"older_value": old["claim"]["claim_value"], "newer_value": new["claim"]["claim_value"]})
         return out
 
+    def timeline(self, since, until, limit=50, now=None):
+        since, until = _number(since, "since"), _number(until, "until")
+        if since >= until or type(limit) is not int or not 1 <= limit <= 100:
+            raise ValueError("Invalid observation timeline range or limit")
+        now = time.time() if now is None else _number(now, "now")
+        # Use occurrence time: an identical window can be observed on several days.
+        # Archived occurrence tokens cannot reconstruct an exact historical timeline.
+        candidates = self.db.execute("""
+            SELECT e.*,max(o.timestamp) AS observed_at,min(o.timestamp) AS observed_since,
+                   count(*) AS retained_occurrences
+            FROM observation_events e JOIN observation_occurrences o ON o.memory_id=e.id
+            WHERE o.timestamp>=? AND o.timestamp<?
+            GROUP BY e.id ORDER BY observed_at DESC,e.id LIMIT 2000
+            """, (since, until)).fetchall()
+        rows = []
+        for candidate in candidates:
+            row = self._decode(dict(candidate))
+            if not self._current(row, now) or not self.source_allowed(row):
+                continue
+            row.update(timestamp=candidate["observed_at"], observed_since=candidate["observed_since"],
+                       retained_occurrences=candidate["retained_occurrences"])
+            rows.append(row)
+            if len(rows) >= limit:
+                break
+        return rows
+
     def retrieve(self, query, limit=5, max_chars=4000, context=None, now=None):
         _text(query, "query", 2048)
         if type(limit) is not int or not 1 <= limit <= 50 or type(max_chars) is not int or not 128 <= max_chars <= 32000:
@@ -471,6 +503,15 @@ class ObservationMemory:
         out = []
         for *_, row in ranked:
             packed = {key: row[key] for key in ("id", "kind", "timestamp", "first_timestamp", "source", "source_reference", "version_id", "object", "summary", "confidence", "sensitivity", "epistemic", "evidence_epistemic", "evidence_type", "provenance", "important", "expires_at", "project", "task_id", "occurrences", "occurrence_archive", "raw_state", "evidence_digest", "claim", "derived_from")}
+            if (row['source'] == 'accessibility' and row['kind'] == 'ax.snapshot'
+                    and row['raw_state'] == 'raw' and row['object'].get('content_authorized') is True):
+                excerpt = static_text_excerpt(row['evidence'])
+                if excerpt:
+                    # Raw AX metadata can precede text by thousands of bytes.
+                    # A bounded model excerpt must retain observed text without
+                    # promoting a partial window read into task completion.
+                    packed['summary'] = ('只读窗口文字（' + row['evidence'].get('read_status', 'UNKNOWN')
+                        + '，任务状态未知）：' + excerpt)
             packed["conflicts"] = self.conflicts(row["id"], now)
             packed["retrieval_method"] = "sqlite_fts5_bm25_local_alias" if self.fts_available else "bounded_lexical_local_alias"
             if len(_dump(out + [packed])) <= max_chars:

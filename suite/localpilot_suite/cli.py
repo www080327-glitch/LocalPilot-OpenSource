@@ -75,7 +75,7 @@ def upgrade(argv, home):
     wheel, version = wheel_info(a.wheel, names[a.module])
     previous = wheel_info(a.previous_wheel, names[a.module])[0] if a.previous_wheel else None
     value = {'module':a.module, 'target':version, 'wheel':wheel, 'previous_wheel':previous,
-             'data_policy':'preserve', 'command':[sys.executable, '-m', 'pip', 'install', '--no-deps', wheel]}
+             'data_policy':'preserve', 'command':[sys.executable, '-m', 'pip', 'install', '--no-deps', '--force-reinstall', wheel]}
     if a.execute:
         if not previous:raise ValueError('--execute requires --previous-wheel so rollback is concrete')
         import psutil
@@ -102,7 +102,12 @@ def upgrade(argv, home):
         with os.fdopen(fd, 'w') as f:json.dump(value, f)
         os.replace(temporary, record_path)
         result = subprocess.run(value['command'])
-        if result.returncode:return result.returncode
+        if result.returncode:
+            rollback = subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-deps', '--force-reinstall', previous])
+            value.update(status='failed_rolled_back' if rollback.returncode == 0 else 'failed_rollback_failed',
+                         installation_exit=result.returncode, rollback_exit=rollback.returncode)
+            emit(value)
+            return result.returncode
         value['status'] = 'installed_run_doctor_before_start'
     else:value['status'] = 'plan_only_add_execute_and_previous_wheel'
     emit(value);return 0

@@ -473,6 +473,8 @@ async fn product_control_impl(
         "prepare_uninstall",
         "desktop_session",
         "desktop_profile",
+        "desktop_model",
+        "model_health",
         "documents",
         "workspace_grants",
         "preferences",

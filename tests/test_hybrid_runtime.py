@@ -53,6 +53,7 @@ class HybridRuntimeTests(unittest.TestCase):
         self.local = Local(answer('local final'))
         self.policy = HybridPolicy(CloudEgressPolicy('CLOUD_ALLOWED'))
         self.primary = 'local'
+        self.thinking = None
         self.mode = 'full-permission'
         self.async_policy = None
         self.services, self.runtimes = [], []
@@ -77,7 +78,7 @@ class HybridRuntimeTests(unittest.TestCase):
             local_backend=self.local, cloud_backend=self.cloud, policy='balanced', streaming=False,
             hybrid_policy=self.policy, hybrid_primary=self.primary,
             hybrid_backends={'local': self.local, 'cloud': self.cloud, **self.catalog_extra},
-            budgets=self.budgets, event_callback=cb, retry_policy=RetryPolicy(max_attempts=1),
+            budgets=self.budgets, thinking=self.thinking, event_callback=cb, retry_policy=RetryPolicy(max_attempts=1),
             stabilization=StabilizationControls(False, True, 'off', 0), async_policy=self.async_policy)
         self.runtimes.append(r)
         return r
@@ -90,6 +91,34 @@ class HybridRuntimeTests(unittest.TestCase):
         return s.wait(t['id'])
     def run_task(self, s):
         return s.wait(s.create_task(TaskRequest('controlled work'))['id'])
+
+    def test_restart_keeps_worker_default_thinking_distinct_from_parent(self):
+        self.primary, self.thinking = 'cloud', 'none'
+        self.async_policy = AsyncPolicy(max_local_model_requests=1)
+        self.cloud.capabilities = replace(self.cloud.capabilities,
+            supports_reasoning_effort=True, supported_thinking_efforts=('none',), default_thinking_effort='none')
+        (self.workspace/'marker.txt').write_text('CHILD-714')
+        self.cloud.steps = [answer(None, spawn('local', task='Read marker.txt', read_only=True)), answer('Collected CHILD-714')]
+        self.local.steps = [answer(None, call('read_file', {'path':'marker.txt'}, 'child-read')), answer('CHILD-714')]
+        service = self.service()
+        task = service.wait(service.create_task(TaskRequest('Read through the worker', idempotency_key='once'))['id'])
+        self.assertEqual(task['status'], 'completed')
+        runtime = service.sessions[task['session_id']].runtime
+        self.assertEqual(runtime.thinking_mode, 'none')
+        self.assertIsNone(runtime._children['1.1'].thinking_mode)
+        before = snapshot_runtime(runtime)
+        calls = (len(self.cloud.requests), len(self.local.requests))
+        service.suspend()
+        restored = self.service()
+        current = restored.sessions[task['session_id']].runtime
+        after = snapshot_runtime(current)
+        self.assertEqual(current.thinking_mode, 'none')
+        self.assertIsNone(current._children['1.1'].thinking_mode)
+        self.assertEqual(after['children']['1.1']['messages'], before['children']['1.1']['messages'])
+        self.assertEqual(restored.task_snapshot(task['id'])['tools'], task['tools'])
+        self.assertEqual(restored.create_task(TaskRequest('Read through the worker', idempotency_key='once'))['id'], task['id'])
+        self.assertEqual((len(self.cloud.requests), len(self.local.requests)), calls)
+
     def test_default_disabled_catalog_and_schema(self):
         r = AgentSession(create_default_registry(self.workspace), backend=self.cloud)
         self.assertNotIn('backend_id', r._schemas()[len(r.registry.schemas())]['function']['parameters']['properties'])
@@ -128,11 +157,15 @@ class HybridRuntimeTests(unittest.TestCase):
         self.assertEqual(result.runtime_metrics['hybrid']['calls'], 4)
         self.assertEqual({a['configured_model'] for a in r._children['1.1'].hybrid.state['attempts']}, {'scripted-local-Q'})
     def test_local_parent_cloud_child_needs_host_not_model_approval(self):
+        self.mode = 'approve-mutations'
         self.local = Local(answer(None, spawn('cloud')), answer('aggregated'))
         self.cloud = Backend(patch('cloud.txt'), answer('cloud verified'))
         s = self.service(); t = self.run_task(s)
         self.assertEqual(t['status'], 'requires_approval')
         self.assertFalse(self.cloud.requests)
+        t = self.act(s, t)
+        self.assertEqual(t['status'], 'requires_approval')
+        self.assertFalse((self.workspace/'cloud.txt').exists())
         t = self.act(s, t)
         self.assertEqual(t['status'], 'completed', t.get('error'))
         self.assertEqual(t['subagents'][0]['backend_id'], 'cloud')
@@ -151,6 +184,7 @@ class HybridRuntimeTests(unittest.TestCase):
                 r.hybrid.resolve('local', **{'alias': args['backend_id'], 'model': args.get('model')})
         self.assertFalse(r._children)
     def test_mixed_children_really_overlap_after_cloud_approval(self):
+        self.mode = 'approve-mutations'
         self.async_policy = AsyncPolicy(max_model_requests=2)
         barrier = threading.Barrier(2)
         intervals = []
@@ -234,22 +268,21 @@ class HybridRuntimeTests(unittest.TestCase):
         r = self.factory()
         messages = [Message('assistant', None, [call('read_file', {'path': 'review.py'}, 'r')]), Message('tool', 'CODE_FOR_REVIEW', tool_call_id='r')]
         self.assertIn('CODE_FOR_REVIEW', json.dumps([m.to_dict() for m in r.hybrid.project_messages(messages)]))
-    def test_switch_preserves_receipt_call_ids_and_recomputes_target_context(self):
+    def test_full_permission_switch_reuses_egress_grant_and_preserves_receipts(self):
         self.local = Local(patch('once.txt'), answer(None, call('request_model_switch',
             {'target': 'cloud', 'backend_id': 'cloud', 'reason': 'review', 'task_complexity': 'complex', 'scope': 'session'}, 'switch')))
         self.cloud.model_info = replace(self.cloud.model_info, effective_context=50000)
         r = self.factory(); first = r.run_turn('write once then review')
-        self.assertEqual(first.status, 'approval_required')
-        before = deepcopy(r.tool_history)
-        self.assertEqual(r.approve().status, 'completed')
-        self.assertEqual(r.tool_history[0], before[0])
+        self.assertEqual(first.status, 'completed')
+        self.assertIsNone(r.pending_approval)
+        self.assertEqual((self.workspace/'once.txt').read_text(), 'proof')
         self.assertEqual(r.hybrid.state['generation'], 1)
         self.assertEqual(r.hybrid.state['handoffs'][0]['contract']['context_budget']['capacity_units'], 50000)
         self.assertIn('write', [m.tool_call_id for m in self.cloud.requests[0]['messages'] if m.role == 'tool'])
         self.assertEqual(len([x for x in r.tool_history if x['name'] == 'apply_patch']), 1)
     def test_turn_scoped_switch_restores_registered_model(self):
         self.local = Local(answer(None, call('request_model_switch', {'target': 'cloud', 'reason': 'review', 'task_complexity': 'complex'}, 's')), answer('local next'))
-        r = self.factory(); r.run_turn('work'); r.approve()
+        r = self.factory(); self.assertEqual(r.run_turn('work').status, 'completed')
         self.assertEqual(r.primary, 'cloud')
         self.assertEqual(r.run_turn('next').status, 'completed')
         self.assertEqual(r.hybrid.state['backend_id'], 'local')
@@ -292,14 +325,14 @@ class HybridRuntimeTests(unittest.TestCase):
     def test_switch_does_not_approve_tools_or_bypass_read_only_child(self):
         self.local = Local(answer(None, spawn('cloud', read_only=True)), answer('parent'))
         self.cloud = Backend(patch('forbidden.txt'), answer('claimed complete'))
-        s = self.service(); t = self.run_task(s); t = self.act(s, t)
+        s = self.service(); t = self.run_task(s)
         self.assertNotEqual(t['status'], 'completed')
         self.assertFalse((self.workspace/'forbidden.txt').exists())
         self.assertEqual(t['subagents'][0]['obligation_status'], 'unresolved')
     def test_model_usage_cost_and_parent_aggregation_do_not_duplicate(self):
         self.policy = replace(self.policy, rates=(('cloud', 1.0, 2.0),))
         self.local = Local(answer(None, spawn('cloud', read_only=True)), answer('parent'))
-        s = self.service(); t = self.act(s, self.run_task(s)); r = s.sessions[t['session_id']].runtime
+        s = self.service(); t = self.run_task(s); r = s.sessions[t['session_id']].runtime
         metrics = r.hybrid.summary(); r._sync_children(); r._sync_children()
         self.assertEqual(r.hybrid.summary(), metrics)
         self.assertEqual(metrics['calls'], 3)
@@ -309,7 +342,7 @@ class HybridRuntimeTests(unittest.TestCase):
         self.policy = replace(self.policy, max_cloud_requests_per_turn=1)
         self.local = Local(answer(None, spawn('cloud')), answer('parent'))
         self.cloud = Backend(answer(None, call('file_info', {'path': 'absent'})), answer('second blocked'))
-        s = self.service(); t = self.act(s, self.run_task(s))
+        s = self.service(); t = self.run_task(s)
         self.assertNotEqual(t['status'], 'completed')
         self.assertEqual(len(self.cloud.requests), 1)
     def test_checkpoint_identity_policy_drift_and_missing_section_refused(self):
@@ -330,9 +363,12 @@ class HybridRuntimeTests(unittest.TestCase):
         r = self.factory(); self.assertEqual(r.run_turn('work').status, 'error')
         self.assertFalse(self.cloud.requests)
     def test_stage_handoff_approval_survives_sqlite_restart(self):
+        self.mode = 'approve-mutations'
         self.local = Local(patch('once.txt'), answer(None, call('request_model_switch',
             {'target': 'cloud', 'reason': 'stage two', 'task_complexity': 'complex', 'scope': 'session'}, 'switch')))
-        s = self.service(); t = self.run_task(s); s.suspend(); s = self.service()
+        s = self.service(); t = self.act(s, self.run_task(s))
+        self.assertEqual(t['status'], 'requires_approval')
+        s.suspend(); s = self.service()
         t = self.act(s, s.task_snapshot(t['id']))
         self.assertEqual(t['status'], 'completed', t.get('error'))
         self.assertEqual(len([x for x in t['tools'] if x['name'] == 'apply_patch']), 1)
@@ -341,6 +377,7 @@ class HybridRuntimeTests(unittest.TestCase):
         self.assertEqual(r.hybrid.state['task']['generation'], 1)
 
     def test_host_cloud_delegate_approval_does_not_redrive_live_local_child(self):
+        self.mode = 'approve-mutations'
         self.async_policy = AsyncPolicy(max_model_requests=2)
         active = threading.Event(); release = threading.Event()
         def delayed(messages):
@@ -348,15 +385,20 @@ class HybridRuntimeTests(unittest.TestCase):
             return patch('local.txt')
         self.primary = 'cloud'
         self.cloud = Backend(answer(None, spawn('local', async_=True, id='l'),
-            spawn('cloud', async_=True, id='c')), answer('cloud child'), answer('parent'))
+            spawn('cloud', async_=True, id='c')), answer('cloud child'), answer('parent'), answer('child settled'))
         self.local = Local(delayed, answer('local child'))
         s = self.service(); t = self.run_task(s)
         self.assertEqual(t['status'], 'requires_approval'); self.assertTrue(active.wait(2))
         s.act(t['id'], 'approve', t['required_action']['id']); release.set(); t = s.wait(t['id'])
+        self.assertEqual(t['status'], 'requires_approval')
+        self.assertFalse((self.workspace/'local.txt').exists())
+        t = self.act(s, t)
         self.assertEqual(t['status'], 'completed', t.get('error'))
         self.assertTrue((self.workspace/'local.txt').exists())
         self.assertEqual(t['subagents'][0]['status'], 'completed')
-        self.assertEqual([e['event'] for e in t['subagents'][0]['timeline']], ['start', 'completed'])
+        self.assertEqual(len(self.local.requests), 2)
+        self.assertEqual([e['event'] for e in t['subagents'][0]['timeline']],
+                         ['start', 'approval_required', 'approve', 'completed'])
 
     def test_switch_keeps_fresh_mutation_approval_separate(self):
         self.mode = 'approve-mutations'
@@ -372,7 +414,7 @@ class HybridRuntimeTests(unittest.TestCase):
     def test_host_policy_change_clears_old_turn_hybrid_restore(self):
         self.local = Local(answer(None, call('request_model_switch', {'target': 'cloud', 'reason': 'review', 'task_complexity': 'complex'}, 's')))
         self.cloud = Backend(answer('cloud first'), answer('cloud next'))
-        r = self.factory(); r.run_turn('work'); r.approve(); r.set_policy('cloud-only')
+        r = self.factory(); r.run_turn('work'); r.set_policy('cloud-only')
         self.assertEqual(r.run_turn('next').status, 'completed')
         self.assertEqual(r.hybrid.state['backend_id'], 'cloud')
 
@@ -412,7 +454,7 @@ class HybridRuntimeTests(unittest.TestCase):
         self.assertFalse(r.tool_history)
         self.assertEqual(r.hybrid.summary()['by_backend']['cloud']['unknown_usage_calls'], 1)
 
-    def test_approval_yields_only_after_live_mutation_intent_settles(self):
+    def test_full_permission_completion_waits_for_live_mutation_intent(self):
         self.async_policy = AsyncPolicy(max_model_requests=2); self.primary = 'cloud'
         entered = threading.Event(); release = threading.Event()
         self.cloud = Backend(answer(None, spawn('local', async_=True, id='l'), spawn('cloud', async_=True, id='c')),
@@ -433,9 +475,9 @@ class HybridRuntimeTests(unittest.TestCase):
         time.sleep(.08)
         self.assertEqual(s.task_snapshot(task['id'])['status'], 'running')
         release.set(); task = s.wait(task['id'])
-        self.assertEqual(task['status'], 'requires_approval')
+        self.assertEqual(task['status'], 'completed')
         self.assertNotEqual(task.get('recovery', {}).get('class'), 'UNKNOWN_BLOCKED')
-        self.assertEqual(self.act(s, task)['status'], 'completed')
+        self.assertEqual((self.workspace/'safe.txt').read_text(), 'proof')
 
     def test_json_credential_pattern_is_denied_without_a_backend_key_match(self):
         self.primary = 'cloud'; r = self.factory()
@@ -475,7 +517,7 @@ class HybridRuntimeTests(unittest.TestCase):
     def test_failed_small_context_switch_is_denied_without_closing_local_session(self):
         self.cloud.model_info = replace(self.cloud.model_info, effective_context=4096)
         self.local = Local(answer(None, call('request_model_switch', {'target': 'cloud', 'reason': 'review', 'task_complexity': 'complex'}, 's')), answer('continue local safely'))
-        r = self.factory(); r.run_turn('work'); result = r.approve()
+        r = self.factory(); result = r.run_turn('work')
         self.assertEqual(result.status, 'completed')
         self.assertEqual(r.hybrid.state['backend_id'], 'local')
         self.assertFalse(self.cloud.requests)
@@ -527,8 +569,7 @@ class HybridRuntimeTests(unittest.TestCase):
                     return answer('parent complete')
                 return work('local')
         self.local = RoutedLocal(); self.cloud = Backend(lambda m: work('cloud'))
-        r = self.factory(); self.assertEqual(r.run_turn('controlled work').status, 'approval_required')
-        self.assertEqual(r.approve().status, 'completed')
+        r = self.factory(); self.assertEqual(r.run_turn('controlled work').status, 'completed')
         self.assertEqual(peak, {'local': 1, 'cloud': 1, 'all': 2})
         local_intervals = sorted((s, e) for k, s, e in intervals if k == 'local')
         self.assertGreaterEqual(local_intervals[1][0], local_intervals[0][1])

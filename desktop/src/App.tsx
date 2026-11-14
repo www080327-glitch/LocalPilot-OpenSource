@@ -4,7 +4,11 @@ import { shouldSubmitEnter, type EnterBehavior } from "./inputBehavior";
 import { ensureLocalModelLoaded, usableAgentModels } from "./modelLoading";
 import { observedModelShare, subagentTraces } from "./collaboration";
 import { classifyConversations, useConversationProjects } from "./projects";
-import { latestTask, errorAfterHealthyConnection, reconciledStreamText } from "./domain";
+import {
+  latestTask,
+  errorAfterHealthyConnection,
+  reconciledStreamText,
+} from "./domain";
 import {
   permissionModes,
   permissionNames,
@@ -350,8 +354,14 @@ export default function App() {
     preferenceWriteVersion = useRef(0),
     restoreDone = useRef(false);
   const scope = `${profile.home}|${profile.origin}|${health?.client_subject || ""}`;
-  const { organization, createProject, renameProject, toggleProjectPinned,
-    toggleConversationPinned, assignConversation } = useConversationProjects(scope);
+  const {
+    organization,
+    createProject,
+    renameProject,
+    toggleProjectPinned,
+    toggleConversationPinned,
+    assignConversation,
+  } = useConversationProjects(scope);
   const supportedRouting = routingSupported(health, routingCaps);
   const effectiveTheme =
     theme === "system" ? (systemDark ? "dark" : "light") : theme;
@@ -385,7 +395,6 @@ export default function App() {
   useEffect(() => {
     if (
       preview ||
-      !chatId.startsWith("draft-") ||
       !preferencesReady ||
       (desktop && (!historyReady || !restoreDone.current))
     )
@@ -393,6 +402,10 @@ export default function App() {
     setDrafts((old) => {
       if (!input.trim()) {
         if (!old[chatId]) return old;
+        if (!chatId.startsWith("draft-")) {
+          if (!old[chatId].input) return old;
+          return { ...old, [chatId]: { ...old[chatId], input: "" } };
+        }
         const next = { ...old };
         delete next[chatId];
         return next;
@@ -402,7 +415,9 @@ export default function App() {
         [chatId]: {
           preferences: sessionPrefs,
           model,
-          title: input.trim().split("\n")[0].slice(0, 32),
+          title: chatId.startsWith("draft-")
+            ? input.trim().split("\n")[0].slice(0, 32)
+            : old[chatId]?.title || "新会话",
           input,
           scope,
         },
@@ -494,6 +509,7 @@ export default function App() {
     setDrafts((old) => ({
       ...old,
       [chatId]: {
+        ...old[chatId],
         preferences: value,
         model,
         title: old[chatId]?.title || "新会话",
@@ -506,19 +522,24 @@ export default function App() {
       setPreferenceSaving(true);
       setPreferenceUnsaved(true);
       // A failed save must not poison the queue for later changes or task sends.
-      persistQueue.current = persistQueue.current.catch(() => {}).then(async () => {
-        try {
-          await call("session_preferences", { sessionId, value });
-          if (version === preferenceWriteVersion.current) {
-            setPreferenceUnsaved(false);
-            setError((old) => old.startsWith("会话偏好未保存：") ? "" : old);
+      persistQueue.current = persistQueue.current
+        .catch(() => {})
+        .then(async () => {
+          try {
+            await call("session_preferences", { sessionId, value });
+            if (version === preferenceWriteVersion.current) {
+              setPreferenceUnsaved(false);
+              setError((old) =>
+                old.startsWith("会话偏好未保存：") ? "" : old,
+              );
+            }
+          } catch (e) {
+            showError("会话偏好未保存：" + String(e));
+          } finally {
+            if (version === preferenceWriteVersion.current)
+              setPreferenceSaving(false);
           }
-        } catch (e) {
-          showError("会话偏好未保存：" + String(e));
-        } finally {
-          if (version === preferenceWriteVersion.current) setPreferenceSaving(false);
-        }
-      });
+        });
     }
   }
   const [enterBehavior, setEnterBehavior] = useState<EnterBehavior>(() =>
@@ -540,7 +561,11 @@ export default function App() {
     ? previewTask
     : tasks.find((t) => t.id === selected);
   const actualModels = preview ? previewModels : models;
-  const selectableModels = usableAgentModels(actualModels, sessionPrefs, preview);
+  const selectableModels = usableAgentModels(
+    actualModels,
+    sessionPrefs,
+    preview,
+  );
   const chosen = actualModels.find((m) => m.id === model);
   const [modelEfforts, setModelEfforts] = useState<Record<string, string>>(() =>
     stored("lp.modelEfforts", {}),
@@ -833,7 +858,10 @@ export default function App() {
         }
         if (e.type === "task.status" || e.type === "task.created")
           updateTask(e.data as Task);
-        if (e.type === "runtime.event" && e.sequence > (streamedSequence.current[id] || 0)) {
+        if (
+          e.type === "runtime.event" &&
+          e.sequence > (streamedSequence.current[id] || 0)
+        ) {
           streamedSequence.current[id] = e.sequence;
           if (e.data.type === "ModelResponseStarted")
             setDelta((old) => ({ ...old, [id]: "" }));
@@ -848,7 +876,9 @@ export default function App() {
         const snapshot = payload.data as Task;
         updateTask(snapshot);
         const recoveredText = reconciledStreamText(
-          snapshot, streamedSequence.current[id] || 0, payload.reconciled === true,
+          snapshot,
+          streamedSequence.current[id] || 0,
+          payload.reconciled === true,
         );
         if (recoveredText !== null) {
           // The snapshot replaces a missing SSE prefix only when it is at
@@ -979,6 +1009,7 @@ export default function App() {
     setChatId(t.session_id);
     localStorage.setItem("lp.currentTask", JSON.stringify(t.id));
     const cached = drafts[t.session_id];
+    setInput(cached?.scope === scope ? cached.input || "" : "");
     setSessionPrefs(
       cached?.scope === scope
         ? cached.preferences
@@ -996,7 +1027,7 @@ export default function App() {
     setPreview(false);
     setSelected(t.id);
     if (t.required_action) setTab("activity");
-    setModel(t.model || model);
+    setModel(t.session_model || t.model || model);
 
     setAgentProfile(
       t.desktop_options?.agent_profile === "minimal" ? "minimal" : "standard",
@@ -1138,8 +1169,7 @@ export default function App() {
   const [loadingModel, setLoadingModel] = useState("");
   const modelLoadLock = useRef(false);
   function detachForRouteChange() {
-    // Core binds a model to its backend Session. Preserve the old conversation
-    // and unsent composer text rather than pretending history was transferred.
+    // Automatic first-turn routing is an explicit new-conversation choice.
     const draftId = `draft-${crypto.randomUUID()}`;
     ++preferenceWriteVersion.current;
     setPreferenceSaving(false);
@@ -1160,49 +1190,80 @@ export default function App() {
     }
     setModelOpen(false);
     setError("");
-    if (!preview && target.adapter === "omlx") {
-      modelLoadLock.current = true;
-      setLoadingModel(target.model);
-      try {
+    const nextEffort = compatibleEffort(
+      target,
+      chosen && thinkingKey(chosen) === thinkingKey(target)
+        ? sessionPrefs.effort
+        : modelEfforts[thinkingKey(target)],
+    );
+    const switchesSession =
+      !preview &&
+      currentTask &&
+      (currentTask.session_model || currentTask.model) !== id;
+    modelLoadLock.current = true;
+    if (!preview) setLoadingModel(target.model);
+    try {
+      await persistQueue.current;
+      if (
+        switchesSession &&
+        (!currentTask.quiescent ||
+          !terminal.has(currentTask.status) ||
+          isUnknown(currentTask))
+      )
+        throw Error(
+          "当前任务尚未结束，不能切换模型。请先完成或取消任务；副作用未知时请先核对原结果。",
+        );
+      if (
+        switchesSession &&
+        !health?.compatibility?.capabilities?.includes(
+          "desktop_model_switch_v1",
+        )
+      )
+        throw Error("请更新 Core 后在当前会话切换模型；原对话和草稿已保留。");
+      if (!preview && target.adapter === "omlx") {
         await ensureLocalModelLoaded(target, call);
         await refresh();
-      } catch (e) {
-        // Loading did not succeed: keep the original conversation and model.
-        showError(e);
-        setLibraryOpen(true);
-        return;
-      } finally {
-        setLoadingModel("");
-        modelLoadLock.current = false;
       }
+      if (switchesSession) {
+        const session = await call<Json>("product_control", {
+          operation: "desktop_model",
+          args: {
+            session_id: currentTask.session_id,
+            model: id,
+            expected_model: currentTask.session_model || currentTask.model,
+            source: sessionPrefs.source,
+            reasoning_effort: nextEffort,
+          },
+        });
+        setTasks((old) =>
+          old.map((task) =>
+            task.session_id === session.id
+              ? { ...task, session_model: session.model }
+              : task,
+          ),
+        );
+      }
+      if (
+        chosen &&
+        sessionPrefs.effort &&
+        chosen.reasoning_efforts?.includes(sessionPrefs.effort)
+      )
+        setModelEfforts((old) => ({
+          ...old,
+          [thinkingKey(chosen)]: sessionPrefs.effort!,
+        }));
+      if (!preview) setSessionPrefs((old) => ({ ...old, effort: nextEffort }));
+      setModel(id);
+      if (switchesSession)
+        setToast("已在当前会话切换模型；对话、任务和工具收据已保留。");
+      else if (!preview && target.adapter === "omlx")
+        setToast("模型已加载，可以发送任务。");
+    } catch (e) {
+      showError(e);
+    } finally {
+      setLoadingModel("");
+      modelLoadLock.current = false;
     }
-    const startsNewConversation = !preview && currentTask && currentTask.model !== id;
-    if (startsNewConversation) detachForRouteChange();
-    if (
-      chosen &&
-      sessionPrefs.effort &&
-      chosen.reasoning_efforts?.includes(sessionPrefs.effort)
-    ) {
-      setModelEfforts((old) => ({
-        ...old,
-        [thinkingKey(chosen)]: sessionPrefs.effort!,
-      }));
-    }
-    if (!preview)
-      setSessionPrefs((old) => ({
-        ...old,
-        effort: compatibleEffort(
-          target,
-          chosen && thinkingKey(chosen) === thinkingKey(target)
-            ? sessionPrefs.effort
-            : modelEfforts[thinkingKey(target)],
-        ),
-      }));
-    setModel(id);
-    if (startsNewConversation)
-      setToast("已为新模型建立独立会话；之前的对话仍在左侧，历史未交接。");
-    else if (!preview && target.adapter === "omlx")
-      setToast("模型已加载，可以发送任务。");
   }
   async function send(cloud = false) {
     if (
@@ -1276,14 +1337,13 @@ export default function App() {
           throw new Error("所选模型不符合本会话来源限制；未提交或替换模型。");
         if (currentTask && !currentTask.quiescent)
           throw new Error("当前任务仍在运行，请等待或取消后继续。");
-        let useSession =
-          !(cloud && chosen?.reasoning_only) &&
-          (model === "__auto__" || currentTask?.model === model)
-            ? currentTask?.session_id || null
-            : null;
-        if (useSession && scopedPending.some(
-          (v) => v.body?.session_id === useSession,
-        ))
+        let useSession = !(cloud && chosen?.reasoning_only)
+          ? currentTask?.session_id || null
+          : null;
+        if (
+          useSession &&
+          scopedPending.some((v) => v.body?.session_id === useSession)
+        )
           throw new Error(
             "此 Session 有提交结果未知的旧请求，请先查询或恢复原请求。其他会话仍可独立执行。",
           );
@@ -1668,8 +1728,14 @@ export default function App() {
   const grouped = latestConversations(tasks).filter((t) =>
     matchedSessions.has(t.session_id),
   );
-  const { pinnedIds, pinnedConversations, otherConversations, orderedProjects,
-    assignedProjects, uncategorized } = classifyConversations(grouped, organization);
+  const {
+    pinnedIds,
+    pinnedConversations,
+    otherConversations,
+    orderedProjects,
+    assignedProjects,
+    uncategorized,
+  } = classifyConversations(grouped, organization);
   function conversationRow(t: Task) {
     const pinned = pinnedIds.has(t.session_id);
     return (
@@ -1688,7 +1754,9 @@ export default function App() {
             )}
             <small>{label(t.status)}</small>
           </span>
-          <i className={`task-dot ${t.status === "completed" ? "good" : isUnknown(t) || t.status.includes("requires") ? "warn" : ""}`} />
+          <i
+            className={`task-dot ${t.status === "completed" ? "good" : isUnknown(t) || t.status.includes("requires") ? "warn" : ""}`}
+          />
         </button>
         <button
           className={`conversation-pin ${pinned ? "active" : ""}`}
@@ -1702,13 +1770,18 @@ export default function App() {
           className="conversation-project"
           aria-label="选择会话所属项目"
           title="将会话归类到项目"
-          value={assignedProjects.has(organization.assignments[t.session_id])
-            ? organization.assignments[t.session_id] : ""}
+          value={
+            assignedProjects.has(organization.assignments[t.session_id])
+              ? organization.assignments[t.session_id]
+              : ""
+          }
           onChange={(e) => assignConversation(t.session_id, e.target.value)}
         >
           <option value="">未分类</option>
           {orderedProjects.map((project) => (
-            <option key={project.id} value={project.id}>{project.name}</option>
+            <option key={project.id} value={project.id}>
+              {project.name}
+            </option>
           ))}
         </select>
       </div>
@@ -1874,7 +1947,9 @@ export default function App() {
                       <button
                         className={`conversation-pin ${project.pinned ? "active" : ""}`}
                         title={project.pinned ? "取消置顶项目" : "置顶项目"}
-                        aria-label={project.pinned ? "取消置顶项目" : "置顶项目"}
+                        aria-label={
+                          project.pinned ? "取消置顶项目" : "置顶项目"
+                        }
                         onClick={() => toggleProjectPinned(project.id)}
                       >
                         <Pin size={12} />
@@ -1889,7 +1964,10 @@ export default function App() {
                       </button>
                     </div>
                     {otherConversations
-                      .filter((t) => organization.assignments[t.session_id] === project.id)
+                      .filter(
+                        (t) =>
+                          organization.assignments[t.session_id] === project.id,
+                      )
                       .map(conversationRow)}
                   </div>
                 ))}
@@ -2102,7 +2180,11 @@ export default function App() {
                             delta[m.taskId || ""],
                           )}
                         </ReactMarkdown>
-                        {!replyText(m, tasks.find((t) => t.id === m.taskId), delta[m.taskId || ""]) && (
+                        {!replyText(
+                          m,
+                          tasks.find((t) => t.id === m.taskId),
+                          delta[m.taskId || ""],
+                        ) && (
                           <span className="thinking">
                             <i />
                             <i />
@@ -2175,7 +2257,10 @@ export default function App() {
         )}
         <div className="composer-area">
           {!preview && runningChildren.length > 0 && (
-            <button className="active-subagent-banner" onClick={openCollaborators}>
+            <button
+              className="active-subagent-banner"
+              onClick={openCollaborators}
+            >
               <Layers size={14} />
               {runningChildren.length} 个子代理正在运行 ·
               {runningChildren.map((child) => child.model).join("、")}
@@ -2239,7 +2324,13 @@ export default function App() {
               <span>{preferenceLabel(sessionPrefs)}</span>
               <ChevronDown size={12} />
             </button>
-            <span>{preferenceSaving ? "正在保存…" : preferenceUnsaved ? "偏好未保存" : "仅此会话"}</span>
+            <span>
+              {preferenceSaving
+                ? "正在保存…"
+                : preferenceUnsaved
+                  ? "偏好未保存"
+                  : "仅此会话"}
+            </span>
           </div>
           {preferenceOpen && (
             <Popover
@@ -2475,17 +2566,27 @@ export default function App() {
                         onClose={() => setModelOpen(false)}
                       >
                         <div className="menu-label">
-                          选择模型<span>已配置且声明支持工具 · 在线状态未验证</span>
+                          选择模型
+                          <span>已配置且声明支持工具 · 在线状态未验证</span>
                         </div>
                         {supportedRouting && (
                           <button
                             onClick={() => {
-                              if (!preview && currentTask && model !== "__auto__") {
+                              if (
+                                !preview &&
+                                currentTask &&
+                                model !== "__auto__"
+                              ) {
                                 detachForRouteChange();
-                                setToast("自动路由将在新会话首次发送时选择模型；旧会话未迁移。");
+                                setToast(
+                                  "自动路由将在新会话首次发送时选择模型；旧会话未迁移。",
+                                );
                               }
                               setModel("__auto__");
-                              setSessionPrefs((old) => ({ ...old, effort: null }));
+                              setSessionPrefs((old) => ({
+                                ...old,
+                                effort: null,
+                              }));
                               setModelOpen(false);
                             }}
                           >
@@ -2510,7 +2611,12 @@ export default function App() {
                               className={model === m.id ? "selected" : ""}
                             >
                               <span>
-                                {["deepseek", "deepseek-native", "remote-openai", "remote-vllm"].includes(m.adapter) ? (
+                                {[
+                                  "deepseek",
+                                  "deepseek-native",
+                                  "remote-openai",
+                                  "remote-vllm",
+                                ].includes(m.adapter) ? (
                                   <Cloud size={16} />
                                 ) : (
                                   <Monitor size={16} />
@@ -2533,7 +2639,9 @@ export default function App() {
                             </button>
                           ))
                         ) : (
-                          <div className="menu-empty">无可用标准 Agent；请先在模型库加载或配置模型。</div>
+                          <div className="menu-empty">
+                            无可用标准 Agent；请先在模型库加载或配置模型。
+                          </div>
                         )}
                         <button
                           onClick={() => {
@@ -2543,9 +2651,7 @@ export default function App() {
                         >
                           模型详情、加载与设置 →
                         </button>
-                        <p>
-                          不可用及未加载模型仍可在模型库检查或加载。
-                        </p>
+                        <p>不可用及未加载模型仍可在模型库检查或加载。</p>
                       </Popover>
                     )}
                   </div>
@@ -2923,7 +3029,9 @@ export default function App() {
               </>
             ) : tab === "agents" ? (
               <section className="inspector-section">
-                <h3><Layers size={15} /> 实际模型协同</h3>
+                <h3>
+                  <Layers size={15} /> 实际模型协同
+                </h3>
                 <p className="micro muted">
                   按本会话已经记录的模型请求次数统计；不把静态路由或缺失来源当成真实模型调用。
                   失败请求也计入调用次数。实际 API 费用需另行核对。
@@ -2931,47 +3039,85 @@ export default function App() {
                 {modelShare.observed > 0 ? (
                   <>
                     <div className="collaboration-percentages">
-                      <span>本地 {modelShare.localPercent}% · {modelShare.local} 次</span>
-                      <span>云端 {modelShare.cloudPercent}% · {modelShare.cloud} 次</span>
+                      <span>
+                        本地 {modelShare.localPercent}% · {modelShare.local} 次
+                      </span>
+                      <span>
+                        云端 {modelShare.cloudPercent}% · {modelShare.cloud} 次
+                      </span>
                     </div>
-                    <div className="collaboration-bar" aria-label="已记录模型调用占比">
-                      <span className="collaboration-local" style={{ width: `${modelShare.localPercent}%` }} />
-                      <span className="collaboration-cloud" style={{ width: `${modelShare.cloudPercent}%` }} />
+                    <div
+                      className="collaboration-bar"
+                      aria-label="已记录模型调用占比"
+                    >
+                      <span
+                        className="collaboration-local"
+                        style={{ width: `${modelShare.localPercent}%` }}
+                      />
+                      <span
+                        className="collaboration-cloud"
+                        style={{ width: `${modelShare.cloudPercent}%` }}
+                      />
                     </div>
                   </>
                 ) : (
                   <p className="muted micro">暂无可核对的本地/云端调用次数。</p>
                 )}
                 {modelShare.unknown > 0 && (
-                  <p className="muted micro">另有 {modelShare.unknown} 次调用没有可信来源分类，未计入百分比。</p>
+                  <p className="muted micro">
+                    另有 {modelShare.unknown}{" "}
+                    次调用没有可信来源分类，未计入百分比。
+                  </p>
                 )}
-                <h3><Layers size={15} /> 子代理 · {childTraces.length}</h3>
-                {childTraces.length ? childTraces.map((child) => (
-                  <details className="tool-call" key={child.id} open={child.status === "running"}>
-                    <summary>
-                      <ChevronRight size={12} />
-                      <span>{child.source === "local" ? "本地" : child.source === "cloud" ? "云端" : "来源未知"} · {child.model}</span>
-                      <span>{label(child.status)}</span>
-                    </summary>
-                    <div className="collaboration-child-details">
-                      <p>子代理 ID：{child.id}</p>
-                      <p>实际提供方：{child.provider}</p>
-                      <p>配置模型：{child.model}</p>
-                      {child.reportedModels.length > 0 && (
-                        <p>提供方实际返回的模型：{child.reportedModels.join("、")}</p>
-                      )}
-                      {child.task && <p>委派任务：{child.task}</p>}
-                      {child.steps.length ? (
-                        <ol className="collaboration-child-steps">
-                          {child.steps.slice(-20).map((step) => (
-                            <li key={step.sequence}>{step.label}</li>
-                          ))}
-                        </ol>
-                      ) : <p>尚无可展示的执行步骤。</p>}
-                    </div>
-                  </details>
-                )) : (
-                  <p className="muted micro">当前任务未观察到子代理创建事件；不能据此宣称已经执行了跨模型委派。</p>
+                <h3>
+                  <Layers size={15} /> 子代理 · {childTraces.length}
+                </h3>
+                {childTraces.length ? (
+                  childTraces.map((child) => (
+                    <details
+                      className="tool-call"
+                      key={child.id}
+                      open={child.status === "running"}
+                    >
+                      <summary>
+                        <ChevronRight size={12} />
+                        <span>
+                          {child.source === "local"
+                            ? "本地"
+                            : child.source === "cloud"
+                              ? "云端"
+                              : "来源未知"}{" "}
+                          · {child.model}
+                        </span>
+                        <span>{label(child.status)}</span>
+                      </summary>
+                      <div className="collaboration-child-details">
+                        <p>子代理 ID：{child.id}</p>
+                        <p>实际提供方：{child.provider}</p>
+                        <p>配置模型：{child.model}</p>
+                        {child.reportedModels.length > 0 && (
+                          <p>
+                            提供方实际返回的模型：
+                            {child.reportedModels.join("、")}
+                          </p>
+                        )}
+                        {child.task && <p>委派任务：{child.task}</p>}
+                        {child.steps.length ? (
+                          <ol className="collaboration-child-steps">
+                            {child.steps.slice(-20).map((step) => (
+                              <li key={step.sequence}>{step.label}</li>
+                            ))}
+                          </ol>
+                        ) : (
+                          <p>尚无可展示的执行步骤。</p>
+                        )}
+                      </div>
+                    </details>
+                  ))
+                ) : (
+                  <p className="muted micro">
+                    当前任务未观察到子代理创建事件；不能据此宣称已经执行了跨模型委派。
+                  </p>
                 )}
               </section>
             ) : tab === "evidence" ? (

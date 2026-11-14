@@ -314,6 +314,32 @@ class ObservationMemoryTests(unittest.TestCase):
         self.assertNotIn("title", self.memory.get(mid)["object"])
         self.assertTrue(self.memory.get(mid)["object"]["content_authorized"])
 
+    def test_native_retrieval_keeps_authorized_static_text_before_diagnostics(self):
+        event=self.event(source='accessibility',kind='ax.snapshot',
+            object={'bundle_id':'example.app','content_authorized':True},
+            evidence={'read_status':'READ_PARTIAL','diagnostics':'AXChildren READ_FAILED '*70,
+                'nodes':[{'id':1,'role':'AXStaticText','text':'Observed marker NATIVE-714'}]})
+        mid=self.memory.add(event)['id'];original=self.memory.get(mid)
+        self.assertNotIn('NATIVE-714',original['summary'])
+        result=self.memory.retrieve('NATIVE',max_chars=2000,now=self.now)
+        self.assertEqual(result[0]['id'],mid)
+        self.assertIn('NATIVE-714',result[0]['summary'])
+        self.assertIn('READ_PARTIAL',result[0]['summary'])
+        self.assertIn('任务状态未知',result[0]['summary'])
+        self.assertEqual(self.memory.get(mid),original)
+        self.assertLessEqual(len(json.dumps(result,ensure_ascii=False,sort_keys=True,separators=(',',':'))),2000)
+        denied=ObservationMemory(self.store,source_allowed=lambda row:False)
+        self.assertEqual(denied.retrieve('NATIVE',now=self.now),[])
+
+    def test_metadata_only_legacy_record_does_not_gain_content_in_excerpt(self):
+        event=self.event(source='accessibility',kind='ax.snapshot',
+            object={'bundle_id':'example.app','content_authorized':False},
+            evidence={'diagnostics':'metadata only '*100,
+                'nodes':[{'id':1,'role':'AXStaticText','text':'WITHHELD_MARKER'}]})
+        self.memory.add(event)
+        result=self.memory.retrieve('WITHHELD_MARKER',max_chars=2000,now=self.now)
+        self.assertNotIn('WITHHELD_MARKER',result[0]['summary'])
+
     def test_localpilot_report_is_not_semantically_observed(self):
         event = self.memory.add(self.event(source="localpilot", kind="task_result", object={"task_id": "task-9"}, important=True,
                                            evidence={"text": "模型声称任务完成", "source_reference": "localpilot:task:task-9", "epistemic": "reported", "metadata": {"task_id": "task-9", "localpilot_status": "completed"}}))

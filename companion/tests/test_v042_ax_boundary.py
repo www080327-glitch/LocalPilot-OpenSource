@@ -114,7 +114,8 @@ class ControlledObservationBoundaryTests(unittest.TestCase):
     def test_start_checks_owned_source_provenance_before_creating_helper(self):
         self.enable(); self.config.native_helper_path = "/synthetic/NativeObserver"
         observer = NativeObserver(self.config, Mock())
-        with patch("companion.observers.native.trusted_helper", return_value=self.config.native_helper_path), \
+        with patch("companion.observers.native.sys.platform", "darwin"), \
+             patch("companion.observers.native.trusted_helper", return_value=self.config.native_helper_path), \
              patch("companion.observers.native.verify_controlled_target", side_effect=ValueError("unowned app")), \
              patch("companion.observers.native.subprocess.Popen") as launch:
             self.assertEqual(observer.start()["state"], "error")

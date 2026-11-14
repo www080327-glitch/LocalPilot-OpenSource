@@ -212,6 +212,7 @@ class CanonicalScopeTests(unittest.TestCase):
 
 
 class ShellBudgetTests(unittest.TestCase):
+    @unittest.skipUnless(sys.platform == "darwin", "NOT_RUN: requires native macOS host Shell/Seatbelt")
     def test_registry_cancellation_terminates_process_and_preserves_uncertainty(self):
         with TemporaryDirectory() as tmp:
             registry = create_default_registry(tmp, permission_mode='full-permission')
