@@ -8,6 +8,7 @@ import {
   textOf,
   usageOf,
   replyText,
+  reconciledStreamText,
 } from "../src/domain";
 import { previewTask, previewModels } from "../src/preview";
 describe("honest service state", () => {
@@ -62,6 +63,16 @@ describe("honest service state", () => {
     expect(replyText(message, running, "New stream chunk")).toBe("New stream chunk");
     expect(replyText(message, { ...running, status: "completed", quiescent: true }, undefined))
       .toBe("Older completed text");
+  });
+  it("does not overwrite new streamed text with an older 409 snapshot", () => {
+    const snapshot = { ...previewTask, status: "running", quiescent: false,
+      last_event_id: 12, streamed_text: "hello " };
+    expect(reconciledStreamText(snapshot, 13, true)).toBeNull();
+    expect(reconciledStreamText(snapshot, 12, true)).toBe("hello ");
+    expect(reconciledStreamText(snapshot, 0, false)).toBeNull();
+    expect(reconciledStreamText({ ...snapshot, status: "completed", quiescent: true }, 0, true))
+      .toBeNull();
+    expect(reconciledStreamText({ ...snapshot, streamed_text: "" }, 0, true)).toBe("");
   });
   it("does not turn completed into verification passed", () => {
     const task = {
