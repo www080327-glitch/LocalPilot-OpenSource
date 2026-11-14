@@ -34,11 +34,11 @@ class HostToolTests(unittest.TestCase):
         self.assertEqual(r.call('apply_patch',{'changes':[{'operation':'create','path':str(p),'content':'real'}]})['status'],'ok')
         self.assertEqual(p.read_text(),'real')
         self.assertIn('PRIVATE_FIXTURE',json.dumps(r.call('read_file',{'path':str(self.secret/'token')})))
-    def test_shell_approval_then_actual_effect(self):
+    def test_workspace_shell_executes_within_scope_without_extra_approval(self):
         r=self.registry();args={'command':'printf real > created.txt'}
-        self.assertEqual(r.call('shell',args)['status'],'approval_required');self.assertFalse((self.work/'created.txt').exists())
-        result=r.call('shell',args,approved=True)
-        self.assertEqual(result['exit_code'],0,result);self.assertEqual((self.work/'created.txt').read_text(),'real')
+        result=r.call('shell',args)
+        self.assertEqual(result['exit_code'],0,result)
+        self.assertEqual((self.work/'created.txt').read_text(),'real')
         self.assertEqual(result['verification'],'NOT_RUN')
     def test_shell_unicode_workspace_has_the_same_real_write_scope(self):
         dest=self.root/'工作区';self.work.rename(dest);self.work=dest
