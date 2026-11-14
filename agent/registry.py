@@ -85,7 +85,9 @@ class ToolRegistry:
 
     def call(self, name, arguments, *, approved=False, receipt_id=None, scope_approval=None):
         from .permission_context import dispatch_access
-        with dispatch_access(self.gateway.mode == "full-permission" or (getattr(self, "scope_policy", None) or {}).get("revision") == 3):
+        # Scope revision changes file routing, not the user's permission tier.
+        # Only Full may relax the protected-file checks in built-in file tools.
+        with dispatch_access(self.gateway.mode == "full-permission"):
             return self._call(name, arguments, approved=approved, receipt_id=receipt_id, scope_approval=scope_approval)
 
     def _call(self, name, arguments, *, approved=False, receipt_id=None, scope_approval=None):
