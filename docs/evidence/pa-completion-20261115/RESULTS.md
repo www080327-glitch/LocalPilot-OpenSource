@@ -1,6 +1,6 @@
 # PA 补齐、重构与最终云端验证（2026-11-15）
 
-**受测代码提交：待本轮推送后记录。** 本记录对应分支 `codex/pa-completion-20261115`，基线为 Draft PR #9 的 `0a7fdff36f45a471130293b508b5d008f40cecf9`。PR #1 `94e0e6ff2c8da974d20530d7a0faa50844d052f4`、PR #9 与原生受测 APP `d2b2fae` 的记录保持原样。本轮没有合并、Release、日常 APP 替换或对外表单提交。
+**受测代码提交：`907dbce1b1aed1752badd74cab8604839057b119`。** 新交付为 [Draft PR #10](https://github.com/www080327-glitch/LocalPilot-OpenSource/pull/10)，此后仅追加本段推送引用，未改变受测运行代码。 本记录对应分支 `codex/pa-completion-20261115`，基线为 Draft PR #9 的 `0a7fdff36f45a471130293b508b5d008f40cecf9`。PR #1 `94e0e6ff2c8da974d20530d7a0faa50844d052f4`、PR #9 与原生受测 APP `d2b2fae` 的记录保持原样。本轮没有合并、Release、日常 APP 替换或对外表单提交。
 
 本环境为 **Linux x86_64 / Python 3.12.14**。代码、真实协议、文件、SQLite、子进程和打包检查已经完成；macOS 新 APP、Swift/TCC、真实音轨、Intel 和实际模型质量仍须独立验收。
 

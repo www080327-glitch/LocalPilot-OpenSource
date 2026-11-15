@@ -3,7 +3,7 @@
   "baseline_sha": "0a7fdff36f45a471130293b508b5d008f40cecf9",
   "preserved_pr1_sha": "94e0e6ff2c8da974d20530d7a0faa50844d052f4",
   "branch": "codex/pa-completion-20261115",
-  "tested_code_commit": "PENDING_PUBLICATION",
+  "tested_code_commit": "907dbce1b1aed1752badd74cab8604839057b119",
   "runtime_host": {
     "system": "Linux",
     "machine": "x86_64",
@@ -159,5 +159,12 @@
     "ranking": "NOT_CLAIMED"
   },
   "archive": "verification-logs-redacted.tar.gz",
-  "source_inventory_sha256": "f646f548a5bea050a42cd15171286baf15aab543e6e9e9492cc36a4976b9d2aa"
+  "source_inventory_sha256": "f646f548a5bea050a42cd15171286baf15aab543e6e9e9492cc36a4976b9d2aa",
+  "pull_request": {
+    "number": 10,
+    "url": "https://github.com/www080327-glitch/LocalPilot-OpenSource/pull/10",
+    "draft": true,
+    "merged": false
+  },
+  "publication_note": "Following commit changes only RESULTS.md and RESULTS.json; runtime/build/test sources remain identical to tested_code_commit."
 }
