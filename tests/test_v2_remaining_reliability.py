@@ -98,8 +98,10 @@ class A03Tests(ReliabilityCase):
         services, tasks, sessions = [], [], []
         for name in ("a", "b"):
             service, owners = self.service(Backend(answer(None, call("apply_patch", {"changes": [update(name, digest)]}, name)), answer("done")))
-            services.append(service); sessions.extend(owners)
+            services.append(service)
             tasks.append(self.settle(service, service.create_task(TaskRequest("update " + name))["id"]))
+            sessions.extend(owners)  # Task creation invokes the lazy runtime factory.
+        self.assertEqual(len(sessions), 2)
         barrier = threading.Barrier(2)
         contexts = []
         for session in sessions:

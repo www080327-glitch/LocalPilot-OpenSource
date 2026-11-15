@@ -112,6 +112,30 @@ class PublicAgentEvaluationTests(unittest.TestCase):
         self.assertEqual(result["arms"]["localpilot"]["cost_usd"]["missing_trials"], 4)
         self.assertEqual(result["arms"]["localpilot"]["n_input_tokens"]["known_sum"], 40)
 
+    def test_unequal_models_keep_results_but_block_paired_conclusion(self):
+        self.spec['arms'][1]['agent']['model_name']='fixture/another-model'
+        self.spec_path.write_text(json.dumps(self.spec))
+        self.study_dir=self.root/'unequal'
+        self.study=freeze(self.spec_path,self.repository,self.study_dir)
+        self.populate()
+        result=audit(self.study_dir)
+        self.assertTrue(result['audit_complete'])
+        self.assertEqual(len(result['trials']),8)
+        self.assertEqual(result['comparison']['status'],'BLOCKED_NON_EQUIVALENT_OR_UNQUALIFIED')
+        self.assertEqual(result['arms']['localpilot']['strict_successes'],4)
+
+    def test_formal_legacy_records_remain_visible_without_claiming_budget_equivalence(self):
+        self.spec['purpose']='evaluation'
+        self.spec_path.write_text(json.dumps(self.spec))
+        self.study_dir=self.root/'unqualified'
+        self.study=freeze(self.spec_path,self.repository,self.study_dir)
+        self.populate()
+        result=audit(self.study_dir)
+        self.assertTrue(result['audit_complete'])
+        self.assertEqual(result['comparison']['status'],'BLOCKED_NON_EQUIVALENT_OR_UNQUALIFIED')
+        self.assertEqual(len(result['comparison_qualification']['unqualified_trials']),8)
+        self.assertTrue(all(row['budget_audit']['status']=='MISSING' for row in result['trials']))
+
     def test_exception_after_reward_one_counts_failure_and_is_retained(self):
         self.populate()
         self.edit(("localpilot", 1, "alpha"), lambda r: r.update(exception_info={"exception_type": "AgentTimeoutError"}))

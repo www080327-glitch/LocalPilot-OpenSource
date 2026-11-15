@@ -44,19 +44,31 @@ export function observedModelShare(
       // observed requests come from SSE, including delegated child events.
       for (const event of currentEvents) {
         const item = payload(event);
-        const usage = item.type === "HybridModelUsage"
-          ? item.data.usage
-          : item.type === "SubagentEvent" && item.data.event?.type === "HybridModelUsage"
-            ? item.data.event.data?.usage
-            : null;
+        const usage =
+          item.type === "HybridModelUsage"
+            ? item.data.usage
+            : item.type === "SubagentEvent" &&
+                item.data.event?.type === "HybridModelUsage"
+              ? item.data.event.data?.usage
+              : null;
         if (!usage) continue;
         if (usage.kind === "local") local += 1;
         else if (usage.kind === "cloud") cloud += 1;
         else unknown += 1;
       }
+    } else if (summary?.source_mix?.by_source) {
+      for (const [source, row] of Object.entries(
+        summary.source_mix.by_source,
+      ) as [string, Json][]) {
+        const calls = row.dispatched_requests;
+        if (source === "local") local += calls;
+        else if (source === "cloud") cloud += calls;
+        else unknown += calls;
+      }
     } else if (summary?.by_backend) {
       for (const row of Object.values(summary.by_backend) as Json[]) {
-        const calls = typeof row.calls === "number" && row.calls >= 0 ? row.calls : 0;
+        const calls =
+          typeof row.calls === "number" && row.calls >= 0 ? row.calls : 0;
         if (row.kind === "local") local += calls;
         else if (row.kind === "cloud") cloud += calls;
         else unknown += calls;
@@ -77,50 +89,86 @@ export function observedModelShare(
   };
 }
 
-export function subagentTraces(events: StreamEvent[], task?: Task | null): ChildTrace[] {
+export function subagentTraces(
+  events: StreamEvent[],
+  task?: Task | null,
+): ChildTrace[] {
   const children = new Map<string, ChildTrace>();
   for (const event of [...events].sort((a, b) => a.sequence - b.sequence)) {
     const { type, data } = payload(event);
-    if (!["SubagentStarted", "SubagentEvent", "SubagentCompleted", "SubagentFailed"].includes(type)) continue;
+    if (
+      ![
+        "SubagentStarted",
+        "SubagentEvent",
+        "SubagentCompleted",
+        "SubagentFailed",
+      ].includes(type)
+    )
+      continue;
     if (typeof data.id !== "string") continue;
     let child = children.get(data.id);
     if (!child) {
       child = {
         id: data.id,
-        source: data.backend === "local" || data.backend === "cloud" ? data.backend : "unknown",
-        model: typeof data.model === "string" ? data.model : (data.configured_model || "未记录"),
+        source:
+          data.backend === "local" || data.backend === "cloud"
+            ? data.backend
+            : "unknown",
+        model:
+          typeof data.model === "string"
+            ? data.model
+            : data.configured_model || "未记录",
         provider: data.provider || "未知",
         status: type === "SubagentStarted" ? "running" : "unknown",
         task: typeof data.task === "string" ? data.task : null,
-        reportedModels: Array.isArray(data.reported_models) ? data.reported_models : [],
+        reportedModels: Array.isArray(data.reported_models)
+          ? data.reported_models
+          : [],
         steps: [],
       };
       children.set(data.id, child);
     }
     if (type === "SubagentStarted") {
       child.status = "running";
-      child.source = data.backend === "local" || data.backend === "cloud" ? data.backend : "unknown";
+      child.source =
+        data.backend === "local" || data.backend === "cloud"
+          ? data.backend
+          : "unknown";
       child.model = data.model || child.model;
       child.provider = data.provider || child.provider;
       child.task = data.task || child.task;
     } else if (type === "SubagentCompleted" || type === "SubagentFailed") {
-      child.status = data.status || (type === "SubagentCompleted" ? "completed" : "failed");
+      child.status =
+        data.status || (type === "SubagentCompleted" ? "completed" : "failed");
       child.model = data.configured_model || child.model;
       child.reportedModels = Array.isArray(data.reported_models)
-        ? data.reported_models : child.reportedModels;
+        ? data.reported_models
+        : child.reportedModels;
     } else {
       const nested = data.event;
       if (!nested || typeof nested.type !== "string") continue;
       const d = nested.data || {};
       if (nested.type === "ModelRequestStarted") {
         child.model = d.model || child.model;
-        child.steps.push({ sequence: event.sequence, label: "请求模型 · " + child.model });
+        child.steps.push({
+          sequence: event.sequence,
+          label: "请求模型 · " + child.model,
+        });
       } else if (nested.type === "ToolCallStarted") {
-        child.steps.push({ sequence: event.sequence, label: "调用工具 · " + (d.name || "未知") });
+        child.steps.push({
+          sequence: event.sequence,
+          label: "调用工具 · " + (d.name || "未知"),
+        });
       } else if (nested.type === "ModelHandoffCommitted") {
-        child.steps.push({ sequence: event.sequence, label: "模型交接 · " + (d.to_backend_id || "未知") });
+        child.steps.push({
+          sequence: event.sequence,
+          label: "模型交接 · " + (d.to_backend_id || "未知"),
+        });
       } else if (nested.type === "ErrorEvent") {
-        child.steps.push({ sequence: event.sequence, label: "异常 · " + (d.error_type || "未知") });
+        child.steps.push({
+          sequence: event.sequence,
+          label: "异常 · " + (d.error_type || "未知"),
+        });
       }
     }
   }
@@ -129,8 +177,10 @@ export function subagentTraces(events: StreamEvent[], task?: Task | null): Child
   for (const row of task?.subagents || []) {
     if (typeof row.id !== "string") continue;
     const existing = children.get(row.id);
-    const source = row.backend === "local" || row.backend === "cloud"
-      ? row.backend : existing?.source || "unknown";
+    const source =
+      row.backend === "local" || row.backend === "cloud"
+        ? row.backend
+        : existing?.source || "unknown";
     children.set(row.id, {
       id: row.id,
       source,
@@ -139,13 +189,16 @@ export function subagentTraces(events: StreamEvent[], task?: Task | null): Child
       status: row.status || existing?.status || "unknown",
       task: row.task || existing?.task || null,
       reportedModels: Array.isArray(row.reported_models)
-        ? row.reported_models : existing?.reportedModels || [],
+        ? row.reported_models
+        : existing?.reportedModels || [],
       steps: existing?.steps?.length
         ? existing.steps
         : (row.receipts || []).map((receipt: Json, index: number) => ({
             sequence: index + 1,
-            label: "工具收据 · " + (receipt.name || "未知")
-              + (receipt.payload?.ok === true ? "（完成）" : "（未成功）"),
+            label:
+              "工具收据 · " +
+              (receipt.name || "未知") +
+              (receipt.payload?.ok === true ? "（完成）" : "（未成功）"),
           })),
     });
   }

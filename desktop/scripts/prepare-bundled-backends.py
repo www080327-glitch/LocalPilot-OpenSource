@@ -15,13 +15,21 @@ import csv
 import base64
 import hashlib
 import re
+import platform
+from macos_artifacts import architecture, runtime_lock, verify_macho
 
 parser=argparse.ArgumentParser()
 parser.add_argument('--wheels',required=True)
 parser.add_argument('--dependencies',required=True)
 parser.add_argument('--channel-runtime',type=Path)
+parser.add_argument('--dependency-lock',type=Path)
+parser.add_argument('--arch',choices=['arm64','x86_64'],default=architecture(platform.machine()))
 args=parser.parse_args()
 root=Path(__file__).resolve().parents[1]
+arch=architecture(args.arch)
+if arch!=architecture(platform.machine()):raise SystemExit('Build with a Python interpreter native to the target architecture; cross-architecture runtime copying is not supported')
+lock_path=args.dependency_lock or root/'runtime-dependencies.json'
+lock=runtime_lock(lock_path,arch)
 out=root/'src-tauri'/'bundled-backends'
 if out.exists():raise SystemExit('Existing resource preserved; use a fresh staging path')
 source=Path(sys.base_prefix)
@@ -86,6 +94,7 @@ for path in sorted(target.rglob('*')):
     if path.is_symlink() or not path.is_file():continue
     with path.open('rb') as f:header=f.read(4)
     if header not in magic:continue
+    verify_macho(path,arch)
     listing=subprocess.check_output(['otool','-L',str(path)],text=True)
     for line in listing.splitlines():
         dependency=line.strip().split(' (')[0]
@@ -97,7 +106,8 @@ for path in sorted(target.rglob('*')):
 (out/'run_suite.py').write_text("from localpilot_suite.cli import main\nraise SystemExit(main())\n")
 (out/'localpilot').write_text('#!/bin/sh\nset -eu\nLP_BUNDLE_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)\nexport PYTHONHOME="$LP_BUNDLE_ROOT/runtime"\nexport PYTHONPATH="$LP_BUNDLE_ROOT/runtime/lib/python3.14/site-packages"\nexport PYTHONNOUSERSITE=1\nexport PYTHONDONTWRITEBYTECODE=1\nif [ -z "${SSL_CERT_FILE:-}" ]; then export SSL_CERT_FILE="$LP_BUNDLE_ROOT/runtime/lib/python3.14/site-packages/pip/_vendor/certifi/cacert.pem"; fi\nexec "$LP_BUNDLE_ROOT/runtime/bin/python3.14" "$LP_BUNDLE_ROOT/run_suite.py" "$@"\n')
 (out/'localpilot').chmod(0o755)
-manifest={'kind':'OFFLINE_INDEPENDENT_MODULES','python':'3.14','weights_bundled':False,'credentials_bundled':False,
+(out/'runtime-dependencies.json').write_text(json.dumps(lock,indent=2)+'\n')
+manifest={'kind':'OFFLINE_INDEPENDENT_MODULES','architecture':arch,'dependency_lock_sha256':hashlib.sha256((out/'runtime-dependencies.json').read_bytes()).hexdigest(),'python':'3.14','weights_bundled':False,'credentials_bundled':False,
     'wheels':[p.name for p in wheels.glob('*.whl')],'python_license':'runtime/lib/python3.14/LICENSE.txt',
     'host_pip_origin_records_omitted':len(origins),'portable_console_entrypoints':sorted(portable)}
 (out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
@@ -107,7 +117,9 @@ subprocess.run([str(out/'localpilot'),'--version'],check=True)
 
 if args.channel_runtime:
     archive=args.channel_runtime
-    expected='c9e1dbc748b33ed2d14f42445191ecaf14c56259c7a9a26d0042c49ec2b66428'
+    sys.path.insert(0,str(root.parent/'suite'))
+    from localpilot_suite.channel_runtime import ARCHIVES
+    filename,expected=ARCHIVES[arch]
     if hashlib.sha256(archive.read_bytes()).hexdigest()!=expected:raise ValueError('Pinned Node archive mismatch')
     directory=out/'channel-runtime';directory.mkdir()
-    shutil.copyfile(archive,directory/'node-v22.23.4-darwin-arm64.tar.gz')
+    shutil.copyfile(archive,directory/filename)

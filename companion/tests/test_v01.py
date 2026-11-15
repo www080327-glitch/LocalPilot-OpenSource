@@ -47,7 +47,7 @@ class V01Tests(unittest.TestCase):
         self.assertFalse(any('10万' in r['summary'] for r in rows if r['type']=='document'))
     def test_failed_update_cannot_return_old_text(self):
         f=self.index('budget.txt','项目：星河\n预算：10万\n');f.write_text('new content')
-        with patch('companion.runtime.service.extract',side_effect=ValueError('corrupt')):
+        with patch('companion.runtime.observations.extract',side_effect=ValueError('corrupt')):
             rows=self.obj.retrieve('星河预算')
         self.assertFalse(any('10万' in r['summary'] for r in rows if r['type']=='document'))
         self.assertIn('corrupt',self.obj.last_error)

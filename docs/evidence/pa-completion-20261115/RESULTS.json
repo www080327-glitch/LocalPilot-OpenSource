@@ -1,0 +1,163 @@
+{
+  "baseline_pr": 9,
+  "baseline_sha": "0a7fdff36f45a471130293b508b5d008f40cecf9",
+  "preserved_pr1_sha": "94e0e6ff2c8da974d20530d7a0faa50844d052f4",
+  "branch": "codex/pa-completion-20261115",
+  "tested_code_commit": "PENDING_PUBLICATION",
+  "runtime_host": {
+    "system": "Linux",
+    "machine": "x86_64",
+    "python": "3.12.14"
+  },
+  "final_checks": [
+    {
+      "scope": "Core",
+      "total": 1485,
+      "pass": 1388,
+      "skip": 97,
+      "fail": 0,
+      "error": 0,
+      "seconds": 205.298,
+      "log_name": "core-completion-final-2.log",
+      "raw_sha256": "84dc1cbe242b387b02004a4ededb26b79f5bec1bae060eb1b932c7a06db39f2e",
+      "skip_reasons": {
+        "Historical benchmark implementation/fixtures are absent from the public source tree; NOT_RUN": 12,
+        "Installed candidate Suite wheel required": 4,
+        "Requires installed Suite and explicit built optional wheel; POSIX lifecycle": 2,
+        "NOT_RUN: requires native macOS host Shell/Seatbelt": 16,
+        "Pinned Harbor evaluation environment required": 7,
+        "Real local model budget qualification is opt-in": 4,
+        "Pinned Harbor schema environment": 2,
+        "macOS executor only": 4,
+        "optional official SDK is not installed": 26,
+        "Optional contract check requires the pinned Harbor checkout and schema dependencies": 1,
+        "optional official OpenAI SDK is not installed": 16,
+        "Benchmark cost ledger is not published in the product tree": 2,
+        "TimedBackend is in the missing benchmark package": 1
+      }
+    },
+    {
+      "scope": "Companion",
+      "total": 630,
+      "pass": 605,
+      "skip": 25,
+      "fail": 0,
+      "error": 0,
+      "seconds": 36.31,
+      "log_name": "companion-completion-final.log",
+      "raw_sha256": "4614f73115fcfefdc43575346f193d9fd6cbf9e432a32e8a6468ea7c99ac8b6a",
+      "skip_reasons": {
+        "macOS Swift fixture required": 16,
+        "native fixture requires macOS Swift": 9
+      }
+    },
+    {
+      "scope": "Suite",
+      "total": 102,
+      "pass": 101,
+      "skip": 1,
+      "fail": 0,
+      "error": 0,
+      "seconds": 46.508,
+      "log_name": "mac-portability-20261115-suite-final.log",
+      "raw_sha256": "9421a0652099a83afdfd4d4e2681d8bd853fb0fcf6a736618ab3b0c9f52abb6b",
+      "skip_reasons": {
+        "macOS fixed system alias": 1
+      }
+    },
+    {
+      "scope": "Official OpenAI SDK 3.51.0",
+      "total": 42,
+      "pass": 42,
+      "skip": 0,
+      "fail": 0,
+      "error": 0,
+      "seconds": 4.066,
+      "log_name": "sdk-full-completion-final.log",
+      "raw_sha256": "2de42a89ef82065e69e43c0cfa523518c0dd350e50a4f569700197ca6ac97f27",
+      "skip_reasons": {}
+    },
+    {
+      "scope": "Official Harbor 0.26.0 contracts",
+      "total": 66,
+      "pass": 62,
+      "skip": 4,
+      "fail": 0,
+      "error": 0,
+      "seconds": 18.741,
+      "log_name": "harbor-contract-final.log",
+      "raw_sha256": "8eca68c694563637629c0f9564b4d9ee04bdd812df32a3ef6cb0065386fde287",
+      "skip_reasons": {
+        "Real local model budget qualification is opt-in": 4
+      }
+    },
+    {
+      "scope": "Installed Channels lifecycle",
+      "total": 6,
+      "pass": 6,
+      "skip": 0,
+      "fail": 0,
+      "error": 0,
+      "seconds": 4.852,
+      "log_name": "installed-channel-lifecycle-final.log",
+      "raw_sha256": "38b81e37ba25f20f392460bbba84fecc5c75ff2f41ba993accaf0555fcc46a47",
+      "skip_reasons": {}
+    },
+    {
+      "scope": "APP directory exchange",
+      "total": 11,
+      "pass": 11,
+      "skip": 0,
+      "fail": 0,
+      "error": 0,
+      "seconds": 0.039,
+      "log_name": "mac-portability-20261115-install.log",
+      "raw_sha256": "027448bf941a7404599f1c0bfd710e02644e85491c98af5b2fceaec952dafb1b",
+      "skip_reasons": {}
+    },
+    {
+      "scope": "Architecture lock",
+      "total": 3,
+      "pass": 3,
+      "skip": 0,
+      "fail": 0,
+      "error": 0,
+      "seconds": 0.006,
+      "log_name": "mac-portability-20261115-architecture.log",
+      "raw_sha256": "eb4c4e54158d61a2461371cb5f3e54f4aaaa98649b2799bd3793391626f87f3e",
+      "skip_reasons": {}
+    }
+  ],
+  "desktop": {
+    "typescript_vite": "PASS",
+    "vitest_pass": 54,
+    "document_links": "PASS",
+    "playwright_current_candidate": "NOT_RUN; prior cloud browser launches blocked"
+  },
+  "native": {
+    "rust": "NOT_RUN; cargo unavailable",
+    "swift": "NOT_RUN; macOS SDK unavailable",
+    "macos_app": "NOT_RUN",
+    "intel_machine": "NOT_RUN",
+    "real_meeting_audio": "NOT_RUN",
+    "real_model_quality": "NOT_RUN",
+    "lora_training": "NOT_RUN"
+  },
+  "core_warning_scan": {
+    "ResourceWarning": false,
+    "RuntimeWarning": false
+  },
+  "counting_note": "Removed historical module-level TestCase alias that collected 13 identical AgentService tests twice; no assertions or test methods deleted. Supplemental suites overlap Core skipped cases; do not sum as unique tests.",
+  "frozen_old_study": {
+    "code": "1c06e97",
+    "planned": 534,
+    "pass": 1,
+    "fail": 3,
+    "error": 13,
+    "without_final_result": 517,
+    "modified_this_round": false,
+    "ranking": "NOT_CLAIMED"
+  },
+  "archive": "verification-logs-redacted.tar.gz",
+  "source_inventory_sha256": "f646f548a5bea050a42cd15171286baf15aab543e6e9e9492cc36a4976b9d2aa"
+}

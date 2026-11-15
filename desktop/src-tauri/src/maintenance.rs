@@ -99,6 +99,10 @@ fn release_url(s: &str) -> bool {
         && !u.path().contains("..")
 }
 fn select_release(rows: &Value, current: &str) -> Result<Value, String> {
+    let arch = if cfg!(target_arch = "aarch64") { "arm64" } else { "x86_64" };
+    select_release_for_arch(rows, current, arch)
+}
+fn select_release_for_arch(rows: &Value, current: &str, arch: &str) -> Result<Value, String> {
     let list = rows.as_array().ok_or("GitHub Release JSON 格式错误")?;
     let mut candidates = list
         .iter()
@@ -126,8 +130,8 @@ fn select_release(rows: &Value, current: &str) -> Result<Value, String> {
         .filter_map(|a| {
             let name = a["name"].as_str()?;
             let allowed = [
-                format!("LocalPilot-{version}-arm64.dmg"),
-                format!("LocalPilot-{version}-arm64.app.zip"),
+                format!("LocalPilot-{version}-{arch}.dmg"),
+                format!("LocalPilot-{version}-{arch}.app.zip"),
             ];
             if !allowed.iter().any(|n| n == name) {
                 return None;
@@ -146,7 +150,7 @@ fn select_release(rows: &Value, current: &str) -> Result<Value, String> {
         })
         .collect::<Vec<_>>();
     if assets.is_empty() {
-        return Err("Release 无有效 macOS arm64 GUI 制品".into());
+        return Err(format!("Release 无有效 macOS {arch} GUI 制品"));
     }
     let current = Version::parse(current).map_err(|_| "当前 GUI 版本无效")?;
     Ok(
@@ -666,9 +670,23 @@ fn verify_archive(path: &Path, latest: &Value) -> Result<Value, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    fn select_release(rows: &Value, current: &str) -> Result<Value, String> {
+        select_release_for_arch(rows, current, "arm64")
+    }
     fn row(tag: &str) -> Value {
         let v = tag.trim_start_matches("desktop-v");
         json!({"tag_name":tag,"draft":false,"prerelease":false,"html_url":format!("{REPO}/releases/tag/{tag}"),"assets":[{"name":format!("LocalPilot-{v}-arm64.dmg"),"browser_download_url":format!("{REPO}/releases/download/{tag}/LocalPilot-{v}-arm64.dmg"),"digest":format!("sha256:{}","a".repeat(64)),"size":10}]})
+    }
+    #[test]
+    fn release_selection_requires_the_running_architecture() {
+        let mut intel = row("desktop-v5.0.0");
+        intel["assets"][0]["name"] = json!("LocalPilot-5.0.0-x86_64.dmg");
+        intel["assets"][0]["browser_download_url"] = json!(format!("{REPO}/releases/download/desktop-v5.0.0/LocalPilot-5.0.0-x86_64.dmg"));
+        let rows = json!([intel]);
+        let selected = select_release_for_arch(&rows, "5.0.0", "x86_64").unwrap();
+        assert_eq!(selected["assets"][0]["name"], "LocalPilot-5.0.0-x86_64.dmg");
+        assert!(select_release_for_arch(&rows, "5.0.0", "arm64").is_err());
+        assert!(select_release_for_arch(&json!([row("desktop-v5.0.0")]), "5.0.0", "x86_64").is_err());
     }
     #[test]
     fn release_selection_ignores_other_modules_and_orders_semver() {

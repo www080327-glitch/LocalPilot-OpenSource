@@ -156,6 +156,9 @@ def dispatch(home,body):
         if set(args)!={'kind','action','args'}:raise ValueError('Exact channel operation required')
         from .channel_product import command
         return command(home,args['kind'],args['action'],args['args'])
+    if op in {'model_configuration','configure_cooperation','configure_local_endpoint'}:
+        from .model_configuration import command
+        return command(home,op,args)
     if op=='inspect':return hardware(home)
     if op=='installation_diagnostics':
         if args:raise ValueError('Diagnostics accepts no arguments')

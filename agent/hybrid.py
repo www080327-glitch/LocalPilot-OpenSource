@@ -650,4 +650,28 @@ class HybridController:
             item['wall_output_tokens_per_second'] = item['known_output_tokens'] / item['known_inference_seconds'] if item['known_inference_seconds'] else None
             item['throughput_source'] = 'output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps'
             result['by_backend'][alias] = item
+        result['source_mix'] = source_mix(attempts)
         return result
+
+
+def source_mix(attempts):
+    """Measured request/token distribution, independent of the five route preferences."""
+    dispatched = [a for a in attempts if a.get('dispatch_authorized_at') is not None]
+    complete_usage = all(a['input_tokens'] is not None and a['output_tokens'] is not None for a in dispatched)
+    total_tokens = sum((a['input_tokens'] or 0) + (a['output_tokens'] or 0) for a in dispatched)
+    by_source = {}
+    for kind in ('local', 'cloud'):
+        rows = [a for a in dispatched if a['kind'] == kind]
+        tokens = sum((a['input_tokens'] or 0) + (a['output_tokens'] or 0) for a in rows)
+        by_source[kind] = {
+            'admitted_requests': sum(a['kind'] == kind for a in attempts),
+            'dispatched_requests': len(rows),
+            'request_share': len(rows) / len(dispatched) if dispatched else None,
+            'known_input_output_tokens': tokens,
+            'token_share': tokens / total_tokens if complete_usage and total_tokens else None,
+            'unknown_usage_requests': sum(a['input_tokens'] is None or a['output_tokens'] is None for a in rows),
+        }
+    return {'scope':'current_task_including_children', 'by_source':by_source,
+            'requests_without_dispatch_evidence':len(attempts) - len(dispatched),
+            'token_share_status':'PROVIDER_REPORTED' if dispatched and complete_usage else 'UNKNOWN',
+            'actual_cost_status':'UNKNOWN'}

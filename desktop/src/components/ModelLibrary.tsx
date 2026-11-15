@@ -11,6 +11,7 @@ import {
 import { call, desktop } from "../bridge";
 import { type Model, type Json, label } from "../domain";
 import { Modal } from "./Modal";
+import { ModelConfiguration } from "./ModelConfiguration";
 const size = (n: unknown) =>
   typeof n === "number" ? `${(n / 1024 ** 3).toFixed(2)} GB` : "未知";
 const tabs = ["发现模型", "推荐模型", "已下载", "正在运行", "下载任务"];
@@ -139,6 +140,10 @@ export function ModelLibrary({
   const rec = hardware?.recommendation;
   return (
     <div className="model-library">
+      <details className="advanced-settings">
+        <summary>模型端点与多 Agent 配置</summary>
+        <ModelConfiguration onChanged={onChanged} />
+      </details>
       <nav className="library-tabs">
         {tabs.map((t) => (
           <button

@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "kind": "FRESH_INSTALLED_LINUX_PYTHON_WHEELS",
+  "python": "3.12.14",
+  "system": "Linux",
+  "machine": "x86_64",
+  "versions": {
+    "localpilot-agent-service": "5.0.0b21+channels.3",
+    "localpilot-companion": "0.5.7b3",
+    "localpilot-suite": "0.2.0b26",
+    "localpilot-channels": "0.1.0a3",
+    "psutil": "7.2.2",
+    "pypdf": "6.21.4",
+    "Pillow": "12.3.0",
+    "defusedxml": "0.7.1",
+    "watchdog": "6.0.0"
+  },
+  "installed_python_files_exact": 255,
+  "imports_resolve_inside_fresh_environment": true,
+  "real_file_tool": "PASS",
+  "entrypoint_help": {
+    "localpilot": 0,
+    "localpilot-core": 0,
+    "localpilot-service": 0,
+    "localpilot-channels": 0,
+    "companion": 0
+  },
+  "suite_version": {
+    "suite": "0.2.0b26",
+    "localpilot-agent-service": "5.0.0b21+channels.3",
+    "localpilot-companion": "0.5.7b3"
+  },
+  "new_capabilities_present": true,
+  "native_macos": "NOT_RUN"
+}

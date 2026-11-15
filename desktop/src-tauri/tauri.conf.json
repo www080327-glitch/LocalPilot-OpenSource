@@ -43,7 +43,8 @@
     "shortDescription": "Independent LocalPilot Agent desktop",
     "macOS": {
       "minimumSystemVersion": "15.0",
-      "signingIdentity": "-"
+      "signingIdentity": "-",
+      "infoPlist": "Info.plist"
     },
     "icon": [
       "icons/32x32.png",

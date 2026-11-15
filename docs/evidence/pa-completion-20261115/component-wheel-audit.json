@@ -1,0 +1,67 @@
+{
+  "kind": "REAL_COMPONENT_WHEELS_SOURCE_OWNERSHIP_LICENSE_AUDIT",
+  "wheels": [
+    {
+      "name": "localpilot_agent_service-5.0.0b21+channels.3-py3-none-any.whl",
+      "distribution": "localpilot-agent-service",
+      "version": "5.0.0b21+channels.3",
+      "sha256": "b7f19c98b6c9e28682f8b1a6f76133dc0594da591ff4c1893effca214fb07001",
+      "python_files": 139,
+      "source_exact": true,
+      "license_expression": "Apache-2.0 AND MIT",
+      "license_files": [
+        "localpilot_agent_service-5.0.0b21+channels.3.dist-info/licenses/LICENSE",
+        "localpilot_agent_service-5.0.0b21+channels.3.dist-info/licenses/third_party/deepseek-harness/LICENSE",
+        "localpilot_agent_service-5.0.0b21+channels.3.dist-info/licenses/third_party/deepseek-harness/NOTICE.md"
+      ]
+    },
+    {
+      "name": "localpilot_channels-0.1.0a3-py3-none-any.whl",
+      "distribution": "localpilot-channels",
+      "version": "0.1.0a3",
+      "sha256": "476ab43663baf4cbaa5623381aab89e247e6b173a15603fb7c975dec10359406",
+      "python_files": 7,
+      "source_exact": true,
+      "license_expression": "Apache-2.0 AND MIT",
+      "license_files": [
+        "localpilot_channels-0.1.0a3.dist-info/licenses/LICENSE",
+        "localpilot_channels-0.1.0a3.dist-info/licenses/integrations/wechat-ilink-bridge/THIRD_PARTY_NOTICES.md"
+      ]
+    },
+    {
+      "name": "localpilot_companion-0.5.7b3-py3-none-any.whl",
+      "distribution": "localpilot-companion",
+      "version": "0.5.7b3",
+      "sha256": "2de93736c4816efabf59f650d198d8d16e00779999fcbc0df1b832a9b95b1513",
+      "python_files": 88,
+      "source_exact": true,
+      "license_expression": "Apache-2.0",
+      "license_files": [
+        "localpilot_companion-0.5.7b3.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "name": "localpilot_suite-0.2.0b26-py3-none-any.whl",
+      "distribution": "localpilot-suite",
+      "version": "0.2.0b26",
+      "sha256": "53d4c1559e49236fa4f40df9c119df1837be8a86fc9a27eb18f76936eca408a9",
+      "python_files": 21,
+      "source_exact": true,
+      "license_expression": "Apache-2.0",
+      "license_files": [
+        "localpilot_suite-0.2.0b26.dist-info/licenses/LICENSE"
+      ]
+    }
+  ],
+  "native_mac_build": "NOT_RUN",
+  "status": "PASS",
+  "unique_python_files": 255,
+  "console_owners": {
+    "localpilot-adapter": "localpilot-agent-service",
+    "localpilot-core": "localpilot-agent-service",
+    "localpilot-service": "localpilot-agent-service",
+    "localpilot-channels": "localpilot-channels",
+    "companion": "localpilot-companion",
+    "localpilot": "localpilot-suite"
+  }
+}

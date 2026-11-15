@@ -5,6 +5,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import os
 from pathlib import Path
+import sys
 import tempfile
 import threading
 import unittest
@@ -12,6 +13,36 @@ import unittest
 
 @unittest.skipUnless(importlib.util.find_spec('harbor'), 'Pinned Harbor evaluation environment required')
 class HarborAdapterTests(unittest.IsolatedAsyncioTestCase):
+    async def test_official_terminus_loop_uses_shared_measured_http_transport(self):
+        name='LITELLM_LOCAL_MODEL_COST_MAP'
+        previous=os.environ.get(name)
+        os.environ[name]='True'
+        self.addCleanup(lambda:os.environ.pop(name,None) if previous is None else os.environ.__setitem__(name,previous))
+        from scripts.harbor_reference import BudgetedTerminusAgent, ProductTransportLLM
+        from scripts.harbor_tokenizer_process import TokenizerProcess
+        from tests import test_harbor_budget_protocol as protocol
+        fixture=protocol.BudgetProtocolTests()
+        fixture.setUp()
+        self.addCleanup(fixture.tearDown)
+        limit={'tokenizer_path':str(fixture.root),'tokenizer_python':sys.executable,
+               'max_requests':2,'max_input_tokens':100,'max_output_tokens':8,
+               'max_total_tokens':100,'min_available_bytes':1}
+        options={'endpoint':f'http://127.0.0.1:{fixture.server.server_port}/v1','model_budget':limit,
+                 'max_turns':1,'enable_summarize':False,'record_terminal_session':False}
+        BudgetedTerminusAgent.preflight(options)
+        agent=BudgetedTerminusAgent(fixture.root/'reference','fixture',**options)
+        fixture.backends.append(agent.product_backend)
+        agent.product_backend.counter=TokenizerProcess(sys.executable,fixture.root,script=fixture.counter_script,timeout=1)
+        self.assertIsInstance(agent._llm,ProductTransportLLM)
+        response=await agent._llm.call('fixture')
+        self.assertEqual((response.usage.prompt_tokens,response.usage.completion_tokens),(7,2))
+        self.assertEqual(len(fixture.calls),1)
+        fixture.status=500
+        with self.assertRaises(Exception):
+            await agent._llm.call('fixture failure')
+        self.assertEqual(len(fixture.calls),2)
+        self.assertEqual(agent.product_backend.disqualified,'failed_usage_unknown')
+
     async def test_native_messages_uses_the_existing_product_backend(self):
         from localpilot_service.backend_contract import ServiceDeepSeekNativeBackend
         from scripts.localpilot_harbor import LocalPilotHarborAgent

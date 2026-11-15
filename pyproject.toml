@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,7 +7,8 @@ name = "localpilot-agent-service"
 version = "5.0.0b21+channels.3"
 description = "Authenticated Agent service over the LocalPilot persistent runtime"
 requires-python = ">=3.10"
-license = {file = "LICENSE"}
+license = "Apache-2.0 AND MIT"
+license-files = ["LICENSE", "third_party/deepseek-harness/LICENSE", "third_party/deepseek-harness/NOTICE.md"]
 dependencies = ["psutil>=7,<8", "pypdf>=6.1,<7", "Pillow>=11,<13", "defusedxml>=0.7,<1"]
 
 [project.optional-dependencies]
@@ -20,13 +21,12 @@ plugins = ["mcp==1.26.0", "jsonschema==4.26.0", "packaging==26.0"]
 localpilot-service = "localpilot_service.__main__:main"
 localpilot-adapter = "localpilot_service.adapter:main"
 localpilot-core = "localpilot_service.cli:main"
-localpilot-channels = "localpilot_channels.__main__:main"
 
 [tool.setuptools]
 py-modules = ["catalog", "recommender", "hardware", "selector_mlp"]
 
 [tool.setuptools.packages.find]
-include = ["agent*", "computer*", "localpilot_api*", "localpilot_service*", "localpilot_plugins*", "localpilot_channels*"]
+include = ["agent*", "computer*", "localpilot_api*", "localpilot_service*", "localpilot_plugins*"]
 exclude = ["tests*", "benchmarks*", "docs*"]
 
 [tool.setuptools.package-data]
@@ -44,7 +44,3 @@ computer = ["native/*.swift"]
 "share/doc/localpilot/plugins" = ["docs/PLUGIN_ECOSYSTEM.md"]
 "share/localpilot/plugins/public-notes" = ["examples/plugins/public_notes/server.py", "examples/plugins/public_notes/review.json"]
 "share/localpilot/skills/public-notes" = ["examples/skills/public-notes/skill.json", "examples/skills/public-notes/SKILL.md"]
-
-"share/localpilot/channels/qq-bridge" = ["integrations/qq-bridge/bridge.mjs", "integrations/qq-bridge/cli.mjs", "integrations/qq-bridge/gateway.mjs", "integrations/qq-bridge/package.json"]
-"share/localpilot/channels/wechat-ilink-bridge" = ["integrations/wechat-ilink-bridge/bridge.mjs", "integrations/wechat-ilink-bridge/cli.mjs", "integrations/wechat-ilink-bridge/package.json", "integrations/wechat-ilink-bridge/THIRD_PARTY_NOTICES.md"]
-"share/localpilot/channels/channel-common" = ["integrations/channel-common/security.mjs", "integrations/channel-common/evidence.mjs", "integrations/channel-common/control.mjs"]

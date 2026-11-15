@@ -1,19 +1,17 @@
 """Real temporary bundle swaps; codesign/LaunchServices need native Mac acceptance."""
-import importlib.util
 import json
 from pathlib import Path
 import plistlib
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
 
 
-SCRIPT = Path(__file__).resolve().parents[1] / 'desktop/scripts/install-local-app.py'
-spec = importlib.util.spec_from_file_location('pa_mac_installer', SCRIPT)
-installer = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(installer)
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'suite'))
+from localpilot_suite import app_install as installer
 
 
 class IsolatedInstallerTests(unittest.TestCase):
@@ -100,6 +98,17 @@ class IsolatedInstallerTests(unittest.TestCase):
         self.assertEqual(installer.info(Path(plan['destination']))['CFBundleShortVersionString'], 'new')
         self.assertEqual(installer.digest(Path(plan['old_app_trash'])), plan['old_sha256'])
         self.assertFalse(Path(plan['backup']).exists())
+        self.assert_daily_unchanged()
+
+    def test_explicit_rollback_restores_the_retired_bundle_after_successful_install(self):
+        plan = self.plan()
+        self.stage(plan)
+        with patch.object(installer.subprocess, 'run', side_effect=self.native):
+            installer.activate(plan)
+            installer.rollback(plan)
+        self.assertEqual(installer.digest(Path(plan['destination'])), plan['old_sha256'])
+        self.assertEqual(installer.digest(Path(plan['failed_app_trash'])), plan['source_sha256'])
+        self.assertEqual(plan['rollback'], 'restored_previous_app')
         self.assert_daily_unchanged()
 
     def test_signature_failure_after_rename_restores_previous_bundle(self):

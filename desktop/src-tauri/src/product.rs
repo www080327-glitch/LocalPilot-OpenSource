@@ -480,6 +480,9 @@ async fn product_control_impl(
         "preferences",
         "verify_model",
         "configure_pet_model",
+        "model_configuration",
+        "configure_cooperation",
+        "configure_local_endpoint",
         "delete",
     ]
     .contains(&operation.as_str())

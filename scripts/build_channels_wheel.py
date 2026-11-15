@@ -10,6 +10,7 @@ import tempfile
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--out', required=True)
+    p.add_argument('--no-isolation', action='store_true', help='Use the already prepared build environment without downloading build tools')
     a = p.parse_args()
     repo = Path(__file__).resolve().parents[1]
     out = Path(a.out).expanduser().resolve()
@@ -17,6 +18,7 @@ def main():
     with tempfile.TemporaryDirectory(prefix='localpilot-channel-build-') as directory:
         stage = Path(directory)
         shutil.copy2(repo / 'channels/pyproject.toml', stage / 'pyproject.toml')
+        shutil.copy2(repo / 'LICENSE', stage / 'LICENSE')
         package = stage / 'localpilot_channels'
         package.mkdir()
         for source in (repo / 'localpilot_channels').glob('*.py'):
@@ -36,7 +38,10 @@ def main():
                 if source.is_symlink():
                     raise ValueError('Linked source rejected')
                 shutil.copy2(source, target / name)
-        subprocess.run([sys.executable, '-m', 'build', '--wheel', '--outdir', str(out), str(stage)], check=True)
+        command = [sys.executable, '-m', 'build', '--wheel', '--outdir', str(out)]
+        if a.no_isolation:
+            command.append('--no-isolation')
+        subprocess.run([*command, str(stage)], check=True)
 
 
 if __name__ == '__main__':

@@ -31,10 +31,13 @@ class MeasuredBudgetTests(unittest.TestCase):
         self.backends.append(backend)
         return backend
 
+    def last_record(self):
+        return json.loads((self.root/'budget.jsonl').read_text().splitlines()[-1])
+
     def test_real_usage_matches_tokenizer_and_second_request_is_blocked(self):
         backend = self.backend()
         backend.request([{'role':'system','content':'Budget fixture.'}, {'role':'user','content':'Reply BUDGET-714.'}],max_tokens=16)
-        row=json.loads((self.root/'budget.jsonl').read_text())
+        row=self.last_record()
         self.assertEqual(row['counted_input_tokens'],row['provider_input_tokens'])
         with self.assertRaises(ModelBudgetExceeded):
             backend.request([{'role':'user','content':'Must not reach inference.'}],max_tokens=16)
@@ -44,7 +47,7 @@ class MeasuredBudgetTests(unittest.TestCase):
         backend=self.backend()
         chunks=list(backend.stream([{'role':'user','content':'Reply STREAM-714.'}],max_tokens=16))
         self.assertEqual(sum(x.kind=='response' for x in chunks),1)
-        self.assertEqual(json.loads((self.root/'budget.jsonl').read_text())['status'],'completed')
+        self.assertEqual(self.last_record()['status'],'completed')
 
     def test_tool_schema_and_tool_history_count_match_provider(self):
         backend=self.backend()
@@ -55,7 +58,7 @@ class MeasuredBudgetTests(unittest.TestCase):
             {'role':'tool','tool_call_id':'fixture-read','content':'MARKER-714'},
             {'role':'user','content':'Reply with that marker only. Do not call a tool.'}]
         backend.request(messages,[schema],max_tokens=16)
-        row=json.loads((self.root/'budget.jsonl').read_text())
+        row=self.last_record()
         self.assertEqual(row['counted_input_tokens'],row['provider_input_tokens'])
 
     def test_reference_uses_shared_transport_without_litellm_retry(self):
