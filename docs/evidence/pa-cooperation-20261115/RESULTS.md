@@ -98,7 +98,7 @@ SDK 与固定 Harbor 的独立命令见日志及[公开评测续作](../../devel
 
 旧 534 项对照仍是 **1 PASS / 3 FAIL / 13 ERROR / 517 无最终结果**，冻结源码 `1c06e97` 未变。本轮没有启动旧队列或新真实模型/Docker study，没有官方 AA 排名或“不弱于主流 Agent”的结论。
 
-Mac 补验已完成独立 APP 的构建、安装和重开，验证了 Test APP 对 daily bundle 身份的 dry-run 拒绝、真实本地 Core 工具调用和 SSE 409。仍未完成真实云端来源、Worker 子 Agent、取消/UNKNOWN 恢复、会议音轨（TCC 责任进程为宿主 ChatGPT）、人工样本、LoRA/adapter、KV、晚间与睡眠唤醒、Intel、完整助手交接失败及反向安装回滚；公开对照仍需合格 tokenizer/model、Docker 与完整新 study。细节见[本机续验报告](../pa-cooperation-20261115-mac/RESULTS.md)。历史 benchmark 原件和旧 Release 来源依旧需要真实材料。
+Mac 补验已完成独立 APP 的构建、安装和重开，验证了 Test APP 对 daily bundle 身份的 dry-run 拒绝、真实本地 Core 工具调用和 SSE 409；并把 LM Studio 本地模型与固定 Hub revision、tokenizer 文件哈希对应，完成真实本地 smoke（回答 56，存在 `<think>` 泄漏）。仍未完成真实云端来源、Worker 子 Agent、取消/UNKNOWN 恢复、会议音轨（TCC 责任进程为宿主 ChatGPT）、人工样本、LoRA/adapter、KV、晚间与睡眠唤醒、Intel、完整助手交接失败及反向安装回滚；公开对照仍缺 Harbor 所需的 Docker/VM 空间、独立预算 tokenizer 资格与完整新 study。细节见[本机续验报告](../pa-cooperation-20261115-mac/RESULTS.md)。历史 benchmark 原件和旧 Release 来源依旧需要真实材料。
 
 本轮未合并、发布 Release、替换日常 APP、提交比赛/落地表单或发送对外消息。自有代码继续 Apache-2.0，实际第三方许可保留。
 

@@ -1,0 +1,131 @@
+{
+  "evidence_type": "LOCAL_MODEL_CACHE_FILE_IDENTITY",
+  "model_key": "qwen3.6-35b-a3b-uncensored-heretic-mlx",
+  "repo": "froggeric/Qwen3.6-35B-A3B-Uncensored-Heretic-MLX-4bit",
+  "revision": "32939a6cef2750f18ccf352443f22f2e4dfe3613",
+  "local_cache": "$HOME/.lmstudio/models/froggeric/Qwen3.6-35B-A3B-Uncensored-Heretic-MLX-4bit",
+  "indexed_model": {
+    "format": "safetensors",
+    "publisher": "froggeric",
+    "sizeBytes": 20422465696,
+    "paramsString": "35B",
+    "architecture": "qwen3_5_moe",
+    "quantization": {
+      "name": "4bit",
+      "bits": 4
+    },
+    "vision": true,
+    "trainedForToolUse": true,
+    "maxContextLength": 262144
+  },
+  "verified_files": [
+    {
+      "file": "chat_template.README.md",
+      "bytes": 6172,
+      "sha256": "79bb610cc5a40b29ef86e0f00fa4c9ca5adfc654ffff96ceb5c6cd567a4415e9",
+      "hub_digest": "f2d4808a7f26a8240317f961646c27751c338773",
+      "matches_revision": true
+    },
+    {
+      "file": "chat_template.jinja",
+      "bytes": 11269,
+      "sha256": "94e944287ffaf8c3ed8b5840a0c92fd4ca3caefa721f4f5e31e92605e63f1ad4",
+      "hub_digest": "7e823502959de185a20ffad5aa3a78a35926fc7e",
+      "matches_revision": true
+    },
+    {
+      "file": "config.json",
+      "bytes": 23644,
+      "sha256": "05c928be0c5bc0871b0638c69a0458177bc70c7eb73b4e98b4b92c2583c48378",
+      "hub_digest": "b8764529aa37eeb9041aad986ace00dd4db4fe0a",
+      "matches_revision": true
+    },
+    {
+      "file": "generation_config.json",
+      "bytes": 226,
+      "sha256": "6416dfba22335cc3bf4925f9517a7701f4c3e286edacd3e5a9f6bda9ea5fed41",
+      "hub_digest": "82e2ae8c8a5e13c8b65ee523fb7c78db406e52ca",
+      "matches_revision": true
+    },
+    {
+      "file": "model-00001-of-00004.safetensors",
+      "bytes": 5288196062,
+      "sha256": "b0ec63518ac6eb21b1cb54d0d99096dd251aabc7492a2a2d2c4df03aa2476547",
+      "hub_digest": "b0ec63518ac6eb21b1cb54d0d99096dd251aabc7492a2a2d2c4df03aa2476547",
+      "matches_revision": true
+    },
+    {
+      "file": "model-00002-of-00004.safetensors",
+      "bytes": 5368472657,
+      "sha256": "955b6bec900e10e4ccfd7d4030416015ee535dcca15af915b185b88e25670a2f",
+      "hub_digest": "955b6bec900e10e4ccfd7d4030416015ee535dcca15af915b185b88e25670a2f",
+      "matches_revision": true
+    },
+    {
+      "file": "model-00003-of-00004.safetensors",
+      "bytes": 5368324255,
+      "sha256": "36948f58bb6a77e9574c049fdd63ad1b6bd3dd1c68dfef35cb4c85cab3d59737",
+      "hub_digest": "36948f58bb6a77e9574c049fdd63ad1b6bd3dd1c68dfef35cb4c85cab3d59737",
+      "matches_revision": true
+    },
+    {
+      "file": "model-00004-of-00004.safetensors",
+      "bytes": 4377211327,
+      "sha256": "ee0295f8806ccd3889ac7d98dd1a3b06a1ecfa9d09237aa8e4e56933867d7a75",
+      "hub_digest": "ee0295f8806ccd3889ac7d98dd1a3b06a1ecfa9d09237aa8e4e56933867d7a75",
+      "matches_revision": true
+    },
+    {
+      "file": "model.safetensors.index.json",
+      "bytes": 215755,
+      "sha256": "0b28df60e33753a14e816d3b31577ae2c93884c58430a4a6de6ae9ea483842ea",
+      "hub_digest": "f714d295484e01790bad8b40c2ce49323d7d2598",
+      "matches_revision": true
+    },
+    {
+      "file": "preprocessor_config.json",
+      "bytes": 390,
+      "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+      "hub_digest": "2ea84a437d448ff71b08df68fdd949d5cc4ebb64",
+      "matches_revision": true
+    },
+    {
+      "file": "processor_config.json",
+      "bytes": 1191,
+      "sha256": "d89ef49ce9cd37fbf510158e13c1ef063d9286411c1ec9049932dbe0487143b1",
+      "hub_digest": "33818c7f9e991ad735fd240209f4fa73e6c28c50",
+      "matches_revision": true
+    },
+    {
+      "file": "tokenizer.json",
+      "bytes": 19989510,
+      "sha256": "639e352c0f904c1875d448ebed6f6faac005fd3eb58393b7f1fb3ff044e5ca03",
+      "hub_digest": "639e352c0f904c1875d448ebed6f6faac005fd3eb58393b7f1fb3ff044e5ca03",
+      "matches_revision": true
+    },
+    {
+      "file": "tokenizer_config.json",
+      "bytes": 12853,
+      "sha256": "cdc595fd84791afcb73ff62058b3ecb12c2cc37a94ed06e1bc0aba9b0b3c2aeb",
+      "hub_digest": "0bb7cb681da45771accd594ba6f0c7b3af46c1de",
+      "matches_revision": true
+    },
+    {
+      "file": "video_preprocessor_config.json",
+      "bytes": 385,
+      "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+      "hub_digest": "3ba673a5ad7d4d13f54155ecd38b2a94a6dac8fe",
+      "matches_revision": true
+    }
+  ],
+  "all_local_files_match_revision": true,
+  "standalone_tokenizers_package_installed": false,
+  "model_loaded_at_capture": false,
+  "independent_core_smoke": {
+    "status": "completed",
+    "expected_answer": "56",
+    "response_issue": "visible <think> text",
+    "provider_usage": "UNKNOWN"
+  },
+  "formal_harbor_qualification": "NOT_RUN_DOCKER_VM_AND_BUDGET_TOKENIZER_REQUIREMENTS"
+}

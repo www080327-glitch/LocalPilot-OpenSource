@@ -29,7 +29,8 @@
 | Companion 实际源问答 | **FAIL / NOT VERIFIED** | 合成 Codex 可见记录与 VTT 已导入并留在隔离 Companion。真实本地模型调用发生，但返回不完整或带工具响应，Companion 拒绝；无可审阅答案 ID，来源真实性/质量未通过。未把协议测试当真实问答成绩。 |
 | 会议 mic/system/both 实采 | **BLOCKED：TCC 责任进程归属** | 从 Test APP 界面和隔离 CLI 两条入口测试 system 音轨。helper 在请求 Speech 权限时以 SIGABRT / exit `-6` 退出，0 段、`raw_audio_saved=false`、`cloud_fallback=false`。崩溃报告注明责任进程是桌面宿主 `ChatGPT`，不是已授权的 `LocalPilot Test` bundle；helper 的签名 Info.plist 本身含 Speech、Microphone 与 ScreenCapture usage strings。没有重置/编辑 TCC 数据库；mic/both、长会议轮换与静音停止未继续。 |
 | 样本人工审阅、LoRA、adapter 推理 | **NOT_RUN** | Companion 没有成功的真实模型答案可供人工标注；未造标签、未训练或加载 adapter。 |
-| 真实模型资格/正式 Harbor 对照 | **BLOCKED / NOT_RUN** | LM Studio model ID 与缓存仓库身份/revision 未建立可信映射；oMLX 缓存的 35B snapshot 为 20.429 GB、revision `38740b847e4cb78f352aba30aa41c76e08e6eb46`，但 tokenizer 与独立 smoke 未完成，模型未加载。VM 无 Docker，磁盘余量低于既定 15 GiB 余量；没有运行新 study 或旧 534 队列。 |
+| LM Studio 模型与 tokenizer 文件资格 | **PASS（身份/文件）；真实 smoke PASS，质量有限** | `lms ls` 将实际 model key 映射到 `froggeric/Qwen3.6-35B-A3B-Uncensored-Heretic-MLX-4bit`；本机 14 个模型文件（20,422,465,696 bytes）逐个 SHA / Git blob 校验，与 Hub revision `32939a6cef2750f18ccf352443f22f2e4dfe3613` 全部匹配，包括 tokenizer.json。既有独立 Core 真实任务使用该 model key，7×8 回答 56，但有可见 `<think>`；provider usage/费用 UNKNOWN。系统 Python 没有独立 `tokenizers` 包，未声称它给出独立 token 计数。 |
+| 新 Harbor study / 本轮额外 35B 加载 | **BLOCKED / NOT_RUN** | `lms load --estimate-only` 对 16k context 估计 26.63 GiB GPU/总内存，置信度 LOW；当时可用 35.3 GiB。此前独立 smoke 已完成，资源审计时 `lms ps` 显示模型当前未加载；本轮没有再次加载以免在低置信估计下将余量压到约 8.7 GiB。oMLX 另一份 35B snapshot 为 20.429 GB、revision `38740b847e4cb78f352aba30aa41c76e08e6eb46`，未加载。VM 无 Docker，余量约 11 GiB，低于既定 15 GiB；没有运行新 study 或旧 534 队列。 |
 | 子 Agent、真实取消/恢复、五档来源、KV 冷热 | **NOT_RUN / 部分** | 已有会话任务含两个真实 Core 工具调用，但没有实际 Worker 子任务。只测试了本地路线；云端模型未配置，五档选择器可见不等于五档任务通过。未运行真实取消/UNKNOWN 恢复、冷/热 KV 或 oMLX 加载/卸载。 |
 | 晚间问候/睡眠唤醒与 Intel | **NOT_RUN** | 未调整时钟或模拟睡眠；本机为 arm64，没有 Intel Mac。 |
 
@@ -52,6 +53,8 @@
 
 APP run：`desktop/release/test-v5.0.1-rc.7/20261115-232524-47179/`。签名为 ad-hoc、未公证；bundle ID `io.localpilot.desktop.test`，架构 arm64。Test Info.plist 在该包中包含麦克风、Speech 和 ScreenCapture 用途说明。实际安装收据与旧 APP archive/restored-tree 哈希保留在私有收据中。
 
+LM Studio 本地模型身份与内容绑定到 [froggeric/Qwen3.6-35B-A3B-Uncensored-Heretic-MLX-4bit @ `32939a6cef2750f18ccf352443f22f2e4dfe3613`](https://huggingface.co/froggeric/Qwen3.6-35B-A3B-Uncensored-Heretic-MLX-4bit/commit/32939a6cef2750f18ccf352443f22f2e4dfe3613)。`lms ls --json` 记录 repo key、`qwen3_5_moe`、4-bit、35B、262144 max context 和 20,422,465,696 bytes；本机缓存 14 个文件与该 commit 的 LFS SHA-256/Git blob SHA-1 全部匹配。完整逐文件值见[模型身份清单](LMSTUDIO_MODEL_IDENTITY.json)。`tokenizer.json` SHA-256 为 `639e352c0f904c1875d448ebed6f6faac005fd3eb58393b7f1fb3ff044e5ca03`。独立 Core smoke task 的 backend model key 与该 LM Studio key 相同，输出 56；provider usage 未提供。此处确认的是 tokenizer 文件身份及后端真实调用，不是独立 token 计数或任务质量资格。
+
 ## 命令和日志
 
 关键命令（均在仓库现有流程内）：
@@ -72,7 +75,7 @@ npm run test:ui -- --reporter=line
 cargo test --locked --manifest-path src-tauri/Cargo.toml
 ```
 
-原始完整日志、trace、构建 manifest、安装计划/收据、错误 `.ips` 的本地系统路径与模型配置均在 worktree 的 `docs/evidence/pa-cooperation-20261115-mac/.private/` 和被 `.gitignore` 忽略的 `desktop/docs/evidence/…/.private/` 下，仅本机保留，没有加入公开提交。重点日志名：`test-app-build-tcc-plist.log`、`test-app-install-tcc-{plan,execute}.log`、`playwright-ui-r2.log`、`rust-tests-final.log`、`companion-meeting-tests.log`、`meeting-system-smoke-retry.log`、`meeting-system-ui-status-start.json`、`sse409-native.json`、`daily-app-as-test-plan-r2.json`。首次 Harbor 夹具错误与原有 UI 失败历史均未覆盖。
+原始完整日志、trace、构建 manifest、安装计划/收据、错误 `.ips` 的本地系统路径与模型配置均在 worktree 的 `docs/evidence/pa-cooperation-20261115-mac/.private/` 和被 `.gitignore` 忽略的 `desktop/docs/evidence/…/.private/` 下，仅本机保留，没有加入公开提交。重点日志名：`test-app-build-tcc-plist.log`、`test-app-install-tcc-{plan,execute}.log`、`playwright-ui-r2.log`、`rust-tests-final.log`、`companion-meeting-tests.log`、`meeting-system-smoke-retry.log`、`meeting-system-ui-status-start.json`、`sse409-native.json`、`daily-app-as-test-plan-r2.json`、`lms-model-list.json`、`lms-models-loaded.json`、`lmstudio-model-hub-metadata.json`、`lmstudio-model-identity.json`、`real-model-tasks-sanitized.json`。首次 Harbor 夹具错误与原有 UI 失败历史均未覆盖。
 
 ## 隐私与范围
 
