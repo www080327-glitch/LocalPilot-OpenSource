@@ -220,6 +220,31 @@ class RuntimeSessionTests(unittest.TestCase):
         self.assertEqual((self.root / "note.txt").read_text(), "fact changed externally")
         self.assertIn("Approval expired", cloud.calls[-1]["messages"][-1].content)
 
+    def test_script_approval_binds_resource_and_runs_real_process_once(self):
+        script = self.root / 'reviewed.py'
+        script.write_text("from pathlib import Path\nwith Path('effects.txt').open('a') as output: output.write('once\\n')\n")
+        cloud = ScriptBackend(response(None, call('execute', {'argv':['python3', 'reviewed.py']})), response('done'))
+        session = self.session(cloud, capabilities=CapabilityPolicy(execute=True))
+        self.assertEqual(session.run_turn('Run the reviewed script').status, 'approval_required')
+        self.assertFalse((self.root / 'effects.txt').exists())
+        self.assertIn('resource:reviewed.py', session.pending_approval['fingerprint'])
+        self.assertEqual(session.approve().status, 'completed')
+        self.assertEqual((self.root / 'effects.txt').read_text(), 'once\n')
+        self.assertEqual(len(session.tool_history), 1)
+        session.close()
+
+    def test_changed_script_invalidates_approval_before_process_dispatch(self):
+        script = self.root / 'reviewed.py'
+        script.write_text("print('reviewed')\n")
+        cloud = ScriptBackend(response(None, call('execute', {'argv':['python3', 'reviewed.py']})), response('stopped'))
+        session = self.session(cloud, capabilities=CapabilityPolicy(execute=True))
+        self.assertEqual(session.run_turn('Run the reviewed script').status, 'approval_required')
+        script.write_text("from pathlib import Path\nPath('unexpected.txt').write_text('changed')\n")
+        session.approve()
+        self.assertFalse((self.root / 'unexpected.txt').exists())
+        self.assertIn('Approval expired', cloud.calls[-1]['messages'][-1].content)
+        session.close()
+
     def test_plan_read_only_then_plan_approval_does_not_approve_patch(self):
         change = call("apply_patch", {"changes": [{"path": "new", "operation": "create", "content": "new"}]})
         cloud = ScriptBackend(response(None, change), response("Plan: create new"),

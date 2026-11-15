@@ -91,7 +91,8 @@ class OwnedCacheTests(unittest.TestCase):
 
     def test_probe_timeout_retains_partial_stdout_and_error_receipt(self):
         self.configure(hang=True)
-        self.plugin.probe_timeout=0.1
+        # This deadline includes starting Python and reaching the first print.
+        self.plugin.probe_timeout=2
         self.plugin.cleanup('fixture-task')
         row=self.receipt()
         self.assertEqual(row['status'],'ERROR')

@@ -1054,7 +1054,7 @@ async fn companion(
     preferences: Option<Preferences>,
     args: Option<Value>,
 ) -> Result<Value, String> {
-    if !["status", "ask", "ui_snapshot", "escalation_status", "source_list", "source_connect", "source_sync", "source_set_enabled", "source_revoke", "source_coverage", "training_export", "meeting_start", "meeting_stop", "meeting_status"].contains(&command.as_str()) {
+    if !["status", "ask", "ui_snapshot", "escalation_status", "source_list", "source_connect", "source_sync", "source_set_enabled", "source_revoke", "source_coverage", "training_export", "training_review", "training_candidates", "training_examples", "training_example_add", "training_example_delete", "meeting_start", "meeting_stop", "meeting_status"].contains(&command.as_str()) {
         return Err(fail("未开放的 Companion 操作"));
     }
     let mut body = args.unwrap_or_else(|| json!({}));

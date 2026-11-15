@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { desktop } from "../bridge";
 import type { CompanionMeeting } from "../hooks/useCompanionMeeting";
+import { meetingStateLabel, meetingTrackNames } from "../meetingStatus";
 
 export function MeetingCapture({
   controller,
@@ -21,7 +22,9 @@ export function MeetingCapture({
         <select
           aria-label="会议采集音轨"
           value={capture}
-          disabled={controller.active}
+          disabled={
+            controller.active || controller.busy || controller.uncertain
+          }
           onChange={(event) => setCapture(event.target.value)}
         >
           <option value="microphone">麦克风</option>
@@ -33,7 +36,9 @@ export function MeetingCapture({
         识别语言
         <select
           value={locale}
-          disabled={controller.active}
+          disabled={
+            controller.active || controller.busy || controller.uncertain
+          }
           onChange={(event) => setLocale(event.target.value)}
         >
           <option value="zh-CN">中文</option>
@@ -44,7 +49,9 @@ export function MeetingCapture({
         会议名称
         <input
           value={label}
-          disabled={controller.active}
+          disabled={
+            controller.active || controller.busy || controller.uncertain
+          }
           onChange={(event) => setLabel(event.target.value)}
           placeholder="可选，例如项目讨论"
         />
@@ -54,6 +61,7 @@ export function MeetingCapture({
           className="primary"
           disabled={
             !desktop ||
+            !controller.connected ||
             controller.busy ||
             controller.active ||
             controller.uncertain
@@ -80,6 +88,11 @@ export function MeetingCapture({
           停止采集
         </button>
       </div>
+      {!controller.connected && !controller.uncertain && (
+        <p className="muted" role="status">
+          等待 Companion 连接。Core 停止时仍可独立使用会议转写。
+        </p>
+      )}
       {controller.uncertain && (
         <p className="warning" role="status">
           暂时无法确认采集状态。未自动再次启动；请停止采集或检查 Companion
@@ -87,12 +100,30 @@ export function MeetingCapture({
         </p>
       )}
       {controller.result && (
-        <details open>
-          <summary>当前采集覆盖与状态</summary>
-          <pre className="json">
-            {JSON.stringify(controller.result, null, 2)}
-          </pre>
-        </details>
+        <>
+          <div className="meeting-status" role="status">
+            <strong>{meetingStateLabel(controller.meeting?.state)}</strong>
+            <p>
+              已记录 {controller.meeting?.segments || 0}{" "}
+              段文字，转写内容仍需核对。
+            </p>
+            {Object.entries(controller.meeting?.sources || {}).map(
+              ([track, value]) => (
+                <p key={track}>
+                  {meetingTrackNames[track] || track}：
+                  {meetingStateLabel((value as { state?: string }).state)}
+                </p>
+              ),
+            )}
+            {controller.result.reason && <p>{controller.result.reason}</p>}
+          </div>
+          <details>
+            <summary>当前采集覆盖与状态详情</summary>
+            <pre className="json">
+              {JSON.stringify(controller.result, null, 2)}
+            </pre>
+          </details>
+        </>
       )}
     </section>
   );

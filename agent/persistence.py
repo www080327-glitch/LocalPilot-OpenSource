@@ -149,6 +149,8 @@ def configuration(runtime):
         config['hybrid'] = runtime.hybrid.configuration()
     if runtime.delivery_instruction is not None:
         config['delivery_instruction'] = runtime.delivery_instruction
+    if runtime.child_registry_contract is not None:
+        config['child_registry_contract'] = deepcopy(runtime.child_registry_contract)
     if runtime.engine_policy:
         config['engine_v5'] = asdict(runtime.engine_policy)
     if runtime.adaptive:

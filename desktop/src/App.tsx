@@ -1,3 +1,10 @@
+import { ModelPicker } from "./components/ModelPicker";
+import { meetingStateLabel } from "./meetingStatus";
+import { SettingsDialog } from "./components/SettingsDialog";
+import { BrandMark as Mark } from "./components/BrandMark";
+import { JsonView as Pretty } from "./components/JsonView";
+import { TaskStatus as Status } from "./components/TaskStatus";
+import { TaskInspector } from "./components/TaskInspector";
 import { latestConversations, conversationTitle } from "./conversations";
 import { compatibleEffort, thinkingKey } from "./modelThinking";
 import { shouldSubmitEnter, type EnterBehavior } from "./inputBehavior";
@@ -23,7 +30,6 @@ import {
   useAttachments,
 } from "./components/Attachments";
 import { SetupAssistant } from "./components/SetupAssistant";
-import { ProductSettings } from "./components/ProductSettings";
 import { VersionManagement } from "./components/VersionManagement";
 import packageInfo from "../package.json";
 import {
@@ -52,35 +58,20 @@ import {
   Command,
   MessageSquare,
   Check,
-  CheckCheck,
-  Clock,
-  Activity,
   ShieldCheck,
   ShieldAlert,
   RefreshCw,
   Square,
-  Wifi,
-  WifiOff,
-  ExternalLink,
-  Terminal,
-  FileText,
-  GitCompare,
   Layers,
   Sparkles,
   X,
-  MoreHorizontal,
   Cloud,
-  Monitor,
-  Play,
-  Power,
   AlertTriangle,
   Copy,
   CheckCircle2,
   SlidersHorizontal,
-  Palette,
   ArrowDown,
   LoaderCircle,
-  Download,
   Pin,
   FolderPlus,
   Pencil,
@@ -92,21 +83,15 @@ import { call, desktop } from "./bridge";
 import {
   type Json,
   type Task,
-  type Model,
   type NativeProfile,
   label,
   dimensions,
   isUnknown,
   textOf,
   replyText,
-  usageOf,
-  settled,
-  eventName,
-  eventDetail,
   compatible,
   liveEfforts,
   verificationLabel,
-  diffsOf,
   terminal,
 } from "./domain";
 import {
@@ -139,29 +124,6 @@ function stored<T>(key: string, fallback: T): T {
   } catch {
     return fallback;
   }
-}
-function Mark({ small = false }: { small?: boolean }) {
-  return (
-    <span className={`brand-mark ${small ? "small" : ""}`} aria-hidden="true">
-      <span />
-      <span />
-      <span />
-    </span>
-  );
-}
-function Status({ task }: { task?: Task | null }) {
-  const unknown = isUnknown(task);
-  return (
-    <span
-      className={`status ${unknown ? "warn" : task?.status === "completed" ? "good" : task?.status === "failed" ? "bad" : task?.status.startsWith("requires_") ? "warn" : ""}`}
-    >
-      <i />
-      {unknown ? "UNKNOWN · 已隔离" : task ? label(task.status) : "准备就绪"}
-    </span>
-  );
-}
-function Pretty({ value }: { value: unknown }) {
-  return <pre className="json">{JSON.stringify(value, null, 2)}</pre>;
 }
 const markdownComponents = {
   a: DocumentLink,
@@ -225,9 +187,6 @@ export default function App() {
       taskId?: string;
       actionId?: string;
     } | null>(null),
-    [cloudPaths, setCloudPaths] = useState(""),
-    [delegation, setDelegation] = useState<Json | null>(null),
-    [delegatedActive, setDelegatedActive] = useState<Json | null>(null),
     [apiInfo, setApiInfo] = useState(""),
     [follow, setFollow] = useState(true),
     [atBottom, setAtBottom] = useState(true);
@@ -376,7 +335,10 @@ export default function App() {
     historyReady,
     refresh,
   } = connection;
-  const meeting = useCompanionMeeting(!!compHealth, showError);
+  const meeting = useCompanionMeeting(profile.home, showError);
+  useEffect(() => {
+    if (profile.maintenance_return) setUpdatesOpen(true);
+  }, [profile.maintenance_return]);
   const scope = `${profile.home}|${profile.origin}|${health?.client_subject || ""}`;
   const openTask = useSessionRecovery(taskState, {
     preferencesReady,
@@ -608,7 +570,6 @@ export default function App() {
   const composer = useRef<HTMLTextAreaElement>(null),
     scroller = useRef<HTMLDivElement>(null),
     searchRef = useRef<HTMLInputElement>(null),
-    modelMenu = useRef<HTMLDivElement>(null),
     preferenceAnchor = useRef<HTMLDivElement>(null);
   const currentTask = preview
     ? previewTask
@@ -667,8 +628,7 @@ export default function App() {
     setRight(true);
     setTab("agents");
   };
-  const dims = dimensions(currentTask),
-    usage = usageOf(currentTask);
+  const dims = dimensions(currentTask);
   const connected = !!health && compatible(health);
   const scopedPending = pending.filter(
     (v) => v.origin === profile.origin && v.subject === health?.client_subject,
@@ -735,14 +695,6 @@ export default function App() {
       });
   }, [messages, delta, follow, atBottom, preview]);
   useEffect(() => {
-    if (!modelOpen) return;
-    const fn = (e: MouseEvent) => {
-      if (!modelMenu.current?.contains(e.target as Node)) setModelOpen(false);
-    };
-    window.addEventListener("mousedown", fn);
-    return () => window.removeEventListener("mousedown", fn);
-  }, [modelOpen]);
-  useEffect(() => {
     if (!toast) return;
     const timer = setTimeout(() => setToast(""), 3500);
     return () => clearTimeout(timer);
@@ -786,6 +738,10 @@ export default function App() {
     setSettings(false);
   }
   async function connect() {
+    if (formHome !== profile.home && (meeting.active || meeting.uncertain)) {
+      showError("请先停止当前会议采集并确认状态，再切换 Suite 数据目录。");
+      return;
+    }
     setManagement(true);
     try {
       const r = await call<Json>("connect_suite", {
@@ -816,35 +772,6 @@ export default function App() {
       setSettings(false);
       setToast("已连接 · 凭据由原生侧安全调用");
     } catch (e) {
-      showError(e);
-    } finally {
-      setManagement(false);
-    }
-  }
-  async function pick(kind: string) {
-    try {
-      const v = await call<string | null>("pick_suite", { kind });
-      if (v) (kind === "home" ? setFormHome : setFormCli)(v);
-    } catch (e) {
-      showError(e);
-    }
-  }
-  async function manage(action: string) {
-    setError("");
-    setManagement(true);
-    try {
-      const r = await call<Json>("lifecycle", { action });
-      setDiagnostic(r);
-      await refresh().catch(() => {});
-      if (r.exit === 0) {
-        setToast("操作已返回，状态以诊断结果为准");
-      } else {
-        setError(
-          "管理操作未成功，请查看诊断。连接状态已按服务实际健康情况更新。",
-        );
-      }
-    } catch (e) {
-      await refresh().catch(() => {});
       showError(e);
     } finally {
       setManagement(false);
@@ -1284,76 +1211,6 @@ export default function App() {
       setManagement(false);
     }
   }
-  async function prepareDelegation(question: string, cloud = false) {
-    try {
-      const result = await call<Json>("companion_control", {
-        action: cloud ? "prepare_cloud" : "prepare_help",
-        text: question,
-        ticket: null,
-        confirmed: false,
-        preferences: sessionPrefs,
-      });
-      if (result.control && result.status === "inference_prepared")
-        setDelegation({ ...result.control, presented: false });
-      else throw new Error(result.text || result.reason || result.status);
-    } catch (e) {
-      showError(e);
-    }
-  }
-  useEffect(() => {
-    if (!delegation?.id) return;
-    let alive = true;
-    const heartbeat = setInterval(() => {
-      void call("companion_control", {
-        action: "heartbeat",
-        text: null,
-        ticket: delegation.id,
-        confirmed: false,
-        preferences: sessionPrefs,
-      }).catch(showError);
-    }, 8000);
-    call<Json>("companion_control", {
-      action: "present",
-      text: null,
-      ticket: delegation.id,
-      confirmed: false,
-      preferences: sessionPrefs,
-    })
-      .then((r) => {
-        if (!alive) return;
-        if (!["ready_to_start", "confirmation_required"].includes(r.status))
-          throw new Error(r.text || r.status);
-        setDelegation({ ...r.control, presented: true });
-      })
-      .catch(showError);
-    return () => {
-      alive = false;
-      clearInterval(heartbeat);
-    };
-  }, [delegation?.id]);
-  useEffect(() => {
-    if (!delegatedActive) return;
-    const handle = setInterval(async () => {
-      try {
-        await call("companion_control", {
-          action: "heartbeat",
-          text: null,
-          ticket: delegatedActive.id,
-          confirmed: false,
-          preferences: sessionPrefs,
-        });
-        const t = await call<Task>("api", {
-          method: "GET",
-          path: `/localpilot/v1/tasks/${delegatedActive.taskId}`,
-        });
-        updateTask(t);
-        if (t.quiescent && terminal.has(t.status)) setDelegatedActive(null);
-      } catch (e) {
-        showError(e);
-      }
-    }, 8000);
-    return () => clearInterval(handle);
-  }, [delegatedActive?.id]);
   async function recover(key: string) {
     setBusy(true);
     try {
@@ -1473,9 +1330,6 @@ export default function App() {
   }
   const outputBlocked =
     busy || (!preview && !!currentTask && !terminal.has(currentTask.status));
-  const plans: Json[] = Array.isArray(currentTask?.goals)
-    ? currentTask!.goals
-    : [];
   return (
     <div
       className={`app ${right ? "right-open" : ""} ${left ? "left-open" : ""}`}
@@ -1489,7 +1343,9 @@ export default function App() {
       {(meeting.active || meeting.uncertain) && (
         <div className="meeting-capture-banner" role="status">
           <strong>
-            {meeting.uncertain ? "会议采集状态待确认" : "正在采集会议音频"}
+            {meeting.uncertain
+              ? "会议采集状态待确认"
+              : meetingStateLabel(meeting.meeting?.state)}
           </strong>
           <span>
             {meeting.meeting?.label || meeting.meeting?.capture} ·{" "}
@@ -2243,121 +2099,30 @@ export default function App() {
                     <span>标准 Agent</span>
                   </button>
                 </div>
-                {
-                  <div className="model-anchor" ref={modelMenu}>
-                    <button
-                      className="model-trigger"
-                      aria-label="选择模型"
-                      disabled={!!loadingModel || busy}
-                      onClick={() => setModelOpen(!modelOpen)}
-                    >
-                      <span
-                        className={`model-indicator ${loadingModel || chosen?.deployment_status !== "ready" ? "unavailable" : routeCloud ? "cloud" : ""}`}
-                      />
-                      <span>
-                        {loadingModel
-                          ? `正在加载 ${loadingModel}…`
-                          : chosen?.model || "选择模型"}
-                      </span>
-                      <ChevronDown size={11} />
-                    </button>
-                    {modelOpen && (
-                      <Popover
-                        className="model-menu"
-                        anchor={modelMenu}
-                        onClose={() => setModelOpen(false)}
-                      >
-                        <div className="menu-label">
-                          选择模型
-                          <span>已配置且声明支持工具 · 在线状态未验证</span>
-                        </div>
-                        {supportedRouting && (
-                          <button
-                            onClick={() => {
-                              if (
-                                !preview &&
-                                currentTask &&
-                                model !== "__auto__"
-                              ) {
-                                detachForRouteChange();
-                                setToast(
-                                  "自动路由将在新会话首次发送时选择模型；旧会话未迁移。",
-                                );
-                              }
-                              setModel("__auto__");
-                              setSessionPrefs((old) => ({
-                                ...old,
-                                effort: null,
-                              }));
-                              setModelOpen(false);
-                            }}
-                          >
-                            Core 自动选择 · 新会话选路
-                          </button>
-                        )}
-                        {selectableModels.length ? (
-                          selectableModels.map((m) => (
-                            <button
-                              key={m.id}
-                              disabled={
-                                !!m.reasoning_only || !!loadingModel || busy
-                              }
-                              title={
-                                m.reasoning_only
-                                  ? "此路由用于 Companion 轻量对话，不具备标准 Agent 工具能力"
-                                  : undefined
-                              }
-                              onClick={() => {
-                                void selectModel(m.id);
-                              }}
-                              className={model === m.id ? "selected" : ""}
-                            >
-                              <span>
-                                {[
-                                  "deepseek",
-                                  "deepseek-native",
-                                  "remote-openai",
-                                  "remote-vllm",
-                                ].includes(m.adapter) ? (
-                                  <Cloud size={16} />
-                                ) : (
-                                  <Monitor size={16} />
-                                )}
-                              </span>
-                              <div>
-                                <strong>{m.model}</strong>
-                                <small>
-                                  {m.id} · {label(m.deployment_status)} ·{" "}
-                                  {m.context_budget
-                                    ? `${Math.round(m.context_budget / 1024)}k`
-                                    : "上下文未知"}
-                                </small>
-                              </div>
-                              {model === m.id ? (
-                                <Check size={14} />
-                              ) : m.deployment_status !== "ready" ? (
-                                <AlertTriangle size={13} />
-                              ) : null}
-                            </button>
-                          ))
-                        ) : (
-                          <div className="menu-empty">
-                            无可用标准 Agent；请先在模型库加载或配置模型。
-                          </div>
-                        )}
-                        <button
-                          onClick={() => {
-                            setModelOpen(false);
-                            setLibraryOpen(true);
-                          }}
-                        >
-                          模型详情、加载与设置 →
-                        </button>
-                        <p>不可用及未加载模型仍可在模型库检查或加载。</p>
-                      </Popover>
-                    )}
-                  </div>
-                }
+                <ModelPicker
+                  model={model}
+                  chosen={chosen}
+                  models={selectableModels}
+                  loadingModel={loadingModel}
+                  busy={busy}
+                  routeCloud={routeCloud}
+                  supportedRouting={supportedRouting}
+                  open={modelOpen}
+                  onOpen={setModelOpen}
+                  onSelect={(id) => void selectModel(id)}
+                  onAutoRoute={() => {
+                    if (!preview && currentTask && model !== "__auto__") {
+                      detachForRouteChange();
+                      setToast(
+                        "自动路由将在新会话首次发送时选择模型；旧会话未迁移。",
+                      );
+                    }
+                    setModel("__auto__");
+                    setSessionPrefs((old) => ({ ...old, effort: null }));
+                    setModelOpen(false);
+                  }}
+                  onLibrary={() => setLibraryOpen(true)}
+                />
                 {
                   <div className="effort-anchor" ref={effortAnchor}>
                     <button
@@ -2482,554 +2247,26 @@ export default function App() {
         </div>
       </main>
       {right && (
-        <aside className="inspector">
-          <Resizer
-            side="right"
-            width={shownRight}
-            max={maxRight}
-            onChange={resizeRight}
-          />
-          <header className="inspector-header" data-tauri-drag-region>
-            <span>任务详情</span>
-            <button
-              className="icon-btn"
-              aria-label="关闭任务详情"
-              onClick={() => setRight(false)}
-            >
-              <PanelRight size={16} />
-            </button>
-          </header>
-          <div className="inspector-body">
-            <div className="task-overview">
-              <div className="section-eyebrow">
-                {preview ? "SIMULATED TASK" : "LIVE WORKSPACE"}
-              </div>
-              <div className="overview-heading">
-                <h2>{currentTask ? "每一步，都有依据。" : "准备好开始"}</h2>
-                <button
-                  className="icon-btn"
-                  aria-label="重新查询任务"
-                  onClick={requery}
-                >
-                  <RefreshCw size={14} />
-                </button>
-              </div>
-              <Status task={currentTask} />
-              {currentTask && !preview && !terminal.has(currentTask.status) && (
-                <button className="task-cancel text-btn" onClick={cancel}>
-                  <Square size={10} />
-                  取消任务
-                </button>
-              )}
-              {currentTask?.error && (
-                <div className="task-error">
-                  <AlertTriangle size={13} />
-                  <span>
-                    {typeof currentTask.error === "string"
-                      ? currentTask.error
-                      : currentTask.error.message ||
-                        JSON.stringify(currentTask.error)}
-                  </span>
-                </div>
-              )}
-              {currentTask && (
-                <code className="task-id" title={currentTask.id}>
-                  {currentTask.id}
-                </code>
-              )}
-            </div>
-            <div
-              className="inspector-tabs"
-              role="tablist"
-              aria-label="任务详情"
-            >
-              <button
-                role="tab"
-                aria-selected={tab === "activity"}
-                className={tab === "activity" ? "selected" : ""}
-                onClick={() => setTab("activity")}
-              >
-                进度
-              </button>
-              <button
-                role="tab"
-                aria-selected={tab === "agents"}
-                className={tab === "agents" ? "selected" : ""}
-                onClick={() => setTab("agents")}
-              >
-                协同 {childTraces.length || ""}
-              </button>
-              <button
-                role="tab"
-                aria-selected={tab === "evidence"}
-                className={tab === "evidence" ? "selected" : ""}
-                onClick={() => setTab("evidence")}
-              >
-                证据
-              </button>
-              <button
-                role="tab"
-                aria-selected={tab === "diff"}
-                className={tab === "diff" ? "selected" : ""}
-                onClick={() => setTab("diff")}
-              >
-                Diff
-              </button>
-            </div>
-            {tab === "activity" ? (
-              <>
-                <section className="inspector-section">
-                  <h3>
-                    <CheckCheck size={15} />
-                    任务计划
-                    <span>
-                      {plans.length
-                        ? `${plans.filter((p) => p.status === "completed").length}/${plans.length}`
-                        : ""}
-                    </span>
-                  </h3>
-                  {plans.length ? (
-                    <ol className="plan-list">
-                      {plans.map((p, i) => (
-                        <li key={i}>
-                          <span
-                            className={`plan-number ${p.status === "completed" ? "done" : ""}`}
-                          >
-                            {p.status === "completed" ? (
-                              <Check size={11} />
-                            ) : (
-                              i + 1
-                            )}
-                          </span>
-                          <span>
-                            {p.title ||
-                              p.description ||
-                              p.goal ||
-                              p.id ||
-                              JSON.stringify(p)}
-                            <small>{label(p.status)}</small>
-                          </span>
-                        </li>
-                      ))}
-                    </ol>
-                  ) : (
-                    <div className="quiet-empty">
-                      <span className="empty-line" />
-                      <span className="empty-line short" />
-                      <p>
-                        {currentTask
-                          ? "服务未提供结构化计划"
-                          : "计划会随着任务逐步展开"}
-                      </p>
-                    </div>
-                  )}
-                </section>
-                <section className="inspector-section">
-                  <h3>
-                    <Terminal size={15} />
-                    工具调用<span>{currentTask?.tools?.length || ""}</span>
-                  </h3>
-                  {currentTask?.tools?.length ? (
-                    currentTask.tools.map((t, i) => (
-                      <details className="tool-call" key={t.id || i}>
-                        <summary>
-                          <ChevronRight size={12} />
-                          <code>{t.name || t.tool_name || "tool"}</code>
-                          <span>{label(t.status || "unknown")}</span>
-                        </summary>
-                        <Pretty value={t} />
-                      </details>
-                    ))
-                  ) : (
-                    <p className="muted micro">
-                      工具提案、执行与收据将在这里显示
-                    </p>
-                  )}
-                </section>
-                {currentTask?.required_action && (
-                  <section
-                    className={`approval-card ${isUnknown(currentTask) ? "unknown" : ""}`}
-                  >
-                    <ShieldAlert size={19} />
-                    <h3>
-                      {isUnknown(currentTask)
-                        ? "UNKNOWN · 副作用未知"
-                        : "需要可信操作者"}
-                    </h3>
-                    <p>
-                      {isUnknown(currentTask)
-                        ? "保持隔离。允许查询或取消，禁止自动重放。"
-                        : "先核对动作、目标与范围，再确认授权。审批身份由本机受控通道使用。"}
-                    </p>
-                    <details>
-                      <summary>查看操作详情</summary>
-                      <Pretty value={currentTask.required_action} />
-                    </details>
-                    {!isUnknown(currentTask) && (
-                      <div className="approval-actions">
-                        {currentTask.required_action.type === "approval" && (
-                          <>
-                            <button
-                              className="primary"
-                              disabled={management}
-                              onClick={() => handoff("approve")}
-                            >
-                              允许一次
-                            </button>
-                            <button
-                              className="secondary"
-                              disabled={management}
-                              onClick={() => handoff("reject")}
-                            >
-                              拒绝动作
-                            </button>
-                          </>
-                        )}
-                        {currentTask.required_action.type ===
-                          "runtime_continuation" &&
-                          currentTask.recovery?.class === "SAFE_TO_RESUME" && (
-                            <button
-                              className="text-btn"
-                              onClick={() => handoff("resume")}
-                            >
-                              继续任务
-                            </button>
-                          )}
-                      </div>
-                    )}
-                  </section>
-                )}
-                <section className="inspector-section timeline-section">
-                  <h3>
-                    <Activity size={15} />
-                    事件时间线<span>{activeEvents.length || ""}</span>
-                  </h3>
-                  {activeEvents.length ? (
-                    <ol className="timeline">
-                      {activeEvents
-                        .filter((e) => eventName(e) !== "TextDelta")
-                        .slice(-35)
-                        .map((e) => (
-                          <li key={e.sequence}>
-                            <i />
-                            <div>
-                              <span>{eventName(e)}</span>
-                              <small>
-                                {eventDetail(e) || `sequence ${e.sequence}`}
-                              </small>
-                            </div>
-                            <code>{String(e.sequence).padStart(2, "0")}</code>
-                          </li>
-                        ))}
-                    </ol>
-                  ) : (
-                    <p className="muted micro">
-                      等待服务事件。流中断后使用原任务和游标恢复。
-                    </p>
-                  )}
-                </section>
-              </>
-            ) : tab === "agents" ? (
-              <section className="inspector-section">
-                <h3>
-                  <Layers size={15} /> 实际模型协同
-                </h3>
-                <p className="micro muted">
-                  按本会话已经记录的模型请求次数统计；不把静态路由或缺失来源当成真实模型调用。
-                  失败请求也计入调用次数。实际 API 费用需另行核对。
-                </p>
-                {modelShare.observed > 0 ? (
-                  <>
-                    <div className="collaboration-percentages">
-                      <span>
-                        本地 {modelShare.localPercent}% · {modelShare.local} 次
-                      </span>
-                      <span>
-                        云端 {modelShare.cloudPercent}% · {modelShare.cloud} 次
-                      </span>
-                    </div>
-                    <div
-                      className="collaboration-bar"
-                      aria-label="已记录模型调用占比"
-                    >
-                      <span
-                        className="collaboration-local"
-                        style={{ width: `${modelShare.localPercent}%` }}
-                      />
-                      <span
-                        className="collaboration-cloud"
-                        style={{ width: `${modelShare.cloudPercent}%` }}
-                      />
-                    </div>
-                  </>
-                ) : (
-                  <p className="muted micro">暂无可核对的本地/云端调用次数。</p>
-                )}
-                {modelShare.unknown > 0 && (
-                  <p className="muted micro">
-                    另有 {modelShare.unknown}{" "}
-                    次调用没有可信来源分类，未计入百分比。
-                  </p>
-                )}
-                <h3>
-                  <Layers size={15} /> 子代理 · {childTraces.length}
-                </h3>
-                {childTraces.length ? (
-                  childTraces.map((child) => (
-                    <details
-                      className="tool-call"
-                      key={child.id}
-                      open={child.status === "running"}
-                    >
-                      <summary>
-                        <ChevronRight size={12} />
-                        <span>
-                          {child.source === "local"
-                            ? "本地"
-                            : child.source === "cloud"
-                              ? "云端"
-                              : "来源未知"}{" "}
-                          · {child.model}
-                        </span>
-                        <span>{label(child.status)}</span>
-                      </summary>
-                      <div className="collaboration-child-details">
-                        <p>子代理 ID：{child.id}</p>
-                        <p>实际提供方：{child.provider}</p>
-                        <p>配置模型：{child.model}</p>
-                        {child.reportedModels.length > 0 && (
-                          <p>
-                            提供方实际返回的模型：
-                            {child.reportedModels.join("、")}
-                          </p>
-                        )}
-                        {child.task && <p>委派任务：{child.task}</p>}
-                        {child.steps.length ? (
-                          <ol className="collaboration-child-steps">
-                            {child.steps.slice(-20).map((step) => (
-                              <li key={step.sequence}>{step.label}</li>
-                            ))}
-                          </ol>
-                        ) : (
-                          <p>尚无可展示的执行步骤。</p>
-                        )}
-                      </div>
-                    </details>
-                  ))
-                ) : (
-                  <p className="muted micro">
-                    当前任务未观察到子代理创建事件；不能据此宣称已经执行了跨模型委派。
-                  </p>
-                )}
-              </section>
-            ) : tab === "evidence" ? (
-              <>
-                <section className="inspector-section">
-                  <h3>
-                    <ShieldCheck size={15} />
-                    执行与交付
-                  </h3>
-                  <div className="dimension-list">
-                    {[
-                      ["执行", dims.runtime],
-                      ["交付", dims.delivery],
-                      ["验证", dims.verification],
-                      ["工程状态", dims.engineering],
-                      ["任务验收", dims.outcome],
-                    ].map(([k, v]) => (
-                      <div key={k}>
-                        <span>{k}</span>
-                        <span
-                          className={
-                            v === "passed" ||
-                            v === "completed" ||
-                            v === "verified"
-                              ? "mint"
-                              : ""
-                          }
-                        >
-                          {k === "验证"
-                            ? verificationLabel(v)
-                            : k === "工程状态"
-                              ? v === "passed"
-                                ? "通过"
-                                : v === "failed"
-                                  ? "未通过"
-                                  : label(v)
-                              : label(v)}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                  <p className="micro muted">
-                    执行完成、交付结果和可信验证分别呈现。缺失的指标保留为未知。
-                  </p>
-                </section>
-                <section className="inspector-section">
-                  <h3>
-                    <FileText size={15} />
-                    验证与收据
-                  </h3>
-                  {currentTask ? (
-                    <>
-                      <details className="evidence-details" open>
-                        <summary>Verification summary</summary>
-                        <Pretty
-                          value={
-                            currentTask.verification_summary || {
-                              verification_status: "not_run",
-                            }
-                          }
-                        />
-                      </details>
-                      <details className="evidence-details" open>
-                        <summary>文件位置与内容校验</summary>
-                        <Pretty
-                          value={
-                            currentTask.file_operation_verification || {
-                              status: "NOT_RUN",
-                            }
-                          }
-                        />
-                        <p className="micro muted">
-                          核对真实文件与操作收据；任务要求是否全部满足仍单独验证。
-                        </p>
-                      </details>
-                      <details className="evidence-details">
-                        <summary>Receipt summary</summary>
-                        <Pretty
-                          value={
-                            currentTask.receipt_summary || { status: "unknown" }
-                          }
-                        />
-                      </details>
-                      <details className="evidence-details">
-                        <summary>Route decision / recovery</summary>
-                        <Pretty
-                          value={{
-                            service: currentTask.service,
-                            recovery: currentTask.recovery,
-                          }}
-                        />
-                      </details>
-                    </>
-                  ) : (
-                    <p className="muted micro">
-                      提交任务后显示服务提供的证据。
-                    </p>
-                  )}
-                </section>
-              </>
-            ) : (
-              <section className="inspector-section">
-                {diffsOf(currentTask).length ? (
-                  <>
-                    <h3>
-                      <GitCompare size={15} />
-                      当前审批的变更预览
-                    </h3>
-                    {diffsOf(currentTask).map((c, i) => (
-                      <div className="diff-file" key={i}>
-                        <div>
-                          <FileText size={13} />
-                          <code>{c.path}</code>
-                          <span>{c.operation}</span>
-                        </div>
-                        <pre>
-                          {c.diff.split("\n").map((line: string, n: number) => (
-                            <span
-                              key={n}
-                              className={
-                                line.startsWith("+")
-                                  ? "addition"
-                                  : line.startsWith("-")
-                                    ? "deletion"
-                                    : ""
-                              }
-                            >
-                              {line}
-                              {"\n"}
-                            </span>
-                          ))}
-                        </pre>
-                      </div>
-                    ))}
-                    <p className="micro muted">
-                      来自服务的当前审批预览。它描述拟议变更，不证明已经写入磁盘。最终状态以收据与
-                      Verification 为准。
-                    </p>
-                  </>
-                ) : (
-                  <div className="diff-empty">
-                    <GitCompare size={28} />
-                    <h3>变更，从可信来源开始。</h3>
-                    <p>
-                      当前没有审批 Diff。服务提供 apply_patch
-                      审批预览时，会在这里显示；RC2 尚无通用工作区 Diff 接口。
-                    </p>
-                    <span className="outline-badge">不读取工作区文件</span>
-                  </div>
-                )}
-              </section>
-            )}
-            <div className="inspector-bottom">
-              <div>
-                <span>上下文</span>
-                <strong>
-                  {chosen?.context_budget
-                    ? `${Math.round(chosen.context_budget / 1024)}k`
-                    : "未知"}
-                </strong>
-              </div>
-              <div>
-                <span>Tokens</span>
-                <strong>
-                  {usage
-                    ? `${usage.input?.toLocaleString() ?? "未知"} / ${usage.output?.toLocaleString() ?? "未知"}`
-                    : "未知"}
-                </strong>
-              </div>
-              <div>
-                <span>实际费用</span>
-                <strong>未知</strong>
-              </div>
-              <button
-                className="text-btn"
-                onClick={() =>
-                  setApiInfo(
-                    "模型上下文来自服务注册表；Token 仅展示 provider 实际返回的 usage。RC2 没有计费 API，客户端不估算实际费用。上下文总容量不代表当前已使用量。",
-                  )
-                }
-              >
-                关于这些指标
-                <ChevronRight size={12} />
-              </button>
-            </div>
-          </div>
-          <footer className="inspector-status">
-            <span
-              className={`connection-dot ${stream === "connected" ? "online" : ""}`}
-            />
-            {preview
-              ? "模拟事件 · 不连接服务"
-              : stream === "connected"
-                ? "SSE 已连接"
-                : stream === "reconnecting"
-                  ? "SSE 正在重连"
-                  : stream === "disconnected"
-                    ? "连接中断 · 可重新查询"
-                    : currentTask?.quiescent
-                      ? "任务已静止 · 快照保留"
-                      : "事件连接待命"}
-            <button
-              className="icon-btn"
-              aria-label="重连 SSE"
-              onClick={requery}
-            >
-              <RefreshCw size={12} />
-            </button>
-          </footer>
-        </aside>
+        <TaskInspector
+          currentTask={currentTask}
+          chosen={chosen}
+          activeEvents={activeEvents}
+          modelShare={modelShare}
+          childTraces={childTraces}
+          preview={preview}
+          management={management}
+          stream={stream}
+          tab={tab}
+          width={shownRight}
+          maxWidth={maxRight}
+          onResize={resizeRight}
+          onClose={() => setRight(false)}
+          onTab={setTab}
+          onRequery={requery}
+          onCancel={cancel}
+          onAction={handoff}
+          onInfo={setApiInfo}
+        />
       )}
       {developerOpen && (
         <Modal
@@ -3288,122 +2525,6 @@ export default function App() {
           )}
         </Modal>
       )}
-      {delegation && (
-        <Modal
-          title={
-            delegation.kind === "cloud"
-              ? "确认原问题出站至 DeepSeek"
-              : delegation.mode === "execution"
-                ? "确认需要标准 Agent 帮助"
-                : "确认本地深入分析"
-          }
-          onClose={() => setDelegation(null)}
-        >
-          <p>{delegation.question}</p>
-          <p>本次模型：{delegation.model}</p>
-          <p>
-            {delegation.kind === "cloud"
-              ? "仅发送这条原问题；不附带本地回答、记忆、观察或操作，不重放工具。"
-              : delegation.mode === "execution"
-                ? "Companion 将委派给 Core。文件写入仍会单独审批。"
-                : "只进行本地分析，不授予文件修改等执行权限。"}
-          </p>
-          <p>
-            当前可用内存约{" "}
-            {Math.round(
-              (delegation.resources?.memory_available_bytes || 0) / 1024 ** 3,
-            )}{" "}
-            GB。确认项目：
-            {(delegation.required_confirmations || []).join("、") ||
-              "资源范围已核对"}
-            。
-          </p>
-          <button
-            className="primary"
-            disabled={!delegation.presented || busy}
-            onClick={async () => {
-              setBusy(true);
-              try {
-                await call("companion_control", {
-                  action: "heartbeat",
-                  text: null,
-                  ticket: delegation.id,
-                  confirmed: false,
-                  preferences: sessionPrefs,
-                });
-                const result = await call<Json>("companion_control", {
-                  action: "start",
-                  text: null,
-                  ticket: delegation.id,
-                  confirmed: true,
-                  preferences: sessionPrefs,
-                });
-                if (
-                  result.status === "confirmation_required" &&
-                  result.control
-                ) {
-                  setDelegation({ ...result.control, presented: true });
-                  setToast("资源条件发生变化，请核对更新后的范围再确认。");
-                  return;
-                }
-                if (!result.task_id)
-                  throw new Error(result.text || result.status);
-                const t = await call<Task>("api", {
-                  method: "GET",
-                  path: `/localpilot/v1/tasks/${result.task_id}`,
-                });
-                setDelegatedActive({
-                  id: delegation.id,
-                  taskId: t.id,
-                  kind: delegation.kind,
-                });
-                setDelegation(null);
-
-                await call("session_preferences", {
-                  sessionId: t.session_id,
-                  value: sessionPrefs,
-                });
-                updateTask(t);
-                openTask(t);
-              } catch (e) {
-                showError(e);
-              } finally {
-                setBusy(false);
-              }
-            }}
-          >
-            {delegation.kind === "cloud"
-              ? "同意仅发送原问题"
-              : delegation.mode === "execution"
-                ? "需要帮助，确认委派"
-                : "确认本次本地分析"}
-          </button>
-        </Modal>
-      )}
-      {delegatedActive && (
-        <div className="toast" role="status">
-          Companion 委派进行中 · {delegatedActive.taskId}
-          <button
-            className="secondary"
-            onClick={async () => {
-              try {
-                await call("companion_control", {
-                  action: "stop",
-                  text: null,
-                  ticket: delegatedActive.id,
-                  confirmed: true,
-                  preferences: sessionPrefs,
-                });
-                setToast("停止请求已送达，正在核对原任务。");
-              } catch (e) {
-                showError(e);
-              }
-            }}
-          >
-            停止委派
-          </button>
-        </div>
-      )}
       {toast && (
         <div className="toast" role="status">
           <CheckCircle2 size={16} />
@@ -3412,326 +2533,76 @@ export default function App() {
       )}
       {updatesOpen && (
         <Modal title="软件更新" onClose={() => setUpdatesOpen(false)} wide>
-          <VersionManagement health={health} cliReady={!!profile.cli} />
-        </Modal>
-      )}
-      {settings && (
-        <Modal title="连接与偏好设置" onClose={() => setSettings(false)} wide>
-          <div className="settings-intro">
-            <Mark small />
-            <div>
-              <strong>LocalPilot Desktop</strong>
-              <p>管理模型、权限和宠物。服务连接与专业参数放在高级设置。</p>
-            </div>
-            <span className="outline-badge">{packageInfo.version} · arm64</span>
-          </div>
-          <section className="global-preferences">
-            <div className="preference-panel-title">
-              <h3>新会话默认值</h3>
-              <span className="micro muted">保存后仅影响后续新会话</span>
-            </div>
-            <PreferenceControls
-              value={defaultsDraft}
-              onChange={setDefaultsDraft}
-              supported={supportedRouting}
-            />
-            <button className="primary" onClick={() => saveDefaults()}>
-              保存全局默认值
-            </button>
-          </section>
-          <ProductSettings
-            meeting={meeting}
-            permissionMode={permissionDefault}
-            enterBehavior={enterBehavior}
-            onEnterBehavior={setEnterBehavior}
-            onPermission={(id) => choosePermission(id, true)}
-            defaultModel={defaultModel}
-            models={models.filter((m) => !m.reasoning_only)}
-            onDefaultModel={setDefaultModel}
-            onUpdates={() => {
-              setSettings(false);
-              setUpdatesOpen(true);
-            }}
-            onModels={() => {
-              setSettings(false);
-              setLibraryOpen(true);
-            }}
-            onError={showError}
+          <VersionManagement
+            health={health}
+            cliReady={!!profile.cli}
+            maintenanceReturn={!!profile.maintenance_return}
           />
-          <details className="advanced-settings">
-            <summary>高级设置 · 服务、API、路由与诊断</summary>
-            <div className="settings-grid">
-              <section>
-                <h3>服务连接</h3>
-                {desktop && (
-                  <section>
-                    <label className="field-label">
-                      云端文件正文范围 · 精确工作区相对路径，一行一个
-                      <textarea
-                        aria-label="云端文件正文范围"
-                        value={cloudPaths}
-                        onChange={(e) => setCloudPaths(e.target.value)}
-                        placeholder={"input.txt\nanswer.txt"}
-                      />
-                    </label>
-                    <button
-                      className="secondary full"
-                      disabled={
-                        management || busy || !connected || !cloudPaths.trim()
-                      }
-                      onClick={async () => {
-                        setManagement(true);
-                        try {
-                          const result = await call<Json>(
-                            "configure_cloud_scope",
-                            {
-                              paths: cloudPaths
-                                .split("\n")
-                                .map((p) => p.trim())
-                                .filter(Boolean),
-                              confirmed: true,
-                            },
-                          );
-                          await refresh();
-                          setModel(
-                            result.result?.route ||
-                              result.route ||
-                              "deepseek-agent",
-                          );
-                          setToast(
-                            "精确文件范围已授权。新会话使用新增的云端路由；每次请求仍需出站审批。",
-                          );
-                        } catch (e) {
-                          showError(e);
-                        } finally {
-                          setManagement(false);
-                        }
-                      }}
-                    >
-                      授权以上文件正文出站 · 创建独立云端路由
-                    </button>
-                    <p className="micro muted">
-                      仅授权列出的文件；可列出尚未创建的目标文件。已有 Session
-                      保留原范围。任务或审批未结束时不修改配置。
-                    </p>
-                  </section>
-                )}
-                {desktop && (
-                  <button
-                    className="secondary full"
-                    disabled={management || busy || !connected}
-                    onClick={async () => {
-                      setManagement(true);
-                      try {
-                        await call("add_cloud_provider");
-                        await refresh();
-                        setToast("DeepSeek 已配置；每次云端任务仍需出站授权。");
-                      } catch (e) {
-                        showError(e);
-                      } finally {
-                        setManagement(false);
-                      }
-                    }}
-                  >
-                    配置 DeepSeek · 选择现有私有密钥文件
-                  </button>
-                )}
-                <button
-                  className="text-btn"
-                  onClick={() => {
-                    setSettings(false);
-                    setInitOpen(true);
-                  }}
-                >
-                  首次使用：初始化空 Suite 目录
-                  <ArrowRight size={13} />
-                </button>
-                <label className="field-label">
-                  Suite 数据目录
-                  <div className="path-input">
-                    <input
-                      aria-label="Suite 数据目录"
-                      value={formHome}
-                      onChange={(e) => setFormHome(e.target.value)}
-                      placeholder="~/.local/share/localpilot"
-                    />
-                    <button
-                      className="icon-btn"
-                      onClick={() => pick("home")}
-                      aria-label="选择 Suite 数据目录"
-                    >
-                      <Folder size={16} />
-                    </button>
-                  </div>
-                </label>
-                <label className="field-label">
-                  Suite 命令
-                  <div className="path-input">
-                    <input
-                      aria-label="Suite 命令"
-                      value={formCli}
-                      onChange={(e) => setFormCli(e.target.value)}
-                      placeholder="/path/to/venv/bin/localpilot"
-                    />
-                    <button
-                      className="icon-btn"
-                      onClick={() => pick("cli")}
-                      aria-label="选择 Suite 命令"
-                    >
-                      <Folder size={16} />
-                    </button>
-                  </div>
-                </label>
-                <p className="micro muted">
-                  <ShieldCheck size={12} /> 仅由原生侧读取 Suite 的 600
-                  私有凭据。GUI 保存连接引用，不复制 Token。
-                </p>
-                <button
-                  className="primary"
-                  onClick={connect}
-                  disabled={management || !formHome}
-                >
-                  {management ? (
-                    <LoaderCircle className="spin" size={14} />
-                  ) : (
-                    <Wifi size={14} />
-                  )}
-                  连接并检查
-                </button>
-                {profile.origin && (
-                  <p className="micro muted">
-                    {profile.origin}
-                    <br />
-                    {connected
-                      ? `Core ${health?.version} · 契约 ${health?.compatibility?.agent_service_api}`
-                      : "已配置连接；服务可能尚未启动"}
-                  </p>
-                )}
-              </section>
-              <section>
-                <h3>外观与交互</h3>
-                <button
-                  className="secondary full"
-                  onClick={() => {
-                    setSettings(false);
-                    setDeveloperOpen(true);
-                  }}
-                >
-                  <Terminal size={14} />
-                  开发者工具 · 完整 CLI
-                </button>
-                <button
-                  className="secondary full"
-                  onClick={() => {
-                    setSettings(false);
-                    setToolsOpen(true);
-                  }}
-                >
-                  <Terminal size={14} />
-                  Suite / Companion 工具
-                </button>
-                <div className="setting-row">
-                  <span>主题</span>
-                  <select
-                    aria-label="主题"
-                    value={theme}
-                    onChange={(e) => setTheme(e.target.value)}
-                  >
-                    <option value="system">跟随系统</option>
-                    <option value="dark">深色 · Graphite</option>
-                    <option value="light">浅色 · Paper</option>
-                  </select>
-                </div>
-                <div className="setting-row">
-                  <span>原生 Liquid Glass</span>
-                  <input
-                    type="checkbox"
-                    aria-label="原生 Liquid Glass"
-                    checked={glass}
-                    onChange={(e) => setGlass(e.target.checked)}
-                  />
-                </div>
-                <p className="micro muted">{glassStatus}</p>
-                <div className="setting-row">
-                  <span>减少动态效果</span>
-                  <input
-                    aria-label="减少动态效果"
-                    type="checkbox"
-                    checked={reduced}
-                    onChange={(e) => setReduced(e.target.checked)}
-                  />
-                </div>
-                <p className="micro muted">
-                  同时遵循系统 Reduce Motion。无持续背景动画。
-                </p>
-                <button className="secondary full" onClick={enterPreview}>
-                  <Monitor size={14} />
-                  查看模拟工作区
-                </button>
-                <p className="micro muted">
-                  浏览器只提供设计预览；真实接入通过 macOS 原生连接层。
-                </p>
-              </section>
-            </div>
-            <VersionManagement
-              key={`${profile.cli}|${profile.home}`}
-              health={health}
-              cliReady={!!profile.cli}
-            />
-            <div className="settings-service">
-              <h3>
-                服务管理
-                <span>
-                  {compHealth ? "Companion 已连接" : "Companion 未连接"}
-                </span>
-              </h3>
-              <div className="management-actions">
-                {[
-                  ["start", "启动 Core"],
-                  ["companion_start", "启动 Companion"],
-                  ["doctor", "诊断"],
-                  ["status", "服务状态"],
-                  ["restart", "重启 Core"],
-                  ["logs", "日志"],
-                  ["config", "配置摘要"],
-                  ["models", "模型注册表"],
-                  ["version", "版本"],
-                  ["companion_status", "Companion 状态"],
-                  ["companion_privacy", "观察权限状态"],
-                  ["companion_stop", "停止 Companion"],
-                  ["stop", "停止 Core"],
-                ].map(([a, t]) => (
-                  <button
-                    className="secondary"
-                    disabled={management || !profile.cli}
-                    key={a}
-                    onClick={() => manage(a)}
-                  >
-                    {a === "doctor" ? (
-                      <Activity size={13} />
-                    ) : a.includes("stop") ? (
-                      <Square size={11} />
-                    ) : (
-                      <Power size={13} />
-                    )}{" "}
-                    {t}
-                  </button>
-                ))}
-              </div>
-              {diagnostic && (
-                <>
-                  <Pretty value={diagnostic} />
-                </>
-              )}
-            </div>
-          </details>
-          {error && (
-            <p className="form-error" role="alert">
-              {error}
-            </p>
-          )}
         </Modal>
       )}
+      <SettingsDialog
+        open={settings}
+        onClose={() => setSettings(false)}
+        defaults={{
+          value: defaultsDraft,
+          onChange: setDefaultsDraft,
+          supported: supportedRouting,
+        }}
+        onSaveDefaults={() => void saveDefaults()}
+        product={{
+          meeting,
+          permissionMode: permissionDefault,
+          enterBehavior,
+          onEnterBehavior: setEnterBehavior,
+          onPermission: (id) => choosePermission(id, true),
+          defaultModel,
+          models: models.filter((m) => !m.reasoning_only),
+          onDefaultModel: setDefaultModel,
+          onUpdates: () => {
+            setSettings(false);
+            setUpdatesOpen(true);
+          },
+          onModels: () => {
+            setSettings(false);
+            setLibraryOpen(true);
+          },
+          onError: showError,
+        }}
+        profile={profile}
+        health={health}
+        compHealth={compHealth}
+        diagnostic={diagnostic}
+        setDiagnostic={setDiagnostic}
+        connected={connected}
+        formHome={formHome}
+        setFormHome={setFormHome}
+        formCli={formCli}
+        setFormCli={setFormCli}
+        management={management}
+        setManagement={setManagement}
+        busy={busy}
+        error={error}
+        setError={setError}
+        showError={showError}
+        connect={connect}
+        refresh={refresh}
+        setModel={setModel}
+        setToast={setToast}
+        onOpenPanel={(panel) => {
+          setSettings(false);
+          if (panel === "initialize") setInitOpen(true);
+          else if (panel === "developer") setDeveloperOpen(true);
+          else setToolsOpen(true);
+        }}
+        onPreview={enterPreview}
+        theme={theme}
+        setTheme={setTheme}
+        glass={glass}
+        setGlass={setGlass}
+        glassStatus={glassStatus}
+        reduced={reduced}
+        setReduced={setReduced}
+      />
       {confirm === "cloud" && (
         <Modal
           title="这次允许云端处理？"

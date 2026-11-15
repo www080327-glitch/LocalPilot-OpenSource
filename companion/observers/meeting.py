@@ -105,8 +105,7 @@ class MeetingCapture:
             return self.status() | {"status":"unavailable"}
         session_id = str(uuid.uuid4())
         self.output = PrivateData(PrivateData(self.service.private.root / "meetings").root / ("meeting-"+session_id))
-        transcript = self.output.write("transcript.jsonl", "")
-        registered = self.service.sources.connect("meeting", str(transcript), label, False)
+        registered = self.service.sources.connect("meeting", str(self.output.root), label, False)
         self.state = {"session_id":session_id, "state":"starting", "capture":capture, "locale":locale,
                       "label":label, "started_at":time.time(), "source_id":registered["source"]["id"],
                       "segments":0, "sources":{name:{"state":"starting"} for name in
@@ -154,13 +153,13 @@ class MeetingCapture:
             try:
                 process.wait(timeout=13)
             except subprocess.TimeoutExpired:
+                self.failure = "helper_stop_required_termination"
                 process.terminate()
                 try:
                     process.wait(timeout=2)
                 except subprocess.TimeoutExpired:
                     process.kill()
                     process.wait(timeout=3)
-                self.state["detail"] = "helper_stop_required_termination"
             if self.reader:
                 self.reader.join(timeout=2)
             self.drain()
@@ -211,6 +210,8 @@ class MeetingCapture:
                 fields = {key:event[key] for key in ("state", "detail", "at")}
                 if event["source"] == "all":
                     self.state.update(state=event["state"], detail=event["detail"])
+                    if event['state'] not in ACTIVE:
+                        self.state['ended_at'] = event['at']
                     for source in self.state["sources"]:
                         self.state["sources"][source] = fields
                 else:
@@ -218,8 +219,9 @@ class MeetingCapture:
             else:
                 self.state["exit_code"] = event["returncode"]
                 if self.state["state"] in ACTIVE:
-                    self.state.update(state="stopped" if self.stop_requested.is_set() and event["returncode"] == 0 else "failed",
-                                      detail="helper_exited", ended_at=time.time())
+                    self.state.update(state="failed", detail="helper_exited_without_terminal_status", ended_at=time.time())
+                elif self.state['state'] == 'stopped' and event['returncode'] != 0:
+                    self.state.update(state='failed', detail='helper_exit_nonzero')
         if self.overflow.is_set():
             changed |= self.state.get("detail") != "transcript_queue_overflow"
             self.failure = "transcript_queue_overflow"
@@ -238,12 +240,15 @@ class MeetingCapture:
             self.discard = True
             self.request_stop()
             return
-        filename = self.output.file("transcript.jsonl")
-        with filename.open("a", encoding="utf-8") as stream:
-            stream.write(json.dumps(event, ensure_ascii=False) + "\n")
+        # Immutable segment files keep earlier observation IDs current while a
+        # long meeting continues, and avoid reimporting its entire history.
+        filename = self.output.write(f"segment-{len(self.seen)+1:06d}-{event['source']}.jsonl",
+                                     json.dumps(event, ensure_ascii=False) + "\n")
         self.seen.add(event["segment"])
         self.state.update(segments=len(self.seen), last_transcript_at=event["ended_at"])
-        self.state["last_sync"] = self.service.sources.sync(source["id"])
+        self.state["last_sync"] = self.service.sources.sync(source["id"], selected_file=filename)
+        if self.state['last_sync']['status'] != 'ok':
+            raise ValueError('Final transcript could not be indexed')
 
     def _read(self, process, session_id):
         try:

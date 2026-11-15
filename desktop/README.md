@@ -4,7 +4,7 @@
 
 [公开 GitHub 历史发行与可用下载](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases) · [源码与版本留存规则](../docs/development/GITHUB_RELEASE_HISTORY_POLICY.md)。历史 5.0.0 下载资产原属旧私有发行，尚未核验迁移到公开 Release；不要把新公开地址拼成未经验证的同名 DMG/ZIP。
 
-[测试安装与回滚](../docs/development/MAC_PORTABILITY_20261114.md) · [当前源码与验收边界](../docs/development/PA_READINESS_20261114.md) · [推荐版本清单](recommended-release.json) · [总说明](../README.md)
+[测试安装与回滚](../docs/development/MAC_PORTABILITY_20261114.md) · [当前桌面源码与验收边界](docs/development/PA_CONTINUATION_20261115.md) · [本机 Work 提示词](../docs/development/WORK_PA_COOPERATION_20261115.md) · [推荐版本清单](recommended-release.json) · [总说明](../README.md)
 
 桌宠支持六个边缘 Anchor、缩回/重新探头、底部潜水鲸尾、真实左右拖动姿态、独立角色比例、透明穿透和局部原生 Liquid Glass。小气泡点击展开现有聊天窗；工具委派仍复用 Core 授权、提交账本和 SSE，不产生第二套 Runtime。个人角色素材与姿态包不随源码或制品分发。
 

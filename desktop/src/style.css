@@ -3918,3 +3918,32 @@ html[data-pet-part="character"] button:active:not(:disabled) {
 .meeting-capture-banner span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .model-configuration label:not(.simple-toggle), .companion-sources section > label { display: grid; gap: 6px; margin: 12px 0; }
 .model-configuration input, .model-configuration select, .companion-sources section > label input, .companion-sources section > label select { width: 100%; }
+
+.training-review {
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.training-review label {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0;
+}
+.training-review textarea {
+  width: 100%;
+  min-width: 0;
+  resize: vertical;
+}
+.training-source,
+.training-candidate,
+.training-example {
+  margin: 10px 0;
+  overflow-wrap: anywhere;
+}
+.training-answer {
+  white-space: pre-wrap;
+}
+.meeting-status {
+  margin: 12px 0;
+}

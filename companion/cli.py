@@ -127,7 +127,10 @@ def main():
     example.add_argument("--answer", required=True)
     example.add_argument("--purpose", required=True, choices=["greeting", "activity_qa", "handoff"])
     example.add_argument("--observation-id", action="append", default=[])
+    example.add_argument('--answer-id')
     sub.add_parser("training-example-delete").add_argument("id")
+    sub.add_parser('training-review').add_argument('answer_id')
+    sub.add_parser('training-candidates').add_argument('--limit', type=int, default=20)
     training_export = sub.add_parser("training-export")
     training_export.add_argument("--seed", type=int, default=17)
     training_export.add_argument("--validation-fraction", type=float, default=.2)
@@ -234,9 +237,13 @@ def main():
             elif args.action.startswith("training-"):
                 command = {"command":args.action.replace("-", "_")}
                 if args.action == "training-example-add":
-                    command.update(question=args.question, answer=args.answer, purpose=args.purpose, observation_ids=args.observation_id)
+                    command.update(question=args.question, answer=args.answer, purpose=args.purpose, observation_ids=args.observation_id, answer_id=args.answer_id)
                 elif args.action == "training-example-delete":
                     command["id"] = args.id
+                elif args.action == 'training-review':
+                    command['answer_id'] = args.answer_id
+                elif args.action == 'training-candidates':
+                    command['limit'] = args.limit
                 elif args.action == "training-export":
                     command.update(seed=args.seed, validation_fraction=args.validation_fraction)
             elif args.action.startswith("meeting-"):

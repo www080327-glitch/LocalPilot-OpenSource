@@ -15,6 +15,51 @@ class TaskController:
     def __init__(self, service):
         self.service = service
 
+    def context_current(self, request):
+        service = self.service
+        for original in request.get('relevant_memories', []):
+            raw = service.store.db.execute('SELECT * FROM memories WHERE id=?', (original.get('id'),)).fetchone()
+            if raw is None:
+                return False
+            row = dict(raw) | {'metadata':json.loads(raw['metadata'])}
+            if not service.legacy_memory_accessible(row) or not service.store.is_current(row):
+                return False
+            if row['type'] == 'conversation' and not service.conversation_accessible(row):
+                return False
+            if row['type'] in {'document', 'summary', 'computer_event'}:
+                indexed = service.store.db.execute('SELECT mtime_ns FROM files WHERE path=?', (row['source_reference'],)).fetchone()
+                try:
+                    if indexed is None or Path(row['source_reference']).stat().st_mtime_ns != indexed[0]:
+                        return False
+                except OSError:
+                    return False
+        if any(not service.scope.allowed(path) for path in request.get('relevant_files', [])):
+            return False
+        for row in request.get('recent_events', []):
+            if row.get('observation_id'):
+                if not service.observation_memory.is_current(row['observation_id']):
+                    return False
+            elif not service.scope.allowed(row.get('source_reference', '')):
+                return False
+        return True
+
+    def session_context_current(self, session_id, before=None):
+        records = [record for record in self.service.store.get('localpilot_tasks', {}).values()
+                   if record.get('endpoint') == self.service.config.localpilot_endpoint
+                   and (record.get('result') or record.get('last_status') or {}).get('session_id') == session_id
+                   and (before is None or record.get('timestamp', 0) <= before)]
+        return bool(records) and all('request' in record and self.context_current(record['request']) for record in records)
+
+    def result_context_current(self, task_id):
+        record = self.service.store.get('localpilot_tasks', {}).get(task_id)
+        if not record or 'request' not in record:
+            # Preserve the receipt in task history, but do not retrieve text
+            # whose source permissions can no longer be reconstructed.
+            return False
+        session_id = (record.get('result') or record.get('last_status') or {}).get('session_id')
+        return (self.session_context_current(session_id, record.get('timestamp')) if session_id
+                else self.context_current(record['request']))
+
     def recover_submission_journal(self):
         """Repair a local crash between accepted-ID persistence and projections."""
         service = self.service
@@ -388,6 +433,16 @@ class TaskController:
                 binding=None
             session_id = (pending_intent.get("transport",{}).get("session_id") if provider_kind=="cloud" and pending_intent else
                           data.get("session_id") or (binding or {}).get("session_id"))
+            known_session = any((record.get('result') or record.get('last_status') or {}).get('session_id') == session_id
+                                for record in service.store.get('localpilot_tasks', {}).values()) if session_id else False
+            if session_id and not pending_intent and (known_session or binding and binding.get('session_id') == session_id):
+                if not self.session_context_current(session_id):
+                    if data.get('session_id'):
+                        return {'status':'unavailable', 'reason':'Session source access changed; use a new session'}
+                    sessions.pop(conversation, None)
+                    service.store.set('localpilot_conversations', sessions)
+                    binding = None
+                    session_id = None
             if binding and session_id and not data.get("session_id") and not service.store.get("pending_localpilot_submission"):
                 restored=provider.restore_session(session_id,cloud_approved=data.get("cloud_approved") is True)
                 if restored.get("status")=="closed":

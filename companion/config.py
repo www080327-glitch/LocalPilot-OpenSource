@@ -22,6 +22,7 @@ class Config:
     eco_unload_seconds: float = 120
     backend: str = "mlx"
     model_path: str = ""
+    model_adapter_path: str = ""
     model_context_tokens: int = 8192
     max_output_tokens: int = 160
     model_routing_enabled: bool = True
@@ -156,6 +157,8 @@ class Config:
             raise ValueError("Invalid proactive settings")
         if not isinstance(c.tier2_model_path, str):
             raise ValueError("tier2_model_path must be a local path")
+        if not isinstance(c.model_adapter_path, str) or c.model_adapter_path and c.backend != 'mlx':
+            raise ValueError('A candidate model_adapter_path is supported only by the mlx backend')
         if (type(c.tier2_context_tokens) is not int or not 512 <= c.tier2_context_tokens <= 32768
                 or type(c.tier2_max_output_tokens) is not int or not 1 <= c.tier2_max_output_tokens <= 2048
                 or c.tier2_context_tokens <= c.tier2_max_output_tokens + 256):

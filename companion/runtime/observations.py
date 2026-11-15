@@ -334,6 +334,8 @@ class ObservationController:
 
     def observation_accessible(self, row):
         service = self.service
+        if row.get('source') == 'localpilot' and row.get('kind') == 'task_result':
+            return service.agent_tasks.result_context_current(row.get('object', {}).get('task_id'))
         if row.get("source") == "external_source" and row.get("kind", "").startswith("imported."):
             return service.sources.accessible(row)
         if row.get("source") == "file_observer":

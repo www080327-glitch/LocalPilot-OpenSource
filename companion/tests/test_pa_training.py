@@ -4,6 +4,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 
 from companion.config import Config
@@ -58,6 +59,74 @@ class ReviewedTrainingTests(unittest.TestCase):
         self.app.ask("早上好")
         self.assertEqual(self.app.command({"command":"training_examples"})["examples"], [])
         self.assertEqual(self.app.model.inferences, 0)
+
+    def test_review_candidate_binds_exact_displayed_question_answer_and_sources(self):
+        _, mid, _ = self.source('reviewed-dialogue', 'Review the parser, deployment is not verified.')
+        response = self.app.ask('会议说了什么？')
+        greeting = self.app.ask('晚上好')
+        candidates = self.app.command({'command':'training_candidates'})['candidates']
+        self.assertEqual({row['answer_id'] for row in candidates}, {response['answer_id'], greeting['answer_id']})
+        review = self.app.command({'command':'training_review', 'answer_id':response['answer_id']})['candidate']
+        self.assertEqual(review['question'], '会议说了什么？')
+        self.assertEqual(review['answer'], response['text'])
+        self.assertEqual(review['observation_ids'], [mid])
+        self.assertEqual(review['sources'][0]['id'], mid)
+        self.assertTrue(review['sources'][0]['locator'])
+        self.assertEqual(self.app.training.list()['examples'], [])
+        saved = self.app.command({'command':'training_example_add', 'answer_id':response['answer_id'],
+            'purpose':review['purpose'], 'question':'这份来源提到什么？', 'answer':'记录提到讨论 parser，未证明部署完成。'})
+        self.assertEqual(saved['status'], 'ok')
+        example = self.app.training.list()['examples'][0]
+        self.assertEqual(example['observation_ids'], [mid])
+        self.assertEqual(example['answer'], '记录提到讨论 parser，未证明部署完成。')
+
+    def test_reviewed_answer_cannot_be_saved_after_source_disable_or_file_change(self):
+        source_id, _, path = self.source('review-window', 'Synthetic original text')
+        response = self.app.ask('会议说了什么？')
+        self.app.sources.set_enabled(source_id, False)
+        for command in ('training_review', 'training_example_add'):
+            value = self.app.command({'command':command, 'answer_id':response['answer_id'],
+                'purpose':'activity_qa', 'question':'What was said?', 'answer':'Reviewed answer'})
+            self.assertEqual(value['status'], 'unavailable')
+        self.assertEqual(self.app.training.candidates()['candidates'], [])
+        self.app.sources.set_enabled(source_id, True)
+        path.write_text('Changed source')
+        self.assertEqual(self.app.training.review(response['answer_id'])['status'], 'unavailable')
+        self.assertEqual(self.app.training.list()['examples'], [])
+
+    def test_gui_review_cannot_replace_original_source_ids_or_purpose(self):
+        _, _, _ = self.source('bound', 'First original source')
+        response = self.app.ask('会议说了什么？')
+        _, other, _ = self.source('other', 'Other source')
+        with self.assertRaisesRegex(ValueError, 'original source'):
+            self.app.training.add('Question', 'Answer', 'activity_qa', [other], answer_id=response['answer_id'])
+        with self.assertRaisesRegex(ValueError, 'purpose'):
+            self.app.training.add('Question', 'Answer', 'greeting', answer_id=response['answer_id'])
+        self.assertEqual(self.app.training.list()['examples'], [])
+
+    def test_retention_never_exports_full_target_with_only_compressed_source_context(self):
+        _, mid, _ = self.source('retained', 'Retained source body ' * 40)
+        self.app.training.add('Source question', 'Explicitly reviewed target', 'activity_qa', [mid])
+        self.app.observation_memory.retain(now=time.time()+86401, raw_ttl_days=1, ttl_days=30)
+        self.assertEqual(self.app.observation_memory.get(mid)['raw_state'], 'compressed')
+        self.assertFalse(self.app.training.list()['examples'][0]['available'])
+        with self.assertRaisesRegex(ValueError, 'currently readable'):
+            self.app.training.export()
+
+    def test_memory_disabled_does_not_create_review_candidate(self):
+        self.app.command({'command':'pet_memory', 'enabled':False})
+        result = self.app.command({'command':'pet_ask', 'text':'早上好'})
+        self.assertIsNone(result['answer_id'])
+        self.assertEqual(self.app.training.candidates()['candidates'], [])
+
+    def test_forgetting_question_removes_its_answer_from_review_and_conversation_recall(self):
+        response = self.app.ask('早上好')
+        rows = self.app.store.records(10, ['conversation'])
+        question = next(row for row in rows if row['source'] == 'user_chat')
+        answer = next(row for row in rows if row['id'] == response['answer_id'])
+        self.app.command({'command':'forget', 'id':question['id']})
+        self.assertEqual(self.app.training.review(response['answer_id'])['status'], 'unavailable')
+        self.assertFalse(self.app.conversation_accessible(answer))
 
     def test_explicit_sample_is_idempotent_and_requires_current_sources(self):
         source_id, mid, _ = self.source("review", "Reviewed evidence")

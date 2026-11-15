@@ -521,29 +521,42 @@ def launch(root, component, command, env, config=None):
     finally:
         os.close(fd)
     import psutil
-    try:
-        p = psutil.Process(child.pid)
-        observed = p.cmdline()
-        # macOS framework Python can canonicalize argv[0] during exec.
-        # Capture the child we just spawned; subsequent controls match this
-        # observed command, executable, owner and creation time exactly.
-        if observed[1:] != command[1:]:
-            raise ValueError('CHANNEL_CHILD_ARGUMENTS_CHANGED')
-        save(root / (component + '.process.json'), {'pid': child.pid, 'created': p.create_time(),
-             'argv': observed, 'executable': p.exe()})
-    except Exception:
-        if child.poll() is None:
-            child.terminate()
-        child.wait(timeout=20)
-        raise ValueError('CHANNEL_PROCESS_RECORD_FAILED') from None
-    def refresh_identity():
-        # Framework Python execs its app binary after Popen returns. Only
-        # record the final identity after authenticated startup readiness.
-        current = psutil.Process(child.pid)
-        if abs(current.create_time()-p.create_time()) > .02 or current.cmdline()[1:] != command[1:]:
-            raise ValueError('CHANNEL_CHILD_IDENTITY_CHANGED')
-        save(root / (component + '.process.json'), {'pid':child.pid,'created':current.create_time(),
-             'argv':current.cmdline(),'executable':current.exe()})
+    created = None
+
+    def record_identity(*, allow_empty=False):
+        nonlocal created
+        try:
+            current = psutil.Process(child.pid)
+            current_created = current.create_time()
+            if created is None:
+                created = current_created
+            if abs(current_created-created) > .02:
+                raise ValueError('CHANNEL_CHILD_IDENTITY_CHANGED')
+            observed = current.cmdline()
+            # A live child can expose empty argv just after Popen. Defer only
+            # this observation; final identity must be confirmed after readiness.
+            if allow_empty and not observed:
+                return
+            # macOS framework Python can canonicalize argv[0] during exec.
+            if not observed or observed[1:] != command[1:]:
+                raise ValueError('CHANNEL_CHILD_ARGUMENTS_CHANGED')
+            save(root / (component + '.process.json'), {'pid':child.pid,'created':current_created,
+                 'argv':observed,'executable':current.exe()})
+        except Exception as error:
+            if child.poll() is None:
+                child.terminate()
+            child.wait(timeout=20)
+            # Append after reaping so the child's stderr cannot overwrite this line.
+            with contextlib.suppress(Exception):
+                number = getattr(error, 'errno', None)
+                number = number if type(number) is int else 'none'
+                fd = os.open(error_file, os.O_WRONLY | os.O_APPEND | getattr(os, 'O_NOFOLLOW', 0))
+                with os.fdopen(fd, 'w', encoding='utf-8') as stream:
+                    stream.write('\nCHANNEL_PROCESS_RECORD_FAILED stage=identity_record '
+                                 f'exception={type(error).__name__} errno={number}\n')
+            raise ValueError('CHANNEL_PROCESS_RECORD_FAILED') from None
+
+    record_identity(allow_empty=True)
     if component == 'adapter':
         key = env[config['adapter']['channels'][0]['ingress_key_env']]
         until = time.monotonic() + 5
@@ -552,16 +565,16 @@ def launch(root, component, command, env, config=None):
                 raise ValueError('CHANNEL_START_FAILED: inspect private config, state permissions or port conflicts')
             try:
                 health = request(config, '/healthz', key=key)
-                if health.get('pid') == child.pid and health.get('instance_id') == config['adapter']['instance_id']:
-                    refresh_identity()
-                    return {'status': 'running', 'component': component, 'pid': child.pid}
             except ValueError:
-                pass
+                health = {}
+            if health.get('pid') == child.pid and health.get('instance_id') == config['adapter']['instance_id']:
+                record_identity()
+                return {'status': 'running', 'component': component, 'pid': child.pid}
             time.sleep(.1)
-        p.terminate()
+        child.terminate()
         return {'status': 'UNKNOWN', 'code': 'CHANNEL_START_NOT_CONFIRMED'}
     time.sleep(.2)
     if child.poll() is None:
-        refresh_identity()
+        record_identity()
     return {'status': 'running' if child.poll() is None else 'error', 'component': component,
             'platform_connection': 'NOT_VERIFIED', 'next_step': 'doctor; status'}

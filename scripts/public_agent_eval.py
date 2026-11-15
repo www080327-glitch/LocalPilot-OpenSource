@@ -146,6 +146,8 @@ def validate_spec(spec):
             raise ValueError("Each arm must name its model explicitly")
         if not isinstance(agent.get('kwargs',{}),dict):
             raise ValueError('Agent kwargs must be an object')
+        from scripts.harbor_orchestration import arm_orchestration
+        arm_orchestration(agent)
         budget = agent.get('kwargs',{}).get('model_budget')
         if budget is not None and not isinstance(budget,dict):
             raise ValueError('model_budget must be an object')
@@ -230,6 +232,10 @@ def freeze(spec_path, repository, output, task_prefix=""):
              "selection": "all_tasks_in_checkout_prefix" if selected == available else "preregistered_subset",
              "available_task_paths": available, "tasks": tasks}
     study['runtime_source'] = runtime_snapshot(Path(__file__).resolve().parents[1])
+    from scripts.harbor_orchestration import arm_orchestration
+    orchestration = {arm['id']:arm_orchestration(arm['agent']) for arm in spec['arms']}
+    if any(value['mode'] == 'multi-agent' for value in orchestration.values()):
+        study['orchestration_contracts'] = orchestration
     study_id = digest(study)[:12]
     output = output.resolve()
     output.mkdir(parents=True, exist_ok=False)
@@ -261,6 +267,11 @@ def read_study(directory):
     content = {key: value for key, value in study.items() if key != "sha256"}
     if study.get("sha256") != digest(content):
         raise ValueError("Frozen study changed; create a new study instead of editing it")
+    from scripts.harbor_orchestration import arm_orchestration
+    orchestration = {arm['id']:arm_orchestration(arm['agent']) for arm in study['specification']['arms']}
+    if (any(value['mode'] == 'multi-agent' for value in orchestration.values())
+            and study.get('orchestration_contracts') != orchestration):
+        raise ValueError('Missing or changed frozen child-agent execution contract')
     for job in study["jobs"]:
         config = read_json(directory / "configs" / f"{job['name']}.json")
         if digest(config) != job["config_sha256"]:

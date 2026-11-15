@@ -26,7 +26,7 @@ test("browser exposes manual guide but cannot check, scan, or delete real files"
   ).toBeVisible();
   await page.getByRole("button", { name: "手动更新指引", exact: true }).click();
   await expect(
-    page.getByText("不要替换 Core/Companion/Suite", { exact: false }),
+    page.getByText("执行前需停止服务", { exact: false }),
   ).toBeVisible();
   await expect(page.getByRole("button", { name: /删除/ })).toHaveCount(0);
   await page.screenshot({

@@ -18,14 +18,22 @@ _REASONING = re.compile(r"<(?:think|analysis|reasoning)\b|\"reasoning_content\"\
 
 class TrainingExamples:
     def __init__(self, store, observations, private):
-        self.db, self.observations, self.private = store.db, observations, private
+        self.store, self.db, self.observations, self.private = store, store.db, observations, private
         self.db.execute("""CREATE TABLE IF NOT EXISTS training_examples (
             id TEXT PRIMARY KEY, digest TEXT NOT NULL UNIQUE, question TEXT NOT NULL,
             answer TEXT NOT NULL, purpose TEXT NOT NULL, observation_ids TEXT NOT NULL,
             created_at REAL NOT NULL)""")
         self.db.commit()
 
-    def add(self, question, answer, purpose, observation_ids=None):
+    def add(self, question, answer, purpose, observation_ids=None, *, answer_id=None):
+        if answer_id is not None:
+            review = self.review(answer_id)
+            if review['status'] != 'ok':
+                return review
+            candidate = review['candidate']
+            if purpose != candidate['purpose'] or observation_ids and observation_ids != candidate['observation_ids']:
+                raise ValueError('Use the reviewed answer purpose and its original source IDs')
+            observation_ids = candidate['observation_ids']
         question, answer, observation_ids = self._example_input(question, answer, purpose, observation_ids)
         payload = [question, answer, purpose, sorted(observation_ids)]
         digest = hashlib.sha256(json.dumps(payload, ensure_ascii=False).encode()).hexdigest()
@@ -38,12 +46,56 @@ class TrainingExamples:
         return {"status":"ok", "id":sample_id, "already_saved":bool(prior),
                 "label_origin":"explicit_user_review", "training":"NOT_RUN"}
 
+    def review(self, answer_id):
+        if not isinstance(answer_id, str) or not 1 <= len(answer_id) <= 100:
+            raise ValueError('A saved answer ID is required')
+        raw = self.db.execute("SELECT * FROM memories WHERE id=? AND type='conversation'", (answer_id,)).fetchone()
+        missing = {'status':'unavailable', 'reason':'answer_or_sources_unavailable',
+                   'text':'这条回答没有完整的可审阅来源，或来源已变化；请重新提问后再审阅。', 'training':'NOT_RUN'}
+        if raw is None or getattr(self.store, 'conversation_disabled', False):
+            return missing
+        metadata = json.loads(raw['metadata'])
+        ids, purpose = metadata.get('observation_ids', []), metadata.get('review_purpose')
+        if (raw['source'] not in {'companion_greeting_rule', 'companion_activity_digest', 'companion_model'}
+                or metadata.get('role') != 'assistant' or metadata.get('delivery') != 'displayed'
+                or purpose not in {'greeting', 'activity_qa'} or metadata.get('memory_ids')
+                or len(ids) > 16 or purpose == 'activity_qa' and not ids
+                or any(not self._source_ready(mid) for mid in ids)):
+            return missing
+        question = self.db.execute("SELECT summary FROM memories WHERE id=? AND type='conversation' AND source='user_chat'",
+                                   (metadata.get('question_id'),)).fetchone()
+        if question is None:
+            return missing
+        sources = []
+        for mid in ids:
+            row = self.observations.get(mid)
+            sources.append({key:row[key] for key in ('id', 'source_reference', 'kind', 'evidence_type', 'evidence_epistemic', 'summary')}
+                           | {'locator':row['evidence'].get('locator', ''), 'raw_state':row['raw_state']})
+        return {'status':'ok', 'candidate':{'answer_id':answer_id, 'question':question[0], 'answer':raw['summary'],
+                'purpose':purpose, 'observation_ids':ids, 'sources':sources, 'created_at':raw['timestamp']},
+                'label_origin':'requires_explicit_user_review', 'training':'NOT_RUN'}
+
+    def candidates(self, limit=20):
+        if type(limit) is not int or not 1 <= limit <= 50:
+            raise ValueError('Use a review candidate limit between 1 and 50')
+        candidates = []
+        for row in self.db.execute("SELECT id FROM memories WHERE type='conversation' ORDER BY timestamp DESC LIMIT 200"):
+            review = self.review(row[0])
+            if review['status'] != 'ok':
+                continue
+            candidate = review['candidate']
+            candidates.append({key:candidate[key] for key in ('answer_id', 'question', 'answer', 'purpose', 'created_at')}
+                              | {'source_count':len(candidate['observation_ids'])})
+            if len(candidates) == limit:
+                break
+        return {'status':'ok', 'candidates':candidates, 'training':'NOT_RUN'}
+
     def list(self):
         rows = []
         for raw in self.db.execute("SELECT * FROM training_examples ORDER BY created_at,id"):
             row = dict(raw)
             ids = json.loads(row["observation_ids"])
-            available = all(self.observations.is_current(mid) for mid in ids)
+            available = all(self._source_ready(mid) for mid in ids)
             rows.append({"id":row["id"], "purpose":row["purpose"], "created_at":row["created_at"],
                          "observation_ids":ids, "question":row["question"] if available else None,
                          "answer":row["answer"] if available else None, "available":available,
@@ -117,9 +169,13 @@ class TrainingExamples:
         ids = list(dict.fromkeys(ids))
         if purpose == "activity_qa" and not ids:
             raise ValueError("Activity examples require their actual observation sources")
-        if any(not self.observations.is_current(mid) for mid in ids):
+        if any(not self._source_ready(mid) for mid in ids):
             raise ValueError("Reviewed examples require currently readable observation sources")
         return question.strip(), answer.strip(), ids
+
+    def _source_ready(self, memory_id):
+        row = self.observations.get(memory_id)
+        return bool(row and row['raw_state'] == 'raw' and self.observations.is_current(row))
 
     def _prepare(self, example):
         sources, context, groups = [], [], set()

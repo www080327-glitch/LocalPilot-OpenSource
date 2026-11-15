@@ -46,6 +46,7 @@ def watch_parent(parent_pid, interval=1):
 
 def main():
     model = tokenizer = None
+    candidate = None
     watch_parent(int(sys.argv[3]) if len(sys.argv) > 3 else os.getppid())
     model_path, context_tokens = Path(sys.argv[1]), int(sys.argv[2])
     config = json.loads((model_path / "config.json").read_text())
@@ -60,13 +61,19 @@ def main():
             cold = model is None
             with contextlib.redirect_stdout(sys.stderr):
                 stage = "model_load"
+                if model is None and len(sys.argv) > 4:
+                    stage = 'candidate_validation'
+                    from companion.model.candidate import inspect_candidate
+                    candidate = inspect_candidate(str(model_path), sys.argv[4], require_runtime=True)
+                    stage = 'model_load'
                 import mlx.core as mx
                 from mlx_lm import load, stream_generate
                 from mlx_lm.models.cache import make_prompt_cache
                 from mlx_lm.sample_utils import make_sampler
                 load_start = time.perf_counter()
                 if model is None:
-                    model, tokenizer = load(str(model_path), tokenizer_config={"trust_remote_code": False})
+                    options = {'adapter_path':candidate['directory']} if candidate else {}
+                    model, tokenizer = load(str(model_path), tokenizer_config={"trust_remote_code": False}, **options)
                 load_seconds = time.perf_counter() - load_start if cold else 0
                 stage = "chat_template"
                 prompt = tokenizer.apply_chat_template(data["messages"], tokenize=False, add_generation_prompt=True, enable_thinking=False)
@@ -96,6 +103,8 @@ def main():
                 result.update(prompt_sha256=hashlib.sha256(prompt.encode()).hexdigest(),
                               chat_template_sha256=hashlib.sha256(str(tokenizer.chat_template).encode()).hexdigest(),
                               sampling_temperature=0, enable_thinking=False, cache_policy="fresh_per_request")
+                if candidate:
+                    result['candidate_adapter'] = {key:candidate[key] for key in ('sha256', 'fine_tune_type', 'quality')}
         except Exception as exc:
             result = {"status": "unavailable", "error": f"{type(exc).__name__}: {exc}", "error_stage": stage}
         result.update(worker_pid=os.getpid(), worker_request_number=request_number)
