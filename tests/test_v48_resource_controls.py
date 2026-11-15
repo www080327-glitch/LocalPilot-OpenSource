@@ -1,4 +1,7 @@
 """Host resource controls, not real-model success measurements."""
+from tests.optional_benchmarks import require_benchmarks
+require_benchmarks()
+
 from pathlib import Path
 import tempfile
 import unittest

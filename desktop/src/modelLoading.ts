@@ -1,4 +1,14 @@
 import type { Json, Model } from "./domain";
+import { sourceAllows, type Preferences } from "./preferences";
+
+export function usableAgentModels(models: Model[], preferences: Preferences, preview = false) {
+  return models.filter((model) =>
+    model.deployment_status === "ready" &&
+    !model.reasoning_only &&
+    model.capabilities?.includes("tool_calling") &&
+    (preview || sourceAllows(preferences, model)),
+  );
+}
 
 // Selection grants one bounded load; never unload another model or retry UNKNOWN.
 export async function ensureLocalModelLoaded(

@@ -1,7 +1,10 @@
 #!/bin/sh
 # One shared disposable build slot; immutable delivery folders contain archives only.
 set -eu
-[ "$(uname -s)" = Darwin ] && [ "$(uname -m)" = arm64 ] || { echo 'Requires macOS arm64' >&2; exit 1; }
+[ "$(uname -s)" = Darwin ] || { echo 'Requires macOS' >&2; exit 1; }
+LP_GUI_ARCH=$(uname -m)
+case "$LP_GUI_ARCH" in arm64|x86_64) ;; *) echo 'Requires macOS arm64 or x86_64' >&2; exit 1 ;; esac
+export LP_GUI_ARCH
 LP_GUI_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$LP_GUI_ROOT"
 if [ "${LP_GUI_BUILD_LOCK_HELD:-0}" != 1 ]; then exec python3 scripts/build-locked.py "$@"; fi
@@ -41,6 +44,7 @@ if [ "${LP_GUI_USE_INSTALLED_DEPS:-0}" != 1 ]; then
   npm ci
 fi
 LP_GUI_VERSION=$(node -p 'JSON.parse(require("fs").readFileSync("package.json")).version')
+npm run tauri -- icon public/icon.svg
 LP_GUI_RUN=$(date +%Y%m%d-%H%M%S)-$$
 LP_GUI_OUTPUT="$LP_GUI_ROOT/release/v$LP_GUI_VERSION/$LP_GUI_RUN"
 if [ -n "${LP_GUI_TEST_CONFIG:-}" ]; then
@@ -48,7 +52,7 @@ if [ -n "${LP_GUI_TEST_CONFIG:-}" ]; then
   LP_GUI_OUTPUT="$LP_GUI_ROOT/release/test-v$LP_GUI_VERSION/$LP_GUI_RUN"
 fi
 python3 ../scripts/check-candidate-versions.py
-python3 scripts/check-bundled-backends.py
+python3 scripts/check-bundled-backends.py --arch "$LP_GUI_ARCH"
 [ ! -e "$LP_GUI_OUTPUT" ] || { echo 'Existing output preserved' >&2; exit 1; }
 if [ -n "${LP_GUI_TEST_CONFIG:-}" ]; then
   npm run tauri -- build --bundles app --config "$LP_GUI_TEST_CONFIG"
@@ -66,7 +70,8 @@ mkdir -p "$LP_GUI_OUTPUT"
 /usr/bin/xattr -rd com.apple.FinderInfo "$LP_GUI_BUILD_APP" 2>/dev/null || true
 /usr/bin/xattr -rd com.apple.ResourceFork "$LP_GUI_BUILD_APP" 2>/dev/null || true
 /usr/bin/codesign --verify --deep --strict "$LP_GUI_BUILD_APP"
-python3 scripts/archive-app.py "$LP_GUI_BUILD_APP" "$LP_GUI_OUTPUT/LocalPilot-$LP_GUI_VERSION-arm64.app.zip"
+/usr/bin/lipo -verify_arch "$LP_GUI_ARCH" "$LP_GUI_BUILD_APP/Contents/MacOS/localpilot-desktop"
+python3 scripts/archive-app.py "$LP_GUI_BUILD_APP" "$LP_GUI_OUTPUT/LocalPilot-$LP_GUI_VERSION-$LP_GUI_ARCH.app.zip"
 # Staging is newly generated disposable data; no retained build or installation is removed.
 LP_GUI_PACKAGE_OUTPUT="$LP_GUI_OUTPUT" LP_GUI_PACKAGE_APP="$LP_GUI_BUILD_APP" LP_GUI_PACKAGE_VERSION="$LP_GUI_VERSION" python3 scripts/package-release.py
 printf '%s\n' "$LP_GUI_OUTPUT"

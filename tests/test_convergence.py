@@ -1,4 +1,7 @@
 """Regression checks for the V0 release's evidence and hard-policy boundaries."""
+from tests.optional_benchmarks import require_benchmarks
+require_benchmarks()
+
 
 from copy import deepcopy
 from dataclasses import FrozenInstanceError

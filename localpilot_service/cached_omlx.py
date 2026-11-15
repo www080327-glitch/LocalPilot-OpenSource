@@ -35,7 +35,7 @@ def save(path, value):
 class CachedOmlxHost:
     """Host-only, one inference lease, bounded startup and idle release."""
     def __init__(self, spec, directory):
-        if set(spec)-{"snapshot", "port", "idle_seconds", "memory_bytes", "min_available_bytes"}:
+        if set(spec)-{"snapshot", "port", "idle_seconds", "memory_bytes", "min_available_bytes", "cache_bytes"}:
             raise ValueError("Unknown cached-model host option")
         self.snapshot=Path(spec["snapshot"]).expanduser().resolve(strict=True)
         if self.snapshot!=SNAPSHOT.resolve(strict=True) or self.snapshot.name!=REVISION or not (self.snapshot/"config.json").is_file():
@@ -67,6 +67,17 @@ class CachedOmlxHost:
         self.root.mkdir(parents=True,exist_ok=True,mode=0o700)
         if self.root.is_symlink() or self.root.stat().st_mode&0o077:
             raise ValueError("Cached host directory must be private")
+        from .cache_budget import reserve
+        cache_root = self.root/'prefix-cache'
+        # Older oMLX created this child as 755 under our private host root.
+        # Keep its blocks while making the newly registered cache private.
+        if (not cache_root.is_symlink() and cache_root.is_dir()
+                and cache_root.stat().st_uid == os.getuid()):
+            cache_root.chmod(0o700)
+        self.cache_bytes = spec.get('cache_bytes',2000000000)
+        self.cache_reservation = reserve(cache_root,self.cache_bytes)
+        save(self.root/'cache-ownership.json',{'version':1,'kind':'LOCALPILOT_REBUILDABLE_PREFIX_CACHE',
+            'cache_root':str((self.root/'prefix-cache').resolve()),**self.cache_reservation})
         self.token=secrets.token_urlsafe(32)
         self.client=Client(f"http://127.0.0.1:{self.port}",token=self.token,timeout=90)
         self.lock=threading.RLock();self.start_lock=threading.Lock();self.slot=threading.BoundedSemaphore(1)
@@ -90,7 +101,8 @@ class CachedOmlxHost:
         return {"status":phase,"active_leases":self.active,"model":MODEL,"downloaded":True,
                 "revision":REVISION,"minimum_available_bytes":self.minimum,"memory_guard_bytes":self.memory,
                 "release_after_task":True,"model_process_alive":model_alive,
-                "control_surface_required":True,"evidence_kind":"HOST_LIFECYCLE_STATE_NOT_MODEL_BENCHMARK"}
+                "control_surface_required":True,"cache_reservation":self.cache_reservation,
+                "evidence_kind":"HOST_LIFECYCLE_STATE_NOT_MODEL_BENCHMARK"}
 
     def _lease_record(self):
         save(self.root/"lease.json",{"active":self.active,"at":time.time(),"ui_deadline":min(self.gui_deadlines.values()) if self.gui_deadlines else 0,"battery_allowed":all(self.power_grants.values()) if self.power_grants else False})
@@ -118,7 +130,8 @@ class CachedOmlxHost:
         model_state=self.root/"model-state";model_state.mkdir(exist_ok=True,mode=0o700)
         save(model_state/"model_settings.json",{"version":1,"models":{MODEL:{"enable_thinking":False}}})
         profile={"root":str(self.root),"parent":os.getpid(),"parent_created":psutil.Process().create_time(),
-            "idle_seconds":self.idle,"port":self.port,"memory_guard_gb":self.memory/1024**3}
+            "idle_seconds":self.idle,"port":self.port,"memory_guard_gb":self.memory/1024**3,
+            "cache_bytes":self.cache_bytes}
         save(self.root/"profile.json",profile)
         env={k:v for k,v in os.environ.items() if k in {"PATH","HOME","LANG","TMPDIR"}}
         env.update(OMLX_API_KEY=self.token,HF_HUB_OFFLINE="1",TRANSFORMERS_OFFLINE="1",HF_DATASETS_OFFLINE="1",PYTHONPATH=str(Path(__file__).resolve().parents[1]))
@@ -235,7 +248,7 @@ def guardian(path):
     command=[BINARY,"serve","--base-path",str(root/"model-state"),"--model-dir",str(root/"models"),
         "--host","127.0.0.1","--port",str(profile["port"]),"--max-concurrent-requests","1",
         "--memory-guard-gb",str(profile["memory_guard_gb"]),
-        "--paged-ssd-cache-dir",str(root/"prefix-cache"),"--paged-ssd-cache-max-size","2GB",
+        "--paged-ssd-cache-dir",str(root/"prefix-cache"),"--paged-ssd-cache-max-size",str(profile.get('cache_bytes',2000000000)),
         "--hot-cache-max-size","128MB","--no-hf-cache",
         "--initial-cache-blocks","8","--log-level","warning"]
     baseline=psutil.swap_memory().used

@@ -154,7 +154,8 @@ class ObserverBoundaryV041Tests(unittest.TestCase):
                 shared_core_manifest()
         observer = NativeObserver(self.config, Mock())
         observer.config.native_helper_path = "/synthetic/helper"
-        with patch("companion.observers.native.trusted_helper", side_effect=HelperRebuildRequired("missing")), \
+        with patch("companion.observers.native.sys.platform", "darwin"), \
+                patch("companion.observers.native.trusted_helper", side_effect=HelperRebuildRequired("missing")), \
                 patch("companion.observers.native.subprocess.Popen") as create:
             self.assertEqual(observer.start()["state"], "MANUAL_REQUIRED")
         create.assert_not_called()

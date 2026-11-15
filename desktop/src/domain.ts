@@ -28,6 +28,7 @@ export interface Model {
   reasoning_only?: boolean;
   cloud_egress?: string;
   provenance?: string;
+  health_observation?: Json;
   reasoning_efforts?: string[];
   default_reasoning_effort?: string;
   reasoning_toggle?: { supported: boolean; default: boolean; model: string };
@@ -38,6 +39,7 @@ export interface Task extends Json {
   status: string;
   quiescent: boolean;
   model?: string;
+  session_model?: string;
   result: Json | null;
   tools: Json[];
   required_action: Json | null;
@@ -47,12 +49,14 @@ export interface Task extends Json {
   receipt_summary?: Json;
   recovery?: Json;
   output?: Json[];
+  streamed_text?: string;
 }
 export interface NativeProfile {
   home: string;
   cli: string;
   origin: string;
   workspace: string;
+  maintenance_return?: boolean;
 }
 export interface Message {
   id: string;
@@ -67,9 +71,23 @@ export function replyText(
   task: Task | undefined,
   delta: string | undefined,
 ) {
-  if (task?.status === "running" && !task.quiescent && delta !== undefined)
-    return delta;
+  if (task?.status === "running" && !task.quiescent)
+    return delta ?? task.streamed_text ?? m.text ?? "";
   return m.text || delta || "";
+}
+// A gap snapshot must not overwrite text from a newer live SSE event.
+export function reconciledStreamText(
+  task: Task,
+  lastSeenSequence: number,
+  reconciled: boolean,
+): string | null {
+  return reconciled &&
+    task.status === "running" &&
+    !task.quiescent &&
+    typeof task.streamed_text === "string" &&
+    task.last_event_id >= lastSeenSequence
+    ? task.streamed_text
+    : null;
 }
 export interface StreamEvent {
   sequence: number;

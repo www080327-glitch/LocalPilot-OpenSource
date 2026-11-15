@@ -36,8 +36,8 @@ def parse_policy(value):
 
 @dataclass(frozen=True)
 class EligibilityConfig:
-    excluded_size_classes: tuple = ("4B", "9B")
-    min_context: int = 65536
+    excluded_size_classes: tuple = ()
+    min_context: int = 4096
 
     def __post_init__(self):
         if not isinstance(self.excluded_size_classes, tuple) or any(

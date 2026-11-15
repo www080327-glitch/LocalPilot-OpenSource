@@ -744,7 +744,7 @@ class SessionComputerTests(unittest.TestCase):
             return response("set_value", {"app": APP, "element": node["handle"], "observation": observed["observation"],
                 "value": "new", "postcondition": condition()}, "compacted-new-write")
         backend = ScriptBackend(response("inspect_tree", {"app": APP}, "observe"), initial_write, replanned, response())
-        backend.model_info = ModelInfo("script", "scripted-controller", 65536)
+        backend.model_info = ModelInfo("script", "scripted-controller", 17000)
         session = self.make_session(backend, mode="approve-mutations", budgets=SessionBudgets(max_steps=16, max_token_units=1048576))
         self.adapter.nodes += [{"handle": "label" + str(i), "role": "AXStaticText", "value": "unrelated UI text " * 12} for i in range(40)]
         session.run_turn("Edit fixture. " + "Known task context. " * 45)
@@ -788,7 +788,7 @@ class SessionComputerTests(unittest.TestCase):
         narrated_read.message.content = "I need to inspect the tree before finding and writing. " * 200
         backend = ScriptBackend(response("inspect_tree", {"app": APP}, "initial-read"), find_after_read, write,
             narrated_read, find_after_read, write, response())
-        backend.model_info = ModelInfo("script", "scripted-controller", 65536)
+        backend.model_info = ModelInfo("script", "scripted-controller", 20000)
         session = self.make_session(backend, mode="approve-mutations", budgets=SessionBudgets(max_steps=16, max_token_units=1048576))
         self.adapter.nodes += [{"handle": "label" + str(i), "role": "AXStaticText", "value": "unrelated UI text " * 12} for i in range(40)]
         self.assertEqual(session.run_turn("Edit fixture. " + "Known task context. " * 40).status, "approval_required")

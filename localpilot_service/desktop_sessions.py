@@ -183,6 +183,9 @@ def switch_profile(server, principal, session_id, body):
         if current!=body['expected_profile']:
             raise APIError('Agent profile changed in another client','profile_conflict',409)
         runtime=session.runtime
+        from localpilot_api.session_history import retain_child_routes
+        old_child_contexts = session.child_route_contexts
+        child_contexts = retain_child_routes(session)
         old=(runtime.messages[:],runtime.prompt_profile,runtime.base_prompt,getattr(runtime,'_persistence_config',None),session.base_prompt)
         registry=runtime.registry
         thinking_state=[(b,b.capabilities,getattr(b,"_thinking_toggle",False)) for b in thinking_backends(runtime)]
@@ -197,6 +200,7 @@ def switch_profile(server, principal, session_id, body):
                 task.execution_metadata={**(task.execution_metadata or {})}
                 task.execution_metadata.setdefault('desktop_options',deepcopy(options))
             apply_options(runtime,updated)
+            session.child_route_contexts = child_contexts or None
             session.desktop_options=updated
             session.base_prompt=runtime.base_prompt
             runtime._persistence_config=digest(dumps(configuration(runtime)))
@@ -204,6 +208,7 @@ def switch_profile(server, principal, session_id, body):
         except Exception:
             runtime.messages,runtime.prompt_profile,runtime.base_prompt,runtime._persistence_config,session.base_prompt=old
             session.desktop_options=options
+            session.child_route_contexts = old_child_contexts
             for backend,capabilities,toggle_enabled in thinking_state:
                 backend.capabilities,backend._thinking_toggle=capabilities,toggle_enabled
             runtime.registry=registry
@@ -214,3 +219,7 @@ def switch_profile(server, principal, session_id, body):
         result=service.session_snapshot(session_id)
     server.access.audit(operation='desktop_profile_changed',subject=principal.subject,client_subject=subject,session_id=session_id,previous=current,agent_profile=updated['agent_profile'],previous_permission=options['permission_mode'],permission_mode=updated['permission_mode'])
     return result
+
+
+
+from .session_migration import switch_model

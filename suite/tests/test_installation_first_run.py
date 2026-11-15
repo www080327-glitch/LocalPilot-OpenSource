@@ -65,6 +65,7 @@ class RecoveryTests(unittest.TestCase):
         save(home/'connection.json',{'url':'http://127.0.0.1:8765','token_env':'LOCALPILOT_HTTP_TOKEN'})
         save(home/'companion.json',{'data_dir':str(home/'companion-data'),'localpilot_endpoint':'http://127.0.0.1:8765'})
         save(home/'model-preferences.json',{'preserved':True})
+        save(home/'model-configuration-pending.json',{'modules':['core','companion']})
         (home/'clients.env').write_text('export LOCALPILOT_HTTP_TOKEN=synthetic-token-123456\n');(home/'clients.env').chmod(0o600)
         for path in [home/'data/runtime.sqlite3',home/'companion-data/memory.sqlite3']:
             with closing(sqlite3.connect(path)) as db:
@@ -87,6 +88,7 @@ class RecoveryTests(unittest.TestCase):
             for name in ('core-data/runtime.sqlite3','companion-data/memory.sqlite3'):
                 with closing(sqlite3.connect(destination/name)) as db:self.assertEqual(db.execute('SELECT text FROM history').fetchone()[0],'before upgrade')
             self.assertEqual(json.loads((destination/'model-preferences.json').read_text()),{'preserved':True})
+            self.assertEqual(json.loads((destination/'model-configuration-pending.json').read_text()),{'modules':['core','companion']})
             with self.assertRaises(ValueError):restore(source,home)
 
     def test_corrupt_backup_and_low_disk_fail_before_creating_destination(self):

@@ -8,7 +8,7 @@ from agent.registry import create_default_registry
 from agent.scope_permissions import configure, proposal
 from agent.safety import CapabilityPolicy
 from localpilot_service.desktop_sessions import apply_options
-from tests.test_agent_service import AgentServiceTests as Base
+from tests import test_agent_service as service_fixture
 from tests.test_runtime_api import Backend, answer, call
 
 class ScopeFiles(unittest.TestCase):
@@ -53,14 +53,26 @@ class ScopeFiles(unittest.TestCase):
             value=r.call('make_directory',{'path':mode})
             self.assertEqual(value['status'],'approval_required' if mode=='request' else 'ok')
             self.assertEqual(r.call('execute',{'argv':['pwd']},approved=True)['status'],'denied')
+    def test_legacy_isolated_scope_rejects_outside_reads(self):
+        for revision in (1,2):
+            with self.subTest(revision=revision):
+                registry=self.registry('isolated')
+                configure(registry,'isolated',revision=revision)
+                with self.assertRaises(PermissionError):
+                    registry.call('read_file',{'path':str(self.src)})
     def test_absolute_paths_inside_workspace_are_not_extra_prompts(self):
         r=self.registry();(self.work/'note').write_text('inside')
         self.assertEqual(r.call('read_file',{'path':str(self.work/'note')}),'inside')
 
 class ScopeHTTP(unittest.TestCase):
-    setUp=Base.setUp;tearDown=Base.tearDown;start=Base.start;stop=Base.stop;done=Base.done;denied=Base.denied
+    setUp = service_fixture.AgentServiceTests.setUp
+    tearDown = service_fixture.AgentServiceTests.tearDown
+    start = service_fixture.AgentServiceTests.start
+    stop = service_fixture.AgentServiceTests.stop
+    done = service_fixture.AgentServiceTests.done
+    denied = service_fixture.AgentServiceTests.denied
     def factory(self,callback):
-        runtime=Base.factory(self,callback)
+        runtime=service_fixture.AgentServiceTests.factory(self,callback)
         return runtime
     def prepare(self,mode='workspace'):
         self.out=(self.root/'outside').resolve();self.out.mkdir(exist_ok=True);self.target=self.out/'new.txt'

@@ -48,6 +48,8 @@ class ScopedService:
                 reverse.update({v:k for k,v in p.routes.items()})
         if isinstance(value, dict) and "model" in value:
             value["model"] = reverse.get(value["model"], value["model"])
+        if isinstance(value, dict) and "session_model" in value:
+            value["session_model"] = reverse.get(value["session_model"], value["session_model"])
         if isinstance(value,dict) and value.get('object')=='localpilot.session':
             from dataclasses import asdict
             session=self.runtime._session(value['id']);registry=session.runtime.registry
@@ -188,6 +190,28 @@ class ScopedService:
 
 class ServiceServer(APIServer):
     request_queue_size = 16
+
+    def registered_models(self, principal):
+        self.refresh_models(principal)
+        models = []
+        for alias, route in principal.routes.items():
+            entry = {'id': alias, **self.catalog.get(route, {})}
+            manager = getattr(self, 'model_hosts', {}).get(route)
+            backend = (getattr(self, 'inference_backends', {}).get(route)
+                       or getattr(self, 'model_backends', {}).get(route))
+            if manager is not None:
+                entry['local_model_lifecycle'] = manager.status()
+            elif (entry.get('adapter') in {'omlx', 'local-openai'}
+                  and callable(getattr(backend, 'cancel_request', None))):
+                entry['local_model_lifecycle'] = {
+                    'shared_external_service': True, 'request_cancel_supported': True,
+                    'control_surface_required': True, 'release_after_task': False,
+                    'minimum_available_bytes': 4 * 1024**3,
+                    'request_cancel_scope': 'client_http_response',
+                    'provider_compute_stop': 'UNKNOWN', 'heartbeat_lease': False,
+                }
+            models.append(entry)
+        return models
 
     def refresh_models(self, principal):
         """Observe external providers only; never acquire a loading lease."""
@@ -394,9 +418,24 @@ class ServiceHandler(Handler):
             if self.command=='POST' and path=='/localpilot/v1/desktop-sessions':
                 from .desktop_sessions import create
                 return self._json(create(self.server,principal,self._body(),self.headers.get("Idempotency-Key")),201)
+            if self.command=='POST' and path=='/localpilot/v1/model-health':
+                self.scoped._scope('read')
+                body=self._body()
+                if set(body)!={'model'} or not isinstance(body['model'],str):
+                    raise APIError('Exact registered model required')
+                if body['model'] not in principal.routes:
+                    raise APIError('Model/route is not registered for this client','model_not_registered',404)
+                from .model_health import probe_model_health
+                route=principal.routes[body['model']]
+                observation=probe_model_health(getattr(self.server,'inference_backends',{}).get(route))
+                self.server.catalog.setdefault(route,{})['health_observation']=observation
+                return self._json({'model':body['model'],**observation})
             if self.command=='POST' and len(parts)==6 and parts[1:4]==['localpilot','v1','desktop-sessions'] and parts[5]=='profile':
                 from .desktop_sessions import switch_profile
                 return self._json(switch_profile(self.server,principal,parts[4],self._body()))
+            if self.command=='POST' and len(parts)==6 and parts[1:4]==['localpilot','v1','desktop-sessions'] and parts[5]=='model':
+                from .desktop_sessions import switch_model
+                return self._json(switch_model(self.server,principal,parts[4],self._body()))
             if self.command=='POST' and path=='/localpilot/v1/attachments/import':
                 from .attachments import ingest
                 return self._json(ingest(self.server,principal,self._body()),201)
@@ -430,8 +469,7 @@ class ServiceHandler(Handler):
                 return self._json(json.loads((Path(__file__).parent / "openapi.json").read_text()))
             if self.command == "GET" and path == "/localpilot/v1/model-registry":
                 self.scoped._scope("read")
-                self.server.refresh_models(principal)
-                return self._json({"models": [{"id": k, **self.server.catalog.get(v, {}), **({"local_model_lifecycle":self.server.model_hosts[v].status()} if v in getattr(self.server,"model_hosts",{}) else {"local_model_lifecycle":{'shared_external_service':True,'request_cancel_supported':True,'control_surface_required':True,'release_after_task':False,'minimum_available_bytes':4*1024**3}} if v in getattr(self.server,'model_backends',{}) else {})} for k,v in principal.routes.items()]})
+                return self._json({'models': self.server.registered_models(principal)})
             if self.command == 'GET' and path == '/localpilot/v1/routing-capabilities':
                 self.scoped._scope('read')
                 return self._json(routing_contract())

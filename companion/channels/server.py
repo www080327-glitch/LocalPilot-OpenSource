@@ -15,6 +15,7 @@ class LocalChannel:
 
             def do_POST(self):
                 future = None
+                streaming_started = False
                 if not hmac.compare_digest(self.headers.get("Authorization", ""), "Bearer " + token):
                     self.send_error(403)
                     return
@@ -41,6 +42,9 @@ class LocalChannel:
                         self.send_header("Cache-Control", "no-store")
                         self.send_header("Connection", "close")
                         self.end_headers()
+                        streaming_started = True
+                        self.wfile.write(("data: "+json.dumps({"event":"accepted", "text":"收到，我先查看问题和已授权上下文。", "task_execution":"not_started"}, ensure_ascii=False)+"\n\n").encode())
+                        self.wfile.flush()
                         deadline = time.monotonic()+125
                         while not future.done() or not deltas.empty():
                             if time.monotonic() > deadline:
@@ -69,6 +73,13 @@ class LocalChannel:
                         future.cancel()  # A timed out queued command must not run later.
                     content = json.dumps({"status":"error", "error":str(exc)}).encode()
                     try:
+                        if streaming_started:
+                            result = {"status":"error", "text":"这次回复未能完整返回，请查看任务状态。", "error":str(exc),
+                                      "task_execution":"not_started" if future.cancelled() else "unknown"}
+                            self.wfile.write(("data: "+json.dumps({"event":"final", "result":result}, ensure_ascii=False)+"\n\n").encode())
+                            self.wfile.flush()
+                            self.close_connection = True
+                            return
                         self.send_response(400)
                         self.send_header("Content-Length", str(len(content)))
                         self.end_headers()

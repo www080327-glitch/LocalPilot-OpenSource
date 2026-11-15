@@ -1,0 +1,165 @@
+{
+  "scope": "Raw logs retained in the cloud validation workspace; only hashes and summaries committed. Prior failures retained.",
+  "logs": {
+    "adaptive-final.log": {
+      "bytes": 5011,
+      "sha256": "69b2cd4ecf25b215fb5b091435ffeb54db246330cf7dc08b863ff6a2077ff9e5"
+    },
+    "adaptive-preapproval-transition.log": {
+      "bytes": 1095,
+      "sha256": "8ff6a45444fd6ebff119cd31b0db50711422a52819af8dc0c4e61bfddbaa4c9b"
+    },
+    "build-baseline.log": {
+      "bytes": 880,
+      "sha256": "003381d5fdb2bb4d2a81867d7366634149f37384587a148ae244afb6265e67b4"
+    },
+    "build-current.log": {
+      "bytes": 880,
+      "sha256": "470ab613f0fcf2f2a3a581ae9163697c9b96fd6f139499b701c23d2767274042"
+    },
+    "build-final.log": {
+      "bytes": 880,
+      "sha256": "4fbaf9a17e0a35191088fd6d92d826740cb0b427d40356a63b189fbc5e71abdc"
+    },
+    "companion-pa-final-retest.log": {
+      "bytes": 96069,
+      "sha256": "37bca9e8f41758394c77b900861c773e74bf8e0ba16a7d91f5d596843bff9097"
+    },
+    "companion-pa-final.log": {
+      "bytes": 96771,
+      "sha256": "e31e59f4b7e9da2d6fc9b36b267668216a60eaf104c9982f84da51864047afdb"
+    },
+    "companion-pa-full.log": {
+      "bytes": 95857,
+      "sha256": "5ac10e647c9f6fa8c1176ebda41a66ad62d9b24aeb2486c77e7bd10f6e9e3cfc"
+    },
+    "companion-pa-sse-409.log": {
+      "bytes": 309,
+      "sha256": "713ab4513257ec2ebc6976e4f5135d8a7fbee05ca71c2ad36cc641f9fcce7ec2"
+    },
+    "companion-pa-sse-retest.log": {
+      "bytes": 7497,
+      "sha256": "74bf41833dcfcab77414dcb6a7da310169f714b06ec5dd72d2ec4dfcf9287489"
+    },
+    "companion-pa-sse.log": {
+      "bytes": 8300,
+      "sha256": "11cea7bdf074fc6cbc2507bb3544af9b35fe8a5d9bf69e496b340e98d98e5156"
+    },
+    "companion-pa-targeted.log": {
+      "bytes": 20248,
+      "sha256": "db4c6ab5e64cf3892bc58db51824f747774a97c97104340467bd7242ab85e7e5"
+    },
+    "companion-published.log": {
+      "bytes": 96069,
+      "sha256": "bd1f7a907ff97fde686a0cc719abf6ba0321c133d7cfbb157e2ce86c34303ce7"
+    },
+    "core-final-retest.log": {
+      "bytes": 1748,
+      "sha256": "cb37fdd409a2fe5c3dd3947d3f3e62a69540bdb9ba842934696a06a7ee6ea80b"
+    },
+    "core-final.log": {
+      "bytes": 3988,
+      "sha256": "a90cdcf5eb5b1e1a87c8f23ee5ed3339ea25f4ec2f54e8975db7ae2ded8cb1ea"
+    },
+    "core-published.log": {
+      "bytes": 1750,
+      "sha256": "811340d20db26460c256b9e01f00f5b7d7a8e741653b86602ebd88eb0ec059c9"
+    },
+    "delegate-approval-retest.log": {
+      "bytes": 1276,
+      "sha256": "25bc738ccdef61839da60cae0b7738c063a2d68f10d518e3dfc5b0eb99325d61"
+    },
+    "docs-check-final.log": {
+      "bytes": 244,
+      "sha256": "db45107f681624573ccea55f688ff1465ee0fc0c5f4a7f548f9cbf4a3297ce42"
+    },
+    "docs-check.log": {
+      "bytes": 436,
+      "sha256": "f83d99e0b8e4372a25412f6c060680db4112991583e63d2c74d8816eb4c3cb61"
+    },
+    "hybrid-final.log": {
+      "bytes": 7869,
+      "sha256": "7f804a80d90b31aa4ed67a2cc3ee6b51cea3a861b02f57c3f5fddc8afa1cb123"
+    },
+    "model-switch-independent-review.log": {
+      "bytes": 1576,
+      "sha256": "4c56f157c079301e6c0cb73c703fc52915695b3ebc5734889e5bd3551a8ee8c0"
+    },
+    "openai-2.29.0-tests.log": {
+      "bytes": 32128,
+      "sha256": "325f7ff16b6c77b116e7c72c781dabfb0728a02f9c2f364d1e52c667affb2619"
+    },
+    "openai-3.51.0-fixed-tests.log": {
+      "bytes": 6351,
+      "sha256": "288004592b27d9cf328f439d6eef185b18eed485b4db6008fa3b038a550d73e7"
+    },
+    "openai-3.51.0-tests.log": {
+      "bytes": 23242,
+      "sha256": "86816b814e14465c727705900ab22c1599ffea3aa9c1f997024f6b301976fe9d"
+    },
+    "pa-core-retest.log": {
+      "bytes": 5714,
+      "sha256": "23ebf3d3e4527e93924999f1fa75d9f5cf5a11a47e22d1f503de7c9340e69b74"
+    },
+    "pa-core.log": {
+      "bytes": 2286,
+      "sha256": "a608397e757cbda2b063b76e4aa8d193e6859aa1744bdce9b5c28faf384a031e"
+    },
+    "pa-model-health-omlx.log": {
+      "bytes": 5936,
+      "sha256": "69c5046dbf3d3633affdcebb152d91dcef051321a66f00a5d6b479d35618f5a0"
+    },
+    "pa-model-health-service.log": {
+      "bytes": 6524,
+      "sha256": "d487b868888bf0aeff05fd63c4775e0bddc0a1be28ac1fc98c480c88a52450ee"
+    },
+    "pa-model-health.log": {
+      "bytes": 1869,
+      "sha256": "0d472f186702c9c198609d92b3edf1c592f1c2e90598330b85e9dff651ff01fd"
+    },
+    "permission-full-retest.log": {
+      "bytes": 13850,
+      "sha256": "07bc64c8dbe274019bf2aa7c59f44507854a84b6da5b71fd13d34c29b68a2ef0"
+    },
+    "permission-full-transition.log": {
+      "bytes": 24062,
+      "sha256": "54842b6609da1b89cd5d35fdc0743e7abad24fadb0df418fe9b47ff4450e2e8b"
+    },
+    "playwright-baseline.log": {
+      "bytes": 41079,
+      "sha256": "cc4ab3330b2f65aff136140f01aa2c84956924aea56b10c9a6fe5765b3316564"
+    },
+    "playwright-browser-install.log": {
+      "bytes": 5528,
+      "sha256": "e8dc0687b010ff1d444cfb3097e6c95e684de762d7717c5528914159046f96ce"
+    },
+    "playwright-system-chromium.log": {
+      "bytes": 136384,
+      "sha256": "4f81ae025c654c7fcc3a0b9f2f82676eee04d53a0f70acb32e1591134d668c81"
+    },
+    "plugins.log": {
+      "bytes": 4730,
+      "sha256": "9b0b417aacce762fd4f1468f007c9ece3b882fdf9701f62243d90531d67f6e2c"
+    },
+    "prettier-check.log": {
+      "bytes": 165,
+      "sha256": "5bf5bf82219fcfa49043e9d2d1d1460f203bdff6d7d1fe0f377dbbd647a692dd"
+    },
+    "prettier.log": {
+      "bytes": 282,
+      "sha256": "a8ee73682b9810d3543c78f7a4b535560d398847953c504365c133af63fd8752"
+    },
+    "python-baseline.log": {
+      "bytes": 351369,
+      "sha256": "1af7e62dff5cfa521bc4a3ac13fcce64b28ffd1b048b644a9f3d17ba6a89b5dd"
+    },
+    "vitest-baseline.log": {
+      "bytes": 398,
+      "sha256": "ef1335ad98ea1f7507ff5bb7aec966f3f2922e5c2dff816b1b102856162a7ee4"
+    },
+    "vitest-final.log": {
+      "bytes": 405,
+      "sha256": "2e55a97b932fbc414ec39790309d088162e3a17da6c2c3be7fa919d522dca88c"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
-import { ensureLocalModelLoaded } from "../src/modelLoading";
+import { ensureLocalModelLoaded, usableAgentModels } from "../src/modelLoading";
+import { initialPreferences } from "../src/preferences";
 import type { Model } from "../src/domain";
 const model: Model = {
   id: "local",
@@ -12,6 +13,27 @@ const catalog = (entry: object) => ({
   resources_supported: true,
   models: { models: [{ id: "weights", size_bytes: 1024 ** 3, ...entry }] },
 });
+describe("model selector uses runtime-capable deployed routes", () => {
+  const ready = { ...model, cloud_egress: "LOCAL_ONLY", capabilities: ["tool_calling", "streaming"] };
+  const choices = [
+    ready,
+    { ...ready, id: "downloading", deployment_status: "loading" },
+    { ...ready, id: "offline", deployment_status: "not_deployed" },
+    { ...ready, id: "reasoning", reasoning_only: true },
+    { ...ready, id: "no-tools", capabilities: ["streaming"] },
+    { ...ready, id: "cloud", adapter: "deepseek", cloud_egress: "REQUIRES_APPROVAL" },
+  ];
+  it("filters ghost and non-agent models without deleting their library entries", () => {
+    const result = usableAgentModels(choices, initialPreferences);
+    expect(result.map((entry) => entry.id)).toEqual(["local", "cloud"]);
+    expect(choices).toHaveLength(6);
+  });
+  it("respects an explicit local-only source boundary", () => {
+    const result = usableAgentModels(choices, { ...initialPreferences, source: "local_only" });
+    expect(result.map((entry) => entry.id)).toEqual(["local"]);
+  });
+});
+
 describe("model selection loads the explicit local route", () => {
   it("loads downloaded weights within an explicit memory budget", async () => {
     const invoke = vi

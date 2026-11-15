@@ -111,7 +111,7 @@ test("native contract: first completion requires a healthy Core and failed setup
   await expect(finish).toHaveCount(0);
   await page.getByRole("button", { name: "开始准备 Agent" }).click();
   const prepare = page.getByRole("button", {
-    name: "一键准备 Core、Companion 与 Suite",
+    name: "准备 LocalPilot",
   });
   await prepare.click();
   await expect(page.getByRole("dialog").getByRole("alert")).toContainText(
@@ -124,6 +124,7 @@ test("native contract: first completion requires a healthy Core and failed setup
   await expect(
     page.getByRole("button", { name: "继续 · 连接消息平台" }),
   ).toBeEnabled();
+  await page.getByText("高级 · 工作文件夹", { exact: true }).click();
   await page
     .getByRole("button", { name: "选择工作文件夹…", exact: true })
     .click();

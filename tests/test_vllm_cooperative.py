@@ -14,7 +14,14 @@ from agent.retry import RetryPolicy
 from agent.session import AgentSession, SessionBudgets
 from agent.vllm import VLLMBackend
 from agent.safety import CapabilityPolicy
-from benchmarks.hybrid_accounting import CostLedger, BudgetExceeded
+# The public product tree does not include the private benchmarking package.
+# Keep provider and routing regressions runnable; benchmark-only tests stay SKIP.
+try:
+    from benchmarks.hybrid_accounting import CostLedger, BudgetExceeded
+except ModuleNotFoundError as exc:
+    if exc.name not in {'benchmarks', 'benchmarks.hybrid_accounting'}:
+        raise
+    CostLedger = BudgetExceeded = None
 
 
 class Scripted:
@@ -33,7 +40,7 @@ class Scripted:
 class CooperativeTests(unittest.TestCase):
     def decision(self, mode='local-first', **updates):
         fields = dict(current='local', local_requests=0, tool_errors=0, stagnation=0,
-            context_bytes=1000, local_context=65536, bucket='simple', profile={})
+            context_tokens=1000, local_context=65536, bucket='simple', profile={})
         fields.update(updates)
         return decide(CooperativePolicy(mode=mode), **fields)
 
@@ -42,18 +49,18 @@ class CooperativeTests(unittest.TestCase):
             self.assertEqual(self.decision(mode, cloud_allowed=False, tool_errors=5, bucket='complex')['target'], 'local')
 
     def test_unseen_quality_never_claims_calibration(self):
-        self.assertEqual(self.decision('balanced')['target'], 'cloud')
+        self.assertEqual(self.decision('balanced')['target'], 'local')
         self.assertEqual(self.decision('cloud-first')['target'], 'cloud')
         self.assertEqual(self.decision()['target'], 'local')
 
     def test_early_exit_and_hysteresis(self):
-        self.assertEqual(self.decision(local_requests=2)['reason'], 'local_trial_budget_exhausted')
+        self.assertEqual(self.decision(local_requests=8)['reason'], 'local_trial_budget_exhausted')
         self.assertEqual(self.decision(tool_errors=1)['reason'], 'tool_error')
         self.assertEqual(self.decision(escalated=True)['reason'], 'route_hysteresis')
-        self.assertEqual(self.decision(bucket='complex')['target'], 'cloud')
+        self.assertEqual(self.decision('balanced',bucket='complex')['target'], 'cloud')
 
     def test_profile_cannot_turn_model_self_confidence_into_quality(self):
-        self.assertEqual(self.decision('balanced', profile={'confidence':1})['target'], 'cloud')
+        self.assertEqual(self.decision('balanced', profile={'confidence':1})['target'], 'local')
         self.assertEqual(self.decision('balanced', profile={'samples':100,'successes':100})['target'], 'local')
 
     def test_runtime_local_only_never_calls_cloud(self):
@@ -118,7 +125,12 @@ class CooperativeTests(unittest.TestCase):
 
 class VLLMTests(unittest.TestCase):
     def test_token_observation_is_not_mutated_by_a_later_raw_cancel_stream(self):
-        from benchmarks.vllm_backend_qualification import TimedBackend
+        try:
+            from benchmarks.vllm_backend_qualification import TimedBackend
+        except ModuleNotFoundError as exc:
+            if exc.name not in {'benchmarks', 'benchmarks.vllm_backend_qualification'}:
+                raise
+            self.skipTest('TimedBackend is in the missing benchmark package')
         from tests.test_local_http_backend import MockServer,sse
         server=MockServer()
         try:
@@ -160,6 +172,19 @@ class VLLMTests(unittest.TestCase):
             self.assertEqual(len(b._responses),0)
         finally:server.close()
 
+    def test_vllm_short_chinese_request_fits_real_32k_context_admission(self):
+        backend = VLLMBackend(base_url='http://127.0.0.1:9/v1', model='fixture-local',
+                              effective_context=32768, supports_tool_calling=True)
+        payload = backend._payload([Message('user','你好')], [], 2048)
+        self.assertEqual(payload['max_tokens'],2048)
+        self.assertEqual(payload['messages'][0]['content'],'你好')
+
+    def test_vllm_still_rejects_real_context_overflow_before_network(self):
+        backend = VLLMBackend(base_url='http://127.0.0.1:9/v1', model='fixture-local',
+                              effective_context=32768)
+        with self.assertRaises(LocalBackendError):
+            backend._payload([Message('user','a'*110000)], [], 2048)
+
     def test_remote_vllm_remains_cloud_in_five_mode_selection(self):
         from localpilot_service.routing import select_route
         catalog={'remote':{'adapter':'remote-vllm','cloud_egress':'CLOUD_ALLOWED','model':'model'}}
@@ -169,13 +194,14 @@ class VLLMTests(unittest.TestCase):
     def test_capability_and_context_fail_before_http(self):
         b=VLLMBackend(base_url='http://127.0.0.1:9/v1',model='frozen',effective_context=1000)
         with self.assertRaises(ValueError):b.request([Message('user','hi')],tools=[{}],max_tokens=2)
-        with self.assertRaises(LocalBackendError):b.request([Message('user','x'*2000)],max_tokens=2)
+        with self.assertRaises(LocalBackendError):b.request([Message('user','x'*5000)],max_tokens=2)
         DataPolicy(local_only=True).check_backend(b)
         with self.assertRaises(ValueError):VLLMBackend(base_url='http://192.0.2.1/v1',model='frozen',allow_remote=True)
         remote=VLLMBackend(base_url='https://192.0.2.1/v1',model='frozen',allow_remote=True,api_key='example')
         with self.assertRaises(PermissionError):DataPolicy(local_only=True).check_backend(remote)
 
 
+@unittest.skipUnless(CostLedger is not None, 'Benchmark cost ledger is not published in the product tree')
 class LedgerTests(unittest.TestCase):
     def test_concurrent_reservations_and_restart_cannot_exceed_ceiling(self):
         with tempfile.TemporaryDirectory() as tmp:

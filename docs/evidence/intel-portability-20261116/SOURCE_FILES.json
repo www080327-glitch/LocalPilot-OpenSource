@@ -1,0 +1,266 @@
+{
+  "base": "47e39faf3e97fbd13a562a9ec74efa30dfcc7b42",
+  "scope": "changed source, tests and current documentation; historical evidence excluded",
+  "files": [
+    {
+      "path": "MODULE_RELEASE.json",
+      "sha256": "35b333681c60c487d1b2159357d7e5883ab8aff23abe58ec8e6a1c6e4901659a"
+    },
+    {
+      "path": "README.md",
+      "sha256": "cdfaf8f1b66ac422e3d50d0695613539d35ecf19f269f86316867f9fc03de327"
+    },
+    {
+      "path": "agent/local_http.py",
+      "sha256": "001039ea35404a2a6ac17d0c50d17935a744dc12363fc93d7ceb8ac61308776b"
+    },
+    {
+      "path": "agent/omlx.py",
+      "sha256": "fe269722568b35f8b176bd65ec1b6529ebd48473fee73a0516edeecaaf9e8e07"
+    },
+    {
+      "path": "agent/vllm.py",
+      "sha256": "10c22df969b21bb54b58d0f36e64a1346b84ff55008181f4778692c63aa00dcb"
+    },
+    {
+      "path": "companion/MODULE_RELEASE.json",
+      "sha256": "1e4ec522f7d13f56cb4bb8f363fbd9e9f5737fb534462b842226f30ed3d4c29b"
+    },
+    {
+      "path": "companion/README.md",
+      "sha256": "723c86d34875e014e7048e3c26868c329349937101d5b28e19793ccf52e44bbb"
+    },
+    {
+      "path": "companion/__init__.py",
+      "sha256": "1093237115ccc4116d8183852f08763ede7743107fd7e971ecf93bc388c5d97b"
+    },
+    {
+      "path": "companion/config.example.json",
+      "sha256": "4aab30a0003c243a8d1388d0a91299b06b99e5f923dc03861cbf32f83c461098"
+    },
+    {
+      "path": "companion/config.py",
+      "sha256": "47719af5cadd5da73df56213d0271b66b2626f5b97b7636c19f9e2f2fc811a1b"
+    },
+    {
+      "path": "companion/model/backend.py",
+      "sha256": "32315ea6adfe63d137c7e61079d364dcd17903363e15406499d7e86404f486de"
+    },
+    {
+      "path": "companion/pyproject.toml",
+      "sha256": "3419c1b686bd75734897e4bb41aef71f208d981bee49788b1640c616a0608714"
+    },
+    {
+      "path": "companion/runtime/inference_controls.py",
+      "sha256": "4a292bfda8e554e24afd7ba427d4bfa92a4a34cde9b22612f8ee837c56fd1ed3"
+    },
+    {
+      "path": "companion/runtime/launchd.py",
+      "sha256": "f983ae95dd2747b87cb0f5629d2a5e5a0a493a12d33f30c7174308d56caf47c5"
+    },
+    {
+      "path": "companion/runtime/power.py",
+      "sha256": "a714eb817b0b34255e55b0be38b6f8017638a680f0a24d4d12e8f1d251e0315e"
+    },
+    {
+      "path": "companion/runtime/system_resources.py",
+      "sha256": "a5938389e510ccabf1caad80830392ba5e18b5b4716096d573e2f7b3dda67d36"
+    },
+    {
+      "path": "companion/tests/test_companion.py",
+      "sha256": "b3d4b3c066bca1746362b9da9ffd4d8e31bf8203cd8e1f0d34af09505363eb75"
+    },
+    {
+      "path": "companion/tests/test_intel_delegation.py",
+      "sha256": "3c12573ca87fb6e630dab18c6b56a449aa72c1bdbe15c1acefbc50aec3112b38"
+    },
+    {
+      "path": "companion/tests/test_intel_portability.py",
+      "sha256": "97b11edfcce1f61b6b12d7bd93d67ab3bac52c83f450384e561da5233a57dcdb"
+    },
+    {
+      "path": "companion/tests/test_pa_candidate.py",
+      "sha256": "b4ad6a94f98138e9cbcff764eb8f89f66276554f67608757ba1d689e57bc12cf"
+    },
+    {
+      "path": "companion/tests/test_suite_contract.py",
+      "sha256": "2317b1c52cc202b04abd2c3ca147c6265911a868a2533288ef1059bd919fadf3"
+    },
+    {
+      "path": "companion/tests/test_v02.py",
+      "sha256": "6c45dc80da60c97bc364c64f7014ebb88d6153649e9db229fcbb64a91da4654d"
+    },
+    {
+      "path": "companion/tests/test_v044_resource_controls.py",
+      "sha256": "fc606d3ecf77b1fb56703e213f9e2d3d1bb89ef2d734d0542f19b7a07775676e"
+    },
+    {
+      "path": "desktop/README.md",
+      "sha256": "be31b1364d4034ff495c74dbb6b832c217746aeecaa20ce9d256148cc6664fe1"
+    },
+    {
+      "path": "desktop/docs/development/INTEL_MAC_20261116.md",
+      "sha256": "5ef5ad9af0cc173523b8ba0f995f28e9fe5de145fcbf3a4e9d165aa93825b02f"
+    },
+    {
+      "path": "desktop/scripts/build-cryptography-wheel.py",
+      "sha256": "6dfdd224c3bd89f14f9103951e393ab67016ce12157e1851071723e07a039c0d"
+    },
+    {
+      "path": "desktop/scripts/build-watchdog-wheel.py",
+      "sha256": "dae4fc379c197d9e0e8dd06b4639e7cd8e26414e7f1855dd9af790c24c52b130"
+    },
+    {
+      "path": "desktop/scripts/lock-runtime-dependencies.py",
+      "sha256": "3088991b42b447bbee3363a13c43644d2fd23506dc1e29ed1eaab977b2dceecc"
+    },
+    {
+      "path": "desktop/scripts/macos_artifacts.py",
+      "sha256": "e0ce4ae80b8ada413d431eb154b8401969332df6d318e92130d88054deae7b4c"
+    },
+    {
+      "path": "desktop/src-tauri/src/product.rs",
+      "sha256": "42c670a1082fe1613f64b1347b5d0a25aa221fa7cb731e460957048f83ca24b9"
+    },
+    {
+      "path": "desktop/src/components/LocalEndpointForm.tsx",
+      "sha256": "3be7f85693b29317f3f4aaa83060a7a9461c33a2d634d79e44008307d86d1f5f"
+    },
+    {
+      "path": "desktop/src/components/ModelConfiguration.tsx",
+      "sha256": "93825ad119ecae2214097eb6164a54222bf632fbc110c831b1747967049f6264"
+    },
+    {
+      "path": "desktop/src/components/ModelLibrary.tsx",
+      "sha256": "d63cd794d2696bce883a5ea7a36aa4ca7c556bca72d2e9b3ec389cf0e789ebb7"
+    },
+    {
+      "path": "desktop/src/components/SetupAssistant.tsx",
+      "sha256": "71dd4855616ec1b6d28455aa4a95a671b4faa5ce04f45dc3b85a0515840c6cdb"
+    },
+    {
+      "path": "desktop/tests/local-endpoint.test.tsx",
+      "sha256": "7a88518fae3b25b86a3c3c0c9da875be06babf189726ff23812591748865bf76"
+    },
+    {
+      "path": "desktop/tests/test_macos_artifacts.py",
+      "sha256": "4925b56fa2d7cd99c3abc41e95a2fab750a1023051908717e5d6b6225140046f"
+    },
+    {
+      "path": "desktop/tests/ui/intel-fixture.html",
+      "sha256": "a99a1ee909832a04a4d7b62856bb38a482d7ec19e6ae8a8c570fda06fd286312"
+    },
+    {
+      "path": "desktop/tests/ui/intel-fixture.tsx",
+      "sha256": "936317f1ef1cde7bdddd725d4c939d4bf48a8a33e855dc462518130ade779256"
+    },
+    {
+      "path": "desktop/tests/ui/intel-setup.spec.ts",
+      "sha256": "8bdb7395b10edae593ed70311e16e6fb0dbdf0f2665fe4a39a9bd5178b7474d0"
+    },
+    {
+      "path": "docs/development/COMPANION_INTEL_20261116.md",
+      "sha256": "5e5c04c19dd26551604d38970ad032e1f5f6666e03db56dc4b085a8bae2ab716"
+    },
+    {
+      "path": "docs/development/CORE_PORTABILITY_20261116.md",
+      "sha256": "40e57ba74bf5ff83e9432ff8fbd7911e0a9cc758b9d42863ed59be5849f17443"
+    },
+    {
+      "path": "docs/development/PLATFORM_SUPPORT_20261116.md",
+      "sha256": "cfb084899feb0556660efb22d84d79004d0eb787ef7a8cb83c4981bf46c223ea"
+    },
+    {
+      "path": "docs/development/WORK_INTEL_20261116.md",
+      "sha256": "bef5a086b4fbb2e7ce831853a4b7d7a1fc7b4d1f80dc425aa8a58770d60426e3"
+    },
+    {
+      "path": "hardware.py",
+      "sha256": "d597c8ab31c71947783928eb6da619c7e28a4bf2607f98dc31823fa06a719f7f"
+    },
+    {
+      "path": "localpilot_service/__init__.py",
+      "sha256": "7cad109755f8cc369f2e33f702d6c66b944bdad29e96f0bd7fca39ca1b012c3e"
+    },
+    {
+      "path": "localpilot_service/cli.py",
+      "sha256": "e7fe08fed2095a2bb9263a7e8dddb251517f38b87d56e98e5d6eb728d48c8766"
+    },
+    {
+      "path": "localpilot_service/configure.py",
+      "sha256": "5d0ef65bd08ffa49358858a56f164fc744fffc5b52d727af43c3cae0f1c527a1"
+    },
+    {
+      "path": "localpilot_service/server.py",
+      "sha256": "e195cc3c082340322dd73b04414250a84a9cc3677bdd530fa89640db6bed9193"
+    },
+    {
+      "path": "main.py",
+      "sha256": "73bfe99d55452f51eb43f3b75e3f14f34624697de0d3a097b0ec104df7d9ad08"
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "695ecdcbb0cacf89efc3763d6d067e169001c7f0b8edf3c3e5e7fb856e540e75"
+    },
+    {
+      "path": "recommender.py",
+      "sha256": "0ae30775578b7d1c55aeacaa4e7242ca0e0f2069056bc6e6927d85fac7c5618d"
+    },
+    {
+      "path": "suite/MODULE_RELEASE.json",
+      "sha256": "708df25d96aad9439fb3f05d2951b067817bf8348e86f13f7ffa93807a758b21"
+    },
+    {
+      "path": "suite/README.md",
+      "sha256": "daead18218fa6c7b450a7ba67676604fe0a0fbc16c6327777618293fe744e169"
+    },
+    {
+      "path": "suite/localpilot_suite/__init__.py",
+      "sha256": "7ef89bce31877705454c365dce027be57be5290a14d5374331ab903fb942f2c6"
+    },
+    {
+      "path": "suite/localpilot_suite/desktop_setup.py",
+      "sha256": "26870bd42a8f628c7af3a48b9520ff6a26e0cad3dfcd74b22efaf811af35f296"
+    },
+    {
+      "path": "suite/localpilot_suite/model_configuration.py",
+      "sha256": "fa55e85ebbbf893e1c726059c5905638d4fdbc337e78597c302a910466f29891"
+    },
+    {
+      "path": "suite/localpilot_suite/product_backup.py",
+      "sha256": "1704841811391f61bad5ff2206afe80db28b0e2d76de1093658ed97c0edd38ed"
+    },
+    {
+      "path": "suite/localpilot_suite/product_control.py",
+      "sha256": "8884e52c5e55dbe061754dc3eec148bc3c1d7a31399ec3b08b9a58df14557840"
+    },
+    {
+      "path": "suite/pyproject.toml",
+      "sha256": "d91863ceb4569652cfdd4d43c47e5306307a0db203f8d18c0d7f5dbbfc38562d"
+    },
+    {
+      "path": "suite/tests/test_active_power_recommendation.py",
+      "sha256": "b605ebf2551079b3fa978d463d81b7a46ad320a07d719ff1a9d09b00d3424cf7"
+    },
+    {
+      "path": "suite/tests/test_installation_first_run.py",
+      "sha256": "fd381b1515a68a7ecd541aebe11c1bb9abd37cefaf3af4526c5c234f4c56fbcf"
+    },
+    {
+      "path": "suite/tests/test_local_endpoint_portability.py",
+      "sha256": "703a15df10e3c8d8a9cd54c8f102c5af31609b1db600e01570fd972038fd5864"
+    },
+    {
+      "path": "suite/tests/test_model_configuration.py",
+      "sha256": "2f854593ef9ff020d29b02f80f64c3e5363508854721e15f68b6ffb4db0d8208"
+    },
+    {
+      "path": "tests/test_core_portability.py",
+      "sha256": "e4b3605d322e062f2c9e3e40e568279849a246fd6a792e6318f27b885d77c2f3"
+    },
+    {
+      "path": "tests/test_local_http_backend.py",
+      "sha256": "d8c1e2e1a087113847c0eea9bc95bf0fc8c78a571d9788607ed9f459b27529f0"
+    }
+  ]
+}

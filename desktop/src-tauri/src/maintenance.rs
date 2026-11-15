@@ -14,8 +14,8 @@ use std::{
 };
 use tauri::State;
 
-const REPO: &str = "https://github.com/www080327-glitch/LocalPilot";
-const RELEASES: &str = "https://api.github.com/repos/www080327-glitch/LocalPilot/releases";
+const REPO: &str = "https://github.com/www080327-glitch/LocalPilot-OpenSource";
+const RELEASES: &str = "https://api.github.com/repos/www080327-glitch/LocalPilot-OpenSource/releases";
 const MAX_BODY: usize = 4 * 1024 * 1024;
 #[derive(Default)]
 pub struct Maintenance {
@@ -94,11 +94,15 @@ fn release_url(s: &str) -> bool {
         && u.password().is_none()
         && u.query().is_none()
         && u.fragment().is_none()
-        && u.path()
-            .starts_with("/www080327-glitch/LocalPilot/releases/")
+        && (u.path() == "/www080327-glitch/LocalPilot-OpenSource/releases"
+            || u.path().starts_with("/www080327-glitch/LocalPilot-OpenSource/releases/"))
         && !u.path().contains("..")
 }
 fn select_release(rows: &Value, current: &str) -> Result<Value, String> {
+    let arch = if cfg!(target_arch = "aarch64") { "arm64" } else { "x86_64" };
+    select_release_for_arch(rows, current, arch)
+}
+fn select_release_for_arch(rows: &Value, current: &str, arch: &str) -> Result<Value, String> {
     let list = rows.as_array().ok_or("GitHub Release JSON 格式错误")?;
     let mut candidates = list
         .iter()
@@ -126,8 +130,8 @@ fn select_release(rows: &Value, current: &str) -> Result<Value, String> {
         .filter_map(|a| {
             let name = a["name"].as_str()?;
             let allowed = [
-                format!("LocalPilot-{version}-arm64.dmg"),
-                format!("LocalPilot-{version}-arm64.app.zip"),
+                format!("LocalPilot-{version}-{arch}.dmg"),
+                format!("LocalPilot-{version}-{arch}.app.zip"),
             ];
             if !allowed.iter().any(|n| n == name) {
                 return None;
@@ -146,7 +150,7 @@ fn select_release(rows: &Value, current: &str) -> Result<Value, String> {
         })
         .collect::<Vec<_>>();
     if assets.is_empty() {
-        return Err("Release 无有效 macOS arm64 GUI 制品".into());
+        return Err(format!("Release 无有效 macOS {arch} GUI 制品"));
     }
     let current = Version::parse(current).map_err(|_| "当前 GUI 版本无效")?;
     Ok(
@@ -171,7 +175,7 @@ async fn public_releases() -> Result<Value, String> {
             .map_err(|_| "GitHub 网络连接失败；状态 UNKNOWN，请检查网络后重试")?;
         let status = res.status();
         if !status.is_success() {
-            return Err(format!("GitHub HTTP {}；无法确认最新版本。404 可能需要私有仓库权限；可主动使用本机 GitHub 登录。",status.as_u16()));
+            return Err(format!("GitHub HTTP {}；无法确认最新版本。404 可能是公开 Release 不可用；请核对仓库页面。",status.as_u16()));
         }
         let mut stream = res.bytes_stream();
         let mut bytes = Vec::new();
@@ -204,7 +208,7 @@ async fn load_releases(authenticated: bool) -> Result<Value, String> {
                 "api",
                 "--hostname",
                 "github.com",
-                &format!("repos/www080327-glitch/LocalPilot/releases?per_page=100&page={page}"),
+                &format!("repos/www080327-glitch/LocalPilot-OpenSource/releases?per_page=100&page={page}"),
             ])
             .env("GH_PROMPT_DISABLED", "1");
             let s = run(cmd, 20, MAX_BODY).map_err(|_| {
@@ -230,7 +234,14 @@ pub async fn desktop_update_check(
     let result = load_releases(authenticated)
         .await
         .and_then(|v| select_release(&v, env!("CARGO_PKG_VERSION")));
-    let mut v = result.unwrap_or_else(|e| json!({"status":"UNKNOWN","error":e}));
+    let mut v = result.unwrap_or_else(|e| {
+        if e == "未发现正式 Desktop Release；Core/Suite Release 不参与 GUI 更新" {
+            json!({"status":"NO_STABLE_RELEASE","url":format!("{REPO}/releases"),
+                "error":"公开仓库目前没有正式 Desktop Release；预发布不会自动推荐"})
+        } else {
+            json!({"status":"UNKNOWN","error":e})
+        }
+    });
     v["checked_at"] = json!(stamp());
     v["source"] = json!(if authenticated {
         "github-cli-authenticated"
@@ -599,7 +610,8 @@ pub async fn desktop_open_release(
 #[tauri::command]
 pub async fn desktop_verify_archive(n: State<'_, Maintenance>) -> Result<Value, String> {
     let latest = n.latest.lock().unwrap().clone();
-    if latest["status"] == "UNKNOWN"
+    if !["CURRENT", "LOCAL_AHEAD", "UPDATE_AVAILABLE"]
+        .contains(&latest["status"].as_str().unwrap_or(""))
         || latest["checked_at"]
             .as_u64()
             .is_none_or(|t| stamp().saturating_sub(t) > 3600)
@@ -658,9 +670,23 @@ fn verify_archive(path: &Path, latest: &Value) -> Result<Value, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    fn select_release(rows: &Value, current: &str) -> Result<Value, String> {
+        select_release_for_arch(rows, current, "arm64")
+    }
     fn row(tag: &str) -> Value {
         let v = tag.trim_start_matches("desktop-v");
         json!({"tag_name":tag,"draft":false,"prerelease":false,"html_url":format!("{REPO}/releases/tag/{tag}"),"assets":[{"name":format!("LocalPilot-{v}-arm64.dmg"),"browser_download_url":format!("{REPO}/releases/download/{tag}/LocalPilot-{v}-arm64.dmg"),"digest":format!("sha256:{}","a".repeat(64)),"size":10}]})
+    }
+    #[test]
+    fn release_selection_requires_the_running_architecture() {
+        let mut intel = row("desktop-v5.0.0");
+        intel["assets"][0]["name"] = json!("LocalPilot-5.0.0-x86_64.dmg");
+        intel["assets"][0]["browser_download_url"] = json!(format!("{REPO}/releases/download/desktop-v5.0.0/LocalPilot-5.0.0-x86_64.dmg"));
+        let rows = json!([intel]);
+        let selected = select_release_for_arch(&rows, "5.0.0", "x86_64").unwrap();
+        assert_eq!(selected["assets"][0]["name"], "LocalPilot-5.0.0-x86_64.dmg");
+        assert!(select_release_for_arch(&rows, "5.0.0", "arm64").is_err());
+        assert!(select_release_for_arch(&json!([row("desktop-v5.0.0")]), "5.0.0", "x86_64").is_err());
     }
     #[test]
     fn release_selection_ignores_other_modules_and_orders_semver() {
@@ -695,7 +721,16 @@ mod tests {
             "https://github.com.evil.test/www080327-glitch/LocalPilot/releases/"
         ));
         assert!(!release_url(
-            "https://github.com/www080327-glitch/LocalPilot/releases/?x=1"
+            "https://github.com/www080327-glitch/LocalPilot-OpenSource/releases/?x=1"
+        ));
+        assert!(!release_url(
+            "https://github.com/www080327-glitch/LocalPilot/releases/download/desktop-v5.0.0/LocalPilot-5.0.0-arm64.dmg"
+        ));
+        assert!(release_url(
+            "https://github.com/www080327-glitch/LocalPilot-OpenSource/releases/download/desktop-v5.0.0/LocalPilot-5.0.0-arm64.dmg"
+        ));
+        assert!(release_url(
+            "https://github.com/www080327-glitch/LocalPilot-OpenSource/releases"
         ));
     }
     #[test]
@@ -703,6 +738,9 @@ mod tests {
         let mut a = row("desktop-v9.0.0");
         a["draft"] = json!(true);
         assert!(select_release(&json!([a]), "0.2.0").is_err());
+        let mut candidate = row("desktop-v9.0.0");
+        candidate["prerelease"] = json!(true);
+        assert!(select_release(&json!([candidate]), "0.2.0").is_err());
         assert_eq!(
             select_release(&json!([row("desktop-v0.2.0")]), "0.2.1-dev.1").unwrap()["status"],
             "LOCAL_AHEAD"

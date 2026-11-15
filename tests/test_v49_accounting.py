@@ -1,4 +1,7 @@
 """Cost reporting must preserve concurrent identity and unknown usage."""
+from tests.optional_benchmarks import require_benchmarks
+require_benchmarks()
+
 import tempfile,unittest,json
 from pathlib import Path
 from benchmarks.v49_analysis import account,price,pair_test

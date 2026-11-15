@@ -18,11 +18,13 @@ import "./pet/pet.css";
 import EdgeCharacter from "./pet/EdgeCharacter";
 import { idleLines } from "./pet/personality";
 import { textOf } from "./domain";
+import { TrainingReview } from "./components/TrainingSamples";
 type Message = {
   role: "user" | "assistant";
   text: string;
   profile?: string;
   question?: string;
+  answerId?: string;
 };
 const act = (action: string, value?: unknown) =>
   call<any>("pet_action", { action, value: value ?? null });
@@ -44,6 +46,7 @@ export default function Pet() {
     [],
   );
   const [aside, setAside] = useState("");
+  const [reviewingAnswer, setReviewingAnswer] = useState<string | null>(null);
   const [agentTask, setAgentTask] = useState<any>(null);
   const [coreConnected, setCoreConnected] = useState(false);
   const delegating = useRef(false);
@@ -51,6 +54,7 @@ export default function Pet() {
     [text, setText] = useState(""),
     [busy, setBusy] = useState(false),
     [draft, setDraft] = useState(""),
+    [acknowledgement, setAcknowledgement] = useState(""),
     [error, setError] = useState(""),
     [snapshot, setSnapshot] = useState<any>(null),
     [memory, setMemory] = useState(true),
@@ -129,8 +133,10 @@ export default function Pet() {
         .then(acceptTask)
         .catch(() => {});
       void sub("pet-stream", (v) => {
-        if (v.id === current.current && v.data.event === "draft")
-          setDraft((t) => t + v.data.text);
+        if (v.id !== current.current) return;
+        if (v.data.event === "accepted")
+          setAcknowledgement(v.data.text || "收到，正在处理。");
+        else if (v.data.event === "draft") setDraft((t) => t + v.data.text);
       });
       void sub("task-stream", (v) => {
         if (v.taskId !== taskId.current) return;
@@ -369,6 +375,7 @@ export default function Pet() {
     setText("");
     setError("");
     setDraft("");
+    setAcknowledgement("");
     setBusy(true);
     setView("chat");
     setMessages((m) => [...m, { role: "user", text: q }]);
@@ -385,6 +392,7 @@ export default function Pet() {
           text: r.text || r.reason || r.error || "暂时无法回答，请稍后重试。",
           profile: r.agent_profile,
           question: q,
+          answerId: r.answer_id || undefined,
         },
       ]);
       activity(
@@ -400,6 +408,7 @@ export default function Pet() {
     } finally {
       setBusy(false);
       setDraft("");
+      setAcknowledgement("");
       current.current = "";
     }
   }
@@ -530,11 +539,26 @@ export default function Pet() {
                     仅本地
                   </button>
                 )}
+                {m.answerId && (
+                  <button
+                    className="pet-handoff"
+                    onClick={() => setReviewingAnswer(m.answerId!)}
+                  >
+                    审阅为训练样本
+                  </button>
+                )}
+                {m.answerId && reviewingAnswer === m.answerId && (
+                  <TrainingReview
+                    answerId={m.answerId}
+                    request={service}
+                    onClose={() => setReviewingAnswer(null)}
+                  />
+                )}
               </article>
             ))}
             {busy && (
               <article className="pet-message assistant">
-                <p>{draft || "让我想一想…"}</p>
+                <p role="status">{draft || acknowledgement || "让我想一想…"}</p>
                 {draft && <small>正在生成，完成后核对</small>}
               </article>
             )}

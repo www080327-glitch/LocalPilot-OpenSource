@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Check, RefreshCw, Download, Monitor } from "lucide-react";
 import { call, desktop } from "../bridge";
 import type { Json } from "../domain";
+import { LocalEndpointForm } from "./LocalEndpointForm";
 import {
   ChannelSettings,
   channelLabels,
@@ -235,18 +236,23 @@ export function SetupAssistant({
             <details className="advanced-settings">
               <summary>高级 · 设备信息</summary>
               <p>
-                {hw.chip} · {gb(hw.memory_bytes)} 统一内存 · 当前可用{" "}
+                {hw.chip} · {gb(hw.memory_bytes)} 内存 · 当前可用{" "}
                 {gb(hw.available_memory_bytes)}
                 <br />
                 剩余磁盘 {gb(hw.free_disk_bytes)} ·{" "}
-                {hw.backends.length ? "已发现 oMLX" : "尚未连接本地推理服务"} ·
-                已发现 {hw.models.length} 个模型
+                {hw.backends.length
+                  ? "已发现本地推理服务"
+                  : "尚未连接本地推理服务"}{" "}
+                · 已发现 {hw.models.length} 个模型
               </p>
             </details>
           )}
           {stage === 1 && (
             <>
-              {state && !state.omlx_installed && (
+              {hw?.arch === "x86_64" && (
+                <LocalEndpointForm onBeforeSave={prepare} onChanged={onReady} />
+              )}
+              {state && !state.omlx_installed && hw?.arch !== "x86_64" && (
                 <>
                   <p>
                     本地模型需要 oMLX。下载安装官方 0.7.2（约 0.9
@@ -279,37 +285,39 @@ export function SetupAssistant({
                   </button>
                 </>
               )}
-              {state?.omlx_installed && !hw?.backends?.length && (
-                <div className="dialog-actions">
-                  <button
-                    className="secondary"
-                    disabled={!!busy}
-                    onClick={async () => {
-                      setBusy("启动本地推理服务");
-                      try {
-                        await call("product_control", {
-                          operation: "initialize_backend",
-                          args: { confirmed: true },
-                        });
-                        await inspect();
-                      } catch (e) {
-                        onError(e);
-                      } finally {
-                        setBusy("");
-                      }
-                    }}
-                  >
-                    启动本地推理服务
-                  </button>
-                  <button
-                    className="text-btn"
-                    disabled={!!busy}
-                    onClick={() => call("open_omlx_setup").catch(onError)}
-                  >
-                    打开 oMLX
-                  </button>
-                </div>
-              )}
+              {state?.omlx_installed &&
+                !hw?.backends?.length &&
+                hw?.arch !== "x86_64" && (
+                  <div className="dialog-actions">
+                    <button
+                      className="secondary"
+                      disabled={!!busy}
+                      onClick={async () => {
+                        setBusy("启动本地推理服务");
+                        try {
+                          await call("product_control", {
+                            operation: "initialize_backend",
+                            args: { confirmed: true },
+                          });
+                          await inspect();
+                        } catch (e) {
+                          onError(e);
+                        } finally {
+                          setBusy("");
+                        }
+                      }}
+                    >
+                      启动本地推理服务
+                    </button>
+                    <button
+                      className="text-btn"
+                      disabled={!!busy}
+                      onClick={() => call("open_omlx_setup").catch(onError)}
+                    >
+                      打开 oMLX
+                    </button>
+                  </div>
+                )}
               <button className="primary" disabled={!!busy} onClick={prepare}>
                 {busy ||
                   (state?.core_configured

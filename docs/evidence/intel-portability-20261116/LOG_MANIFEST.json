@@ -1,0 +1,338 @@
+{
+  "format": "gzip UTF-8; ANSI colors and workspace prefix normalized",
+  "logs": [
+    {
+      "source": "core/baseline-source-cli.log",
+      "public": "logs/core__baseline-source-cli.log.gz",
+      "raw_sha256": "719137bdd6e4507c48e99793a99225101c400ed564a7751fbd7156c5661448db",
+      "public_sha256": "6fb3760e65b7e5a2ece07736249ea4d0f48dc56c81f66ad5052f82f7ed874737",
+      "gzip_sha256": "5b8674cc7a9090d48766c70316c206efbf78e49f1d01ec0e8ddd25318de2f09f",
+      "raw_bytes": 3852,
+      "public_bytes": 3772
+    },
+    {
+      "source": "core/source-cli-fixed.log",
+      "public": "logs/core__source-cli-fixed.log.gz",
+      "raw_sha256": "1a068cd048091c88e7d23e7fb430c4434e8607318ac7a18a6778089c551294b7",
+      "public_sha256": "1a068cd048091c88e7d23e7fb430c4434e8607318ac7a18a6778089c551294b7",
+      "gzip_sha256": "746b4e02c7bdf268814dbee21e61b1c8abae2913da5119a97b619379f425b904",
+      "raw_bytes": 820,
+      "public_bytes": 820
+    },
+    {
+      "source": "core/full-core-final.log",
+      "public": "logs/core__full-core-final.log.gz",
+      "raw_sha256": "eaa71940e738bb10f52bb2fc5b20b1ad95bea43562752b83c3711b02d9a40452",
+      "public_sha256": "5e9fa3690d39695efced350927f9e1cb8ee9d3c90e78c11ec9ff43f6cf42e9bd",
+      "gzip_sha256": "7ef3189e2a00d2f18384c54492211588c299b5e40b6aa4a270ca77debbcd6c71",
+      "raw_bytes": 1852,
+      "public_bytes": 1832
+    },
+    {
+      "source": "core/shared-http-cancel-new.log",
+      "public": "logs/core__shared-http-cancel-new.log.gz",
+      "raw_sha256": "5c6c88588f9ea257a393e0da1b55d32991a5501daddf15bc59c8ef49918b51a9",
+      "public_sha256": "8089d7354bb5d21c613231808b216685a3ef3c010b944c0492c6c0df8fd70376",
+      "gzip_sha256": "5e3c8e62df2db2e49e329d6c7e834a3ac16ae40ca15b129dff2a0f8a194b305c",
+      "raw_bytes": 1219,
+      "public_bytes": 1199
+    },
+    {
+      "source": "core/shared-http-cancel-fixed.log",
+      "public": "logs/core__shared-http-cancel-fixed.log.gz",
+      "raw_sha256": "ce8e8c21ef48b3800a224bb76a8ec3c2c21c9341c90061750e4c6d9e0df5a31f",
+      "public_sha256": "ce8e8c21ef48b3800a224bb76a8ec3c2c21c9341c90061750e4c6d9e0df5a31f",
+      "gzip_sha256": "492c1cef7d15a762cd2b99ba27442ccc9b57b5072848e8af3d7c2d625cc5782f",
+      "raw_bytes": 995,
+      "public_bytes": 995
+    },
+    {
+      "source": "core/shared-http-targeted-final.log",
+      "public": "logs/core__shared-http-targeted-final.log.gz",
+      "raw_sha256": "3a61a6768799ddf4a71a414128748de47fb6a0d15a8e3766843a83ade19b1c4d",
+      "public_sha256": "3a61a6768799ddf4a71a414128748de47fb6a0d15a8e3766843a83ade19b1c4d",
+      "gzip_sha256": "6fd9a0df0e72d10f9aa9c2a4b5512f3a2db36cf9b1d66c3b40af73a52dc9afa8",
+      "raw_bytes": 12154,
+      "public_bytes": 12154
+    },
+    {
+      "source": "core/sdk-contracts-final.log",
+      "public": "logs/core__sdk-contracts-final.log.gz",
+      "raw_sha256": "4095be18603df2b2ca64fae4e9d2b7f62da2218c6d1c880ccc6d6899f91f1e86",
+      "public_sha256": "4095be18603df2b2ca64fae4e9d2b7f62da2218c6d1c880ccc6d6899f91f1e86",
+      "gzip_sha256": "753625aca15e761ca1bb272521308a14740d33e54e814dcb3178b7c6d8018229",
+      "raw_bytes": 6351,
+      "public_bytes": 6351
+    },
+    {
+      "source": "core/harbor-contracts-final.log",
+      "public": "logs/core__harbor-contracts-final.log.gz",
+      "raw_sha256": "76d43a0b5bac4adb13fa8dfd6732954fb9ec648efc9b454a6a7e3c0ca7455d2e",
+      "public_sha256": "556c36846f6f37fb7e0217a39dd19e83c334442ed689958dc87d56c9d0ebe5fc",
+      "gzip_sha256": "bbb147dc632aa1134c04298799c195e8a5fab5bbef91cfe9fda08dc3d77922ab",
+      "raw_bytes": 15009,
+      "public_bytes": 14989
+    },
+    {
+      "source": "companion/full-r1.log",
+      "public": "logs/companion__full-r1.log.gz",
+      "raw_sha256": "2ff7ca64734e140c235465e80ac3b147f687733599d72044e5f6484db3781307",
+      "public_sha256": "7681c5fa19dcf385391e027284b52384294c1990c0463b5f1b55b9743928b2ff",
+      "gzip_sha256": "62888469656ecfa37db3ccc7ed3b2012a72d872e3def9f94967ea26c593440b0",
+      "raw_bytes": 114435,
+      "public_bytes": 114415
+    },
+    {
+      "source": "companion/repeated-errors-r1.log",
+      "public": "logs/companion__repeated-errors-r1.log.gz",
+      "raw_sha256": "868aba7bde76636374c9cba0d6a6098e5701aed0a0909845848028d87403cc83",
+      "public_sha256": "c931bf6481068a8aca7e69f2b0f922c4b463de0fa458172762d15449567f2b33",
+      "gzip_sha256": "49139ccded65b5355f8345f555e402c27e6f8501271c31d72e918ffe6746e3a2",
+      "raw_bytes": 981,
+      "public_bytes": 961
+    },
+    {
+      "source": "companion/full-r3.log",
+      "public": "logs/companion__full-r3.log.gz",
+      "raw_sha256": "9a8bf7fe436be9859913676694dea9bbc89633e0ce6457b82f66c513dd2de16b",
+      "public_sha256": "9a8bf7fe436be9859913676694dea9bbc89633e0ce6457b82f66c513dd2de16b",
+      "gzip_sha256": "24357db2d2faab2da0b9f87e6c134d0cc7143740d0a6c403dc2e039299ad7770",
+      "raw_bytes": 115423,
+      "public_bytes": 115423
+    },
+    {
+      "source": "companion/delegation-r2.log",
+      "public": "logs/companion__delegation-r2.log.gz",
+      "raw_sha256": "9c5931c32face5bbf78d815a54c38a52c0f493f550938d35077ea532a062495c",
+      "public_sha256": "9c5931c32face5bbf78d815a54c38a52c0f493f550938d35077ea532a062495c",
+      "gzip_sha256": "6b678164b32fa6857c40ceaeb5c57a272bb727a43b5e794bbb253784aa56bdef",
+      "raw_bytes": 4115,
+      "public_bytes": 4115
+    },
+    {
+      "source": "suite/endpoint-portability-r1.log",
+      "public": "logs/suite__endpoint-portability-r1.log.gz",
+      "raw_sha256": "027ed9a5bf27e51f02c47da9b5c3cde19468b174ca82833785ea57379c0cb7d0",
+      "public_sha256": "8c3344236f56928835b6a067bac179e978c3674418eeac7176af113522f5e97b",
+      "gzip_sha256": "93f6779ecacacc11f1531d2baaff500b651fdd814172b03472efcd1264062e2b",
+      "raw_bytes": 3132,
+      "public_bytes": 3092
+    },
+    {
+      "source": "suite/endpoint-portability-r2.log",
+      "public": "logs/suite__endpoint-portability-r2.log.gz",
+      "raw_sha256": "e39cfe2073450cf2b3ada3a495bea7b994a0efb933ba1ab493c761a0975856f5",
+      "public_sha256": "f9d82bc2b8fc1635cb9fd1d165daf590e29be38fc92e4955938346939259ee47",
+      "gzip_sha256": "2e6feeec67667cd4864141cd4b411f4cd682fa444e710cc241043daf36787fd9",
+      "raw_bytes": 3137,
+      "public_bytes": 3097
+    },
+    {
+      "source": "suite/endpoint-portability-r4.log",
+      "public": "logs/suite__endpoint-portability-r4.log.gz",
+      "raw_sha256": "1465cf26a5b50d242d30dfbe493fc83cc713145dc57b0b607d71d84d6471646b",
+      "public_sha256": "1465cf26a5b50d242d30dfbe493fc83cc713145dc57b0b607d71d84d6471646b",
+      "gzip_sha256": "57bb24d474812077ebb9d42ac77f22d7e6d32ba416378ee71f66f40a47a9b5eb",
+      "raw_bytes": 858,
+      "public_bytes": 858
+    },
+    {
+      "source": "suite/model-configuration-r3.log",
+      "public": "logs/suite__model-configuration-r3.log.gz",
+      "raw_sha256": "c7e80a4d98fa9232b08b3de59d1a5c3a8740974386c23901bece9cb364d343a4",
+      "public_sha256": "d152a116cef20def16434d2accbd6c41abb9d54f362a2f2ea438c1af3116dc56",
+      "gzip_sha256": "600c5077ec76d84b83c2e7c85ae83b27f69691a36904d0c9d60d15226857ffb1",
+      "raw_bytes": 2649,
+      "public_bytes": 2629
+    },
+    {
+      "source": "suite/full-r3.log",
+      "public": "logs/suite__full-r3.log.gz",
+      "raw_sha256": "ebbcb3f5d13452eb21992540ebffdad5eca8009720ae6ffe725d1dc7d91abe9c",
+      "public_sha256": "ebbcb3f5d13452eb21992540ebffdad5eca8009720ae6ffe725d1dc7d91abe9c",
+      "gzip_sha256": "d93a4508f658ee7c0efa88be1cfd19c66f48cb935c9a2176c31abb75d1db29a8",
+      "raw_bytes": 19721,
+      "public_bytes": 19721
+    },
+    {
+      "source": "desktop/vitest-final-source.log",
+      "public": "logs/desktop__vitest-final-source.log.gz",
+      "raw_sha256": "6bf33921431392e5a7a224085d74b75ab54eca1345a96a50934a9ffeafe37fc9",
+      "public_sha256": "f901c7fa30a6e34934d6cbcfb4ff1be5f2c944c0d4f241c3d61ea485125dd66f",
+      "gzip_sha256": "1c463534f97e8d7a3bc6e62ac8ada98be0945b1e5320bf05e180d3ec242890bd",
+      "raw_bytes": 604,
+      "public_bytes": 584
+    },
+    {
+      "source": "desktop/build-final-source.log",
+      "public": "logs/desktop__build-final-source.log.gz",
+      "raw_sha256": "cdf8499e5ae54521d6e1442cf12ac772dd7ed6d02c51d7bff89f9fa310b86bcc",
+      "public_sha256": "cdf8499e5ae54521d6e1442cf12ac772dd7ed6d02c51d7bff89f9fa310b86bcc",
+      "gzip_sha256": "05c4c157d079d2a1fe560d0a6e3f4a26aab2e2035516870bb58e5d071c86addb",
+      "raw_bytes": 888,
+      "public_bytes": 888
+    },
+    {
+      "source": "desktop/artifact-tests-freeze.log",
+      "public": "logs/desktop__artifact-tests-freeze.log.gz",
+      "raw_sha256": "63b4e7bfa594cc4462af9f8f793dbf33da15768c19a5aa691b0786e0830accff",
+      "public_sha256": "63b4e7bfa594cc4462af9f8f793dbf33da15768c19a5aa691b0786e0830accff",
+      "gzip_sha256": "85ea21938211b0b26303b0b67d58b64f2a231a2cb2c386225db25d74b0af3e18",
+      "raw_bytes": 1685,
+      "public_bytes": 1685
+    },
+    {
+      "source": "desktop/intel-fixture-typecheck.log",
+      "public": "logs/desktop__intel-fixture-typecheck.log.gz",
+      "raw_sha256": "2a05dee409413045199db09dd5d937cc534f026175f8b5795aade7823113fc0a",
+      "public_sha256": "2a05dee409413045199db09dd5d937cc534f026175f8b5795aade7823113fc0a",
+      "gzip_sha256": "7276a7f961d92e9b534bf412ea7f5e2adac20705dbad56c3f3c95e4401d394ee",
+      "raw_bytes": 264,
+      "public_bytes": 264
+    },
+    {
+      "source": "desktop/intel-fixture-typecheck-freeze.log",
+      "public": "logs/desktop__intel-fixture-typecheck-freeze.log.gz",
+      "raw_sha256": "7125f194612fcff2f454c05d848e7cb71facc1967b4d5017e25b34fdee3ba74f",
+      "public_sha256": "7125f194612fcff2f454c05d848e7cb71facc1967b4d5017e25b34fdee3ba74f",
+      "gzip_sha256": "934a9d56e1b77b540f21becd97102d1b7088e8e2eba852118cfc29df5c6f4bb7",
+      "raw_bytes": 99,
+      "public_bytes": 99
+    },
+    {
+      "source": "desktop/playwright-first.log",
+      "public": "logs/desktop__playwright-first.log.gz",
+      "raw_sha256": "f1673841e30802756a4686f23ae5e3cf1905745bff9ddc98b9250cd142f1c8ae",
+      "public_sha256": "f1673841e30802756a4686f23ae5e3cf1905745bff9ddc98b9250cd142f1c8ae",
+      "gzip_sha256": "ece22ce5c7c8de35c41d085d4c43147d639cab1d792520736fd253a919177896",
+      "raw_bytes": 2473,
+      "public_bytes": 2473
+    },
+    {
+      "source": "desktop/playwright-install.log",
+      "public": "logs/desktop__playwright-install.log.gz",
+      "raw_sha256": "42936008541b0f8c2a14acc96b81354e2646faf6e6374304fd08de58eaf70401",
+      "public_sha256": "1e1ff0046118a45619a5f15b68e5b5e147f23ac7620854aaab2a26dec59dfd80",
+      "gzip_sha256": "e5db87739bad0622355cc4e18998f93145e0f541e8d563593f604fe1094d2677",
+      "raw_bytes": 5345,
+      "public_bytes": 4980
+    },
+    {
+      "source": "desktop/playwright-system.log",
+      "public": "logs/desktop__playwright-system.log.gz",
+      "raw_sha256": "f3ae22063cb5f8a604d661aae1ecf624846ba629c7c9f497500275b46ed4f8c6",
+      "public_sha256": "89eeef9dcbc3a6a34f0251e72bc215e78d7989bff8ed70df027f2115f6632c30",
+      "gzip_sha256": "eaa8be0896c540b1de5330eba4c875b4d2ef66330b95f5fe73c657b7d3eea483",
+      "raw_bytes": 6415,
+      "public_bytes": 6395
+    },
+    {
+      "source": "desktop/playwright-collected.log",
+      "public": "logs/desktop__playwright-collected.log.gz",
+      "raw_sha256": "2a7f59e2849e2af5bc7af7e39c08bd7891d347660291d477930300d743d107df",
+      "public_sha256": "2a7f59e2849e2af5bc7af7e39c08bd7891d347660291d477930300d743d107df",
+      "gzip_sha256": "b3f9f0177a4cba35bce2c7ef70222bc62b8b45dd43f8060ebe71c408280a9f16",
+      "raw_bytes": 4189,
+      "public_bytes": 4189
+    },
+    {
+      "source": "desktop/native-tool-availability.log",
+      "public": "logs/desktop__native-tool-availability.log.gz",
+      "raw_sha256": "3061a1cba133424f26614316f88f8866105af998b40fb2b446c6b9d70723e5e8",
+      "public_sha256": "3061a1cba133424f26614316f88f8866105af998b40fb2b446c6b9d70723e5e8",
+      "gzip_sha256": "6b2d139210900864c3c1e6c755550e0f36580d9b22e32fb8309f2b1d9918c7f0",
+      "raw_bytes": 99,
+      "public_bytes": 99
+    },
+    {
+      "source": "desktop/intel-pypi-acquisition.log",
+      "public": "logs/desktop__intel-pypi-acquisition.log.gz",
+      "raw_sha256": "4ce711cd4981441de6accc944b9266005a7f51132baeeedeed37d42a6b371815",
+      "public_sha256": "78674237f3e42823d2b2f327ad8e3c58ae999ae39f56705d8bac5839a138cdbc",
+      "gzip_sha256": "91ae152f371ddca01a0000c9eec01c3005c28fce9e94e86e276ec142328704aa",
+      "raw_bytes": 745,
+      "public_bytes": 685
+    },
+    {
+      "source": "installed-channels-r1.log",
+      "public": "logs/installed-channels-r1.log.gz",
+      "raw_sha256": "42991bd0163840122b4d01af0b697c819dc66a3a1b9732cee5ca1d8757ae3a14",
+      "public_sha256": "42991bd0163840122b4d01af0b697c819dc66a3a1b9732cee5ca1d8757ae3a14",
+      "gzip_sha256": "d2949429bc31bf057a63f10685308097ed86705b65c785b14ae287e72c3b689e",
+      "raw_bytes": 2550,
+      "public_bytes": 2550
+    },
+    {
+      "source": "readme-source-install.log",
+      "public": "logs/readme-source-install.log.gz",
+      "raw_sha256": "e85400957e996a7ea12f8afc0ba289a2effff53628609d3448517a7bc4330eb2",
+      "public_sha256": "74e64b1b7c3124903ff7ad6ff670935095159666e7232fd619e5fed56b9be482",
+      "gzip_sha256": "66f7a8ee2d727c992f2fffcb75af40554c45483a6d465ebec3201ae8240cf6ff",
+      "raw_bytes": 4195,
+      "public_bytes": 4175
+    },
+    {
+      "source": "readme-source-run.log",
+      "public": "logs/readme-source-run.log.gz",
+      "raw_sha256": "bbeb8821e16e40c0060b726e762bb26b6534d0f45bbe38b606148ee80b5522a6",
+      "public_sha256": "b03c726c9b0c8d40e2850899a56bb64831a43a285e121c16abfa05d7944356f3",
+      "gzip_sha256": "897630ce7070508e00df878377ef48cd1503041a3aec1c1d6f8ca8e1a8f8acd6",
+      "raw_bytes": 1406,
+      "public_bytes": 1366
+    },
+    {
+      "source": "package-r2/intel-wheel-core.log",
+      "public": "logs/package-r2__intel-wheel-core.log.gz",
+      "raw_sha256": "7dd0f509d2650958cf5fb2536cf756719822d3a2fc50357e8fab5fb3d13e1678",
+      "public_sha256": "68cd64ba1a6db2567f3778aba271b607ab5116753e24e25ba96bcc4d8b1c06af",
+      "gzip_sha256": "d0b54d0310f83fe11e6e66530e3dc38b1cd5abcd24fa8c8566e8ea4e702ec5c9",
+      "raw_bytes": 39226,
+      "public_bytes": 39126
+    },
+    {
+      "source": "package-r2/intel-wheel-companion.log",
+      "public": "logs/package-r2__intel-wheel-companion.log.gz",
+      "raw_sha256": "ecf798a55fb37412de21abe7839c588a1948b64222d22c23f42d4e1401e8a2a8",
+      "public_sha256": "f2b3117c3a3b46bf455683908009ec2c447654a18af477f9d21010487a0f50a3",
+      "gzip_sha256": "cddd46482af2f82771159de99e778b4f778ecb1ec62c23d193207a8aa3d5a73c",
+      "raw_bytes": 26010,
+      "public_bytes": 25910
+    },
+    {
+      "source": "package-r2/intel-wheel-suite.log",
+      "public": "logs/package-r2__intel-wheel-suite.log.gz",
+      "raw_sha256": "d70cb732fe3d0e15bb5e618c5d89e48711b2d62a8c06f1864f51d786fcac9903",
+      "public_sha256": "7ff58b3aec7644437120d9e86af17b5a2dee5d9b2ab4b6143c322d1129589417",
+      "gzip_sha256": "ae6dd64b9d308be32ab0d3b2a5ede7f523b463c1ae0ae580f7a40035f2332bcd",
+      "raw_bytes": 8454,
+      "public_bytes": 8354
+    },
+    {
+      "source": "package-r2/intel-wheel-channels.log",
+      "public": "logs/package-r2__intel-wheel-channels.log.gz",
+      "raw_sha256": "dafbf89def941ca71da54a76a3565dcc8f2958ba0800df5b66508338581a668b",
+      "public_sha256": "dbc731456aa14800aefcc8b4c08dad4c7b9616bf9f9b0eb91a21eb34dc211152",
+      "gzip_sha256": "4d8dced0e4c1968e64638bfac1cc24ebcc2c05765bbbcdafe95beacce0f15b82",
+      "raw_bytes": 7793,
+      "public_bytes": 7693
+    },
+    {
+      "source": "package-r2/intel-wheel-install.log",
+      "public": "logs/package-r2__intel-wheel-install.log.gz",
+      "raw_sha256": "3bd01498c55acc23fe44d95e5c37fa37a79bde1856c5725b2936ef782870d7ac",
+      "public_sha256": "3d21a5f26b0ffd7b60379b2fa292a2c88ec2a930f86144318a79f90ad5edac04",
+      "gzip_sha256": "177830b5ba4d79195deee999bdc0f1fa44ff4222a2f8e1a9c8505e2d37a1aa93",
+      "raw_bytes": 2661,
+      "public_bytes": 2541
+    },
+    {
+      "source": "package-r2/intel-installed-probe.log",
+      "public": "logs/package-r2__intel-installed-probe.log.gz",
+      "raw_sha256": "1f7e397278720b12f1befb79c587185b3617716be92a6eb55756812508653e54",
+      "public_sha256": "ac7d552caeb737bf555461900a010f98c64f78c04de0a479cc4aa755238d06b0",
+      "gzip_sha256": "165ed798f75ab8b1eb98d8892a37a37e5c3c60252008c8d9cdc878a57b0d6f74",
+      "raw_bytes": 1208,
+      "public_bytes": 1108
+    }
+  ]
+}

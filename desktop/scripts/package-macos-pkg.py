@@ -8,6 +8,9 @@ import hashlib
 import json
 from pathlib import Path
 import plistlib
+import platform
+import re
+from macos_artifacts import architecture, verify_macho
 import subprocess
 import xml.etree.ElementTree as ET
 
@@ -21,45 +24,53 @@ def main():
     parser.add_argument('--app', type=Path, required=True)
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--stage', type=Path, required=True)
+    parser.add_argument('--arch', choices=['arm64','x86_64'], default=architecture(platform.machine()))
+    parser.add_argument('--test-app', action='store_true')
     args = parser.parse_args()
     app = args.app.resolve(strict=True)
     info = plistlib.loads((app / 'Contents/Info.plist').read_bytes())
-    if info.get('CFBundleIdentifier') != 'io.localpilot.desktop':
-        raise ValueError('Only the production-identity APP may be packaged')
+    identity='io.localpilot.desktop.test' if args.test_app else 'io.localpilot.desktop'
+    app_name='LocalPilot Test' if args.test_app else 'LocalPilot'
+    if info.get('CFBundleIdentifier') != identity:
+        raise ValueError('APP identity differs from the explicitly selected installer identity')
+    arch=architecture(args.arch)
+    verify_macho(app/'Contents/MacOS/localpilot-desktop',arch)
     version = info['CFBundleShortVersionString']
-    if version != '5.0.1-rc.7':
-        raise ValueError('This installer recipe is pinned to RC.7')
+    parsed=re.fullmatch(r'(\d+)\.(\d+)\.(\d+)(?:-(?:rc|beta|alpha)\.(\d+))?',version)
+    if not parsed:raise ValueError('Installer requires a numeric release or numbered prerelease')
+    package_version='.'.join(value for value in parsed.groups() if value is not None)
+    package_id=identity+'.pkg'
     if args.stage.exists() or args.out.exists():
         raise FileExistsError('Existing installer or staging must be retained')
     args.stage.mkdir(mode=0o700, parents=True)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     run('codesign', '--verify', '--deep', '--strict', app)
     payload = args.stage / 'payload'
-    target = payload / 'Applications/LocalPilot.app'
+    target = payload / ('Applications/'+app_name+'.app')
     target.parent.mkdir(parents=True)
     run('ditto', '--norsrc', '--noextattr', app, target)
     run('codesign', '--verify', '--deep', '--strict', target)
     components = args.stage / 'components.plist'
     run('pkgbuild', '--analyze', '--root', payload, components)
     specs = plistlib.loads(components.read_bytes())
-    if len(specs) != 1 or specs[0]['RootRelativeBundlePath'] != 'Applications/LocalPilot.app':
+    if len(specs) != 1 or specs[0]['RootRelativeBundlePath'] != 'Applications/'+app_name+'.app':
         raise ValueError('Unexpected executable bundle in installer payload')
     specs[0].update(BundleIsRelocatable=False, BundleIsVersionChecked=True,
                     BundleHasStrictIdentifier=True, BundleOverwriteAction='upgrade')
     components.write_bytes(plistlib.dumps(specs))
     component = args.stage / 'LocalPilot.component.pkg'
     run('pkgbuild', '--root', payload, '--component-plist', components,
-        '--identifier', 'io.localpilot.desktop.pkg', '--version', '5.0.1.7',
+        '--identifier', package_id, '--version', package_version,
         '--install-location', '/', '--ownership', 'recommended', component)
     resources = args.stage / 'Resources'
     resources.mkdir()
-    welcome = '''<!doctype html><html lang="zh-CN"><meta charset="utf-8">
-<body style="font:16px -apple-system;line-height:1.6"><h1>安装 LocalPilot RC.7</h1>
+    welcome = f'''<!doctype html><html lang="zh-CN"><meta charset="utf-8">
+<body style="font:16px -apple-system;line-height:1.6"><h1>安装 {app_name} {version}</h1>
 <p>安装器会把 LocalPilot 放进你的个人“应用程序”文件夹，无需拖拽文件。</p>
 <p>已内置 Python、Core、Suite、Companion 和 Channels。首次打开后，按向导选择模型或配置云端 API；模型权重另行下载或选择已有文件。</p>
 <p>安装前请退出正在运行的 LocalPilot。已有用户请先保留旧版本和状态备份。</p>
 <p><strong>这是未公证的个人工程候选。</strong>macOS 可能要求你在“系统设置 → 隐私与安全性”中手动允许。安装器不会关闭系统保护。</p>
-<p>需要 Apple Silicon 和 macOS 15 或更新版本。</p></body></html>'''
+<p>需要 {"Apple Silicon" if arch == "arm64" else "Intel x86_64"} 和 macOS 15 或更新版本。Intel 本机推理请配置已有的 OpenAI 兼容服务；不安装 MLX。</p></body></html>'''
     conclusion = '''<!doctype html><html lang="zh-CN"><meta charset="utf-8">
 <body style="font:16px -apple-system;line-height:1.6"><h1>应用文件已安装</h1>
 <p>从个人“应用程序”文件夹打开 LocalPilot，完成首次设置。</p>
@@ -68,21 +79,21 @@ def main():
     (resources / 'Welcome.html').write_text(welcome)
     (resources / 'Conclusion.html').write_text(conclusion)
     distribution = ET.Element('installer-gui-script', {'minSpecVersion': '2'})
-    ET.SubElement(distribution, 'title').text = 'LocalPilot 5.0.1-rc.7'
+    ET.SubElement(distribution, 'title').text = app_name+' '+version
     ET.SubElement(distribution, 'welcome', {'file': 'Welcome.html', 'mime-type': 'text/html'})
     ET.SubElement(distribution, 'conclusion', {'file': 'Conclusion.html', 'mime-type': 'text/html'})
     ET.SubElement(distribution, 'domains', {'enable_anywhere': 'false',
                   'enable_currentUserHome': 'true', 'enable_localSystem': 'false'})
     ET.SubElement(distribution, 'options', {'customize': 'never',
-                  'require-scripts': 'false', 'hostArchitectures': 'arm64'})
+                  'require-scripts': 'false', 'hostArchitectures': arch})
     outline = ET.SubElement(distribution, 'choices-outline')
     ET.SubElement(outline, 'line', {'choice': 'localpilot'})
     choice = ET.SubElement(distribution, 'choice', {'id': 'localpilot', 'visible': 'false'})
-    ET.SubElement(choice, 'pkg-ref', {'id': 'io.localpilot.desktop.pkg'})
-    ET.SubElement(distribution, 'pkg-ref', {'id': 'io.localpilot.desktop.pkg',
-                  'version': '5.0.1.7', 'auth': 'none'}).text = component.name
-    close_ref = ET.SubElement(distribution, 'pkg-ref', {'id': 'io.localpilot.desktop.pkg'})
-    ET.SubElement(ET.SubElement(close_ref, 'must-close'), 'app', {'id': 'io.localpilot.desktop'})
+    ET.SubElement(choice, 'pkg-ref', {'id': package_id})
+    ET.SubElement(distribution, 'pkg-ref', {'id': package_id,
+                  'version': package_version, 'auth': 'none'}).text = component.name
+    close_ref = ET.SubElement(distribution, 'pkg-ref', {'id': package_id})
+    ET.SubElement(ET.SubElement(close_ref, 'must-close'), 'app', {'id': identity})
     xml = args.stage / 'Distribution.xml'
     ET.indent(distribution)
     ET.ElementTree(distribution).write(xml, encoding='utf-8', xml_declaration=True)
@@ -91,7 +102,7 @@ def main():
     with args.out.open('rb') as stream:
         digest = hashlib.file_digest(stream, 'sha256').hexdigest()
     print(json.dumps({'installer': args.out.name, 'bytes': args.out.stat().st_size,
-                      'sha256': digest, 'version': version, 'destination': '~/Applications/LocalPilot.app',
+                      'sha256': digest, 'version': version, 'destination': '~/Applications/'+app_name+'.app','architecture':arch,'bundle_id':identity,
                       'domain': 'CurrentUserHome', 'installer_scripts': False,
                       'notarized': False, 'actual_installation': 'NOT_RUN'}))
 

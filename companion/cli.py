@@ -103,12 +103,41 @@ def main():
     parser.add_argument("--config", required=True)
     parser.add_argument("--json", action="store_true")
     sub = parser.add_subparsers(dest="action", required=True)
-    for name in ("run", "start", "stop", "status", "popup", "ui", "ui-build", "ui-snapshot", "recent-memories", "reminders", "notices", "index", "retention", "privacy", "native-build", "escalation-status"):
+    for name in ("run", "start", "stop", "status", "popup", "ui", "ui-build", "ui-snapshot", "recent-memories", "reminders", "notices", "index", "retention", "privacy", "native-build", "escalation-status", "source-list", "source-coverage", "training-examples", "meeting-status", "meeting-stop", "meeting-build"):
         action = sub.add_parser(name)
         if name == "ui":
             action.add_argument("--show", action="store_true")
     for name in ("ask", "retrieve", "escalate"):
         sub.add_parser(name).add_argument("text")
+    activity = sub.add_parser("activity")
+    activity.add_argument("--day", choices=["today", "yesterday"], default="today")
+    activity.add_argument("--limit", type=int, default=30)
+    source = sub.add_parser("source-connect")
+    source.add_argument("kind", choices=["codex", "meeting"])
+    source.add_argument("path")
+    source.add_argument("--label")
+    source.add_argument("--once", action="store_true", help="Import only when explicitly synced")
+    for name in ("source-sync", "source-revoke", "source-enable"):
+        source = sub.add_parser(name)
+        source.add_argument("source_id")
+        if name == "source-enable":
+            source.add_argument("value", choices=["on", "off"])
+    example = sub.add_parser("training-example-add", help="Save an explicitly reviewed final-answer target")
+    example.add_argument("--question", required=True)
+    example.add_argument("--answer", required=True)
+    example.add_argument("--purpose", required=True, choices=["greeting", "activity_qa", "handoff"])
+    example.add_argument("--observation-id", action="append", default=[])
+    example.add_argument('--answer-id')
+    sub.add_parser("training-example-delete").add_argument("id")
+    sub.add_parser('training-review').add_argument('answer_id')
+    sub.add_parser('training-candidates').add_argument('--limit', type=int, default=20)
+    training_export = sub.add_parser("training-export")
+    training_export.add_argument("--seed", type=int, default=17)
+    training_export.add_argument("--validation-fraction", type=float, default=.2)
+    meeting = sub.add_parser("meeting-start")
+    meeting.add_argument("--capture", required=True, choices=["microphone", "system", "both"])
+    meeting.add_argument("--locale", default="zh-CN")
+    meeting.add_argument("--label")
     dnd = sub.add_parser("dnd")
     dnd.add_argument("value", choices=["on", "off"])
     remember = sub.add_parser("remember")
@@ -177,6 +206,9 @@ def main():
         elif args.action == "native-build":
             from companion.observers.native import build_native_helper
             result = {"status":"ok", "helper":str(build_native_helper(PrivateData(config.data_dir).file("native")))}
+        elif args.action == "meeting-build":
+            from companion.observers.meeting import build_meeting_helper
+            result = {"status":"ok", "helper":build_meeting_helper(PrivateData(config.data_dir).root / "MeetingTranscriber.app")}
         elif args.action == "launchd":
             from companion.runtime.launchd import manage
             result = manage(args.operation, args.config, PrivateData(config.data_dir), args.confirm)
@@ -192,6 +224,32 @@ def main():
             command = {"command": args.action}
             if args.action in {"ask", "retrieve", "escalate"}:
                 command["text"] = args.text
+            elif args.action == "activity":
+                command = {"command":"activity_digest", "day":args.day, "limit":args.limit}
+            elif args.action.startswith("source-"):
+                command = {"command":args.action.replace("-", "_")}
+                if args.action == "source-connect":
+                    command.update(kind=args.kind, path=args.path, label=args.label, follow=not args.once)
+                elif args.action == "source-enable":
+                    command.update(command="source_set_enabled", source_id=args.source_id, enabled=args.value == "on")
+                elif args.action in {"source-sync", "source-revoke"}:
+                    command["source_id"] = args.source_id
+            elif args.action.startswith("training-"):
+                command = {"command":args.action.replace("-", "_")}
+                if args.action == "training-example-add":
+                    command.update(question=args.question, answer=args.answer, purpose=args.purpose, observation_ids=args.observation_id, answer_id=args.answer_id)
+                elif args.action == "training-example-delete":
+                    command["id"] = args.id
+                elif args.action == 'training-review':
+                    command['answer_id'] = args.answer_id
+                elif args.action == 'training-candidates':
+                    command['limit'] = args.limit
+                elif args.action == "training-export":
+                    command.update(seed=args.seed, validation_fraction=args.validation_fraction)
+            elif args.action.startswith("meeting-"):
+                command = {"command":args.action.replace("-", "_")}
+                if args.action == "meeting-start":
+                    command.update(capture=args.capture, locale=args.locale, label=args.label)
             elif args.action in {"ui-snapshot", "recent-memories", "delete-reminder"}:
                 command = {"command":args.action.replace("-", "_")}
                 if args.action == "delete-reminder":

@@ -4,9 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "localpilot-companion"
-version = "0.5.7b3"
+version = "0.5.7b4"
 description = "Independent read-only local AI companion"
 requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 dependencies = ["watchdog>=6,<7", "pypdf>=6,<7", "psutil>=7,<8"]
 
 [project.optional-dependencies]
@@ -17,7 +19,7 @@ validation = ["reportlab>=4,<5", "python-docx>=1.2,<2", "python-pptx>=1,<2", "op
 companion = "companion.cli:main"
 
 [tool.setuptools]
-packages = ["companion", "companion.runtime", "companion.observers", "companion.memory", "companion.model", "companion.triggers", "companion.channels", "companion.escalation", "companion.benchmark", "companion.ui"]
+packages = ["companion", "companion.runtime", "companion.observers", "companion.observers.shared_ax", "companion.memory", "companion.model", "companion.triggers", "companion.channels", "companion.escalation", "companion.benchmark", "companion.ui"]
 package-dir = {companion = "."}
 
 [tool.setuptools.package-data]

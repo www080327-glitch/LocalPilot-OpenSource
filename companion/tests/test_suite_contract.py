@@ -21,7 +21,7 @@ class SuiteContractTests(unittest.TestCase):
         for battery in [None,SimpleNamespace(power_plugged=False)]:
             for backend in ['mlx','local-http']:
                 m=ModelManager(Config(backend=backend,low_power_policy='off',model_path='/not-used'))
-                with patch('psutil.sensors_battery',return_value=battery), patch('subprocess.Popen',side_effect=AssertionError('worker must not start')):
+                with patch('psutil.sensors_battery',return_value=battery), patch('companion.runtime.power.system_power_source',return_value=None), patch('subprocess.Popen',side_effect=AssertionError('worker must not start')):
                     result=m.complete([{'role':'user','content':'private'}])
                 self.assertEqual(result['error_stage'],'power_policy');self.assertEqual(m.inferences,0)
 

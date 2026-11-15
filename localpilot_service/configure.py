@@ -1,6 +1,7 @@
 """Create a new private deployment config and separate client token environment file."""
 import argparse
 import json
+import math
 import os
 from pathlib import Path
 import secrets
@@ -9,6 +10,15 @@ import secrets
 def write_new(path, text):
     fd=os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
     with os.fdopen(fd,"w") as file:file.write(text)
+
+
+def add_endpoint_arguments(parser):
+    parser.add_argument('--context-budget', type=int,
+                        help='Configured server context in tokens; an operator claim, not a measured limit')
+    parser.add_argument('--model-timeout', type=float,
+                        help='Model HTTP timeout in seconds, including waiting for the first token')
+    parser.add_argument('--stream-usage', action='store_true',
+                        help='Ask a compatible local server for streamed usage; missing usage stays unknown')
 
 
 def main(argv=None):
@@ -22,7 +32,14 @@ def main(argv=None):
     parser.add_argument("--managed-qwen35",action="store_true")
     parser.add_argument("--cloud-key-file")
     parser.add_argument('--omlx', action='store_true', help='Use existing oMLX service without owning or loading it')
+    add_endpoint_arguments(parser)
     args=parser.parse_args(argv)
+    if args.context_budget is not None and args.context_budget <= 0:
+        parser.error('--context-budget must be positive')
+    if args.model_timeout is not None and (not math.isfinite(args.model_timeout) or args.model_timeout <= 0):
+        parser.error('--model-timeout must be positive and finite')
+    if args.stream_usage and args.deepseek_key_file:
+        parser.error('--stream-usage is for local OpenAI-compatible endpoints')
     workspace=Path(args.workspace).expanduser().resolve(strict=True)
     directory=Path(args.directory).expanduser().resolve()
     if not workspace.is_dir() or directory.is_relative_to(workspace):parser.error("Private service directory must be outside the task workspace")
@@ -32,6 +49,12 @@ def main(argv=None):
     clients=[{"subject":n,"token_env":"LOCALPILOT_"+n.upper()+"_TOKEN","routes":{"localpilot":"default"},
               **({"operator":True,"scopes":["read","control","cancel"],"approval_for":names[:-1]} if n=="operator" else {})} for n in names]
     backend={"kind":"deepseek","model":args.model,"key_file":str(Path(args.deepseek_key_file).expanduser().resolve())} if args.deepseek_key_file else {"kind":"local-openai","model":args.model,"base_url":args.base_url}
+    if args.context_budget is not None:
+        backend['context_budget'] = args.context_budget
+    if args.model_timeout is not None:
+        backend['timeout'] = args.model_timeout
+    if args.stream_usage:
+        backend['include_stream_usage'] = True
     if args.omlx:
         if args.deepseek_key_file or args.managed_qwen35: parser.error('oMLX shared service is a separate local provider')
         backend.update(kind='omlx', include_stream_usage=True, chat_template_kwargs={'enable_thinking':False})
@@ -80,7 +103,7 @@ def main(argv=None):
         for index, model in enumerate(observation['models']):
             route=deepcopy(execution)
             route['backend']['model']=model['id']
-            route['backend']['context_budget']=min(model.get('context_budget') or 32768,65536)
+            route['backend']['context_budget']=args.context_budget if args.context_budget is not None else min(model.get('context_budget') or 32768,65536)
             if (model.get('size_bytes') or 0)<=1500000000:
                 route.update(reasoning_only=True,prompt_profile='minimal_0',tool_profile='compact',capabilities={'read':False,'write':False,'execute':False})
             import re
@@ -95,7 +118,9 @@ def main(argv=None):
         preferred=next((m for m in observation['models'] if m['id']=='mlx-community--Qwen3.6-35B-A3B-4bit' and m.get('revision')=='38740b847e4cb78f352aba30aa41c76e08e6eb46'),None)
         if preferred:
             for key in ['default','companion-execution','companion-reasoning']:
-                config['routes'][key]['backend'].update(model=preferred['id'],context_budget=65536,timeout=180)
+                config['routes'][key]['backend'].update(model=preferred['id'],
+                    context_budget=args.context_budget if args.context_budget is not None else 65536,
+                    timeout=args.model_timeout if args.model_timeout is not None else 180)
             execution=deepcopy(config['routes']['companion-execution'])
         v5=deepcopy(execution);v5['engine']='v5'
         config['routes']['local-v5']=v5

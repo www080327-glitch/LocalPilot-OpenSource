@@ -47,7 +47,7 @@ class V01Tests(unittest.TestCase):
         self.assertFalse(any('10万' in r['summary'] for r in rows if r['type']=='document'))
     def test_failed_update_cannot_return_old_text(self):
         f=self.index('budget.txt','项目：星河\n预算：10万\n');f.write_text('new content')
-        with patch('companion.runtime.service.extract',side_effect=ValueError('corrupt')):
+        with patch('companion.runtime.observations.extract',side_effect=ValueError('corrupt')):
             rows=self.obj.retrieve('星河预算')
         self.assertFalse(any('10万' in r['summary'] for r in rows if r['type']=='document'))
         self.assertIn('corrupt',self.obj.last_error)
@@ -130,7 +130,11 @@ class V01Tests(unittest.TestCase):
         suite,_=load_suite();a,_,fa=build_store(self.root/'a');b,_,fb=build_store(self.root/'b')
         try:
             self.assertEqual([hashlib.sha256(f.read_bytes()).hexdigest() for f in fa],[hashlib.sha256(f.read_bytes()).hexdigest() for f in fb])
-            result=retrieval_comparison(a,suite);self.assertTrue(result['retain_bm25'])
+            result=retrieval_comparison(a,suite)
+            self.assertGreater(result['bm25']['recall'],result['lexical']['recall'])
+            self.assertGreaterEqual(result['bm25']['precision'],result['lexical']['precision'])
+            # retain_bm25 also gates measured wall time; shared-host timing is a
+            # benchmark result, not a deterministic unit-test expectation.
         finally:a.close();b.close()
     def test_comparison_rejects_fixture_or_prompt_drift(self):
         from companion.benchmark.compare import compare

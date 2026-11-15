@@ -31,14 +31,16 @@ INSTRUCTIONS = ("Execute only the user-approved user_request in this Companion e
                 "tool approvals. For analysis-only questions, give a direct brief answer. "
                 "Do not invent host approval, verification or delivery records: those require actual "
                 "Runtime evidence, not your own assertions. Without that evidence, verification is "
-                "NOT_RUN and delivery is UNKNOWN. Preserve explicit source read_status and coverage limits.")
+                "NOT_RUN and delivery is UNKNOWN. Preserve explicit source read_status and coverage limits. "
+                "Keep source IDs and locators in citations; reported or MODEL_INFERRED text is not a verified fact.")
 IDENTIFIER = re.compile(r"[A-Za-z0-9_\-]{1,160}\Z")
 ENV_NAME = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\Z")
 REASONING_INSTRUCTIONS = INSTRUCTIONS + " This is reasoning only: do not propose tool execution. If a stronger cloud model is needed, begin the final answer with [NEEDS_CLOUD] and briefly explain the limitation. This marker is a suggestion, never permission to send data or incur costs."
 SOURCE_FIELDS = {"id", "type", "text", "content", "summary", "source_reference", "epistemic",
                  "confidence", "created_at", "observed_at", "provenance", "source", "object",
                  "evidence", "sensitivity", "dedup_key", "dedupe_key", "metadata", "timestamp",
-                 "version_id", "observation_id", "kind", "important"}
+                 "version_id", "observation_id", "kind", "important", "evidence_type",
+                 "evidence_epistemic", "evidence_digest", "raw_state", "derived_from"}
 PRIVATE_LEVELS = {"secret", "credential", "sensitive", "restricted"}
 
 
@@ -200,6 +202,7 @@ def task_view(task):
     verification = result.get("verification_status", "not_run")
     goal = status == "completed" and quiet and verification == "passed" and result.get("engineering_status") == "passed" and not unknown
     execution = "completed" if status == "completed" and quiet else "incomplete" if status == "incomplete" and quiet else "not_completed"
+    progress = {"progress_text":task["streamed_text"][-4000:], "progress_snapshot":True} if isinstance(task.get("streamed_text"), str) else {}
     return {"status": status, "phase": "completed" if execution == "completed" else "awaiting_host" if status in {"requires_approval", "requires_human"} else status,
             "task_id": task["id"], "session_id": task["session_id"], "quiescent": quiet,
             "task_execution": execution, "agent_response": text[:16000], "reasoning_help_requested":needs_cloud,
@@ -212,7 +215,7 @@ def task_view(task):
             "error": task.get("error"), "completion": task.get("completion", result.get("completion")),
             "verification_status": result.get("verification_status", "unknown"),
             "engineering_status": result.get("engineering_status", "unverified"),
-            "last_event_id": task.get("last_event_id", 0), "task": task}
+            "last_event_id": task.get("last_event_id", 0), "task": task, **progress}
 
 
 def result_memory(view):

@@ -1,0 +1,40 @@
+{
+  "status": "PASS",
+  "source_release": "mlx-lm 0.31.3",
+  "upstream_commit": "ed1fca4cef15a824c5f1702c80f70b4cffc8e4dd",
+  "upstream_blob_sha": "b5fcce3492e90ec7dcd190679807d84bd46912fb",
+  "retrieved_source_sha256": "4c363b427bb104c09ec5b9151b6519043f923f7c5da491dde31a453e757076d8",
+  "config_keys_verified": [
+    "adapter_path",
+    "batch_size",
+    "data",
+    "fine_tune_type",
+    "grad_checkpoint",
+    "iters",
+    "learning_rate",
+    "lora_parameters",
+    "mask_prompt",
+    "max_seq_length",
+    "model",
+    "num_layers",
+    "report_to",
+    "save_every",
+    "seed",
+    "steps_per_eval",
+    "steps_per_report",
+    "test",
+    "train",
+    "val_batches"
+  ],
+  "command": [
+    "WORKSPACE/LocalPilot-OpenSource/.venv/bin/python",
+    "-m",
+    "mlx_lm",
+    "lora",
+    "--config",
+    "<owned config>"
+  ],
+  "unsupported_config_keys": [],
+  "native_training": "NOT_RUN",
+  "reason": "Linux and no MLX runtime/weights; verified configuration against exact official source"
+}

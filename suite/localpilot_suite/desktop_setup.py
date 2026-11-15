@@ -2,6 +2,7 @@
 import json
 import os
 from pathlib import Path
+import platform
 import subprocess
 import sys
 
@@ -25,7 +26,8 @@ def prepare(home, workspace):
     workspace.mkdir(parents=True,exist_ok=True)
     settings_path=Path.home()/'.omlx/settings.json'
     backend_ready=False;observed=[];base='http://127.0.0.1:1234/v1'
-    if settings_path.exists():
+    mlx_host=platform.system()=='Darwin' and platform.machine() in {'arm64','aarch64'}
+    if mlx_host and settings_path.exists():
         try:
             settings=private_json(settings_path)
             port=settings.get('server',{}).get('port')
@@ -69,7 +71,8 @@ def prepare(home, workspace):
     connection=private_json(home/'connection.json')
     return {'status':'ready' if companion_ready else 'partial','home':str(home),'origin':connection['url'],'workspace':str(workspace),
         'lightweight_model':selected['id'],'loaded':selected['loaded'],
-        'model_loading':'requires separate authorization in oMLX',
+        'model_loading':'requires separate authorization in oMLX' if mlx_host else 'configure an existing local OpenAI-compatible endpoint',
+        'local_inference':{'mlx_supported':mlx_host,'endpoint_supported':True},
         'cloud_configured':False,'model_downloaded':False,'omlx_service_reused':backend_ready,'companion_ready':companion_ready}
 
 

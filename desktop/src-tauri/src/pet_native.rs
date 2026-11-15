@@ -277,6 +277,9 @@ pub async fn pet_runtime(
         return Ok(json!({"status":"ok","text":"模型运行程序已保存；重启轻聊服务后生效。"}));
     }
     if action == "choose_model" {
+        if !cfg!(target_arch = "aarch64") {
+            return Err("此模型文件夹入口需要 MLX。Intel Mac 请在主窗口模型库配置本机 OpenAI 兼容端点，并勾选同时用于 Companion。".into());
+        }
         let folder = rfd::AsyncFileDialog::new()
             .set_title("选择已有的轻量本地模型文件夹（不下载）")
             .pick_folder()
@@ -886,6 +889,8 @@ pub async fn pet_service(
         "reminders",
         "proactive_settings",
         "notice_action",
+        "training_review",
+        "training_example_add",
     ]
     .contains(&command.as_str())
     {

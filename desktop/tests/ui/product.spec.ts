@@ -13,7 +13,7 @@ test("source choices, standard default, single effort popover and four permissio
   ).toHaveClass(/selected/);
   await page.getByRole("button", { name: "权限模式", exact: true }).click();
   await expect(
-    page.getByRole("button", { name: "工作区自动", exact: false }),
+    page.getByRole("button", { name: /^工作区写入/ }),
   ).toBeVisible();
   await page.getByRole("button", { name: /^请求批准/ }).click();
   await expect(

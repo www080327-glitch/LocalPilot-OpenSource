@@ -1,4 +1,7 @@
 """Offline evidence accounting controls; not real-model acceptance."""
+from tests.optional_benchmarks import require_benchmarks
+require_benchmarks()
+
 import json
 from pathlib import Path
 import tempfile

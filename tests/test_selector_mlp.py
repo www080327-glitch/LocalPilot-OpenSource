@@ -1,4 +1,7 @@
 """Prototype checks; test mutations are fixtures, never extra benchmark evidence."""
+from tests.optional_benchmarks import require_benchmarks
+require_benchmarks()
+
 
 from contextlib import redirect_stdout, redirect_stderr
 from copy import deepcopy

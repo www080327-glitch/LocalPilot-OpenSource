@@ -126,7 +126,7 @@ class DesktopProductTests(unittest.TestCase):
                 actual.append(gateway.decide(op,risk,['test'],{},metadata=meta)['status'])
             self.assertEqual(actual,expected)
             self.assertEqual(gateway.decide('apply_patch','low',[],{},blocked=True)['status'],'denied')
-            self.assertEqual(gateway.decide('read_file','low',[],{},metadata=ToolRiskMetadata(requires_host_approval=True))['status'],'allowed' if mode=='full-permission' else 'approval_required')
+            self.assertEqual(gateway.decide('read_file','low',[],{},metadata=ToolRiskMetadata(requires_host_approval=True))['status'],'approval_required')
 
 class DesktopV5ProfileTests(DesktopProductTests):
     def factory(self,callback):

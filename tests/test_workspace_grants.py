@@ -25,6 +25,13 @@ class FolderControls(unittest.TestCase):
    self.assertEqual([g.decide('read_file' if risk=='low' else 'apply_patch',risk,[],{})['status'] for risk in ['low','medium','high']],expected)
    self.assertEqual(g.decide('apply_patch','unavailable',[],{})['status'],'approval_required')
    self.assertEqual(g.decide('execute','low',[],{})['status'],'denied')
+ def test_full_unknown_risk_requires_one_exact_host_approval(self):
+  gateway=self.registry('full-permission').gateway
+  self.assertEqual(gateway.decide('apply_patch','unavailable',[],{})['status'],'approval_required')
+  with gateway.approving('apply_patch',True):
+   self.assertEqual(gateway.decide('apply_patch','unavailable',[],{})['status'],'allowed')
+   self.assertEqual(gateway.decide('apply_patch','unavailable',[],{})['status'],'approval_required')
+  self.assertEqual(gateway.decide('apply_patch','unavailable',[],{})['status'],'approval_required')
  def test_mkdir_move_rename_copy_and_identity(self):
   r=self.registry();self.assertEqual(r.call('make_directory',{'path':'documents'})['verification'],'passed')
   before=r.call('inspect_file',{'path':'source.txt'})

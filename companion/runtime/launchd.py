@@ -19,6 +19,8 @@ def manage(action, config_filename, private, confirmed=False):
         target = private.file("launchagent.preview.plist")
         private.write(target.name, plistlib.dumps(plist(config_filename, private.root)).decode())
         return {"status":"preview", "path":str(target), "installed":False}
+    if sys.platform != "darwin":
+        return {"status":"unavailable", "reason":"macos_required", "installed":False}
     if action == "status":
         p = subprocess.run(["/bin/launchctl", "print", domain+"/"+LABEL], capture_output=True, text=True, timeout=5)
         return {"status":"loaded" if p.returncode == 0 else "not_loaded", "installed":destination.exists(), "path":str(destination)}

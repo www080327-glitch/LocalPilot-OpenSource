@@ -28,7 +28,7 @@ class V5HybridControls(unittest.TestCase):
     def test_local_only_boundary(self):self.scenario('test_local_only_policy_cannot_be_relaxed_by_catalog')
     def test_private_reasoning_and_bodies_remain_withheld(self):self.scenario('test_default_egress_withholds_file_stdout_private_reasoning_and_arguments')
     def test_approval_scope_and_epoch(self):self.scenario('test_exact_cloud_egress_approval_and_restart_epoch')
-    def test_switch_preserves_receipts(self):self.scenario('test_switch_preserves_receipt_call_ids_and_recomputes_target_context')
+    def test_switch_preserves_receipts(self):self.scenario('test_full_permission_switch_reuses_egress_grant_and_preserves_receipts')
     def test_unknown_quarantine_prevents_failover(self):self.scenario('test_unknown_mutation_is_quarantined_and_cannot_failover')
     def test_parent_cannot_replay_child_effect(self):self.scenario('test_child_patch_cannot_be_replayed_by_parent_with_new_id_or_json_order')
 

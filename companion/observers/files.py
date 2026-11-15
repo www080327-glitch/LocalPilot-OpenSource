@@ -5,6 +5,30 @@ from companion.config import SENSITIVE
 EXTENSIONS = {".txt", ".md", ".docx", ".pptx", ".xlsx", ".pdf"}
 
 
+def read_regular_file(filename, max_bytes):
+    """Read an admitted path without following links or opening special files."""
+    p = Path(os.path.abspath(filename))
+    fd = os.open("/", os.O_RDONLY | os.O_DIRECTORY)
+    try:
+        for part in p.parts[1:-1]:
+            nxt = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=fd)
+            os.close(fd)
+            fd = nxt
+        source_fd = os.open(p.name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=fd)
+    finally:
+        os.close(fd)
+    with os.fdopen(source_fd, "rb") as source:
+        import stat
+        st = os.fstat(source.fileno())
+        if not stat.S_ISREG(st.st_mode) or st.st_size > max_bytes:
+            raise ValueError("Not a regular bounded document")
+        content = source.read(max_bytes + 1)
+        after = os.fstat(source.fileno())
+        if len(content) > max_bytes or (st.st_mtime_ns, st.st_size) != (after.st_mtime_ns, after.st_size):
+            raise ValueError("Document changed while reading; retry on next event")
+        return content, st
+
+
 class ReadScope:
     def __init__(self, config):
         self.config = config
@@ -29,25 +53,7 @@ class ReadScope:
         p = Path(os.path.abspath(filename))
         if not self.allowed(p):
             raise PermissionError("Outside read scope")
-        fd = os.open("/", os.O_RDONLY | os.O_DIRECTORY)
-        try:
-            for part in p.parts[1:-1]:
-                nxt = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=fd)
-                os.close(fd)
-                fd = nxt
-            source_fd = os.open(p.name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=fd)
-        finally:
-            os.close(fd)
-        with os.fdopen(source_fd, "rb") as source:
-            import stat
-            st = os.fstat(source.fileno())
-            if not stat.S_ISREG(st.st_mode) or st.st_size > self.config.max_file_bytes:
-                raise ValueError("Not a regular bounded document")
-            content = source.read(self.config.max_file_bytes + 1)
-            after = os.fstat(source.fileno())
-            if len(content) > self.config.max_file_bytes or (st.st_mtime_ns, st.st_size) != (after.st_mtime_ns, after.st_size):
-                raise ValueError("Document changed while reading; retry on next event")
-            return content, st
+        return read_regular_file(p, self.config.max_file_bytes)
 
     def scan(self):
         count = 0

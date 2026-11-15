@@ -1,8 +1,20 @@
+import { ModelPicker } from "./components/ModelPicker";
+import { meetingStateLabel } from "./meetingStatus";
+import { SettingsDialog } from "./components/SettingsDialog";
+import { BrandMark as Mark } from "./components/BrandMark";
+import { JsonView as Pretty } from "./components/JsonView";
+import { TaskStatus as Status } from "./components/TaskStatus";
+import { TaskInspector } from "./components/TaskInspector";
 import { latestConversations, conversationTitle } from "./conversations";
 import { compatibleEffort, thinkingKey } from "./modelThinking";
 import { shouldSubmitEnter, type EnterBehavior } from "./inputBehavior";
-import { ensureLocalModelLoaded } from "./modelLoading";
-import { latestTask, errorAfterHealthyConnection } from "./domain";
+import { ensureLocalModelLoaded, usableAgentModels } from "./modelLoading";
+import { observedModelShare, subagentTraces } from "./collaboration";
+import { classifyConversations, useConversationProjects } from "./projects";
+import { useTaskState, useTaskStream } from "./hooks/useTaskState";
+import { useServiceConnection } from "./hooks/useServiceConnection";
+import { useSessionRecovery } from "./hooks/useSessionRecovery";
+import { useCompanionMeeting } from "./hooks/useCompanionMeeting";
 import {
   permissionModes,
   permissionNames,
@@ -18,7 +30,6 @@ import {
   useAttachments,
 } from "./components/Attachments";
 import { SetupAssistant } from "./components/SetupAssistant";
-import { ProductSettings } from "./components/ProductSettings";
 import { VersionManagement } from "./components/VersionManagement";
 import packageInfo from "../package.json";
 import {
@@ -47,60 +58,40 @@ import {
   Command,
   MessageSquare,
   Check,
-  CheckCheck,
-  Clock,
-  Activity,
   ShieldCheck,
   ShieldAlert,
   RefreshCw,
   Square,
-  Wifi,
-  WifiOff,
-  ExternalLink,
-  Terminal,
-  FileText,
-  GitCompare,
   Layers,
   Sparkles,
   X,
-  MoreHorizontal,
   Cloud,
-  Monitor,
-  Play,
-  Power,
   AlertTriangle,
   Copy,
   CheckCircle2,
   SlidersHorizontal,
-  Palette,
   ArrowDown,
   LoaderCircle,
-  Download,
+  Pin,
+  FolderPlus,
+  Pencil,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { DocumentLink, documentUrl } from "./documentReferences";
 import remarkGfm from "remark-gfm";
-import { call, desktop, streamListener } from "./bridge";
+import { call, desktop } from "./bridge";
 import {
   type Json,
   type Task,
-  type Model,
   type NativeProfile,
-  type Message,
-  type StreamEvent,
   label,
   dimensions,
   isUnknown,
   textOf,
   replyText,
-  usageOf,
-  settled,
-  eventName,
-  eventDetail,
   compatible,
   liveEfforts,
   verificationLabel,
-  diffsOf,
   terminal,
 } from "./domain";
 import {
@@ -120,7 +111,6 @@ import {
   routingSupported,
   sourceAllows,
   routeEvidence,
-  taskPreferences,
   type Preferences,
   type GlobalPreferences,
 } from "./preferences";
@@ -128,12 +118,6 @@ import { Effort, demoEfforts } from "./components/Effort";
 import { Resizer } from "./components/Resizer";
 import { Modal } from "./components/Modal";
 const DeveloperTools = lazy(() => import("./components/DeveloperTools"));
-const emptyProfile: NativeProfile = {
-  home: "",
-  cli: "",
-  origin: "",
-  workspace: "",
-};
 function stored<T>(key: string, fallback: T): T {
   try {
     return JSON.parse(localStorage.getItem(key) || "null") ?? fallback;
@@ -141,44 +125,11 @@ function stored<T>(key: string, fallback: T): T {
     return fallback;
   }
 }
-function Mark({ small = false }: { small?: boolean }) {
-  return (
-    <span className={`brand-mark ${small ? "small" : ""}`} aria-hidden="true">
-      <span />
-      <span />
-      <span />
-    </span>
-  );
-}
-function Status({ task }: { task?: Task | null }) {
-  const unknown = isUnknown(task);
-  return (
-    <span
-      className={`status ${unknown ? "warn" : task?.status === "completed" ? "good" : task?.status === "failed" ? "bad" : task?.status.startsWith("requires_") ? "warn" : ""}`}
-    >
-      <i />
-      {unknown ? "UNKNOWN · 已隔离" : task ? label(task.status) : "准备就绪"}
-    </span>
-  );
-}
-function Pretty({ value }: { value: unknown }) {
-  return <pre className="json">{JSON.stringify(value, null, 2)}</pre>;
-}
 const markdownComponents = {
   a: DocumentLink,
   img: () => <span className="muted">[远程图片未加载]</span>,
 };
 export default function App() {
-  const [profile, setProfile] = useState(emptyProfile),
-    [health, setHealth] = useState<Json | null>(null),
-    [compHealth, setCompHealth] = useState<Json | null>(null),
-    [models, setModels] = useState<Model[]>([]),
-    [tasks, setTasks] = useState<Task[]>([]),
-    [selected, setSelected] = useState<string | null>(null),
-    [messages, setMessages] = useState<Message[]>([]),
-    [turns, setTurns] = useState<Record<string, Json>>({}),
-    [events, setEvents] = useState<Record<string, StreamEvent[]>>({}),
-    [delta, setDelta] = useState<Record<string, string>>({});
   const [preview, setPreview] = useState(false),
     [input, setInput] = useState(() =>
       desktop
@@ -189,7 +140,6 @@ export default function App() {
     ),
     [model, setModel] = useState(stored("lp.defaultModel", "")),
     [busy, setBusy] = useState(false),
-    [stream, setStream] = useState("idle"),
     [error, setError] = useState(""),
     [toast, setToast] = useState(""),
     [query, setQuery] = useState("");
@@ -205,6 +155,31 @@ export default function App() {
     [modelOpen, setModelOpen] = useState(false),
     [effort, setEffort] = useState(stored("lp.demoEffort", "high")),
     [reduced, setReduced] = useState(stored("lp.reduced", false));
+  const taskState = useTaskState(
+    useCallback(() => {
+      setRight(true);
+      setTab("activity");
+    }, []),
+  );
+  const {
+    tasks,
+    setTasks,
+    selected,
+    setSelected,
+    messages,
+    setMessages,
+    turns,
+    setTurns,
+    events,
+    setEvents,
+    delta,
+    setDelta,
+    stream,
+    setStream,
+    taskSnapshots,
+    streamedSequence,
+    updateTask,
+  } = taskState;
   const [confirm, setConfirm] = useState<"cloud" | null>(null),
     [control, setControl] = useState<{
       action: string;
@@ -212,17 +187,12 @@ export default function App() {
       taskId?: string;
       actionId?: string;
     } | null>(null),
-    [cloudPaths, setCloudPaths] = useState(""),
-    [delegation, setDelegation] = useState<Json | null>(null),
-    [delegatedActive, setDelegatedActive] = useState<Json | null>(null),
     [apiInfo, setApiInfo] = useState(""),
-    [pending, setPending] = useState<Json[]>([]),
     [follow, setFollow] = useState(true),
     [atBottom, setAtBottom] = useState(true);
   const [formHome, setFormHome] = useState(""),
     [formCli, setFormCli] = useState(""),
     [diagnostic, setDiagnostic] = useState<Json | null>(null),
-    [upgradeConfirm, setUpgradeConfirm] = useState(false),
     [management, setManagement] = useState(false),
     [initOpen, setInitOpen] = useState(false),
     [initWorkspace, setInitWorkspace] = useState(""),
@@ -309,7 +279,6 @@ export default function App() {
     [setupBusy, setSetupBusy] = useState(false),
     [setupStage, setSetupStage] = useState(0),
     [preferencesReady, setPreferencesReady] = useState(false),
-    [historyReady, setHistoryReady] = useState(false),
     [defaultsDraft, setDefaultsDraft] =
       useState<Preferences>(initialPreferences),
     [sessionPrefs, setSessionPrefs] = useState<Preferences>(initialPreferences),
@@ -317,7 +286,6 @@ export default function App() {
     [libraryOpen, setLibraryOpen] = useState(false),
     [toolsOpen, setToolsOpen] = useState(false),
     [developerOpen, setDeveloperOpen] = useState(false),
-    [routingCaps, setRoutingCaps] = useState<Json | null>(null),
     [chatId, setChatId] = useState(
       () =>
         stored<string>("lp.currentChat", "") || `draft-${crypto.randomUUID()}`,
@@ -338,11 +306,96 @@ export default function App() {
       window.matchMedia("(prefers-color-scheme: dark)").matches,
     ),
     [preferenceSaving, setPreferenceSaving] = useState(false),
+    [preferenceUnsaved, setPreferenceUnsaved] = useState(false),
     [glass, setGlass] = useState(stored("lp.glass", true)),
     [glassStatus, setGlassStatus] = useState("等待原生外观检查");
   const persistQueue = useRef(Promise.resolve()),
+    preferenceWriteVersion = useRef(0),
     restoreDone = useRef(false);
+  const connection = useServiceConnection(taskState, {
+    setModel,
+    setError,
+    setFormHome,
+    setFormCli,
+    restoreDone,
+    showError,
+  });
+  const {
+    profile,
+    setProfile,
+    health,
+    setHealth,
+    compHealth,
+    setCompHealth,
+    models,
+    setModels,
+    pending,
+    setPending,
+    routingCaps,
+    historyReady,
+    refresh,
+  } = connection;
+  const meeting = useCompanionMeeting(profile.home, showError);
+  useEffect(() => {
+    if (profile.maintenance_return) setUpdatesOpen(true);
+  }, [profile.maintenance_return]);
   const scope = `${profile.home}|${profile.origin}|${health?.client_subject || ""}`;
+  const openTask = useSessionRecovery(taskState, {
+    preferencesReady,
+    completed: globals.completed,
+    health,
+    historyReady,
+    restoreDone,
+    drafts,
+    chatId,
+    scope,
+    defaults: globals.defaults,
+    model,
+    onError: showError,
+    onPreferences: setSessionPrefs,
+    onDraft: (draft) => {
+      setInput(draft.input || "");
+      setSessionPrefs(draft.preferences);
+      setModel(draft.model);
+    },
+    onOpen: (task, view) => {
+      ++preferenceWriteVersion.current;
+      setPreferenceSaving(false);
+      setPreferenceUnsaved(false);
+      setError("");
+      setPermissionOpen(false);
+      setPreferenceOpen(false);
+      setWorkspaceGrant(task.desktop_options?.workspace_grant || "");
+      setChatId(task.session_id);
+      setInput(view.input);
+      setSessionPrefs(view.preferences);
+      setPreview(false);
+      setSelected(task.id);
+      setModel(view.model);
+      setMessages(view.messages);
+      if (task.required_action) setTab("activity");
+      setAgentProfile(
+        task.desktop_options?.agent_profile === "minimal"
+          ? "minimal"
+          : "standard",
+      );
+      if (
+        Object.keys(permissionNames).includes(
+          task.desktop_options?.permission_mode,
+        )
+      )
+        setPermissionMode(task.desktop_options.permission_mode);
+      setRight(true);
+    },
+  });
+  const {
+    organization,
+    createProject,
+    renameProject,
+    toggleProjectPinned,
+    toggleConversationPinned,
+    assignConversation,
+  } = useConversationProjects(scope);
   const supportedRouting = routingSupported(health, routingCaps);
   const effectiveTheme =
     theme === "system" ? (systemDark ? "dark" : "light") : theme;
@@ -376,7 +429,6 @@ export default function App() {
   useEffect(() => {
     if (
       preview ||
-      !chatId.startsWith("draft-") ||
       !preferencesReady ||
       (desktop && (!historyReady || !restoreDone.current))
     )
@@ -384,6 +436,10 @@ export default function App() {
     setDrafts((old) => {
       if (!input.trim()) {
         if (!old[chatId]) return old;
+        if (!chatId.startsWith("draft-")) {
+          if (!old[chatId].input) return old;
+          return { ...old, [chatId]: { ...old[chatId], input: "" } };
+        }
         const next = { ...old };
         delete next[chatId];
         return next;
@@ -393,7 +449,9 @@ export default function App() {
         [chatId]: {
           preferences: sessionPrefs,
           model,
-          title: input.trim().split("\n")[0].slice(0, 32),
+          title: chatId.startsWith("draft-")
+            ? input.trim().split("\n")[0].slice(0, 32)
+            : old[chatId]?.title || "新会话",
           input,
           scope,
         },
@@ -409,25 +467,6 @@ export default function App() {
     historyReady,
     preview,
   ]);
-  useEffect(() => {
-    if (
-      !preferencesReady ||
-      !globals.completed ||
-      !health ||
-      !historyReady ||
-      restoreDone.current
-    )
-      return;
-    restoreDone.current = true;
-    const id = stored<string>("lp.currentTask", "");
-    const task = tasks.find((t) => t.id === id);
-    if (task) openTask(task);
-    else if (drafts[chatId]?.scope === scope) {
-      setInput(drafts[chatId].input || "");
-      setSessionPrefs(drafts[chatId].preferences);
-      setModel(drafts[chatId].model);
-    }
-  }, [preferencesReady, globals.completed, health, tasks, historyReady]);
   useEffect(() => {
     if (preferencesReady && !desktop && drafts[chatId])
       setSessionPrefs(drafts[chatId].preferences);
@@ -485,30 +524,37 @@ export default function App() {
     setDrafts((old) => ({
       ...old,
       [chatId]: {
+        ...old[chatId],
         preferences: value,
         model,
         title: old[chatId]?.title || "新会话",
         scope,
       },
     }));
-    if (desktop && connected) {
+    if (desktop && connected && currentTask?.session_id) {
+      const version = ++preferenceWriteVersion.current;
+      const sessionId = currentTask.session_id;
       setPreferenceSaving(true);
+      setPreferenceUnsaved(true);
+      // A failed save must not poison the queue for later changes or task sends.
       persistQueue.current = persistQueue.current
-        .then(() =>
-          call("session_preferences", {
-            sessionId: currentTask?.session_id || chatId,
-            value,
-          }),
-        )
-        .then(() => {
-          setPreferenceSaving(false);
-        })
-        .catch((e) => {
-          showError(e);
-          setPreferenceSaving(false);
-          throw e;
+        .catch(() => {})
+        .then(async () => {
+          try {
+            await call("session_preferences", { sessionId, value });
+            if (version === preferenceWriteVersion.current) {
+              setPreferenceUnsaved(false);
+              setError((old) =>
+                old.startsWith("会话偏好未保存：") ? "" : old,
+              );
+            }
+          } catch (e) {
+            showError("会话偏好未保存：" + String(e));
+          } finally {
+            if (version === preferenceWriteVersion.current)
+              setPreferenceSaving(false);
+          }
         });
-      persistQueue.current.catch(() => {});
     }
   }
   const [enterBehavior, setEnterBehavior] = useState<EnterBehavior>(() =>
@@ -524,12 +570,16 @@ export default function App() {
   const composer = useRef<HTMLTextAreaElement>(null),
     scroller = useRef<HTMLDivElement>(null),
     searchRef = useRef<HTMLInputElement>(null),
-    modelMenu = useRef<HTMLDivElement>(null),
     preferenceAnchor = useRef<HTMLDivElement>(null);
   const currentTask = preview
     ? previewTask
     : tasks.find((t) => t.id === selected);
   const actualModels = preview ? previewModels : models;
+  const selectableModels = usableAgentModels(
+    actualModels,
+    sessionPrefs,
+    preview,
+  );
   const chosen = actualModels.find((m) => m.id === model);
   const [modelEfforts, setModelEfforts] = useState<Record<string, string>>(() =>
     stored("lp.modelEfforts", {}),
@@ -569,166 +619,21 @@ export default function App() {
         (chosen.adapter === "deepseek" || chosen.cloud_egress !== "LOCAL_ONLY");
   const effectiveMessages = preview ? previewMessages : messages;
   const activeEvents = preview ? previewEvents : events[selected || ""] || [];
-  const dims = dimensions(currentTask),
-    usage = usageOf(currentTask);
+  const modelShare = observedModelShare(tasks, currentTask, activeEvents);
+  const childTraces = subagentTraces(activeEvents, currentTask);
+  const runningChildren = childTraces.filter(
+    (child) => child.status === "running" || child.status === "queued",
+  );
+  const openCollaborators = () => {
+    setRight(true);
+    setTab("agents");
+  };
+  const dims = dimensions(currentTask);
   const connected = !!health && compatible(health);
   const scopedPending = pending.filter(
     (v) => v.origin === profile.origin && v.subject === health?.client_subject,
   );
-  const selectedRef = useRef(selected);
-  selectedRef.current = selected;
-  const taskSnapshots = useRef<Record<string, Task>>({});
-  const updateTask = useCallback((t: Task) => {
-    if (latestTask(taskSnapshots.current[t.id], t) !== t) return;
-    taskSnapshots.current[t.id] = t;
-    if (t.required_action && t.id === selectedRef.current) {
-      setRight(true);
-      setTab("activity");
-    }
-    if (t.service?.route_decision?.selected)
-      t = { ...t, model: t.service.route_decision.selected };
-    setTasks((old) =>
-      [t, ...old.filter((v) => v.id !== t.id)].sort(
-        (a, b) => (b.created_at || 0) - (a.created_at || 0),
-      ),
-    );
-    setMessages((old) =>
-      old.map((m) =>
-        m.taskId === t.id && m.role === "assistant"
-          ? { ...m, text: textOf(t) || m.text }
-          : m,
-      ),
-    );
-  }, []);
-  const activeIdentity = useRef("");
-  const connectionError = useRef("");
-  const refreshSequence = useRef(0);
-  const refresh = useCallback(async () => {
-    const sequence = ++refreshSequence.current;
-    setHistoryReady(false);
-    try {
-      const h = await call<Json>("api", { method: "GET", path: "/healthz" });
-      const activeProfile = await call<NativeProfile>("profile");
-      if (sequence !== refreshSequence.current) return;
-      const identity = `${activeProfile.origin}|${h.client_subject}|${h.client_generation || ""}`;
-      if (activeIdentity.current && activeIdentity.current !== identity) {
-        setPending([]);
-        setTurns({});
-        setTasks([]);
-        taskSnapshots.current = {};
-        setSelected(null);
-        setMessages([]);
-        setEvents({});
-        setDelta({});
-        setModel("");
-        restoreDone.current = false;
-      }
-      activeIdentity.current = identity;
-      setPending([]);
-      setHealth(h);
-      if (!compatible(h))
-        throw new Error("服务契约不兼容；请在连接设置中检查版本。");
-      const [m, t] = await Promise.all([
-        call<Json>("api", {
-          method: "GET",
-          path: "/localpilot/v1/model-registry",
-        }),
-        call<Json>("api", { method: "GET", path: "/localpilot/v1/tasks" }),
-      ]);
-      if (sequence !== refreshSequence.current) return;
-      setModels(m.models || []);
-      let automaticSupported = false;
-      try {
-        const cap = await call<Json>("routing_capabilities");
-        setRoutingCaps(cap);
-        automaticSupported = routingSupported(h, cap);
-      } catch {
-        setRoutingCaps(null);
-      }
-      setTasks(
-        (t.tasks || [])
-          .map((incoming: Task) => {
-            const latest = latestTask(
-              taskSnapshots.current[incoming.id],
-              incoming,
-            );
-            taskSnapshots.current[incoming.id] = latest;
-            return latest;
-          })
-          .sort(
-            (a: Task, b: Task) => (b.created_at || 0) - (a.created_at || 0),
-          ),
-      );
-      setModel(
-        (old) =>
-          ((old === "__auto__" && automaticSupported) ||
-          m.models?.some((v: Model) => v.id === old)
-            ? old
-            : "") ||
-          (automaticSupported ? "__auto__" : "") ||
-          m.models?.find(
-            (v: Model) => v.deployment_status === "ready" && !v.reasoning_only,
-          )?.id ||
-          m.models?.[0]?.id ||
-          "",
-      );
-      try {
-        setCompHealth(await call("companion", { command: "status" }));
-      } catch {
-        setCompHealth(null);
-      }
-      setPending(await call<Json[]>("pending_submissions"));
-      setTurns(await call<Record<string, Json>>("submission_history"));
-      setHistoryReady(true);
-      setError((old) =>
-        errorAfterHealthyConnection(old, connectionError.current),
-      );
-      connectionError.current = "";
-    } catch (e) {
-      if (sequence !== refreshSequence.current) return;
-      setHealth(null);
-      setModels([]);
-      connectionError.current = String(e);
-      throw e;
-    }
-  }, []);
-  useEffect(() => {
-    if (!desktop) return;
-    const sync = () => {
-      void refresh().catch(() => {});
-    };
-    window.addEventListener("focus", sync);
-    const timer = window.setInterval(sync, 30000);
-    return () => {
-      window.removeEventListener("focus", sync);
-      window.clearInterval(timer);
-    };
-  }, [refresh]);
-  useEffect(() => {
-    if (desktop)
-      call<NativeProfile>("profile")
-        .then((p) => {
-          setProfile(p);
-          setFormHome(p.home);
-          setFormCli(p.cli);
-          if (p.home)
-            refresh().catch(async () => {
-              // One bounded recovery per application launch; never replay Agent tasks.
-              try {
-                await call("product_control", {
-                  operation: "service_control",
-                  args: { module: "core", action: "recover", confirmed: true },
-                });
-                await refresh();
-              } catch {
-                showError(
-                  "Core 未连接。请在设置的“安装、服务与数据恢复”中恢复服务；历史与原请求保留。",
-                );
-              }
-            });
-        })
-        .catch(showError);
-  }, [refresh, showError]);
+  useTaskStream(taskState, { preview, connected, showError, setError });
   useEffect(() => {
     const sync = () => {
       setViewport(window.innerWidth);
@@ -783,110 +688,12 @@ export default function App() {
     return () => window.removeEventListener("keydown", key);
   });
   useEffect(() => {
-    let off: (() => void) | undefined;
-    let disposed = false;
-    streamListener((payload) => {
-      if (disposed) return;
-      const id = payload.taskId;
-      if (payload.kind === "event") {
-        const e = payload.data as StreamEvent;
-        setEvents((old) => ({
-          ...old,
-          [id]: [
-            ...(old[id] || []).filter((v) => v.sequence !== e.sequence),
-            e,
-          ].slice(-250),
-        }));
-        if (e.type === "task.status" || e.type === "task.created")
-          updateTask(e.data as Task);
-        if (e.type === "runtime.event") {
-          if (e.data.type === "ModelResponseStarted")
-            setDelta((old) => ({ ...old, [id]: "" }));
-          if (e.data.type === "TextDelta")
-            setDelta((old) => ({
-              ...old,
-              [id]: (old[id] || "") + (e.data.data?.text || ""),
-            }));
-        }
-      }
-      if (payload.kind === "snapshot") updateTask(payload.data);
-      if (
-        id === selectedRef.current &&
-        [
-          "connected",
-          "connecting",
-          "reconnecting",
-          "disconnected",
-          "snapshot",
-        ].includes(payload.kind)
-      )
-        setStream(payload.kind);
-      if (payload.kind === "disconnected" && id === selectedRef.current) {
-        connectionError.current = payload.error;
-        setError(payload.error);
-      }
-      if (
-        ["connected", "snapshot"].includes(payload.kind) &&
-        id === selectedRef.current
-      ) {
-        setError((old) => (old === connectionError.current ? "" : old));
-        connectionError.current = "";
-      }
-    }).then((un) => {
-      if (disposed) un();
-      else off = un;
-    });
-    return () => {
-      disposed = true;
-      off?.();
-    };
-  }, [updateTask]);
-  useEffect(() => {
-    if (preview || !selected || !desktop) return;
-    setStream("connecting");
-    call("watch_task", { taskId: selected, after: 0 }).catch(showError);
-    return () => {
-      call("unwatch_task", { taskId: selected }).catch(() => {});
-    };
-  }, [selected, preview, showError]);
-  useEffect(() => {
-    if (!selected || preview || !connected) return;
-    const active = tasks.find((t) => t.id === selected);
-    if (!active || (terminal.has(active.status) && active.quiescent)) return;
-    const timer = window.setInterval(
-      () =>
-        call<Task>("api", {
-          method: "GET",
-          path: `/localpilot/v1/tasks/${selected}`,
-        })
-          .then(updateTask)
-          .catch(() => setStream("disconnected")),
-      active.quiescent ? 12000 : 4500,
-    );
-    return () => window.clearInterval(timer);
-  }, [
-    selected,
-    currentTask?.status,
-    currentTask?.quiescent,
-    preview,
-    connected,
-    updateTask,
-  ]);
-  useEffect(() => {
     if (follow && atBottom)
       scroller.current?.scrollTo({
         top: scroller.current.scrollHeight,
         behavior: "auto",
       });
   }, [messages, delta, follow, atBottom, preview]);
-  useEffect(() => {
-    if (!modelOpen) return;
-    const fn = (e: MouseEvent) => {
-      if (!modelMenu.current?.contains(e.target as Node)) setModelOpen(false);
-    };
-    window.addEventListener("mousedown", fn);
-    return () => window.removeEventListener("mousedown", fn);
-  }, [modelOpen]);
   useEffect(() => {
     if (!toast) return;
     const timer = setTimeout(() => setToast(""), 3500);
@@ -897,12 +704,12 @@ export default function App() {
       setOnboarding(true);
       return;
     }
-    if (!preview && !selected && !input.trim() && !attachments.files.length) {
-      composer.current?.focus();
-      return;
-    }
+    // An explicit new chat resets this conversation's preferences even when
+    // no text was typed; empty drafts never become persisted task history.
     const id = `draft-${crypto.randomUUID()}`;
-    persistQueue.current = Promise.resolve();
+    ++preferenceWriteVersion.current;
+    setPreferenceSaving(false);
+    setPreferenceUnsaved(false);
     setChatId(id);
     setSessionPrefs({ ...globals.defaults });
     setModel(defaultModel || (supportedRouting ? "__auto__" : ""));
@@ -921,96 +728,6 @@ export default function App() {
     setStream("idle");
     composer.current?.focus();
   }
-  function openTask(t: Task) {
-    setError("");
-    setPermissionOpen(false);
-    setPreferenceOpen(false);
-    setWorkspaceGrant(t.desktop_options?.workspace_grant || "");
-    setChatId(t.session_id);
-    localStorage.setItem("lp.currentTask", JSON.stringify(t.id));
-    const cached = drafts[t.session_id];
-    setSessionPrefs(
-      cached?.scope === scope
-        ? cached.preferences
-        : turns[t.id]?.preferences || taskPreferences(t, globals.defaults),
-    );
-    if (desktop)
-      call<Preferences | null>("session_preferences", {
-        sessionId: t.session_id,
-        value: null,
-      })
-        .then((p) => {
-          if (p && selectedRef.current === t.id) setSessionPrefs(p);
-        })
-        .catch(showError);
-    setPreview(false);
-    setSelected(t.id);
-    if (t.required_action) setTab("activity");
-    setModel(t.model || model);
-
-    setAgentProfile(
-      t.desktop_options?.agent_profile === "minimal" ? "minimal" : "standard",
-    );
-    if (
-      Object.keys(permissionNames).includes(t.desktop_options?.permission_mode)
-    )
-      setPermissionMode(t.desktop_options.permission_mode);
-    const same = [
-      ...tasks.filter((v) => v.session_id === t.session_id && v.id !== t.id),
-      t,
-    ].sort((a, b) => (a.created_at || 0) - (b.created_at || 0));
-    setMessages(
-      same.flatMap((v) => [
-        ...(turns[v.id]?.input || v.user_input
-          ? [
-              {
-                id: `user-${v.id}`,
-                role: "user" as const,
-                text: turns[v.id]?.input || v.user_input,
-              },
-            ]
-          : []),
-        {
-          id: `answer-${v.id}`,
-          role: "assistant" as const,
-          text: textOf(v) || "该任务暂无最终文本。可在右侧查看当前状态和事件。",
-          taskId: v.id,
-          source:
-            turns[v.id] || v.user_input
-              ? "服务快照 · 原请求保存在本机"
-              : "服务快照 · 此客户端未保存原始提问",
-        },
-      ]),
-    );
-    setRight(true);
-  }
-  useEffect(() => {
-    if (!desktop) return;
-    let disposed = false;
-    const load = (id: string) => {
-      if (!/^resp_[a-zA-Z0-9]+$/.test(id)) return;
-      void call<Task>("api", {
-        method: "GET",
-        path: `/localpilot/v1/tasks/${id}`,
-      })
-        .then((t) => {
-          if (!disposed) {
-            updateTask(t);
-            openTask(t);
-          }
-        })
-        .catch(showError);
-    };
-    const id = new URLSearchParams(location.search).get("petTask");
-    if (id) load(id);
-    const stop = listen<Json>("pet-review-task", (e) =>
-      load(e.payload.task_id),
-    );
-    return () => {
-      disposed = true;
-      void stop.then((f) => f());
-    };
-  }, []);
   function enterPreview() {
     setPreview(true);
     setSelected(null);
@@ -1021,6 +738,10 @@ export default function App() {
     setSettings(false);
   }
   async function connect() {
+    if (formHome !== profile.home && (meeting.active || meeting.uncertain)) {
+      showError("请先停止当前会议采集并确认状态，再切换 Suite 数据目录。");
+      return;
+    }
     setManagement(true);
     try {
       const r = await call<Json>("connect_suite", {
@@ -1034,6 +755,7 @@ export default function App() {
         setDelta({});
         setTasks([]);
         taskSnapshots.current = {};
+        streamedSequence.current = {};
         setModels([]);
         setTurns({});
         setPending([]);
@@ -1055,78 +777,100 @@ export default function App() {
       setManagement(false);
     }
   }
-  async function pick(kind: string) {
-    try {
-      const v = await call<string | null>("pick_suite", { kind });
-      if (v) (kind === "home" ? setFormHome : setFormCli)(v);
-    } catch (e) {
-      showError(e);
-    }
-  }
-  async function manage(action: string) {
-    setError("");
-    setManagement(true);
-    try {
-      const r = await call<Json>("lifecycle", { action });
-      setDiagnostic(r);
-      await refresh().catch(() => {});
-      if (r.exit === 0) {
-        setToast("操作已返回，状态以诊断结果为准");
-      } else {
-        setError(
-          "管理操作未成功，请查看诊断。连接状态已按服务实际健康情况更新。",
-        );
-      }
-    } catch (e) {
-      await refresh().catch(() => {});
-      showError(e);
-    } finally {
-      setManagement(false);
-    }
-  }
   const [loadingModel, setLoadingModel] = useState("");
   const modelLoadLock = useRef(false);
+  function detachForRouteChange() {
+    // Automatic first-turn routing is an explicit new-conversation choice.
+    const draftId = `draft-${crypto.randomUUID()}`;
+    ++preferenceWriteVersion.current;
+    setPreferenceSaving(false);
+    setPreferenceUnsaved(false);
+    setChatId(draftId);
+    setSelected(null);
+    setMessages([]);
+    setDelta({});
+    setRight(false);
+    localStorage.removeItem("lp.currentTask");
+  }
   async function selectModel(id: string) {
     if (modelLoadLock.current || busy) return;
     const target = actualModels.find((m) => m.id === id);
-    setModelOpen(false);
-    setError("");
-    if (
-      chosen &&
-      sessionPrefs.effort &&
-      chosen.reasoning_efforts?.includes(sessionPrefs.effort)
-    ) {
-      setModelEfforts((old) => ({
-        ...old,
-        [thinkingKey(chosen)]: sessionPrefs.effort!,
-      }));
-    }
-    if (target && !preview)
-      setSessionPrefs((old) => ({
-        ...old,
-        effort: compatibleEffort(
-          target,
-          chosen && thinkingKey(chosen) === thinkingKey(target)
-            ? sessionPrefs.effort
-            : modelEfforts[thinkingKey(target)],
-        ),
-      }));
-    if (!target || preview || target.adapter !== "omlx") {
-      setModel(id);
+    if (!target || !selectableModels.some((m) => m.id === id)) {
+      setError("此模型尚不能执行标准 Agent 任务。请在模型库检查可用性。");
       return;
     }
-    modelLoadLock.current = true;
-    setModel(id);
-    setLoadingModel(target.model);
+    setModelOpen(false);
     setError("");
+    const nextEffort = compatibleEffort(
+      target,
+      chosen && thinkingKey(chosen) === thinkingKey(target)
+        ? sessionPrefs.effort
+        : modelEfforts[thinkingKey(target)],
+    );
+    const switchesSession =
+      !preview &&
+      currentTask &&
+      (currentTask.session_model || currentTask.model) !== id;
+    modelLoadLock.current = true;
+    if (!preview) setLoadingModel(target.model);
     try {
-      await ensureLocalModelLoaded(target, call);
-      await refresh();
-      setToast("模型已加载，可以发送任务。");
+      await persistQueue.current;
+      if (
+        switchesSession &&
+        (!currentTask.quiescent ||
+          !terminal.has(currentTask.status) ||
+          isUnknown(currentTask))
+      )
+        throw Error(
+          "当前任务尚未结束，不能切换模型。请先完成或取消任务；副作用未知时请先核对原结果。",
+        );
+      if (
+        switchesSession &&
+        !health?.compatibility?.capabilities?.includes(
+          "desktop_model_switch_v1",
+        )
+      )
+        throw Error("请更新 Core 后在当前会话切换模型；原对话和草稿已保留。");
+      if (!preview && target.adapter === "omlx") {
+        await ensureLocalModelLoaded(target, call);
+        await refresh();
+      }
+      if (switchesSession) {
+        const session = await call<Json>("product_control", {
+          operation: "desktop_model",
+          args: {
+            session_id: currentTask.session_id,
+            model: id,
+            expected_model: currentTask.session_model || currentTask.model,
+            source: sessionPrefs.source,
+            reasoning_effort: nextEffort,
+          },
+        });
+        setTasks((old) =>
+          old.map((task) =>
+            task.session_id === session.id
+              ? { ...task, session_model: session.model }
+              : task,
+          ),
+        );
+      }
+      if (
+        chosen &&
+        sessionPrefs.effort &&
+        chosen.reasoning_efforts?.includes(sessionPrefs.effort)
+      )
+        setModelEfforts((old) => ({
+          ...old,
+          [thinkingKey(chosen)]: sessionPrefs.effort!,
+        }));
+      if (!preview) setSessionPrefs((old) => ({ ...old, effort: nextEffort }));
+      setModel(id);
+      if (switchesSession)
+        setToast("已在当前会话切换模型；对话、任务和工具收据已保留。");
+      else if (!preview && target.adapter === "omlx")
+        setToast("模型已加载，可以发送任务。");
     } catch (e) {
       showError(e);
-      // Keep the chosen route visible; do not silently switch providers.
-      setLibraryOpen(true);
     } finally {
       setLoadingModel("");
       modelLoadLock.current = false;
@@ -1204,14 +948,15 @@ export default function App() {
           throw new Error("所选模型不符合本会话来源限制；未提交或替换模型。");
         if (currentTask && !currentTask.quiescent)
           throw new Error("当前任务仍在运行，请等待或取消后继续。");
-        let useSession =
-          !(cloud && chosen?.reasoning_only) &&
-          (model === "__auto__" || currentTask?.model === model)
-            ? currentTask?.session_id || null
-            : null;
-        if (scopedPending.length > 0)
+        let useSession = !(cloud && chosen?.reasoning_only)
+          ? currentTask?.session_id || null
+          : null;
+        if (
+          useSession &&
+          scopedPending.some((v) => v.body?.session_id === useSession)
+        )
           throw new Error(
-            "有提交状态未确认的原请求，请先使用恢复原请求，避免创建重复任务。",
+            "此 Session 有提交结果未知的旧请求，请先查询或恢复原请求。其他会话仍可独立执行。",
           );
         let effectiveModel = model;
         const caps = health?.compatibility?.capabilities || [];
@@ -1466,76 +1211,6 @@ export default function App() {
       setManagement(false);
     }
   }
-  async function prepareDelegation(question: string, cloud = false) {
-    try {
-      const result = await call<Json>("companion_control", {
-        action: cloud ? "prepare_cloud" : "prepare_help",
-        text: question,
-        ticket: null,
-        confirmed: false,
-        preferences: sessionPrefs,
-      });
-      if (result.control && result.status === "inference_prepared")
-        setDelegation({ ...result.control, presented: false });
-      else throw new Error(result.text || result.reason || result.status);
-    } catch (e) {
-      showError(e);
-    }
-  }
-  useEffect(() => {
-    if (!delegation?.id) return;
-    let alive = true;
-    const heartbeat = setInterval(() => {
-      void call("companion_control", {
-        action: "heartbeat",
-        text: null,
-        ticket: delegation.id,
-        confirmed: false,
-        preferences: sessionPrefs,
-      }).catch(showError);
-    }, 8000);
-    call<Json>("companion_control", {
-      action: "present",
-      text: null,
-      ticket: delegation.id,
-      confirmed: false,
-      preferences: sessionPrefs,
-    })
-      .then((r) => {
-        if (!alive) return;
-        if (!["ready_to_start", "confirmation_required"].includes(r.status))
-          throw new Error(r.text || r.status);
-        setDelegation({ ...r.control, presented: true });
-      })
-      .catch(showError);
-    return () => {
-      alive = false;
-      clearInterval(heartbeat);
-    };
-  }, [delegation?.id]);
-  useEffect(() => {
-    if (!delegatedActive) return;
-    const handle = setInterval(async () => {
-      try {
-        await call("companion_control", {
-          action: "heartbeat",
-          text: null,
-          ticket: delegatedActive.id,
-          confirmed: false,
-          preferences: sessionPrefs,
-        });
-        const t = await call<Task>("api", {
-          method: "GET",
-          path: `/localpilot/v1/tasks/${delegatedActive.taskId}`,
-        });
-        updateTask(t);
-        if (t.quiescent && terminal.has(t.status)) setDelegatedActive(null);
-      } catch (e) {
-        showError(e);
-      }
-    }, 8000);
-    return () => clearInterval(handle);
-  }, [delegatedActive?.id]);
   async function recover(key: string) {
     setBusy(true);
     try {
@@ -1594,11 +1269,67 @@ export default function App() {
   const grouped = latestConversations(tasks).filter((t) =>
     matchedSessions.has(t.session_id),
   );
+  const {
+    pinnedIds,
+    pinnedConversations,
+    otherConversations,
+    orderedProjects,
+    assignedProjects,
+    uncategorized,
+  } = classifyConversations(grouped, organization);
+  function conversationRow(t: Task) {
+    const pinned = pinnedIds.has(t.session_id);
+    return (
+      <div className="conversation-entry" key={t.id}>
+        <button
+          className={`task-row ${currentTask?.session_id === t.session_id ? "selected" : ""}`}
+          onClick={() => openTask(t)}
+        >
+          <MessageSquare size={14} />
+          <span>
+            {conversationTitle(
+              t,
+              tasks,
+              stored<Record<string, string>>("lp.titles", {}),
+              turns,
+            )}
+            <small>{label(t.status)}</small>
+          </span>
+          <i
+            className={`task-dot ${t.status === "completed" ? "good" : isUnknown(t) || t.status.includes("requires") ? "warn" : ""}`}
+          />
+        </button>
+        <button
+          className={`conversation-pin ${pinned ? "active" : ""}`}
+          aria-label={pinned ? "取消置顶会话" : "置顶会话"}
+          title={pinned ? "取消置顶" : "置顶"}
+          onClick={() => toggleConversationPinned(t.session_id)}
+        >
+          <Pin size={12} />
+        </button>
+        <select
+          className="conversation-project"
+          aria-label="选择会话所属项目"
+          title="将会话归类到项目"
+          value={
+            assignedProjects.has(organization.assignments[t.session_id])
+              ? organization.assignments[t.session_id]
+              : ""
+          }
+          onChange={(e) => assignConversation(t.session_id, e.target.value)}
+        >
+          <option value="">未分类</option>
+          {orderedProjects.map((project) => (
+            <option key={project.id} value={project.id}>
+              {project.name}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
+  }
   const outputBlocked =
     busy || (!preview && !!currentTask && !terminal.has(currentTask.status));
-  const plans: Json[] = Array.isArray(currentTask?.goals)
-    ? currentTask!.goals
-    : [];
   return (
     <div
       className={`app ${right ? "right-open" : ""} ${left ? "left-open" : ""}`}
@@ -1609,6 +1340,26 @@ export default function App() {
         } as CSSProperties
       }
     >
+      {(meeting.active || meeting.uncertain) && (
+        <div className="meeting-capture-banner" role="status">
+          <strong>
+            {meeting.uncertain
+              ? "会议采集状态待确认"
+              : meetingStateLabel(meeting.meeting?.state)}
+          </strong>
+          <span>
+            {meeting.meeting?.label || meeting.meeting?.capture} ·{" "}
+            {meeting.meeting?.segments || 0} 段
+          </span>
+          <button
+            className="secondary"
+            disabled={meeting.busy}
+            onClick={() => void meeting.control("meeting_stop")}
+          >
+            停止采集
+          </button>
+        </div>
+      )}
       {left && (
         <aside className="sidebar">
           <div className="window-space" data-tauri-drag-region />
@@ -1677,7 +1428,15 @@ export default function App() {
             <ChevronDown size={13} />
           </button>
           <div className="sidebar-section">
-            <span>最近会话</span>
+            <span>项目与会话</span>
+            <button
+              className="icon-btn"
+              aria-label="创建项目"
+              title="创建项目"
+              onClick={createProject}
+            >
+              <FolderPlus size={13} />
+            </button>
             <button
               className="icon-btn"
               aria-label="刷新任务列表"
@@ -1732,28 +1491,49 @@ export default function App() {
                   不会被保存为真实历史
                 </div>
               </>
-            ) : grouped.length ? (
-              grouped.map((t) => (
-                <button
-                  className={`task-row ${currentTask?.session_id === t.session_id ? "selected" : ""}`}
-                  key={t.id}
-                  onClick={() => openTask(t)}
-                >
-                  <MessageSquare size={14} />
-                  <span>
-                    {conversationTitle(
-                      t,
-                      tasks,
-                      stored<Record<string, string>>("lp.titles", {}),
-                      turns,
-                    )}
-                    <small>{label(t.status)}</small>
-                  </span>
-                  <i
-                    className={`task-dot ${t.status === "completed" ? "good" : isUnknown(t) || t.status.includes("requires") ? "warn" : ""}`}
-                  />
-                </button>
-              ))
+            ) : grouped.length || orderedProjects.length ? (
+              <>
+                {pinnedConversations.length > 0 && (
+                  <div className="sidebar-group-label">置顶会话</div>
+                )}
+                {pinnedConversations.map(conversationRow)}
+                {orderedProjects.map((project) => (
+                  <div className="sidebar-project-group" key={project.id}>
+                    <div className="sidebar-group-label">
+                      <Folder size={12} />
+                      <span>{project.name}</span>
+                      <button
+                        className={`conversation-pin ${project.pinned ? "active" : ""}`}
+                        title={project.pinned ? "取消置顶项目" : "置顶项目"}
+                        aria-label={
+                          project.pinned ? "取消置顶项目" : "置顶项目"
+                        }
+                        onClick={() => toggleProjectPinned(project.id)}
+                      >
+                        <Pin size={12} />
+                      </button>
+                      <button
+                        className="conversation-pin"
+                        title="重命名项目"
+                        aria-label="重命名项目"
+                        onClick={() => renameProject(project.id, project.name)}
+                      >
+                        <Pencil size={12} />
+                      </button>
+                    </div>
+                    {otherConversations
+                      .filter(
+                        (t) =>
+                          organization.assignments[t.session_id] === project.id,
+                      )
+                      .map(conversationRow)}
+                  </div>
+                ))}
+                {uncategorized.length > 0 && (
+                  <div className="sidebar-group-label">未分类</div>
+                )}
+                {uncategorized.map(conversationRow)}
+              </>
             ) : (
               <div className="sidebar-empty">
                 {query ? (
@@ -1958,7 +1738,11 @@ export default function App() {
                             delta[m.taskId || ""],
                           )}
                         </ReactMarkdown>
-                        {!m.text && !delta[m.taskId || ""] && (
+                        {!replyText(
+                          m,
+                          tasks.find((t) => t.id === m.taskId),
+                          delta[m.taskId || ""],
+                        ) && (
                           <span className="thinking">
                             <i />
                             <i />
@@ -2030,6 +1814,17 @@ export default function App() {
           </button>
         )}
         <div className="composer-area">
+          {!preview && runningChildren.length > 0 && (
+            <button
+              className="active-subagent-banner"
+              onClick={openCollaborators}
+            >
+              <Layers size={14} />
+              {runningChildren.length} 个子代理正在运行 ·
+              {runningChildren.map((child) => child.model).join("、")}
+              <ChevronRight size={13} />
+            </button>
+          )}
           {currentTask?.status === "requires_approval" &&
             currentTask.required_action &&
             !isUnknown(currentTask) &&
@@ -2087,7 +1882,13 @@ export default function App() {
               <span>{preferenceLabel(sessionPrefs)}</span>
               <ChevronDown size={12} />
             </button>
-            <span>{preferenceSaving ? "正在保存…" : "仅此会话"}</span>
+            <span>
+              {preferenceSaving
+                ? "正在保存…"
+                : preferenceUnsaved
+                  ? "偏好未保存"
+                  : "仅此会话"}
+            </span>
           </div>
           {preferenceOpen && (
             <Popover
@@ -2298,105 +2099,30 @@ export default function App() {
                     <span>标准 Agent</span>
                   </button>
                 </div>
-                {
-                  <div className="model-anchor" ref={modelMenu}>
-                    <button
-                      className="model-trigger"
-                      aria-label="选择模型"
-                      disabled={!!loadingModel || busy}
-                      onClick={() => setModelOpen(!modelOpen)}
-                    >
-                      <span
-                        className={`model-indicator ${loadingModel || chosen?.deployment_status !== "ready" ? "unavailable" : routeCloud ? "cloud" : ""}`}
-                      />
-                      <span>
-                        {loadingModel
-                          ? `正在加载 ${loadingModel}…`
-                          : chosen?.model || "选择模型"}
-                      </span>
-                      <ChevronDown size={11} />
-                    </button>
-                    {modelOpen && (
-                      <Popover
-                        className="model-menu"
-                        anchor={modelMenu}
-                        onClose={() => setModelOpen(false)}
-                      >
-                        <div className="menu-label">
-                          选择模型<span>已下载的本地模型自动加载</span>
-                        </div>
-                        {supportedRouting && (
-                          <button
-                            onClick={() => {
-                              setModel("__auto__");
-                              setModelOpen(false);
-                            }}
-                          >
-                            Core 自动选择 · 已协商 1.0
-                          </button>
-                        )}
-                        {actualModels.length ? (
-                          actualModels.map((m) => (
-                            <button
-                              key={m.id}
-                              disabled={
-                                !!m.reasoning_only || !!loadingModel || busy
-                              }
-                              title={
-                                m.reasoning_only
-                                  ? "此路由用于 Companion 轻量对话，不具备标准 Agent 工具能力"
-                                  : undefined
-                              }
-                              onClick={() => {
-                                if (currentTask && currentTask.model !== m.id)
-                                  setToast(
-                                    "模型改变后，下一条消息将创建新 Session",
-                                  );
-                                void selectModel(m.id);
-                              }}
-                              className={model === m.id ? "selected" : ""}
-                            >
-                              <span>
-                                {m.adapter === "deepseek" ? (
-                                  <Cloud size={16} />
-                                ) : (
-                                  <Monitor size={16} />
-                                )}
-                              </span>
-                              <div>
-                                <strong>{m.model}</strong>
-                                <small>
-                                  {m.id} · {label(m.deployment_status)} ·{" "}
-                                  {m.context_budget
-                                    ? `${Math.round(m.context_budget / 1024)}k`
-                                    : "上下文未知"}
-                                </small>
-                              </div>
-                              {model === m.id ? (
-                                <Check size={14} />
-                              ) : m.deployment_status !== "ready" ? (
-                                <AlertTriangle size={13} />
-                              ) : null}
-                            </button>
-                          ))
-                        ) : (
-                          <div className="menu-empty">连接后读取模型注册表</div>
-                        )}
-                        <button
-                          onClick={() => {
-                            setModelOpen(false);
-                            setLibraryOpen(true);
-                          }}
-                        >
-                          模型详情、加载与设置 →
-                        </button>
-                        <p>
-                          本地状态来自服务；云端上下文以 Provider 声明为准。
-                        </p>
-                      </Popover>
-                    )}
-                  </div>
-                }
+                <ModelPicker
+                  model={model}
+                  chosen={chosen}
+                  models={selectableModels}
+                  loadingModel={loadingModel}
+                  busy={busy}
+                  routeCloud={routeCloud}
+                  supportedRouting={supportedRouting}
+                  open={modelOpen}
+                  onOpen={setModelOpen}
+                  onSelect={(id) => void selectModel(id)}
+                  onAutoRoute={() => {
+                    if (!preview && currentTask && model !== "__auto__") {
+                      detachForRouteChange();
+                      setToast(
+                        "自动路由将在新会话首次发送时选择模型；旧会话未迁移。",
+                      );
+                    }
+                    setModel("__auto__");
+                    setSessionPrefs((old) => ({ ...old, effort: null }));
+                    setModelOpen(false);
+                  }}
+                  onLibrary={() => setLibraryOpen(true)}
+                />
                 {
                   <div className="effort-anchor" ref={effortAnchor}>
                     <button
@@ -2491,6 +2217,19 @@ export default function App() {
             </div>
           </div>
           <div className="composer-caption">
+            <button
+              className="collaboration-meter"
+              aria-label="查看本地、云端调用占比及子代理"
+              onClick={openCollaborators}
+            >
+              <Layers size={12} />
+              {modelShare.observed > 0
+                ? `本地 ${modelShare.localPercent}%（${modelShare.local}） · 云端 ${modelShare.cloudPercent}%（${modelShare.cloud}）`
+                : "本地/云端占比：暂无真实调用记录"}
+              {modelShare.unknown > 0 && ` · 来源未知 ${modelShare.unknown}`}
+              {childTraces.length > 0 && ` · 子代理 ${childTraces.length}`}
+              <ChevronRight size={12} />
+            </button>
             <span>
               <ShieldCheck size={11} />
               {preview
@@ -2508,453 +2247,26 @@ export default function App() {
         </div>
       </main>
       {right && (
-        <aside className="inspector">
-          <Resizer
-            side="right"
-            width={shownRight}
-            max={maxRight}
-            onChange={resizeRight}
-          />
-          <header className="inspector-header" data-tauri-drag-region>
-            <span>任务详情</span>
-            <button
-              className="icon-btn"
-              aria-label="关闭任务详情"
-              onClick={() => setRight(false)}
-            >
-              <PanelRight size={16} />
-            </button>
-          </header>
-          <div className="inspector-body">
-            <div className="task-overview">
-              <div className="section-eyebrow">
-                {preview ? "SIMULATED TASK" : "LIVE WORKSPACE"}
-              </div>
-              <div className="overview-heading">
-                <h2>{currentTask ? "每一步，都有依据。" : "准备好开始"}</h2>
-                <button
-                  className="icon-btn"
-                  aria-label="重新查询任务"
-                  onClick={requery}
-                >
-                  <RefreshCw size={14} />
-                </button>
-              </div>
-              <Status task={currentTask} />
-              {currentTask && !preview && !terminal.has(currentTask.status) && (
-                <button className="task-cancel text-btn" onClick={cancel}>
-                  <Square size={10} />
-                  取消任务
-                </button>
-              )}
-              {currentTask?.error && (
-                <div className="task-error">
-                  <AlertTriangle size={13} />
-                  <span>
-                    {typeof currentTask.error === "string"
-                      ? currentTask.error
-                      : currentTask.error.message ||
-                        JSON.stringify(currentTask.error)}
-                  </span>
-                </div>
-              )}
-              {currentTask && (
-                <code className="task-id" title={currentTask.id}>
-                  {currentTask.id}
-                </code>
-              )}
-            </div>
-            <div
-              className="inspector-tabs"
-              role="tablist"
-              aria-label="任务详情"
-            >
-              <button
-                role="tab"
-                aria-selected={tab === "activity"}
-                className={tab === "activity" ? "selected" : ""}
-                onClick={() => setTab("activity")}
-              >
-                进度
-              </button>
-              <button
-                role="tab"
-                aria-selected={tab === "evidence"}
-                className={tab === "evidence" ? "selected" : ""}
-                onClick={() => setTab("evidence")}
-              >
-                证据
-              </button>
-              <button
-                role="tab"
-                aria-selected={tab === "diff"}
-                className={tab === "diff" ? "selected" : ""}
-                onClick={() => setTab("diff")}
-              >
-                Diff
-              </button>
-            </div>
-            {tab === "activity" ? (
-              <>
-                <section className="inspector-section">
-                  <h3>
-                    <CheckCheck size={15} />
-                    任务计划
-                    <span>
-                      {plans.length
-                        ? `${plans.filter((p) => p.status === "completed").length}/${plans.length}`
-                        : ""}
-                    </span>
-                  </h3>
-                  {plans.length ? (
-                    <ol className="plan-list">
-                      {plans.map((p, i) => (
-                        <li key={i}>
-                          <span
-                            className={`plan-number ${p.status === "completed" ? "done" : ""}`}
-                          >
-                            {p.status === "completed" ? (
-                              <Check size={11} />
-                            ) : (
-                              i + 1
-                            )}
-                          </span>
-                          <span>
-                            {p.title ||
-                              p.description ||
-                              p.goal ||
-                              p.id ||
-                              JSON.stringify(p)}
-                            <small>{label(p.status)}</small>
-                          </span>
-                        </li>
-                      ))}
-                    </ol>
-                  ) : (
-                    <div className="quiet-empty">
-                      <span className="empty-line" />
-                      <span className="empty-line short" />
-                      <p>
-                        {currentTask
-                          ? "服务未提供结构化计划"
-                          : "计划会随着任务逐步展开"}
-                      </p>
-                    </div>
-                  )}
-                </section>
-                <section className="inspector-section">
-                  <h3>
-                    <Terminal size={15} />
-                    工具调用<span>{currentTask?.tools?.length || ""}</span>
-                  </h3>
-                  {currentTask?.tools?.length ? (
-                    currentTask.tools.map((t, i) => (
-                      <details className="tool-call" key={t.id || i}>
-                        <summary>
-                          <ChevronRight size={12} />
-                          <code>{t.name || t.tool_name || "tool"}</code>
-                          <span>{label(t.status || "unknown")}</span>
-                        </summary>
-                        <Pretty value={t} />
-                      </details>
-                    ))
-                  ) : (
-                    <p className="muted micro">
-                      工具提案、执行与收据将在这里显示
-                    </p>
-                  )}
-                </section>
-                {currentTask?.required_action && (
-                  <section
-                    className={`approval-card ${isUnknown(currentTask) ? "unknown" : ""}`}
-                  >
-                    <ShieldAlert size={19} />
-                    <h3>
-                      {isUnknown(currentTask)
-                        ? "UNKNOWN · 副作用未知"
-                        : "需要可信操作者"}
-                    </h3>
-                    <p>
-                      {isUnknown(currentTask)
-                        ? "保持隔离。允许查询或取消，禁止自动重放。"
-                        : "先核对动作、目标与范围，再确认授权。审批身份由本机受控通道使用。"}
-                    </p>
-                    <details>
-                      <summary>查看操作详情</summary>
-                      <Pretty value={currentTask.required_action} />
-                    </details>
-                    {!isUnknown(currentTask) && (
-                      <div className="approval-actions">
-                        {currentTask.required_action.type === "approval" && (
-                          <>
-                            <button
-                              className="primary"
-                              disabled={management}
-                              onClick={() => handoff("approve")}
-                            >
-                              允许一次
-                            </button>
-                            <button
-                              className="secondary"
-                              disabled={management}
-                              onClick={() => handoff("reject")}
-                            >
-                              拒绝动作
-                            </button>
-                          </>
-                        )}
-                        {currentTask.required_action.type ===
-                          "runtime_continuation" &&
-                          currentTask.recovery?.class === "SAFE_TO_RESUME" && (
-                            <button
-                              className="text-btn"
-                              onClick={() => handoff("resume")}
-                            >
-                              继续任务
-                            </button>
-                          )}
-                      </div>
-                    )}
-                  </section>
-                )}
-                <section className="inspector-section timeline-section">
-                  <h3>
-                    <Activity size={15} />
-                    事件时间线<span>{activeEvents.length || ""}</span>
-                  </h3>
-                  {activeEvents.length ? (
-                    <ol className="timeline">
-                      {activeEvents
-                        .filter((e) => eventName(e) !== "TextDelta")
-                        .slice(-35)
-                        .map((e) => (
-                          <li key={e.sequence}>
-                            <i />
-                            <div>
-                              <span>{eventName(e)}</span>
-                              <small>
-                                {eventDetail(e) || `sequence ${e.sequence}`}
-                              </small>
-                            </div>
-                            <code>{String(e.sequence).padStart(2, "0")}</code>
-                          </li>
-                        ))}
-                    </ol>
-                  ) : (
-                    <p className="muted micro">
-                      等待服务事件。流中断后使用原任务和游标恢复。
-                    </p>
-                  )}
-                </section>
-              </>
-            ) : tab === "evidence" ? (
-              <>
-                <section className="inspector-section">
-                  <h3>
-                    <ShieldCheck size={15} />
-                    执行与交付
-                  </h3>
-                  <div className="dimension-list">
-                    {[
-                      ["执行", dims.runtime],
-                      ["交付", dims.delivery],
-                      ["验证", dims.verification],
-                      ["工程状态", dims.engineering],
-                      ["任务验收", dims.outcome],
-                    ].map(([k, v]) => (
-                      <div key={k}>
-                        <span>{k}</span>
-                        <span
-                          className={
-                            v === "passed" ||
-                            v === "completed" ||
-                            v === "verified"
-                              ? "mint"
-                              : ""
-                          }
-                        >
-                          {k === "验证"
-                            ? verificationLabel(v)
-                            : k === "工程状态"
-                              ? v === "passed"
-                                ? "通过"
-                                : v === "failed"
-                                  ? "未通过"
-                                  : label(v)
-                              : label(v)}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                  <p className="micro muted">
-                    执行完成、交付结果和可信验证分别呈现。缺失的指标保留为未知。
-                  </p>
-                </section>
-                <section className="inspector-section">
-                  <h3>
-                    <FileText size={15} />
-                    验证与收据
-                  </h3>
-                  {currentTask ? (
-                    <>
-                      <details className="evidence-details" open>
-                        <summary>Verification summary</summary>
-                        <Pretty
-                          value={
-                            currentTask.verification_summary || {
-                              verification_status: "not_run",
-                            }
-                          }
-                        />
-                      </details>
-                      <details className="evidence-details" open>
-                        <summary>文件位置与内容校验</summary>
-                        <Pretty
-                          value={
-                            currentTask.file_operation_verification || {
-                              status: "NOT_RUN",
-                            }
-                          }
-                        />
-                        <p className="micro muted">
-                          核对真实文件与操作收据；任务要求是否全部满足仍单独验证。
-                        </p>
-                      </details>
-                      <details className="evidence-details">
-                        <summary>Receipt summary</summary>
-                        <Pretty
-                          value={
-                            currentTask.receipt_summary || { status: "unknown" }
-                          }
-                        />
-                      </details>
-                      <details className="evidence-details">
-                        <summary>Route decision / recovery</summary>
-                        <Pretty
-                          value={{
-                            service: currentTask.service,
-                            recovery: currentTask.recovery,
-                          }}
-                        />
-                      </details>
-                    </>
-                  ) : (
-                    <p className="muted micro">
-                      提交任务后显示服务提供的证据。
-                    </p>
-                  )}
-                </section>
-              </>
-            ) : (
-              <section className="inspector-section">
-                {diffsOf(currentTask).length ? (
-                  <>
-                    <h3>
-                      <GitCompare size={15} />
-                      当前审批的变更预览
-                    </h3>
-                    {diffsOf(currentTask).map((c, i) => (
-                      <div className="diff-file" key={i}>
-                        <div>
-                          <FileText size={13} />
-                          <code>{c.path}</code>
-                          <span>{c.operation}</span>
-                        </div>
-                        <pre>
-                          {c.diff.split("\n").map((line: string, n: number) => (
-                            <span
-                              key={n}
-                              className={
-                                line.startsWith("+")
-                                  ? "addition"
-                                  : line.startsWith("-")
-                                    ? "deletion"
-                                    : ""
-                              }
-                            >
-                              {line}
-                              {"\n"}
-                            </span>
-                          ))}
-                        </pre>
-                      </div>
-                    ))}
-                    <p className="micro muted">
-                      来自服务的当前审批预览。它描述拟议变更，不证明已经写入磁盘。最终状态以收据与
-                      Verification 为准。
-                    </p>
-                  </>
-                ) : (
-                  <div className="diff-empty">
-                    <GitCompare size={28} />
-                    <h3>变更，从可信来源开始。</h3>
-                    <p>
-                      当前没有审批 Diff。服务提供 apply_patch
-                      审批预览时，会在这里显示；RC2 尚无通用工作区 Diff 接口。
-                    </p>
-                    <span className="outline-badge">不读取工作区文件</span>
-                  </div>
-                )}
-              </section>
-            )}
-            <div className="inspector-bottom">
-              <div>
-                <span>上下文</span>
-                <strong>
-                  {chosen?.context_budget
-                    ? `${Math.round(chosen.context_budget / 1024)}k`
-                    : "未知"}
-                </strong>
-              </div>
-              <div>
-                <span>Tokens</span>
-                <strong>
-                  {usage
-                    ? `${usage.input?.toLocaleString() ?? "未知"} / ${usage.output?.toLocaleString() ?? "未知"}`
-                    : "未知"}
-                </strong>
-              </div>
-              <div>
-                <span>实际费用</span>
-                <strong>未知</strong>
-              </div>
-              <button
-                className="text-btn"
-                onClick={() =>
-                  setApiInfo(
-                    "模型上下文来自服务注册表；Token 仅展示 provider 实际返回的 usage。RC2 没有计费 API，客户端不估算实际费用。上下文总容量不代表当前已使用量。",
-                  )
-                }
-              >
-                关于这些指标
-                <ChevronRight size={12} />
-              </button>
-            </div>
-          </div>
-          <footer className="inspector-status">
-            <span
-              className={`connection-dot ${stream === "connected" ? "online" : ""}`}
-            />
-            {preview
-              ? "模拟事件 · 不连接服务"
-              : stream === "connected"
-                ? "SSE 已连接"
-                : stream === "reconnecting"
-                  ? "SSE 正在重连"
-                  : stream === "disconnected"
-                    ? "连接中断 · 可重新查询"
-                    : currentTask?.quiescent
-                      ? "任务已静止 · 快照保留"
-                      : "事件连接待命"}
-            <button
-              className="icon-btn"
-              aria-label="重连 SSE"
-              onClick={requery}
-            >
-              <RefreshCw size={12} />
-            </button>
-          </footer>
-        </aside>
+        <TaskInspector
+          currentTask={currentTask}
+          chosen={chosen}
+          activeEvents={activeEvents}
+          modelShare={modelShare}
+          childTraces={childTraces}
+          preview={preview}
+          management={management}
+          stream={stream}
+          tab={tab}
+          width={shownRight}
+          maxWidth={maxRight}
+          onResize={resizeRight}
+          onClose={() => setRight(false)}
+          onTab={setTab}
+          onRequery={requery}
+          onCancel={cancel}
+          onAction={handoff}
+          onInfo={setApiInfo}
+        />
       )}
       {developerOpen && (
         <Modal
@@ -3213,122 +2525,6 @@ export default function App() {
           )}
         </Modal>
       )}
-      {delegation && (
-        <Modal
-          title={
-            delegation.kind === "cloud"
-              ? "确认原问题出站至 DeepSeek"
-              : delegation.mode === "execution"
-                ? "确认需要标准 Agent 帮助"
-                : "确认本地深入分析"
-          }
-          onClose={() => setDelegation(null)}
-        >
-          <p>{delegation.question}</p>
-          <p>本次模型：{delegation.model}</p>
-          <p>
-            {delegation.kind === "cloud"
-              ? "仅发送这条原问题；不附带本地回答、记忆、观察或操作，不重放工具。"
-              : delegation.mode === "execution"
-                ? "Companion 将委派给 Core。文件写入仍会单独审批。"
-                : "只进行本地分析，不授予文件修改等执行权限。"}
-          </p>
-          <p>
-            当前可用内存约{" "}
-            {Math.round(
-              (delegation.resources?.memory_available_bytes || 0) / 1024 ** 3,
-            )}{" "}
-            GB。确认项目：
-            {(delegation.required_confirmations || []).join("、") ||
-              "资源范围已核对"}
-            。
-          </p>
-          <button
-            className="primary"
-            disabled={!delegation.presented || busy}
-            onClick={async () => {
-              setBusy(true);
-              try {
-                await call("companion_control", {
-                  action: "heartbeat",
-                  text: null,
-                  ticket: delegation.id,
-                  confirmed: false,
-                  preferences: sessionPrefs,
-                });
-                const result = await call<Json>("companion_control", {
-                  action: "start",
-                  text: null,
-                  ticket: delegation.id,
-                  confirmed: true,
-                  preferences: sessionPrefs,
-                });
-                if (
-                  result.status === "confirmation_required" &&
-                  result.control
-                ) {
-                  setDelegation({ ...result.control, presented: true });
-                  setToast("资源条件发生变化，请核对更新后的范围再确认。");
-                  return;
-                }
-                if (!result.task_id)
-                  throw new Error(result.text || result.status);
-                const t = await call<Task>("api", {
-                  method: "GET",
-                  path: `/localpilot/v1/tasks/${result.task_id}`,
-                });
-                setDelegatedActive({
-                  id: delegation.id,
-                  taskId: t.id,
-                  kind: delegation.kind,
-                });
-                setDelegation(null);
-
-                await call("session_preferences", {
-                  sessionId: t.session_id,
-                  value: sessionPrefs,
-                });
-                updateTask(t);
-                openTask(t);
-              } catch (e) {
-                showError(e);
-              } finally {
-                setBusy(false);
-              }
-            }}
-          >
-            {delegation.kind === "cloud"
-              ? "同意仅发送原问题"
-              : delegation.mode === "execution"
-                ? "需要帮助，确认委派"
-                : "确认本次本地分析"}
-          </button>
-        </Modal>
-      )}
-      {delegatedActive && (
-        <div className="toast" role="status">
-          Companion 委派进行中 · {delegatedActive.taskId}
-          <button
-            className="secondary"
-            onClick={async () => {
-              try {
-                await call("companion_control", {
-                  action: "stop",
-                  text: null,
-                  ticket: delegatedActive.id,
-                  confirmed: true,
-                  preferences: sessionPrefs,
-                });
-                setToast("停止请求已送达，正在核对原任务。");
-              } catch (e) {
-                showError(e);
-              }
-            }}
-          >
-            停止委派
-          </button>
-        </div>
-      )}
       {toast && (
         <div className="toast" role="status">
           <CheckCircle2 size={16} />
@@ -3337,407 +2533,76 @@ export default function App() {
       )}
       {updatesOpen && (
         <Modal title="软件更新" onClose={() => setUpdatesOpen(false)} wide>
-          <VersionManagement health={health} cliReady={!!profile.cli} />
-        </Modal>
-      )}
-      {settings && (
-        <Modal title="连接与偏好设置" onClose={() => setSettings(false)} wide>
-          <div className="settings-intro">
-            <Mark small />
-            <div>
-              <strong>LocalPilot Desktop</strong>
-              <p>管理模型、权限和宠物。服务连接与专业参数放在高级设置。</p>
-            </div>
-            <span className="outline-badge">{packageInfo.version} · arm64</span>
-          </div>
-          <section className="global-preferences">
-            <div className="preference-panel-title">
-              <h3>新会话默认值</h3>
-              <span className="micro muted">保存后仅影响后续新会话</span>
-            </div>
-            <PreferenceControls
-              value={defaultsDraft}
-              onChange={setDefaultsDraft}
-              supported={supportedRouting}
-            />
-            <button className="primary" onClick={() => saveDefaults()}>
-              保存全局默认值
-            </button>
-          </section>
-          <ProductSettings
-            permissionMode={permissionDefault}
-            enterBehavior={enterBehavior}
-            onEnterBehavior={setEnterBehavior}
-            onPermission={(id) => choosePermission(id, true)}
-            defaultModel={defaultModel}
-            models={models.filter((m) => !m.reasoning_only)}
-            onDefaultModel={setDefaultModel}
-            onUpdates={() => {
-              setSettings(false);
-              setUpdatesOpen(true);
-            }}
-            onModels={() => {
-              setSettings(false);
-              setLibraryOpen(true);
-            }}
-            onError={showError}
+          <VersionManagement
+            health={health}
+            cliReady={!!profile.cli}
+            maintenanceReturn={!!profile.maintenance_return}
           />
-          <details className="advanced-settings">
-            <summary>高级设置 · 服务、API、路由与诊断</summary>
-            <div className="settings-grid">
-              <section>
-                <h3>服务连接</h3>
-                {desktop && (
-                  <section>
-                    <label className="field-label">
-                      云端文件正文范围 · 精确工作区相对路径，一行一个
-                      <textarea
-                        aria-label="云端文件正文范围"
-                        value={cloudPaths}
-                        onChange={(e) => setCloudPaths(e.target.value)}
-                        placeholder={"input.txt\nanswer.txt"}
-                      />
-                    </label>
-                    <button
-                      className="secondary full"
-                      disabled={
-                        management || busy || !connected || !cloudPaths.trim()
-                      }
-                      onClick={async () => {
-                        setManagement(true);
-                        try {
-                          const result = await call<Json>(
-                            "configure_cloud_scope",
-                            {
-                              paths: cloudPaths
-                                .split("\n")
-                                .map((p) => p.trim())
-                                .filter(Boolean),
-                              confirmed: true,
-                            },
-                          );
-                          await refresh();
-                          setModel(
-                            result.result?.route ||
-                              result.route ||
-                              "deepseek-agent",
-                          );
-                          setToast(
-                            "精确文件范围已授权。新会话使用新增的云端路由；每次请求仍需出站审批。",
-                          );
-                        } catch (e) {
-                          showError(e);
-                        } finally {
-                          setManagement(false);
-                        }
-                      }}
-                    >
-                      授权以上文件正文出站 · 创建独立云端路由
-                    </button>
-                    <p className="micro muted">
-                      仅授权列出的文件；可列出尚未创建的目标文件。已有 Session
-                      保留原范围。任务或审批未结束时不修改配置。
-                    </p>
-                  </section>
-                )}
-                {desktop && (
-                  <button
-                    className="secondary full"
-                    disabled={management || busy || !connected}
-                    onClick={async () => {
-                      setManagement(true);
-                      try {
-                        await call("add_cloud_provider");
-                        await refresh();
-                        setToast("DeepSeek 已配置；每次云端任务仍需出站授权。");
-                      } catch (e) {
-                        showError(e);
-                      } finally {
-                        setManagement(false);
-                      }
-                    }}
-                  >
-                    配置 DeepSeek · 选择现有私有密钥文件
-                  </button>
-                )}
-                <button
-                  className="text-btn"
-                  onClick={() => {
-                    setSettings(false);
-                    setInitOpen(true);
-                  }}
-                >
-                  首次使用：初始化空 Suite 目录
-                  <ArrowRight size={13} />
-                </button>
-                <label className="field-label">
-                  Suite 数据目录
-                  <div className="path-input">
-                    <input
-                      aria-label="Suite 数据目录"
-                      value={formHome}
-                      onChange={(e) => setFormHome(e.target.value)}
-                      placeholder="~/.local/share/localpilot"
-                    />
-                    <button
-                      className="icon-btn"
-                      onClick={() => pick("home")}
-                      aria-label="选择 Suite 数据目录"
-                    >
-                      <Folder size={16} />
-                    </button>
-                  </div>
-                </label>
-                <label className="field-label">
-                  Suite 命令
-                  <div className="path-input">
-                    <input
-                      aria-label="Suite 命令"
-                      value={formCli}
-                      onChange={(e) => setFormCli(e.target.value)}
-                      placeholder="/path/to/venv/bin/localpilot"
-                    />
-                    <button
-                      className="icon-btn"
-                      onClick={() => pick("cli")}
-                      aria-label="选择 Suite 命令"
-                    >
-                      <Folder size={16} />
-                    </button>
-                  </div>
-                </label>
-                <p className="micro muted">
-                  <ShieldCheck size={12} /> 仅由原生侧读取 Suite 的 600
-                  私有凭据。GUI 保存连接引用，不复制 Token。
-                </p>
-                <button
-                  className="primary"
-                  onClick={connect}
-                  disabled={management || !formHome}
-                >
-                  {management ? (
-                    <LoaderCircle className="spin" size={14} />
-                  ) : (
-                    <Wifi size={14} />
-                  )}
-                  连接并检查
-                </button>
-                {profile.origin && (
-                  <p className="micro muted">
-                    {profile.origin}
-                    <br />
-                    {connected
-                      ? `Core ${health?.version} · 契约 ${health?.compatibility?.agent_service_api}`
-                      : "已配置连接；服务可能尚未启动"}
-                  </p>
-                )}
-              </section>
-              <section>
-                <h3>外观与交互</h3>
-                <button
-                  className="secondary full"
-                  onClick={() => {
-                    setSettings(false);
-                    setDeveloperOpen(true);
-                  }}
-                >
-                  <Terminal size={14} />
-                  开发者工具 · 完整 CLI
-                </button>
-                <button
-                  className="secondary full"
-                  onClick={() => {
-                    setSettings(false);
-                    setToolsOpen(true);
-                  }}
-                >
-                  <Terminal size={14} />
-                  Suite / Companion 工具
-                </button>
-                <div className="setting-row">
-                  <span>主题</span>
-                  <select
-                    aria-label="主题"
-                    value={theme}
-                    onChange={(e) => setTheme(e.target.value)}
-                  >
-                    <option value="system">跟随系统</option>
-                    <option value="dark">深色 · Graphite</option>
-                    <option value="light">浅色 · Paper</option>
-                  </select>
-                </div>
-                <div className="setting-row">
-                  <span>原生 Liquid Glass</span>
-                  <input
-                    type="checkbox"
-                    aria-label="原生 Liquid Glass"
-                    checked={glass}
-                    onChange={(e) => setGlass(e.target.checked)}
-                  />
-                </div>
-                <p className="micro muted">{glassStatus}</p>
-                <div className="setting-row">
-                  <span>减少动态效果</span>
-                  <input
-                    aria-label="减少动态效果"
-                    type="checkbox"
-                    checked={reduced}
-                    onChange={(e) => setReduced(e.target.checked)}
-                  />
-                </div>
-                <p className="micro muted">
-                  同时遵循系统 Reduce Motion。无持续背景动画。
-                </p>
-                <button className="secondary full" onClick={enterPreview}>
-                  <Monitor size={14} />
-                  查看模拟工作区
-                </button>
-                <p className="micro muted">
-                  浏览器只提供设计预览；真实接入通过 macOS 原生连接层。
-                </p>
-              </section>
-            </div>
-            <VersionManagement
-              key={`${profile.cli}|${profile.home}`}
-              health={health}
-              cliReady={!!profile.cli}
-            />
-            <div className="settings-service">
-              <h3>
-                服务管理
-                <span>
-                  {compHealth ? "Companion 已连接" : "Companion 未连接"}
-                </span>
-              </h3>
-              <div className="management-actions">
-                {[
-                  ["start", "启动 Core"],
-                  ["companion_start", "启动 Companion"],
-                  ["doctor", "诊断"],
-                  ["status", "服务状态"],
-                  ["restart", "重启 Core"],
-                  ["logs", "日志"],
-                  ["config", "配置摘要"],
-                  ["models", "模型注册表"],
-                  ["version", "版本"],
-                  ["companion_status", "Companion 状态"],
-                  ["companion_privacy", "观察权限状态"],
-                  ["companion_stop", "停止 Companion"],
-                  ["stop", "停止 Core"],
-                ].map(([a, t]) => (
-                  <button
-                    className="secondary"
-                    disabled={management || !profile.cli}
-                    key={a}
-                    onClick={() => manage(a)}
-                  >
-                    {a === "doctor" ? (
-                      <Activity size={13} />
-                    ) : a.includes("stop") ? (
-                      <Square size={11} />
-                    ) : (
-                      <Power size={13} />
-                    )}{" "}
-                    {t}
-                  </button>
-                ))}
-              </div>
-              <div className="upgrade-row">
-                <span>升级与回滚</span>
-                {["core", "companion", "suite"].map((module) => (
-                  <button
-                    className="text-btn"
-                    key={module}
-                    disabled={!profile.cli || management}
-                    onClick={async () => {
-                      setManagement(true);
-                      try {
-                        setDiagnostic(await call("upgrade_plan", { module }));
-                      } catch (e) {
-                        showError(e);
-                      } finally {
-                        setManagement(false);
-                      }
-                    }}
-                  >
-                    {module} 升级计划
-                    <Download size={12} />
-                  </button>
-                ))}
-              </div>
-              <p className="micro muted">
-                先选择目标与回滚 wheel，审核后调用 Suite
-                升级。请先停止受影响服务；CLI 会检查活动任务。关闭 GUI
-                只断开连接。
-              </p>
-              {diagnostic && (
-                <>
-                  <Pretty value={diagnostic} />
-                  {diagnostic.plan_id && (
-                    <button
-                      className="secondary"
-                      disabled={management}
-                      onClick={() => setUpgradeConfirm(true)}
-                    >
-                      审核并执行此升级
-                      <ArrowRight size={13} />
-                    </button>
-                  )}
-                </>
-              )}
-            </div>
-          </details>
-          {error && (
-            <p className="form-error" role="alert">
-              {error}
-            </p>
-          )}
         </Modal>
       )}
-      {upgradeConfirm && (
-        <Modal
-          title="执行已审核的升级"
-          onClose={() => setUpgradeConfirm(false)}
-        >
-          <p>
-            以下路径与模块来自原生文件选择器，执行使用同一份计划。Suite
-            保留用户数据，并检查服务是否已停止。回滚包会记录在 Suite 数据目录。
-          </p>
-          <Pretty value={diagnostic?.result} />
-          <div className="dialog-actions">
-            <button
-              className="secondary"
-              onClick={() => setUpgradeConfirm(false)}
-            >
-              返回
-            </button>
-            <button
-              className="primary"
-              disabled={management}
-              onClick={async () => {
-                if (!diagnostic?.plan_id) return;
-                setUpgradeConfirm(false);
-                setManagement(true);
-                try {
-                  setDiagnostic(
-                    await call("execute_upgrade", {
-                      planId: diagnostic.plan_id,
-                    }),
-                  );
-                  setToast("升级操作已返回，请运行诊断后再启动");
-                } catch (e) {
-                  showError(e);
-                } finally {
-                  setManagement(false);
-                }
-              }}
-            >
-              执行此升级
-              <ArrowRight size={14} />
-            </button>
-          </div>
-        </Modal>
-      )}
+      <SettingsDialog
+        open={settings}
+        onClose={() => setSettings(false)}
+        defaults={{
+          value: defaultsDraft,
+          onChange: setDefaultsDraft,
+          supported: supportedRouting,
+        }}
+        onSaveDefaults={() => void saveDefaults()}
+        product={{
+          meeting,
+          permissionMode: permissionDefault,
+          enterBehavior,
+          onEnterBehavior: setEnterBehavior,
+          onPermission: (id) => choosePermission(id, true),
+          defaultModel,
+          models: models.filter((m) => !m.reasoning_only),
+          onDefaultModel: setDefaultModel,
+          onUpdates: () => {
+            setSettings(false);
+            setUpdatesOpen(true);
+          },
+          onModels: () => {
+            setSettings(false);
+            setLibraryOpen(true);
+          },
+          onError: showError,
+        }}
+        profile={profile}
+        health={health}
+        compHealth={compHealth}
+        diagnostic={diagnostic}
+        setDiagnostic={setDiagnostic}
+        connected={connected}
+        formHome={formHome}
+        setFormHome={setFormHome}
+        formCli={formCli}
+        setFormCli={setFormCli}
+        management={management}
+        setManagement={setManagement}
+        busy={busy}
+        error={error}
+        setError={setError}
+        showError={showError}
+        connect={connect}
+        refresh={refresh}
+        setModel={setModel}
+        setToast={setToast}
+        onOpenPanel={(panel) => {
+          setSettings(false);
+          if (panel === "initialize") setInitOpen(true);
+          else if (panel === "developer") setDeveloperOpen(true);
+          else setToolsOpen(true);
+        }}
+        onPreview={enterPreview}
+        theme={theme}
+        setTheme={setTheme}
+        glass={glass}
+        setGlass={setGlass}
+        glassStatus={glassStatus}
+        reduced={reduced}
+        setReduced={setReduced}
+      />
       {confirm === "cloud" && (
         <Modal
           title="这次允许云端处理？"

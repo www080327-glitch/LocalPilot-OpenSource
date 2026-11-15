@@ -6,6 +6,7 @@ import json
 import ssl
 import tempfile
 import threading
+import time
 import unittest
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -46,6 +47,7 @@ class MockServer:
         self.models = ["mock-local"]
         self.model_status = 200
         self.redirect_url = None
+        self.get_responses = {}
         outer = self
 
         class Handler(BaseHTTPRequestHandler):
@@ -57,7 +59,8 @@ class MockServer:
                 self.send_response(outer.model_status)
                 self.send_header("Content-Type", "application/json")
                 self.end_headers()
-                self.wfile.write(json.dumps({"data": [{"id": x} for x in outer.models]}).encode())
+                body = outer.get_responses.get(self.path, {"data": [{"id": x} for x in outer.models]})
+                self.wfile.write(json.dumps(body).encode())
 
             def do_POST(self):
                 outer.headers.append((self.path, self.headers.get("Authorization")))
@@ -73,8 +76,13 @@ class MockServer:
                 self.end_headers()
                 if isinstance(body, list):
                     for fragment in body:
-                        self.wfile.write(fragment)
-                        self.wfile.flush()
+                        if callable(fragment):
+                            fragment = fragment()
+                        try:
+                            self.wfile.write(fragment)
+                            self.wfile.flush()
+                        except (BrokenPipeError, ConnectionResetError):
+                            return
                 else:
                     self.wfile.write(body if isinstance(body, bytes) else json.dumps(body).encode())
 
@@ -139,6 +147,93 @@ class LocalHTTPTests(unittest.TestCase):
         self.assertEqual(answer.message.content, "hello")
         self.assertEqual(self.server.requests[0]["messages"], [{"role": "user", "content": "hi"}])
         self.assertEqual(self.server.requests[0]["max_tokens"], 20)
+
+    def test_visible_thinking_and_missing_usage_are_not_rewritten(self):
+        text = '<think>provider-visible reasoning</think>56'
+        body = completion(text)
+        body.pop('usage')
+        self.server.add(body)
+        answer = self.local.request([Message('user', '7 times 8')])
+        self.assertEqual(answer.message.content, text)
+        self.assertIsNone(answer.usage)
+        self.server.add(sse({'choices': [{'index': 0, 'delta': {'content': text},
+                                         'finish_reason': 'stop'}]}), content_type='text/event-stream')
+        streamed = list(self.local.stream([Message('user', '7 times 8')]))[-1].response
+        self.assertEqual(streamed.message.content, text)
+        self.assertIsNone(streamed.usage)
+
+    def test_cancel_buffered_response_disconnects_only_the_request(self):
+        for local in self.cancellable_backends():
+            with self.subTest(adapter=type(local).__name__):
+                release = threading.Event()
+                result = []
+
+                def finish(release=release):
+                    release.wait(8)
+                    return b'[]}'
+
+                def request(local=local, result=result):
+                    try:
+                        result.append(local.request([Message('user', 'slow buffered response')]))
+                    except Exception as error:
+                        result.append(error)
+
+                self.server.add([b'{"choices":', finish])
+                worker = threading.Thread(target=request)
+                worker.start()
+                try:
+                    deadline = time.monotonic() + 5
+                    while not local._responses and time.monotonic() < deadline:
+                        time.sleep(.01)
+                    self.assertTrue(local._responses, 'HTTP response never became active')
+                    local.cancel_request()
+                    worker.join(2)
+                    self.assertFalse(worker.is_alive(), 'buffered HTTP read was not interrupted')
+                    self.assertEqual(len(result), 1)
+                    self.assertIsInstance(result[0], LocalBackendError)
+                    self.assertFalse(local._responses)
+                    self.assertTrue(local.status()['service_running'])
+                finally:
+                    release.set()
+                    worker.join(10)
+
+    def cancellable_backends(self):
+        from agent.omlx import OMLXBackend
+        from agent.vllm import VLLMBackend
+        self.server.get_responses.update({
+            '/api/status': {'loaded_models': ['mock-local'], 'active_requests': 0},
+            '/v1/models/status': {'models': [
+                {'id': 'mock-local', 'loaded': True, 'estimated_size': 1024}]},
+        })
+        return [adapter(base_url=self.server.base_url, model='mock-local', timeout=10)
+                for adapter in (LocalHTTPBackend, OMLXBackend, VLLMBackend)]
+
+    def test_cancel_stream_preserves_partial_evidence_and_releases_each_adapter(self):
+        first = ('data: ' + json.dumps({'choices': [{'index': 0,
+            'delta': {'content': 'partial evidence'}}]}) + '\n\n').encode()
+        for local in self.cancellable_backends():
+            with self.subTest(adapter=type(local).__name__):
+                release = threading.Event()
+
+                def finish(release=release):
+                    release.wait(8)
+                    return sse({'choices': [{'index': 0, 'delta': {'content': ' late'},
+                                             'finish_reason': 'stop'}]})
+
+                self.server.add([first, finish], content_type='text/event-stream')
+                stream = local.stream([Message('user', 'slow stream')])
+                try:
+                    self.assertEqual(next(stream).text, 'partial evidence')
+                    local.cancel_request()
+                    with self.assertRaises(LocalBackendError) as interrupted:
+                        list(stream)
+                    self.assertFalse(interrupted.exception.retryable)
+                    self.assertEqual(interrupted.exception.response.message.content, 'partial evidence')
+                    self.assertFalse(local._responses)
+                    self.assertTrue(local.status()['service_running'])
+                finally:
+                    release.set()
+                    stream.close()
 
     def test_optional_chat_template_kwargs_for_local_server(self):
         local = LocalHTTPBackend(base_url=self.server.base_url, model="mock-local",

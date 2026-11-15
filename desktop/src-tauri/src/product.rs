@@ -473,11 +473,18 @@ async fn product_control_impl(
         "prepare_uninstall",
         "desktop_session",
         "desktop_profile",
+        "desktop_model",
+        "model_health",
         "documents",
         "workspace_grants",
         "preferences",
         "verify_model",
         "configure_pet_model",
+        "model_configuration",
+        "configure_cooperation",
+        "configure_local_endpoint",
+        "discover_local_endpoint",
+        "activate_model_configuration",
         "delete",
     ]
     .contains(&operation.as_str())

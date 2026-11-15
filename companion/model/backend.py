@@ -1,6 +1,7 @@
 import json
 import os
 from pathlib import Path
+import platform
 import select
 import subprocess
 import sys
@@ -13,6 +14,10 @@ class ModelBackend(Protocol):
     def unload(self) -> None: ...
 
 
+def mlx_supported():
+    return sys.platform == "darwin" and platform.machine() in {"arm64", "aarch64"}
+
+
 class ModelManager:
     """MLX is contained in a disposable child. Eco unload really releases its process."""
     def __init__(self, config, metrics_store=None, adapter: ModelBackend | None = None):
@@ -20,6 +25,7 @@ class ModelManager:
         self.metrics_store = metrics_store
         self.adapter = adapter
         self.child = None
+        self.loaded_selection = None
         self.last_used = 0.0
         self.wake_times = metrics_store.get("model_call_times", []) if metrics_store else []
         self.load_times = metrics_store.get("model_load_times", []) if metrics_store else []
@@ -33,12 +39,18 @@ class ModelManager:
     def complete(self, messages, max_tokens=None, schema=None):
         if self.stopping:
             return {"status":"unavailable", "error":"Companion is stopping"}
+        if self.config.model_adapter_path and self.config.backend != 'mlx':
+            return {'status':'unavailable', 'error_stage':'candidate_configuration',
+                    'error':'A candidate adapter requires the mlx backend; the configured HTTP model was not called'}
         if self.adapter is None and self.config.backend != "disabled":
             from companion.runtime.power import local_model_block_reason
             reason = local_model_block_reason(self.config)
             if reason:
                 self.unload()
                 return {"status":"unavailable", "error_stage":"power_policy", "error":reason}
+        if self.adapter is None and self.config.backend == "mlx" and not mlx_supported():
+            return {"status":"unavailable", "error_stage":"backend_platform", "model_called":False,
+                    "error":"The bundled MLX worker requires Apple Silicon macOS. Configure a local-http CPU/model server on Intel Mac or Linux."}
         from companion.runtime.power import LowPowerPolicy
         if self.adapter is None and self.config.backend == 'omlx':
             try:
@@ -57,6 +69,11 @@ class ModelManager:
                 return {"status":"unavailable", "error_stage":"power_policy", "error":"Lightweight model is idle; explicit on-demand configuration required"}
             root = Path(self.config.model_path).expanduser()
             weights = list(root.glob("*.safetensors")) if self.config.model_path else []
+            if self.config.model_adapter_path:
+                candidate = Path(self.config.model_adapter_path).expanduser() / 'adapters.safetensors'
+                if not candidate.is_file():
+                    return {'status':'unavailable', 'error_stage':'power_policy', 'error':'Candidate weight size is unknown'}
+                weights.append(candidate)
             if not weights or sum(p.stat().st_size for p in weights) > self.config.lightweight_max_weight_bytes:
                 return {"status":"unavailable", "error_stage":"power_policy", "error":"Model size is unknown or exceeds lightweight budget"}
             try:
@@ -101,13 +118,16 @@ class ModelManager:
                 response_format = {"type":"json_schema", "json_schema":{"name":schema,"strict":True,"schema":json_schema(schema)}} if schema and self.config.http_schema_supported else None
                 http_seconds = max(.001, min(90, deadline-time.monotonic())) if deadline is not None else 90
                 result = request_chat(self.config.http_model_endpoint, self.config.http_model_name, messages, max_tokens or self.config.max_output_tokens, api_key_env=self.config.http_model_api_key_env, response_format=response_format, timeout_seconds=http_seconds,
-                    **({'chat_template_kwargs':{'enable_thinking':False}} if self.config.backend=='omlx' else {}))
+                    **({'chat_template_kwargs':{'enable_thinking':False}} if self.config.backend=='omlx' or self.config.http_model_disable_thinking else {}))
                 result["backend"] = self.config.backend
                 result["constraint"] = "server_requested_unverified" if response_format else "unsupported_validator_required" if schema else "none"
             else:
                 model_path = Path(self.config.model_path).expanduser()
                 if not self.config.model_path or not model_path.is_dir():
                     raise RuntimeError("Local model not configured/downloaded; no automatic cloud fallback")
+                selection = (str(model_path), self.config.model_adapter_path)
+                if self.child is not None and selection != self.loaded_selection:
+                    self.unload()
                 cold = self.child is None or self.child.poll() is not None
                 if cold:
                     if self.child:
@@ -121,7 +141,11 @@ class ModelManager:
                     credential_names = {self.config.localpilot_resource_key_env, self.config.localpilot_api_key_env, self.config.agent_api_key_env, self.config.http_model_api_key_env}
                     env = {k:v for k,v in os.environ.items() if k not in credential_names and not re.search(r"token|secret|password|credential|api.?key|localpilot|deepseek|authorization", k, re.I)}
                     env.update(HF_HUB_OFFLINE="1", TRANSFORMERS_OFFLINE="1", TOKENIZERS_PARALLELISM="false")
-                    self.child = subprocess.Popen([sys.executable, "-m", "companion.model.worker", str(model_path), str(self.config.model_context_tokens), str(os.getpid())], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, bufsize=0, env=env, close_fds=True)
+                    command = [sys.executable, "-m", "companion.model.worker", str(model_path), str(self.config.model_context_tokens), str(os.getpid())]
+                    if self.config.model_adapter_path:
+                        command.append(self.config.model_adapter_path)
+                    self.child = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, bufsize=0, env=env, close_fds=True)
+                    self.loaded_selection = selection
                     self.worker_buffer = b""
                 callback = getattr(self, "on_delta", None) if schema is None else None
                 payload = {"messages": messages, "max_tokens": max_tokens or self.config.max_output_tokens, "schema":schema}
@@ -177,7 +201,7 @@ class ModelManager:
             return True
         if self.config.backend in {"local-http", "omlx"}:
             return bool(self.config.http_model_endpoint and self.config.http_model_name and self.config.http_model_host_local_only)
-        return self.config.backend == "mlx" and bool(self.config.model_path) and Path(self.config.model_path).expanduser().is_dir()
+        return self.config.backend == "mlx" and mlx_supported() and bool(self.config.model_path) and Path(self.config.model_path).expanduser().is_dir()
 
     def stats(self):
         loaded = bool(self.child and self.child.poll() is None)
@@ -190,7 +214,9 @@ class ModelManager:
                 pass
         self.wake_times[:] = [t for t in self.wake_times if time.time() - t < 3600]
         self.load_times[:] = [t for t in self.load_times if time.time() - t < 3600]
-        return {"loaded": loaded, "worker_pid": self.child.pid if loaded else None, "worker_rss_bytes": rss, "inferences": self.inferences, "model_calls_last_hour": len(self.wake_times), "model_wakes_last_hour":len(self.load_times), "model_wakes_total":self.total_loads, "model_unloads_total":self.total_unloads, "last_result_metrics": {k:v for k,v in (self.last_result or {}).items() if k not in {"text", "error"}}}
+        return {"loaded": loaded, "backend":self.config.backend, "configured":self.available(),
+                "backend_platform_supported":self.config.backend != "mlx" or mlx_supported(),
+                "owns_model_process":self.config.backend == "mlx", "worker_pid": self.child.pid if loaded else None, "worker_rss_bytes": rss, "inferences": self.inferences, "model_calls_last_hour": len(self.wake_times), "model_wakes_last_hour":len(self.load_times), "model_wakes_total":self.total_loads, "model_unloads_total":self.total_unloads, "last_result_metrics": {k:v for k,v in (self.last_result or {}).items() if k not in {"text", "error"}}}
 
     def persist_totals(self):
         if self.metrics_store:

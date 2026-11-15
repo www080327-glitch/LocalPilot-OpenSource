@@ -155,7 +155,7 @@ class InferenceControls:
             nonce=self.authorized_nonce
         try:
             result=self.app.command({"command":"submit_escalation","approved":True,
-                "expected_digest":current["digest"],"automatic_local":current["kind"]=="local",
+                "expected_digest":current["digest"],"automatic_local":current["kind"]=="local" and self.app.config.localpilot_auto_local,
                 "provider_kind":current["kind"],"cloud_approved":current["kind"]=="cloud",
                 "memory_ticket":current["id"] if scopes else None,"resource_scopes":scopes,"control_ticket":current["id"],
                 "_host_control_nonce":nonce,"defer_monitor":True,"user_help_approved":current["mode"]=="execution" and self.help_authorized(current),
@@ -223,7 +223,14 @@ class InferenceControls:
     def stopped(self, ticket, result):
         if not self.current or self.current["id"]!=ticket:return
         self.current["stop_result"]={k:v for k,v in result.items() if k!="tasks"}
-        self.current["phase"]="stop_unconfirmed" if result.get("status")=="stop_unconfirmed" else "draining" if self.current["kind"]=="cloud" and self.current.get("task_id") else "stopped"
+        if result.get("status")=="stop_unconfirmed":
+            self.current["phase"]="stop_unconfirmed"
+        elif self.current["kind"]=="cloud" and self.current.get("task_id"):
+            self.current["phase"]="draining"
+        elif any(task.get("quiescent") is not True or task.get("status") not in TERMINAL for task in result.get("tasks",[])):
+            self.current["phase"]="stopping"
+        else:
+            self.current["phase"]="stopped"
         bindings=result.get("request_bindings",{})
         key=self.current.get("submission_id")
         if key and not self.current.get("task_id") and result.get("status")!="stop_unconfirmed":

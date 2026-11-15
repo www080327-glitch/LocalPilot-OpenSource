@@ -85,7 +85,9 @@ class ToolRegistry:
 
     def call(self, name, arguments, *, approved=False, receipt_id=None, scope_approval=None):
         from .permission_context import dispatch_access
-        with dispatch_access(self.gateway.mode == "full-permission" or (getattr(self, "scope_policy", None) or {}).get("revision") == 3):
+        # Scope revision changes file routing, not the user's permission tier.
+        # Only Full may relax the protected-file checks in built-in file tools.
+        with dispatch_access(self.gateway.mode == "full-permission"):
             return self._call(name, arguments, approved=approved, receipt_id=receipt_id, scope_approval=scope_approval)
 
     def _call(self, name, arguments, *, approved=False, receipt_id=None, scope_approval=None):
@@ -136,7 +138,7 @@ class ToolRegistry:
                 return self._bound_result(decision)
         elif name not in {"execute", "apply_patch"}:
             metadata = self.metadata(name)
-            if not self._metadata_declared.get(name,False) and self.gateway.mode in {'assist-low-risk','assist-high-risk','full-permission'}:
+            if not self._metadata_declared.get(name,False) and self.gateway.mode in {'assist-low-risk','assist-high-risk'}:
                 metadata=replace(metadata,requires_host_approval=True)
             host_constraint = getattr(function, "_requires_host_approval", None)
             if host_constraint is not None and host_constraint():
@@ -169,7 +171,11 @@ class ToolRegistry:
                 result, self.last_read_receipt = self.read_cache.read(
                     self.workspace_root, arguments["path"], function, self._bound_result, self._read_source)
             else:
-                result = function(workspace_root=self.workspace_root, **arguments)
+                from .host_tools import qualified_shell
+                if qualified_shell(self, name):
+                    result = function(workspace_root=self.workspace_root, cancel_event=getattr(self, 'plugin_cancel_event', None), **arguments)
+                else:
+                    result = function(workspace_root=self.workspace_root, **arguments)
         except Exception as error:
             builtin = function.func if isinstance(function, partial) else function
             if name == 'apply_patch' and builtin is apply_patch and not self.gateway._patch_effect_started:

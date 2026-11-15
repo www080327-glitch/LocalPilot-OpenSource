@@ -88,3 +88,15 @@ output/
 .chart-data-*/
 # Private originals remain on disk; review copies and hashes are delivered separately.
 /docs/evidence/aic-final-20261029/
+
+# Test-only local build outputs and raw evidence stay outside public history.
+node_modules/
+target/
+.pytest_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+*.log
+*.trace
+*.prof
+

@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { call, desktop } from "../bridge";
 import { compatible, type Json } from "../domain";
+import { ComponentUpgrades } from "./ComponentUpgrades";
 
 const date = (v?: number) =>
   v ? new Date(v * 1000).toLocaleString() : "本次启动尚未检查";
 const bytes = (v?: number) => `${((v || 0) / 1024 / 1024).toFixed(1)} MB`;
 const labels: Record<string, string> = {
   UNKNOWN: "UNKNOWN · 无法确认",
+  NO_STABLE_RELEASE: "公开仓库尚无正式 Desktop Release",
   CURRENT: "与正式 GUI Release 相同",
   LOCAL_AHEAD: "本地维护版本领先于正式 Release",
   UPDATE_AVAILABLE: "有可用 GUI 更新",
@@ -15,9 +17,11 @@ const labels: Record<string, string> = {
 export function VersionManagement({
   health,
   cliReady,
+  maintenanceReturn = false,
 }: {
   health: Json | null;
   cliReady: boolean;
+  maintenanceReturn?: boolean;
 }) {
   const [installation, setInstallation] = useState<Json | null>(null);
   const [release, setRelease] = useState<Json | null>(null);
@@ -64,8 +68,8 @@ export function VersionManagement({
     >
       <h3 id="version-management-title">版本更新与存储管理</h3>
       <p className="micro muted">
-        GUI 独立更新。Core、Companion、Suite
-        使用下方各自的升级计划。点击检查才连接 GitHub；没有后台更新或清理。
+        GUI、Core、Companion、Suite、Channels 使用同一入口审阅升级与恢复计划。
+        点击检查才连接 GitHub；没有后台更新或清理。
       </p>
       <dl className="version-facts">
         <div>
@@ -80,7 +84,9 @@ export function VersionManagement({
           <dd>
             {release?.status === "UNKNOWN"
               ? "UNKNOWN"
-              : release?.version || "UNKNOWN · 尚未检查"}
+              : release?.status === "NO_STABLE_RELEASE"
+                ? "尚无正式版"
+                : release?.version || "UNKNOWN · 尚未检查"}
           </dd>
         </div>
         <div>
@@ -103,6 +109,12 @@ export function VersionManagement({
         <div>
           <dt>已安装 Suite</dt>
           <dd>{modules?.suite || "UNKNOWN · 请读取模块版本"}</dd>
+        </div>
+        <div>
+          <dt>已安装 Channels</dt>
+          <dd>
+            {modules?.["localpilot-channels"] || "UNKNOWN · 请读取模块版本"}
+          </dd>
         </div>
         <div>
           <dt>API 兼容状态</dt>
@@ -181,8 +193,9 @@ export function VersionManagement({
         </button>
       </div>
       <p className="micro muted">
-        私有仓库需要本机已安装并登录 GitHub
-        CLI。只有点击登录检查才调用现有登录；Token 不传给页面。
+        正式版本从公开 LocalPilot-OpenSource 仓库核对，无需登录。 可选使用本机
+        GitHub CLI 登录查询；Token
+        不传给页面，未验证的预发布不会提示为正式更新。
       </p>
       {busy && <p role="status">正在读取，请稍候…</p>}
       {release && (
@@ -256,7 +269,7 @@ export function VersionManagement({
           <ol>
             <li>
               成功检查 GUI Release，打开官方页面下载适合当前 Mac
-              的安装包。当前构建只验证 macOS arm64。
+              的安装包。列表按当前运行架构筛选；原生资格以发布记录为准。
             </li>
             <li>
               在本页选择安装包，核对 GitHub 提供的 SHA256 与大小。缺少 digest
@@ -271,17 +284,22 @@ export function VersionManagement({
               签名、未公证；这不证明开发者身份，勿绕过系统安全设置。
             </li>
             <li>
-              退出要替换的 GUI，保存当前 APP 作为回滚副本，再用 Finder
-              将新版复制到 Applications。服务、任务和用户数据保持独立。
+              使用本页统一升级入口选择解包后的
+              APP，审阅版本、目标路径与回滚材料。 执行前需停止服务；GUI
+              会自行退出，由独立助手替换并重新打开。
             </li>
             <li>
-              重新打开并检查版本、连接与会话。失败时退出新版并恢复旧
-              APP。不要替换 Core/Companion/Suite，不要清除 Application
-              Support、配置或数据库。
+              重新打开并检查升级回执、版本、连接与会话。组件和 APP
+              失败会按所审阅计划回滚，
+              回滚未完成时保留日志与材料。随后显式恢复服务；已有任务不会自动重放。
             </li>
           </ol>
         </div>
       )}
+      <ComponentUpgrades
+        cliReady={cliReady}
+        maintenanceReturn={maintenanceReturn}
+      />
       <h4>存储与历史版本</h4>
       <div className="management-actions">
         <button

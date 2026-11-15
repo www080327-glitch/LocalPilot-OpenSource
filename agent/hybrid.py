@@ -189,7 +189,7 @@ class HybridController:
             'context_budget': {'model': r._model_name(backend),
                 'capacity_units': backend.model_info.effective_context,
                 'output_token_ceiling': r.budgets.max_output_tokens,
-                'estimator': 'utf8_bytes_conservative_not_measured_tokens'},
+                'estimator': 'mixed_text_estimate_v1'},
             'finalization': deepcopy(r._completion and {k: r._completion.get(k)
                 for k in ('execution', 'delivery', 'attempts', 'obligations')}),
             'verification_status': r._verification_status,
@@ -533,11 +533,12 @@ class HybridController:
             raise ValueError('Handoff requires drained proposal queue')
         r._effective_thinking(backend)
         from .harness_context import transfer_with_optional_projection
-        # Recalculate target admission before committing a route change. This
-        # remains a conservative byte estimate, never a tokenizer measurement.
+        # Check the target model's context in tokens, without changing the
+        # legacy byte-denominated per-turn resource ledger.
         transfer_with_optional_projection(self.project_messages(r.messages, alias), None if r._finalizing else r._schemas(),
-            backend.model_info.effective_context, r.budgets.max_output_tokens * 16,
+            backend.model_info.effective_context, r.budgets.max_output_tokens + max(64, backend.model_info.effective_context // 50),
             working_state=self.contract(backend), final_only=r._finalizing,
+            tokenizer=getattr(backend, 'tokenizer', None),
             enabled=bool(r.harness_policy and backend.is_local and not r._finalizing))
         if r.adaptive:
             r.adaptive.check_switch(alias)
@@ -587,7 +588,7 @@ class HybridController:
                 self.check_target(alias)
                 if not backend.capabilities.supports_tool_calling and not self.runtime._finalizing:
                     reason = 'tool_capability'
-                elif backend.model_info.effective_context <= self.runtime.budgets.max_output_tokens * 16 + 4096:
+                elif backend.model_info.effective_context <= self.runtime.budgets.max_output_tokens + 256:
                     reason = 'context_budget'
                 elif backend.is_local and not backend.health_check():
                     reason = 'unavailable'
@@ -649,4 +650,28 @@ class HybridController:
             item['wall_output_tokens_per_second'] = item['known_output_tokens'] / item['known_inference_seconds'] if item['known_inference_seconds'] else None
             item['throughput_source'] = 'output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps'
             result['by_backend'][alias] = item
+        result['source_mix'] = source_mix(attempts)
         return result
+
+
+def source_mix(attempts):
+    """Measured request/token distribution, independent of the five route preferences."""
+    dispatched = [a for a in attempts if a.get('dispatch_authorized_at') is not None]
+    complete_usage = all(a['input_tokens'] is not None and a['output_tokens'] is not None for a in dispatched)
+    total_tokens = sum((a['input_tokens'] or 0) + (a['output_tokens'] or 0) for a in dispatched)
+    by_source = {}
+    for kind in ('local', 'cloud'):
+        rows = [a for a in dispatched if a['kind'] == kind]
+        tokens = sum((a['input_tokens'] or 0) + (a['output_tokens'] or 0) for a in rows)
+        by_source[kind] = {
+            'admitted_requests': sum(a['kind'] == kind for a in attempts),
+            'dispatched_requests': len(rows),
+            'request_share': len(rows) / len(dispatched) if dispatched else None,
+            'known_input_output_tokens': tokens,
+            'token_share': tokens / total_tokens if complete_usage and total_tokens else None,
+            'unknown_usage_requests': sum(a['input_tokens'] is None or a['output_tokens'] is None for a in rows),
+        }
+    return {'scope':'current_task_including_children', 'by_source':by_source,
+            'requests_without_dispatch_evidence':len(attempts) - len(dispatched),
+            'token_share_status':'PROVIDER_REPORTED' if dispatched and complete_usage else 'UNKNOWN',
+            'actual_cost_status':'UNKNOWN'}

@@ -1,3 +1,6 @@
+
+from tests.optional_benchmarks import require_benchmarks
+require_benchmarks()
 import tempfile
 import unittest
 from pathlib import Path

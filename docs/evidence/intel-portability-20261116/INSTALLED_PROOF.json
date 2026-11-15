@@ -1,0 +1,61 @@
+{
+  "status": "PASS",
+  "installed_python_files": 257,
+  "installed_python_data_files": 3,
+  "all_wheel_sources_exact": true,
+  "actual_file_read_write": true,
+  "module_paths": {
+    "agent": "<WORKSPACE>/validation/intel-20261116/package-r2/intel-component-install/lib/python3.12/site-packages/agent/session.py",
+    "tools": "<WORKSPACE>/validation/intel-20261116/package-r2/intel-component-install/lib/python3.12/site-packages/agent/session_tools.py",
+    "candidate": "<WORKSPACE>/validation/intel-20261116/package-r2/intel-component-install/lib/python3.12/site-packages/companion/model/candidate.py",
+    "suite": "<WORKSPACE>/validation/intel-20261116/package-r2/intel-component-install/lib/python3.12/site-packages/localpilot_suite/__init__.py",
+    "channels": "<WORKSPACE>/validation/intel-20261116/package-r2/intel-component-install/lib/python3.12/site-packages/localpilot_channels/__init__.py"
+  },
+  "versions": {
+    "localpilot-agent-service": "5.0.0b22",
+    "localpilot-companion": "0.5.7b4",
+    "localpilot-suite": "0.2.0b27",
+    "localpilot-channels": "0.1.0a3",
+    "psutil": "7.2.2",
+    "pypdf": "6.21.4",
+    "watchdog": "6.0.0",
+    "Pillow": "12.3.0"
+  },
+  "commands": [
+    {
+      "executable": "localpilot",
+      "option": "--version",
+      "returncode": 0,
+      "stdout": "{\"suite\": \"0.2.0b27\", \"localpilot-agent-service\": \"5.0.0b22\", \"localpilot-companion\": \"0.5.7b4\", \"localpilot-channels\": \"0.1.0a3\"}\n",
+      "stderr": ""
+    },
+    {
+      "executable": "localpilot-core",
+      "option": "--help",
+      "returncode": 0,
+      "stdout": "usage: localpilot-core [-h] [--version] [--home HOME] [--json]\n                       {init,start,stop,restart,status,doctor,models,tasks,logs,config,_serve,service-unregister,ask,agent,chat,task}\n                       ...\n\nLocalPilot Core \u2014 persistent tasks, explicit permissions, independent service\n\npositional arguments:\n  {init,start,stop,restart,status,doctor,models,tasks,logs,config,_serve,service-unregister,ask,agent,chat,task}\n    init                Configure existing model without loading/downloading\n                        it\n    ask                 Reasoning only\n    agent               Submit standard Agent task through Permission Gateway\n    chat                Reasoning only\n\noptions:\n  -h, --help            show this help message and exit\n  --version             show program's version number and exit\n  --home HOME\n  --json                JSON; streaming commands emit newline-delimited event\n                        objects followed by final task\n",
+      "stderr": ""
+    },
+    {
+      "executable": "localpilot-service",
+      "option": "--help",
+      "returncode": 0,
+      "stdout": "usage: localpilot-service [-h] --config CONFIG [--check]\n\npython -m localpilot_service --config /private/service.json\n\noptions:\n  -h, --help       show this help message and exit\n  --config CONFIG\n  --check          Validate configuration and checkpoints without inference\n",
+      "stderr": ""
+    },
+    {
+      "executable": "localpilot-channels",
+      "option": "--help",
+      "returncode": 0,
+      "stdout": "usage: localpilot-channels [-h] --config CONFIG --state-dir STATE_DIR\n                           [--port PORT]\n                           [--task-timeout-seconds TASK_TIMEOUT_SECONDS]\n\nLoopback QQ/WeChat facade for official LocalPilot Agent service\n\noptions:\n  -h, --help            show this help message and exit\n  --config CONFIG       JSON with environment variable NAMES, never credential\n                        values\n  --state-dir STATE_DIR\n                        New private directory outside all repositories and\n                        task workspaces\n  --port PORT\n  --task-timeout-seconds TASK_TIMEOUT_SECONDS\n                        Task deadline including manual approvals (maximum\n                        3600)\n",
+      "stderr": ""
+    },
+    {
+      "executable": "companion",
+      "option": "--help",
+      "returncode": 0,
+      "stdout": "usage: companion [-h] [--version] --config CONFIG [--json]\n                 {run,start,stop,status,popup,ui,ui-build,ui-snapshot,recent-memories,reminders,notices,index,retention,privacy,native-build,escalation-status,source-list,source-coverage,training-examples,meeting-status,meeting-stop,meeting-build,ask,retrieve,escalate,activity,source-connect,source-sync,source-revoke,source-enable,training-example-add,training-example-delete,training-review,training-candidates,training-export,meeting-start,dnd,remember,forget,clear-memory,respond,submit-escalation,retry-submission,authorize-observation,observe,observations,forget-observation,exclude-apps,proactive,set-reminder,delete-reminder,localpilot-health,task-status,task-cancel,task-events,launchd,model-smoke}\n                 ...\n\nCompanion 0.5.7b4 \u2014 independent local read-only assistant\n\npositional arguments:\n  {run,start,stop,status,popup,ui,ui-build,ui-snapshot,recent-memories,reminders,notices,index,retention,privacy,native-build,escalation-status,source-list,source-coverage,training-examples,meeting-status,meeting-stop,meeting-build,ask,retrieve,escalate,activity,source-connect,source-sync,source-revoke,source-enable,training-example-add,training-example-delete,training-review,training-candidates,training-export,meeting-start,dnd,remember,forget,clear-memory,respond,submit-escalation,retry-submission,authorize-observation,observe,observations,forget-observation,exclude-apps,proactive,set-reminder,delete-reminder,localpilot-health,task-status,task-cancel,task-events,launchd,model-smoke}\n    training-example-add\n                        Save an explicitly reviewed final-answer target\n\noptions:\n  -h, --help            show this help message and exit\n  --version             show program's version number and exit\n  --config CONFIG\n  --json\n",
+      "stderr": ""
+    }
+  ]
+}

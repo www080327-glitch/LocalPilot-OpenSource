@@ -3,6 +3,7 @@ import http.client
 import json
 import os
 from pathlib import Path
+import re
 import socket
 import subprocess
 import sys
@@ -47,7 +48,15 @@ class InstalledSuiteChannelTests(unittest.TestCase):
         result = subprocess.run([sys.executable,'-m','localpilot_suite.cli','--home',str(self.home),
                                  '--json','channels',*args], env=self.env, capture_output=True,
                                 text=True, timeout=150)
-        self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+        diagnostic = ''
+        if result.returncode:
+            try:
+                lines = (self.home/'channels/adapter.error.log').read_text(encoding='utf-8', errors='replace').splitlines()
+            except OSError:
+                lines = []
+            diagnostic = '\n'.join(line for line in lines if re.fullmatch(
+                r'CHANNEL_PROCESS_RECORD_FAILED stage=identity_record exception=[A-Za-z_][A-Za-z0-9_]* errno=(?:none|-?[0-9]+)', line))
+        self.assertEqual(result.returncode,0,result.stdout+result.stderr+'\n'+diagnostic)
         for secret in ENV.values():
             self.assertNotIn(secret,result.stdout+result.stderr)
         data = json.loads(result.stdout)
@@ -78,6 +87,72 @@ class InstalledSuiteChannelTests(unittest.TestCase):
             return data
         finally:
             conn.close()
+
+    def start_with_identity_observation(self, mode):
+        script = '''import errno,json,sys,psutil
+from localpilot_suite import channels
+from localpilot_suite.cli import main
+mode=sys.argv.pop(1)
+real_cmdline,real_save=psutil.Process.cmdline,channels.save
+observed={'calls':0,'saves':0,'pid':None}
+def cmdline(process):
+    observed['calls']+=1;observed['pid']=process.pid
+    if observed['calls']==1:
+        return ['synthetic','--changed'] if mode=='changed_initial' else []
+    if mode=='changed_final':return ['synthetic','--changed']
+    if mode=='empty_final':return []
+    return real_cmdline(process)
+def save(path,value):
+    observed['saves']+=1
+    if mode=='save_failure':raise OSError(errno.ENOSPC,'SYNTHETIC_SAVE_FAILURE')
+    return real_save(path,value)
+psutil.Process.cmdline,channels.save=cmdline,save
+try:
+    code=main()
+finally:
+    observed['alive']=observed['pid'] is not None and psutil.pid_exists(observed['pid'])
+    print('STARTUP_TEST '+json.dumps(observed),file=sys.stderr)
+raise SystemExit(code)
+'''
+        result = subprocess.run([sys.executable,'-c',script,mode,'--home',str(self.home),
+                                 '--json','channels','start','adapter'],env=self.env,
+                                capture_output=True,text=True,timeout=150)
+        for secret in ENV.values():
+            self.assertNotIn(secret,result.stdout+result.stderr)
+        observed = json.loads(next(line.removeprefix('STARTUP_TEST ') for line in result.stderr.splitlines()
+                                   if line.startswith('STARTUP_TEST ')))
+        return result.returncode, json.loads(result.stdout), observed
+
+    def test_empty_initial_identity_is_confirmed_after_real_http_readiness(self):
+        code, result, observed = self.start_with_identity_observation('empty_initial')
+        self.assertEqual(code,0,result)
+        self.assertEqual(result['status'],'running')
+        self.assertEqual(observed['calls'],2)
+        self.assertEqual(observed['saves'],1)
+        self.assertTrue(observed['alive'])
+        self.assertEqual(self.cli('status')['processes']['adapter'],'running')
+        self.assertEqual(self.cli('stop','adapter')['status'],'stopped')
+
+    def test_changed_or_still_empty_identity_is_rejected_without_startup_retry(self):
+        for mode, calls in [('changed_initial',1),('changed_final',2),('empty_final',2)]:
+            with self.subTest(mode=mode):
+                code, result, observed = self.start_with_identity_observation(mode)
+                self.assertEqual(code,2)
+                self.assertEqual(result,{'error':'CHANNEL_PROCESS_RECORD_FAILED'})
+                self.assertEqual(observed['calls'],calls)
+                self.assertEqual(observed['saves'],0)
+                self.assertFalse(observed['alive'])
+                self.assertEqual(self.cli('status')['processes']['adapter'],'stopped')
+
+    def test_final_record_save_failure_reaps_child_after_real_http_readiness(self):
+        code, result, observed = self.start_with_identity_observation('save_failure')
+        self.assertEqual(code,2)
+        self.assertEqual(result,{'error':'CHANNEL_PROCESS_RECORD_FAILED'})
+        self.assertEqual(observed['calls'],2)
+        self.assertEqual(observed['saves'],1)
+        self.assertFalse(observed['alive'])
+        self.assertIn('exception=OSError errno=28',(self.home/'channels/adapter.error.log').read_text())
+        self.assertEqual(self.cli('status')['processes']['adapter'],'stopped')
 
     def test_installed_adapter_start_query_sigterm_restart_and_safe_uninstall(self):
         self.assertEqual(self.cli('start','adapter')['status'],'running')
