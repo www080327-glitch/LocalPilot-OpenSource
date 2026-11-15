@@ -1,0 +1,16 @@
+{
+  "python": "3.12.14",
+  "executable": "<WORKSPACE>/harbor-contract-venv/bin/python",
+  "versions": {
+    "harbor": "0.26.0",
+    "psutil": "7.2.2",
+    "pydantic": "2.14.3",
+    "litellm": "1.109.1"
+  },
+  "harbor_origin": {
+    "dir_info": {
+      "editable": true
+    },
+    "url": "file://<WORKSPACE>/harbor-eval-reference"
+  }
+}

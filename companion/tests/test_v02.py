@@ -211,12 +211,13 @@ class V02Tests(unittest.TestCase):
     def test_production_repeated_error_and_bulk_file_changes(self):
         self.obj.model = Mock()
         self.obj.model.complete.return_value = {"status":"ok","text":'{"action":"quiet","confidence":1}'}
-        with unittest.mock.patch("companion.runtime.service.datetime") as clock:
+        with unittest.mock.patch("companion.runtime.observations.datetime") as clock:
             from datetime import datetime
             clock.fromtimestamp.side_effect = lambda t: datetime(2026,10,3,12)
             for i in range(3):
                 self.obj.record_event(str(self.docs / "松岚" / "error.txt"), "modified", "松岚", {"error_signature":"same parser error"})
         self.assertEqual(self.obj.store.get("last_active_decision")["verdict"]["origin"], "host_evidence")
+        self.obj.model.complete.assert_not_called()
 
     def test_feedback_not_needed_raises_threshold_and_backoff(self):
         policy = self.obj.policy

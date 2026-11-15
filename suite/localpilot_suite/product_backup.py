@@ -64,7 +64,7 @@ def backup(home,destination):
     destination.parent.mkdir(mode=0o700,parents=True,exist_ok=True)
     destination.mkdir(mode=0o700,exist_ok=False)
     destination=private_dir(destination);files=[]
-    for name in ['service.json','connection.json','companion.json','clients.env','model-preferences.json','model-downloads.json','model-integrity.json']:
+    for name in ['service.json','connection.json','companion.json','clients.env','model-preferences.json','model-downloads.json','model-integrity.json','model-configuration-pending.json']:
         p=home/name
         if p.exists():
             # Validate ownership/privacy without logging credentials.

@@ -18,7 +18,8 @@ def snapshot():
         battery=psutil.sensors_battery()
     except (OSError, AttributeError):
         battery=None
-    on_ac=battery.power_plugged if battery is not None else None
+    from companion.runtime.power import external_power
+    on_ac=external_power(battery)
     watts=None
     if on_ac is False:
         try:

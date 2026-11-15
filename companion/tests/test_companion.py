@@ -258,7 +258,8 @@ class CompanionTests(unittest.TestCase):
         private = PrivateData(self.config.data_dir)
         data = plist(self.filename, private.root)
         self.assertFalse(data["KeepAlive"])
-        self.assertEqual(manage("install", self.filename, private)["status"], "confirmation_required")
+        with patch("companion.runtime.launchd.sys.platform", "darwin"):
+            self.assertEqual(manage("install", self.filename, private)["status"], "confirmation_required")
 
     def test_model_disabled_explicit(self):
         from companion.model import ModelManager

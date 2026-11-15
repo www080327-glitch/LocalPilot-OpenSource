@@ -1,0 +1,19 @@
+{
+  "python": "3.12.14",
+  "platform": "Linux",
+  "architecture": "x86_64",
+  "executable": "<WORKSPACE>/LocalPilot-intel-20261116/.venv/bin/python",
+  "source_files": {
+    "hardware.py": "d597c8ab31c71947783928eb6da619c7e28a4bf2607f98dc31823fa06a719f7f",
+    "main.py": "73bfe99d55452f51eb43f3b75e3f14f34624697de0d3a097b0ec104df7d9ad08",
+    "recommender.py": "0ae30775578b7d1c55aeacaa4e7242ca0e0f2069056bc6e6927d85fac7c5618d",
+    "agent/local_http.py": "001039ea35404a2a6ac17d0c50d17935a744dc12363fc93d7ceb8ac61308776b",
+    "agent/omlx.py": "fe269722568b35f8b176bd65ec1b6529ebd48473fee73a0516edeecaaf9e8e07",
+    "agent/vllm.py": "10c22df969b21bb54b58d0f36e64a1346b84ff55008181f4778692c63aa00dcb",
+    "localpilot_service/cli.py": "e7fe08fed2095a2bb9263a7e8dddb251517f38b87d56e98e5d6eb728d48c8766",
+    "localpilot_service/configure.py": "5d0ef65bd08ffa49358858a56f164fc744fffc5b52d727af43c3cae0f1c527a1",
+    "localpilot_service/server.py": "e195cc3c082340322dd73b04414250a84a9cc3677bdd530fa89640db6bed9193",
+    "tests/test_core_portability.py": "e4b3605d322e062f2c9e3e40e568279849a246fd6a792e6318f27b885d77c2f3",
+    "tests/test_local_http_backend.py": "d8c1e2e1a087113847c0eea9bc95bf0fc8c78a571d9788607ed9f459b27529f0"
+  }
+}

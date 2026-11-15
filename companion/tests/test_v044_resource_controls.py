@@ -49,6 +49,12 @@ class ControlTests(unittest.TestCase):
         self.assertEqual(self.app.command.call_count,1)
         self.assertEqual(self.app.command.call_args.args[0]["resource_scopes"],[])
 
+    def test_manual_local_start_does_not_require_automatic_escalation_preference(self):
+        self.app.config.localpilot_auto_local=False
+        self.controls.start(self.prepare())
+        self.assertFalse(self.app.command.call_args.args[0]["automatic_local"])
+        self.assertFalse(self.app.config.localpilot_auto_local)
+
     def test_battery_off_waits_for_explicit_once_consent(self):
         self.state["on_ac_power"]=False;ticket=self.prepare()
         self.assertEqual(self.controls.start(ticket)["status"],"confirmation_required")

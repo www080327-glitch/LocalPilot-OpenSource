@@ -15,6 +15,9 @@ from macos_artifacts import architecture, runtime_lock, wheel_supports
 spec = importlib.util.spec_from_file_location('lock_runtime_dependencies', SCRIPTS / 'lock-runtime-dependencies.py')
 generator = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(generator)
+crypto_spec = importlib.util.spec_from_file_location('cryptography_builder', SCRIPTS / 'build-cryptography-wheel.py')
+crypto_builder = importlib.util.module_from_spec(crypto_spec)
+crypto_spec.loader.exec_module(crypto_builder)
 
 
 class MacArtifactTests(unittest.TestCase):
@@ -53,6 +56,91 @@ class MacArtifactTests(unittest.TestCase):
         runtime_lock(baseline, 'arm64')
         with self.assertRaisesRegex(ValueError, 'no x86_64 wheel'):
             runtime_lock(baseline, 'x86_64')
+
+    def test_intel_wheel_requires_cpython_314_abi_and_supported_macos(self):
+        for tag in ['cp313-cp313-macosx_10_13_x86_64',
+                    'cp314-cp314t-macosx_10_13_x86_64',
+                    'pp310-pypy310_pp73-macosx_10_15_x86_64',
+                    'cp314-cp314-macosx_16_0_x86_64',
+                    'py2-none-any']:
+            with self.subTest(tag=tag):
+                self.assertFalse(wheel_supports('fixture-1.0-' + tag + '.whl', 'x86_64'))
+        for tag in ['cp36-abi3-macosx_10_9_x86_64',
+                    'cp314-cp314-macosx_10_15_universal2',
+                    'py2.py3-none-any']:
+            with self.subTest(tag=tag):
+                self.assertTrue(wheel_supports('fixture-1.0-' + tag + '.whl', 'x86_64'))
+
+    def test_pypi_selection_uses_compatible_abi_and_skips_yanked_files(self):
+        def row(tag, **kwargs):
+            return dict(filename='fixture-1.0-' + tag + '.whl',packagetype='bdist_wheel',**kwargs)
+        selected = row('cp36-abi3-macosx_10_9_x86_64')
+        files = [row('cp314-cp314t-macosx_10_13_x86_64'),
+                 row('cp314-cp314-macosx_10_13_x86_64', yanked=True),
+                 row('cp314-cp314-macosx_15_0_x86_64', requires_python='>=3.15'),
+                 selected, row('cp314-cp314-macosx_11_0_arm64')]
+        self.assertEqual(generator.select_wheel(files, 'x86_64'), selected)
+        self.assertIsNone(generator.select_wheel(files[:3], 'x86_64'))
+
+    def test_existing_download_is_hash_verified_without_network_or_overwrite(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            path=root/'fixture-1.0-py3-none-any.whl'
+            path.write_bytes(b'actual-fixture-content')
+            row={'filename':path.name,'url':'https://files.pythonhosted.org/fixture.whl',
+                 'digests':{'sha256':hashlib.sha256(path.read_bytes()).hexdigest()}}
+            observed=generator.fetch_artifact(row,root)
+            self.assertEqual(observed['bytes'],len(path.read_bytes()))
+            row['digests']['sha256']='0'*64
+            with self.assertRaisesRegex(ValueError,'hash mismatch'):
+                generator.fetch_artifact(row,root)
+            self.assertEqual(path.read_bytes(),b'actual-fixture-content')
+
+    def test_lock_checks_distribution_python_requirement(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            wheel=root/'fixture-1.0-py3-none-any.whl'
+            with zipfile.ZipFile(wheel,'w') as archive:
+                archive.writestr('fixture-1.0.dist-info/METADATA',
+                    'Metadata-Version: 2.1\nName: fixture\nVersion: 1.0\nRequires-Python: >=3.15\n')
+            with self.assertRaisesRegex(ValueError,'Python 3.14.6'):
+                generator.create_lock(root,{'packages':{'fixture':{'version':'1.0'}}},'x86_64')
+
+    def test_native_record_requires_matching_source_target_and_real_artifact_hash(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            wheel=root/'cryptography-50.0.2-cp311-abi3-macosx_15_0_x86_64.whl'
+            wheel.write_bytes(b'local native artifact fixture')
+            record={'kind':'CONTROLLED_NATIVE_SOURCE_BUILD','architecture':'x86_64',
+                    'source_sha256':crypto_builder.SOURCE_SHA256,'wheel':wheel.name,
+                    'sha256':hashlib.sha256(wheel.read_bytes()).hexdigest()}
+            path=root/'cryptography-build.json'
+            path.write_text(json.dumps(record))
+            self.assertEqual(generator.read_build_record(root,'cryptography','x86_64'),record)
+            with self.assertRaisesRegex(ValueError,'does not match'):
+                generator.read_build_record(root,'cryptography','arm64')
+            wheel.write_bytes(b'changed artifact')
+            with self.assertRaisesRegex(ValueError,'does not match'):
+                generator.read_build_record(root,'cryptography','x86_64')
+
+    def test_static_openssl_license_is_bundled_and_wheel_record_is_regenerated(self):
+        from wheel.wheelfile import WheelFile
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            source=root/'cryptography-50.0.2-cp311-abi3-macosx_15_0_x86_64.whl'
+            dist='cryptography-50.0.2.dist-info'
+            with zipfile.ZipFile(source,'w') as archive:
+                archive.writestr(dist+'/METADATA','Metadata-Version: 2.4\nName: cryptography\nVersion: 50.0.2\n')
+                archive.writestr(dist+'/WHEEL','Wheel-Version: 1.0\nGenerator: fixture\nRoot-Is-Purelib: false\nTag: cp311-abi3-macosx_15_0_x86_64\n')
+                archive.writestr('cryptography/binding.so',b'fixture binary')
+                archive.writestr(dist+'/RECORD','old invalid record')
+            target=root/'final'/source.name
+            crypto_builder.bundle_openssl_license(source,target,b'OpenSSL license fixture\n')
+            with WheelFile(target) as wheel:
+                self.assertEqual(wheel.read(dist+'/licenses/OPENSSL.txt'),b'OpenSSL license fixture\n')
+                self.assertEqual(wheel.read('cryptography/binding.so'),b'fixture binary')
+                self.assertIn(b'License-File: OPENSSL.txt',wheel.read(dist+'/METADATA'))
+                self.assertNotIn(b'old invalid record',wheel.read(dist+'/RECORD'))
 
 
 if __name__ == '__main__':

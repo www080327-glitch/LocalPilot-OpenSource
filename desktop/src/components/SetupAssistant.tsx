@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Check, RefreshCw, Download, Monitor } from "lucide-react";
 import { call, desktop } from "../bridge";
 import type { Json } from "../domain";
+import { LocalEndpointForm } from "./LocalEndpointForm";
 import {
   ChannelSettings,
   channelLabels,
@@ -239,19 +240,17 @@ export function SetupAssistant({
                 {gb(hw.available_memory_bytes)}
                 <br />
                 剩余磁盘 {gb(hw.free_disk_bytes)} ·{" "}
-                {hw.backends.length ? "已发现 oMLX" : "尚未连接本地推理服务"} ·
-                已发现 {hw.models.length} 个模型
+                {hw.backends.length
+                  ? "已发现本地推理服务"
+                  : "尚未连接本地推理服务"}{" "}
+                · 已发现 {hw.models.length} 个模型
               </p>
             </details>
           )}
           {stage === 1 && (
             <>
               {hw?.arch === "x86_64" && (
-                <p>
-                  Intel Mac 可连接以 CPU 运行的本地 OpenAI
-                  兼容服务，或使用云端模型。 需先在 Core
-                  配置本地服务地址和模型；当前向导不安装 MLX 后端。
-                </p>
+                <LocalEndpointForm onBeforeSave={prepare} onChanged={onReady} />
               )}
               {state && !state.omlx_installed && hw?.arch !== "x86_64" && (
                 <>

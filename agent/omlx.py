@@ -6,7 +6,6 @@ import hashlib
 import re
 import subprocess
 import sys
-import socket
 from pathlib import Path
 from .local_http import LocalHTTPBackend, LocalBackendError
 
@@ -19,8 +18,6 @@ class OMLXBackend(LocalHTTPBackend):
         kwargs.setdefault('engine', 'omlx')
         kwargs.setdefault('service_location', 'local')
         super().__init__(**kwargs)
-        self._response_lock = threading.Lock()
-        self._responses = set()
 
     _thinking_cache = {}
     _thinking_cache_lock = threading.Lock()
@@ -167,29 +164,3 @@ class OMLXBackend(LocalHTTPBackend):
             'active_requests': status.get('active_requests'),
             'management_url': root + '/admin', 'mutations_supported': False,
             'request_cleanup': 'client_disconnect; provider_release_not_verified'}
-
-    def _open(self, path, payload=None):
-        response = super()._open(path, payload)
-        if payload is None:
-            return response
-        backend = self
-        class TrackedResponse:
-            def __enter__(self): return response
-            def __exit__(self, *exc):
-                try: response.close()
-                finally:
-                    with backend._response_lock: backend._responses.discard(response)
-        with self._response_lock: self._responses.add(response)
-        return TrackedResponse()
-
-    def cancel_request(self):
-        # Close only this Session's client responses; never unload the shared model.
-        with self._response_lock:
-            responses = tuple(self._responses)
-        for response in responses:
-            sock=getattr(getattr(getattr(response,'fp',None),'raw',None),'_sock',None)
-            if sock is not None:
-                try:sock.shutdown(socket.SHUT_RDWR)
-                except OSError:pass
-            try: response.close()
-            except OSError: pass

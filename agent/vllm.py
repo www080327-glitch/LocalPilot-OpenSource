@@ -1,7 +1,5 @@
 """vLLM Chat Completions adapter. Tools remain proposals to AgentSession."""
 import json
-import socket
-import threading
 from .backends import Message
 from .context_budget import request_budget
 from .local_http import LocalBackendError, LocalHTTPBackend
@@ -21,8 +19,6 @@ class VLLMBackend(LocalHTTPBackend):
             if not self.base_url.startswith('https://') or not self._api_key:
                 raise ValueError('Remote vLLM requires HTTPS and authentication')
             self.is_local = False
-        self._lock = threading.Lock()
-        self._responses = set()
         self.service_contract = {'provider': 'vllm', 'revision': 1,
             'generation_parameters': self.generation_parameters.copy(),
             'profile': self.profile.snapshot(),
@@ -56,34 +52,3 @@ class VLLMBackend(LocalHTTPBackend):
             load_unload='trusted host process lifecycle; no standard HTTP weight-unload API',
             cancellation=self.service_contract['cancellation'])
         return result
-
-    def _open(self, path, payload=None):
-        response = super()._open(path, payload)
-        if payload is None:
-            return response
-        backend = self
-        class Tracked:
-            def __enter__(self):
-                return response
-            def __exit__(self, *exc):
-                try:
-                    response.close()
-                finally:
-                    with backend._lock:
-                        backend._responses.discard(response)
-        with self._lock:
-            self._responses.add(response)
-        return Tracked()
-
-    def cancel_request(self):
-        """Cancel this adapter's active requests; never kill a shared server."""
-        with self._lock:
-            responses = tuple(self._responses)
-        for response in responses:
-            sock = getattr(getattr(getattr(response, 'fp', None), 'raw', None), '_sock', None)
-            if sock is not None:
-                try:
-                    sock.shutdown(socket.SHUT_RDWR)
-                except OSError:
-                    pass
-            response.close()

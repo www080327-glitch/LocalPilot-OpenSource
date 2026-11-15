@@ -38,11 +38,11 @@ def main(agent_args=None):
 
     print("检测到设备：")
     print(f"{hardware['chip']} / {hardware['computer']}")
-    print(f"统一内存：{memory_gb if memory_gb is not None else '未知'} GB")
+    print(f"内存：{memory_gb if memory_gb is not None else '未知'} GB")
     print(f"系统：{hardware['os']} ({hardware['arch']})")
     if hardware.get("platform_status") != "supported":
-        print(f"平台状态：{hardware.get('platform_status')} — {hardware.get('platform_reason')}")
-        return
+        print(f"MLX 推荐状态：{hardware.get('platform_status')} — {hardware.get('platform_reason')}")
+        return agent_main(["--workspace", ".", *agent_args])
 
     print("\n请选择偏好：\n1. 效果优先\n2. 速度优先\n3. 资源偏好（heuristic，未测能耗）\n4. 平衡")
     preference = PREFERENCES.get(input("请输入编号：").strip(), "balanced")
@@ -67,7 +67,7 @@ def main(agent_args=None):
         return agent_main(["--workspace", ".", *agent_args])
     if result.get("status") in {"unsupported", "deferred"}:
         print(f"\n平台暂不支持：{result['reason']}")
-        return
+        return 1
 
     print("\n推荐配置：")
     print(f"模型：{result['model']['name']}")
@@ -86,4 +86,4 @@ def main(agent_args=None):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    raise SystemExit(main(sys.argv[1:]))

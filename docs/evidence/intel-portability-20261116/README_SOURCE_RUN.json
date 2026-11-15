@@ -1,0 +1,103 @@
+{
+  "status": "PASS",
+  "scope": "INSTALLED_CLI_SCRIPTED_HTTP_NOT_MODEL_QUALITY",
+  "versions": {
+    "suite": "0.2.0b27",
+    "localpilot-agent-service": "5.0.0b22",
+    "localpilot-companion": "0.5.7b4",
+    "localpilot-channels": "NOT_INSTALLED"
+  },
+  "commands": [
+    {
+      "command": "version",
+      "argv": [
+        "--version"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "init",
+      "argv": [
+        "init",
+        "--workspace",
+        "<WORKSPACE>/validation/intel-20261116/readme-source-run/workspace",
+        "--model",
+        "local-model",
+        "--base-url",
+        "http://127.0.0.1:45197/v1",
+        "--context-budget",
+        "8192",
+        "--model-timeout",
+        "120",
+        "--port",
+        "18769"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "start",
+      "argv": [
+        "start"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "models",
+      "argv": [
+        "models"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "ask",
+      "argv": [
+        "ask",
+        "--allow-local-on-battery",
+        "Introduce yourself briefly."
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "agent",
+      "argv": [
+        "agent",
+        "--allow-local-on-battery",
+        "Read project.md and report its fact."
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "status",
+      "argv": [
+        "status"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "stop",
+      "argv": [
+        "stop"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "restart",
+      "argv": [
+        "start"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "tasks-after-restart",
+      "argv": [
+        "tasks"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "model_requests": 3,
+  "actual_file_readback": true,
+  "restart_no_replay": true,
+  "model_usage": "UNKNOWN",
+  "working_directory": "<WORKSPACE>/validation/intel-20261116/readme-source-run"
+}

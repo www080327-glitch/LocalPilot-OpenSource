@@ -5,6 +5,7 @@ from pathlib import Path
 import subprocess
 import sys
 import unittest
+from unittest.mock import patch
 
 import companion.tests.test_pa_training as fixtures
 from companion.config import Config
@@ -102,7 +103,8 @@ class CandidateArtifactTests(unittest.TestCase):
                         low_power_policy='off', allow_local_on_battery=True)
         manager = ModelManager(config)
         try:
-            response = manager.complete([{'role':'user', 'content':'Synthetic question'}], max_tokens=16)
+            with patch('companion.model.backend.mlx_supported', return_value=True):
+                response = manager.complete([{'role':'user', 'content':'Synthetic question'}], max_tokens=16)
             self.assertEqual(response['status'], 'unavailable')
             self.assertEqual(response['error_stage'], 'candidate_validation')
             self.assertIn('Candidate weights', response['error'])

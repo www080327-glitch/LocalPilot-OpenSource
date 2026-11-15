@@ -165,7 +165,22 @@ def initialize(args, home):
                     settings=private_json(Path(args.omlx_settings_file).expanduser())
                     setup_env['LOCALPILOT_OMLX_API_KEY']=settings.get('auth',{}).get('api_key','')
                 with temporary_environment(setup_env):
-                    configure(['--workspace', workspace, '--model', model, '--directory', str(home), '--base-url', args.base_url] + (['--api-key-env','LOCALPILOT_OMLX_API_KEY'] if args.omlx_settings_file else ['--api-key-env',args.api_key_env] if args.api_key_env else []) + (['--omlx'] if args.omlx else []) + (['--managed-qwen35'] if args.managed_qwen35 else []) + (['--cloud-key-file',args.cloud_key_file] if args.cloud_key_file else []))
+                    configure_args = ['--workspace', workspace, '--model', model, '--directory', str(home), '--base-url', args.base_url]
+                    if args.api_key_env or args.omlx_settings_file:
+                        configure_args += ['--api-key-env', 'LOCALPILOT_OMLX_API_KEY' if args.omlx_settings_file else args.api_key_env]
+                    if args.omlx:
+                        configure_args.append('--omlx')
+                    if args.managed_qwen35:
+                        configure_args.append('--managed-qwen35')
+                    if args.cloud_key_file:
+                        configure_args += ['--cloud-key-file', args.cloud_key_file]
+                    if args.context_budget is not None:
+                        configure_args += ['--context-budget', str(args.context_budget)]
+                    if args.model_timeout is not None:
+                        configure_args += ['--model-timeout', str(args.model_timeout)]
+                    if args.stream_usage:
+                        configure_args.append('--stream-usage')
+                    configure(configure_args)
             config = private_json(home / 'service.json'); config['port'] = args.port
             save(home / 'service.json', config)
             save(home / 'connection.json', {'url':f'http://127.0.0.1:{args.port}', 'token_env':'LOCALPILOT_LOCAL_TOKEN' if args.managed_qwen35 else 'LOCALPILOT_HTTP_TOKEN', 'managed_qwen35':args.managed_qwen35, 'client_subject':'local' if args.managed_qwen35 else 'companion', 'cloud_configured':bool(args.cloud_key_file),
@@ -353,11 +368,11 @@ def submit(args, home, client, text, *, chat_session=None):
     if args.action in {'ask', 'chat'} and entry.get('reasoning_only') is not True:
         raise ValueError('ask/chat requires an isolated reasoning_only route; use agent for tool tasks')
     if entry.get('adapter') == 'local-openai':
-        # CLI defaults to no inference on battery/unknown power, with no automatic override.
-        import psutil
-        power = psutil.sensors_battery()
-        if os.environ.get('LOCALPILOT_DISABLE_LOCAL_MODELS') == '1' or power is None or power.power_plugged is not True:
-            raise ValueError('Local model inference blocked: external power required or operator disabled models')
+        from hardware import external_power
+        if os.environ.get('LOCALPILOT_DISABLE_LOCAL_MODELS') == '1':
+            raise ValueError('Local model inference blocked: operator disabled models')
+        if not getattr(args, 'allow_local_on_battery', False) and external_power() is not True:
+            raise ValueError('Local model inference blocked: external power required; --allow-local-on-battery explicitly permits this request on battery or unknown power')
     key = getattr(args, 'key', None) or uuid.uuid4().hex
     if getattr(args,'timeout',None) is not None and (not math.isfinite(args.timeout) or not 0 < args.timeout <= 3600):
         raise ValueError('Task timeout must be finite and within (0, 3600]')
@@ -370,7 +385,8 @@ def submit(args, home, client, text, *, chat_session=None):
     record = {'key':key, 'body':body, 'url':client.base_url}
     old=private_json(request_file) if request_file.exists() else None
     lifecycle=entry.get('local_model_lifecycle') or {}
-    managed=lifecycle.get('control_surface_required') is True
+    managed=(lifecycle.get('control_surface_required') is True
+             and lifecycle.get('shared_external_service') is not True)
     if managed and getattr(args,'timeout',None) is None:
         if old and 'timeout_seconds' in old.get('body',{}):body['timeout_seconds']=old['body']['timeout_seconds']
         elif not old:body['timeout_seconds']=600
@@ -422,12 +438,16 @@ def parser():
     init.add_argument('--omlx', action='store_true');init.add_argument('--omlx-settings-file', help='Reference existing private oMLX settings; credentials are never copied')
     init.add_argument('--workspace'); init.add_argument('--model'); init.add_argument('--managed-qwen35',action='store_true',help='Use approved existing cached Qwen35 with managed lifecycle'); init.add_argument('--cloud-key-file',help='Existing protected DeepSeek credential file reference; no copy'); init.add_argument('--base-url', default='http://127.0.0.1:1234/v1')
     init.add_argument('--api-key-env',default='',help='Existing local backend credential environment name; no value is copied'); init.add_argument('--port', type=int, default=8765); init.add_argument('--connect'); init.add_argument('--token-env', default='LOCALPILOT_TOKEN')
+    from .configure import add_endpoint_arguments
+    add_endpoint_arguments(init)
     for name in ['start','stop','restart','status','doctor','models','tasks','logs','config','_serve','service-unregister']:
         sub.add_parser(name)
     for name in ['ask','agent','chat']:
         cmd = sub.add_parser(name, help='Reasoning only' if name != 'agent' else 'Submit standard Agent task through Permission Gateway')
         if name != 'chat':cmd.add_argument('text')
         cmd.add_argument('--model'); cmd.add_argument('--session'); cmd.add_argument('--key'); cmd.add_argument('--detach', action='store_true'); cmd.add_argument('--timeout', type=float, help='Total task deadline in seconds, including approvals; maximum 3600')
+        cmd.add_argument('--allow-local-on-battery', action='store_true',
+                         help='Explicitly allow this local-openai request on battery or unknown power; does not override operator model disable')
     task = sub.add_parser('task').add_subparsers(dest='operation', required=True)
     for name in ['show','watch','cancel','approve','reject','resume']:
         cmd = task.add_parser(name); cmd.add_argument('id')

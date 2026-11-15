@@ -3,7 +3,9 @@
 import ipaddress
 import json
 import math
+import socket
 import ssl
+import threading
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlparse
 from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_opener
@@ -113,6 +115,8 @@ class LocalHTTPBackend:
              "authentication_configured": api_key is not None})
         # Bypass environment HTTP proxies even for explicitly permitted remote endpoints.
         self._opener = build_opener(ProxyHandler({}), _NoRedirect())
+        self._response_lock = threading.Lock()
+        self._responses = set()
 
     def _open(self, path, payload=None):
         headers = {"Content-Type": "application/json", "Accept": "text/event-stream" if payload and payload.get("stream") else "application/json"}
@@ -123,7 +127,7 @@ class LocalHTTPBackend:
                           headers=headers,
                           method="GET" if payload is None else "POST")
         try:
-            return self._opener.open(request, timeout=self.timeout)
+            response = self._opener.open(request, timeout=self.timeout)
         except HTTPError as error:
             # Server bodies may echo credentials or prompt data. Do not put
             # untrusted response bodies in CLI/audit/verification diagnostics.
@@ -139,6 +143,43 @@ class LocalHTTPBackend:
                 term in str(reason).lower() for term in ("certificate", "cert verify"))
             raise LocalBackendError(f"Local model server unavailable at {self.base_url}: {error}",
                                     retryable=not certificate_error) from error
+        if payload is None:
+            return response
+        backend = self
+
+        class TrackedResponse:
+            def __enter__(self):
+                return response
+
+            def __exit__(self, *exc):
+                try:
+                    response.close()
+                finally:
+                    with backend._response_lock:
+                        backend._responses.discard(response)
+
+        with self._response_lock:
+            self._responses.add(response)
+        return TrackedResponse()
+
+    def cancel_request(self):
+        """Disconnect this adapter's active responses; provider compute release is unverified."""
+        with self._response_lock:
+            responses = tuple(self._responses)
+        for response in responses:
+            sock = getattr(getattr(getattr(response, 'fp', None), 'raw', None), '_sock', None)
+            if sock is not None:
+                try:
+                    sock.shutdown(socket.SHUT_RDWR)
+                except OSError:
+                    pass
+                # The reader closes its response in __exit__; closing it here
+                # races HTTPResponse.read()'s own fp cleanup after shutdown.
+            else:
+                try:
+                    response.close()
+                except OSError:
+                    pass
 
     def status(self):
         """Fresh service and model discovery; no model download or inference."""

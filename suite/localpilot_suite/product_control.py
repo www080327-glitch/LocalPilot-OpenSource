@@ -68,19 +68,33 @@ class OmlxAdmin:
                 'restart_persistence':'NOT_VERIFIED','per_model_toggle':False,'retention_guaranteed':False},'pause':False,'auto_load':False,'memory_budget':False,'batching':False}
 
 
-def active_power_policy(power, settings):
+def active_power_policy(power, settings, capabilities=None):
     """Project only the current macOS profile; unknown is not permission."""
     match=re.search(r"^Now drawing from '(AC Power|Battery Power)'\s*$",power,re.MULTILINE)
     if not match:return None,None
-    source=match[1];current=None;values=[]
+    source=match[1];current=None;values=[];profiles=0;invalid=False
     for line in settings.splitlines():
         header=re.fullmatch(r'(AC Power|Battery Power|UPS Power):',line.strip())
         if line and not line[0].isspace() and line.rstrip().endswith(':'):
             current=header[1] if header else None
+            profiles+=current==source
+            invalid|=header is None
         elif current==source:
-            value=re.fullmatch(r'\s*lowpowermode\s+([01])\s*',line)
-            if value:values.append(value[1])
-    return source,(values[0]=='1') if len(values)==1 else None
+            value=re.fullmatch(r'\s*(lowpowermode|powermode)\s+([012])\s*',line)
+            if value:
+                if value[1]=='lowpowermode' and value[2]=='2':return source,None
+                values.append(value[2]=='1')
+            elif re.match(r'\s*(?:lowpowermode|powermode)\b',line):invalid=True
+    if invalid or profiles!=1 or len(values)>1:return source,None
+    if values:return source,values[0]
+    if capabilities:
+        lines=[line.strip() for line in capabilities.splitlines() if line.strip()]
+        features=set(lines[1:])
+        if (lines and lines[0]==f'Capabilities for {source}:' and features & {'sleep','displaysleep'}
+                and all(re.fullmatch(r'[a-z][a-z0-9_]*',feature) for feature in features)
+                and not features & {'lowpowermode','powermode','highpowermode'}):
+            return source,False
+    return source,None
 
 
 def hardware(home):
@@ -99,6 +113,9 @@ def hardware(home):
         hw['power']=subprocess.run(['/usr/bin/pmset','-g','batt'],capture_output=True,text=True,timeout=3,check=True).stdout.strip()
         hw['power_policy']=subprocess.run(['/usr/bin/pmset','-g','custom'],capture_output=True,text=True,timeout=3,check=True).stdout.strip()
         source,low=active_power_policy(hw['power'],hw['power_policy'])
+        if source and low is None:
+            capabilities=subprocess.run(['/usr/bin/pmset','-g','cap'],capture_output=True,text=True,timeout=3,check=True).stdout
+            source,low=active_power_policy(hw['power'],hw['power_policy'],capabilities)
         after=subprocess.run(['/usr/bin/pmset','-g','batt'],capture_output=True,text=True,timeout=3,check=True).stdout.strip()
         if active_power_policy(after,hw['power_policy'])[0]!=source:source,low=None,None
         hw.update(active_power_source=source or 'UNKNOWN',active_low_power_mode=low)
@@ -123,7 +140,10 @@ def hardware(home):
         if not r['power_compatible']:
             r['reason']+=(' 暂时无法确认当前电源策略。可稍后重新检测，或跳过本地模型。' if hw.get('active_low_power_mode') is None
                 else ' 当前低电量策略限制此大小模型的推理。可跳过本地模型，或在系统调整后重新检测。')
+    mlx_supported=hw['os'] in {'Darwin','macOS'} and hw['arch'] in {'arm64','aarch64'}
     return {'version':1,'hardware':hw,'recommendation':r,'recommendation_status':recommendation_status,'installation': installation_state(home),
+        'local_inference':{'mlx_supported':mlx_supported,'endpoint_supported':hw['os'] in {'Darwin','macOS','Linux'},
+            'recommendation_kind':'mlx' if mlx_supported else 'local-endpoint'},
         'omlx_installed':any((p/'oMLX.app').is_dir() for p in [Path('/Applications'),Path.home()/'Applications']),
         'core_configured':(home/'connection.json').exists(),'agent_constraints':constraints,'model_download_forced':False}
 
@@ -159,6 +179,12 @@ def dispatch(home,body):
     if op in {'model_configuration','configure_cooperation','configure_local_endpoint'}:
         from .model_configuration import command
         return command(home,op,args)
+    if op=='discover_local_endpoint':
+        from .model_configuration import discover_endpoint
+        return discover_endpoint(args)
+    if op=='activate_model_configuration':
+        from .model_configuration import activate_configuration
+        return activate_configuration(home,args)
     if op=='inspect':return hardware(home)
     if op=='installation_diagnostics':
         if args:raise ValueError('Diagnostics accepts no arguments')

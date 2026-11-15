@@ -6,7 +6,7 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
-from localpilot_suite.product_control import hardware
+from localpilot_suite.product_control import active_power_policy, hardware
 
 
 CUSTOM='Battery Power:\n lowpowermode 1\nAC Power:\n lowpowermode 0\n'
@@ -18,6 +18,7 @@ class ActivePowerRecommendationTests(unittest.TestCase):
         def run(args,**kwargs):
             if args[0].endswith('system_profiler'):text=json.dumps({'SPDisplaysDataType':[]})
             elif args[-1]=='custom':text=custom
+            elif args[-1]=='cap':text='UNKNOWN'
             else:text=f"Now drawing from '{next(states)}'\n"
             return subprocess.CompletedProcess(args,0,stdout=text,stderr='')
         with tempfile.TemporaryDirectory() as folder, patch('hardware.get_hardware',return_value={'os':'Darwin','arch':'arm64','chip':'Apple test'}), patch('psutil.virtual_memory',return_value=SimpleNamespace(total=64*1024**3,available=48*1024**3)), patch('recommender.recommend',return_value={'model':{'artifact_gb':3},'reason':'fixture'}), patch('localpilot_suite.product_control.subprocess.run',side_effect=run), patch('localpilot_suite.product_control.backend_settings',side_effect=ValueError('no model')), patch('localpilot_suite.product_control.installation_state',return_value='first_launch'):
@@ -34,6 +35,23 @@ class ActivePowerRecommendationTests(unittest.TestCase):
 
     def test_ac_low_power_stays_constrained(self):
         self.assertFalse(self.observe(custom=CUSTOM.replace('lowpowermode 0','lowpowermode 1'))['recommendation']['power_compatible'])
+
+    def test_current_macos_powermode_distinguishes_low_and_high_power(self):
+        for mode,low in [(0,False),(1,True),(2,False)]:
+            with self.subTest(mode=mode):
+                value=self.observe(custom=f'AC Power:\n powermode {mode}\n')
+                self.assertIs(value['hardware']['active_low_power_mode'],low)
+
+    def test_intel_without_low_power_feature_requires_matching_capabilities(self):
+        power="Now drawing from 'AC Power'"
+        custom='AC Power:\n sleep 0\n displaysleep 10\n'
+        cap='Capabilities for AC Power:\n displaysleep\n disksleep\n sleep\n'
+        self.assertEqual(active_power_policy(power,custom,cap),('AC Power',False))
+        for settings,capabilities in [(custom,None),(custom,cap.replace('AC Power','Battery Power')),
+                (custom,cap+' lowpowermode\n'),(custom+' powermode UNKNOWN\n',cap),
+                (custom+custom,cap),(custom+' powermode 0\n powermode 1\n',cap)]:
+            with self.subTest(settings=settings,capabilities=capabilities):
+                self.assertEqual(active_power_policy(power,settings,capabilities),('AC Power',None))
 
     def test_unknown_source_and_missing_or_conflicting_profile_fail_closed(self):
         for source,custom in [('unrecognized',CUSTOM),('AC Power','Battery Power:\n lowpowermode 0\n'),('AC Power',CUSTOM+' lowpowermode 1\n')]:

@@ -67,6 +67,7 @@ class Config:
     http_model_name: str = ""
     http_model_api_key_env: str = ""
     http_model_host_local_only: bool = False
+    http_model_disable_thinking: bool = False
     port: int = 0
     native_observation_enabled: bool = False
     native_all_apps_enabled: bool = False
@@ -170,7 +171,7 @@ class Config:
             raise ValueError("Invalid retrieval backend/relevance threshold")
         if c.mode not in {"eco", "responsive"} or c.backend not in {"mlx", "local-http", "omlx", "disabled"}:
             raise ValueError("Invalid mode/backend")
-        for key in ("summarize_documents", "notifications", "dnd", "agent_allow_remote", "agent_host_local_only", "http_model_host_local_only", "http_schema_supported", "break_reminder_opt_in", "native_observation_enabled", "native_ax_enabled", "localpilot_allow_remote", "localpilot_host_local_only", "localpilot_allow_cloud"):
+        for key in ("summarize_documents", "notifications", "dnd", "agent_allow_remote", "agent_host_local_only", "http_model_host_local_only", "http_model_disable_thinking", "http_schema_supported", "break_reminder_opt_in", "native_observation_enabled", "native_ax_enabled", "localpilot_allow_remote", "localpilot_host_local_only", "localpilot_allow_cloud"):
             if type(getattr(c,key)) is not bool:
                 raise ValueError(f"{key} must be boolean")
         for key in ("max_file_bytes", "max_document_chars", "max_scan_files", "retrieval_records", "retrieval_chars", "model_context_tokens", "max_output_tokens", "max_notices_per_day"):

@@ -276,7 +276,9 @@ def recommend(
             or any(not isinstance(v, str) for v in allowed_model_ids)):
         raise ValueError("allowed_model_ids must be an explicit model allowlist")
     if os_name != "macOS":
-        return {"status": "unsupported", "reason": "Only macOS is in the current platform scope."}
+        return {"status": "unsupported", "reason": "Bundled MLX recommendations require macOS + Apple Silicon. Core can use a configured local OpenAI-compatible endpoint or a cloud route on Linux.",
+                "local_backend_alternative": "local-openai", "acceleration": "provider_selected",
+                "mps_availability": "NOT_PROBED"}
     if arch not in {"arm64", "aarch64"}:
         return {"status": "deferred", "reason": "MLX requires Apple Silicon. Configure a local OpenAI-compatible CPU/Metal endpoint or a cloud route on Intel Mac; its native APP qualification is pending.",
                 "local_backend_alternative": "local-openai", "acceleration": "provider_selected",

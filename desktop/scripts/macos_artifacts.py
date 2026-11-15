@@ -2,6 +2,10 @@
 import json
 from pathlib import Path
 import subprocess
+from functools import lru_cache
+
+from packaging.tags import compatible_tags, cpython_tags, mac_platforms
+from packaging.utils import InvalidWheelFilename, parse_wheel_filename
 
 
 def architecture(value):
@@ -12,10 +16,21 @@ def architecture(value):
         raise ValueError('Only macOS arm64 and x86_64 artifacts are supported') from None
 
 
+@lru_cache(maxsize=2)
+def runtime_tags(arch):
+    platforms = tuple(mac_platforms(version=(15, 0), arch=arch))
+    return tuple(dict.fromkeys([
+        *cpython_tags(python_version=(3, 14), abis=['cp314'], platforms=platforms),
+        *compatible_tags(python_version=(3, 14), interpreter='cp314', platforms=platforms),
+    ]))
+
+
 def wheel_supports(filename, arch):
-    platforms = filename.removesuffix('.whl').rsplit('-', 1)[-1].split('.')
-    return any(value == 'any' or value.startswith('macosx_') and
-               (value.endswith('_' + arch) or value.endswith('_universal2')) for value in platforms)
+    try:
+        tags = parse_wheel_filename(filename)[3]
+    except InvalidWheelFilename:
+        return False
+    return not tags.isdisjoint(runtime_tags(arch))
 
 
 def runtime_lock(path, arch):

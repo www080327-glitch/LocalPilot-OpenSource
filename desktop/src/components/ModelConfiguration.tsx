@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { call, desktop } from "../bridge";
 import type { Json } from "../domain";
+import { LocalEndpointForm } from "./LocalEndpointForm";
 
 export function ModelConfiguration({
   onChanged,
+  preferEndpoint = false,
 }: {
   onChanged?: () => void | Promise<void>;
+  preferEndpoint?: boolean;
 }) {
   const [models, setModels] = useState<Json[]>([]);
   const [primary, setPrimary] = useState("");
@@ -13,10 +16,6 @@ export function ModelConfiguration({
   const [mode, setMode] = useState("local-first");
   const [asyncEnabled, setAsyncEnabled] = useState(true);
   const [name, setName] = useState("personal-agent");
-  const [endpoint, setEndpoint] = useState("http://127.0.0.1:1234/v1");
-  const [localModel, setLocalModel] = useState("");
-  const [context, setContext] = useState(32768);
-  const [companion, setCompanion] = useState(false);
   const [result, setResult] = useState<Json | null>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -50,19 +49,19 @@ export function ModelConfiguration({
     <section className="model-configuration">
       <h3>添加本机模型与协作 Agent</h3>
       <p className="muted">
-        配置将保存为新路由。等待活动任务结束后，在设置中显式停止并恢复
-        Core；涉及 Companion 时也需重启其服务。连接检查与实际推理分别验证。
+        配置将保存为新路由。等待活动任务结束后，显式重启服务以应用配置。 已有
+        Session 与收据保留；连接检查与实际推理分别验证。
       </p>
-      <label>
-        新路由名称
-        <input
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          placeholder="personal-agent"
-        />
-      </label>
-      <details open className="advanced-settings">
+      <details open={!preferEndpoint} className="advanced-settings">
         <summary>由多个已注册模型协作</summary>
+        <label>
+          协作路由名称
+          <input
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            placeholder="personal-agent"
+          />
+        </label>
         <label>
           主模型
           <select
@@ -146,61 +145,14 @@ export function ModelConfiguration({
           保存协作 Agent 配置
         </button>
       </details>
-      <details className="advanced-settings">
+      <details open={preferEndpoint} className="advanced-settings">
         <summary>Intel / CPU 或其他本机 OpenAI 兼容服务</summary>
-        <p className="muted">
-          先用自己的推理程序启动本机服务，再填写模型 ID
-          与实际上下文上限。硬件加速由该服务检测，CPU
-          回退由该服务执行。LocalPilot 不为此启动
-          MLX、下载权重或更改其他推理服务。
-        </p>
-        <label>
-          本机端点
-          <input
-            value={endpoint}
-            onChange={(event) => setEndpoint(event.target.value)}
-          />
-        </label>
-        <label>
-          模型 ID
-          <input
-            value={localModel}
-            onChange={(event) => setLocalModel(event.target.value)}
-          />
-        </label>
-        <label>
-          上下文 token 上限
-          <input
-            type="number"
-            min={4096}
-            max={1048576}
-            value={context}
-            onChange={(event) => setContext(Number(event.target.value))}
-          />
-        </label>
-        <label className="simple-toggle">
-          <input
-            type="checkbox"
-            checked={companion}
-            onChange={(event) => setCompanion(event.target.checked)}
-          />
-          同时让 Companion 使用这个本机端点
-        </label>
-        <button
-          className="primary"
-          disabled={!desktop || busy || !localModel.trim()}
-          onClick={() =>
-            void save("configure_local_endpoint", {
-              name,
-              base_url: endpoint,
-              model: localModel,
-              context_budget: context,
-              companion,
-            })
-          }
-        >
-          保存本机模型配置
-        </button>
+        <LocalEndpointForm
+          onChanged={async () => {
+            await refresh();
+            await onChanged?.();
+          }}
+        />
       </details>
       {error && (
         <p role="alert" className="warning">
@@ -210,13 +162,28 @@ export function ModelConfiguration({
       {result && (
         <div role="status">
           <p>{result.next}</p>
-          <p>
-            已保存：{result.route} · 推理 {result.inference} · 连接{" "}
-            {result.connection}
-          </p>
-          <p className="muted">
-            原配置备份：<code>{result.backup}</code>
-          </p>
+          {result.route && (
+            <p>
+              已保存：{result.route} · 推理 {result.inference} · 连接{" "}
+              {result.connection}
+            </p>
+          )}
+          {result.backup && (
+            <p className="muted">
+              原配置备份：<code>{result.backup}</code>
+            </p>
+          )}
+          {result.restart_required && (
+            <button
+              className="secondary"
+              disabled={busy}
+              onClick={() =>
+                void save("activate_model_configuration", { confirmed: true })
+              }
+            >
+              确认重启服务并应用配置
+            </button>
+          )}
         </div>
       )}
     </section>

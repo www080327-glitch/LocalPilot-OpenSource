@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from localpilot_service.cli import save
+from localpilot_service.cli import environment, save
 from localpilot_service.deployment import build
 from localpilot_service.security import private_json
 from localpilot_suite.product_control import dispatch
@@ -35,7 +35,8 @@ class ModelConfigurationTests(unittest.TestCase):
         self.config['routes']['route-b']['backend']['model'] = 'fixture-b'
         save(self.home / 'service.json', self.config)
         save(self.home / 'connection.json', {'client_subject': 'gui'})
-        save(self.home / 'companion.json', {'backend': 'disabled', 'watch_dirs': [], 'native_observation_enabled': False})
+        save(self.home / 'companion.json', {'backend': 'disabled', 'watch_dirs': [], 'native_observation_enabled': False,
+             'localpilot_client_subject': 'gui', 'localpilot_api_key_env': 'LOCALPILOT_TEST_TOKEN'})
         self.env = patch.dict(os.environ, LOCALPILOT_TEST_TOKEN='synthetic-gui-token-'+'x'*24,
                               LOCALPILOT_OTHER_TOKEN='synthetic-other-token-'+'y'*24)
         self.env.start()
@@ -51,7 +52,8 @@ class ModelConfigurationTests(unittest.TestCase):
             server.access.close()
 
     def service(self):
-        server = build(self.home / 'service.json')
+        with patch.dict(os.environ, environment(self.home)):
+            server = build(self.home / 'service.json')
         self.services.append(server)
         return server
 
@@ -99,6 +101,81 @@ class ModelConfigurationTests(unittest.TestCase):
         server = self.service()
         self.assertEqual(server.catalog['cpu-agent']['model'], 'local-model')
         self.assertFalse(server.service.sessions)
+        catalog = self.dispatch('model_configuration', {})
+        self.assertTrue(catalog['restart_required'])
+        self.assertEqual(catalog['restart_modules'], ['core', 'companion'])
+
+    def test_cpu_endpoint_uses_explicit_power_and_thinking_with_small_context(self):
+        save(self.home / 'companion.json', {'backend': 'mlx', 'model_adapter_path': '/old/mlx-adapter',
+            'watch_dirs': [], 'native_observation_enabled': False, 'low_power_policy': 'always',
+            'allow_local_on_battery': False, 'max_output_tokens': 4096,
+            'localpilot_client_subject': 'gui', 'localpilot_api_key_env': 'LOCALPILOT_TEST_TOKEN'})
+        self.dispatch('configure_local_endpoint', {'name': 'cpu-agent', 'model': 'local-model',
+            'base_url': 'http://localhost:1234/v1/', 'context_budget': 4096, 'companion': True,
+            'companion_power_policy': 'system', 'disable_thinking': True})
+        route = private_json(self.home / 'service.json')['routes']['cpu-agent']
+        self.assertEqual(route['budgets']['max_output_tokens'], 1024)
+        self.assertEqual(route['budgets']['max_worker_output_tokens'], 1024)
+        self.assertEqual(route['backend']['chat_template_kwargs'], {'enable_thinking': False})
+        self.assertEqual(route['backend']['base_url'], 'http://127.0.0.1:1234/v1')
+        companion = private_json(self.home / 'companion.json')
+        self.assertEqual(companion['low_power_policy'], 'system')
+        self.assertTrue(companion['http_model_disable_thinking'])
+        self.assertEqual(companion['model_adapter_path'], '')
+        self.assertEqual(companion['http_model_endpoint'], 'http://127.0.0.1:1234/v1')
+        self.assertEqual(companion['max_output_tokens'], 1024)
+        self.assertEqual(companion['localpilot_route'], 'cpu-agent')
+        self.assertEqual(companion['localpilot_analysis_route'], 'cpu-agent-reasoning')
+        config = private_json(self.home / 'service.json')
+        analysis = config['routes']['cpu-agent-reasoning']
+        self.assertTrue(analysis['reasoning_only'])
+        self.assertEqual(analysis['capabilities'], {'read': False, 'write': False, 'execute': False})
+        resource = next(c for c in config['clients'] if c['subject'] == 'endpoint-resource')
+        self.assertEqual(resource['scopes'], ['read', 'resource_control'])
+        self.assertEqual(resource['approval_for'], ['gui'])
+        self.assertIn(companion['localpilot_resource_key_env'], environment(self.home))
+        self.assertNotIn('localpilot_auto_local', companion)
+        self.assertFalse(companion['allow_local_on_battery'])
+        self.assertFalse(companion['native_observation_enabled'])
+        from companion.config import Config
+        self.assertEqual(Config.load(self.home / 'companion.json').backend, 'local-http')
+
+    def test_endpoint_defaults_preserve_power_and_reject_invalid_preferences_before_save(self):
+        settings = {'backend': 'disabled', 'low_power_policy': 'always', 'allow_local_on_battery': False,
+                    'localpilot_client_subject': 'gui', 'localpilot_api_key_env': 'LOCALPILOT_TEST_TOKEN'}
+        save(self.home / 'companion.json', settings)
+        args = {'name': 'cpu-agent', 'model': 'local-model', 'base_url': 'http://127.0.0.1:1234/v1',
+                'context_budget': 8192, 'companion': True}
+        for invalid in [{'companion_power_policy': 'auto'}, {'disable_thinking': 'yes'},
+                        {'companion': False, 'companion_power_policy': 'off'}]:
+            with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                self.dispatch('configure_local_endpoint', {**args, **invalid})
+        self.assertEqual(private_json(self.home / 'companion.json'), settings)
+        self.assertEqual(private_json(self.home / 'service.json'), self.config)
+        self.dispatch('configure_local_endpoint', args)
+        saved = private_json(self.home / 'companion.json')
+        self.assertEqual(saved['low_power_policy'], 'always')
+        self.assertFalse(saved['allow_local_on_battery'])
+        self.assertNotIn('http_model_disable_thinking', saved)
+
+    def test_companion_resource_identity_follows_its_client_not_the_gui(self):
+        companion = private_json(self.home / 'companion.json')
+        companion.update(localpilot_client_subject='other', localpilot_api_key_env='LOCALPILOT_OTHER_TOKEN')
+        save(self.home / 'companion.json', companion)
+        self.dispatch('configure_local_endpoint', {'name': 'cpu-agent', 'model': 'local-model',
+            'base_url': 'http://127.0.0.1:1234/v1', 'context_budget': 8192, 'companion': True})
+        saved = private_json(self.home / 'service.json')
+        resource = next(c for c in saved['clients'] if c['subject'] == 'endpoint-resource')
+        self.assertEqual(resource['approval_for'], ['other'])
+        self.assertEqual(saved['clients'][1]['routes']['cpu-agent-reasoning'], 'cpu-agent-reasoning')
+        actual = private_json(self.home / 'companion.json')
+        self.assertEqual(actual['localpilot_client_subject'], 'other')
+        self.assertEqual(actual['localpilot_api_key_env'], 'LOCALPILOT_OTHER_TOKEN')
+        self.assertEqual(self.service().access.principals['endpoint-resource'].approval_for, ('other',))
+
+    def test_existing_connection_uses_the_token_principal_for_its_catalog(self):
+        save(self.home / 'connection.json', {'client_subject': 'gui', 'token_env': 'LOCALPILOT_OTHER_TOKEN'})
+        self.assertEqual([m['id'] for m in self.dispatch('model_configuration', {})['models']], ['primary'])
 
     def test_wrong_endpoint_and_cross_workspace_are_rejected_without_writing(self):
         for endpoint in ['https://example.test/v1', 'http://127.0.0.1:1234/v1?x=1', 'http://127.0.0.1:1234/other']:

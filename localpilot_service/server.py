@@ -191,6 +191,28 @@ class ScopedService:
 class ServiceServer(APIServer):
     request_queue_size = 16
 
+    def registered_models(self, principal):
+        self.refresh_models(principal)
+        models = []
+        for alias, route in principal.routes.items():
+            entry = {'id': alias, **self.catalog.get(route, {})}
+            manager = getattr(self, 'model_hosts', {}).get(route)
+            backend = (getattr(self, 'inference_backends', {}).get(route)
+                       or getattr(self, 'model_backends', {}).get(route))
+            if manager is not None:
+                entry['local_model_lifecycle'] = manager.status()
+            elif (entry.get('adapter') in {'omlx', 'local-openai'}
+                  and callable(getattr(backend, 'cancel_request', None))):
+                entry['local_model_lifecycle'] = {
+                    'shared_external_service': True, 'request_cancel_supported': True,
+                    'control_surface_required': True, 'release_after_task': False,
+                    'minimum_available_bytes': 4 * 1024**3,
+                    'request_cancel_scope': 'client_http_response',
+                    'provider_compute_stop': 'UNKNOWN', 'heartbeat_lease': False,
+                }
+            models.append(entry)
+        return models
+
     def refresh_models(self, principal):
         """Observe external providers only; never acquire a loading lease."""
         visible = set(principal.routes.values())
@@ -447,8 +469,7 @@ class ServiceHandler(Handler):
                 return self._json(json.loads((Path(__file__).parent / "openapi.json").read_text()))
             if self.command == "GET" and path == "/localpilot/v1/model-registry":
                 self.scoped._scope("read")
-                self.server.refresh_models(principal)
-                return self._json({"models": [{"id": k, **self.server.catalog.get(v, {}), **({"local_model_lifecycle":self.server.model_hosts[v].status()} if v in getattr(self.server,"model_hosts",{}) else {"local_model_lifecycle":{'shared_external_service':True,'request_cancel_supported':True,'control_surface_required':True,'release_after_task':False,'minimum_available_bytes':4*1024**3}} if v in getattr(self.server,'model_backends',{}) else {})} for k,v in principal.routes.items()]})
+                return self._json({'models': self.server.registered_models(principal)})
             if self.command == 'GET' and path == '/localpilot/v1/routing-capabilities':
                 self.scoped._scope('read')
                 return self._json(routing_contract())

@@ -1,0 +1,43 @@
+{
+  "groups": {
+    "full_core": {
+      "tests": 1526,
+      "passed": 1416,
+      "skipped": 110,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 218.368,
+      "log": "<WORKSPACE>/validation/intel-20261116/core/full-core-final.log"
+    },
+    "shared_http_targeted": {
+      "tests": 72,
+      "passed": 69,
+      "skipped": 3,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 37.625,
+      "log": "<WORKSPACE>/validation/intel-20261116/core/shared-http-targeted-final.log"
+    },
+    "sdk_contracts": {
+      "tests": 42,
+      "passed": 42,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 4.058,
+      "log": "<WORKSPACE>/validation/intel-20261116/core/sdk-contracts-final.log"
+    },
+    "harbor_contracts": {
+      "tests": 76,
+      "passed": 72,
+      "skipped": 4,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 27.714,
+      "log": "<WORKSPACE>/validation/intel-20261116/core/harbor-contracts-final.log"
+    }
+  },
+  "independent_groups_overlap": true,
+  "full_core_report": "<WORKSPACE>/validation/intel-20261116/core/full-core-final.json",
+  "no_real_model_or_docker_or_intel_mac": true
+}

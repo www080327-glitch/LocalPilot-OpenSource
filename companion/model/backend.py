@@ -1,6 +1,7 @@
 import json
 import os
 from pathlib import Path
+import platform
 import select
 import subprocess
 import sys
@@ -11,6 +12,10 @@ from typing import Protocol
 class ModelBackend(Protocol):
     def complete(self, messages: list[dict], max_tokens: int) -> dict: ...
     def unload(self) -> None: ...
+
+
+def mlx_supported():
+    return sys.platform == "darwin" and platform.machine() in {"arm64", "aarch64"}
 
 
 class ModelManager:
@@ -43,6 +48,9 @@ class ModelManager:
             if reason:
                 self.unload()
                 return {"status":"unavailable", "error_stage":"power_policy", "error":reason}
+        if self.adapter is None and self.config.backend == "mlx" and not mlx_supported():
+            return {"status":"unavailable", "error_stage":"backend_platform", "model_called":False,
+                    "error":"The bundled MLX worker requires Apple Silicon macOS. Configure a local-http CPU/model server on Intel Mac or Linux."}
         from companion.runtime.power import LowPowerPolicy
         if self.adapter is None and self.config.backend == 'omlx':
             try:
@@ -110,7 +118,7 @@ class ModelManager:
                 response_format = {"type":"json_schema", "json_schema":{"name":schema,"strict":True,"schema":json_schema(schema)}} if schema and self.config.http_schema_supported else None
                 http_seconds = max(.001, min(90, deadline-time.monotonic())) if deadline is not None else 90
                 result = request_chat(self.config.http_model_endpoint, self.config.http_model_name, messages, max_tokens or self.config.max_output_tokens, api_key_env=self.config.http_model_api_key_env, response_format=response_format, timeout_seconds=http_seconds,
-                    **({'chat_template_kwargs':{'enable_thinking':False}} if self.config.backend=='omlx' else {}))
+                    **({'chat_template_kwargs':{'enable_thinking':False}} if self.config.backend=='omlx' or self.config.http_model_disable_thinking else {}))
                 result["backend"] = self.config.backend
                 result["constraint"] = "server_requested_unverified" if response_format else "unsupported_validator_required" if schema else "none"
             else:
@@ -193,7 +201,7 @@ class ModelManager:
             return True
         if self.config.backend in {"local-http", "omlx"}:
             return bool(self.config.http_model_endpoint and self.config.http_model_name and self.config.http_model_host_local_only)
-        return self.config.backend == "mlx" and bool(self.config.model_path) and Path(self.config.model_path).expanduser().is_dir()
+        return self.config.backend == "mlx" and mlx_supported() and bool(self.config.model_path) and Path(self.config.model_path).expanduser().is_dir()
 
     def stats(self):
         loaded = bool(self.child and self.child.poll() is None)
@@ -206,7 +214,9 @@ class ModelManager:
                 pass
         self.wake_times[:] = [t for t in self.wake_times if time.time() - t < 3600]
         self.load_times[:] = [t for t in self.load_times if time.time() - t < 3600]
-        return {"loaded": loaded, "worker_pid": self.child.pid if loaded else None, "worker_rss_bytes": rss, "inferences": self.inferences, "model_calls_last_hour": len(self.wake_times), "model_wakes_last_hour":len(self.load_times), "model_wakes_total":self.total_loads, "model_unloads_total":self.total_unloads, "last_result_metrics": {k:v for k,v in (self.last_result or {}).items() if k not in {"text", "error"}}}
+        return {"loaded": loaded, "backend":self.config.backend, "configured":self.available(),
+                "backend_platform_supported":self.config.backend != "mlx" or mlx_supported(),
+                "owns_model_process":self.config.backend == "mlx", "worker_pid": self.child.pid if loaded else None, "worker_rss_bytes": rss, "inferences": self.inferences, "model_calls_last_hour": len(self.wake_times), "model_wakes_last_hour":len(self.load_times), "model_wakes_total":self.total_loads, "model_unloads_total":self.total_unloads, "last_result_metrics": {k:v for k,v in (self.last_result or {}).items() if k not in {"text", "error"}}}
 
     def persist_totals(self):
         if self.metrics_store:
