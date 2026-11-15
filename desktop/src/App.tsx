@@ -4,11 +4,10 @@ import { shouldSubmitEnter, type EnterBehavior } from "./inputBehavior";
 import { ensureLocalModelLoaded, usableAgentModels } from "./modelLoading";
 import { observedModelShare, subagentTraces } from "./collaboration";
 import { classifyConversations, useConversationProjects } from "./projects";
-import {
-  latestTask,
-  errorAfterHealthyConnection,
-  reconciledStreamText,
-} from "./domain";
+import { useTaskState, useTaskStream } from "./hooks/useTaskState";
+import { useServiceConnection } from "./hooks/useServiceConnection";
+import { useSessionRecovery } from "./hooks/useSessionRecovery";
+import { useCompanionMeeting } from "./hooks/useCompanionMeeting";
 import {
   permissionModes,
   permissionNames,
@@ -89,14 +88,12 @@ import {
 import ReactMarkdown from "react-markdown";
 import { DocumentLink, documentUrl } from "./documentReferences";
 import remarkGfm from "remark-gfm";
-import { call, desktop, streamListener } from "./bridge";
+import { call, desktop } from "./bridge";
 import {
   type Json,
   type Task,
   type Model,
   type NativeProfile,
-  type Message,
-  type StreamEvent,
   label,
   dimensions,
   isUnknown,
@@ -129,7 +126,6 @@ import {
   routingSupported,
   sourceAllows,
   routeEvidence,
-  taskPreferences,
   type Preferences,
   type GlobalPreferences,
 } from "./preferences";
@@ -137,12 +133,6 @@ import { Effort, demoEfforts } from "./components/Effort";
 import { Resizer } from "./components/Resizer";
 import { Modal } from "./components/Modal";
 const DeveloperTools = lazy(() => import("./components/DeveloperTools"));
-const emptyProfile: NativeProfile = {
-  home: "",
-  cli: "",
-  origin: "",
-  workspace: "",
-};
 function stored<T>(key: string, fallback: T): T {
   try {
     return JSON.parse(localStorage.getItem(key) || "null") ?? fallback;
@@ -178,16 +168,6 @@ const markdownComponents = {
   img: () => <span className="muted">[远程图片未加载]</span>,
 };
 export default function App() {
-  const [profile, setProfile] = useState(emptyProfile),
-    [health, setHealth] = useState<Json | null>(null),
-    [compHealth, setCompHealth] = useState<Json | null>(null),
-    [models, setModels] = useState<Model[]>([]),
-    [tasks, setTasks] = useState<Task[]>([]),
-    [selected, setSelected] = useState<string | null>(null),
-    [messages, setMessages] = useState<Message[]>([]),
-    [turns, setTurns] = useState<Record<string, Json>>({}),
-    [events, setEvents] = useState<Record<string, StreamEvent[]>>({}),
-    [delta, setDelta] = useState<Record<string, string>>({});
   const [preview, setPreview] = useState(false),
     [input, setInput] = useState(() =>
       desktop
@@ -198,7 +178,6 @@ export default function App() {
     ),
     [model, setModel] = useState(stored("lp.defaultModel", "")),
     [busy, setBusy] = useState(false),
-    [stream, setStream] = useState("idle"),
     [error, setError] = useState(""),
     [toast, setToast] = useState(""),
     [query, setQuery] = useState("");
@@ -214,6 +193,31 @@ export default function App() {
     [modelOpen, setModelOpen] = useState(false),
     [effort, setEffort] = useState(stored("lp.demoEffort", "high")),
     [reduced, setReduced] = useState(stored("lp.reduced", false));
+  const taskState = useTaskState(
+    useCallback(() => {
+      setRight(true);
+      setTab("activity");
+    }, []),
+  );
+  const {
+    tasks,
+    setTasks,
+    selected,
+    setSelected,
+    messages,
+    setMessages,
+    turns,
+    setTurns,
+    events,
+    setEvents,
+    delta,
+    setDelta,
+    stream,
+    setStream,
+    taskSnapshots,
+    streamedSequence,
+    updateTask,
+  } = taskState;
   const [confirm, setConfirm] = useState<"cloud" | null>(null),
     [control, setControl] = useState<{
       action: string;
@@ -225,13 +229,11 @@ export default function App() {
     [delegation, setDelegation] = useState<Json | null>(null),
     [delegatedActive, setDelegatedActive] = useState<Json | null>(null),
     [apiInfo, setApiInfo] = useState(""),
-    [pending, setPending] = useState<Json[]>([]),
     [follow, setFollow] = useState(true),
     [atBottom, setAtBottom] = useState(true);
   const [formHome, setFormHome] = useState(""),
     [formCli, setFormCli] = useState(""),
     [diagnostic, setDiagnostic] = useState<Json | null>(null),
-    [upgradeConfirm, setUpgradeConfirm] = useState(false),
     [management, setManagement] = useState(false),
     [initOpen, setInitOpen] = useState(false),
     [initWorkspace, setInitWorkspace] = useState(""),
@@ -318,7 +320,6 @@ export default function App() {
     [setupBusy, setSetupBusy] = useState(false),
     [setupStage, setSetupStage] = useState(0),
     [preferencesReady, setPreferencesReady] = useState(false),
-    [historyReady, setHistoryReady] = useState(false),
     [defaultsDraft, setDefaultsDraft] =
       useState<Preferences>(initialPreferences),
     [sessionPrefs, setSessionPrefs] = useState<Preferences>(initialPreferences),
@@ -326,7 +327,6 @@ export default function App() {
     [libraryOpen, setLibraryOpen] = useState(false),
     [toolsOpen, setToolsOpen] = useState(false),
     [developerOpen, setDeveloperOpen] = useState(false),
-    [routingCaps, setRoutingCaps] = useState<Json | null>(null),
     [chatId, setChatId] = useState(
       () =>
         stored<string>("lp.currentChat", "") || `draft-${crypto.randomUUID()}`,
@@ -353,7 +353,79 @@ export default function App() {
   const persistQueue = useRef(Promise.resolve()),
     preferenceWriteVersion = useRef(0),
     restoreDone = useRef(false);
+  const connection = useServiceConnection(taskState, {
+    setModel,
+    setError,
+    setFormHome,
+    setFormCli,
+    restoreDone,
+    showError,
+  });
+  const {
+    profile,
+    setProfile,
+    health,
+    setHealth,
+    compHealth,
+    setCompHealth,
+    models,
+    setModels,
+    pending,
+    setPending,
+    routingCaps,
+    historyReady,
+    refresh,
+  } = connection;
+  const meeting = useCompanionMeeting(!!compHealth, showError);
   const scope = `${profile.home}|${profile.origin}|${health?.client_subject || ""}`;
+  const openTask = useSessionRecovery(taskState, {
+    preferencesReady,
+    completed: globals.completed,
+    health,
+    historyReady,
+    restoreDone,
+    drafts,
+    chatId,
+    scope,
+    defaults: globals.defaults,
+    model,
+    onError: showError,
+    onPreferences: setSessionPrefs,
+    onDraft: (draft) => {
+      setInput(draft.input || "");
+      setSessionPrefs(draft.preferences);
+      setModel(draft.model);
+    },
+    onOpen: (task, view) => {
+      ++preferenceWriteVersion.current;
+      setPreferenceSaving(false);
+      setPreferenceUnsaved(false);
+      setError("");
+      setPermissionOpen(false);
+      setPreferenceOpen(false);
+      setWorkspaceGrant(task.desktop_options?.workspace_grant || "");
+      setChatId(task.session_id);
+      setInput(view.input);
+      setSessionPrefs(view.preferences);
+      setPreview(false);
+      setSelected(task.id);
+      setModel(view.model);
+      setMessages(view.messages);
+      if (task.required_action) setTab("activity");
+      setAgentProfile(
+        task.desktop_options?.agent_profile === "minimal"
+          ? "minimal"
+          : "standard",
+      );
+      if (
+        Object.keys(permissionNames).includes(
+          task.desktop_options?.permission_mode,
+        )
+      )
+        setPermissionMode(task.desktop_options.permission_mode);
+      setRight(true);
+    },
+  });
   const {
     organization,
     createProject,
@@ -433,25 +505,6 @@ export default function App() {
     historyReady,
     preview,
   ]);
-  useEffect(() => {
-    if (
-      !preferencesReady ||
-      !globals.completed ||
-      !health ||
-      !historyReady ||
-      restoreDone.current
-    )
-      return;
-    restoreDone.current = true;
-    const id = stored<string>("lp.currentTask", "");
-    const task = tasks.find((t) => t.id === id);
-    if (task) openTask(task);
-    else if (drafts[chatId]?.scope === scope) {
-      setInput(drafts[chatId].input || "");
-      setSessionPrefs(drafts[chatId].preferences);
-      setModel(drafts[chatId].model);
-    }
-  }, [preferencesReady, globals.completed, health, tasks, historyReady]);
   useEffect(() => {
     if (preferencesReady && !desktop && drafts[chatId])
       setSessionPrefs(drafts[chatId].preferences);
@@ -620,170 +673,7 @@ export default function App() {
   const scopedPending = pending.filter(
     (v) => v.origin === profile.origin && v.subject === health?.client_subject,
   );
-  const selectedRef = useRef(selected);
-  selectedRef.current = selected;
-  const taskSnapshots = useRef<Record<string, Task>>({});
-  const streamedSequence = useRef<Record<string, number>>({});
-  const updateTask = useCallback((t: Task) => {
-    if (latestTask(taskSnapshots.current[t.id], t) !== t) return;
-    taskSnapshots.current[t.id] = t;
-    if (t.required_action && t.id === selectedRef.current) {
-      setRight(true);
-      setTab("activity");
-    }
-    if (t.service?.route_decision?.selected)
-      t = { ...t, model: t.service.route_decision.selected };
-    setTasks((old) =>
-      [t, ...old.filter((v) => v.id !== t.id)].sort(
-        (a, b) => (b.created_at || 0) - (a.created_at || 0),
-      ),
-    );
-    setMessages((old) =>
-      old.map((m) =>
-        m.taskId === t.id && m.role === "assistant"
-          ? { ...m, text: textOf(t) || m.text }
-          : m,
-      ),
-    );
-  }, []);
-  const activeIdentity = useRef("");
-  const connectionError = useRef("");
-  const refreshSequence = useRef(0);
-  const refresh = useCallback(async () => {
-    const sequence = ++refreshSequence.current;
-    setHistoryReady(false);
-    try {
-      const h = await call<Json>("api", { method: "GET", path: "/healthz" });
-      const activeProfile = await call<NativeProfile>("profile");
-      if (sequence !== refreshSequence.current) return;
-      const identity = `${activeProfile.origin}|${h.client_subject}|${h.client_generation || ""}`;
-      if (activeIdentity.current && activeIdentity.current !== identity) {
-        setPending([]);
-        setTurns({});
-        setTasks([]);
-        taskSnapshots.current = {};
-        streamedSequence.current = {};
-        setSelected(null);
-        setMessages([]);
-        setEvents({});
-        setDelta({});
-        setModel("");
-        restoreDone.current = false;
-      }
-      activeIdentity.current = identity;
-      setPending([]);
-      setHealth(h);
-      if (!compatible(h))
-        throw new Error("服务契约不兼容；请在连接设置中检查版本。");
-      const [m, t] = await Promise.all([
-        call<Json>("api", {
-          method: "GET",
-          path: "/localpilot/v1/model-registry",
-        }),
-        call<Json>("api", { method: "GET", path: "/localpilot/v1/tasks" }),
-      ]);
-      if (sequence !== refreshSequence.current) return;
-      setModels(m.models || []);
-      let automaticSupported = false;
-      try {
-        const cap = await call<Json>("routing_capabilities");
-        setRoutingCaps(cap);
-        automaticSupported = routingSupported(h, cap);
-      } catch {
-        setRoutingCaps(null);
-      }
-      setTasks(
-        (t.tasks || [])
-          .map((incoming: Task) => {
-            const latest = latestTask(
-              taskSnapshots.current[incoming.id],
-              incoming,
-            );
-            taskSnapshots.current[incoming.id] = latest;
-            return latest;
-          })
-          .sort(
-            (a: Task, b: Task) => (b.created_at || 0) - (a.created_at || 0),
-          ),
-      );
-      setModel(
-        (old) =>
-          ((old === "__auto__" && automaticSupported) ||
-          m.models?.some(
-            (v: Model) =>
-              v.id === old &&
-              v.deployment_status === "ready" &&
-              !v.reasoning_only &&
-              v.capabilities?.includes("tool_calling"),
-          )
-            ? old
-            : "") ||
-          (automaticSupported ? "__auto__" : "") ||
-          m.models?.find(
-            (v: Model) =>
-              v.deployment_status === "ready" &&
-              !v.reasoning_only &&
-              v.capabilities?.includes("tool_calling"),
-          )?.id ||
-          "",
-      );
-      try {
-        setCompHealth(await call("companion", { command: "status" }));
-      } catch {
-        setCompHealth(null);
-      }
-      setPending(await call<Json[]>("pending_submissions"));
-      setTurns(await call<Record<string, Json>>("submission_history"));
-      setHistoryReady(true);
-      setError((old) =>
-        errorAfterHealthyConnection(old, connectionError.current),
-      );
-      connectionError.current = "";
-    } catch (e) {
-      if (sequence !== refreshSequence.current) return;
-      setHealth(null);
-      setModels([]);
-      connectionError.current = String(e);
-      throw e;
-    }
-  }, []);
-  useEffect(() => {
-    if (!desktop) return;
-    const sync = () => {
-      void refresh().catch(() => {});
-    };
-    window.addEventListener("focus", sync);
-    const timer = window.setInterval(sync, 30000);
-    return () => {
-      window.removeEventListener("focus", sync);
-      window.clearInterval(timer);
-    };
-  }, [refresh]);
-  useEffect(() => {
-    if (desktop)
-      call<NativeProfile>("profile")
-        .then((p) => {
-          setProfile(p);
-          setFormHome(p.home);
-          setFormCli(p.cli);
-          if (p.home)
-            refresh().catch(async () => {
-              // One bounded recovery per application launch; never replay Agent tasks.
-              try {
-                await call("product_control", {
-                  operation: "service_control",
-                  args: { module: "core", action: "recover", confirmed: true },
-                });
-                await refresh();
-              } catch {
-                showError(
-                  "Core 未连接。请在设置的“安装、服务与数据恢复”中恢复服务；历史与原请求保留。",
-                );
-              }
-            });
-        })
-        .catch(showError);
-  }, [refresh, showError]);
+  useTaskStream(taskState, { preview, connected, showError, setError });
   useEffect(() => {
     const sync = () => {
       setViewport(window.innerWidth);
@@ -838,118 +728,6 @@ export default function App() {
     return () => window.removeEventListener("keydown", key);
   });
   useEffect(() => {
-    let off: (() => void) | undefined;
-    let disposed = false;
-    streamListener((payload) => {
-      if (disposed) return;
-      const id = payload.taskId;
-      if (payload.kind === "event") {
-        const e = payload.data as StreamEvent;
-        // Text deltas already accumulate in delta; they are not timeline
-        // facts and keeping a second copy re-renders the entire event list.
-        if (!(e.type === "runtime.event" && e.data.type === "TextDelta")) {
-          setEvents((old) => ({
-            ...old,
-            [id]: [
-              ...(old[id] || []).filter((v) => v.sequence !== e.sequence),
-              e,
-            ].slice(-500),
-          }));
-        }
-        if (e.type === "task.status" || e.type === "task.created")
-          updateTask(e.data as Task);
-        if (
-          e.type === "runtime.event" &&
-          e.sequence > (streamedSequence.current[id] || 0)
-        ) {
-          streamedSequence.current[id] = e.sequence;
-          if (e.data.type === "ModelResponseStarted")
-            setDelta((old) => ({ ...old, [id]: "" }));
-          if (e.data.type === "TextDelta")
-            setDelta((old) => ({
-              ...old,
-              [id]: (old[id] || "") + (e.data.data?.text || ""),
-            }));
-        }
-      }
-      if (payload.kind === "snapshot") {
-        const snapshot = payload.data as Task;
-        updateTask(snapshot);
-        const recoveredText = reconciledStreamText(
-          snapshot,
-          streamedSequence.current[id] || 0,
-          payload.reconciled === true,
-        );
-        if (recoveredText !== null) {
-          // The snapshot replaces a missing SSE prefix only when it is at
-          // least as recent as the events already observed in this GUI.
-          streamedSequence.current[id] = snapshot.last_event_id;
-          setDelta((old) => ({ ...old, [id]: recoveredText }));
-        }
-      }
-      if (
-        id === selectedRef.current &&
-        [
-          "connected",
-          "connecting",
-          "reconnecting",
-          "disconnected",
-          "snapshot",
-        ].includes(payload.kind)
-      )
-        setStream(payload.kind);
-      if (payload.kind === "disconnected" && id === selectedRef.current) {
-        connectionError.current = payload.error;
-        setError(payload.error);
-      }
-      if (
-        ["connected", "snapshot"].includes(payload.kind) &&
-        id === selectedRef.current
-      ) {
-        setError((old) => (old === connectionError.current ? "" : old));
-        connectionError.current = "";
-      }
-    }).then((un) => {
-      if (disposed) un();
-      else off = un;
-    });
-    return () => {
-      disposed = true;
-      off?.();
-    };
-  }, [updateTask]);
-  useEffect(() => {
-    if (preview || !selected || !desktop) return;
-    setStream("connecting");
-    call("watch_task", { taskId: selected, after: 0 }).catch(showError);
-    return () => {
-      call("unwatch_task", { taskId: selected }).catch(() => {});
-    };
-  }, [selected, preview, showError]);
-  useEffect(() => {
-    if (!selected || preview || !connected) return;
-    const active = tasks.find((t) => t.id === selected);
-    if (!active || (terminal.has(active.status) && active.quiescent)) return;
-    const timer = window.setInterval(
-      () =>
-        call<Task>("api", {
-          method: "GET",
-          path: `/localpilot/v1/tasks/${selected}`,
-        })
-          .then(updateTask)
-          .catch(() => setStream("disconnected")),
-      active.quiescent ? 12000 : 4500,
-    );
-    return () => window.clearInterval(timer);
-  }, [
-    selected,
-    currentTask?.status,
-    currentTask?.quiescent,
-    preview,
-    connected,
-    updateTask,
-  ]);
-  useEffect(() => {
     if (follow && atBottom)
       scroller.current?.scrollTo({
         top: scroller.current.scrollHeight,
@@ -998,100 +776,6 @@ export default function App() {
     setStream("idle");
     composer.current?.focus();
   }
-  function openTask(t: Task) {
-    ++preferenceWriteVersion.current;
-    setPreferenceSaving(false);
-    setPreferenceUnsaved(false);
-    setError("");
-    setPermissionOpen(false);
-    setPreferenceOpen(false);
-    setWorkspaceGrant(t.desktop_options?.workspace_grant || "");
-    setChatId(t.session_id);
-    localStorage.setItem("lp.currentTask", JSON.stringify(t.id));
-    const cached = drafts[t.session_id];
-    setInput(cached?.scope === scope ? cached.input || "" : "");
-    setSessionPrefs(
-      cached?.scope === scope
-        ? cached.preferences
-        : turns[t.id]?.preferences || taskPreferences(t, globals.defaults),
-    );
-    if (desktop)
-      call<Preferences | null>("session_preferences", {
-        sessionId: t.session_id,
-        value: null,
-      })
-        .then((p) => {
-          if (p && selectedRef.current === t.id) setSessionPrefs(p);
-        })
-        .catch(showError);
-    setPreview(false);
-    setSelected(t.id);
-    if (t.required_action) setTab("activity");
-    setModel(t.session_model || t.model || model);
-
-    setAgentProfile(
-      t.desktop_options?.agent_profile === "minimal" ? "minimal" : "standard",
-    );
-    if (
-      Object.keys(permissionNames).includes(t.desktop_options?.permission_mode)
-    )
-      setPermissionMode(t.desktop_options.permission_mode);
-    const same = [
-      ...tasks.filter((v) => v.session_id === t.session_id && v.id !== t.id),
-      t,
-    ].sort((a, b) => (a.created_at || 0) - (b.created_at || 0));
-    setMessages(
-      same.flatMap((v) => [
-        ...(turns[v.id]?.input || v.user_input
-          ? [
-              {
-                id: `user-${v.id}`,
-                role: "user" as const,
-                text: turns[v.id]?.input || v.user_input,
-              },
-            ]
-          : []),
-        {
-          id: `answer-${v.id}`,
-          role: "assistant" as const,
-          text: textOf(v) || "该任务暂无最终文本。可在右侧查看当前状态和事件。",
-          taskId: v.id,
-          source:
-            turns[v.id] || v.user_input
-              ? "服务快照 · 原请求保存在本机"
-              : "服务快照 · 此客户端未保存原始提问",
-        },
-      ]),
-    );
-    setRight(true);
-  }
-  useEffect(() => {
-    if (!desktop) return;
-    let disposed = false;
-    const load = (id: string) => {
-      if (!/^resp_[a-zA-Z0-9]+$/.test(id)) return;
-      void call<Task>("api", {
-        method: "GET",
-        path: `/localpilot/v1/tasks/${id}`,
-      })
-        .then((t) => {
-          if (!disposed) {
-            updateTask(t);
-            openTask(t);
-          }
-        })
-        .catch(showError);
-    };
-    const id = new URLSearchParams(location.search).get("petTask");
-    if (id) load(id);
-    const stop = listen<Json>("pet-review-task", (e) =>
-      load(e.payload.task_id),
-    );
-    return () => {
-      disposed = true;
-      void stop.then((f) => f());
-    };
-  }, []);
   function enterPreview() {
     setPreview(true);
     setSelected(null);
@@ -1802,6 +1486,24 @@ export default function App() {
         } as CSSProperties
       }
     >
+      {(meeting.active || meeting.uncertain) && (
+        <div className="meeting-capture-banner" role="status">
+          <strong>
+            {meeting.uncertain ? "会议采集状态待确认" : "正在采集会议音频"}
+          </strong>
+          <span>
+            {meeting.meeting?.label || meeting.meeting?.capture} ·{" "}
+            {meeting.meeting?.segments || 0} 段
+          </span>
+          <button
+            className="secondary"
+            disabled={meeting.busy}
+            onClick={() => void meeting.control("meeting_stop")}
+          >
+            停止采集
+          </button>
+        </div>
+      )}
       {left && (
         <aside className="sidebar">
           <div className="window-space" data-tauri-drag-region />
@@ -3738,6 +3440,7 @@ export default function App() {
             </button>
           </section>
           <ProductSettings
+            meeting={meeting}
             permissionMode={permissionDefault}
             enterBehavior={enterBehavior}
             onEnterBehavior={setEnterBehavior}
@@ -4015,47 +3718,9 @@ export default function App() {
                   </button>
                 ))}
               </div>
-              <div className="upgrade-row">
-                <span>升级与回滚</span>
-                {["core", "companion", "suite"].map((module) => (
-                  <button
-                    className="text-btn"
-                    key={module}
-                    disabled={!profile.cli || management}
-                    onClick={async () => {
-                      setManagement(true);
-                      try {
-                        setDiagnostic(await call("upgrade_plan", { module }));
-                      } catch (e) {
-                        showError(e);
-                      } finally {
-                        setManagement(false);
-                      }
-                    }}
-                  >
-                    {module} 升级计划
-                    <Download size={12} />
-                  </button>
-                ))}
-              </div>
-              <p className="micro muted">
-                先选择目标与回滚 wheel，审核后调用 Suite
-                升级。请先停止受影响服务；CLI 会检查活动任务。关闭 GUI
-                只断开连接。
-              </p>
               {diagnostic && (
                 <>
                   <Pretty value={diagnostic} />
-                  {diagnostic.plan_id && (
-                    <button
-                      className="secondary"
-                      disabled={management}
-                      onClick={() => setUpgradeConfirm(true)}
-                    >
-                      审核并执行此升级
-                      <ArrowRight size={13} />
-                    </button>
-                  )}
                 </>
               )}
             </div>
@@ -4065,50 +3730,6 @@ export default function App() {
               {error}
             </p>
           )}
-        </Modal>
-      )}
-      {upgradeConfirm && (
-        <Modal
-          title="执行已审核的升级"
-          onClose={() => setUpgradeConfirm(false)}
-        >
-          <p>
-            以下路径与模块来自原生文件选择器，执行使用同一份计划。Suite
-            保留用户数据，并检查服务是否已停止。回滚包会记录在 Suite 数据目录。
-          </p>
-          <Pretty value={diagnostic?.result} />
-          <div className="dialog-actions">
-            <button
-              className="secondary"
-              onClick={() => setUpgradeConfirm(false)}
-            >
-              返回
-            </button>
-            <button
-              className="primary"
-              disabled={management}
-              onClick={async () => {
-                if (!diagnostic?.plan_id) return;
-                setUpgradeConfirm(false);
-                setManagement(true);
-                try {
-                  setDiagnostic(
-                    await call("execute_upgrade", {
-                      planId: diagnostic.plan_id,
-                    }),
-                  );
-                  setToast("升级操作已返回，请运行诊断后再启动");
-                } catch (e) {
-                  showError(e);
-                } finally {
-                  setManagement(false);
-                }
-              }}
-            >
-              执行此升级
-              <ArrowRight size={14} />
-            </button>
-          </div>
         </Modal>
       )}
       {confirm === "cloud" && (

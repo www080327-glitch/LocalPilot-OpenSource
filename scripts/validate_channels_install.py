@@ -94,8 +94,10 @@ def main():
         suite=next(wheels.glob('localpilot_suite-*.whl'))
         channels=next(wheels.glob('localpilot_channels-*.whl'))
         with zipfile.ZipFile(core) as archive:
-            assert 'localpilot_channels/__main__.py' in archive.namelist(), 'Core wheel omitted the facade'
-            assert any('/share/localpilot/channels/channel-common/security.mjs' in n for n in archive.namelist())
+            names = archive.namelist()
+            assert not any(n.startswith('localpilot_channels/') or '/share/localpilot/channels/' in n for n in names), 'Channels must have one distribution owner'
+            entries = next(n for n in names if n.endswith('.dist-info/entry_points.txt'))
+            assert 'localpilot-channels' not in archive.read(entries).decode(), 'Channels owns its console entry point'
         with zipfile.ZipFile(channels) as archive:
             names=archive.namelist()
             assert 'localpilot_channels/__main__.py' in names
@@ -125,8 +127,7 @@ def main():
             py=runtime/('Scripts/python.exe' if os.name=='nt' else 'bin/python')
             run(label+'-install-core',[py,'-m','pip','--isolated','install',hostwheel])
             run(label+'-install-suite',[py,'-m','pip','--isolated','install','--no-deps',suite])
-            if label=='official-b20':
-                run(label+'-install-channel-facade',[py,'-m','pip','--isolated','install','--no-deps',channels])
+            run(label+'-install-channel-facade',[py,'-m','pip','--isolated','install','--no-deps',channels])
             # The test directory has NO Agent, Service or facade source. Imports
             # must resolve to the fresh installed wheels from a different cwd.
             sandbox=out/(label+'-test-harness');sandbox.mkdir()

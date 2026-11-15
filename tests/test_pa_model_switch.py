@@ -14,7 +14,7 @@ from agent.persistence import snapshot_runtime
 from agent.policy import DataPolicy
 from agent.registry import create_default_registry
 from agent.retry import RetryPolicy
-from agent.session import AgentSession
+from agent.session import AgentSession, SessionBudgets
 from localpilot_api.service import TaskService
 from localpilot_service.security import AccessPolicy, Principal
 from localpilot_service.server import ServiceServer
@@ -41,6 +41,8 @@ class ModelSwitchTests(unittest.TestCase):
         self.backends['internal-a'].is_local = True
         self.target_workspace = self.workspace
         self.async_policy = AsyncPolicy()
+        self.route_async = {}
+        self.budgets = SessionBudgets(max_worker_token_units=131072)
         self.use_v5 = False
         self.services = []
         self.start()
@@ -54,7 +56,8 @@ class ModelSwitchTests(unittest.TestCase):
             backend=backend, policy='local-only' if local else 'cloud-only',
             data_policy=policy, hybrid_policy=HybridPolicy(CloudEgressPolicy('LOCAL_ONLY' if local else 'CLOUD_ALLOWED')),
             hybrid_backends={'selected':backend}, hybrid_primary='selected',
-            async_policy=self.async_policy, engine_policy=EngineV5Policy() if self.use_v5 else None,
+            budgets=self.budgets,
+            async_policy=self.route_async.get(name, self.async_policy), engine_policy=EngineV5Policy() if self.use_v5 else None,
             event_callback=callback, retry_policy=RetryPolicy(max_attempts=1))
 
     def start(self):
@@ -248,19 +251,92 @@ class ModelSwitchTests(unittest.TestCase):
         self.assertEqual(self.service.sessions[sid].model, 'internal-a')
         self.assertIn('retain persisted history', [m.content for m in self.service.sessions[sid].runtime.messages])
 
-    def test_completed_child_backend_cannot_be_silently_rebound(self):
+    def test_completed_child_keeps_original_backend_history_and_receipts_across_switch_and_restart(self):
+        (self.workspace / 'child-source.txt').write_text('original worker evidence')
         self.backends['internal-a'].steps = [answer(None, call('delegate', {
             'task':'bounded review', 'backend_preference':'local', 'backend_id':'selected',
-            'read_only':True, 'mode':'sync'}, 'child-once')), answer('Child complete'), answer('Parent complete')]
+            'read_only':True, 'mode':'sync'}, 'child-once')),
+            answer(None, call('read_file', {'path':'child-source.txt'}, 'child-read')),
+            answer('Child complete'), answer('Parent complete')]
         sid = self.session()['id']
         first = self.submit(sid, 'review with one child', 'child')
         self.assertEqual(first['status'], 'completed')
         old = self.service.sessions[sid].runtime
         self.assertEqual(len(old._children), 1)
         before = snapshot_runtime(old)
-        self.denied(409, lambda:self.switch(sid), 'model_switch_children_incompatible')
-        self.assertEqual(snapshot_runtime(old), before)
+        self.switch(sid)
+        migrated = self.service.sessions[sid].runtime
+        self.assertEqual(snapshot_runtime(migrated)['children'], before['children'])
+        self.assertEqual(migrated._children['1.1'].current_primary_model, 'internal-a')
+        self.assertEqual(migrated.current_primary_model, 'internal-b')
+        self.assertEqual(migrated.tool_history, before['history'])
         self.assertEqual(len(self.backends['internal-b'].requests), 0)
+        count = len(self.backends['internal-a'].requests)
+        self.restart()
+        restored = self.service.sessions[sid].runtime
+        self.assertEqual(snapshot_runtime(restored)['children'], before['children'])
+        self.assertEqual(restored._children['1.1'].current_primary_model, 'internal-a')
+        self.assertEqual(len(self.backends['internal-a'].requests), count)
+        self.assertEqual(self.client.submit('review with one child', model='a', session_id=sid,
+            idempotency_key='child')['id'], first['id'])
+        second = self.submit(sid, 'Continue using the earlier evidence.', 'after-child')
+        self.assertEqual(second['status'], 'completed')
+        self.switch(sid, 'a', 'b')
+        self.restart()
+        self.assertEqual(snapshot_runtime(self.service.sessions[sid].runtime)['children'], before['children'])
+        self.assertEqual(self.service.sessions[sid].runtime.tool_history, before['history'])
+
+    def test_child_route_contract_change_is_rejected_without_relabeling_history(self):
+        self.backends['internal-a'].steps = [answer(None, call('delegate', {
+            'task':'bounded review', 'backend_preference':'local', 'read_only':True}, 'worker')),
+            answer('child complete'), answer('parent complete')]
+        sid = self.session()['id']
+        self.submit(sid, 'review', 'worker-review')
+        old = self.service.sessions[sid].runtime
+        self.service.routes['internal-a'] = lambda callback: self.factory('internal-b', callback)
+        before = snapshot_runtime(old)
+        self.denied(409, lambda:self.switch(sid), 'model_switch_children_incompatible')
+        self.assertIs(self.service.sessions[sid].runtime, old)
+        self.assertEqual(snapshot_runtime(old), before)
+        self.assertIsNone(self.service.sessions[sid].child_route_contexts)
+
+    def test_prompt_permission_change_keeps_completed_child_contract_on_restart(self):
+        self.backends['internal-a'].steps = [answer(None, call('delegate', {
+            'task':'bounded review', 'backend_preference':'local', 'read_only':True}, 'worker')),
+            answer('child complete'), answer('parent complete')]
+        sid = self.session()['id']
+        self.submit(sid, 'review', 'profile-child')
+        before = snapshot_runtime(self.service.sessions[sid].runtime)['children']
+        self.operator.request('/localpilot/v1/desktop-sessions/'+sid+'/profile', {
+            'client_subject':'desktop', 'agent_profile':'minimal', 'expected_profile':'standard',
+            'permission_mode':'isolated', 'expected_permission_mode':'full'})
+        self.restart()
+        runtime = self.service.sessions[sid].runtime
+        self.assertEqual(snapshot_runtime(runtime)['children'], before)
+        self.assertEqual(runtime.registry.scope_policy['mode'], 'isolated')
+        self.assertEqual(runtime._children['1.1'].registry.scope_policy['mode'], 'full')
+        self.assertTrue(runtime._children['1.1'].registry.gateway.capabilities.read_only)
+
+    def test_idle_route_switch_can_enable_and_disable_async_without_losing_history(self):
+        self.route_async['internal-a'] = None
+        self.backends['internal-a'].steps = [answer(None, call('delegate', {
+            'task':'bounded review', 'backend_preference':'local', 'read_only':True}, 'worker')),
+            answer('child complete'), answer('parent complete')]
+        sid = self.session()['id']
+        self.submit(sid, 'review', 'sync-child')
+        before = snapshot_runtime(self.service.sessions[sid].runtime)['children']
+        self.switch(sid)
+        self.restart()
+        current = self.service.sessions[sid].runtime
+        self.assertEqual(current.async_policy, self.async_policy)
+        self.assertIs(current._scheduler, self.service.scheduler)
+        self.assertEqual(snapshot_runtime(current)['children'], before)
+        self.assertEqual(self.submit(sid, 'Continue', 'async-next')['status'], 'completed')
+        self.switch(sid, 'a', 'b')
+        self.restart()
+        current = self.service.sessions[sid].runtime
+        self.assertIsNone(current.async_policy)
+        self.assertEqual(snapshot_runtime(current)['children'], before)
 
     def test_native_reasoning_remains_canonical_but_is_not_replayed_to_another_provider(self):
         response = answer('Visible answer')

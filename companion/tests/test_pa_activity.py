@@ -62,6 +62,41 @@ class PersonalActivityTests(unittest.TestCase):
         self.app.store.set("proactive_level", "off")
         self.assertIsNone(self.app.scheduled_greeting(self.noon.replace(hour=19).timestamp()))
 
+    def test_evening_greeting_deduplicates_after_runtime_reopen(self):
+        evening = self.noon.replace(hour=19).timestamp()
+        notice = self.app.scheduled_greeting(evening)
+        self.assertIsNotNone(notice)
+        config = self.app.config
+        self.app.native.stop(); self.app.observer.stop(); self.app.model.unload(); self.app.channel.stop()
+        self.app.store.close(); self.app.lock.close()
+        self.app = Companion(config)
+        for kind in ("system.did_wake", "system.screens_wake", "session.became_active"):
+            self.app.process_native(ObservationEvent.create("session", kind, {"type":"system"},
+                {"notification":kind, "coverage":"PARTIAL", "lock_state":"UNKNOWN"}, timestamp=evening+60).to_dict())
+        self.assertIsNone(self.app.scheduled_greeting(evening+120))
+        self.assertEqual(self.app.store.db.execute("SELECT count(*) FROM notices").fetchone()[0], 1)
+        self.assertEqual(self.app.model.inferences, 0)
+
+    def test_quiet_wake_does_not_consume_the_later_morning_greeting(self):
+        self.app.config.quiet_start_hour, self.app.config.quiet_end_hour = 22, 8
+        for hour in (7, 9):
+            self.app.process_native(ObservationEvent.create("session", "system.did_wake", {"type":"system"},
+                {"notification":"system.did_wake", "coverage":"PARTIAL", "lock_state":"UNKNOWN"},
+                timestamp=self.noon.replace(hour=hour).timestamp()).to_dict())
+        rows = self.app.store.db.execute("SELECT timestamp,message FROM notices").fetchall()
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(datetime.fromtimestamp(rows[0]["timestamp"]).hour, 9)
+        self.assertIn("早上好", rows[0]["message"])
+
+    def test_source_question_uses_actual_occurrence_date_for_repeated_codex_snapshot(self):
+        from companion.memory.activity import source_activity_answer
+        yesterday = (self.noon-timedelta(days=1)).replace(hour=10).timestamp()
+        today = self.noon.replace(hour=9).timestamp()
+        source = self.observe("Visible conversation in Codex", at=yesterday)
+        self.observe("Visible conversation in Codex", at=today)
+        result = source_activity_answer(self.app.observation_memory, "昨天 Codex 做了什么", "codex", now=self.noon.timestamp())
+        self.assertEqual([(row["id"], row["timestamp"]) for row in result["items"]], [(source["id"], yesterday)])
+
     def test_day_digest_uses_occurrences_when_same_window_is_seen_on_two_days(self):
         yesterday = (self.noon - timedelta(days=1)).replace(hour=10).timestamp()
         today = self.noon.replace(hour=9).timestamp()

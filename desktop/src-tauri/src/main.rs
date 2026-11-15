@@ -19,6 +19,8 @@ use product::{
     pick_workspace, product_control, remove_attachment, stage_attachment,
 };
 mod maintenance;
+mod upgrades;
+use upgrades::{execute_upgrade, upgrade_plan};
 mod preferences;
 use developer::{
     developer_command, developer_profile, pick_developer_python, pick_developer_source,
@@ -54,7 +56,7 @@ struct Native {
     selected_files: Mutex<HashMap<String, PathBuf>>,
     selected_origins: Mutex<HashMap<String, String>>,
     selected_identities: Mutex<HashMap<String, (u64, u64, i64, u64)>>,
-    upgrades: Mutex<HashMap<String, (Profile, String, String, String)>>,
+    upgrades: Mutex<HashMap<String, upgrades::ReviewedUpgrade>>,
     preference_lock: Mutex<()>,
     watchers: Mutex<HashMap<String, tauri::async_runtime::JoinHandle<()>>>,
     setup_lock: std::sync::Arc<tokio::sync::Mutex<()>>,
@@ -646,20 +648,22 @@ async fn model_manager(
     }
 }
 #[tauri::command]
-fn profile(n: State<Native>) -> Profile {
-    current(&n)
+fn profile(n: State<Native>) -> Value {
+    let mut value = serde_json::to_value(current(&n)).unwrap();
+    value["maintenance_return"] = json!(std::env::args().any(|arg| arg == "--maintenance-return"));
+    value
 }
 #[tauri::command]
 async fn pick_suite(kind: String) -> Result<Option<String>, String> {
     let dialog = rfd::AsyncFileDialog::new();
-    let selected = if ["home", "workspace"].contains(&kind.as_str()) {
+    let selected = if ["home", "workspace", "companion_folder"].contains(&kind.as_str()) {
         dialog
-            .set_title("选择 LocalPilot Suite 数据目录")
+            .set_title(if kind == "companion_folder" { "选择授权 Companion 只读同步的来源文件夹" } else { "选择 LocalPilot Suite 数据目录" })
             .pick_folder()
             .await
     } else {
         dialog
-            .set_title("选择已安装的 localpilot 命令")
+            .set_title(if kind == "companion_file" { "选择授权 Companion 读取的对话或会议文本" } else { "选择已安装的 localpilot 命令" })
             .pick_file()
             .await
     };
@@ -1048,11 +1052,14 @@ async fn companion(
     command: String,
     text: Option<String>,
     preferences: Option<Preferences>,
+    args: Option<Value>,
 ) -> Result<Value, String> {
-    if !["status", "ask", "ui_snapshot", "escalation_status"].contains(&command.as_str()) {
+    if !["status", "ask", "ui_snapshot", "escalation_status", "source_list", "source_connect", "source_sync", "source_set_enabled", "source_revoke", "source_coverage", "training_export", "meeting_start", "meeting_stop", "meeting_status"].contains(&command.as_str()) {
         return Err(fail("未开放的 Companion 操作"));
     }
-    let mut body = json!({"command":command});
+    let mut body = args.unwrap_or_else(|| json!({}));
+    if !body.is_object() { return Err(fail("Companion 参数必须是对象")); }
+    body["command"] = json!(command);
     if command == "ask" {
         if let Some(ref prefs) = preferences {
             if prefs.source == preferences::Source::CloudOnly {
@@ -1607,7 +1614,9 @@ async fn cli_run(p: Profile, args: Vec<String>) -> Result<Value, String> {
             if let Some(s) = child.try_wait().map_err(|_| fail("CLI 状态不可读"))? {
                 break s;
             }
-            let deadline = if args.first().is_some_and(|a| a == "product-control") {
+            let deadline = if args.first().is_some_and(|a| a == "upgrade") {
+                1800
+            } else if args.first().is_some_and(|a| a == "product-control") {
                 1200
             } else if args.first().is_some_and(|a| a == "cloud-configure") {
                 200
@@ -2081,78 +2090,6 @@ async fn lifecycle(n: State<'_, Native>, action: String) -> Result<Value, String
         _ => return Err(fail("未开放的管理动作")),
     };
     cli_run(current(&n), args.into_iter().map(String::from).collect()).await
-}
-#[tauri::command]
-async fn upgrade_plan(n: State<'_, Native>, module: String) -> Result<Value, String> {
-    if !["core", "companion", "suite"].contains(&module.as_str()) {
-        return Err(fail("未知模块"));
-    }
-    let wheel = rfd::AsyncFileDialog::new()
-        .set_title("选择目标发布 wheel")
-        .add_filter("Python wheel", &["whl"])
-        .pick_file()
-        .await
-        .ok_or("已取消")?
-        .path()
-        .to_string_lossy()
-        .to_string();
-    let previous = rfd::AsyncFileDialog::new()
-        .set_title("选择回滚用的旧 wheel")
-        .add_filter("Python wheel", &["whl"])
-        .pick_file()
-        .await
-        .ok_or("已取消：执行升级必须有具体回滚包")?
-        .path()
-        .to_string_lossy()
-        .to_string();
-    let p = current(&n);
-    let mut result = cli_run(
-        p.clone(),
-        vec![
-            "upgrade".into(),
-            module.clone(),
-            "--wheel".into(),
-            wheel.clone(),
-            "--previous-wheel".into(),
-            previous.clone(),
-        ],
-    )
-    .await?;
-    if result["exit"] == 0 {
-        let id = uuid::Uuid::new_v4().to_string();
-        n.upgrades
-            .lock()
-            .unwrap()
-            .insert(id.clone(), (p, module, wheel, previous));
-        result["plan_id"] = json!(id);
-    }
-    Ok(result)
-}
-#[tauri::command]
-async fn execute_upgrade(n: State<'_, Native>, plan_id: String) -> Result<Value, String> {
-    let plan = n
-        .upgrades
-        .lock()
-        .unwrap()
-        .remove(&plan_id)
-        .ok_or("升级计划已过期，请重新选择发布包")?;
-    let p = current(&n);
-    if plan.0.home != p.home || plan.0.cli != p.cli {
-        return Err(fail("连接已改变，拒绝执行旧升级计划"));
-    }
-    cli_run(
-        p,
-        vec![
-            "upgrade".into(),
-            plan.1,
-            "--wheel".into(),
-            plan.2,
-            "--previous-wheel".into(),
-            plan.3,
-            "--execute".into(),
-        ],
-    )
-    .await
 }
 #[tauri::command]
 async fn open_control_terminal(

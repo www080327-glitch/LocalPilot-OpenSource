@@ -75,6 +75,7 @@ class SessionRecord:
     desktop_key: str | None = None
     desktop_fingerprint: str | None = None
     extensions: dict | None = None  # Host extensions committed with their configuration identity.
+    child_route_contexts: dict | None = None
 
 
 @dataclass
@@ -174,16 +175,16 @@ class TaskService:
         with self.condition:
             session = self._session(session_id)
             payload = {"version": 1, "configuration": session.runtime._persistence_config,
-                "session": {f.name: getattr(session, f.name) for f in fields(SessionRecord) if f.name != "runtime" and not (f.name=='extensions' and not session.extensions)},
+                "session": {f.name: getattr(session, f.name) for f in fields(SessionRecord) if f.name != "runtime" and not (f.name in {'extensions', 'child_route_contexts'} and not getattr(session, f.name))},
                 "runtime": snapshot_runtime(session.runtime),
                 "tasks": [pack({f.name: getattr(t, f.name) for f in fields(TaskRecord) if f.name != "timer"})
                           for t in self.tasks.values() if t.session_id == session_id]}
             self.store.save(session_id, payload, point)
 
     def _attach_persistence(self, session):
-        if session.runtime.async_policy != self.async_policy:
+        if session.runtime.async_policy is not None and session.runtime.async_policy != self.async_policy:
             raise ValueError('Async Session and TaskService policies must match')
-        if self.scheduler:
+        if session.runtime.async_policy:
             for runtime in nodes(session.runtime):
                 runtime._owns_scheduler = False
                 runtime._async_enabled = True
@@ -233,10 +234,15 @@ class TaskService:
                 if migration is None or not migration(runtime, payload):
                     raise PersistenceError("Host configuration changed; explicit migration required")
                 migrated.append((sid,getattr(migration,'checkpoint_point','host_restore_private_paths_rebased')))
-            if self.scheduler:
+            if runtime.async_policy:
                 runtime._state_condition, runtime._scheduler = self.condition, self.scheduler
                 runtime._scheduler_owner = sid
-            restore_runtime(runtime, payload["runtime"])
+            from .session_history import retained_child_parents
+            previous_child_contexts = deepcopy(saved.get('child_route_contexts'))
+            with retained_child_parents(self, saved) as child_parents:
+                restore_runtime(runtime, payload["runtime"], child_parents=child_parents)
+            if saved.get('child_route_contexts') != previous_child_contexts and not any(item[0] == sid for item in migrated):
+                migrated.append((sid, 'host_restore_child_paths_rebased'))
             runtime._effective_thinking()
             runtime._persistence_config = cfg
             session = SessionRecord(runtime=runtime, **saved)

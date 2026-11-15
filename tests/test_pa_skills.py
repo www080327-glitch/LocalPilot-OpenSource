@@ -5,9 +5,10 @@ import tempfile
 import unittest
 
 from agent.engine_v5 import EngineV5Policy
-from agent.persistence import configuration
+from agent.hybrid import CloudEgressPolicy, HybridPolicy
+from agent.persistence import configuration, snapshot_runtime, restore_runtime
 from agent.registry import create_default_registry
-from agent.session import AgentSession
+from agent.session import AgentSession, SessionBudgets
 from localpilot_plugins.adapter import configure_session
 from localpilot_plugins.skills import SkillRegistry
 from tests.test_runtime_api import Backend, answer, call
@@ -86,6 +87,44 @@ class SelectedSkillTests(unittest.TestCase):
         first, _ = self.runtime(selected)
         second, _ = self.runtime(list(reversed(selected)))
         self.assertEqual(first.registry.schemas(), second.registry.schemas())
+
+    def test_worker_loads_same_reviewed_skill_and_restores_its_tool_contract(self):
+        self.install('activity', 'WORKER_GUIDE: read the source and cite the observation.')
+        (self.work/'source.txt').write_text('Public source fact')
+        backend = Backend(answer(None, call('delegate', {
+            'backend_preference':'cloud', 'task':'Read the public source with the activity guide.',
+            'read_only':True}, 'delegate-once')),
+            answer(None, call('load_skill', {'skill':'activity:user'}, 'load-once')),
+            answer(None, call('read_file', {'path':'source.txt'}, 'read-once')),
+            answer('Public source fact'), answer('Collected the evidence.'))
+
+        def configured():
+            runtime = AgentSession(create_default_registry(self.work, permission_mode='full-permission'),
+                backend=backend, policy='cloud-only', engine_policy=EngineV5Policy(),
+                hybrid_policy=HybridPolicy(CloudEgressPolicy('CLOUD_ALLOWED')),
+                hybrid_backends={'cloud':backend}, hybrid_primary='cloud',
+                budgets=SessionBudgets(max_steps=20, max_token_units=2000000,
+                    max_worker_steps=8, max_worker_token_units=500000))
+            self.runtimes.append(runtime)
+            configure_session(runtime, self.root/'plugins', skill_home=self.skills.user,
+                              skills=[{'id':'activity','scope':'user'}])
+            return runtime
+
+        runtime = configured()
+        result = runtime.run_turn('Delegate a read-only source check.')
+        self.assertEqual(result.status, 'completed')
+        child = runtime._children['1.1']
+        self.assertIn('load_skill', child.registry._tools)
+        self.assertTrue(child.registry.gateway.capabilities.read_only)
+        self.assertFalse(child.registry.gateway.capabilities.write)
+        self.assertEqual([r['name'] for r in child.tool_history], ['load_skill','read_file'])
+        self.assertNotIn('apply_patch', [s['function']['name'] for s in backend.requests[1]['tools']])
+        saved = snapshot_runtime(runtime)
+        count = len(backend.requests)
+        restored = configured()
+        restore_runtime(restored, saved)
+        self.assertEqual(snapshot_runtime(restored)['children'], saved['children'])
+        self.assertEqual(len(backend.requests), count)
 
 
 if __name__ == "__main__":

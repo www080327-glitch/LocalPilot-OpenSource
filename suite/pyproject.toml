@@ -6,6 +6,8 @@ name = "localpilot-suite"
 version = "0.2.0b26"
 description = "Thin installation and CLI coordination for independent LocalPilot and Companion services"
 requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 dependencies = ["localpilot-agent-service>=5.0.0b20,<6", "localpilot-companion>=0.5.6b1,<0.6"]
 [project.scripts]
 localpilot = "localpilot_suite.cli:main"

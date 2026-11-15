@@ -1,0 +1,713 @@
+{
+  "archive_sha256": "c2c8c3a758a7e3fc807a271aefb409f7eb5a1cb4e1b67420397730ee7734b0a3",
+  "redaction": "Workspace absolute root -> WORKSPACE; ANSI color removed; no test results changed. Historical logs may concern earlier source checkpoints.",
+  "files": [
+    {
+      "path": "suite-desktop/mac-portability-20261115-architecture.log",
+      "raw_sha256": "eb4c4e54158d61a2461371cb5f3e54f4aaaa98649b2799bd3793391626f87f3e",
+      "public_sha256": "eb4c4e54158d61a2461371cb5f3e54f4aaaa98649b2799bd3793391626f87f3e",
+      "bytes": 627,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "suite-desktop/mac-portability-20261115-desktop-final.log",
+      "raw_sha256": "a7abad70a00c26af5f26193dccf192420ecf81861e4aa9b5a92fb972c6f12d1b",
+      "public_sha256": "1d39bc083cb6db29b7e29cc59742aebd46e0dcf29577096dd0cf8f005f40fa33",
+      "bytes": 1260,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "suite-desktop/mac-portability-20261115-desktop.log",
+      "raw_sha256": "c70fc57502ab9275fdd8a3008132fe6f603d1da06f892272470b344684c0d727",
+      "public_sha256": "53d7588e991703c40d33340073c74a4c0c337cac25a136f56fdeeeb79b89b3c7",
+      "bytes": 1260,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "suite-desktop/mac-portability-20261115-install.log",
+      "raw_sha256": "027448bf941a7404599f1c0bfd710e02644e85491c98af5b2fceaec952dafb1b",
+      "public_sha256": "027448bf941a7404599f1c0bfd710e02644e85491c98af5b2fceaec952dafb1b",
+      "bytes": 1973,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "suite-desktop/mac-portability-20261115-prettier.log",
+      "raw_sha256": "d041f2ac05e02d3ba83c34644f20a37f396e803c3883e5b2e084cadb71d173d2",
+      "public_sha256": "d041f2ac05e02d3ba83c34644f20a37f396e803c3883e5b2e084cadb71d173d2",
+      "bytes": 142,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "suite-desktop/mac-portability-20261115-suite-final.log",
+      "raw_sha256": "9421a0652099a83afdfd4d4e2681d8bd853fb0fcf6a736618ab3b0c9f52abb6b",
+      "public_sha256": "9421a0652099a83afdfd4d4e2681d8bd853fb0fcf6a736618ab3b0c9f52abb6b",
+      "bytes": 17761,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "suite-desktop/mac-portability-20261115-suite.log",
+      "raw_sha256": "dc5ede5d5a48363e3ef486fe81952e2d3d8d19ee976a8b6175330088e99be2eb",
+      "public_sha256": "dc5ede5d5a48363e3ef486fe81952e2d3d8d19ee976a8b6175330088e99be2eb",
+      "bytes": 17319,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/adaptive-final.log",
+      "raw_sha256": "69b2cd4ecf25b215fb5b091435ffeb54db246330cf7dc08b863ff6a2077ff9e5",
+      "public_sha256": "69b2cd4ecf25b215fb5b091435ffeb54db246330cf7dc08b863ff6a2077ff9e5",
+      "bytes": 5011,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/adaptive-preapproval-transition.log",
+      "raw_sha256": "8ff6a45444fd6ebff119cd31b0db50711422a52819af8dc0c4e61bfddbaa4c9b",
+      "public_sha256": "257bbf44956719700e17b9170c6e87de3b8418bfe4f5873c50d8c4d6f3266ac3",
+      "bytes": 1073,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/build-baseline.log",
+      "raw_sha256": "003381d5fdb2bb4d2a81867d7366634149f37384587a148ae244afb6265e67b4",
+      "public_sha256": "003381d5fdb2bb4d2a81867d7366634149f37384587a148ae244afb6265e67b4",
+      "bytes": 880,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/build-current.log",
+      "raw_sha256": "470ab613f0fcf2f2a3a581ae9163697c9b96fd6f139499b701c23d2767274042",
+      "public_sha256": "470ab613f0fcf2f2a3a581ae9163697c9b96fd6f139499b701c23d2767274042",
+      "bytes": 880,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/build-final.log",
+      "raw_sha256": "4fbaf9a17e0a35191088fd6d92d826740cb0b427d40356a63b189fbc5e71abdc",
+      "public_sha256": "4fbaf9a17e0a35191088fd6d92d826740cb0b427d40356a63b189fbc5e71abdc",
+      "bytes": 880,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/build-tools-install.log",
+      "raw_sha256": "663a6d383b4f30918375161cd1d8a4995cea54e4f252fc59c99dae7d7a90ab7f",
+      "public_sha256": "663a6d383b4f30918375161cd1d8a4995cea54e4f252fc59c99dae7d7a90ab7f",
+      "bytes": 539,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/child-factory.log",
+      "raw_sha256": "4a5f28a9c20ab7309b71d86abbb45fcec127fb6b9e11529f389305323720c21c",
+      "public_sha256": "4a5f28a9c20ab7309b71d86abbb45fcec127fb6b9e11529f389305323720c21c",
+      "bytes": 99,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/child-migration-first.log",
+      "raw_sha256": "eaea7acdf8a127a40bd2daedd82a125545d43b8339b4751b7bca3d5fd352b2ea",
+      "public_sha256": "2f111e4c1f0b2bde581564ce3a57a68c3f0a48e9f2479c3fad011907f3d9705d",
+      "bytes": 897,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/child-migration-second.log",
+      "raw_sha256": "80cde94a24744bff753987a60037279c0b2522df0318992cf2598dae80788b9b",
+      "public_sha256": "7d3e1bd90977550d63e320b8ca529a43042538a191c4ce61aed101160eddba29",
+      "bytes": 840,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-20261115-baseline.log",
+      "raw_sha256": "ee3930d20e488543ec63fdf1f4b676af8d1687e5a49b6fc9e0af9eadf17561f0",
+      "public_sha256": "ee3930d20e488543ec63fdf1f4b676af8d1687e5a49b6fc9e0af9eadf17561f0",
+      "bytes": 96469,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-20261115-final-focus.log",
+      "raw_sha256": "83481d0d3f5270a9b2e6a09aba64e17a2ac4c645c0bd7f0ff2e6c60398ea76c3",
+      "public_sha256": "83481d0d3f5270a9b2e6a09aba64e17a2ac4c645c0bd7f0ff2e6c60398ea76c3",
+      "bytes": 98,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-20261115-final-r3.log",
+      "raw_sha256": "fda91add087aa572e8c802fe9f5364c0185ba9f0a91a0820438f812fc60e4ccd",
+      "public_sha256": "fda91add087aa572e8c802fe9f5364c0185ba9f0a91a0820438f812fc60e4ccd",
+      "bytes": 12001,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-20261115-full-r1.log",
+      "raw_sha256": "1bd389298dc2e9c4f394fcd49857bb2e4f356dbb4431376bfe9d7af28e738ff0",
+      "public_sha256": "1bd389298dc2e9c4f394fcd49857bb2e4f356dbb4431376bfe9d7af28e738ff0",
+      "bytes": 103225,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-20261115-full-r2.log",
+      "raw_sha256": "47b6172e1910ca58cc34b0a4dbeb708b8b72c37cf8f0a307511c00b917ef49e7",
+      "public_sha256": "47b6172e1910ca58cc34b0a4dbeb708b8b72c37cf8f0a307511c00b917ef49e7",
+      "bytes": 105625,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-20261115-integration-r1.log",
+      "raw_sha256": "e698c687b7c2ff455f85973f4b7e0f0b2cdbdd8447e985a58a7de9603a6b78fe",
+      "public_sha256": "e698c687b7c2ff455f85973f4b7e0f0b2cdbdd8447e985a58a7de9603a6b78fe",
+      "bytes": 9364,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-20261115-meeting-r1.log",
+      "raw_sha256": "83b559dd2dcd8258860e7c73efaca82a6b0813fcdee93389dde4fa556303d056",
+      "public_sha256": "1eb10fc064c597694229caa35683c5e063a5cda67d08c054d44f8d07bbc54292",
+      "bytes": 12783,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-20261115-meeting-r2.log",
+      "raw_sha256": "7b3ccdd7b49293b27d0a57bf79d3930be57ff0c5cfb624533fcd11957e52c3b3",
+      "public_sha256": "7b3ccdd7b49293b27d0a57bf79d3930be57ff0c5cfb624533fcd11957e52c3b3",
+      "bytes": 12001,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-20261115-refactor-r2.log",
+      "raw_sha256": "74cae359858845ad191e1e40f5fe1af5dead14190242b185d8503ecccbc9d038",
+      "public_sha256": "74cae359858845ad191e1e40f5fe1af5dead14190242b185d8503ecccbc9d038",
+      "bytes": 19416,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-20261115-refactor.log",
+      "raw_sha256": "24e57cfc944cfbe4ae8708173e01a1a7b82d306c7ca65c4f7adad3891e729d0e",
+      "public_sha256": "24e57cfc944cfbe4ae8708173e01a1a7b82d306c7ca65c4f7adad3891e729d0e",
+      "bytes": 19416,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-20261115-source-final.log",
+      "raw_sha256": "c51c13ebd67ef484410267ed98992ee6353eebdb1b8c641a129bad73bf466750",
+      "public_sha256": "c51c13ebd67ef484410267ed98992ee6353eebdb1b8c641a129bad73bf466750",
+      "bytes": 98,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-20261115-sources-integrated.log",
+      "raw_sha256": "3b7ca39eb77dff848a30d1c28062915188fa1dc6dd5fcbfe4800033391ddf6e7",
+      "public_sha256": "3b7ca39eb77dff848a30d1c28062915188fa1dc6dd5fcbfe4800033391ddf6e7",
+      "bytes": 100,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-20261115-sources-r1.log",
+      "raw_sha256": "762a16df9d09d060a3f5370031aa3b33e7c4af04b959ef9e3f621d68dcea0a12",
+      "public_sha256": "07c244e29a2c5a5d5a5e723f63588c47e81861606f306dd9e3992dc8e2d641bf",
+      "bytes": 8227,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-20261115-sources-r2.log",
+      "raw_sha256": "49d6477873e4351c7f0aa2e56ace42e0bf90f590e976256f9d4ffba2ca54a45b",
+      "public_sha256": "49d6477873e4351c7f0aa2e56ace42e0bf90f590e976256f9d4ffba2ca54a45b",
+      "bytes": 98,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-20261115-training-r1.log",
+      "raw_sha256": "dd5f13e2277db5ba6777256861602e3b09d1cb705a98eb00bd399a85c2253c2d",
+      "public_sha256": "dd5f13e2277db5ba6777256861602e3b09d1cb705a98eb00bd399a85c2253c2d",
+      "bytes": 5871,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-completion-final.log",
+      "raw_sha256": "4614f73115fcfefdc43575346f193d9fd6cbf9e432a32e8a6468ea7c99ac8b6a",
+      "public_sha256": "4614f73115fcfefdc43575346f193d9fd6cbf9e432a32e8a6468ea7c99ac8b6a",
+      "bytes": 105625,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-pa-final-retest.log",
+      "raw_sha256": "37bca9e8f41758394c77b900861c773e74bf8e0ba16a7d91f5d596843bff9097",
+      "public_sha256": "37bca9e8f41758394c77b900861c773e74bf8e0ba16a7d91f5d596843bff9097",
+      "bytes": 96069,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-pa-final.log",
+      "raw_sha256": "e31e59f4b7e9da2d6fc9b36b267668216a60eaf104c9982f84da51864047afdb",
+      "public_sha256": "11aa69523d8a44e7bedf407b4a89bb2b89c420e1a1ed4f2032c0e640607defdc",
+      "bytes": 96749,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-pa-full.log",
+      "raw_sha256": "5ac10e647c9f6fa8c1176ebda41a66ad62d9b24aeb2486c77e7bd10f6e9e3cfc",
+      "public_sha256": "5ac10e647c9f6fa8c1176ebda41a66ad62d9b24aeb2486c77e7bd10f6e9e3cfc",
+      "bytes": 95857,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-pa-sse-409.log",
+      "raw_sha256": "713ab4513257ec2ebc6976e4f5135d8a7fbee05ca71c2ad36cc641f9fcce7ec2",
+      "public_sha256": "713ab4513257ec2ebc6976e4f5135d8a7fbee05ca71c2ad36cc641f9fcce7ec2",
+      "bytes": 309,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-pa-sse-retest.log",
+      "raw_sha256": "74bf41833dcfcab77414dcb6a7da310169f714b06ec5dd72d2ec4dfcf9287489",
+      "public_sha256": "74bf41833dcfcab77414dcb6a7da310169f714b06ec5dd72d2ec4dfcf9287489",
+      "bytes": 7497,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-pa-sse.log",
+      "raw_sha256": "11cea7bdf074fc6cbc2507bb3544af9b35fe8a5d9bf69e496b340e98d98e5156",
+      "public_sha256": "83131fde396e02839d85236fc1b3839690a0b082af72fbe970886391382cbf3f",
+      "bytes": 8278,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-pa-targeted.log",
+      "raw_sha256": "db4c6ab5e64cf3892bc58db51824f747774a97c97104340467bd7242ab85e7e5",
+      "public_sha256": "db4c6ab5e64cf3892bc58db51824f747774a97c97104340467bd7242ab85e7e5",
+      "bytes": 20248,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/companion-published.log",
+      "raw_sha256": "bd1f7a907ff97fde686a0cc719abf6ba0321c133d7cfbb157e2ce86c34303ce7",
+      "public_sha256": "bd1f7a907ff97fde686a0cc719abf6ba0321c133d7cfbb157e2ce86c34303ce7",
+      "bytes": 96069,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/component-wheel-install.log",
+      "raw_sha256": "d6355ef8eebfd73e7a1ac91d51c9f42321a2835dd885533d90a477fbec152584",
+      "public_sha256": "d6355ef8eebfd73e7a1ac91d51c9f42321a2835dd885533d90a477fbec152584",
+      "bytes": 2090,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/core-a03-file-after.log",
+      "raw_sha256": "b7f440e501a69827a1410761f461706d21e1fdcb43922777c76d67bff8b993cc",
+      "public_sha256": "b7f440e501a69827a1410761f461706d21e1fdcb43922777c76d67bff8b993cc",
+      "bytes": 4343,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/core-a03-repro-after.log",
+      "raw_sha256": "dc208a5c6903cff5e6fdb73d96f426c1ee2beaf4d7a8af0b407ca98247038da7",
+      "public_sha256": "dc208a5c6903cff5e6fdb73d96f426c1ee2beaf4d7a8af0b407ca98247038da7",
+      "bytes": 200,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/core-a03-repro-before.log",
+      "raw_sha256": "60d3d77746dcd3d1fa56d2537bfd0f441fea878ba64fc1959ab903eee3aeecd7",
+      "public_sha256": "d92df7a4171ced730570da9b907f34322f0f423eebe81d091d7a24ecd12de724",
+      "bytes": 2353,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/core-completion-final-2.log",
+      "raw_sha256": "84dc1cbe242b387b02004a4ededb26b79f5bec1bae060eb1b932c7a06db39f2e",
+      "public_sha256": "d6bf33bc364a498aafb5ea4ba4b1a128643bfb6b0e6749ace8809ece11676c55",
+      "bytes": 242529,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/core-completion-final.log",
+      "raw_sha256": "48fc1a7aa46532640b4274ad1b03edfbe4723acd002b0a19a330e4f51a3a7c55",
+      "public_sha256": "97ea104adcdd93bf652f48d000d7764eb8623331f5b2c4715468606171958751",
+      "bytes": 245108,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/core-completion-first.log",
+      "raw_sha256": "38e5199b19bfe77fc833e1f675d776f84cfb50bab281d8d96ed343888ae5ac7e",
+      "public_sha256": "7fd0d5f7f22005825be9efb9604b14107dca3a8f354cadf790fe7213b32f7b36",
+      "bytes": 237799,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/core-final-retest.log",
+      "raw_sha256": "cb37fdd409a2fe5c3dd3947d3f3e62a69540bdb9ba842934696a06a7ee6ea80b",
+      "public_sha256": "a1327d3b8df0a55de24b8bede4beda7b7abb5066a3c2fa148493dc04d5c5a373",
+      "bytes": 1726,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/core-final.log",
+      "raw_sha256": "a90cdcf5eb5b1e1a87c8f23ee5ed3339ea25f4ec2f54e8975db7ae2ded8cb1ea",
+      "public_sha256": "8cdd245a5f7b1905266183bc8207f024acdafa045a4ab61400fb83a353614657",
+      "bytes": 3900,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/core-published.log",
+      "raw_sha256": "811340d20db26460c256b9e01f00f5b7d7a8e741653b86602ebd88eb0ec059c9",
+      "public_sha256": "ae0a66681547ce9f7d6b56a7d82165765e2306de6641792881c5b7189fed7e7a",
+      "bytes": 1728,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/delegate-approval-retest.log",
+      "raw_sha256": "25bc738ccdef61839da60cae0b7738c063a2d68f10d518e3dfc5b0eb99325d61",
+      "public_sha256": "a1e0fd1f865508f42debdc651ffc81482ef513e05ba0c3c2939ffc53a17d33e0",
+      "bytes": 1254,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/desktop-docs-final.log",
+      "raw_sha256": "db45107f681624573ccea55f688ff1465ee0fc0c5f4a7f548f9cbf4a3297ce42",
+      "public_sha256": "db45107f681624573ccea55f688ff1465ee0fc0c5f4a7f548f9cbf4a3297ce42",
+      "bytes": 244,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/docs-check-final.log",
+      "raw_sha256": "db45107f681624573ccea55f688ff1465ee0fc0c5f4a7f548f9cbf4a3297ce42",
+      "public_sha256": "db45107f681624573ccea55f688ff1465ee0fc0c5f4a7f548f9cbf4a3297ce42",
+      "bytes": 244,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/docs-check.log",
+      "raw_sha256": "f83d99e0b8e4372a25412f6c060680db4112991583e63d2c74d8816eb4c3cb61",
+      "public_sha256": "f83d99e0b8e4372a25412f6c060680db4112991583e63d2c74d8816eb4c3cb61",
+      "bytes": 436,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "harbor/child-route-paths-final.log",
+      "raw_sha256": "fcf7e880b4e36cd3b8d0930740ffd8b04fe5be34761b7ca6cf6f61fde878093d",
+      "public_sha256": "fcf7e880b4e36cd3b8d0930740ffd8b04fe5be34761b7ca6cf6f61fde878093d",
+      "bytes": 4059,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "harbor/child-route-paths-legacy-final.log",
+      "raw_sha256": "8d06bc125b5ffb3ec847f71066082f9c3452d664229cd8d3bc12bbf634a37eaa",
+      "public_sha256": "8d06bc125b5ffb3ec847f71066082f9c3452d664229cd8d3bc12bbf634a37eaa",
+      "bytes": 3996,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "harbor/harbor-contract-all.log",
+      "raw_sha256": "f0cee4d5d09c3fc8498edcc315cc3c88fdbad11c498eeaf3513504009297c847",
+      "public_sha256": "6386fe27da4e130bcdf85d4b4c8efd21ef7cf1d992faa1473558d9bdac337a0b",
+      "bytes": 13437,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "harbor/harbor-contract-final.log",
+      "raw_sha256": "8eca68c694563637629c0f9564b4d9ee04bdd812df32a3ef6cb0065386fde287",
+      "public_sha256": "6fda798def5b1cf6f1f46ea44e83902b04d860fac6cbcdf9c2c3fb011a7a439f",
+      "bytes": 12962,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "harbor/project-venv-final.log",
+      "raw_sha256": "d215aefd5cc26ff15b04e0616f11eed6644d7de3f85720f25e09644550606146",
+      "public_sha256": "d215aefd5cc26ff15b04e0616f11eed6644d7de3f85720f25e09644550606146",
+      "bytes": 12602,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "harbor/terminus-transport.log",
+      "raw_sha256": "6f0a8e02f9d044ca51b1caed75da93b745cb1e7cfca5e7fa85e9fb31f7e659d7",
+      "public_sha256": "9e4a946cd23e2d84da6853dcaff89e83ab34073d313de0f466481e51156f1f4f",
+      "bytes": 1181,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/hybrid-final.log",
+      "raw_sha256": "7f804a80d90b31aa4ed67a2cc3ee6b51cea3a861b02f57c3f5fddc8afa1cb123",
+      "public_sha256": "7f804a80d90b31aa4ed67a2cc3ee6b51cea3a861b02f57c3f5fddc8afa1cb123",
+      "bytes": 7869,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/installed-channel-lifecycle-final.log",
+      "raw_sha256": "38b81e37ba25f20f392460bbba84fecc5c75ff2f41ba993accaf0555fcc46a47",
+      "public_sha256": "38b81e37ba25f20f392460bbba84fecc5c75ff2f41ba993accaf0555fcc46a47",
+      "bytes": 1280,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/model-switch-independent-review.log",
+      "raw_sha256": "4c56f157c079301e6c0cb73c703fc52915695b3ebc5734889e5bd3551a8ee8c0",
+      "public_sha256": "4c56f157c079301e6c0cb73c703fc52915695b3ebc5734889e5bd3551a8ee8c0",
+      "bytes": 1576,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/multi-model-transports.log",
+      "raw_sha256": "366e02307f63098792151bc03602d6f4fc875f66b32140f7970f3bd191f98633",
+      "public_sha256": "366e02307f63098792151bc03602d6f4fc875f66b32140f7970f3bd191f98633",
+      "bytes": 97,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/old-tree-compatibility.log",
+      "raw_sha256": "98e82093bc452c6a05e3300c4a749dfaf0abaf6d01978648062d0aa08c494069",
+      "public_sha256": "98e82093bc452c6a05e3300c4a749dfaf0abaf6d01978648062d0aa08c494069",
+      "bytes": 555,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/openai-2.29.0-tests.log",
+      "raw_sha256": "325f7ff16b6c77b116e7c72c781dabfb0728a02f9c2f364d1e52c667affb2619",
+      "public_sha256": "8a90fc6139fe08110a24569c62f49ce7b82738fc1b49672a8b35c43030b86148",
+      "bytes": 30038,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/openai-3.51.0-fixed-tests.log",
+      "raw_sha256": "288004592b27d9cf328f439d6eef185b18eed485b4db6008fa3b038a550d73e7",
+      "public_sha256": "288004592b27d9cf328f439d6eef185b18eed485b4db6008fa3b038a550d73e7",
+      "bytes": 6351,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/openai-3.51.0-tests.log",
+      "raw_sha256": "86816b814e14465c727705900ab22c1599ffea3aa9c1f997024f6b301976fe9d",
+      "public_sha256": "3b1819512afcaa57f9ca8dfe52f318bbe84395ce3c073dfa1dc260244c3a2cb9",
+      "bytes": 21856,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/pa-core-contract-final.log",
+      "raw_sha256": "69b69bc337a91b6b7d72faa9c125aadf6aabbf0da7f957fff5464d963d765c2e",
+      "public_sha256": "69b69bc337a91b6b7d72faa9c125aadf6aabbf0da7f957fff5464d963d765c2e",
+      "bytes": 99,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/pa-core-retest.log",
+      "raw_sha256": "23ebf3d3e4527e93924999f1fa75d9f5cf5a11a47e22d1f503de7c9340e69b74",
+      "public_sha256": "23ebf3d3e4527e93924999f1fa75d9f5cf5a11a47e22d1f503de7c9340e69b74",
+      "bytes": 5714,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/pa-core.log",
+      "raw_sha256": "a608397e757cbda2b063b76e4aa8d193e6859aa1744bdce9b5c28faf384a031e",
+      "public_sha256": "c9cc6720a05cac4c3fd308a3e38e15b3d36a1704dca7ba46674613fded95085a",
+      "bytes": 2264,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/pa-model-health-omlx.log",
+      "raw_sha256": "69c5046dbf3d3633affdcebb152d91dcef051321a66f00a5d6b479d35618f5a0",
+      "public_sha256": "69c5046dbf3d3633affdcebb152d91dcef051321a66f00a5d6b479d35618f5a0",
+      "bytes": 5936,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/pa-model-health-service.log",
+      "raw_sha256": "d487b868888bf0aeff05fd63c4775e0bddc0a1be28ac1fc98c480c88a52450ee",
+      "public_sha256": "d487b868888bf0aeff05fd63c4775e0bddc0a1be28ac1fc98c480c88a52450ee",
+      "bytes": 6524,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/pa-model-health.log",
+      "raw_sha256": "0d472f186702c9c198609d92b3edf1c592f1c2e90598330b85e9dff651ff01fd",
+      "public_sha256": "0d472f186702c9c198609d92b3edf1c592f1c2e90598330b85e9dff651ff01fd",
+      "bytes": 1869,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/permission-full-retest.log",
+      "raw_sha256": "07bc64c8dbe274019bf2aa7c59f44507854a84b6da5b71fd13d34c29b68a2ef0",
+      "public_sha256": "56921f467061ae83a7b101771361bb96e7ea778037d51bf6aa7ea1d6e2de5a7e",
+      "bytes": 13828,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/permission-full-transition.log",
+      "raw_sha256": "54842b6609da1b89cd5d35fdc0743e7abad24fadb0df418fe9b47ff4450e2e8b",
+      "public_sha256": "794501d4766a97b86a6345bf4c3c10048d130dfa3f19f0c7136d9253d1c2ba5d",
+      "bytes": 23556,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/playwright-baseline.log",
+      "raw_sha256": "cc4ab3330b2f65aff136140f01aa2c84956924aea56b10c9a6fe5765b3316564",
+      "public_sha256": "cc4ab3330b2f65aff136140f01aa2c84956924aea56b10c9a6fe5765b3316564",
+      "bytes": 41079,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/playwright-browser-install.log",
+      "raw_sha256": "e8dc0687b010ff1d444cfb3097e6c95e684de762d7717c5528914159046f96ce",
+      "public_sha256": "d05ba6b7a04c8c499bec9969dd4a105cf355c0ebe44d38bc319bf415e222715b",
+      "bytes": 5131,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/playwright-system-chromium.log",
+      "raw_sha256": "4f81ae025c654c7fcc3a0b9f2f82676eee04d53a0f70acb32e1591134d668c81",
+      "public_sha256": "4f81ae025c654c7fcc3a0b9f2f82676eee04d53a0f70acb32e1591134d668c81",
+      "bytes": 136384,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/plugins.log",
+      "raw_sha256": "9b0b417aacce762fd4f1468f007c9ece3b882fdf9701f62243d90531d67f6e2c",
+      "public_sha256": "9b0b417aacce762fd4f1468f007c9ece3b882fdf9701f62243d90531d67f6e2c",
+      "bytes": 4730,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/prettier-check.log",
+      "raw_sha256": "5bf5bf82219fcfa49043e9d2d1d1460f203bdff6d7d1fe0f377dbbd647a692dd",
+      "public_sha256": "5bf5bf82219fcfa49043e9d2d1d1460f203bdff6d7d1fe0f377dbbd647a692dd",
+      "bytes": 165,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/prettier.log",
+      "raw_sha256": "a8ee73682b9810d3543c78f7a4b535560d398847953c504365c133af63fd8752",
+      "public_sha256": "a8ee73682b9810d3543c78f7a4b535560d398847953c504365c133af63fd8752",
+      "bytes": 282,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/profile-child-history.log",
+      "raw_sha256": "b2e1c5bd8673d99a6e80e19c797113c42b372a958268724468bf312271ee384c",
+      "public_sha256": "b2e1c5bd8673d99a6e80e19c797113c42b372a958268724468bf312271ee384c",
+      "bytes": 98,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/python-baseline.log",
+      "raw_sha256": "1af7e62dff5cfa521bc4a3ac13fcce64b28ffd1b048b644a9f3d17ba6a89b5dd",
+      "public_sha256": "bb79704990ecd894ac6d508bd12e44d886a301b3755e44dcaf2dd3d6e361881e",
+      "bytes": 349631,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/route-contracts.log",
+      "raw_sha256": "167c43da14887ffd2994cc7068422a8d2c051825ce1efd15deffb7aba0f370a7",
+      "public_sha256": "167c43da14887ffd2994cc7068422a8d2c051825ce1efd15deffb7aba0f370a7",
+      "bytes": 98,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/routes-first.log",
+      "raw_sha256": "705a06f209f547f9197af703c0aff3338ad179b292573d26f155f2a942820138",
+      "public_sha256": "705a06f209f547f9197af703c0aff3338ad179b292573d26f155f2a942820138",
+      "bytes": 728,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/routes-second.log",
+      "raw_sha256": "d487d84fbd0c02644009cdb8535cc9bf1331f88f70ba4eeaf814827fe995f855",
+      "public_sha256": "d487d84fbd0c02644009cdb8535cc9bf1331f88f70ba4eeaf814827fe995f855",
+      "bytes": 110,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/sdk-completion-command-error.log",
+      "raw_sha256": "2a4188deb32d9482eb0b958f119ef259bcefdfb81a6be254b95a1b908e1b1c3f",
+      "public_sha256": "2a4188deb32d9482eb0b958f119ef259bcefdfb81a6be254b95a1b908e1b1c3f",
+      "bytes": 817,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/sdk-completion-final.log",
+      "raw_sha256": "a6a54f9f166ab85fa167853227b82c9378c4c44eedabeb4fbeb0ab4efc16bcb4",
+      "public_sha256": "a6a54f9f166ab85fa167853227b82c9378c4c44eedabeb4fbeb0ab4efc16bcb4",
+      "bytes": 4139,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/sdk-full-completion-final.log",
+      "raw_sha256": "2de42a89ef82065e69e43c0cfa523518c0dd350e50a4f569700197ca6ac97f27",
+      "public_sha256": "2de42a89ef82065e69e43c0cfa523518c0dd350e50a4f569700197ca6ac97f27",
+      "bytes": 6351,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/session-migrations.log",
+      "raw_sha256": "cf93267d6f30909fc829372f3544120e0c301f9b7b8b465d2edde7cf5d987852",
+      "public_sha256": "97d87dda02b025f8ce521133f873f4251dd4f202478244b4a5e2196703a8429d",
+      "bytes": 3069,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/session-refactor-first.log",
+      "raw_sha256": "aefa38ce39c6427d6452366fd00a38aef9f06248516dd126729aa948b70e9892",
+      "public_sha256": "aefa38ce39c6427d6452366fd00a38aef9f06248516dd126729aa948b70e9892",
+      "bytes": 99,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/vitest-baseline.log",
+      "raw_sha256": "ef1335ad98ea1f7507ff5bb7aec966f3f2922e5c2dff816b1b102856162a7ee4",
+      "public_sha256": "de3b996a3cbb688122776c87589e5da7d81cefd16234af168d12c828f54a78f6",
+      "bytes": 376,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/vitest-final.log",
+      "raw_sha256": "2e55a97b932fbc414ec39790309d088162e3a17da6c2c3be7fa919d522dca88c",
+      "public_sha256": "04055ef32ba81c5ae543793f29e581d7b4054bbc111ef3a07dab557b72fa4d44",
+      "bytes": 383,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/wheel-channels-build.log",
+      "raw_sha256": "c3decd901f7ce59fc13d60df2d8936b9f703cc615d06bc1a60c4e448cd67f860",
+      "public_sha256": "2b08300b7953b5d753a54e8156cb9edadf5a16ec04458926b8e7a82992c283fb",
+      "bytes": 7309,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/wheel-companion-build.log",
+      "raw_sha256": "250c6185ff70eba61b375b5ad94facd3cfecd3c046a582a9e4ec61036df9606f",
+      "public_sha256": "ec11d13521fbabbeb4d9ac1af561493b5006df9c3f8e93fb2b784bacd5c5c07d",
+      "bytes": 18136,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/wheel-companion-initial-warning.log",
+      "raw_sha256": "bd22cfcc6a1e3a294b26b2834943107ed25c2e432f257c8195a0ef0530b31601",
+      "public_sha256": "58cd909bfdf133c2b620c5d0d65a9ff0049cd2cdf9295bc5b21cb3adc46d5888",
+      "bytes": 27322,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/wheel-core-build.log",
+      "raw_sha256": "88f28bba4867e9b72b0f6767836db5586b1850d02f09d0d429ff0a7aac697b86",
+      "public_sha256": "44a24509a0b5c739455bd64ca74c9b8966aa3fbf4368c7a9302663244b2dee19",
+      "bytes": 39394,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/wheel-suite-build.log",
+      "raw_sha256": "f9b0bda37a3282bf2e2f03afc424a186aac99888c76cfcc30f9c913c7f473066",
+      "public_sha256": "6cb4b103ad167730047f5a4c6400e5fe49d240d7e7b5b90e05754aa9d003e1bf",
+      "bytes": 7967,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/worker-cache-compat.log",
+      "raw_sha256": "bfa955282191a50c5c639e699c487496f3e46e123de17aba477b515bf6d1e7fb",
+      "public_sha256": "bfa955282191a50c5c639e699c487496f3e46e123de17aba477b515bf6d1e7fb",
+      "bytes": 98,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    },
+    {
+      "path": "workspace/worker-skills-and-migration.log",
+      "raw_sha256": "53c0504f9ee4dfcd6c089636f84929b32cebc00722436d6b02583b68eac639af",
+      "public_sha256": "53c0504f9ee4dfcd6c089636f84929b32cebc00722436d6b02583b68eac639af",
+      "bytes": 98,
+      "phase": "final_or_historical_workspace_run; see RESULTS.md for qualified final logs"
+    }
+  ]
+}

@@ -4,7 +4,10 @@ import { useState, useEffect } from "react";
 import { call, desktop } from "../bridge";
 import { InstallationSettings } from "./InstallationSettings";
 import { ChannelSettings } from "./ChannelSettings";
+import { CompanionSources } from "./CompanionSources";
+import type { CompanionMeeting } from "../hooks/useCompanionMeeting";
 export function ProductSettings({
+  meeting,
   enterBehavior,
   onEnterBehavior,
   permissionMode,
@@ -16,6 +19,7 @@ export function ProductSettings({
   onDefaultModel,
   onUpdates,
 }: {
+  meeting: CompanionMeeting;
   enterBehavior: EnterBehavior;
   onEnterBehavior: (value: EnterBehavior) => void;
   defaultModel: string;
@@ -142,6 +146,7 @@ export function ProductSettings({
       </div>
       <details className="advanced-settings">
         <summary>Companion 独立设置</summary>
+        <CompanionSources onError={onError} meeting={meeting} />
         <button
           className="secondary"
           disabled={!companion}

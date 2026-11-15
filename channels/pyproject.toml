@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,6 +7,8 @@ name = "localpilot-channels"
 version = "0.1.0a3"
 description = "Optional QQ/WeChat transport facade for an independently running LocalPilot Core"
 requires-python = ">=3.10"
+license = "Apache-2.0 AND MIT"
+license-files = ["LICENSE", "integrations/wechat-ilink-bridge/THIRD_PARTY_NOTICES.md"]
 dependencies = []
 
 [project.scripts]

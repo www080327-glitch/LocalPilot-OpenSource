@@ -5,7 +5,6 @@ import json
 from pathlib import Path
 
 from agent.async_runtime import AsyncPolicy, policy_snapshot
-from agent.backends import LocalBackend
 from agent.hybrid import CloudEgressPolicy, HybridPolicy
 from agent.policy import DataPolicy
 from agent.registry import create_default_registry, ToolRegistry
@@ -15,13 +14,14 @@ from agent.session import AgentSession, SessionBudgets
 from localpilot_api.service import TaskService
 from .security import AccessPolicy, Principal, private_json
 from .server import ServiceServer
-from .backend_contract import ServiceDeepSeekBackend, ServiceDeepSeekOptimizedBackend, ServiceDeepSeekNativeBackend, ServiceOpenAIBackend, ServiceOMLXBackend, ServiceVLLMBackend, ManagedLocalBackend, generation_options
+from .backend_contract import generation_options
+from .route_backends import build_backend, cooperation_routes, initial_backend, CLOUD_KINDS
 from .verification import configured_verifier, configured_execution_check
 
 
 def build(config_path):
     config = private_json(config_path)
-    if config.get("schema_version") != 1 or set(config) - {"schema_version", "host", "port", "data_dir", "log_dir", "clients", "routes", "max_sessions", "max_tasks", "max_handlers", "restore_path_migration", "restore_skill_catalog_migration", "async_policy"}:
+    if config.get("schema_version") != 1 or set(config) - {"schema_version", "host", "port", "data_dir", "log_dir", "clients", "routes", "max_sessions", "max_tasks", "max_handlers", "restore_path_migration", "restore_skill_catalog_migration", "restore_async_policy_migration", "async_policy"}:
         raise ValueError("Unsupported service configuration schema")
     async_policy = None
     if "async_policy" in config:
@@ -50,7 +50,7 @@ def build(config_path):
     routes, catalog, model_hosts = {}, {}, {}
     managed_profiles = {}
     for name, spec in config["routes"].items():
-        if set(spec) - {"workspace", "backend", "permissions", "capabilities", "budgets", "cloud_egress", "cloud_egress_paths", "thinking", "deployment_status", "verification", "acceptance", "strict_task", "cache_stable_prefix", "prompt_profile", "tool_profile", "reasoning_only", "managed_local_model", "engine", "routing_rank", "cooperation", "plugins", "computer_use"}:
+        if set(spec) - {"workspace", "backend", "permissions", "capabilities", "budgets", "cloud_egress", "cloud_egress_paths", "thinking", "deployment_status", "verification", "acceptance", "strict_task", "cache_stable_prefix", "prompt_profile", "tool_profile", "reasoning_only", "managed_local_model", "engine", "routing_rank", "cooperation", "plugins", "computer_use", "orchestration_mode"}:
             raise ValueError("Unsupported route parameters")
         workspace = Path(spec["workspace"]).expanduser().resolve(strict=True)
         if data.is_relative_to(workspace) or logs.is_relative_to(workspace):
@@ -73,42 +73,18 @@ def build(config_path):
         if type(backend_spec.get("include_stream_usage", False)) is not bool:
             raise ValueError("include_stream_usage must be a boolean host option")
         generation_options(backend_spec.get("generation_parameters", {}))
-        cloud = kind in {"deepseek", "deepseek-native", "remote-openai", "remote-vllm"}
-        cooperation=spec.get('cooperation')
-        partner=None
-        cooperative_policy=None
-        cooperative_profiles=None
-        if cooperation is not None:
-            if (not isinstance(cooperation,dict) or set(cooperation)-{'cloud_route','local_route','optimizer','profiles'}
-                    or ('cloud_route' in cooperation) == ('local_route' in cooperation)
-                    or spec.get('managed_local_model') or spec.get('reasoning_only')):
-                raise ValueError('Cooperation requires exactly one registered partner route and a tool-capable primary')
-            partner_is_local='local_route' in cooperation
-            if partner_is_local:
-                if kind not in {'deepseek','deepseek-native','remote-openai','remote-vllm'}:
-                    raise ValueError('A local worker partner requires a cloud primary')
-                partner_spec=config['routes'].get(cooperation['local_route'])
-                if (not partner_spec or partner_spec['backend']['kind'] not in {'omlx','vllm','local-openai'}
-                        or partner_spec.get('managed_local_model')):
-                    raise ValueError('Local cooperation partner must be a registered unmanaged local inference route')
-            else:
-                if kind not in {'omlx','vllm','local-openai'}:
-                    raise ValueError('A cloud partner requires a local primary')
-                partner_spec=config['routes'].get(cooperation['cloud_route'])
-                if not partner_spec or partner_spec['backend']['kind'] not in {'deepseek','deepseek-native'}:
-                    raise ValueError('Cooperation partner must be a registered DeepSeek provider')
-            if Path(partner_spec['workspace']).expanduser().resolve()!=workspace:
-                raise ValueError('Cooperation partners must use the same workspace')
-            if 'optimizer' in cooperation:
-                from agent.cooperative import CooperativePolicy
-                cooperative_policy=CooperativePolicy(**cooperation['optimizer'])
-                cooperative_profiles=cooperation.get('profiles')
-            elif partner_is_local or kind!='omlx' or set(cooperation)!={'cloud_route'}:
-                raise ValueError('Non-legacy cooperation requires a typed optimizer')
-            partner={**partner_spec['backend'],'_host_thinking':partner_spec.get('thinking')}
-        egress = spec.get("cloud_egress", "REQUIRES_APPROVAL" if cloud or partner else "LOCAL_ONLY")
-        if not cloud and not partner and egress != "LOCAL_ONLY":
+        cloud = kind in CLOUD_KINDS
+        workers, cooperative_policy, cooperative_profiles = cooperation_routes(name, spec, config['routes'], workspace)
+        partner = bool(workers)
+        partner_is_local = any(w['backend']['kind'] not in CLOUD_KINDS for w in workers.values())
+        has_cloud = cloud or any(w['backend']['kind'] in CLOUD_KINDS for w in workers.values())
+        egress = spec.get("cloud_egress", "REQUIRES_APPROVAL" if has_cloud else "LOCAL_ONLY")
+        if not has_cloud and egress != "LOCAL_ONLY":
             raise ValueError("Local route must retain LOCAL_ONLY egress")
+        orchestration_mode = spec.get('orchestration_mode', 'async' if async_policy else 'sync')
+        if orchestration_mode not in {'sync', 'async'} or orchestration_mode == 'async' and async_policy is None:
+            raise ValueError('Async routes require shared host async_policy limits')
+        route_async_policy = async_policy if orchestration_mode == 'async' else None
         model_host = None
         if spec.get("managed_local_model") is not None:
             from .cached_omlx import CachedOmlxHost, MODEL
@@ -125,9 +101,9 @@ def build(config_path):
             model_hosts[name]=model_host
         if cooperative_policy and spec.get('computer_use'):
             raise ValueError('Experimental cooperative routing is not qualified for Computer Use')
-        if partner and egress!='REQUIRES_APPROVAL' and not (cooperative_policy and egress=='CLOUD_ALLOWED'):
+        if partner and has_cloud and egress != 'REQUIRES_APPROVAL' and not (cooperative_policy and egress in {'CLOUD_ALLOWED', 'LOCAL_ONLY'}):
             raise ValueError('Cooperation requires an explicit host cloud-egress grant')
-        hard_policy = DataPolicy(local_only=not (cloud or partner))
+        hard_policy = DataPolicy(local_only=not has_cloud or egress == 'LOCAL_ONLY')
         budget_values = dict(spec.get("budgets", {}))
         if cloud and cooperative_policy and partner_is_local:
             # A cloud-primary local trial needs two hops to return on failure.
@@ -162,8 +138,8 @@ def build(config_path):
             raise ValueError("cache_stable_prefix must be a host boolean")
         computer_config = spec.get('computer_use')
         if computer_config is not None:
-            if async_policy:
-                raise ValueError('Async children and native Computer Use require separate services')
+            if route_async_policy:
+                raise ValueError('Async children and native Computer Use require separate routes')
             if engine != 'v5' or partner or reasoning_only:
                 raise ValueError('Computer Use requires V5, tools, and one inference backend')
             if not isinstance(computer_config,dict) or not Path(computer_config.get('evidence_directory','')).expanduser().resolve().is_relative_to(data):
@@ -188,78 +164,28 @@ def build(config_path):
                     dp=hard_policy, budgets=budget, is_cloud=cloud, ep=egress,
                     paths=tuple(spec.get("cloud_egress_paths", ())), thinking=spec.get("thinking"),
                     verification=verification, verifier=verifier, cache_stable_prefix=cache_stable_prefix,
-                    prompt_profile=prompt_profile, tool_profile=tool_profile, reasoning_only=reasoning_only, model_host=model_host, engine=engine, partner=partner,
+                    prompt_profile=prompt_profile, tool_profile=tool_profile, reasoning_only=reasoning_only, model_host=model_host, engine=engine, workers=workers,
                     strict_task=strict_task, plugins=plugins, computer_config=computer_config,
-                    cooperative_policy=cooperative_policy, cooperative_profiles=cooperative_profiles):
-            kind = b["kind"]
-            if kind == "unavailable":
-                backend = LocalBackend(b.get("model", "not-deployed"))
-            elif kind in {"deepseek", "deepseek-native"}:
-                backend_type = ServiceDeepSeekNativeBackend if kind == 'deepseek-native' else ServiceDeepSeekOptimizedBackend if b.get("agent_engine") == "deepseek_optimized" else ServiceDeepSeekBackend
-                backend = backend_type(model=b["model"], key_file=b.get("key_file"),
-                    api_key=os.environ.get(b["api_key_env"]) if b.get("api_key_env") else None,
-                    base_url=b.get("base_url", "https://api.deepseek.com/anthropic" if kind == 'deepseek-native' else "https://api.deepseek.com"),
-                    effective_context=b.get("context_budget", 131072), timeout=b.get("timeout", 30), data_policy=dp,
-                    generation_parameters=b.get("generation_parameters"))
-            else:
-                bc = b.get("capabilities", {})
-                key = os.environ.get(b["api_key_env"]) if b.get("api_key_env") else None
-                if kind in {"remote-openai", "remote-vllm"} and (not key or not b["base_url"].startswith("https://")):
-                    raise ValueError("Remote inference requires HTTPS and an explicit API token")
-                backend_type = ManagedLocalBackend if model_host else ServiceVLLMBackend if kind in {'vllm','remote-vllm'} else ServiceOMLXBackend if kind == 'omlx' else ServiceOpenAIBackend
-                backend = backend_type(**({"manager":model_host} if model_host else {"api_key":key}), base_url=b["base_url"], model=b["model"],
-                    effective_context=b.get("context_budget", 131072), timeout=b.get("timeout", 30),
-                    allow_remote=kind in {"remote-openai","remote-vllm"},
-                    supports_tool_calling=bc.get("tool_calling", kind not in {'vllm','remote-vllm'}), supports_streaming=bc.get("streaming", True),
-                    supports_vision=bc.get("vision", False),
-                    supports_reasoning=bc.get("reasoning"), reasoning_efforts=b.get("reasoning_efforts", ()),
-                    include_stream_usage=b.get("include_stream_usage", kind in {'omlx', 'vllm', 'remote-vllm'}),
-                    chat_template_kwargs=b.get("chat_template_kwargs"),
-                    generation_parameters=b.get("generation_parameters"))
-                backend.is_local = not is_cloud
+                    cooperative_policy=cooperative_policy, cooperative_profiles=cooperative_profiles,
+                    route_async_policy=route_async_policy, modern_cooperation='routes' in spec.get('cooperation', {})):
+            backend = build_backend(b, dp, manager=model_host, cache_stable_prefix=cache_stable_prefix)
             if model_host and hasattr(backend,"service_contract"):
                 backend.service_contract["managed_local_model"]={"model":model_host.status()["model"],"revision":model_host.status()["revision"],"idle_seconds":model_host.idle,"memory_bytes":model_host.memory}
             if reasoning_only:
                 backend.service_reasoning_only = True
                 if hasattr(backend, "service_contract"):
                     backend.service_contract["reasoning_only"] = True
-            if cache_stable_prefix:
-                backend.service_cache_stable_prefix = True
-                if hasattr(backend, "service_contract"):
-                    backend.service_contract["cache_stable_prefix"] = True
-                    backend.service_contract["cache_layout_version"] = 1
-                    backend.service_contract["system_prompt_update"] = "in-history" if getattr(backend, "supports_in_history_system_prompt", False) else "replace"
             if verification is not None and hasattr(backend, "service_contract"):
                 backend.service_contract["host_verification"] = verification
             registry = (ToolRegistry if reasoning_only else create_default_registry)(w, permission_mode=p, capabilities=cap, data_policy=dp, tool_profile=tool_profile)
             from agent.engine_v5 import EngineV5Policy
-            secondary=None
-            if partner:
-                if partner['kind'] in {'deepseek','deepseek-native'}:
-                    cls=ServiceDeepSeekNativeBackend if partner['kind']=='deepseek-native' else ServiceDeepSeekBackend
-                    secondary=cls(model=partner['model'],key_file=partner.get('key_file'),
-                        api_key=os.environ.get(partner['api_key_env']) if partner.get('api_key_env') else None,
-                        base_url=partner.get('base_url','https://api.deepseek.com/anthropic' if partner['kind']=='deepseek-native' else 'https://api.deepseek.com'),
-                        effective_context=partner.get('context_budget',131072),timeout=partner.get('timeout',45),data_policy=dp,
-                        generation_parameters=partner.get('generation_parameters'))
-                    if partner.get('_host_thinking') is not None:
-                        from dataclasses import replace
-                        if partner['_host_thinking'] not in secondary.capabilities.supported_thinking_efforts:raise ValueError('Partner thinking is unsupported')
-                        secondary.capabilities=replace(secondary.capabilities,default_thinking_effort=partner['_host_thinking'])
-                        secondary.service_contract['default_thinking']=partner['_host_thinking']
-                else:
-                    pc=partner.get('capabilities',{})
-                    partner_type=ServiceVLLMBackend if partner['kind']=='vllm' else ServiceOMLXBackend if partner['kind']=='omlx' else ServiceOpenAIBackend
-                    secondary=partner_type(api_key=os.environ.get(partner['api_key_env']) if partner.get('api_key_env') else None,
-                        base_url=partner['base_url'],model=partner['model'],
-                        effective_context=partner.get('context_budget',131072),timeout=partner.get('timeout',30),
-                        allow_remote=False,supports_tool_calling=pc.get('tool_calling',partner['kind']!='vllm'),
-                        supports_streaming=pc.get('streaming',True),supports_vision=pc.get('vision',False),
-                        supports_reasoning=pc.get('reasoning'),reasoning_efforts=partner.get('reasoning_efforts',()),
-                        include_stream_usage=partner.get('include_stream_usage',partner['kind'] in {'omlx','vllm'}),
-                        chat_template_kwargs=partner.get('chat_template_kwargs'),
-                        generation_parameters=partner.get('generation_parameters'))
-                    secondary.is_local=True
+            backend_catalog = {'selected': backend, **{
+                alias: build_backend(worker['backend'], dp, worker_thinking=worker['thinking'],
+                                     cache_stable_prefix=worker['cache_stable_prefix'])
+                for alias, worker in workers.items()}}
+            local_backend = next((item for item in backend_catalog.values() if item.is_local), None)
+            cloud_backend = next((item for item in backend_catalog.values() if not item.is_local), None)
+            primary = initial_backend(backend_catalog, cooperative_policy) if modern_cooperation else 'selected'
             computer = None
             if computer_config is not None:
                 registry=ToolRegistry(w,permission_mode=p,capabilities=cap,data_policy=dp,tool_profile=tool_profile)
@@ -275,17 +201,16 @@ def build(config_path):
                 def execution_check(root,projection,_old=old_execution,_computer=computer):
                     ui=_computer.host_verification(root)
                     return _old(root,projection) if ui.status=='passed' and _old else ui
-            runtime = AgentSession(registry, cloud_backend=(backend if is_cloud else secondary),
-                local_backend=(secondary if is_cloud and partner else None if is_cloud else backend), data_policy=dp,
-                policy=cooperative_policy.mode if cooperative_policy else "cloud-first" if is_cloud and partner else "local-first" if partner else "cloud-only" if is_cloud else "local-only", thinking=thinking, budgets=budgets,
+            runtime = AgentSession(registry, cloud_backend=cloud_backend, local_backend=local_backend, data_policy=dp,
+                policy=cooperative_policy.mode if cooperative_policy else "cloud-first" if is_cloud and workers else "local-first" if workers else "cloud-only" if is_cloud else "local-only", thinking=thinking, budgets=budgets,
                 prompt_profile=prompt_profile, runtime_tools=not reasoning_only,
                 computer_runtime=computer,
                 hybrid_policy=HybridPolicy(CloudEgressPolicy(ep, paths), automatic_failover=bool(cooperative_policy and cooperative_policy.mode not in {'local-only','cloud-only'})) if computer is None else None,
-                hybrid_backends={"selected": backend, **({('local' if is_cloud else 'cloud'):secondary} if secondary else {})} if computer is None else None, hybrid_primary="selected" if computer is None else None,
+                hybrid_backends=backend_catalog if computer is None else None, hybrid_primary=primary if computer is None else None,
                 cooperative_policy=cooperative_policy, cooperative_profiles=cooperative_profiles,
                 engine_policy=EngineV5Policy() if engine == 'v5' else None,
                 strict_task=strict_task, completion_check=execution_check,
-                async_policy=async_policy,
+                async_policy=route_async_policy,
                 event_callback=callback, retry_policy=RetryPolicy(max_attempts=2 if engine == 'v5' or b.get("agent_engine") == "deepseek_optimized" else 1), verification_callback=session_verifier)
             runtime._workspace_grants=workspace_grants
             if plugins is not None:
@@ -306,8 +231,10 @@ def build(config_path):
             "cloud_egress_paths":list(spec.get('cloud_egress_paths',())),
             "tool_capabilities":capability_values,"workspace":str(workspace),"permission_mode":permission,"budgets":spec.get("budgets",{}),
             "reasoning_efforts":[], "thinking_scope":"host_route_configuration"}
-        if async_policy:
-            catalog[name]["orchestration"] = {"mode": "async_children", "limits": policy_snapshot(async_policy)}
+        if route_async_policy:
+            catalog[name]["orchestration"] = {"mode": "async_children", "limits": policy_snapshot(route_async_policy)}
+        if workers:
+            catalog[name]["worker_routes"] = list(workers)
         if kind in {'vllm','remote-vllm'}:
             catalog[name]['capabilities']=[key for key,enabled in {
                 'streaming':bc.get('streaming',True),'tool_calling':bc.get('tool_calling',False),
@@ -326,12 +253,13 @@ def build(config_path):
             continue  # Deliberately undeployed routes remain valid registry entries.
         try:
             probe = factory(lambda event: None)
-            inference_backends[route_name] = probe.current_backend
+            selected_backend = probe.hybrid.catalog['selected'] if probe.hybrid else probe.current_backend
+            inference_backends[route_name] = selected_backend
             if catalog[route_name]['adapter'] == 'omlx':
-                model_backends[route_name] = probe.current_backend
-            catalog[route_name]['reasoning_efforts']=list(probe.current_backend.capabilities.supported_thinking_efforts)
+                model_backends[route_name] = selected_backend
+            catalog[route_name]['reasoning_efforts']=list(selected_backend.capabilities.supported_thinking_efforts)
             if catalog[route_name]['adapter']=='omlx':
-                observed=probe.current_backend.thinking_toggle_observation()
+                observed=selected_backend.thinking_toggle_observation()
                 if observed['supported']:
                     catalog[route_name].update(reasoning_efforts=['none','high'],reasoning_toggle=observed,
                         default_reasoning_effort='high' if observed['default'] else 'none')
@@ -346,8 +274,8 @@ def build(config_path):
     try:
         from .documents import DocumentEngine
         documents = DocumentEngine(data / 'documents-v2')
-        from .restore_migration import path_migration, skill_catalog_migration
-        migration=skill_catalog_migration(config.get('restore_skill_catalog_migration'),config.get('restore_path_migration')) or path_migration(config.get('restore_path_migration'))
+        from .restore_migration import configured_migration
+        migration = configured_migration(config)
         service = TaskService(routes, persistence=data / "runtime.sqlite3", auto_resume=False,
             async_policy=async_policy,
             configuration_migration=migration,

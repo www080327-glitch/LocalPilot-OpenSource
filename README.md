@@ -10,7 +10,9 @@ LocalPilot 采用 Apache 2.0 开源协议，致力于让强大、易用且低成
 
 ## 当前源码组件版本
 
-本源码树包含 Desktop 5.0.1-rc.7、Core 5.0.0b21+channels.3、Suite 0.2.0b26 和 Companion 0.5.7b3。源码版本不代表已经发布或通过原生安装验收；可用发行资产以 GitHub Releases 为准。
+本源码树包含 Desktop 5.0.1-rc.7、Core 5.0.0b21+channels.3、Suite 0.2.0b26、Companion 0.5.7b3 和独立 Channels 0.1.0a3。源码版本不代表已经发布或通过原生安装验收；可用发行资产以 GitHub Releases 为准。
+
+2026-11-15 的后续实现见 [PA 产品补齐与源码整理](docs/development/PA_COMPLETION_20261115.md)：多模型协作、保留历史子 Agent 的换模与恢复、来源问答、显式本地会议转写、人工审阅的训练数据、统一升级回滚和 Intel 构建路径。[本轮继续验收提示词](docs/development/WORK_PA_COMPLETION_20261115.md)只列新候选仍需本机验证的项目。原生 APP、Intel、真实会议与正式能力对照按各自证据验收，不能由源码测试或旧 APP 的结果代替。
 
 2026-11-14 的后续开发检查见 [PA 与主 Agent 接入状态](docs/development/PA_READINESS_20261114.md)，包含异步子代理配置、按需 Skills、Companion 活动证据、同会话换模与测试 APP 回滚。真实模型、原生安装和公开基准仍按各项证据验收；这些源码改动不代表新发行已合格。[本机继续验收步骤](docs/development/WORK_CONTINUE_20261114.md)列出了剩余工作与已确认的恢复兼容边界。
 

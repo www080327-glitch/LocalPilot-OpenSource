@@ -17,6 +17,9 @@ import subprocess
 import sys
 import tomllib
 
+if __package__ in (None, ''):
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 
 HARBOR_COMMIT = "ec6aeab7fe0eb51df52b4e72c524daf5ea9cc5f4"
 HARBOR_VERSION = "0.26.0"
@@ -30,12 +33,26 @@ def main():
         study = freeze(args.spec, args.repository, args.output, args.task_prefix)
         print(json.dumps({"study_sha256": study["sha256"], "jobs": len(study["jobs"])}))
         return 0
-    if args.command == "run":
-        return run_job(args.study, args.arm, args.repeat, args.harbor_repository, args.python)
+    if args.command in {"run", "resume", "preflight"}:
+        from scripts.harbor_study_runner import select_job
+        from scripts.harbor_preflight import preflight
+        if args.command == 'preflight':
+            study = read_study(args.study)
+            report = preflight(args.study,study,select_job(study,args.arm,args.repeat),
+                               args.harbor_repository,args.repository,args.runtime_repository,args.python,
+                               args.docker_host,args.resource_evidence)
+            write_json(args.output,report)
+            print(json.dumps({'ready':report['ready'],'output':str(args.output)}))
+            return 0 if report['ready'] else 2
+        return run_job(args.study, args.arm, args.repeat, args.harbor_repository, args.python,
+                       repository=args.repository,runtime_repository=args.runtime_repository,
+                       docker_host=args.docker_host,resource_evidence=args.resource_evidence,
+                       resume=args.command=='resume',continue_pid=getattr(args,'continue_pid',None))
     report = audit(args.study)
     write_json(args.output, report)
-    print(json.dumps({"audit_complete": report["audit_complete"], "output": str(args.output)}))
-    return 0 if report["audit_complete"] else 2
+    print(json.dumps({"audit_complete": report["audit_complete"],
+                      "comparison_status":report['comparison']['status'], "output": str(args.output)}))
+    return 0 if report["audit_complete"] and report['comparison_qualification']['qualified'] else 2
 
 
 def arguments():
@@ -46,12 +63,21 @@ def arguments():
     p.add_argument("--repository", type=Path, required=True, help="Clean benchmark Git checkout")
     p.add_argument("--task-prefix", default="", help="Relative task directory within that checkout")
     p.add_argument("--output", type=Path, required=True, help="New directory; never overwritten")
-    p = commands.add_parser("run", help="Run one frozen arm/repeat with official Harbor")
-    p.add_argument("--study", type=Path, required=True)
-    p.add_argument("--arm", required=True)
-    p.add_argument("--repeat", type=int, required=True)
-    p.add_argument("--harbor-repository", type=Path, required=True)
-    p.add_argument("--python", default=sys.executable, help="Python with the pinned Harbor dependencies installed")
+    for name in ('run','resume','preflight'):
+        p = commands.add_parser(name, help="Preflight or run a frozen job; resume preserves every prior attempt")
+        p.add_argument("--study", type=Path, required=True)
+        p.add_argument("--arm", required=True)
+        p.add_argument("--repeat", type=int, required=True)
+        p.add_argument("--harbor-repository", type=Path, required=True)
+        p.add_argument("--repository",type=Path,required=True,help='Frozen benchmark Git checkout')
+        p.add_argument("--runtime-repository",type=Path,default=Path(__file__).resolve().parents[1])
+        p.add_argument("--docker-host",help='Explicit dedicated Unix Docker socket; otherwise DOCKER_HOST')
+        p.add_argument("--resource-evidence",type=Path,help='Fresh guest disk observation JSON bound to daemon ID')
+        p.add_argument("--python", default=sys.executable, help="Python with the pinned Harbor dependencies installed")
+        if name=='preflight':
+            p.add_argument('--output',type=Path,required=True)
+        if name=='resume':
+            p.add_argument('--continue-pid',type=int,help='SIGCONT only the exact original stopped Harbor process and stopped children')
     p = commands.add_parser("audit", help="Import raw Harbor trial result.json files, including failures")
     p.add_argument("--study", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
@@ -118,11 +144,18 @@ def validate_spec(spec):
             raise ValueError("Each agent must specify exactly one name or import_path")
         if not isinstance(agent.get("model_name"), str) or not agent["model_name"]:
             raise ValueError("Each arm must name its model explicitly")
+        if not isinstance(agent.get('kwargs',{}),dict):
+            raise ValueError('Agent kwargs must be an object')
+        budget = agent.get('kwargs',{}).get('model_budget')
+        if budget is not None and not isinstance(budget,dict):
+            raise ValueError('model_budget must be an object')
         if agent.get("env"):
             raise ValueError("Keep credentials out of study files; use the agent's environment-variable support")
         if spec["purpose"] == "evaluation" and agent.get("name") in {"oracle", "nop"}:
             raise ValueError("Oracle/nop can only be used for a smoke study")
     comparison = spec["comparison"]
+    if 'model_identity' in spec and not isinstance(spec['model_identity'],dict):
+        raise ValueError('model_identity must be an object')
     if not isinstance(comparison, dict) or any(comparison.get(k) not in names for k in ("candidate", "baseline")):
         raise ValueError("comparison must name registered candidate and baseline arms")
     if comparison["candidate"] == comparison["baseline"]:
@@ -150,6 +183,9 @@ def validate_spec(spec):
                 or hashlib.sha256(Path(cleanup['plan_path']).read_bytes()).hexdigest() != cleanup['plan_sha256']
                 or execution['n_concurrent_trials'] != 1):
             raise ValueError('An exact reviewed Docker cache plan and sequential execution are required')
+        plan = read_json(Path(cleanup['plan_path']))
+        if not isinstance(plan.get('daemon_id'),str) or not plan['daemon_id']:
+            raise ValueError('New cache cleanup plans must include the dedicated Docker daemon ID')
 
 
 def task_snapshot(repository, path):
@@ -172,6 +208,7 @@ def task_snapshot(repository, path):
 
 
 def freeze(spec_path, repository, output, task_prefix=""):
+    from scripts.harbor_preflight import runtime_snapshot
     spec = read_json(spec_path)
     validate_spec(spec)
     repository = repository.resolve(strict=True)
@@ -192,6 +229,7 @@ def freeze(spec_path, repository, output, task_prefix=""):
              "specification": spec, "benchmark_commit": commit,
              "selection": "all_tasks_in_checkout_prefix" if selected == available else "preregistered_subset",
              "available_task_paths": available, "tasks": tasks}
+    study['runtime_source'] = runtime_snapshot(Path(__file__).resolve().parents[1])
     study_id = digest(study)[:12]
     output = output.resolve()
     output.mkdir(parents=True, exist_ok=False)
@@ -230,39 +268,9 @@ def read_study(directory):
     return study
 
 
-def run_job(directory, arm, repeat, harbor_repository, python):
-    directory = directory.resolve(strict=True)
-    study = read_study(directory)
-    matches = [j for j in study["jobs"] if j["arm"] == arm and j["repeat"] == repeat]
-    if len(matches) != 1:
-        raise ValueError("Arm/repeat is not part of this frozen study")
-    job = matches[0]
-    harbor_repository = harbor_repository.resolve(strict=True)
-    if git(harbor_repository, "rev-parse", "HEAD") != study["harbor_commit"]:
-        raise ValueError(f"Harbor checkout must be pinned to {study['harbor_commit']}")
-    if git(harbor_repository, "status", "--porcelain", "--untracked-files=no"):
-        raise ValueError("Harbor checkout has tracked modifications")
-    if (directory / "runs" / job["name"]).exists():
-        raise ValueError("Job already has results; do not replace an attempt with a retry")
-    entry = "import sys; sys.path.insert(0, sys.argv.pop(1)); from harbor.cli.main import app; app()"
-    command = [python, "-c", entry, str(harbor_repository / "src"), "run", "--config",
-               str(directory / "configs" / f"{job['name']}.json")]
-    cleanup = study['specification'].get('owned_docker_cache_cleanup')
-    if cleanup:
-        command.extend(['--plugin','scripts.harbor_owned_cache:OwnedDockerCachePlugin',
-            '--plugin-kwarg','plan_path='+cleanup['plan_path'],
-            '--plugin-kwarg','plan_sha256='+cleanup['plan_sha256']])
-    receipt = {"study_sha256": study["sha256"], "job": job["name"],
-               "harbor_commit": study["harbor_commit"], "started_at": datetime.now(timezone.utc).isoformat(),
-               "owned_docker_cache_cleanup":cleanup}
-    write_json(directory / "launches" / f"{job['name']}.json", receipt)
-    with (directory / "launches" / f"{job['name']}.log").open("x") as stream:
-        result = subprocess.run(command, stdout=stream, stderr=subprocess.STDOUT, check=False)
-    write_json(directory / "launches" / f"{job['name']}.exit.json", {"exit_code": result.returncode,
-               "finished_at": datetime.now(timezone.utc).isoformat()})
-    print(json.dumps({"job": job["name"], "exit_code": result.returncode,
-                      "note": "Exit code is not a benchmark score; run audit"}))
-    return result.returncode
+def run_job(directory, arm, repeat, harbor_repository, python, **options):
+    from scripts.harbor_study_runner import run_job as execute
+    return execute(directory,arm,repeat,harbor_repository,python,**options)
 
 
 def number(value, label, positive=False):
@@ -406,6 +414,7 @@ def normalize_trial(raw, study, job, task):
 
 
 def audit(directory):
+    from scripts.harbor_budget_audit import audit_budget_log, qualify_comparison
     directory = directory.resolve(strict=True)
     study = read_study(directory)
     tasks = {t["name"]: t for t in study["tasks"]}
@@ -441,6 +450,9 @@ def audit(directory):
                 if row["trial_id"] in trial_ids:
                     raise ValueError("Trial id reused across files or repeats")
                 trial_ids.add(row["trial_id"])
+                if study['specification']['purpose'] == 'evaluation':
+                    arm = next(a for a in study['specification']['arms'] if a['id'] == job['arm'])
+                    row['budget_audit'] = audit_budget_log(path, raw, arm, study['specification'].get('model_identity',{}))
             except (OSError, ValueError, TypeError) as exc:
                 issues.append({"kind": "invalid_trial", **source, "reason": str(exc)})
                 if isinstance(raw, dict) and raw.get("task_name") in records:
@@ -462,14 +474,18 @@ def audit(directory):
     complete = not issues and all(row["status"] in TERMINAL_STATUSES for row in rows)
     arms = {arm["id"]: summarize([r for r in rows if r["arm"] == arm["id"]], len(tasks))
             for arm in study["specification"]["arms"]}
-    comparison = paired_comparison(rows, study) if complete else {"status": "BLOCKED_INCOMPLETE_AUDIT"}
+    qualification = qualify_comparison(rows,study)
+    comparison = ({'status':'BLOCKED_INCOMPLETE_AUDIT'} if not complete else
+                  paired_comparison(rows, study) if qualification['qualified'] else
+                  {'status':'BLOCKED_NON_EQUIVALENT_OR_UNQUALIFIED', 'reasons':qualification['reasons']})
     return {"schema_version": 1, "study_sha256": study["sha256"], "purpose": study["specification"]["purpose"],
             "benchmark": study["specification"]["benchmark"], "benchmark_commit": study["benchmark_commit"],
             "harbor_commit": study["harbor_commit"], "selection": study["selection"],
             "audit_complete": complete, "official_leaderboard_result": False,
             "metric": "strict completion plus upstream binary verifier; errors and missing trials are not successes",
             "provenance_limit": "Checks supplied records and frozen inputs; does not certify model identity or independent execution",
-            "arms": arms, "comparison": comparison, "issues": issues, "trials": rows}
+            "arms": arms, "comparison": comparison, "comparison_qualification":qualification,
+            "issues": issues, "trials": rows}
 
 
 def summarize(rows, task_count):

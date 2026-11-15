@@ -197,6 +197,8 @@ def snapshot_runtime(runtime):
         snapshot['host_acceptance'] = runtime.verification_callback.identity
     if getattr(runtime.registry, 'plugin_manager', None):
         snapshot['plugin_namespace'] = runtime._plugin_namespace
+    if getattr(runtime, '_child_tool_contract_revision', None) == 1:
+        snapshot['child_tool_contract'] = {'revision': 1, 'schemas_sha256': digest(dumps(runtime.registry.schemas()))}
     if runtime.async_policy:
         snapshot['async'] = {'policy': policy_snapshot(runtime.async_policy)}
     if runtime.finalization_policy:
@@ -221,7 +223,7 @@ def snapshot_runtime(runtime):
     return snapshot
 
 
-def restore_runtime(runtime, data, *, conservative_interrupts=False):
+def restore_runtime(runtime, data, *, conservative_interrupts=False, child_parents=None):
     if data.get('strict_task', False) != runtime.strict_task:
         raise PersistenceError('Task acceptance contract checkpoint mismatch')
     if data.get('host_acceptance') != getattr(runtime.verification_callback, 'identity', None):
@@ -230,10 +232,7 @@ def restore_runtime(runtime, data, *, conservative_interrupts=False):
         raise PersistenceError('V5 engine checkpoint mismatch')
     if data.get('harness_sha256') != (digest(json.dumps(configuration(runtime)['harness'],sort_keys=True)) if runtime.harness_policy else None):
         raise PersistenceError('Harness task contract checkpoint mismatch')
-    from .session import AgentSession, SessionBudgets, SessionState
-    from .registry import create_default_registry
-    from .policy import DataPolicy
-    from .safety import CapabilityPolicy
+    from .session_types import SessionBudgets, SessionState
     if data["version"] != 1:
         raise PersistenceError("Unsupported runtime checkpoint version")
     if runtime.async_policy:
@@ -345,48 +344,14 @@ def restore_runtime(runtime, data, *, conservative_interrupts=False):
         runtime.state = SessionState.COMPUTER_PAUSED
     for worker_id, child_data in data["children"].items():
         record = next(r for r in runtime.subagents if r["id"] == worker_id)
-        target, tier = record["backend"], record.get("tier")
-        backend = runtime.local_backend if target == "local" else runtime.cloud_worker_backends.get(tier) if tier else runtime.cloud_backend
-        if runtime.hybrid:
-            _, backend = runtime.hybrid.resolve(target, record.get('backend_id'), record.get('configured_model'), tier)
-        if backend is None:
-            raise PersistenceError("Child backend no longer configured")
-        ceiling = runtime.registry.gateway.capabilities
-        read_only = record["read_only"]
-        registry = create_default_registry(runtime.workspace, permission_mode=runtime.permission_mode,
-            capabilities=CapabilityPolicy(read=ceiling.read, write=ceiling.write and not read_only,
-                execute=ceiling.execute and not read_only, read_only=ceiling.read_only or read_only),
-            data_policy=DataPolicy(local_only=runtime.hard_data_policy.local_only if runtime.hybrid else target == "local"),file_operations="move_file" in runtime.registry._tools)
-        registry.authorization_guard=getattr(runtime.registry,"authorization_guard",None)
-        registry.scope_policy=getattr(runtime.registry,"scope_policy",None)
-        child = AgentSession(registry, backend=backend,
-            local_backend=runtime.local_backend if runtime.hybrid else None,
-            cloud_backend=runtime.cloud_backend if runtime.hybrid else None,
-            cloud_worker_backends=runtime.cloud_worker_backends if runtime.hybrid else None,
-            policy=runtime.routing_policy if runtime.hybrid else "local-only" if target == "local" else "cloud-only",
-            budgets=SessionBudgets(**child_data["budgets"]), thinking=unpack(child_data["fields"])["thinking_mode"],
-            reasoning=runtime.reasoning_mode, streaming=runtime.streaming, runtime_tools=False,
-            depth=runtime.depth + 1, retry_policy=runtime.retry_policy, stabilization=runtime.controls,
-            engine_policy=runtime.engine_policy,
-            computer_runtime=runtime.computer, computer_owner=False,
-            event_callback=lambda e, w=worker_id: runtime._emit("SubagentEvent", id=w, event=e.to_dict()),
-            hybrid_policy=runtime.hybrid.policy if runtime.hybrid else None,
-            hybrid_backends=runtime.hybrid.catalog if runtime.hybrid else None,
-            hybrid_primary=record.get('backend_id'),
-            harness_policy=runtime.harness_policy,
-            adaptive_policy=runtime.adaptive.policy if runtime.adaptive else None,
-            capability_profiles=runtime.adaptive.profiles if runtime.adaptive else None,
-            task_traits=runtime._child_traits() if runtime.adaptive else None)
-        if runtime.async_policy:
-            child._async_enabled = True
-            child._state_condition, child._scheduler = runtime._state_condition, runtime._scheduler
-            child._scheduler_owner = runtime._scheduler_owner
-            from .judge import LocalSafetyJudge
-            if isinstance(child.registry.gateway.judge, LocalSafetyJudge):
-                child.registry.gateway.judge.request_context = lambda c=child: c._scheduler.model_slot(c, c.local_backend)
-        child._cancel_parent = child._ledger_parent = runtime
-        child._worker_id = worker_id
-        child._eligible = lambda c=child: bool(c.current_backend.health_check()) if c.primary == 'local' else False
+        from .child_sessions import create_child
+        contract = child_data.get('child_tool_contract')
+        child = create_child(runtime, record, SessionBudgets(**child_data['budgets']),
+            unpack(child_data['fields'])['thinking_mode'],
+            source=(child_parents or {}).get(worker_id), inherit_tools=contract is not None)
+        if contract is not None and contract != {'revision': 1, 'schemas_sha256': digest(dumps(child.registry.schemas()))}:
+            child.close()
+            raise PersistenceError('Child tool contract changed')
         restore_runtime(child, child_data, conservative_interrupts=bool(runtime.finalization_policy or runtime.async_policy or conservative_interrupts))
         runtime._children[worker_id] = child
     if runtime.pending_approval and runtime.pending_approval.get("kind") in {"subagent_resume", "async_child"}:

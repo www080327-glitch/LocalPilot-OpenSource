@@ -187,7 +187,8 @@ class MemoryStore:
 
     def clear(self, extra_tables=(), state=None):
         allowed = {"observation_occurrences", "observation_claims", "observation_conflicts", "observation_derivations",
-                   "observation_versions", "observation_document_links", "observation_events", "observation_fts", "observation_occurrence_archive"}
+                   "observation_versions", "observation_document_links", "observation_events", "observation_fts", "observation_occurrence_archive",
+                   "connected_sources", "source_import_files", "training_examples"}
         if set(extra_tables) - allowed:
             raise ValueError("Unknown memory tables")
         with self.db:

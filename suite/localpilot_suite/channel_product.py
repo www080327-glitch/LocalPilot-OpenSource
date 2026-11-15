@@ -100,7 +100,13 @@ def unresolved(root, state_dir):
             connection.close()
     return False
 
-def wheel_source():
+def wheel_source(home=None):
+    if home is not None and (home / "channels-wheel.json").exists():
+        reference=private_json(home / "channels-wheel.json")
+        path=channels.canonical_path(reference["path"])
+        if not path.is_relative_to(home / "upgrades") or channel_runtime.digest(path)!=reference["sha256"]:
+            raise ValueError("CHANNEL_REVIEWED_UPGRADE_WHEEL_CHANGED")
+        return path
     # This exact directory is supplied by the signed APP resource layout.
     resources = Path(sys.prefix).parent
     manifest = json.loads((resources / 'verified-modules.json').read_text())
@@ -112,10 +118,10 @@ def wheel_source():
         raise ValueError('CHANNEL_BUNDLED_WHEEL_INTEGRITY_FAILED')
     return path
 
-def component_compatible(root):
+def component_compatible(root,home=None):
     if not channels.installed(root):return False
     record=private_json(root/'installation.json')
-    return record.get('transport_contract')==2 and record.get('wheel_sha256')==channel_runtime.digest(wheel_source())
+    return record.get('transport_contract')==2 and record.get('wheel_sha256')==channel_runtime.digest(wheel_source(home))
 
 
 def update_component(home,hub,state,kind):
@@ -140,9 +146,9 @@ def install_component(home, hub, state):
     target = component_home(hub, state)
     private_directory(target, create=True)
     root = target / 'channels'
-    if channels.installed(root) and not component_compatible(root):raise ValueError('CHANNEL_COMPONENT_UPDATE_REQUIRED')
+    if channels.installed(root) and not component_compatible(root,home):raise ValueError('CHANNEL_COMPONENT_UPDATE_REQUIRED')
     if not channels.installed(root):
-        channels.main(['install', '--wheel', str(wheel_source())], target, node_path=node)
+        channels.main(['install', '--wheel', str(wheel_source(home))], target, node_path=node)
     return node
 
 def bridge_env(hub, kind, state_dir, config=None):
@@ -182,7 +188,7 @@ def status(home, kind, include_login=False):
     state = settings(hub)
     root = runtime_root(hub, state)
     installed = channels.installed(root)
-    compatible = component_compatible(root) if installed else False
+    compatible = component_compatible(root,home) if installed else False
     running = {component: bool(channels.process(root, component)) if root.exists() else False
         for component in (kind, 'adapter')}
     data = state_info(state_dir)

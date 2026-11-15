@@ -67,50 +67,45 @@ def wheel_info(path, expected):
 
 
 def upgrade(argv, home):
-    p = argparse.ArgumentParser(description='Independent offline wheel upgrade/rollback; data is preserved')
-    p.add_argument('module', choices=['core','companion','suite']); p.add_argument('--wheel', required=True)
-    p.add_argument('--execute', action='store_true'); p.add_argument('--previous-wheel')
+    from . import upgrades
+    p = argparse.ArgumentParser(description='Reviewed offline APP/component upgrade; concrete rollback and data preservation')
+    p.add_argument('module', choices=['core','companion','suite','channels','all','desktop','bundle','status'])
+    p.add_argument('--wheel', action='append', default=[])
+    p.add_argument('--previous-wheel', action='append', default=[])
+    p.add_argument('--app', type=Path)
+    p.add_argument('--test-app', action='store_true')
+    p.add_argument('--plan')
+    p.add_argument('--fingerprint')
+    p.add_argument('--execute', action='store_true')
+    p.add_argument('--rollback', action='store_true')
+    p.add_argument('--launch', action='store_true')
+    p.add_argument('--wait-pid', type=int)
     a = p.parse_args(argv)
-    names = {'core':'localpilot-agent-service', 'companion':'localpilot-companion', 'suite':'localpilot-suite'}
-    wheel, version = wheel_info(a.wheel, names[a.module])
-    previous = wheel_info(a.previous_wheel, names[a.module])[0] if a.previous_wheel else None
-    value = {'module':a.module, 'target':version, 'wheel':wheel, 'previous_wheel':previous,
-             'data_policy':'preserve', 'command':[sys.executable, '-m', 'pip', 'install', '--no-deps', '--force-reinstall', wheel]}
-    if a.execute:
-        if not previous:raise ValueError('--execute requires --previous-wheel so rollback is concrete')
-        import psutil
-        if home.is_symlink() or not home.is_dir() or home.stat().st_uid != os.getuid() or home.stat().st_mode & 0o077:
-            raise ValueError('Initialize a private data directory before upgrade')
-        if a.module == 'core':
-            record_path = home / 'process.json'
-            if record_path.exists():
-                if record_path.is_symlink() or record_path.stat().st_mode & 0o077:raise ValueError('Unsafe process record')
-                record = json.loads(record_path.read_text())
-                try:
-                    process = psutil.Process(record['pid'])
-                    if abs(process.create_time() - record['created']) < .02 and process.status() != psutil.STATUS_ZOMBIE:
-                        raise ValueError('Stop Core explicitly before upgrade; active tasks must be resolved first')
-                except psutil.NoSuchProcess:pass
-        elif a.module == 'companion':
-            probe = subprocess.run([sys.executable, '-m', 'companion', '--config', str(companion_config(home)), '--json', 'status'], capture_output=True, text=True)
-            if probe.returncode == 0 and json.loads(probe.stdout).get('status') == 'running':
-                raise ValueError('Stop Companion explicitly before upgrade')
-        # Record rollback before installation; never rewrite model/database/config paths.
-        record_path = home / ('upgrade-' + a.module + '.json')
-        temporary = record_path.with_suffix('.tmp')
-        fd = os.open(temporary, os.O_CREAT | os.O_EXCL | os.O_WRONLY | os.O_NOFOLLOW, 0o600)
-        with os.fdopen(fd, 'w') as f:json.dump(value, f)
-        os.replace(temporary, record_path)
-        result = subprocess.run(value['command'])
-        if result.returncode:
-            rollback = subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-deps', '--force-reinstall', previous])
-            value.update(status='failed_rolled_back' if rollback.returncode == 0 else 'failed_rollback_failed',
-                         installation_exit=result.returncode, rollback_exit=rollback.returncode)
-            emit(value)
-            return result.returncode
-        value['status'] = 'installed_run_doctor_before_start'
-    else:value['status'] = 'plan_only_add_execute_and_previous_wheel'
-    emit(value);return 0
+    if a.module == 'status':
+        emit(upgrades.history(home)); return 0
+    if a.plan:
+        if not (a.execute or a.rollback or a.launch):
+            raise ValueError('A saved plan requires execute or rollback')
+        if a.launch:
+            if a.wait_pid is None:raise ValueError('The current GUI PID is required')
+            value = upgrades.launch(home,a.plan,a.wait_pid,fingerprint=a.fingerprint,rollback=a.rollback)
+        else:
+            value = upgrades.execute(home,a.plan,fingerprint=a.fingerprint,rollback=a.rollback)
+    else:
+        if a.module in upgrades.NAMES and (len(a.wheel)!=1 or len(a.previous_wheel)!=1):
+            raise ValueError('Select a target wheel and exact installed-version rollback wheel')
+        if a.module in upgrades.NAMES:
+            wheel_info(a.wheel[0],upgrades.NAMES[a.module])
+            wheel_info(a.previous_wheel[0],upgrades.NAMES[a.module])
+        if a.module in {'desktop','bundle'} and not a.app:raise ValueError('Select the unpacked APP')
+        if a.module == 'bundle':
+            files=a.app/'Contents/Resources/bundled-backends/wheels'
+            a.wheel=[str(f) for f in files.glob('*.whl') if f.name.startswith(('localpilot_agent_service-','localpilot_companion-','localpilot_suite-','localpilot_channels-'))]
+            if len(a.wheel)!=4:raise ValueError('Candidate APP must include Core, Companion, Suite and Channels wheels')
+        value=upgrades.plan(home,a.wheel,a.previous_wheel,app=a.app,test_app=a.test_app)
+        if a.execute:value=upgrades.execute(home,value['id'],fingerprint=value['fingerprint'])
+    emit(value)
+    return 0 if value['status'] in {'plan_only','completed','rolled_back','awaiting_gui_exit'} else 6
 
 
 def main(argv=None):
@@ -122,7 +117,7 @@ def main(argv=None):
             except importlib.metadata.PackageNotFoundError:value[name] = 'NOT_INSTALLED'
         emit(value);return 0
     if not argv or argv in [['--help'], ['-h']]:
-        print('LocalPilot Suite — independent modules through API 1.0\n\nUsage: localpilot [--home DIR] [--json] COMMAND\n\nCore: init doctor start stop restart status ask chat agent models tasks task logs config\nCompanion: companion start|stop|status|ask|... (its own CLI)\nPlugins: plugins list|add|discover|review|enable|disable|tools|doctor|update|remove\nSkills: skills list|add|show|enable|disable|doctor|update|remove\nChannels (optional): channels list|install|configure|doctor|start|stop|status|pending|task|login|uninstall\nModules: upgrade core|companion|suite --wheel FILE [--execute --previous-wheel FILE]\n\nCtrl-C detaches a task; task watch ID reconnects. No model download at initialization.\nUse localpilot COMMAND --help for details. Global options go before COMMAND.')
+        print('LocalPilot Suite — independent modules through API 1.0\n\nUsage: localpilot [--home DIR] [--json] COMMAND\n\nCore: init doctor start stop restart status ask chat agent models tasks task logs config\nCompanion: companion start|stop|status|ask|... (its own CLI)\nPlugins: plugins list|add|discover|review|enable|disable|tools|doctor|update|remove\nSkills: skills list|add|show|enable|disable|doctor|update|remove\nChannels (optional): channels list|install|configure|doctor|start|stop|status|pending|task|login|uninstall\nModules: upgrade core|companion|suite|channels|all --wheel FILE --previous-wheel FILE [--execute]\nDesktop: upgrade bundle|desktop --app PATH [--test-app]\nSaved plans: upgrade status | upgrade all --plan ID --execute|--rollback\n\nCtrl-C detaches a task; task watch ID reconnects. No model download at initialization.\nUse localpilot COMMAND --help for details. Global options go before COMMAND.')
         return 0
     # Parse only global flags. All task options stay with their owning module.
     prefix=[]; index=0; home=Path(os.environ.get('LOCALPILOT_HOME','~/.local/share/localpilot')).expanduser().resolve(); structured=False

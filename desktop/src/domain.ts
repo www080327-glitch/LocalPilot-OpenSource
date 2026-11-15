@@ -56,6 +56,7 @@ export interface NativeProfile {
   cli: string;
   origin: string;
   workspace: string;
+  maintenance_return?: boolean;
 }
 export interface Message {
   id: string;
