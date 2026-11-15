@@ -572,14 +572,13 @@
     "reinforcement_learning_executor": "NOT_IMPLEMENTED"
   },
   "not_run": [
-    "Rust",
-    "Swift",
-    "macOS APP build/install/upgrade/rollback",
-    "real native PA/UI/audio",
+    "full APP upgrade helper handoff failure and actual reverse rollback",
+    "real microphone/system/both audio capture (TCC attributed the helper to the host process)",
+    "real cloud-source model tasks, Worker child tasks, real cancellation and UNKNOWN recovery",
+    "human-reviewed samples and actual training/adapter inference",
     "real model quality and new public benchmark study",
-    "actual LoRA training and adapter tensor inference",
-    "Intel hardware and CPU model performance",
-    "real KV cold/hot/reload measurements"
+    "evening greeting, actual sleep/wake, Intel hardware and real KV cold/hot/reload",
+    "real cloud-model source tiers"
   ],
   "preserved_failed_runs": [
     "cooperation-child-registry-first.log",
@@ -611,5 +610,21 @@
     "daily_app_replaced": false,
     "external_forms_submitted": false
   },
-  "publication_note": "The follow-up evidence commit only fills publication references in RESULTS.md and RESULTS.json; runtime/source manifest and archived logs are unchanged."
+  "publication_note": "The earlier follow-up evidence commit only filled publication references in RESULTS.md and RESULTS.json; runtime/source manifest and archived logs were unchanged.",
+  "macos_followup": {
+    "report": "../pa-cooperation-20261115-mac/RESULTS.md",
+    "source_commit": "4492522463473901c610851a1a4926195770cb94",
+    "starting_head": "c3368f77742cf00d709cbfc334df9cb2473189a1",
+    "platform": "macOS 27.0.1 arm64",
+    "rust_tests": {"passed": 42, "ignored": 3, "failures": 0},
+    "playwright": {"passed": 34, "failed": 0},
+    "test_app": {"built": true, "installed": true, "reopened": true, "bundle_id": "io.localpilot.desktop.test"},
+    "native_audio": {"status": "BLOCKED", "reason": "TCC responsible process resolved to host ChatGPT; zero segments and no raw audio saved"},
+    "sse_409": "PASS",
+    "daily_app_as_test_plan": "REJECTED_AT_BUNDLE_ID_CHECK",
+    "formal_benchmark": "NOT_RUN",
+    "merged": false,
+    "release_published": false,
+    "daily_app_replaced": false
+  }
 }

@@ -2,7 +2,7 @@
 
 本轮分支为 `codex/pa-cooperation-20261115`，基线为 [Draft PR #10](https://github.com/www080327-glitch/LocalPilot-OpenSource/pull/10) 的 `92ad9a30b9fda43bc185d96c99e5cb0a8ce8ec02`。本轮已推送 [Draft PR #11](https://github.com/www080327-glitch/LocalPilot-OpenSource/pull/11)，受测代码提交为 [`71fc7c6d99cb6794c5a8e1e77f8141290157b79f`](https://github.com/www080327-glitch/LocalPilot-OpenSource/commit/71fc7c6d99cb6794c5a8e1e77f8141290157b79f)。受测源码由本目录 `SOURCE_FILES.json` 逐文件绑定；后续证据提交仅回填本段与 `RESULTS.json` 的发布引用，运行代码不变。旧 PR #1、#9、#10 与全部旧 evidence 保持原样。
 
-开发与执行环境为 **Linux x86_64、Python 3.12.14**。本轮完成代码、协议、真实文件/SQLite/子进程和独立 wheel 安装验证；没有 macOS SDK、真实音轨、Intel Mac 或正式模型/Docker 评测环境。
+开发与执行环境为 **Linux x86_64、Python 3.12.14**。本报告以下主表记录该环境；后续从 macOS arm64 完成了本机补验，独立状态、制品与日志见[本机续验报告](../pa-cooperation-20261115-mac/RESULTS.md)。
 
 ## 当前最终结果
 
@@ -18,8 +18,8 @@
 | 四组件真实 wheel | **PASS：257 个包内 Python 文件 + 3 个脚本资源** | 逐字节对应源码，唯一包归属，许可证与 Swift 资源在包内 |
 | 新 venv 安装与入口 | **PASS** | 仓库外 `-I` 导入、全部安装文件、实际文件读写、五个 CLI 和 Channels 版本 |
 | 安装后渠道生命周期 | **12 PASS / 0 FAIL / 0 ERROR / 0 SKIP**，8.579 秒 | 全新 venv、真实四组件 wheel、仓库外运行；包含 SIGINT 后重开及启动身份缺陷回归 |
-| Playwright | **34 项收集 / 0 项实际运行** | Chromium 在页面启动前被环境的 socket 限制阻止；不是 34 项产品 FAIL，也不是交互 PASS |
-| Rust / Swift / 新原生 APP | **NOT_RUN** | 缺 cargo/macOS SDK；需本机 Work |
+| Playwright | **Linux：34 项收集 / 0 项实际运行；Mac：34/34 PASS** | Linux Chromium 在页面启动前被 socket 限制阻止；Mac 运行修正桥接夹具后的原生 UI 套件 |
+| Rust / Swift / 新原生 APP | **Mac：Rust 42 PASS / 3 ignored；Swift helper 与独立 APP 构建/安装/重开 PASS** | 真实系统音轨仍因 TCC 责任进程归属阻塞；APP 升级交接失败与真实反向回滚未执行，见本机续验 |
 | 真模型质量、正式对照、真实训练 | **NOT_RUN** | 没有用脚本应答替代实际模型成绩 |
 
 定向测试、SDK、Harbor 与安装补测和全量存在重叠，不能相加为独立测试总数。Core 原始 110 SKIP 分类为：历史 benchmark/账本/TimedBackend 15、原生 macOS 20、官方 SDK 42、独立 Suite/渠道 12、固定 Harbor 环境 17、真实模型资格 4。独立环境补测不会改写主环境原始 SKIP。
@@ -98,7 +98,7 @@ SDK 与固定 Harbor 的独立命令见日志及[公开评测续作](../../devel
 
 旧 534 项对照仍是 **1 PASS / 3 FAIL / 13 ERROR / 517 无最终结果**，冻结源码 `1c06e97` 未变。本轮没有启动旧队列或新真实模型/Docker study，没有官方 AA 排名或“不弱于主流 Agent”的结论。
 
-新候选的 Rust/Swift、独立 APP 安装与升级退出/重开、真实五档模型任务、Shell/子 Agent 取消、UNKNOWN/Session/SSE 409、会议音轨、原生样本审阅、晚间及系统睡眠唤醒、KV 冷热/重载、Intel 和实际 LoRA 仍按[统一 Work 提示词](../../development/WORK_PA_COOPERATION_20261115.md)执行。历史 benchmark 原件和旧 Release 来源依旧需要真实材料。
+Mac 补验已完成独立 APP 的构建、安装和重开，验证了 Test APP 对 daily bundle 身份的 dry-run 拒绝、真实本地 Core 工具调用和 SSE 409。仍未完成真实云端来源、Worker 子 Agent、取消/UNKNOWN 恢复、会议音轨（TCC 责任进程为宿主 ChatGPT）、人工样本、LoRA/adapter、KV、晚间与睡眠唤醒、Intel、完整助手交接失败及反向安装回滚；公开对照仍需合格 tokenizer/model、Docker 与完整新 study。细节见[本机续验报告](../pa-cooperation-20261115-mac/RESULTS.md)。历史 benchmark 原件和旧 Release 来源依旧需要真实材料。
 
 本轮未合并、发布 Release、替换日常 APP、提交比赛/落地表单或发送对外消息。自有代码继续 Apache-2.0，实际第三方许可保留。
 
