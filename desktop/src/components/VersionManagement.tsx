@@ -17,9 +17,11 @@ const labels: Record<string, string> = {
 export function VersionManagement({
   health,
   cliReady,
+  maintenanceReturn = false,
 }: {
   health: Json | null;
   cliReady: boolean;
+  maintenanceReturn?: boolean;
 }) {
   const [installation, setInstallation] = useState<Json | null>(null);
   const [release, setRelease] = useState<Json | null>(null);
@@ -66,7 +68,7 @@ export function VersionManagement({
     >
       <h3 id="version-management-title">版本更新与存储管理</h3>
       <p className="micro muted">
-        GUI、Core、Companion、Suite 使用同一入口审阅升级与恢复计划。
+        GUI、Core、Companion、Suite、Channels 使用同一入口审阅升级与恢复计划。
         点击检查才连接 GitHub；没有后台更新或清理。
       </p>
       <dl className="version-facts">
@@ -107,6 +109,12 @@ export function VersionManagement({
         <div>
           <dt>已安装 Suite</dt>
           <dd>{modules?.suite || "UNKNOWN · 请读取模块版本"}</dd>
+        </div>
+        <div>
+          <dt>已安装 Channels</dt>
+          <dd>
+            {modules?.["localpilot-channels"] || "UNKNOWN · 请读取模块版本"}
+          </dd>
         </div>
         <div>
           <dt>API 兼容状态</dt>
@@ -288,7 +296,10 @@ export function VersionManagement({
           </ol>
         </div>
       )}
-      <ComponentUpgrades cliReady={cliReady} />
+      <ComponentUpgrades
+        cliReady={cliReady}
+        maintenanceReturn={maintenanceReturn}
+      />
       <h4>存储与历史版本</h4>
       <div className="management-actions">
         <button

@@ -312,8 +312,10 @@ class ServiceContractTests(unittest.TestCase):
         app = self.host()
         view = self.done(self.submit())
         app.store_task_result(view)
-        rows = app.observation_memory.records(limit=10)
-        self.assertTrue(any(r["source"] == "localpilot" for r in rows))
+        # This task was submitted outside Companion: retain its receipt, but
+        # do not invent missing input lineage for later personal questions.
+        self.assertTrue(app.store.db.execute("SELECT 1 FROM observation_events WHERE source='localpilot'").fetchone())
+        self.assertEqual(app.observation_memory.records(limit=10), [])
         self.assertFalse(app.store.records(10, ["user_fact"]))
         self.assertEqual(app.store.db.execute("PRAGMA integrity_check").fetchone()[0], "ok")
 

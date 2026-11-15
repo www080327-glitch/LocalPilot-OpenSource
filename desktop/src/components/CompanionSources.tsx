@@ -3,6 +3,7 @@ import { call, desktop } from "../bridge";
 import type { Json } from "../domain";
 import type { CompanionMeeting } from "../hooks/useCompanionMeeting";
 import { MeetingCapture } from "./MeetingCapture";
+import { TrainingSamples } from "./TrainingSamples";
 
 export function CompanionSources({
   onError,
@@ -15,7 +16,6 @@ export function CompanionSources({
   const [kind, setKind] = useState("codex");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
-  const [exported, setExported] = useState<Json | null>(null);
   async function command(command: string, args: Json = {}) {
     const result = await call<Json>("companion", { command, args });
     if (result.status === "error")
@@ -34,7 +34,6 @@ export function CompanionSources({
     try {
       const result = await command(action, args);
       const sync = result.sync || result;
-      if (action === "training_export") setExported(result);
       setNotice(
         action === "source_revoke"
           ? `已撤销来源并移除 ${result.removed_records || 0} 条关联记录。`
@@ -42,9 +41,7 @@ export function CompanionSources({
             ? args.enabled
               ? "已恢复该来源授权。"
               : "来源已停用，相关记忆立即停止检索。"
-            : action === "training_export"
-              ? "已导出人工审阅样本；未启动模型训练。"
-              : `同步状态：${sync.status} · ${sync.files || 0} 个文件 · ${sync.records || 0} 条记录`,
+            : `同步状态：${sync.status} · ${sync.files || 0} 个文件 · ${sync.records || 0} 条记录`,
       );
       await refresh();
     } catch (error) {
@@ -167,23 +164,7 @@ export function CompanionSources({
           </pre>
         </details>
       ))}
-      <details className="advanced-settings">
-        <summary>人工审阅样本导出</summary>
-        <p className="muted">
-          仅导出已通过 Companion
-          样本接口明确保存的问答，按独立来源划分训练与验证数据。该操作不生成标签、不启动训练。
-        </p>
-        <button
-          className="secondary"
-          disabled={!desktop || busy}
-          onClick={() => void run("training_export", {})}
-        >
-          导出已审阅样本
-        </button>
-        {exported && (
-          <pre className="json">{JSON.stringify(exported, null, 2)}</pre>
-        )}
-      </details>
+      <TrainingSamples />
     </section>
   );
 }

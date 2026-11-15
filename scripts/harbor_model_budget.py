@@ -31,19 +31,24 @@ class ModelBudget:
 
 
 class BudgetedLocalBackend(ServiceOpenAIBackend):
-    def __init__(self, *, model_budget, budget_log, **kwargs):
+    def __init__(self, *, model_budget, budget_log, record_admission_denials=False, **kwargs):
+        if type(record_admission_denials) is not bool:
+            raise ValueError('Admission denial recording must be a host boolean')
+        self.record_admission_denials = record_admission_denials
         self.limit = ModelBudget(**model_budget)
         super().__init__(**kwargs)
         if not self.is_loopback or self.chat_template_kwargs != {'enable_thinking': False}:
             raise ValueError('Measured evaluation requires local text inference with thinking disabled')
         self.budget_log = Path(budget_log)
         self.requests = self.charged_tokens = 0
+        self.denied_attempts = 0
         self.disqualified = None
         self.tokenizer_sha256 = tokenizer_fingerprint(self.limit.tokenizer_path)
         self.counter = TokenizerProcess(self.limit.tokenizer_python, self.limit.tokenizer_path,
             timeout=self.limit.tokenizer_timeout, stderr_path=self.budget_log.with_name('tokenizer-stderr.log'))
         self._record({'status':'budget_initialized', 'limits':asdict(self.limit),
-                      'tokenizer_sha256':self.tokenizer_sha256, 'model':self.model})
+                      'tokenizer_sha256':self.tokenizer_sha256, 'model':self.model,
+                      **({'admission_denials':True} if record_admission_denials else {})})
 
     def _count(self, payload):
         return self.counter.count(payload)
@@ -53,15 +58,20 @@ class BudgetedLocalBackend(ServiceOpenAIBackend):
         if self.disqualified:
             raise ModelBudgetExceeded('Budget qualification was lost: ' + self.disqualified)
         if psutil.virtual_memory().available < self.limit.min_available_bytes:
-            raise ModelBudgetExceeded('Host memory headroom is below the registered reserve')
+            self._deny_admission('memory_headroom', 'Host memory headroom is below the registered reserve')
         if self.requests >= self.limit.max_requests:
-            raise ModelBudgetExceeded('Measured request budget exhausted')
+            self._deny_admission('requests', 'Measured request budget exhausted')
         maximum = min(max_tokens or self.limit.max_output_tokens, self.limit.max_output_tokens)
         payload = self._payload(messages, tools, maximum, thinking=thinking)
-        tokens = self._count(payload)
+        try:
+            tokens = self._count(payload)
+        except Exception as error:
+            if not self.record_admission_denials:
+                raise
+            self._deny_admission('tokenizer_failure', 'Tokenizer failed before dispatch: ' + type(error).__name__)
         if (tokens > self.limit.max_input_tokens
                 or self.charged_tokens + tokens + maximum > self.limit.max_total_tokens):
-            raise ModelBudgetExceeded('Measured request/input/output/total model budget exhausted')
+            self._deny_admission('tokens', 'Measured request/input/output/total model budget exhausted')
         self.requests += 1
         # Reserve the entire unknown response before dispatch. A failed request
         # consumes this allowance; a retry cannot replenish the shared budget.
@@ -69,6 +79,13 @@ class BudgetedLocalBackend(ServiceOpenAIBackend):
         self._record({'status':'admitted', 'request':self.requests, 'counted_input_tokens':tokens,
                       'reserved_output_tokens':maximum, 'charged_total_tokens':self.charged_tokens})
         return tokens, maximum
+
+    def _deny_admission(self, reason, message):
+        if self.record_admission_denials:
+            self.denied_attempts += 1
+            self._record({'status':'denied_before_dispatch', 'request':self.requests + 1,
+                          'reason':reason, 'charged_total_tokens':self.charged_tokens})
+        raise ModelBudgetExceeded(message)
 
     def _settle(self, tokens, maximum, response):
         usage = response.usage or {}

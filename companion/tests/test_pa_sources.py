@@ -71,6 +71,42 @@ class SourceImportTests(unittest.TestCase):
         self.assertEqual(self.app.store.records(10, ["user_fact"]), [])
         self.assertEqual(path.read_bytes(), original)
 
+    def test_explicit_imported_filename_can_be_cited_with_its_observation_identity(self):
+        from companion.model import ModelManager
+        from companion.tests.test_v04_service import ShortReply
+        path = self.root / 'meeting-notes.txt'
+        path.write_text('Discussed parser changes; completion was not verified.')
+        self.connect(path, 'meeting')
+        self.config.model_routing_enabled = False
+        backend = ShortReply('来源：《meeting-notes.txt》lines 1-1。记录提到 parser，不能证明完成。')
+        self.app.model = ModelManager(self.config, adapter=backend)
+        response = self.app.ask('请解释《meeting-notes.txt》中的记录')
+        self.assertEqual(response['status'], 'ok')
+        self.assertEqual(response['text'], backend.text)
+        self.assertEqual(response['observation_sources'][0]['source_path'], str(path))
+        self.assertEqual(response['observation_sources'][0]['evidence']['locator'], 'lines 1-1')
+        review = self.app.training.review(response['answer_id'])
+        self.assertEqual(review['status'], 'ok')
+        self.assertEqual(review['candidate']['observation_ids'], [response['observation_sources'][0]['id']])
+
+    def test_normal_observation_answer_is_withheld_if_source_changes_during_inference(self):
+        from companion.model import ModelManager
+        from companion.tests.test_v04_service import ShortReply
+        path = self.root / 'meeting-notes.txt'
+        path.write_text('Synthetic current text')
+        self.connect(path, 'meeting')
+        self.config.model_routing_enabled = False
+        class ChangingReply(ShortReply):
+            def complete(self, messages, max_tokens):
+                path.write_text('A replacement is now on disk')
+                return super().complete(messages, max_tokens)
+        self.app.model = ModelManager(self.config, adapter=ChangingReply('WITHHELD_ORIGINAL_SOURCE_TEXT'))
+        response = self.app.ask('请解释《meeting-notes.txt》中的记录')
+        self.assertEqual(response['status'], 'unavailable')
+        self.assertEqual(response['model']['status'], 'source_changed')
+        self.assertNotIn('WITHHELD_ORIGINAL_SOURCE_TEXT', json.dumps(response))
+        self.assertEqual(self.app.training.candidates()['candidates'], [])
+
     def test_codex_excludes_reasoning_tools_environment_and_protocol_duplicates(self):
         path = self.codex(messages=[("user_message", "请检查 parser"), ("agent_message", "公开回复"),
                                    ("agent_reasoning", "PRIVATE_REASONING"), ("user_message", "<environment_context>PRIVATE_ENV</environment_context>")])

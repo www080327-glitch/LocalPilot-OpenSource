@@ -18,11 +18,13 @@ import "./pet/pet.css";
 import EdgeCharacter from "./pet/EdgeCharacter";
 import { idleLines } from "./pet/personality";
 import { textOf } from "./domain";
+import { TrainingReview } from "./components/TrainingSamples";
 type Message = {
   role: "user" | "assistant";
   text: string;
   profile?: string;
   question?: string;
+  answerId?: string;
 };
 const act = (action: string, value?: unknown) =>
   call<any>("pet_action", { action, value: value ?? null });
@@ -44,6 +46,7 @@ export default function Pet() {
     [],
   );
   const [aside, setAside] = useState("");
+  const [reviewingAnswer, setReviewingAnswer] = useState<string | null>(null);
   const [agentTask, setAgentTask] = useState<any>(null);
   const [coreConnected, setCoreConnected] = useState(false);
   const delegating = useRef(false);
@@ -389,6 +392,7 @@ export default function Pet() {
           text: r.text || r.reason || r.error || "暂时无法回答，请稍后重试。",
           profile: r.agent_profile,
           question: q,
+          answerId: r.answer_id || undefined,
         },
       ]);
       activity(
@@ -534,6 +538,21 @@ export default function Pet() {
                     {m.profile === "minimal" ? "极简" : "标准"} Agent 处理 ·
                     仅本地
                   </button>
+                )}
+                {m.answerId && (
+                  <button
+                    className="pet-handoff"
+                    onClick={() => setReviewingAnswer(m.answerId!)}
+                  >
+                    审阅为训练样本
+                  </button>
+                )}
+                {m.answerId && reviewingAnswer === m.answerId && (
+                  <TrainingReview
+                    answerId={m.answerId}
+                    request={service}
+                    onClose={() => setReviewingAnswer(null)}
+                  />
                 )}
               </article>
             ))}

@@ -112,7 +112,7 @@ def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
     if argv == ['--version']:
         value = {'suite':VERSION}
-        for name in ['localpilot-agent-service','localpilot-companion']:
+        for name in ['localpilot-agent-service','localpilot-companion','localpilot-channels']:
             try:value[name] = importlib.metadata.version(name)
             except importlib.metadata.PackageNotFoundError:value[name] = 'NOT_INSTALLED'
         emit(value);return 0

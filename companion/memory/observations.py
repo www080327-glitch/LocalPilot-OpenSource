@@ -507,6 +507,10 @@ class ObservationMemory:
         out = []
         for *_, row in ranked:
             packed = {key: row[key] for key in ("id", "kind", "timestamp", "first_timestamp", "source", "source_reference", "version_id", "object", "summary", "confidence", "sensitivity", "epistemic", "evidence_epistemic", "evidence_type", "provenance", "important", "expires_at", "project", "task_id", "occurrences", "occurrence_archive", "raw_state", "evidence_digest", "claim", "derived_from")}
+            packed['evidence'] = {key:value for key,value in row['evidence'].items() if key in {
+                'read_status', 'coverage', 'locator', 'timestamp_basis', 'capture_source',
+                'started_at', 'ended_at', 'automatic_transcription', 'completion_verified',
+                'file_sha256', 'epistemic', 'cue_start', 'cue_end'}}
             if (row['source'] == 'accessibility' and row['kind'] == 'ax.snapshot'
                     and row['raw_state'] == 'raw' and row['object'].get('content_authorized') is True):
                 excerpt = static_text_excerpt(row['evidence'])

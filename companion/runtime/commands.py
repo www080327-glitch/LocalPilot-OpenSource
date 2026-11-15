@@ -60,6 +60,8 @@ class CommandRouter:
             'source_revoke': self.source_revoke,
             'source_coverage': self.source_coverage,
             'training_example_add': self.training_example_add,
+            'training_candidates': lambda data: service.training.candidates(data.get('limit', 20)),
+            'training_review': lambda data: service.training.review(data.get('answer_id')),
             'training_examples': lambda data: service.training.list(),
             'training_example_delete': lambda data: service.training.delete(data.get('id')),
             'training_export': lambda data: service.training.export(data.get('seed', 17), data.get('validation_fraction', .2)),
@@ -101,7 +103,7 @@ class CommandRouter:
         return self.service.meetings.status()
 
     def training_example_add(self, data):
-        return self.service.training.add(data.get('question'), data.get('answer'), data.get('purpose'), data.get('observation_ids'))
+        return self.service.training.add(data.get('question'), data.get('answer'), data.get('purpose'), data.get('observation_ids'), answer_id=data.get('answer_id'))
 
     def source_coverage(self, data):
         service = self.service

@@ -33,7 +33,7 @@ class MeetingControllerTests(unittest.TestCase):
         self.close_app()
         self.temp.cleanup()
 
-    def helper(self, messages=(), final=(), terminal="stopped", wait=True):
+    def helper(self, messages=(), final=(), terminal="stopped", wait=True, exit_code=None):
         path = self.root / ("fixture-"+str(time.monotonic_ns()))
         content = f"""#!{sys.executable}
 import json, sys, time, uuid
@@ -46,8 +46,8 @@ if {wait!r}:
     for line in sys.stdin:
         if line.strip() == 'stop': break
 for row in {list(final)!r}: emit(row)
-emit({{'type':'status','state':{terminal!r},'detail':'fixture_terminal','source':'all','at':time.time()}})
-sys.exit(0 if {terminal!r} == 'stopped' else 1)
+if {terminal is not None!r}: emit({{'type':'status','state':{terminal!r},'detail':'fixture_terminal','source':'all','at':time.time()}})
+sys.exit({exit_code if exit_code is not None else 0 if terminal == 'stopped' else 1})
 """
         path.write_text(content)
         path.chmod(0o700)
@@ -102,7 +102,9 @@ sys.exit(0 if {terminal!r} == 'stopped' else 1)
         self.assertIsNone(self.app.meetings.process)
         self.assertEqual(stopped["meeting"]["segments"], 3)
         self.assertIn("Synthetic final phrase", self.app.ask("会议说了什么？")["text"])
-        self.assertEqual({path.name for path in self.app.meetings.output.root.iterdir()}, {".companion-data-owner", "transcript.jsonl"})
+        self.assertEqual(len(list(self.app.meetings.output.root.glob('segment-*.jsonl'))), 3)
+        self.assertEqual(len(list(self.app.meetings.output.root.iterdir())), 4)
+        self.assertIn('ended_at', stopped['meeting'])
         self.assertFalse(stopped["meeting"]["raw_audio_saved"])
         self.assertFalse(stopped["meeting"]["cloud_fallback"])
         self.assertEqual(self.app.model.inferences, 0)
@@ -117,7 +119,7 @@ sys.exit(0 if {terminal!r} == 'stopped' else 1)
         again = self.start(helper)
         self.assertEqual(first["meeting"]["session_id"], again["meeting"]["session_id"])
         self.assertIs(process, self.app.meetings.process)
-        self.assertEqual(len(self.app.meetings.output.file("transcript.jsonl").read_text().splitlines()), 1)
+        self.assertEqual(len(list(self.app.meetings.output.root.glob('segment-*.jsonl'))), 1)
 
     def test_stop_request_reaches_process_before_the_service_queue_is_serviced(self):
         self.start(self.helper())
@@ -145,7 +147,7 @@ sys.exit(0 if {terminal!r} == 'stopped' else 1)
         self.assertEqual(self.app.meetings.state["detail"], "invalid_helper_protocol")
         self.assertEqual(self.app.meetings.state["segments"], 0)
         self.assertNotIn("MUST_NOT_BE_PERSISTED", "\n".join(self.app.store.db.iterdump()))
-        self.assertEqual(self.app.meetings.output.file("transcript.jsonl").read_text(), "")
+        self.assertEqual(list(self.app.meetings.output.root.glob('*.jsonl')), [])
 
     def test_pause_stops_capture_and_discards_pending_final_without_resuming_on_unpause(self):
         self.start(self.helper(final=[self.segment("DISCARDED_ON_PAUSE")]))
@@ -154,9 +156,43 @@ sys.exit(0 if {terminal!r} == 'stopped' else 1)
         self.app.command({"command":"pause_observation", "paused":True})
         self.assertEqual(process.poll(), 0)
         self.assertEqual(self.app.meetings.state["segments"], 0)
-        self.assertEqual(self.app.meetings.output.file("transcript.jsonl").read_text(), "")
+        self.assertEqual(list(self.app.meetings.output.root.glob('*.jsonl')), [])
         self.app.command({"command":"pause_observation", "paused":False})
         self.assertIsNone(self.app.meetings.process)
+
+    def test_later_segments_keep_prior_sources_and_reviewed_examples_current(self):
+        helper = self.helper([self.segment('First immutable segment')],
+                             [self.segment('Second immutable segment', segment='segment-2')])
+        self.start(helper)
+        self.until(lambda:self.app.meetings.state['segments'] == 1)
+        prior = self.app.observation_memory.records(kind='imported.meeting')[0]
+        self.app.training.add('第一段写了什么？', '来源写了 First immutable segment。', 'activity_qa', [prior['id']])
+        self.app.meetings.stop()
+        self.assertTrue(self.app.observation_memory.is_current(prior['id']))
+        self.assertTrue(self.app.training.list()['examples'][0]['available'])
+        self.assertEqual(self.app.store.db.execute('SELECT count(*) FROM observation_events').fetchone()[0], 2)
+        self.assertEqual(self.app.store.db.execute('SELECT count(*) FROM observation_versions').fetchone()[0], 2)
+        self.assertEqual(self.app.meetings.state['last_sync']['files'], 1)
+
+    def test_long_protocol_run_has_linear_records_and_never_truncates_prior_segments(self):
+        segments = [self.segment(f'Synthetic segment {n}', segment=f'mic-{n}') for n in range(80)]
+        self.start(self.helper(segments))
+        self.until(lambda:self.app.meetings.state['segments'] == len(segments))
+        self.app.meetings.stop()
+        self.assertEqual(self.app.store.db.execute('SELECT count(*) FROM observation_events').fetchone()[0], 80)
+        self.assertEqual(self.app.store.db.execute('SELECT count(*) FROM observation_versions').fetchone()[0], 80)
+        self.assertEqual(len(self.app.observation_memory.records(limit=100, kind='imported.meeting')), 80)
+        self.assertEqual(self.app.meetings.state['last_sync']['files'], 1)
+        self.assertEqual(self.app.meetings.state['state'], 'stopped')
+
+    def test_process_exit_must_agree_with_terminal_state(self):
+        for terminal in (False, True):
+            with self.subTest(terminal=terminal):
+                helper = self.helper(wait=False, terminal='stopped' if terminal else None, exit_code=3 if terminal else 0)
+                self.start(helper)
+                self.until(lambda:self.app.meetings.state.get('exit_code') is not None)
+                self.assertEqual(self.app.meetings.state['state'], 'failed')
+                self.assertEqual(self.app.meetings.state['detail'], 'helper_exit_nonzero' if terminal else 'helper_exited_without_terminal_status')
 
     def test_disabling_or_revoking_current_source_stops_its_process(self):
         for command in ("source_set_enabled", "source_revoke"):

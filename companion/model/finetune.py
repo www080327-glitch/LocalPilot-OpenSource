@@ -23,7 +23,7 @@ MLX_SOURCE = "https://github.com/ml-explore/mlx-lm/blob/ed1fca4cef15a824c5f1702c
 def prepare(model, dataset, output, *, method="lora", iterations=100, rank=8, layers=None,
             max_seq_length=2048, batch_size=1, seed=17, learning_rate=1e-5):
     layers = (-1 if method == "full" else 4) if layers is None else layers
-    model, dataset, output, manifest, model_config = _inputs(
+    model, dataset, output, manifest, model_config, base_config_sha256 = _inputs(
         model, dataset, output, method, iterations, rank, layers, max_seq_length, batch_size, seed, learning_rate)
     private = PrivateData(output)
     config = {"model":str(model), "data":str(dataset), "train":True, "test":False,
@@ -41,6 +41,7 @@ def prepare(model, dataset, output, *, method="lora", iterations=100, rank=8, la
             "quality":"NOT_EVALUATED", "model_promoted":False, "created_at":time.time(),
             "model":str(model), "model_type":model_config.get("model_type", "UNKNOWN"),
             "model_weights_verified":False, "dataset":str(dataset), "output":str(output),
+            "base_config_sha256":base_config_sha256,
             "dataset_sha256":manifest["sha256"], "counts":manifest["counts"],
             "manifest_sha256":hashlib.sha256((dataset / "manifest.json").read_bytes()).hexdigest(),
             "config":config, "command":[sys.executable, "-m", "mlx_lm", "lora", "--config", str(config_path)],
@@ -103,6 +104,13 @@ def execute(plan):
             with weights.open("rb") as stream:
                 digest = hashlib.file_digest(stream, "sha256").hexdigest()
             plan["trained_weights"] = {"path":str(weights), "bytes":weights.stat().st_size, "sha256":digest}
+            adapter_config = weights.parent / 'adapter_config.json'
+            if not adapter_config.is_file():
+                plan.update(status='failed', training='FAILED', reason='trainer_did_not_produce_adapter_config')
+            else:
+                plan['adapter_config_sha256'] = hashlib.sha256(adapter_config.read_bytes()).hexdigest()
+                plan['candidate_config'] = {'backend':'mlx', 'model_path':plan['model'],
+                                            'model_adapter_path':str(weights.parent)}
     private.write("run.json", json.dumps(plan, indent=2) + "\n")
     return plan
 
@@ -151,7 +159,9 @@ def _inputs(model, dataset, output, method, iterations, rank, layers, max_seq_le
                     [message.get("role") for message in messages if isinstance(message, dict)] != ["system", "user", "assistant"] or
                     any(not isinstance(message.get("content"), str) or not message["content"].strip() for message in messages)):
                 raise ValueError("Training rows require complete system/user/reviewed-answer messages")
-    return model, dataset, output, manifest, model_config
+    return model, dataset, output, manifest, model_config, {
+        'config.json':hashlib.sha256(model_bytes).hexdigest(),
+        'tokenizer_config.json':hashlib.sha256(tokenizer_bytes).hexdigest()}
 
 
 def _token_budget(plan):

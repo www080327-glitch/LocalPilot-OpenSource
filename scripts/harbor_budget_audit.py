@@ -2,6 +2,8 @@
 from hashlib import sha256
 import json
 
+from scripts.harbor_orchestration import arm_orchestration, validate_orchestration_evidence
+
 
 LIMIT_DEFAULTS = {'max_requests':24, 'max_input_tokens':32768, 'max_output_tokens':1024,
                   'max_total_tokens':500000, 'min_available_bytes':8 * 1024**3, 'tokenizer_timeout':30}
@@ -27,10 +29,16 @@ def comparison_configuration(spec):
     selected = [arms[spec['comparison'][side]] for side in ('candidate','baseline')]
     candidate, baseline = [arm['agent'] for arm in selected]
     reasons = []
+    orchestration = {}
+    for side, agent in zip(('candidate','baseline'), (candidate,baseline)):
+        try:
+            orchestration[side] = arm_orchestration(agent)
+        except ValueError as exc:
+            reasons.append(str(exc))
     if candidate['model_name'] != baseline['model_name']:
         reasons.append('Different configured models')
     if spec['purpose'] == 'smoke':
-        return {'qualified':not reasons, 'scope':'SMOKE_ONLY', 'reasons':reasons}
+        return {'qualified':not reasons, 'scope':'SMOKE_ONLY', 'reasons':reasons, 'orchestration':orchestration}
     options = [agent.get('kwargs',{}) for agent in (candidate,baseline)]
     if any(agent.get('import_path') not in MEASURED_ADAPTERS for agent in (candidate,baseline)):
         reasons.append('Both arms must use a reviewed adapter with the measured model transport')
@@ -60,6 +68,8 @@ def comparison_configuration(spec):
     if spec['execution']['n_concurrent_trials'] != 1:
         reasons.append('The measured local comparison requires sequential trials')
     return {'qualified':not reasons, 'scope':'MATCHED_MODEL_AND_MEASURED_BUDGET', 'reasons':reasons,
+            'orchestration':orchestration,
+            'comparison_limit':'Harness comparison under one model and total model budget; tool protocols and child scheduling may differ. This is not a multi-model or hardware-cost equivalence claim.',
             'model_identity':identity, 'identity_limit':'Frozen declarations and tokenizer evidence do not independently certify model weights'}
 
 
@@ -77,7 +87,14 @@ def audit_budget_log(trial_path, raw, arm, model_identity):
         rows = [json.loads(line) for line in data.splitlines() if line.strip()]
         expected = normalized_limits(arm['agent'].get('kwargs',{}).get('model_budget',{}))
         result = _reconcile_budget(rows, expected, arm['agent']['model_name'], model_identity)
-    except (ValueError,TypeError,KeyError) as exc:
+        contract = arm_orchestration(arm['agent'])
+        if contract['mode'] == 'multi-agent':
+            orchestration_path = path.with_name('localpilot-orchestration.json')
+            data = orchestration_path.read_bytes()
+            result['orchestration'] = validate_orchestration_evidence(json.loads(data), contract, result, arm['agent']['model_name'])
+            result['orchestration_source'] = {'path':orchestration_path.relative_to(trial_path.parent).as_posix(),
+                                              'sha256':sha256(data).hexdigest()}
+    except (OSError,ValueError,TypeError,KeyError) as exc:
         result = {'qualified':False, 'status':'UNQUALIFIED', 'issues':[str(exc)]}
     return {**result, 'source':evidence}
 
@@ -96,11 +113,19 @@ def _reconcile_budget(rows, expected, model, identity):
         raise ValueError('Budget initialization differs from the frozen model/configuration')
     if first.get('tokenizer_sha256') != identity.get('tokenizer_sha256'):
         raise ValueError('Actual tokenizer/template files differ from the frozen identity')
-    requests, charged, inputs, outputs, pending = 0, 0, 0, 0, None
+    requests, charged, inputs, outputs, denials, pending = 0, 0, 0, 0, 0, None
     for row in rows[1:]:
         if not isinstance(row,dict):
             raise ValueError('Invalid model budget record')
-        if row.get('status') == 'admitted':
+        if row.get('status') == 'denied_before_dispatch':
+            if (first.get('admission_denials') is not True or pending is not None
+                    or row.get('request') != requests + 1 or row.get('charged_total_tokens') != charged
+                    or row.get('reason') not in {'memory_headroom','requests','tokens','tokenizer_failure'}):
+                raise ValueError('Pre-dispatch denial has no reconciled admission boundary')
+            if row['reason'] in {'memory_headroom','tokenizer_failure'}:
+                raise ValueError('Required resource or token measurement was unavailable: ' + row['reason'])
+            denials += 1
+        elif row.get('status') == 'admitted':
             if pending is not None or row.get('request') != requests + 1:
                 raise ValueError('Overlapping, duplicate, or missing model admission')
             requests += 1
@@ -133,6 +158,7 @@ def _reconcile_budget(rows, expected, model, identity):
     if pending is not None:
         raise ValueError('Model request has no final usage settlement')
     return {'qualified':True, 'status':'QUALIFIED', 'requests':requests,
+            'denied_before_dispatch':denials,
             'charged_total_tokens':charged, 'input_tokens':inputs, 'output_tokens':outputs, 'issues':[]}
 
 

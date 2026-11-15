@@ -90,7 +90,7 @@ class SourceRegistry:
         self.next_poll = now + 60
         return [self.sync(row["id"]) for row in self.list()["sources"] if row["enabled"] and row["follow"]]
 
-    def sync(self, source_id):
+    def sync(self, source_id, *, selected_file=None):
         source = self.get(source_id)
         if not source["enabled"] or self.paused():
             return {"status": "disabled" if not source["enabled"] else "paused", "source_id": source_id,
@@ -100,7 +100,10 @@ class SourceRegistry:
                   "coverage": self.coverage(source["kind"])}
         now, total_bytes = time.time(), 0
         try:
-            for filename in self._paths(source):
+            paths = self._paths(source) if selected_file is None else [Path(selected_file)]
+            for filename in paths:
+                if not self._within(filename, Path(source['path']), source['path_kind']):
+                    raise ValueError('File is outside the selected source')
                 if result["files"] >= min(self.config.max_scan_files, 500):
                     result["truncated"] = True
                     break

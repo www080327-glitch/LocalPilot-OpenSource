@@ -50,6 +50,9 @@ class DialogueController:
         if not service.legacy_memory_accessible(row):
             return False
         metadata, source = row.get("metadata", {}), row.get("source")
+        if metadata.get('question_id') and not service.store.db.execute(
+                'SELECT 1 FROM memories WHERE id=?', (metadata['question_id'],)).fetchone():
+            return False
         if source == "user_chat":
             return metadata.get("role") == "user"
         if metadata.get("role") != "assistant":
@@ -122,9 +125,11 @@ class DialogueController:
         greeting = question.strip().lower().strip("!！。,.，？? ")
         if not force_help and greeting in {"你好", "您好", "hello", "hi", "早上好", "晚上好"}:
             text = {"早上好":"早上好，祝你今天顺利。", "晚上好":"晚上好，需要时可以来找我。"}.get(greeting,"你好，需要时可以来找我。")
-            service.store.add("conversation", question, "user_chat", metadata={"role":"user"})
-            service.store.add("conversation", text, "companion_greeting_rule", epistemic="inferred", metadata={"role":"assistant"})
-            return {"status":"ok", "text":text, "memories":[], "model":{"status":"not_called", "reason":"deterministic_greeting"}}
+            question_id = service.store.add("conversation", question, "user_chat", metadata={"role":"user"})
+            answer_id = service.store.add("conversation", text, "companion_greeting_rule", epistemic="inferred",
+                metadata={"role":"assistant", "question_id":question_id, "delivery":"displayed",
+                          "review_purpose":"greeting", "memory_ids":[], "observation_ids":[]})
+            return {"status":"ok", "text":text, "answer_id":answer_id, "memories":[], "model":{"status":"not_called", "reason":"deterministic_greeting"}}
         memory_allowed = not getattr(service.store, "conversation_disabled", False)
         from companion.memory.activity import requested_activity_day, activity_digest, requested_source_activity, source_activity_answer
         activity_day = requested_activity_day(question)
@@ -134,10 +139,12 @@ class DialogueController:
                 return {"status":"unavailable", "text":"记忆已关闭，暂不读取活动记录。", "model":{"status":"not_called"}}
             result = (source_activity_answer(service.observation_memory, question, activity_source) if activity_source
                       else activity_digest(service.observation_memory, activity_day))
-            service.store.add("conversation", question, "user_chat", metadata={"role":"user"})
-            service.store.add("conversation", result["text"], "companion_activity_digest", epistemic="inferred",
-                           metadata={"role":"assistant", "memory_ids":[], "observation_ids":[r["id"] for r in result["items"]]})
-            return result
+            question_id = service.store.add("conversation", question, "user_chat", metadata={"role":"user"})
+            answer_id = service.store.add("conversation", result["text"], "companion_activity_digest", epistemic="inferred",
+                           metadata={"role":"assistant", "question_id":question_id, "delivery":"displayed",
+                                     "review_purpose":"activity_qa" if result['items'] else None,
+                                     "memory_ids":[], "observation_ids":[r["id"] for r in result["items"]]})
+            return result | {'answer_id':answer_id}
         retrieved = service.retrieve(question) if memory_allowed else []
         # A prior question is a record of speech, not source evidence for its
         # answer. Keep history on disk and expose it only when explicitly asked.
@@ -172,6 +179,8 @@ class DialogueController:
         requested_names = {name for name in ascii_names if not any(q != name and q.endswith(name) for q in quoted_names)} | quoted_names
         if requested_names:
             known_names = {Path(row[0]).name for row in service.store.db.execute("SELECT path FROM files") if service.scope.allowed(row[0])}
+            known_names.update(Path(row['object']['source_path']).name for row in observation_rows
+                               if row.get('object', {}).get('source_path'))
             missing = [name for name in requested_names if name not in known_names]
             if missing:
                 return {"status":"ok", "text":"当前已授权来源中找不到：" + ", ".join(missing) + "。无法总结这个文件。", "memories":[], "model":{"status":"not_called","reason":"missing_explicit_source"}}
@@ -239,18 +248,21 @@ class DialogueController:
             delegated=service.prepare_escalation(local_request,mode="reasoning",automatic=True)
             if delegated.get("task_id") or delegated.get("status") in {"submission_unknown","recovery_required","inference_prepared","inference_busy"}:
                 return delegated | {"primary_result":{"status":result.get("status"),"error_stage":result.get("error_stage")}}
-        if context_rows is not None and (service.observation_pause_requested.is_set() or any(
+        if selected and (service.observation_pause_requested.is_set() or any(
                 not (current := service.observation_memory.get(r["id"])) or not service.observation_accessible(current)
                 or not service.observation_memory.is_current(current) for r in selected)):
-            return {"status":"unavailable", "text":"观察已暂停或来源权限发生变化，暂不展示窗口整理。", "model":{"status":"source_changed"}, "memories":[]}
+            return {"status":"unavailable", "text":"观察已暂停或来源发生变化，暂不展示这次整理。", "model":{"status":"source_changed"}, "memories":[]}
         if result["status"] in {"ok", "truncated"} and result.get("text", "").lstrip("* #\n").startswith("NEEDS_AGENT"):
             request = service.escalation(question, "model_limit", memories)
             return service.prepare_escalation(request, mode="reasoning", automatic=True) | {"memories":memories}
+        answer_id = None
         if result["status"] == "ok":
             text = result["text"]
             verification = service.verifier.answer(text, memories)
             cited_names = file_references(text) if re.search(r"来源|出处|引用|source|citation", text, re.I) else set()
             provided_names = {Path(r["source_reference"]).name for r in memories if r["source_reference"]}
+            provided_names.update(Path(row['object']['source_path']).name for row in selected
+                                  if row.get('object', {}).get('source_path'))
             invented_sources = {name for name in cited_names if name.casefold() not in {p.casefold() for p in provided_names}}
             if invented_sources:
                 verification.append({"status":"UNVERIFIED", "reason":"source_not_provided_in_context", "sources":sorted(invented_sources)})
@@ -268,7 +280,8 @@ class DialogueController:
                 text += "\n（以上内容含未验证句子，请核对来源。）"
             # Speaker history contains the answer actually shown, including a
             # withholding message, never an undelivered failed source claim.
-            service.store.add("conversation", text, "companion_model", confidence=0.5, epistemic="inferred", metadata={"role":"assistant", "memory_ids":dependency_ids, "observation_ids":observation_ids, "answer_sources":[r.get("provenance", {}) for r in memories], "sentence_trace":sentence_trace(text, memories), "source_verification":verification, "delivery":"displayed"})
+            answer_id = service.store.add("conversation", text, "companion_model", confidence=0.5, epistemic="inferred", metadata={"role":"assistant", "question_id":question_id, "memory_ids":dependency_ids, "observation_ids":observation_ids, "answer_sources":[r.get("provenance", {}) for r in memories], "sentence_trace":sentence_trace(text, memories), "source_verification":verification, "delivery":"displayed",
+                "review_purpose":"activity_qa" if observation_ids and not dependency_ids and result['status'] == 'ok' else None})
         else:
             verification = []
             text = result.get("text") if result.get("status") == "unverified" else "本地模型暂时无法可靠回答。" + ("检索到以下本地来源，请查看记忆记录。" if memories else "目前没有相关记忆。")
@@ -280,7 +293,10 @@ class DialogueController:
                                "latency_seconds":a["result"].get("latency_seconds"), "reliability":a.get("reliability")} for a in result.get("attempts", [])]
         sources = [{"id":r["id"], "summary":r["summary"], "source":r["source"],
                     "source_reference":r.get("source_reference") or r.get("object",{}).get("bundle_id", ""),
-                    "evidence_type":r["evidence_type"], "evidence":{"read_status":r.get("evidence",{}).get("read_status", "UNKNOWN")}}
-                   for r in selected] if context_rows is not None else []
-        return {"status":result["status"], "text":text, "memories":memories, "observation_sources":sources,
+                    "source_path":r.get('object', {}).get('source_path'),
+                    "evidence_type":r["evidence_type"], "evidence_epistemic":r['evidence_epistemic'],
+                    "evidence":{"read_status":r.get("evidence",{}).get("read_status", "UNKNOWN"),
+                                "locator":r.get('evidence', {}).get('locator', '')}}
+                   for r in selected]
+        return {"status":result["status"], "text":text, "answer_id":answer_id, "memories":memories, "observation_sources":sources,
                 "source_verification":verification, "model":metrics, "routing":result.get("routing", route)}

@@ -889,6 +889,8 @@ pub async fn pet_service(
         "reminders",
         "proactive_settings",
         "notice_action",
+        "training_review",
+        "training_example_add",
     ]
     .contains(&command.as_str())
     {

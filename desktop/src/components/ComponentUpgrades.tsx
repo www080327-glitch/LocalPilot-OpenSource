@@ -17,6 +17,7 @@ const statuses: Record<string, string> = {
   rolled_back: "已恢复原版本",
   rolling_back: "正在回滚 / 上次回滚尚未完成",
   awaiting_gui_exit: "等待当前 GUI 退出",
+  handoff_failed: "维护助手未完成，请核对错误记录",
 };
 
 function result(value: Json) {
@@ -26,27 +27,43 @@ function result(value: Json) {
   return payload;
 }
 
-export function ComponentUpgrades({ cliReady }: { cliReady: boolean }) {
+export function ComponentUpgrades({
+  cliReady,
+  maintenanceReturn = false,
+}: {
+  cliReady: boolean;
+  maintenanceReturn?: boolean;
+}) {
   const [plan, setPlan] = useState<Json | null>(null);
   const [receipt, setReceipt] = useState<Json | null>(null);
+  const [handoffError, setHandoffError] = useState<Json | null>(null);
   const [records, setRecords] = useState<Json[]>([]);
+  const [historyOpen, setHistoryOpen] = useState(maintenanceReturn);
   const [busy, setBusy] = useState(false);
   const [reviewed, setReviewed] = useState(false);
   const [identityAllowed, setIdentityAllowed] = useState(true);
   const [error, setError] = useState("");
-  const load = async () =>
-    setRecords(
+  async function load() {
+    const rows: Json[] =
       result(await call<Json>("upgrade_plan", { module: "history" }))
-        .upgrades || [],
-    );
+        .upgrades || [];
+    setRecords(rows);
+    const selected = rows.find((row) => row.plan.id === plan?.id);
+    if (selected) {
+      setReceipt(selected.receipt || null);
+      setHandoffError(selected.handoff_error || null);
+    }
+  }
   useEffect(() => {
-    if (desktop && cliReady) void load().catch(() => {});
+    if (desktop && cliReady)
+      void load().catch((error) => setError(String(error)));
   }, [cliReady]);
   async function select(module: string) {
     setBusy(true);
     setError("");
     setReviewed(false);
     setReceipt(null);
+    setHandoffError(null);
     setPlan(null);
     setIdentityAllowed(true);
     try {
@@ -82,6 +99,11 @@ export function ComponentUpgrades({ cliReady }: { cliReady: boolean }) {
   return (
     <section aria-labelledby="component-upgrades-title">
       <h4 id="component-upgrades-title">统一升级与回滚</h4>
+      {maintenanceReturn && (
+        <p role="status">
+          已从维护助手返回。请打开本次计划核对收据与错误记录，再显式恢复服务。
+        </p>
+      )}
       <p className="micro muted">
         选择本机发布包和对应的旧版本
         wheel，先生成完整计划。安装前核对组合依赖；安装或验证失败时按相反顺序恢复。用户数据、模型和任务收据保留。
@@ -246,6 +268,12 @@ export function ComponentUpgrades({ cliReady }: { cliReady: boolean }) {
       {receipt && (
         <div role="status" className="version-notice">
           <strong>{statuses[receipt.status] || receipt.status}</strong>
+          {receipt.finished_at && (
+            <p className="micro">
+              收据完成时间：
+              {new Date(receipt.finished_at * 1000).toLocaleString()}
+            </p>
+          )}
           <p>{receipt.failure || receipt.error || receipt.next}</p>
           {(receipt.rollback_failures || []).map((item: Json) => (
             <p key={item.module} className="form-error">
@@ -258,8 +286,23 @@ export function ComponentUpgrades({ cliReady }: { cliReady: boolean }) {
           </details>
         </div>
       )}
+      {handoffError && (
+        <div className="version-notice error" role="alert">
+          <strong>维护助手错误记录</strong>
+          <p className="micro">
+            {new Date(handoffError.at * 1000).toLocaleString()}
+          </p>
+          <p>{handoffError.error}</p>
+          <p className="micro">
+            此记录独立保留；请结合安装与回滚收据的时间判断本次结果。
+          </p>
+        </div>
+      )}
       {records.length > 0 && (
-        <details>
+        <details
+          open={historyOpen}
+          onToggle={(event) => setHistoryOpen(event.currentTarget.open)}
+        >
           <summary>已有计划与恢复入口（{records.length}）</summary>
           {records.map((row: Json) => (
             <button
@@ -268,7 +311,8 @@ export function ComponentUpgrades({ cliReady }: { cliReady: boolean }) {
               key={row.plan.id}
               onClick={() => {
                 setPlan(row.plan);
-                setReceipt(row.receipt || row.handoff_error);
+                setReceipt(row.receipt || null);
+                setHandoffError(row.handoff_error || null);
                 setReviewed(false);
                 setIdentityAllowed(row.execution_allowed !== false);
                 setError(row.blocked_reason || "");
@@ -278,6 +322,7 @@ export function ComponentUpgrades({ cliReady }: { cliReady: boolean }) {
               {statuses[
                 row.receipt?.status || row.handoff_error?.status || "plan_only"
               ] || row.receipt?.status}
+              {row.handoff_error && " · 有助手错误记录"}
             </button>
           ))}
         </details>

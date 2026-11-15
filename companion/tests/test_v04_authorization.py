@@ -93,7 +93,8 @@ class AuthorizationV04Tests(unittest.TestCase):
                                  "expected_digest":digest, **kwargs})
 
     def attach(self):
-        self.app.store.set("localpilot_tasks", {"resp_fixture":{"endpoint":self.config.localpilot_endpoint}})
+        self.app.store.set("localpilot_tasks", {"resp_fixture":{"endpoint":self.config.localpilot_endpoint,
+            "request":asdict(escalation()), "result":view()}})
 
     def test_stale_preview_cannot_authorize_replacement_task(self):
         digest_a = self.prepare(escalation("Task A"))

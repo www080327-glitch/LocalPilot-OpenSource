@@ -1,0 +1,65 @@
+{
+  "date": "2026-11-15",
+  "pull_requests": [
+    {
+      "number": 1,
+      "url": "https://github.com/www080327-glitch/LocalPilot-OpenSource/pull/1",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "base": "main",
+      "base_sha": "34e95eb1b66afd0cdfe0d6a41b9ec748b41a4e1b",
+      "head": "fix/nationals-runtime-ux-20261113",
+      "head_sha": "94e0e6ff2c8da974d20530d7a0faa50844d052f4",
+      "updated_at": "2026-11-14T08:43:27Z"
+    },
+    {
+      "number": 9,
+      "url": "https://github.com/www080327-glitch/LocalPilot-OpenSource/pull/9",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "base": "fix/nationals-runtime-ux-20261113",
+      "base_sha": "94e0e6ff2c8da974d20530d7a0faa50844d052f4",
+      "head": "codex/pa-readiness-20261114",
+      "head_sha": "0a7fdff36f45a471130293b508b5d008f40cecf9",
+      "updated_at": "2026-11-14T22:56:17Z"
+    },
+    {
+      "number": 10,
+      "url": "https://github.com/www080327-glitch/LocalPilot-OpenSource/pull/10",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "base": "codex/pa-readiness-20261114",
+      "base_sha": "0a7fdff36f45a471130293b508b5d008f40cecf9",
+      "head": "codex/pa-completion-20261115",
+      "head_sha": "92ad9a30b9fda43bc185d96c99e5cb0a8ce8ec02",
+      "updated_at": "2026-11-15T07:16:13Z"
+    }
+  ],
+  "issues": [
+    {
+      "issue_number": 6,
+      "url": "https://github.com/www080327-glitch/LocalPilot-OpenSource/issues/6",
+      "title": "P1｜同会话无损跨模型切换与真实云端↔本地 Agent 协同",
+      "state": "open",
+      "updated_at": "2026-11-14T06:31:25Z"
+    },
+    {
+      "issue_number": 7,
+      "url": "https://github.com/www080327-glitch/LocalPilot-OpenSource/issues/7",
+      "title": "P1/P2｜统一组件升级回滚、50 GiB 受管缓存与源码减法式清理",
+      "state": "open",
+      "updated_at": "2026-11-14T06:31:28Z"
+    },
+    {
+      "issue_number": 8,
+      "url": "https://github.com/www080327-glitch/LocalPilot-OpenSource/issues/8",
+      "title": "P0｜离线 APP 打包阻塞：watchdog 6.0.0 cp314 wheel 锁与官方 PyPI 文件列表不一致",
+      "state": "open",
+      "updated_at": "2026-11-14T07:29:26Z"
+    }
+  ],
+  "note": "Read-only snapshot; previous PRs and issues were not changed."
+}
