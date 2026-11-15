@@ -50,6 +50,8 @@ async function companionBridge(
               workspace: "/fixture/work",
               maintenance_return: maintenanceReturn,
             };
+          if (command === "product_control")
+            return { grants: [] };
           if (command === "upgrade_plan")
             return {
               exit: 0,

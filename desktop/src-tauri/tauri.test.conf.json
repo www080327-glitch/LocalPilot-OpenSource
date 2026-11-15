@@ -1,4 +1,5 @@
 {
+  "productName": "LocalPilot Test",
   "identifier": "io.localpilot.desktop.test",
   "app": {
     "windows": [
@@ -15,5 +16,10 @@
         "transparent": true
       }
     ]
+  },
+  "bundle": {
+    "macOS": {
+      "infoPlist": "Test-Info.plist"
+    }
   }
 }
