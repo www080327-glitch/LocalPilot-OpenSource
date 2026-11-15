@@ -1,6 +1,6 @@
 # PA 协作、来源延续与最后一轮代码检查（2026-11-15）
 
-本轮分支为 `codex/pa-cooperation-20261115`，基线为 [Draft PR #10](https://github.com/www080327-glitch/LocalPilot-OpenSource/pull/10) 的 `92ad9a30b9fda43bc185d96c99e5cb0a8ce8ec02`。受测源码由本目录 `SOURCE_FILES.json` 逐文件绑定；发布时在本段补充受测代码提交和新 PR 引用。旧 PR #1、#9、#10 与全部旧 evidence 保持原样。
+本轮分支为 `codex/pa-cooperation-20261115`，基线为 [Draft PR #10](https://github.com/www080327-glitch/LocalPilot-OpenSource/pull/10) 的 `92ad9a30b9fda43bc185d96c99e5cb0a8ce8ec02`。本轮已推送 [Draft PR #11](https://github.com/www080327-glitch/LocalPilot-OpenSource/pull/11)，受测代码提交为 [`71fc7c6d99cb6794c5a8e1e77f8141290157b79f`](https://github.com/www080327-glitch/LocalPilot-OpenSource/commit/71fc7c6d99cb6794c5a8e1e77f8141290157b79f)。受测源码由本目录 `SOURCE_FILES.json` 逐文件绑定；后续证据提交仅回填本段与 `RESULTS.json` 的发布引用，运行代码不变。旧 PR #1、#9、#10 与全部旧 evidence 保持原样。
 
 开发与执行环境为 **Linux x86_64、Python 3.12.14**。本轮完成代码、协议、真实文件/SQLite/子进程和独立 wheel 安装验证；没有 macOS SDK、真实音轨、Intel Mac 或正式模型/Docker 评测环境。
 

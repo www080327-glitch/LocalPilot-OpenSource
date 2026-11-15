@@ -2,8 +2,8 @@
   "date": "2026-11-15",
   "branch": "codex/pa-cooperation-20261115",
   "base_commit": "92ad9a30b9fda43bc185d96c99e5cb0a8ce8ec02",
-  "tested_commit": null,
-  "pull_request": null,
+  "tested_commit": "71fc7c6d99cb6794c5a8e1e77f8141290157b79f",
+  "pull_request": "https://github.com/www080327-glitch/LocalPilot-OpenSource/pull/11",
   "environment": {
     "os": "Linux",
     "architecture": "x86_64",
@@ -610,5 +610,6 @@
     "release_published": false,
     "daily_app_replaced": false,
     "external_forms_submitted": false
-  }
+  },
+  "publication_note": "The follow-up evidence commit only fills publication references in RESULTS.md and RESULTS.json; runtime/source manifest and archived logs are unchanged."
 }
