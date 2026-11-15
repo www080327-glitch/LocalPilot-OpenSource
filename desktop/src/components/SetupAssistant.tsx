@@ -235,7 +235,7 @@ export function SetupAssistant({
             <details className="advanced-settings">
               <summary>高级 · 设备信息</summary>
               <p>
-                {hw.chip} · {gb(hw.memory_bytes)} 统一内存 · 当前可用{" "}
+                {hw.chip} · {gb(hw.memory_bytes)} 内存 · 当前可用{" "}
                 {gb(hw.available_memory_bytes)}
                 <br />
                 剩余磁盘 {gb(hw.free_disk_bytes)} ·{" "}
@@ -246,7 +246,14 @@ export function SetupAssistant({
           )}
           {stage === 1 && (
             <>
-              {state && !state.omlx_installed && (
+              {hw?.arch === "x86_64" && (
+                <p>
+                  Intel Mac 可连接以 CPU 运行的本地 OpenAI
+                  兼容服务，或使用云端模型。 需先在 Core
+                  配置本地服务地址和模型；当前向导不安装 MLX 后端。
+                </p>
+              )}
+              {state && !state.omlx_installed && hw?.arch !== "x86_64" && (
                 <>
                   <p>
                     本地模型需要 oMLX。下载安装官方 0.7.2（约 0.9
@@ -279,37 +286,39 @@ export function SetupAssistant({
                   </button>
                 </>
               )}
-              {state?.omlx_installed && !hw?.backends?.length && (
-                <div className="dialog-actions">
-                  <button
-                    className="secondary"
-                    disabled={!!busy}
-                    onClick={async () => {
-                      setBusy("启动本地推理服务");
-                      try {
-                        await call("product_control", {
-                          operation: "initialize_backend",
-                          args: { confirmed: true },
-                        });
-                        await inspect();
-                      } catch (e) {
-                        onError(e);
-                      } finally {
-                        setBusy("");
-                      }
-                    }}
-                  >
-                    启动本地推理服务
-                  </button>
-                  <button
-                    className="text-btn"
-                    disabled={!!busy}
-                    onClick={() => call("open_omlx_setup").catch(onError)}
-                  >
-                    打开 oMLX
-                  </button>
-                </div>
-              )}
+              {state?.omlx_installed &&
+                !hw?.backends?.length &&
+                hw?.arch !== "x86_64" && (
+                  <div className="dialog-actions">
+                    <button
+                      className="secondary"
+                      disabled={!!busy}
+                      onClick={async () => {
+                        setBusy("启动本地推理服务");
+                        try {
+                          await call("product_control", {
+                            operation: "initialize_backend",
+                            args: { confirmed: true },
+                          });
+                          await inspect();
+                        } catch (e) {
+                          onError(e);
+                        } finally {
+                          setBusy("");
+                        }
+                      }}
+                    >
+                      启动本地推理服务
+                    </button>
+                    <button
+                      className="text-btn"
+                      disabled={!!busy}
+                      onClick={() => call("open_omlx_setup").catch(onError)}
+                    >
+                      打开 oMLX
+                    </button>
+                  </div>
+                )}
               <button className="primary" disabled={!!busy} onClick={prepare}>
                 {busy ||
                   (state?.core_configured

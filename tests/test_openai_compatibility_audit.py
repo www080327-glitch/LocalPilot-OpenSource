@@ -57,6 +57,7 @@ class CompatibilityAudit(unittest.TestCase):
         response = self.sdk._client.post(self.url + path, json=body,
             headers={"Authorization": "Bearer test-key"})
         self.assertEqual(response.status_code, status, response.text)
+        self.assertEqual(response.headers.get("connection"), "close")
         error = response.json()["error"]
         self.assertTrue(error["message"])
         self.assertIn("param", error)

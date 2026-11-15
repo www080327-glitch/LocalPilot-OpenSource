@@ -200,6 +200,7 @@ def task_view(task):
     verification = result.get("verification_status", "not_run")
     goal = status == "completed" and quiet and verification == "passed" and result.get("engineering_status") == "passed" and not unknown
     execution = "completed" if status == "completed" and quiet else "incomplete" if status == "incomplete" and quiet else "not_completed"
+    progress = {"progress_text":task["streamed_text"][-4000:], "progress_snapshot":True} if isinstance(task.get("streamed_text"), str) else {}
     return {"status": status, "phase": "completed" if execution == "completed" else "awaiting_host" if status in {"requires_approval", "requires_human"} else status,
             "task_id": task["id"], "session_id": task["session_id"], "quiescent": quiet,
             "task_execution": execution, "agent_response": text[:16000], "reasoning_help_requested":needs_cloud,
@@ -212,7 +213,7 @@ def task_view(task):
             "error": task.get("error"), "completion": task.get("completion", result.get("completion")),
             "verification_status": result.get("verification_status", "unknown"),
             "engineering_status": result.get("engineering_status", "unverified"),
-            "last_event_id": task.get("last_event_id", 0), "task": task}
+            "last_event_id": task.get("last_event_id", 0), "task": task, **progress}
 
 
 def result_memory(view):

@@ -2,6 +2,7 @@
 from pathlib import Path
 import tempfile
 import unittest
+import sys
 from agent.registry import create_default_registry
 from agent.session import AgentSession
 from agent.persistence import recovery_class
@@ -9,6 +10,7 @@ from localpilot_service.desktop_sessions import apply_options
 from tests.test_runtime_api import Backend, answer, call
 
 class ShellFailureRepairTests(unittest.TestCase):
+    @unittest.skipUnless(sys.platform == "darwin", "NOT_RUN: requires native macOS host Shell/Seatbelt")
     def test_invalid_macos_flag_can_be_inspected_and_corrected(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp).resolve()
@@ -31,6 +33,7 @@ class ShellFailureRepairTests(unittest.TestCase):
                 self.assertEqual(recovery_class(runtime),'SAFE_TO_RESUME')
                 self.assertEqual(sum(r['name']=='shell' for r in runtime.tool_history),1)
             finally:runtime.close()
+    @unittest.skipUnless(sys.platform == "darwin", "NOT_RUN: requires native macOS host Shell/Seatbelt")
     def test_timeout_still_preserves_uncertain_effects(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp).resolve()

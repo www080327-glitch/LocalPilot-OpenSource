@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import tempfile
 import unittest
+import sys
 from agent.registry import create_default_registry
 from agent.session import AgentSession
 from localpilot_service.desktop_sessions import apply_options
@@ -103,6 +104,7 @@ class PermissionV3Tests(unittest.TestCase):
         (self.workspace/'hello.csv').write_text('x\n1')
         self.assertTrue(any(x['name']=='hello.csv' for x in registry.call('list_entries',{'path':'.'})))
         with self.assertRaises(PermissionError):registry.call('apply_patch',self.patch('blocked.txt'))
+    @unittest.skipUnless(sys.platform == "darwin", "NOT_RUN: requires native macOS host Shell/Seatbelt")
     def test_full_shell_runs_and_writes_a_real_file(self):
         registry=self.runtime('full').registry
         import shlex
@@ -120,6 +122,7 @@ class PermissionV3Tests(unittest.TestCase):
             target=Path(temp).resolve()/'authorized-temp.txt'
             self.runtime('workspace').registry.call('apply_patch',self.patch(target))
             self.assertEqual(target.read_text(),'proof')
+    @unittest.skipUnless(sys.platform == "darwin", "NOT_RUN: requires native macOS host Shell/Seatbelt")
     def test_read_only_shell_can_read_but_os_denies_writes(self):
         registry=self.runtime('isolated').registry
         result=registry.call('shell',{'command':'pwd'})

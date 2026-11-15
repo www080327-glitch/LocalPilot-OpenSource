@@ -13,7 +13,8 @@ class PetTests(unittest.TestCase):
         self.temp=tempfile.TemporaryDirectory()
         self.app=Companion(Config(data_dir=str(Path(self.temp.name).resolve()/'data'),backend='disabled',localpilot_endpoint='',watch_dirs=(),native_observation_enabled=False))
     def tearDown(self):
-        self.app.store.close();self.temp.cleanup()
+        self.app.native.stop(); self.app.observer.stop(); self.app.model.unload(); self.app.channel.stop()
+        self.app.store.close(); self.app.lock.close(); self.temp.cleanup()
     def test_rules_dont_call_model(self):
         self.app.model.complete=Mock(side_effect=AssertionError('model called'))
         r=self.app.command({'command':'pet_ask','text':'你好'})

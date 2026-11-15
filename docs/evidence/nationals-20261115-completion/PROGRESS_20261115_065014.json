@@ -1,0 +1,73 @@
+{
+  "record_type": "IN_PROGRESS_SNAPSHOT",
+  "at": "2026-11-15T06:50:14.470202+08:00",
+  "runtime_source": "d2b2fae9ecff0d70385a48ac06716516965ce1c5",
+  "benchmark_source": "1c06e975bb25aa39dbdc651aa1186ec9c8b11400",
+  "whole_app_source": "d2b2fae",
+  "app_tree_sha256": "8fc10f914e5e3a39195458117b7824904a0eb26525de7bd7d13eb70342a9af51",
+  "core": {
+    "run": 1447,
+    "pass": 1373,
+    "skip": 74,
+    "fail": 0,
+    "error": 0
+  },
+  "companion": {
+    "run": 583,
+    "pass": 583,
+    "skip": 0
+  },
+  "native_build": {
+    "status": "PASS",
+    "wheel_count": 39,
+    "Rust_PASS": 40,
+    "Rust_ignored": 3,
+    "archive_sha256": "090f3b7d22633fc12f2321193de304d3a8791d8157921b9147815dd71c7d7a6b"
+  },
+  "native_morning": {
+    "status": "PASS",
+    "actual_local_time": "2026-11-15T06:30:52.143305+08:00",
+    "system_clock_changed": false,
+    "deployed_component_source": "d2b2fae",
+    "DND_suppressed": true,
+    "quiet_hours_suppressed": true,
+    "unmuted_morning_notice": {
+      "id": "75d0093f9f8d4cd58a7fe1c145acaa87",
+      "type": "greeting",
+      "event_key": "greeting:morning:2026-11-15",
+      "timestamp": 1794695442.9399538,
+      "message": "早上好，祝你今天顺利。",
+      "status": "pending",
+      "delivery": "popup_available",
+      "explanation": null
+    },
+    "restart_deduped": true,
+    "model_inferences": 0,
+    "test_history": "Earlier profile disabled DND before applying quiet hours and emitted a legitimate morning notice; that profile and notice preserved, fresh data root used with DND held during setup."
+  },
+  "formal": {
+    "planned": 534,
+    "statuses": {
+      "localpilot": {
+        "ERROR": 13,
+        "FAIL": 3,
+        "PASS": 1,
+        "NOT_RUN": 250
+      },
+      "terminus2": {
+        "NOT_RUN": 267
+      }
+    },
+    "audit_complete": false,
+    "state": "EXACT_JOB_SIGSTOP_FOR_HOST_DISK",
+    "task18_Docker_startup_canceled_receipt_preserved": true,
+    "official_leaderboard_result": false
+  },
+  "resources": {
+    "free_host_bytes": 6903324672,
+    "available_RAM_bytes": 41439789056,
+    "owned_Qwen": "unloaded",
+    "owned_VM": "stopped",
+    "extra_disk_requested_bytes": 16106127360
+  }
+}

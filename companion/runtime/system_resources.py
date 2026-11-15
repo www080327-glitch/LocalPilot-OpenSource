@@ -13,7 +13,11 @@ def _signed_current(value):
 
 def snapshot():
     import psutil
-    memory=psutil.virtual_memory();battery=psutil.sensors_battery()
+    memory=psutil.virtual_memory()
+    try:
+        battery=psutil.sensors_battery()
+    except (OSError, AttributeError):
+        battery=None
     on_ac=battery.power_plugged if battery is not None else None
     watts=None
     if on_ac is False:

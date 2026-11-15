@@ -109,6 +109,9 @@ def main():
             action.add_argument("--show", action="store_true")
     for name in ("ask", "retrieve", "escalate"):
         sub.add_parser(name).add_argument("text")
+    activity = sub.add_parser("activity")
+    activity.add_argument("--day", choices=["today", "yesterday"], default="today")
+    activity.add_argument("--limit", type=int, default=30)
     dnd = sub.add_parser("dnd")
     dnd.add_argument("value", choices=["on", "off"])
     remember = sub.add_parser("remember")
@@ -192,6 +195,8 @@ def main():
             command = {"command": args.action}
             if args.action in {"ask", "retrieve", "escalate"}:
                 command["text"] = args.text
+            elif args.action == "activity":
+                command = {"command":"activity_digest", "day":args.day, "limit":args.limit}
             elif args.action in {"ui-snapshot", "recent-memories", "delete-reminder"}:
                 command = {"command":args.action.replace("-", "_")}
                 if args.action == "delete-reminder":

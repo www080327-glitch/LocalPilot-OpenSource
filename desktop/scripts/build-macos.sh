@@ -41,6 +41,7 @@ if [ "${LP_GUI_USE_INSTALLED_DEPS:-0}" != 1 ]; then
   npm ci
 fi
 LP_GUI_VERSION=$(node -p 'JSON.parse(require("fs").readFileSync("package.json")).version')
+npm run tauri -- icon public/icon.svg
 LP_GUI_RUN=$(date +%Y%m%d-%H%M%S)-$$
 LP_GUI_OUTPUT="$LP_GUI_ROOT/release/v$LP_GUI_VERSION/$LP_GUI_RUN"
 if [ -n "${LP_GUI_TEST_CONFIG:-}" ]; then

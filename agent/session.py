@@ -2146,6 +2146,10 @@ class AgentSession:
             categories.append("goal_state")
         return categories
 
+    def _runtime_preapproved(self, target):
+        return self.permission_mode == "full-permission" and (
+            target == "local" or self.hybrid is not None and self.hybrid.policy.egress.mode == "CLOUD_ALLOWED")
+
     def _switch_request(self, call, args):
         target = args["target"]
         if self.hybrid:
@@ -2162,9 +2166,14 @@ class AgentSession:
             if self.adaptive:
                 self.adaptive.check_switch(alias)
             request = ModelSwitchRequest(self.current_primary_model, self._model_name(backend), args['reason'],
-                args.get('scope', 'turn'), args['task_complexity'])
-            self.pending_approval = {'kind': 'switch', 'call': deepcopy(call), 'target': target,
-                                     'backend_id': alias, 'request': asdict(request)}
+                args.get('scope', 'turn'), args['task_complexity'],
+                requires_user_confirmation=not self._runtime_preapproved(target))
+            pending = {'kind': 'switch', 'call': deepcopy(call), 'target': target,
+                       'backend_id': alias, 'request': asdict(request)}
+            if self._runtime_preapproved(target):
+                self._emit('ModelSwitchRequested', **asdict(request), backend_id=alias)
+                return self._apply_switch(pending)
+            self.pending_approval = pending
             self.state = SessionState.MODEL_SWITCH_AWAITING_APPROVAL
             self._emit('ModelSwitchRequested', **asdict(request), backend_id=alias)
             self._emit('ApprovalRequired', **self._approval_view())
@@ -2179,8 +2188,13 @@ class AgentSession:
         request = ModelSwitchRequest(from_model=self.current_primary_model,
             to_model=self._model_name(self.local_backend if target == "local" else self.cloud_backend),
             reason=args["reason"], scope=scope, task_complexity=args["task_complexity"],
-            requires_user_confirmation=True, data_boundary_change=self._data_categories() if target == "cloud" else [])
-        self.pending_approval = {"kind": "switch", "call": deepcopy(call), "target": target, "request": asdict(request)}
+            requires_user_confirmation=not self._runtime_preapproved(target),
+            data_boundary_change=self._data_categories() if target == "cloud" else [])
+        pending = {"kind": "switch", "call": deepcopy(call), "target": target, "request": asdict(request)}
+        if self._runtime_preapproved(target):
+            self._emit("ModelSwitchRequested", **asdict(request))
+            return self._apply_switch(pending)
+        self.pending_approval = pending
         self.state = SessionState.MODEL_SWITCH_AWAITING_APPROVAL
         self._emit("ModelSwitchRequested", **asdict(request))
         self._emit("ApprovalRequired", **self._approval_view())
@@ -2337,7 +2351,7 @@ class AgentSession:
         if self.thinking_mode is not None and child_thinking is None:
             self._emit("SubagentThinkingDefaulted", backend=target, model=self._model_name(backend),
                        requested=self.thinking_mode, effective="provider_default")
-        if target == "cloud" and not approved:
+        if target == "cloud" and not approved and not self._runtime_preapproved(target):
             self.pending_approval = {"kind": "delegate", "call": deepcopy(call), "task": args["task"],
                 "tier": tier, "provider": getattr(backend, "provider", "unknown"),
                 "configured_model": self._model_name(backend),

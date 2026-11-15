@@ -48,6 +48,8 @@ class ScopedService:
                 reverse.update({v:k for k,v in p.routes.items()})
         if isinstance(value, dict) and "model" in value:
             value["model"] = reverse.get(value["model"], value["model"])
+        if isinstance(value, dict) and "session_model" in value:
+            value["session_model"] = reverse.get(value["session_model"], value["session_model"])
         if isinstance(value,dict) and value.get('object')=='localpilot.session':
             from dataclasses import asdict
             session=self.runtime._session(value['id']);registry=session.runtime.registry
@@ -394,9 +396,24 @@ class ServiceHandler(Handler):
             if self.command=='POST' and path=='/localpilot/v1/desktop-sessions':
                 from .desktop_sessions import create
                 return self._json(create(self.server,principal,self._body(),self.headers.get("Idempotency-Key")),201)
+            if self.command=='POST' and path=='/localpilot/v1/model-health':
+                self.scoped._scope('read')
+                body=self._body()
+                if set(body)!={'model'} or not isinstance(body['model'],str):
+                    raise APIError('Exact registered model required')
+                if body['model'] not in principal.routes:
+                    raise APIError('Model/route is not registered for this client','model_not_registered',404)
+                from .model_health import probe_model_health
+                route=principal.routes[body['model']]
+                observation=probe_model_health(getattr(self.server,'inference_backends',{}).get(route))
+                self.server.catalog.setdefault(route,{})['health_observation']=observation
+                return self._json({'model':body['model'],**observation})
             if self.command=='POST' and len(parts)==6 and parts[1:4]==['localpilot','v1','desktop-sessions'] and parts[5]=='profile':
                 from .desktop_sessions import switch_profile
                 return self._json(switch_profile(self.server,principal,parts[4],self._body()))
+            if self.command=='POST' and len(parts)==6 and parts[1:4]==['localpilot','v1','desktop-sessions'] and parts[5]=='model':
+                from .desktop_sessions import switch_model
+                return self._json(switch_model(self.server,principal,parts[4],self._body()))
             if self.command=='POST' and path=='/localpilot/v1/attachments/import':
                 from .attachments import ingest
                 return self._json(ingest(self.server,principal,self._body()),201)

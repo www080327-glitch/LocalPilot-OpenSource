@@ -4,11 +4,12 @@ import hashlib, json, os, plistlib, subprocess, tempfile
 root=Path(__file__).resolve().parents[1]
 out=Path(os.environ['LP_GUI_PACKAGE_OUTPUT']);app=Path(os.environ['LP_GUI_PACKAGE_APP']);version=os.environ['LP_GUI_PACKAGE_VERSION']
 with tempfile.TemporaryDirectory(prefix='localpilot-new-dmg-') as stage:
-    subprocess.run(['/usr/bin/ditto','--norsrc','--noextattr',str(app),str(Path(stage)/'LocalPilot.app')],check=True)
-    subprocess.run(['/usr/bin/codesign','--verify','--deep','--strict',str(Path(stage)/'LocalPilot.app')],check=True)
+    staged_app=Path(stage)/app.name
+    subprocess.run(['/usr/bin/ditto','--norsrc','--noextattr',str(app),str(staged_app)],check=True)
+    subprocess.run(['/usr/bin/codesign','--verify','--deep','--strict',str(staged_app)],check=True)
     (Path(stage)/'Applications').symlink_to('/Applications')
     dmg=out/f'LocalPilot-{version}-arm64.dmg'
-    subprocess.run(['/usr/bin/hdiutil','create','-volname','LocalPilot','-srcfolder',stage,'-format','UDZO',str(dmg)],check=True)
+    subprocess.run(['/usr/bin/hdiutil','create','-volname',app.stem,'-srcfolder',stage,'-format','UDZO',str(dmg)],check=True)
     subprocess.run(['/usr/bin/hdiutil','verify',str(dmg)],check=True)
 files={p.name:{'sha256':hashlib.file_digest(p.open('rb'),'sha256').hexdigest(),'bytes':p.stat().st_size} for p in sorted(out.iterdir()) if p.is_file() and not p.is_symlink()}
 head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()

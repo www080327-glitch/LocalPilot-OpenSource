@@ -2,6 +2,8 @@
 
 # 独立部署与接入
 
+2026-11-14 新增可选 `async_policy`、显式只读模型发现及同 Session 换模。当前入口、五档来源/四档权限和旧 Skill Session 指纹兼容限制见 [PA 接入说明](docs/development/PA_READINESS_20261114.md)。首次启用在独立服务目录验证；不要将下文历史版本号当作当前发行状态。
+
 服务包版本 `4.9.1rc2` 是候选包标识，不自动创建 Git tag。只需 Python 3.10+ 标准库；真实模型服务独立运行。`pyproject.toml` 提供 localpilot-service/localpilot-adapter 安装入口，OpenAPI 是 package data。无需安装 vLLM、下载模型或研究 Runtime 内部。
 
 ## 五步启动
