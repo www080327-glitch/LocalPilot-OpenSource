@@ -1,0 +1,148 @@
+{
+  "kind": "existing candidate version gate regression",
+  "files": [
+    {
+      "file": "AFTER_CURRENT.json",
+      "bytes": 1047,
+      "sha256": "d082d8dc29ac5c9f023f98c25b292d1901279e351fdee440871d35ce61907ef7",
+      "source_file": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/version-gate-r1/AFTER_CURRENT.json",
+      "source_bytes": 1047,
+      "source_sha256": "d082d8dc29ac5c9f023f98c25b292d1901279e351fdee440871d35ce61907ef7",
+      "transformation": "byte-preserving copy"
+    },
+    {
+      "file": "AFTER_CURRENT.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_file": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/version-gate-r1/AFTER_CURRENT.stderr.log",
+      "source_bytes": 0,
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transformation": "byte-preserving copy"
+    },
+    {
+      "file": "AFTER_CURRENT.stdout.log",
+      "bytes": 112,
+      "sha256": "e9b793476cc03137af3cd1ef1bdac8250738f16dbf9c1c352199abe288ab92b1",
+      "source_file": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/version-gate-r1/AFTER_CURRENT.stdout.log",
+      "source_bytes": 112,
+      "source_sha256": "e9b793476cc03137af3cd1ef1bdac8250738f16dbf9c1c352199abe288ab92b1",
+      "transformation": "byte-preserving copy"
+    },
+    {
+      "file": "AFTER_MISMATCH.json",
+      "bytes": 2376,
+      "sha256": "3d11078ae9923aec5dd238a877f2ce5d2d60d59df8796b7ad456bf26d0e7009f",
+      "source_file": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/version-gate-r1/AFTER_MISMATCH.json",
+      "source_bytes": 2376,
+      "source_sha256": "3d11078ae9923aec5dd238a877f2ce5d2d60d59df8796b7ad456bf26d0e7009f",
+      "transformation": "byte-preserving copy"
+    },
+    {
+      "file": "AFTER_MISMATCH.stderr.log",
+      "bytes": 509,
+      "sha256": "77f54d543dca233c9913b97d1ad545ab88b5e6640ad711401d62f6223c44ebfd",
+      "source_file": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/version-gate-r1/AFTER_MISMATCH.stderr.log",
+      "source_bytes": 509,
+      "source_sha256": "77f54d543dca233c9913b97d1ad545ab88b5e6640ad711401d62f6223c44ebfd",
+      "transformation": "byte-preserving copy"
+    },
+    {
+      "file": "AFTER_MISMATCH.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_file": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/version-gate-r1/AFTER_MISMATCH.stdout.log",
+      "source_bytes": 0,
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transformation": "byte-preserving copy"
+    },
+    {
+      "file": "BEFORE.json",
+      "bytes": 1212,
+      "sha256": "f64ac73ecfc9e1950e63c9c4c13b6c963a03a8c762d439a17177e55a8a1558b4",
+      "source_file": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/version-gate-r1/BEFORE.json",
+      "source_bytes": 1212,
+      "source_sha256": "f64ac73ecfc9e1950e63c9c4c13b6c963a03a8c762d439a17177e55a8a1558b4",
+      "transformation": "byte-preserving copy"
+    },
+    {
+      "file": "BEFORE.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_file": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/version-gate-r1/BEFORE.stderr.log",
+      "source_bytes": 0,
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transformation": "byte-preserving copy"
+    },
+    {
+      "file": "BEFORE.stdout.log",
+      "bytes": 112,
+      "sha256": "37be2cf727ba326b15d4db478c8b7b3b9da5fbea8f3ad53059fda27eb0cac8fc",
+      "source_file": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/version-gate-r1/BEFORE.stdout.log",
+      "source_bytes": 112,
+      "source_sha256": "37be2cf727ba326b15d4db478c8b7b3b9da5fbea8f3ad53059fda27eb0cac8fc",
+      "transformation": "byte-preserving copy"
+    },
+    {
+      "file": "CHANGE.patch",
+      "bytes": 3592,
+      "sha256": "f646959ecf408d032e62ab95c5c37313707ffc2af4d0579b739c67716c038380",
+      "source_file": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/version-gate-r1/CHANGE.patch",
+      "source_bytes": 3592,
+      "source_sha256": "f646959ecf408d032e62ab95c5c37313707ffc2af4d0579b739c67716c038380",
+      "transformation": "byte-preserving copy"
+    },
+    {
+      "file": "RESULTS.md",
+      "bytes": 4633,
+      "sha256": "9387106d62f7f077172cc3bc1453b02b8dc27500d37c11a4758f10bfc3a5e442",
+      "source_file": null,
+      "transformation": "new report"
+    },
+    {
+      "file": "SOURCE_IDENTITY.json",
+      "bytes": 1597,
+      "sha256": "2b9a2a7b9ef3d29cc86dfee54cae0eeefa10e477ce21b8ca86387624155047ba",
+      "source_file": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/version-gate-r1/SOURCE_IDENTITY.json",
+      "source_bytes": 1597,
+      "source_sha256": "2b9a2a7b9ef3d29cc86dfee54cae0eeefa10e477ce21b8ca86387624155047ba",
+      "transformation": "byte-preserving copy"
+    },
+    {
+      "file": "TESTS_AFTER.log",
+      "bytes": 436,
+      "sha256": "3941a7f495fcf0a3e99b78880d556c25f82af0c8c12720eca912f137748bb03e",
+      "source_file": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/version-gate-r1/TESTS_AFTER.log",
+      "source_bytes": 436,
+      "source_sha256": "3941a7f495fcf0a3e99b78880d556c25f82af0c8c12720eca912f137748bb03e",
+      "transformation": "byte-preserving copy"
+    },
+    {
+      "file": "checker-before.py",
+      "bytes": 1357,
+      "sha256": "ed691b76eec77c7bb9771849697d4d5f5a84f533d64c450e60be767daf5a4a0d",
+      "source_file": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/version-gate-r1/checker-before.py",
+      "source_bytes": 1357,
+      "source_sha256": "ed691b76eec77c7bb9771849697d4d5f5a84f533d64c450e60be767daf5a4a0d",
+      "transformation": "byte-preserving copy"
+    }
+  ],
+  "manifest_excluded_from_own_entries": true,
+  "allowlist": [
+    "AFTER_CURRENT.json",
+    "AFTER_CURRENT.stderr.log",
+    "AFTER_CURRENT.stdout.log",
+    "AFTER_MISMATCH.json",
+    "AFTER_MISMATCH.stderr.log",
+    "AFTER_MISMATCH.stdout.log",
+    "BEFORE.json",
+    "BEFORE.stderr.log",
+    "BEFORE.stdout.log",
+    "CHANGE.patch",
+    "RESULTS.md",
+    "SOURCE_IDENTITY.json",
+    "TESTS_AFTER.log",
+    "checker-before.py"
+  ],
+  "source_mutations": "Only checker and existing test module were changed by this task; version bumps belong to root. Frozen b30 snapshot and old runtime evidence were not changed.",
+  "no_models_or_api_calls": true
+}

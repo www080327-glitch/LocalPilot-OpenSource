@@ -1,0 +1,39 @@
+{
+  "baseline_git_head": "71c771592e68df0ffc8e2f1b95ee3ebe7e6a5d43",
+  "observed_git_head": "7fe7c57c531bd44b966717502b44901582418cc4",
+  "files": {
+    "scripts/check-candidate-versions.py": {
+      "bytes": 1503,
+      "sha256": "e9b076b67dc56b8eea9680495dbcc65b6e05147089f2b92b70bd1569a118950a"
+    },
+    "tests/test_release_observability.py": {
+      "bytes": 6969,
+      "sha256": "0810e40b65efcdbbae34f42e49b527e018746c5da0a81b0877e2d3d53c8dbae1"
+    }
+  },
+  "patch_sha256": "f646959ecf408d032e62ab95c5c37313707ffc2af4d0579b739c67716c038380",
+  "old_checker_sha256": "ed691b76eec77c7bb9771849697d4d5f5a84f533d64c450e60be767daf5a4a0d",
+  "production_scope": "Existing checker import runpy plus one source-VERSION assertion; no new version source or runtime metadata mechanism.",
+  "tests": {
+    "command": [
+      "/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python",
+      "-B",
+      "-m",
+      "unittest",
+      "tests.test_release_observability.CandidateVersionGateTests",
+      "-v"
+    ],
+    "tests": 2,
+    "passed": 2,
+    "skipped": 0,
+    "seconds": 0.077,
+    "test_source_versions": "Real checker subprocesses over copied candidate files; one matching runtime source and one stale runtime source."
+  },
+  "no_model_or_api_requests": true,
+  "old_snapshots_unchanged": true,
+  "release_owner_publication": {
+    "remote_commit": "c5439659a579b2ee9e74fd53e6d3232fe12fb855",
+    "tree": "d0b0b33b036587ef0f0a802ca728419e9a444587",
+    "source": "Root release-owner publication receipt; current checker/test bytes still match the targeted test hashes."
+  }
+}

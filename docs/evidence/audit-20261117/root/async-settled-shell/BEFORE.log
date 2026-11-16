@@ -1,0 +1,20 @@
+test_root_settled_shell_failure_allows_actual_recovery (tests.test_async_runtime.AsyncRuntimeTests.test_root_settled_shell_failure_allows_actual_recovery) ... ok
+test_async_child_settled_shell_failure_allows_actual_recovery (tests.test_async_runtime.AsyncRuntimeTests.test_async_child_settled_shell_failure_allows_actual_recovery) ... FAIL
+
+======================================================================
+FAIL: test_async_child_settled_shell_failure_allows_actual_recovery (tests.test_async_runtime.AsyncRuntimeTests.test_async_child_settled_shell_failure_allows_actual_recovery)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<source_root>/tests/test_async_runtime.py", line 158, in test_async_child_settled_shell_failure_allows_actual_recovery
+    self.assertEqual(t['status'],'completed')
+AssertionError: 'incomplete' != 'completed'
+- incomplete
+? --
++ completed
+?         +
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.280s
+
+FAILED (failures=1)

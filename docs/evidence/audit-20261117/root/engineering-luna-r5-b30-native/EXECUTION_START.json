@@ -1,0 +1,19 @@
+{
+  "started_at": "2026-11-16T21:33:42.361815+00:00",
+  "source_head": "1dca93c5a6a2d0c557a9507ca020c07458dd92d1",
+  "source_tree": "1457ce75f9134196c0c489f69bc4ee5b03467d4b",
+  "source_clean": true,
+  "runner_sha256": "108f948c1b32fa9de95e48a1a84ede4b4b78a3d3ecfabe1c9977e4b7e21cc0fb",
+  "job_sha256": "2d85d2605331ae41d12e0d5ac5ffbd28b6a0490a57c2cdbf1e6aecc2fd7e6669",
+  "interpreter": "<task_python_env>/bin/python",
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "source_root": "<validation_root>/final-source-b30",
+  "output": "<validation_root>/engineering-luna-r5-b30-native",
+  "task_timeout_seconds": 1200,
+  "entrypoint": "Native Terminal foreground job",
+  "environment_change": "Prepend only the fixed task-tool Python directory to inherited PATH; proxy and TLS variables unchanged.",
+  "credential_source": "User-provided private key-file; contents not copied or logged.",
+  "attempt_reason": "New frozen b30 version-validation attempt after the async missing-directory completion change; R3 and R4 remain FAIL and R2 remains interrupted.",
+  "single_attempt": true,
+  "fixture_prompt_budgets_runner_unchanged": true
+}

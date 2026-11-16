@@ -1,0 +1,24 @@
+{
+  "stage": "Actual fixed checker after release owner synchronized b31 / RC14 versions",
+  "time_unix": 1794865631.214199,
+  "git_head": "7fe7c57c531bd44b966717502b44901582418cc4",
+  "command": [
+    "/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python",
+    "-B",
+    "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/scripts/check-candidate-versions.py"
+  ],
+  "cwd": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116",
+  "returncode": 0,
+  "checker_report": {
+    "consistent": true,
+    "desktop": "5.0.1-rc.14",
+    "core": "5.0.0b31",
+    "suite": "0.2.0b32",
+    "companion": "0.5.7b8"
+  },
+  "runtime_source_VERSION": "5.0.0b31",
+  "fixed_checker_sha256": "e9b076b67dc56b8eea9680495dbcc65b6e05147089f2b92b70bd1569a118950a",
+  "runtime_source_sha256": "1fe67309030df4b77d8541a29b81845e45ece60b3193bd43e5bae8bc51ceee52",
+  "pyproject_sha256": "641cebaea2fac643f6e17e704910331b9c02b655cf94b50e98fe8ac1ef616f7e",
+  "version_files_changed_by": "root release owner, not this checker change"
+}

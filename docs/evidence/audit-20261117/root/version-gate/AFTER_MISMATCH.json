@@ -1,0 +1,34 @@
+{
+  "stage": "Exact frozen b30 inputs with only the fixed checker substituted in a scratch copy",
+  "time_unix": 1794865521.7533376,
+  "frozen_source_commit": "1dca93c5a6a2d0c557a9507ca020c07458dd92d1",
+  "command": [
+    "/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python",
+    "-B",
+    "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/version-gate-r1/b30-mismatch-with-fixed-checker/scripts/check-candidate-versions.py"
+  ],
+  "cwd": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/version-gate-r1/b30-mismatch-with-fixed-checker",
+  "returncode": 1,
+  "diagnostic": "localpilot_service.VERSION differs from pyproject.toml",
+  "runtime_source_VERSION": "5.0.0b28",
+  "package_version": "5.0.0b30",
+  "fixed_checker_sha256": "e9b076b67dc56b8eea9680495dbcc65b6e05147089f2b92b70bd1569a118950a",
+  "all_input_files_identical_to_frozen": true,
+  "input_hashes": {
+    "pyproject.toml": "679d7145bd8d7dcd51822d06f59365fcfc9953cbc0a0a679ec964852b42abf4f",
+    "suite/pyproject.toml": "94555c8db26f003838477cfffec9cedeb277c12e881d83312d44ff768226ce3e",
+    "companion/pyproject.toml": "5c90fe3bb2b11a191e6ed726e3832f2dfcc843de5676b6483d22938a4a0a1594",
+    "desktop/package.json": "e1d0272eb7baf98da586c83e39c5449b406fa27cd6ed9777b3db45931a9d2851",
+    "desktop/package-lock.json": "a6a1265a85795fff5a9567d0bdae80e48d237fd917f4f612a385ce1d64094e31",
+    "desktop/src-tauri/tauri.conf.json": "0b383b54090477eda0a67a42ae8e28d4cf80c08c818c6d3444e43122b4cdb76b",
+    "desktop/src-tauri/Cargo.toml": "32d5931cac20afea409e220cb0a54835ce090aefa492ee104205b9bda83672e1",
+    "MODULE_RELEASE.json": "2ac3933b23bc39050904f57b10ae90638ae681a236091838b649660eba121920",
+    "suite/MODULE_RELEASE.json": "bc9e7eded17cc1b5b07c2232a29a1c4a3eb663cca07dcd62bf37c276c9e84248",
+    "companion/MODULE_RELEASE.json": "bfc6c4adf8e6c420b89419d958d27e52168487f8ffe66ae8c747bf0c4a010d6d",
+    "README.md": "ebb2921d930b608d63f778cd4dd65f0a39a3aeac6c16d40bcaed605b20d41ec1",
+    "desktop/README.md": "3d681588e1f2b551aed83155573408134cacf8bf9c35548d111148bbbb93743f",
+    "suite/README.md": "b9df9fe2c01c090e60da6a484d8a9f00c793d11e0d645b00d8d4a54837334ca6",
+    "companion/README.md": "fd4ea266a98e13e634f9f9a1c733ea099ce3f4a8293f61e95d40cb3d76c257ee",
+    "localpilot_service/__init__.py": "cbc5f821de80e7796353bf2c534b9d716c181df323942a86bb49925b9978d542"
+  }
+}
