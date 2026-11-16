@@ -287,18 +287,26 @@ def ground_truth(value):
     groups, roots = {}, set()
     for entity in value['groups']:
         if (not isinstance(entity, dict) or not isinstance(entity.get('id'), str) or not entity['id']
-                or entity['id'] in groups or type(entity.get('root_cause')) is not bool):
+                or type(entity.get('root_cause', False)) is not bool):
             raise ValueError('Invalid or duplicate ground-truth entity')
         for field in ('name', 'namespace', 'kind'):
+            if field == 'namespace' and entity.get(field) is None:
+                continue
             if field in entity and not isinstance(entity[field], str):
                 raise ValueError('Entity identifying metadata must be text')
         if 'filter' in entity and (not isinstance(entity['filter'], list)
                                   or not all(isinstance(item, str) for item in entity['filter'])):
             raise ValueError('Entity filters must be a list of text')
-        groups[entity['id']] = {key: entity[key] for key in
-                               ('id', 'name', 'namespace', 'kind', 'filter') if key in entity}
-        if entity['root_cause']:
-            roots.add(entity['id'])
+        entity_id, root_cause = entity['id'], entity.get('root_cause', False)
+        identifying = {key: entity[key] for key in ('id', 'name', 'namespace', 'kind', 'filter')
+                       if key in entity and not (key == 'namespace' and entity[key] is None)}
+        if entity_id in groups:
+            if groups[entity_id] != identifying or (entity_id in roots) != root_cause:
+                raise ValueError('Conflicting duplicate ground-truth entity')
+            continue
+        groups[entity_id] = identifying
+        if root_cause:
+            roots.add(entity_id)
     aliases = value.get('aliases', [])
     if not isinstance(aliases, list) or not all(isinstance(alias, list) and all(
             isinstance(entity_id, str) and entity_id in groups for entity_id in alias) for alias in aliases):

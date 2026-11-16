@@ -130,7 +130,9 @@ class ITBenchScoringTests(unittest.TestCase):
         value['groups'][0]['root_cause'] = 'true'
         bad.append(value)
         value = synthetic_truth()
-        value['groups'].append(deepcopy(value['groups'][0]))
+        duplicate = deepcopy(value['groups'][0])
+        duplicate['root_cause'] = False
+        value['groups'].append(duplicate)
         bad.append(value)
         value = synthetic_truth()
         for entity in value['groups']:
@@ -138,6 +140,47 @@ class ITBenchScoringTests(unittest.TestCase):
         bad.append(value)
         for value in bad:
             with self.subTest(value=value), self.assertRaises(ValueError):
+                grading.ground_truth(value)
+
+    def test_missing_root_flags_default_to_false(self):
+        value = synthetic_truth()
+        for entity in value['groups']:
+            if not entity['root_cause']:
+                del entity['root_cause']
+        self.assertEqual(grading.ground_truth(value), self.truth)
+        value['groups'][0]['root_cause'] = None
+        with self.assertRaises(ValueError):
+            grading.ground_truth(value)
+
+    def test_null_namespace_is_missing_but_other_identity_fields_remain_typed(self):
+        value = synthetic_truth()
+        del value['groups'][0]['namespace']
+        expected = grading.ground_truth(value)
+        value['groups'][0]['namespace'] = None
+        self.assertEqual(grading.ground_truth(value), expected)
+        for field in ('name', 'kind'):
+            invalid = deepcopy(value)
+            invalid['groups'][0][field] = None
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                grading.ground_truth(invalid)
+
+    def test_identical_duplicate_ids_preserve_one_identity_and_root_group(self):
+        value = synthetic_truth()
+        value['groups'].extend(deepcopy(value['groups'][:2]))
+        del value['groups'][-1]['root_cause']
+        actual = grading.ground_truth(value)
+        self.assertEqual(actual, self.truth)
+        self.assertEqual(len(actual.judge_input['groups']), len(synthetic_truth()['groups']))
+
+    def test_conflicting_duplicate_identity_or_root_flag_is_rejected(self):
+        for field, changed in (('name', 'different'), ('namespace', 'different'),
+                               ('kind', 'Service'), ('filter', ['different']),
+                               ('root_cause', False)):
+            value = synthetic_truth()
+            duplicate = deepcopy(value['groups'][0])
+            duplicate[field] = changed
+            value['groups'].append(duplicate)
+            with self.subTest(field=field), self.assertRaises(ValueError):
                 grading.ground_truth(value)
 
     def test_judge_format_order_names_length_and_ids_are_checked(self):

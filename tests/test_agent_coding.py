@@ -84,6 +84,98 @@ class CodingTests(unittest.TestCase):
         self.assertEqual((self.root / "new.txt").read_text(), "two\n")
         self.assertNotIn("+two", json.dumps(self.registry.gateway.audit))
 
+    def test_same_file_updates_are_sequential_with_one_write_and_receipt(self):
+        original = hashlib.sha256(b"VALUE = 1\n").hexdigest()
+        changes = [
+            {"path":"value.py", "operation":"update", "old_text":"VALUE = 1", "new_text":"VALUE = 2", "expected_sha256":original},
+            {"path":"value.py", "operation":"update", "old_text":"VALUE = 2", "new_text":"VALUE = 3", "expected_sha256":original},
+        ]
+        with patch("agent.patches.os.replace", wraps=os.replace) as replace:
+            result = self.registry.call("apply_patch", {"changes":changes})
+        replace.assert_called_once()
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual((self.root/"value.py").read_text(), "VALUE = 3\n")
+        self.assertEqual(len(result["changes"]), 1)
+        receipt = result["changes"][0]
+        self.assertEqual(receipt["before_sha256"], original)
+        self.assertEqual(receipt["before_identity"]["sha256"], original)
+        self.assertEqual(receipt["after_sha256"], hashlib.sha256(b"VALUE = 3\n").hexdigest())
+        self.assertIn("-VALUE = 1", receipt["diff"])
+        self.assertIn("+VALUE = 3", receipt["diff"])
+        applied = [row for row in self.registry.gateway.audit if row.get("path")=="value.py" and row.get("status")=="applied"]
+        self.assertEqual(len(applied), 1)
+
+    def test_full_session_child_accepts_same_file_update_and_noop(self):
+        from agent.engine_v5 import EngineV5Policy
+        from agent.session import AgentSession, SessionBudgets
+        from localpilot_service.desktop_sessions import apply_options
+        from tests.test_runtime_api import Backend, answer, call as runtime_call
+
+        changes = [
+            {"path":"value.py", "operation":"update", "old_text":"VALUE = 1", "new_text":"VALUE = 2"},
+            {"path":"value.py", "operation":"update", "old_text":"VALUE = 2", "new_text":"VALUE = 2"},
+        ]
+        backend = Backend(
+            answer(None, runtime_call("delegate", {"task":"Update value.py in one two-part patch.", "backend_preference":"cloud", "read_only":False}, "delegate")),
+            answer(None, runtime_call("read_file", {"path":"value.py"}, "inspect")),
+            answer(None, runtime_call("apply_patch", {"changes":changes}, "patch")),
+            answer("Child updated value.py."),
+            answer(None, runtime_call("read_file", {"path":"value.py"}, "verify")),
+            answer("Collected child output and read VALUE = 2."))
+        runtime = AgentSession(make_registry(self.root), cloud_backend=backend, policy="cloud-only",
+            engine_policy=EngineV5Policy(), budgets=SessionBudgets(max_steps=10, max_tool_calls=10, max_token_units=2000000))
+        apply_options(runtime, {"permission_mode":"full", "agent_profile":"standard", "prompt_revision":2,
+            "scope_revision":3, "execution_budget":"standard"})
+        try:
+            final = runtime.run_turn("Delegate updating value.py, then read back the result.")
+            self.assertEqual(final.status, "completed")
+            self.assertEqual((self.root/"value.py").read_text(), "VALUE = 2\n")
+            child = runtime.subagents[0]
+            self.assertEqual(child["status"], "completed")
+            self.assertEqual(child["obligation_status"], "resolved")
+            receipts = [row for row in child["receipts"] if row["name"]=="apply_patch"]
+            self.assertEqual(len(receipts), 1)
+            self.assertTrue(receipts[0]["payload"]["ok"])
+            self.assertEqual(len(receipts[0]["payload"]["result"]["changes"]), 1)
+            self.assertNotIn("repaired_proposals", receipts[0])
+        finally:
+            runtime.close()
+
+    def test_later_same_file_mismatch_leaves_entire_batch_unwritten(self):
+        with self.assertRaisesRegex(ValueError, "exactly once"):
+            self.registry.call("apply_patch", {"changes":[
+                {"path":"new.txt", "operation":"create", "content":"prepared only"},
+                {"path":"value.py", "operation":"update", "old_text":"VALUE = 1", "new_text":"VALUE = 2"},
+                {"path":"value.py", "operation":"update", "old_text":"missing", "new_text":"VALUE = 3"},
+            ]})
+        self.assertFalse((self.root/"new.txt").exists())
+        self.assertEqual((self.root/"value.py").read_text(), "VALUE = 1\n")
+        self.assertFalse(self.registry.gateway._patch_effect_started)
+
+    def test_same_file_create_delete_mixes_remain_rejected(self):
+        update = {"path":"value.py", "operation":"update", "old_text":"VALUE = 1", "new_text":"VALUE = 2"}
+        delete = {"path":"value.py", "operation":"delete", "expected_sha256":hashlib.sha256(b"VALUE = 1\n").hexdigest()}
+        cases = [[update, delete], [delete, update], [delete, delete],
+            [{"path":"new.txt", "operation":"create", "content":"one"},
+             {"path":"new.txt", "operation":"update", "old_text":"one", "new_text":"two"}],
+            [update, {"path":"value.py", "operation":"create", "content":"replacement"}]]
+        for changes in cases:
+            with self.subTest(changes=changes), self.assertRaises(ValueError):
+                self.registry.call("apply_patch", {"changes":changes})
+            self.assertEqual((self.root/"value.py").read_text(), "VALUE = 1\n")
+            self.assertFalse((self.root/"new.txt").exists())
+            self.assertFalse(self.registry.gateway._patch_effect_started)
+
+    def test_later_update_hash_must_match_original_not_intermediate_bytes(self):
+        with self.assertRaisesRegex(ValueError, "hash mismatch"):
+            self.registry.call("apply_patch", {"changes":[
+                {"path":"value.py", "operation":"update", "old_text":"VALUE = 1", "new_text":"VALUE = 2"},
+                {"path":"value.py", "operation":"update", "old_text":"VALUE = 2", "new_text":"VALUE = 3",
+                 "expected_sha256":hashlib.sha256(b"VALUE = 2\n").hexdigest()},
+            ]})
+        self.assertEqual((self.root/"value.py").read_text(), "VALUE = 1\n")
+        self.assertFalse(self.registry.gateway._patch_effect_started)
+
     def test_preflight_rejects_entire_batch_without_partial_edits(self):
         with self.assertRaises(ValueError):
             self.registry.call("apply_patch", {"changes": [

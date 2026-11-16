@@ -51,7 +51,7 @@ def apply_patch(workspace_root, changes, *, gateway=None):
     if len(json.dumps(changes, ensure_ascii=False).encode("utf-8")) > MAX_PATCH_BYTES:
         raise ValueError("Patch request exceeds 2 MB total byte budget")
     prepared = []
-    seen = set()
+    seen = {}
     for change in changes:
         if not isinstance(change, dict):
             raise ValueError("Each change must be an object")
@@ -61,9 +61,9 @@ def apply_patch(workspace_root, changes, *, gateway=None):
         if set(change) - allowed or operation not in {"create", "update", "delete"}:
             raise ValueError("Unsupported patch operation or fields")
         target = resolve_workspace_path(gateway.root, change.get("path"), must_exist=False, writing=True)
-        if target == gateway.root or target in seen:
-            raise ValueError("Patch paths must be distinct files, not the workspace root")
-        seen.add(target)
+        previous = prepared[seen[target]] if target in seen else None
+        if target == gateway.root or previous and (operation != "update" or previous[3]["operation"] != "update"):
+            raise ValueError("Patch targets must be files; repeated paths support only update operations")
         if not target.parent.is_dir():
             raise ValueError("Parent directory must already exist")
         if operation == "create":
@@ -75,8 +75,9 @@ def apply_patch(workspace_root, changes, *, gateway=None):
                 raise ValueError("create requires UTF-8 content")
             after = content.encode("utf-8")
         else:
-            before = _read_bytes(target)
-            text = before.decode("utf-8")
+            # Each expected hash and receipt keeps the original inspected version.
+            before = previous[1] if previous else _read_bytes(target)
+            text = (previous[2] if previous else before).decode("utf-8")
             if operation == "delete":
                 if not change.get("expected_sha256"):
                     raise ValueError("delete requires expected_sha256 from an inspected file")
@@ -95,13 +96,19 @@ def apply_patch(workspace_root, changes, *, gateway=None):
         receipt = {
             "path": target.relative_to(gateway.root).as_posix(), "operation": operation,
             "before_sha256": _hash(before) if operation != "create" else None,
-            "before_identity":inspect_file(gateway.root,change["path"]) if operation!="create" else None,
+            "before_identity":previous[3]["before_identity"] if previous else (
+                inspect_file(gateway.root,change["path"]) if operation!="create" else None),
             "after_sha256": _hash(after) if after is not None else None,
             "diff": "".join(difflib.unified_diff(before.decode("utf-8").splitlines(True),
                          (after or b"").decode("utf-8").splitlines(True),
                          fromfile=change["path"], tofile=change["path"]))[:4000],
         }
-        prepared.append((target, before, after, receipt))
+        item = (target, before, after, receipt)
+        if previous:
+            prepared[seen[target]] = item
+        else:
+            seen[target] = len(prepared)
+            prepared.append(item)
     deleting = any(item[3]["operation"] == "delete" for item in prepared)
     decision = gateway.decide("apply_patch", "high" if deleting else "medium",
         ["Deletes inspected files." if deleting else "Creates or changes workspace text files; changed code may execute later."],
