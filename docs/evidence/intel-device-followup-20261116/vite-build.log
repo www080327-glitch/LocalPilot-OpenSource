@@ -1,0 +1,18 @@
+
+> localpilot-desktop@5.0.1-rc.7 build
+> tsc -b && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 1891 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                            0.41 kB │ gzip:  0.28 kB
+dist/assets/Pet-BHCxpe50.css               8.98 kB │ gzip:  2.71 kB
+dist/assets/index-B7NIlkgH.css            60.13 kB │ gzip: 12.66 kB
+dist/assets/Pet-DPUFDSmf.js               22.31 kB │ gzip:  9.05 kB
+dist/assets/TrainingSamples-B0Aye0ln.js  170.85 kB │ gzip: 53.62 kB
+dist/assets/App-Cg_lhOb6.js              222.24 kB │ gzip: 71.00 kB
+dist/assets/index-CD_m6YLt.js            224.44 kB │ gzip: 70.19 kB
+dist/assets/DeveloperTools-B-ZtmGXW.js   273.90 kB │ gzip: 28.35 kB
+✓ built in 1.29s

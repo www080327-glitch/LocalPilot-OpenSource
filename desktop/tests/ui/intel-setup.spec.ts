@@ -19,7 +19,10 @@ async function intelBridge(page: Page) {
         if(command==='model_manager')return {supported:false,models:{models:[]}};
         if(command==='product_control'){
           if(args.operation==='inspect')return {hardware,core_configured:true,omlx_installed:false,recommendation:null};
-          if(args.operation==='model_configuration')return {models:configuredModels,restart_required:localStorage.getItem('fixture.pending')==='yes'};
+          if(args.operation==='model_configuration')return {
+            models:configuredModels.slice(),
+            restart_required:localStorage.getItem('fixture.pending')==='yes'
+          };
           if(args.operation==='catalog')return {jobs:{tasks:[]},capabilities:{}};
           if(args.operation==='preferences')return {models:{}};
           if(args.operation==='workspace_grants')return {grants:[]};
