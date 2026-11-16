@@ -1,0 +1,19 @@
+{
+  "command": [
+    "/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python",
+    "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/final-source-91dd87c/scripts/qualify_openai_agent.py",
+    "--case",
+    "soak",
+    "--soak-seconds",
+    "7200",
+    "--output",
+    "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r3-final",
+    "--key-file",
+    "<private_key_file>"
+  ],
+  "cwd": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/final-source-91dd87c",
+  "log": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r3-final.log",
+  "exit_receipt": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r3-final-exit.json",
+  "heartbeat": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r3-final/workspace/heartbeat.jsonl",
+  "supervisor_sha256": "31eebe99550dec0e33fa8cb03206fe2350dde070f185dd1ff25498d7d712af8d"
+}

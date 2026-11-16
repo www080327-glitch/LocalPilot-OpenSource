@@ -1,0 +1,19 @@
+test_full_parent_recognizes_child_timeout_only_repair (tests.test_shell_failure_repair.ShellFailureRepairTests.test_full_parent_recognizes_child_timeout_only_repair) ... FAIL
+
+======================================================================
+FAIL: test_full_parent_recognizes_child_timeout_only_repair (tests.test_shell_failure_repair.ShellFailureRepairTests.test_full_parent_recognizes_child_timeout_only_repair)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<source_root>/tests/test_shell_failure_repair.py", line 108, in test_full_parent_recognizes_child_timeout_only_repair
+    self.assertEqual(final.status, 'completed')
+AssertionError: 'incomplete' != 'completed'
+- incomplete
+? --
++ completed
+?         +
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.030s
+
+FAILED (failures=1)

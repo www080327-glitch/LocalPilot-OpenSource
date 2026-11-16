@@ -1,0 +1,55 @@
+{
+  "kind": "SECOND_EXECUTOR_SESSION_LOSS",
+  "observed_unix": 1794858437.3800256,
+  "old_exec_sessions": [
+    39371,
+    36136,
+    59322
+  ],
+  "process_session_lookup": "Unknown process id",
+  "functions_store_lost": true,
+  "cause": "UNKNOWN",
+  "soak_r3": {
+    "heartbeat_lines": 97,
+    "last_elapsed_seconds": 2880.0511786159987,
+    "terminal_result_present": false
+  },
+  "transport_cases": [
+    {
+      "index": 23,
+      "started": true,
+      "result_exists": true,
+      "status": "incomplete",
+      "error": null,
+      "result_sha256": "3803be41129822dda5d089e9df7b2b558ff9a7f45667b2cd1d62609ebfd65f9c",
+      "progress_mtime": 1794857736.0761354
+    },
+    {
+      "index": 25,
+      "started": true,
+      "result_exists": false,
+      "progress_mtime": 1794858296.826667
+    },
+    {
+      "index": 26,
+      "started": false,
+      "result_exists": false
+    },
+    {
+      "index": 27,
+      "started": false,
+      "result_exists": false
+    },
+    {
+      "index": 28,
+      "started": false,
+      "result_exists": false
+    },
+    {
+      "index": 29,
+      "started": false,
+      "result_exists": false
+    }
+  ],
+  "limitation": "Per-exec PID namespaces do not establish machine-wide process absence; native host liveness not yet checked."
+}

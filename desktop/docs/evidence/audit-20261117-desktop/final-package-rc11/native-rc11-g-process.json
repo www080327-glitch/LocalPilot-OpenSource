@@ -1,0 +1,17 @@
+{
+  "command": [
+    "bash",
+    "/workspace/scratch/2a488f6eabf5/validation/polish-20261116/desktop/webkit-minimal-overlay-r9/launch-owned-webview-minimal.sh",
+    "/workspace/scratch/c0f3ec78c621/validation/package-b28-b8-b32-DtZ0R2/native-smoke/extracted/usr/bin/localpilot-desktop-test",
+    "/workspace/scratch/c0f3ec78c621/native-rc11-g"
+  ],
+  "started_utc": "2026-11-16T20:08:08Z",
+  "display": ":0",
+  "xdg_session_type": "x11",
+  "webkit_disable_sandbox_present": false,
+  "candidate_sha256": "e81b4c079fc9105f28228096e500520451b624e2317214a7ec634f3b68dc52cd",
+  "scope": "Validation-only read-only helper overlay with standard bubblewrap private /dev and the single existing X11 auth file read-only at its original path; final RC11 candidate from clean GitHub commit 03535fe943f64f49e9e3d79e7949aca6c9ec9b87, no system installation, no WebKit sandbox disable.",
+  "pid": 25514,
+  "returncode": 143,
+  "finished_utc": "2026-11-16T20:11:05Z"
+}

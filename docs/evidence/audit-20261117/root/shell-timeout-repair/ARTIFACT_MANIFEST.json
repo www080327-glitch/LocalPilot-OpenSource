@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "scope": "Local scripted model responses with real AgentSession, host Shell and existing reliability suites; no external API.",
+  "publication_status": "Source published; package/native validation recorded separately.",
+  "redactions": [
+    {
+      "field": "log text",
+      "transformation": "Replace absolute source checkout prefix with <source_root>; all other bytes preserved."
+    }
+  ],
+  "source_files": [
+    {
+      "file": "agent/tool_protocol.py",
+      "sha256": "e3f80f187fb907dc6798bea6f15a0362614ff7d2bab7acf44eb044f831f40015"
+    },
+    {
+      "file": "agent/session_tools.py",
+      "sha256": "cc45fd513b7d0e2c421befe5c9b9b16df029e1353ec447b9f966ae3e1e7a4a39"
+    },
+    {
+      "file": "agent/session_workers.py",
+      "sha256": "68466835bc45eba1fd3668993868b116ee3911fdc13fa54470871b34fc2ab52e"
+    },
+    {
+      "file": "tests/test_shell_failure_repair.py",
+      "sha256": "25f6a8ed2dc04a28847b2078235c96a21953b84ee81bf822f6259303419b3185"
+    }
+  ],
+  "logs": [
+    {
+      "file": "BEFORE.log",
+      "original": "<validation_root>/shell-timeout-repair-before.log",
+      "original_bytes": 1342,
+      "original_sha256": "79fd6f35e18fa7fdd2692257f0c0144ab7c2b0767e5808e74feb0f26b4596af2",
+      "published_bytes": 1291,
+      "published_sha256": "0e9aac8d84c682e444deb199013079a9c954722112868a73d50b3637b08c05aa"
+    },
+    {
+      "file": "CHILD_BEFORE.log",
+      "original": "<validation_root>/shell-timeout-child-projection-before.log",
+      "original_bytes": 951,
+      "original_sha256": "d118587c1b81512fd74f7a211958092994892bfd301ae59b407959bc2e955d60",
+      "published_bytes": 900,
+      "published_sha256": "c1158e2d3a8093d7722f8603176350cb21de547dca4dd81d15926071f9f3bc0e"
+    },
+    {
+      "file": "FINAL.log",
+      "original": "<validation_root>/shell-timeout-repair-final.log",
+      "original_bytes": 12230,
+      "original_sha256": "4e063b0c66e9c7460895044ade1e556cfbfd769cafed49941505b25cf1190946",
+      "published_bytes": 12230,
+      "published_sha256": "4e063b0c66e9c7460895044ade1e556cfbfd769cafed49941505b25cf1190946"
+    }
+  ],
+  "report": {
+    "file": "RESULTS.md",
+    "bytes": 4642,
+    "sha256": "f2924df79a41a684782987d056a05ab183c6c803e3042366e5f690e2d43e7861"
+  },
+  "source_commit": "03535fe943f64f49e9e3d79e7949aca6c9ec9b87",
+  "source_tree": "1792d58af7858208db5018a747d78a1c75848edf",
+  "core_version": "5.0.0b28",
+  "desktop_version": "5.0.1-rc.11"
+}

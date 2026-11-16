@@ -4,7 +4,7 @@
 
 The completed receipts demonstrate actual GPT-6 Luna Responses requests, function-result round trips, streamed text, Core tool execution, child execution, cancellation, restart lookup, ordinary Companion clients, and both directions of local/cloud delegation. These are bounded integration checks with small synthetic tasks. They do not establish general task quality, an autonomous-work success rate, a public benchmark score, or final native-package qualification.
 
-This report was prepared by independently reading the archived receipts and verifying their hashes. It did not launch another model request, inspect an API key, read benchmark reference answers, or inspect the active soak or benchmark output.
+The initial integration assessment was prepared independently from archived receipts and their hashes. Later status updates are appended by the root owner from the named run records; they do not change the original receipts or merge results from different sources.
 
 | Work item | Status at this report's preparation | Claim supported here |
 | --- | --- | --- |
@@ -16,17 +16,21 @@ This report was prepared by independently reading the archived receipts and veri
 | Heterogeneous delegation | 2/2 PASS within the stated scope | Actual local and cloud child reads; the local-parent run later switched its parent to cloud. |
 | [Finite engineering acceptance](engineering-luna-r1/RESULTS.md) | PASS | Frozen `91dd87c` Core; two genuine async children; original external 17 tests and four CLI cases passed. |
 | Original two-hour soak R1 | **INCOMPLETE: execution-session continuity lost** | 210 heartbeats, last observed 6,270.103 seconds; no terminal receipt or finished marker. |
-| Final-source two-hour soak R3 | **RUNNING** | Fresh 7,200-second run from `91dd87c`; its time is not added to R1. |
-| Forty public ITBench-AA cases | **RUNNING** | No score, grading result, or completion claim yet. |
-| Final native package | **PASS for build and extracted-package UI verification** | Separate [final-package evidence](../../../../desktop/docs/evidence/audit-20261117-desktop/final-package/RESULTS.md); these earlier model runs remain source-based. |
+| [Two-hour soak R3](cloud-soak-2h-r3-interrupted/RESULTS.md) | **INCOMPLETE: second execution-session loss** | `91dd87c`; 97 heartbeats, last 2,880.051 seconds; no terminal result or readback. |
+| Current-source two-hour soak R4 | **RUNNING** | `03535fe` / Core b28, native desktop Terminal, actual Python 3.12.14; a fresh full 7,200-second run, without adding earlier time. |
+| [Original forty-case ITBench R2](itbench-aa-r2/RESULTS.md) | **40 terminal receipts; ungraded** | 26 completed, 28 format-valid; original failures and interrupted attempts preserved. |
+| ITBench pre-candidate transport continuation | **RUNNING** | Six original pre-candidate download failures selected; the newly interrupted started case 025 is not repeated. No score before complete candidate shutdown and grading. |
+| RC10 native package | **PASS for build and extracted-package UI verification** | Separate [RC10 evidence](../../../../desktop/docs/evidence/audit-20261117-desktop/final-package/RESULTS.md); these earlier model runs remain source-based. |
+| [Current RC11 / Core b28 package](../../../../desktop/docs/evidence/audit-20261117-desktop/final-package-rc11/RESULTS.md) | **PASS for build and native short checks** | Source `03535fe`; 40 wheels / 286 source files verified; no system installation, new animation measurement, or binary Release upload claim. |
+| [Shell timeout and Full child repair](shell-timeout-repair/RESULTS.md) | **72 PASS / 1 existing macOS SKIP** | Additional implementation checks, scripted model replies with real Shell and parent/child execution; no benchmark reclassification. |
 
 The root owner will append the completed long-run and benchmark evidence separately. [Benchmark R1](itbench-aa-r1/ABORTED.json) was aborted after four terminal `CloudEgressDenied` failures at the hidden 131,072-byte ceiling; a fifth started case was interrupted. That historical runtime defect and its receipts are distinct from R2's timeout-unit error and remain preserved. No score is assigned to the aborted R1 run.
 
 The frozen ITBench study's phrase `packaged Core HTTP` is historical wording: the candidate service actually loads Core from the frozen `qualification-source-r2` through `PYTHONPATH`. Its source manifest identifies that snapshot. It is not a model run from the installed RC10 DEB; the frozen study is retained unchanged.
 
-The initial long-run executor handles later disappeared together and their progress files stopped updating. [The independently reviewed interrupted-soak archive](cloud-soak-2h-r1-interrupted/RESULTS.md) preserves the 210 heartbeats and missing completion evidence; the cause is unknown and no application-permission cause has been established. A fresh, full 7,200-second soak now uses the final frozen source. Its future result must stand on its own.
+The initial long-run executor handles later disappeared together and their progress files stopped updating. [The independently reviewed interrupted-soak archive](cloud-soak-2h-r1-interrupted/RESULTS.md) preserves the 210 heartbeats and missing completion evidence; the cause is unknown and no application-permission cause has been established. R3 later lost its execution session as well; its independent archive preserves the 48-minute partial trace. R4 now uses the current `03535fe` source from an existing native desktop Terminal. Its result must stand on its own.
 
-ITBench R2 also encountered dataset-download `URLError` / tunnel 403 failures before some candidates started, plus two candidates whose executing sessions lost continuity. The unmodified original runner is being resumed: existing terminal receipts are reused, previously started unfinished candidates are retained as interrupted without another model attempt, and only never-started remaining candidates begin. A separately declared transport continuation will address only the original download failures that never started a model. No grading has begun, and these pending steps carry no score claim.
+ITBench R2 encountered dataset-download `URLError` / tunnel 403 failures before six candidates started, plus two started candidates whose execution sessions lost continuity. The original run now has 40 immutable terminal receipts. The predeclared continuation selects only those six never-started download failures. During that continuation another executor loss interrupted case 025 after it had started; the frozen runner retains that interruption without another candidate attempt. Remaining never-started cases continue from native Terminal with the same source, Python, prompt, budgets and input URLs. Its PID/network namespace differs from per-call exec and is recorded as an execution-environment change; no proxy/TLS policy is changed. Grading waits for all 40 final cohort receipts.
 
 ## Evidence integrity and source identity
 

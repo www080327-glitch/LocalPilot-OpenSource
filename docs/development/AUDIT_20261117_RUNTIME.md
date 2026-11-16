@@ -136,3 +136,9 @@ can require repeated reasoning; the size of any cost, latency, or quality effect
 has not been measured here. Addressing it requires a separate context-history
 change. This is an **unresolved limitation**, not a fixed defect or an additional
 completed audit item; the running benchmark snapshot is unchanged.
+
+## Follow-up: corrected Shell proposals and Full child projection
+
+The current Core b28 source is published at `03535fe943f64f49e9e3d79e7949aca6c9ec9b87`. Two additional concrete defects were reproduced and fixed without changing the main forty-item counts: a fresh successful host Shell call can now settle the identical never-dispatched proposal when only timeout changed; child repair references gain the same worker prefix as their projected receipts. `_finish`, tool schemas, prompts and budgets are unchanged.
+
+[The independent before/after report](../evidence/audit-20261117/root/shell-timeout-repair/RESULTS.md) records 73 tests, 72 passed and one existing macOS-only skip, with real Shell/file/Full parent-child paths and scripted model responses. No-execution, different-command, reused-receipt and UNKNOWN controls retain their earlier behavior. The frozen R2 case-020 remains an original incomplete result; it was not rerun or reclassified. Case-019 used different commands and is outside the narrow association. RC11 packaging and actual-model long-running checks are reported separately.

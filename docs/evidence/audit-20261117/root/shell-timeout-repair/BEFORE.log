@@ -1,0 +1,21 @@
+test_successful_timeout_only_retry_settles_rejected_proposal (tests.test_shell_failure_repair.ShellFailureRepairTests.test_successful_timeout_only_retry_settles_rejected_proposal) ... FAIL
+test_unexecuted_rejected_shell_remains_incomplete (tests.test_shell_failure_repair.ShellFailureRepairTests.test_unexecuted_rejected_shell_remains_incomplete) ... ok
+test_different_shell_command_does_not_settle_rejected_proposal (tests.test_shell_failure_repair.ShellFailureRepairTests.test_different_shell_command_does_not_settle_rejected_proposal) ... ok
+
+======================================================================
+FAIL: test_successful_timeout_only_retry_settles_rejected_proposal (tests.test_shell_failure_repair.ShellFailureRepairTests.test_successful_timeout_only_retry_settles_rejected_proposal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<source_root>/tests/test_shell_failure_repair.py", line 33, in test_successful_timeout_only_retry_settles_rejected_proposal
+    self.assertEqual(final.status, 'completed')
+AssertionError: 'incomplete' != 'completed'
+- incomplete
+? --
++ completed
+?         +
+
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.056s
+
+FAILED (failures=1)
