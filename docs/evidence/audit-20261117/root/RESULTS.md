@@ -16,7 +16,7 @@ This report was prepared by independently reading the archived receipts and veri
 | Heterogeneous delegation | 2/2 PASS within the stated scope | Actual local and cloud child reads; the local-parent run later switched its parent to cloud. |
 | Two-hour Full + extended soak | **RUNNING** | No completion or endurance claim yet. |
 | Forty public ITBench-AA cases | **RUNNING** | No score, grading result, or completion claim yet. |
-| Final native package | **BUILDING** | No packaged-binary claim from these source-based runs. |
+| Final native package | **PASS for build and extracted-package UI verification** | Separate [final-package evidence](../../../../desktop/docs/evidence/audit-20261117-desktop/final-package/RESULTS.md); these earlier model runs remain source-based. |
 
 The root owner will append the completed long-run, benchmark, and packaging evidence separately. The retained initial benchmark parameter/unit error is not replaced by the running attempt; its active data was outside this review.
 
@@ -181,4 +181,4 @@ The archived integration cases exercise concrete paths successfully, with the tw
 
 The final source has later compatibility and credential-source fixes, including GPT-5.5 reasoning-effort defaults. Its frozen-source test receipt is linked above; earlier paid-model results remain attached to their original source hashes. Prefix-preserved reasoning still has the limitation documented in the runtime audit when request history is rewritten; this report does not turn that known limit into a fixed issue.
 
-Final native packaging and package-specific execution require their own completed receipts. Until then, the supported claim is successful actual-provider integration on the explicitly identified source snapshots, within the task and execution boundaries described here.
+Final native packaging and package-specific execution now have their own [completed receipts](../../../../desktop/docs/evidence/audit-20261117-desktop/final-package/RESULTS.md), including the final source identity and measured motion. That separate success does not change the explicitly identified source snapshots used for the earlier paid-model runs. System-wide installation, macOS devices and a GitHub binary upload are not claimed.

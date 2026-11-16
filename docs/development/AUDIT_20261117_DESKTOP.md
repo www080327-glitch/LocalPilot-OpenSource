@@ -8,14 +8,14 @@
 
 | 编号 | 原行为与实际后果 | 修改 | 验证 |
 |---|---|---|---|
-| D-B1 | 原生动画固定等待 50 ms，调度上限约 20 fps；图集帧还以 130 ms 间隔切换 | 可见窗口用 30 Hz `tokio::time::interval`，错过 tick 时跳过积压；进度按真实经过时间计算，隐藏窗口仍低频休眠 | 实际 Linux WebKit 两次点击采样，4 个动作阶段的视觉变化平均 26.79–29.46 fps；真实 `advance` 单测 |
+| D-B1 | 原生动画固定等待 50 ms，调度上限约 20 fps；图集帧还以 130 ms 间隔切换 | 可见窗口用 30 Hz `tokio::time::interval`，错过 tick 时跳过积压；进度按真实经过时间计算，隐藏窗口仍低频休眠 | D 的 4 个动作阶段为 26.79–29.46 fps；最终 RC10 单次采样为 28.52 / 29.39 fps，按整个观测阶段保守计算为 28.52 / 28.32；真实 `advance` 单测 |
 | D-B2 | 指定当前同侧的锚点也会被替换成随机对侧，按钮含义与结果不符 | 显式锚点原样采用；只有未指定锚点的身体点击才选对侧 | 全部锚点对单测；原生从左上点“左边探头”，窗口落到 `(0, 402)` |
 | D-B3 | 浏览器的系统减少动态效果只影响 CSS，Rust 的缩回、探出和位置动画继续播放 | `matchMedia` 初值与变化传给 native；系统偏好、应用动画开关、安静模式共同决定是否动画。关闭时直接完成定位 | 实际 hook 的系统偏好动态切换测试；原生关闭动画后的 6 秒采样无动作阶段，点击直接换位 |
 | D-B4 | DeepSeek 身份在底部总是选可选 `comic`，没有该扩展时整个角色不可见 | 仅在扩展真实存在时使用；否则使用已加载的边缘姿态 | 可选扩展缺失单测；原生夹具故意使用 DeepSeek 前缀且无 comic，底部可见 |
 | D-B5 | 用户取消导出文件对话框后，界面仍显示“已导出 undefined” | 消费明确的 `cancelled` 返回值；只有实际路径结果显示成功 | 真实 React 控件测试（仅 native transport 被替代） |
 | D-B6 | 用户取消导入素材后，将 `{cancelled:true}` 当成新素材覆盖当前角色状态 | 取消时保留已有素材 | 导入取消后角色标签仍为原角色的 UI 断言 |
-| D-B7 | 文本清空后输入区高度遗留；首次隐藏气泡展开和连接提示消失后也可能沿用旧尺寸 | 输入内容、视图、展开及显式聚焦时重新测量输入区；气泡高度同时响应服务连接状态 | 多行发送后输入区收缩测试；原生确认首次展开的后续收尾原因，最终整包复核该新增尺寸触发 |
-| D-B8 | 主界面全局 `button:hover` 命中宠物浅色界面，产生深底深字；原生设置中的高级入口和停止按钮文字难读 | 以零特异性 `:where` 将主界面通用 hover 规则限定在非宠物页面，保留宠物已有主题 | 原生首次截图保存失败外观；最终整包复核 hover |
+| D-B7 | 文本清空后输入区高度遗留；首次隐藏气泡展开和连接提示消失后也可能沿用旧尺寸 | 输入内容、视图、展开及显式聚焦时重新测量输入区；气泡高度同时响应服务连接状态 | 多行发送后输入区收缩测试；最终 RC10 原生首次展开为 320×221，返回聊天恢复 221 高，直接输入焦点正常 |
+| D-B8 | 主界面全局 `button:hover` 命中宠物浅色界面，产生深底深字；原生设置中的高级入口和停止按钮文字难读 | 以零特异性 `:where` 将主界面通用 hover 规则限定在非宠物页面，保留宠物已有主题 | D 保留原失败外观；最终 RC10 的“连接本机 Core”和“高级设置”悬停截图确认文字可读 |
 
 主要源码：[pet_native.rs](../../desktop/src-tauri/src/pet_native.rs)、[pet_edge.rs](../../desktop/src-tauri/src/pet_edge.rs)、[Pet.tsx](../../desktop/src/Pet.tsx)、[useReducedMotion.ts](../../desktop/src/pet/useReducedMotion.ts)、[style.css](../../desktop/src/style.css)。
 
@@ -91,8 +91,31 @@ Companion Swift 推理卡片原来将所有云端咨询标成 DeepSeek；改成�
 - 提取 ELF SHA-256：`c79066b761da62eb9944ab7f0c42f097035b0a669153ecc3e6a7da41703a24d8`。
 - D 运行结束：`STOPPED`，`owned_remaining=[]`。
 - D 使用 `backend=disabled`，观察和云端自动调用关闭；任务 journal / checkpoint、训练样本、观察记录均为 0。仅创建一条私有测试提醒。
-- 两个原生可见尺寸/hover 收尾及最终云文案发生在该混合候选之后，源码和原候选 SHA 已分别保留；它们须由最终全源包的短原生验收覆盖。
+- 两个原生可见尺寸/hover 收尾及最终云文案发生在该混合候选之后，源码和原候选 SHA 已分别保留；后续最终全源 RC10 的 E/F 验收已覆盖，见下节。
 
 证据入口：[原生结果](../../desktop/docs/evidence/audit-20261117-desktop/native/RESULTS.md)、[动画原始摘要](../../desktop/docs/evidence/audit-20261117-desktop/native/animation-summary.json)、[无模型调用与私有数据库计数](../../desktop/docs/evidence/audit-20261117-desktop/native/native-no-model-requests.json)、[Rust 完整输出](../../desktop/docs/evidence/audit-20261117-desktop/rust-tests.log)。旧 A/B / alias 以及上一轮 final-package-smoke 证据没有修改。
 
 首次失败全部保留：命令环境 Chromium socket 限制、桌面终端缺 Node PATH、旧开发服务被复用、代理导致本机端口探测误判、一个测试选择器不匹配，以及归档构建目录缺 Git 元数据导致打包报告失败。它们都没有被删成“首次全通过”；修正后使用新 evidence 子目录继续。最后一项仅补齐隔离 stage 的提交身份并重新输出包报告，未改编译好的桌面 ELF。
+
+## 最终全源 RC10 包与原生复核
+
+最终包来自 GitHub 已发布源码 `91dd87c6fd4678c103d6383dec1c1385deb38f9a`，tree `c19b18071de42ed42feb25519671a559f38dec18`，`source_dirty=false`。四个 LocalPilot wheel 均从这个源码重新构建，版本为 Desktop 5.0.1-rc.10、Core 5.0.0b27、Suite 0.2.0b32、Companion 0.5.7b8、Channels 0.1.0a4。构建前后 286 个 Python/Swift 文件逐字节一致；40 个 wheel、提取运行时 import、`pip check` 和 Node 检查通过。仅使用单个构建 worker。
+
+DEB 为 `LocalPilot-Test-5.0.1-rc.10-linux-x86_64.deb`，114,633,328 bytes，SHA-256 `cd6b7c33baf93e352c0f6f84b56ea32deddd0804425c5110d4bb6b6da27cb73f`。提取 ELF SHA-256 为 `4dd57426eec47489828d18bb6f2ce8a200a7018435144d649cfbad2d44668c84`。本次是提取 DEB 后在已审核的只读 WebKit helper 下运行，不声称系统安装或 GitHub 二进制已上传。
+
+全新 E 完成随包组件首次准备，跳过模型下载和账户连接。真实主界面显示 Core b27，OpenAI 表单显示默认 `gpt-6-luna` 且密钥为空；24 小时任务档位可选。实际服务 `/healthz` 宣告 `desktop_execution_budget_v1` 和 `compatibility.limits.task_timeout_seconds=86400`，任务清单为 0。这验证最终包的服务能力和界面接线，不把它描述成已经运行完 24 小时任务。
+
+E 的测试目录使宠物 socket 路径长达 115 bytes，Linux 实际拒绝并报 `path must be shorter than SUN_LEN`。失败日志原样保留，E 的自有进程全部停止；随后创建独立短路径 F，其 socket 路径为 69 bytes，完成桌宠复核。没有迁移旧用户配置，也没有为这次目录选择改动冻结源码。
+
+F 首次聊天为 320×221，返回聊天仍恢复到 221 高；手动打开后可直接输入，草稿清空且从未发送；设置按钮悬停保持可读。最终包只做一次 6015 ms 动画采样，没有重跑挑选更好的数值：
+
+| 阶段 | rAF 观测机会 / 秒 | 探针视觉变化 / 秒 | 整个观测阶段保守变化 / 秒 |
+|---|---:|---:|---:|
+| 缩回 RETRACTING | 57.0410 | **28.5205** | **28.5205** |
+| 探出 PEEKING | 60.3577 | **29.3890** | **28.3160** |
+
+探针使用首末变化样本之间的时间计算视觉变化率；保守列改用整个阶段的观测时长。两种计算在两个阶段都超过 24/s。它仍是实际 WebKit 布局观测，不是显示器光学测量；DPR 为 1，图集每方向 8 张源帧，不声称 24 张独立画帧。
+
+E/F 的 Companion 均为 `backend=disabled`，观察和自动云调用关闭。E 的 Runtime `checkpoints` / `journal` 为 0；两份 Companion 数据库的 memories、training_examples、observation_events 均为 0。两个停止收据都为 `STOPPED`、`owned_remaining=[]`；最终窗口清单没有 LocalPilot。CUA 完成摘要已在观察停止结果后记录。
+
+完整新证据：[final-package/RESULTS.md](../../desktop/docs/evidence/audit-20261117-desktop/final-package/RESULTS.md)，包括 58 个文件的 SHA-256 清单、构建配方、版本/源码核对、首次失败、截图、单次动画原始时间序列、空任务及进程停止收据。旧 D 的 38 文件清单和 A/B 证据未修改。源码与后续证据可以分开发布；最终安装包始终绑定上述冻结源码 SHA。

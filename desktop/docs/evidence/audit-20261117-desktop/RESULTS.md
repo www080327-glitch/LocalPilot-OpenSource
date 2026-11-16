@@ -9,6 +9,7 @@ Audit decisions and unique category counts: [AUDIT_20261117_DESKTOP.md](../../..
 - TypeScript: `tsc --noEmit` exited 0 after the final UI changes.
 - Final UI transport-fixture run: [browser-run-7/output.log](browser-run-7/output.log), [machine result](browser-run-7/browser-tests.json), **7 passed in 10.6 seconds**. The application controls and handlers are the real implementation; native/provider transport is substituted. No model provider is called.
 - Actual native WebKit: [native/RESULTS.md](native/RESULTS.md), four animated phase averages **26.79–29.46 fps**, plus explicit same-side placement, reduced app animation, typing focus, reminder and service recovery. This is the mixed candidate with the exact source/ELF identity documented there.
+- Final full-source RC10 package: [final-package/RESULTS.md](final-package/RESULTS.md), clean GitHub source `91dd87c`, all four new backend wheels, 40-wheel and 286-source-file verification, actual Core b27 / 24-hour capability, cloud form, compact first-open bubble and readable hover. One final-package pet animation sample measured **28.52 / 29.39 visual changes/s**; conservative whole-observed-phase rates were **28.52 / 28.32**. Both private roots stopped with no owned process remaining and no task/model submission.
 
 ## Preserved first attempts
 
@@ -24,4 +25,4 @@ Audit decisions and unique category counts: [AUDIT_20261117_DESKTOP.md](../../..
 
 The run-specific Playwright configs use the repository's existing configuration and test runner, with only private server port / loopback proxy environment changes. JSON reports originally emitted below the config directory are retained and copied to each run's top level for convenient reading. Logs remain exactly as generated.
 
-The mixed candidate's first package metadata failure and successful retry are documented in `native/RESULTS.md`. Its 38 evidence files are frozen by `native/MANIFEST.json`. A final all-source package must use a separate directory and receipt.
+The mixed candidate's first package metadata failure and successful retry are documented in `native/RESULTS.md`. Its 38 evidence files remain frozen by `native/MANIFEST.json`. The final full-source package has its separate 58-file receipt in `final-package/MANIFEST.json`. That run also preserves an initial long-test-root Unix-socket path failure before the independent short root F successfully completed pet verification; neither failure nor the old native manifest was overwritten.

@@ -1,0 +1,55 @@
+{
+  "scope": "Synthetic receipt metadata tests of the actual orchestration scorer; no Core or model calls. Not model qualification evidence.",
+  "runner_sha256": "108f948c1b32fa9de95e48a1a84ede4b4b78a3d3ecfabe1c9977e4b7e21cc0fb",
+  "cases": [
+    {
+      "case": "valid_metadata",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "case": "child_changes_cli",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "case": "child_tests_missing",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "case": "zero_child_tests",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "case": "zero_parent_tests",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "case": "nonoverlapping_lifecycles",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "case": "missing_child_model_calls",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "case": "same_module_twice",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    }
+  ],
+  "passed": true
+}

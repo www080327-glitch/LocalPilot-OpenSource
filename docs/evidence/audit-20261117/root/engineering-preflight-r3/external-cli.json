@@ -1,0 +1,110 @@
+{
+  "basic": {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-S",
+      "-m",
+      "logstats",
+      "fixtures/basic.csv"
+    ],
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/engineering-preflight-r3/external-acceptance/logstats/__main__.py\", line 6, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/engineering-preflight-r3/external-acceptance/logstats/__main__.py\", line 2, in main\n    raise NotImplementedError(\"Implement the public CLI contract\")\nNotImplementedError: Implement the public CLI contract\n",
+    "seconds": 0.011020932004612405,
+    "expected": {
+      "record_count": 3,
+      "groups": [
+        {
+          "category": "east, priority",
+          "count": 2,
+          "total": "0.30",
+          "first": "2026-01-01T23:30:00Z",
+          "last": "2026-01-01T23:45:00Z"
+        },
+        {
+          "category": "west \"desk\"",
+          "count": 1,
+          "total": "-2.50",
+          "first": "2026-01-01T22:00:00Z",
+          "last": "2026-01-01T22:00:00Z"
+        }
+      ]
+    },
+    "actual": null,
+    "passed": false
+  },
+  "precision": {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-S",
+      "-m",
+      "logstats",
+      "fixtures/precision.csv"
+    ],
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/engineering-preflight-r3/external-acceptance/logstats/__main__.py\", line 6, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/engineering-preflight-r3/external-acceptance/logstats/__main__.py\", line 2, in main\n    raise NotImplementedError(\"Implement the public CLI contract\")\nNotImplementedError: Implement the public CLI contract\n",
+    "seconds": 0.018541514000389725,
+    "expected": {
+      "record_count": 5,
+      "groups": [
+        {
+          "category": "Alpha",
+          "count": 2,
+          "total": "0.00",
+          "first": "2026-02-03T00:00:00Z",
+          "last": "2026-02-03T00:30:00Z"
+        },
+        {
+          "category": "zeta",
+          "count": 2,
+          "total": "9007199254740993.10",
+          "first": "2026-02-03T10:00:00Z",
+          "last": "2026-02-03T10:00:00Z"
+        },
+        {
+          "category": "北区",
+          "count": 1,
+          "total": "2.00",
+          "first": "2026-02-03T03:00:00Z",
+          "last": "2026-02-03T03:00:00Z"
+        }
+      ]
+    },
+    "actual": null,
+    "passed": false
+  },
+  "empty": {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-S",
+      "-m",
+      "logstats",
+      "fixtures/empty.csv"
+    ],
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/engineering-preflight-r3/external-acceptance/logstats/__main__.py\", line 6, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/engineering-preflight-r3/external-acceptance/logstats/__main__.py\", line 2, in main\n    raise NotImplementedError(\"Implement the public CLI contract\")\nNotImplementedError: Implement the public CLI contract\n",
+    "seconds": 0.03623901899845805,
+    "expected": {
+      "record_count": 0,
+      "groups": []
+    },
+    "actual": null,
+    "passed": false
+  },
+  "invalid": {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-S",
+      "-m",
+      "logstats",
+      "fixtures/invalid.csv"
+    ],
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/engineering-preflight-r3/external-acceptance/logstats/__main__.py\", line 6, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/engineering-preflight-r3/external-acceptance/logstats/__main__.py\", line 2, in main\n    raise NotImplementedError(\"Implement the public CLI contract\")\nNotImplementedError: Implement the public CLI contract\n",
+    "seconds": 0.013032827999268193,
+    "passed": false
+  }
+}

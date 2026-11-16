@@ -1,0 +1,28 @@
+{
+  "duration_ms": 6015,
+  "device_pixel_ratio": 1,
+  "reduced_motion": false,
+  "single_run": true,
+  "scope": "One final-package sample under concurrent project workload; actual WebKit laid-out visual changes, not optical display measurement or 24 unique source drawings",
+  "phases": [
+    {
+      "mode": "RETRACTING",
+      "duration_ms": 1122,
+      "frame_count": 65,
+      "visual_change_count": 33,
+      "raf_opportunities_per_second": 57.040998217468804,
+      "visual_changes_per_second": 28.5204991087344,
+      "full_observed_phase_visual_changes_per_second": 28.520499108734402
+    },
+    {
+      "mode": "PEEKING",
+      "duration_ms": 1342,
+      "frame_count": 82,
+      "visual_change_count": 39,
+      "raf_opportunities_per_second": 60.357675111773474,
+      "visual_changes_per_second": 29.389017788089713,
+      "full_observed_phase_visual_changes_per_second": 28.315946348733235
+    }
+  ],
+  "rate_definition": "Probe observed_fps uses change intervals between first/last changed samples; conservative full-observed-phase rate divides changes minus one by the full phase observation duration."
+}

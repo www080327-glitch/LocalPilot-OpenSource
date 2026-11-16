@@ -1,0 +1,68 @@
+{
+  "run": "e",
+  "started_utc": "2026-11-16T17:44:42Z",
+  "signal_sent": true,
+  "scope": "Only SIGTERM the verified UI main process below this run wrapper; no signal is sent to external PIDs or separate services.",
+  "wrapper_pid": 23449,
+  "ui_pid": 23453,
+  "candidate_sha256": "4dd57426eec47489828d18bb6f2ce8a200a7018435144d649cfbad2d44668c84",
+  "root_match": true,
+  "canonical_test_root": "/workspace/scratch/c0f3ec78c621/validation/package-b27-b8-b32-Azb7vG/native-smoke/profile-e",
+  "owned_before": [
+    {
+      "pid": 23449,
+      "ppid": 23448,
+      "name": "bwrap",
+      "state": "S (sleeping)"
+    },
+    {
+      "pid": 23452,
+      "ppid": 23449,
+      "name": "bwrap",
+      "state": "S (sleeping)"
+    },
+    {
+      "pid": 23453,
+      "ppid": 23452,
+      "name": "localpilot-desk",
+      "state": "S (sleeping)"
+    },
+    {
+      "pid": 23461,
+      "ppid": 23453,
+      "name": "WebKitNetworkPr",
+      "state": "S (sleeping)"
+    },
+    {
+      "pid": 23505,
+      "ppid": 23453,
+      "name": "WebKitWebProces",
+      "state": "S (sleeping)"
+    },
+    {
+      "pid": 23601,
+      "ppid": 23452,
+      "name": "python",
+      "state": "S (sleeping)"
+    },
+    {
+      "pid": 23605,
+      "ppid": 23452,
+      "name": "python",
+      "state": "S (sleeping)"
+    },
+    {
+      "pid": 23982,
+      "ppid": 23453,
+      "name": "localpilot-desk",
+      "state": "Z (zombie)"
+    }
+  ],
+  "signal_name": "SIGTERM",
+  "ui_still_present": false,
+  "owned_remaining": [],
+  "launcher_returncode": 143,
+  "launcher_finished_utc": "2026-11-16T17:44:42Z",
+  "status": "STOPPED",
+  "finished_utc": "2026-11-16T17:44:42Z"
+}
