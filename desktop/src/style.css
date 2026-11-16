@@ -92,7 +92,7 @@ button {
     box-shadow 0.16s,
     opacity 0.16s;
 }
-button:hover:not(:disabled) {
+:where(html:not([data-pet="true"])) button:hover:not(:disabled) {
   background: var(--hover);
 }
 button:active:not(:disabled) {
@@ -754,6 +754,14 @@ pre {
   padding: 6px 4px;
   max-width: 205px;
   white-space: nowrap;
+}
+.task-duration {
+  max-width: 150px;
+  padding: 5px 3px;
+  font-size: 10px;
+  color: var(--muted);
+  border-color: transparent;
+  background: transparent;
 }
 .model-trigger > span:nth-child(2) {
   overflow: hidden;

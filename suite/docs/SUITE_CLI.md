@@ -28,7 +28,21 @@ localpilot --home "$LP_DATA" stop
 
 The generated Companion starts in a conservative rules-only configuration: model backend disabled, no watched directories or native observation permissions, automatic local escalation disabled. This is an installation baseline, not proof of configured Qwen behavior. Explicitly configure the 0.8B path, LocalPilot managed model route/resource control, observation permissions and native UI before full Companion inference use. Battery or unknown power blocks real lightweight inference by default. `LOCALPILOT_DISABLE_LOCAL_MODELS=1` blocks Companion models and Core CLI local inference even on AC. It is an operator testing override, not a service-wide authorization policy for every external API consumer.
 
-`companion ask` uses light Companion interaction; deterministic greetings require no model. Top-level `ask/chat` use a Core reasoning_only route; `agent` requires a standard execution route. The generated HTTP identity can access both routes. No command infers that an unavailable local model authorizes cloud use. Configure DeepSeek through the documented host-only credential resolver and explicit egress policy.
+`companion ask` uses light Companion interaction; deterministic greetings require no model. Top-level `ask/chat` use a Core reasoning_only route; `agent` requires a standard execution route. The generated HTTP identity can access both routes. No command infers that an unavailable local model authorizes cloud use.
+
+## Configure a cloud provider
+
+After component setup, choose an existing owner-only file containing one raw provider key. The Desktop provider form creates this private file for the chosen provider; the CLI can reference the same kind of file through `LP_KEY_FILE`:
+
+```sh
+localpilot --home "$LP_DATA" cloud-configure --provider openai --key-file "$LP_KEY_FILE"
+localpilot --home "$LP_DATA" cloud-configure --provider openai --model gpt-6-luna --key-file "$LP_KEY_FILE"
+localpilot --home "$LP_DATA" cloud-configure --provider deepseek --key-file "$LP_KEY_FILE"
+```
+
+OpenAI defaults to `gpt-6-luna` and the explicit Responses protocol. DeepSeek remains the default when `--provider` is omitted. Configuration adds independent agent and Companion reasoning routes, preserves existing routes and Sessions, and restarts Core and Companion through their existing lifecycle controls. If applying the configuration fails, the previous configuration and services are restored. Active tasks and pending approvals must finish first.
+
+The key value is not copied into service JSON or `clients.env`. Configuration returns `api_connection=NOT_PROBED`; select the new route and run a task separately to verify the provider. Configuration itself does not send a model request.
 
 ## Streaming and persistent work
 
@@ -68,7 +82,7 @@ Core task success exit 0 is not a universal semantic verification certificate. I
 
 Suite detects the approved existing 0.8B cache and enables its Companion backend for on-demand interaction; use the Companion `[mlx]` optional extra. `--companion-model-path` supplies another explicitly chosen existing directory. The default remains no automatic inference on battery and no automatic cloud. Optional `--cloud-key-file` references an existing private DeepSeek credential file, never its value. `allow_automatic_cloud` remains false.
 
-Managed task CLI defaults to a bounded 600-second deadline; use `--timeout` to select up to 3600 seconds. Detach leaves an ordinary-token API heartbeat controller; it cannot approve, execute tools or invoke models. Cursor-based watch and task show recover progress after terminal exit. Task input JSON UTF-8 limit is published in health compatibility; oversized original questions fail before submission, while optional context omissions remain explicit.
+Managed task CLI defaults to a bounded 600-second deadline; use `--timeout` to select up to 86400 seconds (24 hours). Detach leaves an ordinary-token API heartbeat controller; it cannot approve, execute tools or invoke models. Cursor-based watch and task show recover progress after terminal exit. Task input JSON UTF-8 limit is published in health compatibility; oversized original questions fail before submission, while optional context omissions remain explicit.
 
 ## Opt-in proactive help
 

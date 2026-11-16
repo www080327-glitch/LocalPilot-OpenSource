@@ -7,49 +7,27 @@ use std::io::Write;
 pub struct Sprite {
     pub width: u32,
     pub height: u32,
+    #[cfg_attr(not(any(target_os = "macos", test)), allow(dead_code))]
     pub alpha: Vec<u8>,
 }
-impl Sprite {
+pub struct Atlas {
+    pub sprite: Sprite,
+    rows: [[u32; 4]; 11],
+}
+impl Atlas {
     pub fn frame_rect(&self, column: u32, row: u32) -> [u32; 4] {
-        let fw = self.width / 8;
-        let fh = self.height / 11;
-        let mut bounds = [fw, fh, 0, 0];
-        // One shared row transform preserves stride registration and baseline.
-        for c in 0..8 {
-            for y in 0..fh {
-                for x in 0..fw {
-                    if self.alpha[((row.min(10) * fh + y) * self.width + c * fw + x) as usize] > 24
-                    {
-                        bounds[0] = bounds[0].min(x);
-                        bounds[1] = bounds[1].min(y);
-                        bounds[2] = bounds[2].max(x + 1);
-                        bounds[3] = bounds[3].max(y + 1);
-                    }
-                }
-            }
-        }
-        if bounds[2] <= bounds[0] || bounds[3] <= bounds[1] {
-            return [column.min(7) * fw, row.min(10) * fh, fw, fh];
-        }
+        let fw = self.sprite.width / 8;
+        let fh = self.sprite.height / 11;
+        let bounds = self.rows[row as usize];
         [
-            column.min(7) * fw + bounds[0],
-            row.min(10) * fh + bounds[1],
-            bounds[2] - bounds[0],
-            bounds[3] - bounds[1],
+            column * fw + bounds[0],
+            row * fh + bounds[1],
+            bounds[2],
+            bounds[3],
         ]
     }
-    pub fn hit(&self, x: f64, y: f64, width: f64, height: f64, pose: (u32, u32)) -> bool {
-        if x < 0.0 || y < 0.0 || x >= width || y >= height || width <= 0.0 || height <= 0.0 {
-            return false;
-        }
-        let fw = self.width / 8;
-        let fh = self.height / 11;
-        let px = (x / width * fw as f64) as u32 + pose.0.min(7) * fw;
-        let py = (y / height * fh as f64) as u32 + pose.1.min(10) * fh;
-        self.alpha[(py * self.width + px) as usize] > 12
-    }
 }
-fn decode(bytes: &[u8]) -> Result<Sprite, String> {
+fn decode(bytes: &[u8]) -> Result<Atlas, String> {
     if bytes.len() > 16 * 1024 * 1024 {
         return Err("素材超过 16 MB".into());
     }
@@ -67,10 +45,41 @@ fn decode(bytes: &[u8]) -> Result<Sprite, String> {
     if !alpha.iter().any(|a| *a == 0) || !alpha.iter().any(|a| *a > 128) {
         return Err("素材必须有真实透明区域和可见角色".into());
     }
-    Ok(Sprite {
-        width: w,
-        height: h,
-        alpha,
+    let (fw, fh) = (w / 8, h / 11);
+    let mut rows = [[fw, fh, 0, 0]; 11];
+    // A shared crop per row preserves stride registration without rescanning
+    // the entire eight-frame row on every animation tick.
+    for (y, scanline) in alpha.chunks_exact(w as usize).enumerate() {
+        let bounds = &mut rows[y / fh as usize];
+        for (x, a) in scanline.iter().enumerate() {
+            if *a > 24 {
+                let (x, y) = (x as u32 % fw, y as u32 % fh);
+                bounds[0] = bounds[0].min(x);
+                bounds[1] = bounds[1].min(y);
+                bounds[2] = bounds[2].max(x + 1);
+                bounds[3] = bounds[3].max(y + 1);
+            }
+        }
+    }
+    for bounds in &mut rows {
+        *bounds = if bounds[2] > bounds[0] && bounds[3] > bounds[1] {
+            [
+                bounds[0],
+                bounds[1],
+                bounds[2] - bounds[0],
+                bounds[3] - bounds[1],
+            ]
+        } else {
+            [0, 0, fw, fh]
+        };
+    }
+    Ok(Atlas {
+        sprite: Sprite {
+            width: w,
+            height: h,
+            alpha,
+        },
+        rows,
     })
 }
 #[tauri::command]
@@ -248,8 +257,8 @@ pub async fn pet_asset(
         return Err("素材身份已变更，请重新导入".into());
     }
     let sprite = decode(&bytes)?;
-    let width = sprite.width;
-    let height = sprite.height;
+    let width = sprite.sprite.width;
+    let height = sprite.sprite.height;
     *app.state::<pet_native::PetState>().sprite.lock().unwrap() = Some(sprite);
     let meta = private_json(&data(&app)?.join("pet-asset-v1.json"))?;
     let edge = edge_pack(&app, meta["id"].as_str().unwrap_or(""))?;
@@ -263,17 +272,17 @@ pub async fn pet_asset(
 mod tests {
     use super::*;
     #[test]
-    fn alpha_hit_testing_tracks_the_displayed_frame_and_transparent_space() {
-        let mut alpha = vec![0; 8 * 11];
-        alpha[1] = 255;
-        let sprite = Sprite {
-            width: 8,
-            height: 11,
-            alpha,
-        };
-        assert!(!sprite.hit(10.0, 10.0, 144.0, 156.0, (0, 0)));
-        assert!(sprite.hit(10.0, 10.0, 144.0, 156.0, (1, 0)));
-        assert!(!sprite.hit(-1.0, 10.0, 144.0, 156.0, (1, 0)));
+    fn atlas_crops_each_row_once_and_preserves_frame_registration() {
+        let mut image = image::RgbaImage::new(32, 44);
+        image.put_pixel(1, 8, image::Rgba([255, 255, 255, 255]));
+        image.put_pixel(7, 10, image::Rgba([255, 255, 255, 255]));
+        let mut bytes = std::io::Cursor::new(Vec::new());
+        image.write_to(&mut bytes, image::ImageFormat::Png).unwrap();
+        let atlas = decode(bytes.get_ref()).unwrap();
+        assert_eq!(atlas.frame_rect(0, 2), [1, 8, 3, 3]);
+        assert_eq!(atlas.frame_rect(1, 2), [5, 8, 3, 3]);
+        assert_eq!(atlas.frame_rect(7, 2), [29, 8, 3, 3]);
+        assert_eq!(atlas.frame_rect(0, 0), [0, 0, 4, 4]);
     }
 }
 

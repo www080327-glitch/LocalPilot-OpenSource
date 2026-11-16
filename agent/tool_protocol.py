@@ -59,17 +59,13 @@ def schema_errors(value, schema, path='$'):
 
 def validate_arguments(name, arguments, schemas):
     canonical = 'execute' if name == 'run_command' else name
-    from .schemas import TOOL_SCHEMAS
-    from .runtime_tools import RUNTIME_TOOL_NAMES, ASYNC_TOOL_NAMES
-    if canonical not in {s['function']['name'] for s in TOOL_SCHEMAS} | RUNTIME_TOOL_NAMES | ASYNC_TOOL_NAMES:
-        # Native/host extensions retain their owning protocol validators. This
-        # change cannot reinterpret postconditions, qualification or UNKNOWN.
-        return
     schema = next((s['function']['parameters'] for s in schemas
                    if s['function']['name'] == canonical), None)
     if not isinstance(arguments, dict):
         raise ToolArgumentsError(['$: expected object'])
-    errors = schema_errors(arguments, schema) if schema is not None else []
+    if schema is None:
+        return
+    errors = schema_errors(arguments, schema)
     if canonical == 'apply_patch' and not errors:
         for i, change in enumerate(arguments['changes']):
             operation = change['operation']

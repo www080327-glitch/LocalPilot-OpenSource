@@ -298,6 +298,7 @@ class SessionModelCalls:
         cache_snapshot_committed = False
         def request():
             nonlocal cache_snapshot_committed
+            self._check_cancel()
             # Retries are charged as requests too; never reset a budget on retry.
             if self.controls.reserve and (self._attempts >= self.budgets.max_steps - (0 if self._finalizing else self.finalization_policy.max_attempts if self.finalization_policy else 1)
                     or self._token_units + request_units + output_charge > limit):
@@ -339,7 +340,8 @@ class SessionModelCalls:
                     self._token_units += output_charge
                 raise
         try:
-            response = call_with_retry(request, RetryPolicy(max_attempts=1) if self._finalizing else self.retry_policy, on_retry=lambda event: self._emit("ModelRetry", **event))
+            response = call_with_retry(request, RetryPolicy(max_attempts=1) if self._finalizing else self.retry_policy,
+                on_retry=lambda event: self._emit("ModelRetry", **event), sleep=self._stop_requested.wait)
         except ReserveReached:
             if self._finalizing:
                 raise

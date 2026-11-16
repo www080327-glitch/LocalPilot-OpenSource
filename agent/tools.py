@@ -119,7 +119,7 @@ def file_info(workspace_root, path):
     from .safe_files import inspect_file
     try:
         target=resolve_workspace_path(workspace_root,path,must_exist=False)
-        info=inspect_file(workspace_root,target.relative_to(Path(workspace_root).resolve()).as_posix())
+        info=inspect_file(workspace_root,target.relative_to(Path(workspace_root).resolve()).as_posix(), hash_content=False)
         return {'path':path,'type':info['type'],'size_bytes':info['size_bytes'] if info['type']=='file' else None}
     except FileNotFoundError:
         return {"path":path,"exists":False,"observation":"target_not_found",

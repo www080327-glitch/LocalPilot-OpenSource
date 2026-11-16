@@ -1167,6 +1167,7 @@ async fn submit_task(
     cloud_consent: bool,
     effort: Option<String>,
     preferences: Preferences,
+    timeout_seconds: Option<u32>,
 ) -> Result<Value, String> {
     if !preferences::load(&data(&app)?)?.completed {
         return Err(fail("请先明确完成首次设置"));
@@ -1298,7 +1299,7 @@ async fn submit_task(
             low_power_consent = true;
         }
     }
-    let mut body = json!({"input":input,"timeout_seconds":600});
+    let mut body = json!({"input":input,"timeout_seconds":timeout_seconds.unwrap_or(600)});
     if low_power_consent {
         body["low_power_consent"] = json!(true);
     }
@@ -1399,7 +1400,7 @@ async fn submission_history(app: tauri::AppHandle, n: State<'_, Native>) -> Resu
                     if let Some(id) = v["task_id"].as_str() {
                         result.insert(
                             id.to_string(),
-                            json!({"input":v["body"]["input"],"model":v["body"]["model"],"preferences":v["preferences"]}),
+                            json!({"input":v["body"]["input"],"model":v["body"]["model"],"preferences":v["preferences"],"timeout_seconds":v["body"]["timeout_seconds"]}),
                         );
                     }
                 }

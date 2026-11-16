@@ -3,8 +3,6 @@ import json
 import os
 from pathlib import Path
 import platform
-import subprocess
-import sys
 
 def discover_omlx(base, key):
     from localpilot_service.sdk import Client
@@ -15,9 +13,10 @@ def discover_omlx(base, key):
         if m.get('engine_type') not in {'markitdown'} and not m.get('is_helper')]
 
 def prepare(home, workspace):
-    from localpilot_service.cli import private_dir, environment, main as core
+    from localpilot_service.cli import private_dir, main as core
     from localpilot_service.security import private_json
     from .cli import initialize_companion
+    from .installation import service
     home=private_dir(home)
     present=[(home/name).exists() for name in ('connection.json','service.json','clients.env')]
     if any(present) and not all(present):
@@ -64,10 +63,7 @@ def prepare(home, workspace):
     with contextlib.redirect_stdout(io.StringIO()):
         from .installation import start_core
         start_core(home)
-    env={k:v for k,v in environment(home).items() if 'OPERATOR' not in k.upper() and 'DEEPSEEK' not in k.upper()}
-    result=subprocess.run([sys.executable,'-m','companion','--config',str(home/'companion.json'),'--json','start'],env=env,capture_output=True,text=True,timeout=30)
-    try:companion_ready=result.returncode==0 and json.loads(result.stdout).get('status')=='running'
-    except ValueError:companion_ready=False
+    companion_ready = service(home, 'companion', 'start')['status'] == 'running'
     connection=private_json(home/'connection.json')
     return {'status':'ready' if companion_ready else 'partial','home':str(home),'origin':connection['url'],'workspace':str(workspace),
         'lightweight_model':selected['id'],'loaded':selected['loaded'],
@@ -107,53 +103,129 @@ def sync_models(home):
     return {'status':'synchronized','added_routes':added,'downloaded':False,'loaded':False,'existing_routes_preserved':True}
 
 
-def configure_cloud(home, key_file):
+def configure_cloud(home, key_file, provider='deepseek', model=None):
     from copy import deepcopy
+    import hashlib
     import secrets
     import time
-    from agent.cloud_credentials import resolve_deepseek_key
-    from localpilot_service.cli import connection, compatible, stop, start, save, environment
+    from agent.cloud_credentials import resolve_deepseek_key, resolve_openai_key
+    from localpilot_service.cli import connection, compatible, save
     from localpilot_service.security import private_json
-    # Verify the selected protected file, retaining only its path reference.
-    resolve_deepseek_key(key_file=key_file)
-    client=connection(home);compatible(client)
-    if any(not t.get('quiescent') or t['status'] in {'requires_approval','requires_human'} for t in client.request('/localpilot/v1/tasks')['tasks']):
+    from .installation import service
+    from .model_configuration import valid_model_id
+
+    if provider not in {'deepseek', 'openai'}:
+        raise ValueError('Select DeepSeek or OpenAI')
+    model = model if model is not None else ('gpt-6-luna' if provider == 'openai' else 'deepseek-flash')
+    if not valid_model_id(model):
+        raise ValueError('Provide an explicit cloud model ID')
+    model = model.strip()
+    key_file = str(Path(key_file).expanduser().absolute())
+    resolver = resolve_openai_key if provider == 'openai' else resolve_deepseek_key
+    resolver(key_file=key_file)
+    key_file = str(Path(key_file).resolve())
+    client = connection(home)
+    compatible(client)
+    if any(not task.get('quiescent') or task['status'] in {'requires_approval', 'requires_human'}
+           for task in client.request('/localpilot/v1/tasks')['tasks']):
         raise ValueError('Resolve active tasks and approvals before adding a provider')
-    config=private_json(home/'service.json')
-    if 'deepseek-agent' in config['routes']:
-        return {'status':'already_configured','cloud_egress':'REQUIRES_APPROVAL','model':'deepseek-flash','credential_copied':False,'api_connection':'NOT_PROBED'}
-    agent=deepcopy(config['routes']['default'])
-    agent.update(engine='v5',backend={'kind':'deepseek-native','model':'deepseek-flash','key_file':str(Path(key_file).expanduser().resolve()),'context_budget':1000000,'timeout':45},
-        cloud_egress='REQUIRES_APPROVAL',deployment_status='ready',thinking='none',routing_rank={'speed':60,'quality':95,'efficiency':60,'balanced':60})
-    reasoning=deepcopy(agent)
-    reasoning.update(reasoning_only=True,prompt_profile='minimal_0',tool_profile='compact',capabilities={'read':False,'write':False,'execute':False})
-    config['routes'].update({'deepseek-agent':agent,'companion-cloud-reasoning':reasoning})
-    local=deepcopy(config['routes'].get('local-v5',config['routes']['default']))
-    local.update(cooperation={'cloud_route':'deepseek-agent'},cloud_egress='REQUIRES_APPROVAL')
-    config['routes']['local-cloud-agent']=local
+
+    before = private_json(home / 'service.json')
+    config = deepcopy(before)
+    name = provider + '-agent'
+    if name in config['routes'] and config['routes'][name]['backend']['model'] != model:
+        name = provider + '-' + hashlib.sha256(model.encode()).hexdigest()[:12] + '-agent'
+    if name in config['routes']:
+        return {'status': 'already_configured', 'provider': provider, 'route': name,
+                'cloud_egress': config['routes'][name]['cloud_egress'], 'model': model,
+                'credential_copied': False, 'api_connection': 'NOT_PROBED'}
+
+    additions, reasoning_name, cooperative_name = _cloud_route_additions(
+        config['routes'], provider, model, key_file, name)
+    config['routes'].update(additions)
     for principal in config['clients']:
         if not principal.get('operator'):
-            principal['routes'].update({'deepseek-agent':'deepseek-agent','companion-cloud-reasoning':'companion-cloud-reasoning','local-cloud-agent':'local-cloud-agent'})
-    if not any(p['subject']=='resource' for p in config['clients']):
-        config['clients'].append({'subject':'resource','token_env':'LOCALPILOT_RESOURCE_TOKEN','operator':True,'scopes':['read','resource_control'],'approval_for':['companion'],'routes':{}})
-        fd=os.open(home/'clients.env',os.O_WRONLY|os.O_APPEND|os.O_NOFOLLOW)
-        with os.fdopen(fd,'a') as f:f.write('export LOCALPILOT_RESOURCE_TOKEN='+secrets.token_urlsafe(32)+'\n')
-    backup=home/('service.before-cloud-'+str(time.time_ns())+'.json')
-    save(backup,private_json(home/'service.json'))
-    stopped=stop(home)
-    if stopped['status']!='stopped':raise ValueError('Core has not stopped; provider configuration unchanged')
-    save(home/'service.json',config)
-    try:start(home)
+            principal['routes'].update({route: route for route in additions})
+    resource_token = None
+    if not any(principal['subject'] == 'resource' for principal in config['clients']):
+        config['clients'].append({'subject': 'resource', 'token_env': 'LOCALPILOT_RESOURCE_TOKEN',
+            'operator': True, 'scopes': ['read', 'resource_control'], 'approval_for': ['companion'], 'routes': {}})
+        resource_token = secrets.token_urlsafe(32)
+    companion_before = private_json(home / 'companion.json')
+    companion = {**companion_before, 'localpilot_allow_cloud': True,
+                 'localpilot_resource_key_env': 'LOCALPILOT_RESOURCE_TOKEN',
+                 'localpilot_cloud_analysis_route': reasoning_name}
+    backup = home / ('service.before-cloud-' + str(time.time_ns()) + '.json')
+    save(backup, before)
+    credentials_before = (home / 'clients.env').read_bytes() if resource_token else None
+    if service(home, 'core', 'stop').get('status') != 'stopped':
+        raise ValueError('Core 尚未停止；云端配置尚未修改，请稍后重新检查')
+    try:
+        service(home, 'companion', 'stop')
     except Exception:
-        save(home/'service.json',private_json(backup));start(home);raise
-    companion=private_json(home/'companion.json')
-    companion.update(localpilot_allow_cloud=True,localpilot_resource_key_env='LOCALPILOT_RESOURCE_TOKEN')
-    save(home/'companion.json',companion)
-    env={k:v for k,v in environment(home).items() if 'OPERATOR' not in k.upper() and 'DEEPSEEK' not in k.upper()}
-    for command in ['stop','start']:
-        result=subprocess.run([sys.executable,'-m','companion','--config',str(home/'companion.json'),'--json',command],env=env,capture_output=True,timeout=30)
-        if result.returncode:raise ValueError('Companion restart incomplete; inspect service status')
-    return {'status':'configured','cloud_egress':'REQUIRES_APPROVAL','model':'deepseek-flash','credential_copied':False,'api_connection':'NOT_PROBED','backup':str(backup)}
+        service(home, 'core', 'recover')
+        raise
+    try:
+        if resource_token:
+            fd = os.open(home / 'clients.env', os.O_WRONLY | os.O_APPEND | os.O_NOFOLLOW)
+            with os.fdopen(fd, 'a') as stream:
+                stream.write('export LOCALPILOT_RESOURCE_TOKEN=' + resource_token + '\n')
+        save(home / 'service.json', config)
+        save(home / 'companion.json', companion)
+        service(home, 'core', 'recover')
+        service(home, 'companion', 'recover')
+    except Exception:
+        if service(home, 'core', 'stop').get('status') != 'stopped':
+            raise ValueError('Core 尚未停止；配置回滚尚未完成，请恢复服务后重试') from None
+        service(home, 'companion', 'stop')
+        save(home / 'service.json', before)
+        save(home / 'companion.json', companion_before)
+        if credentials_before is not None:
+            with (home / 'clients.env').open('wb') as stream:
+                stream.write(credentials_before)
+        service(home, 'core', 'recover')
+        service(home, 'companion', 'recover')
+        raise
+    return {'status': 'configured', 'provider': provider, 'route': name,
+            'reasoning_route': reasoning_name, 'cooperative_route': cooperative_name,
+            'cloud_egress': 'REQUIRES_APPROVAL', 'model': model, 'credential_copied': False,
+            'api_connection': 'NOT_PROBED', 'backup': str(backup)}
+
+
+def _cloud_route_additions(routes, provider, model, key_file, name):
+    from copy import deepcopy
+    from .model_configuration import LOCAL
+
+    backend = {'kind': 'openai' if provider == 'openai' else 'deepseek-native',
+               'model': model, 'key_file': key_file,
+               'context_budget': 1050000 if provider == 'openai' else 1000000,
+               'timeout': 120 if provider == 'openai' else 45}
+    if provider == 'openai':
+        backend['protocol'] = 'responses'
+    agent = deepcopy(routes.get('default') or next(iter(routes.values())))
+    for key in ('cooperation', 'managed_local_model', 'verification', 'acceptance', 'computer_use', 'thinking'):
+        agent.pop(key, None)
+    agent.update(engine='v5', backend=backend, cloud_egress='REQUIRES_APPROVAL',
+                 deployment_status='ready', reasoning_only=False,
+                 routing_rank={'speed': 60, 'quality': 95, 'efficiency': 60, 'balanced': 60})
+    if provider == 'deepseek':
+        agent['thinking'] = 'none'
+    reasoning_name = 'companion-cloud-reasoning' if name == 'deepseek-agent' else 'companion-' + name.removesuffix('-agent') + '-reasoning'
+    reasoning = deepcopy(agent)
+    reasoning.update(reasoning_only=True, prompt_profile='minimal_0', tool_profile='compact',
+                     capabilities={'read': False, 'write': False, 'execute': False})
+    additions = {name: agent, reasoning_name: reasoning}
+    local = next((route for route in routes.values()
+                  if route['backend']['kind'] in LOCAL and not route.get('reasoning_only')), None)
+    cooperative_name = None
+    if local is not None:
+        cooperative_name = 'local-cloud-agent' if name == 'deepseek-agent' else 'local-' + name
+        cooperative = deepcopy(local)
+        cooperative.update(cooperation={'cloud_route': name}, cloud_egress='REQUIRES_APPROVAL')
+        additions[cooperative_name] = cooperative
+    if set(additions) & routes.keys():
+        raise ValueError('Existing cloud route names are in use; original configuration is preserved')
+    return additions, reasoning_name, cooperative_name
 
 
 def configure_cloud_scope(home, paths):
@@ -217,9 +289,10 @@ def attach_omlx(home, base, settings_path):
 
 def configure_pet_model(home):
     """Explicitly select an already downloaded tiny model; no observers or downloads."""
-    from localpilot_service.cli import environment,save,connection
+    from localpilot_service.cli import save,connection
     from localpilot_service.security import private_json
     from .product_control import backend_settings
+    from .installation import service
     base,settings=backend_settings();models=discover_omlx(base+'/v1',settings.get('auth',{}).get('api_key'))
     small=[m for m in models if type(m.get('size_bytes')) is int and 0<m['size_bytes']<=1500000000]
     if not small:raise ValueError('尚未下载轻量模型。请在模型库搜索并下载 Qwen3.5-0.8B-4bit，然后回来连接。')
@@ -231,13 +304,15 @@ def configure_pet_model(home):
     if client.request('/healthz').get('active_task_count',1):raise ValueError('请先等待活动 Agent 任务结束，再更换宠物模型')
     path=home/'companion.json';config=private_json(path);before=dict(config)
     config.update(backend='omlx',model_path=str(model_path),http_model_endpoint=base+'/v1',http_model_name=selected['id'],http_model_api_key_env='LOCALPILOT_OMLX_API_KEY',http_model_host_local_only=True,model_routing_enabled=False,desktop_control_enabled=True,low_power_policy='system',local_model_min_available_bytes=4*1024**3)
-    env={k:v for k,v in environment(home).items() if 'OPERATOR' not in k.upper() and 'DEEPSEEK' not in k.upper()}
-    def run(command):
-        r=subprocess.run([sys.executable,'-m','companion','--config',str(path),'--json',command],env=env,capture_output=True,text=True,timeout=30)
-        if r.returncode:raise ValueError('Companion service change failed; original configuration retained')
-    run('stop');save(path,config)
-    try:run('start')
-    except Exception:save(path,before);run('start');raise
+    service(home, 'companion', 'stop')
+    save(path,config)
+    try:
+        service(home, 'companion', 'start')
+    except Exception:
+        service(home, 'companion', 'stop')
+        save(path,before)
+        service(home, 'companion', 'start')
+        raise
     return {'status':'configured','model':selected['id'],'loaded':selected['loaded'],'downloaded':False,'privacy_scope_changed':False,'next':'模型未加载时，请在模型库单独确认加载。'}
 
 def migrate_desktop_acceptance_route(home):

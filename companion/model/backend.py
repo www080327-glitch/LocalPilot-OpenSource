@@ -21,7 +21,9 @@ def mlx_supported():
 class ModelManager:
     """MLX is contained in a disposable child. Eco unload really releases its process."""
     def __init__(self, config, metrics_store=None, adapter: ModelBackend | None = None):
+        from companion.runtime.power import LowPowerPolicy
         self.config = config
+        self.power = LowPowerPolicy(config)
         self.metrics_store = metrics_store
         self.adapter = adapter
         self.child = None
@@ -51,18 +53,18 @@ class ModelManager:
         if self.adapter is None and self.config.backend == "mlx" and not mlx_supported():
             return {"status":"unavailable", "error_stage":"backend_platform", "model_called":False,
                     "error":"The bundled MLX worker requires Apple Silicon macOS. Configure a local-http CPU/model server on Intel Mac or Linux."}
-        from companion.runtime.power import LowPowerPolicy
+        low_power = self.power.active() if self.adapter is None and self.config.backend != 'disabled' else False
         if self.adapter is None and self.config.backend == 'omlx':
             try:
                 from companion.model.omlx import loaded_model
                 state = loaded_model(self.config)
                 self.external_state={'model':state['id'],'loaded':state['loaded'],'observed_at':time.time(),'owns_process':False}
-                if LowPowerPolicy(self.config).active() and (type(state.get('estimated_size')) is not int or state['estimated_size']>self.config.lightweight_max_weight_bytes):
+                if low_power and (type(state.get('estimated_size')) is not int or state['estimated_size']>self.config.lightweight_max_weight_bytes):
                     raise ValueError('oMLX model exceeds the low-power lightweight budget')
             except Exception:
                 return {'status':'unavailable','error_stage':'omlx_admission',
                         'error':'oMLX model unavailable, not loaded, or outside lightweight resource grant'}
-        if LowPowerPolicy(self.config).active() and self.adapter is None and self.config.backend != "disabled":
+        if low_power:
             if self.config.backend == "local-http":
                 return {"status":"unavailable", "error_stage":"power_policy", "error":"Unmanaged local backend is disabled in low-power mode"}
             if not self.config.lightweight_on_demand and (self.child is None or self.child.poll() is not None):
@@ -191,8 +193,9 @@ class ModelManager:
         return result
 
     def tick(self):
-        from companion.runtime.power import LowPowerPolicy
-        low = LowPowerPolicy(self.config).active()
+        if not self.child and not self.adapter:
+            return
+        low = self.power.active()
         if (low or self.config.mode == "eco") and (self.child or self.adapter) and time.monotonic() - self.last_used >= (min(15, self.config.eco_unload_seconds) if low else self.config.eco_unload_seconds):
             self.unload()
 

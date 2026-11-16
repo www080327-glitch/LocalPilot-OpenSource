@@ -42,12 +42,12 @@ def digest_fd(fd):
     if identity(before) != identity(os.fstat(fd)): raise ValueError('File changed while inspecting')
     return {**identity(before), 'sha256':sha.hexdigest()}
 
-def inspect_file(workspace_root, path):
+def inspect_file(workspace_root, path, *, hash_content=True):
     with entry(workspace_root, path) as (parent, name):
         fd = os.open(name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=parent)
         try:
             info = os.fstat(fd)
-            return {'path':path, 'exists':True, **(digest_fd(fd) if stat.S_ISREG(info.st_mode) else identity(info))}
+            return {'path':path, 'exists':True, **(digest_fd(fd) if hash_content and stat.S_ISREG(info.st_mode) else identity(info))}
         finally: os.close(fd)
 
 def list_entries(workspace_root, path='.'):
@@ -93,8 +93,8 @@ def transfer(workspace_root, source, destination, expected_sha256, *, moving):
         with entry(workspace_root,source) as (sp,sn), entry(workspace_root,destination) as (dp,dn):
             source_fd=os.open(sn,os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK,dir_fd=sp)
             before=digest_fd(source_fd)
-            if os.fstat(source_fd).st_nlink!=1 or before['sha256']!=expected_sha256:
-                raise ValueError('Current source hash or link count differs; inspect again')
+            if before['sha256']!=expected_sha256:
+                raise ValueError('Current source hash differs; inspect again')
             if moving:
                 if identity(os.stat(sn,dir_fd=sp,follow_symlinks=False))!={k:v for k,v in before.items() if k!='sha256'}:
                     raise ValueError('Source identity changed')

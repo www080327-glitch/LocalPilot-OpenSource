@@ -4,13 +4,14 @@ import json
 import os
 from pathlib import Path
 import sqlite3
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
 
 from localpilot_channels.adapter import Adapter
 from localpilot_channels.client import ChannelError
-from localpilot_channels.security import canonical_path, private_directory
+from localpilot_channels.security import canonical_path, private_directory, private_json
 from localpilot_channels.store import Store
 from tests.channel_fixtures import ENV, QA, QQ, WA, WX, FakeOfficial, configuration
 
@@ -133,6 +134,16 @@ class ChannelPathSecurityTests(unittest.TestCase):
             Store(self.root/'alias/new-state', {})
         self.assertFalse((self.root/'new-state').exists())
 
+    @unittest.skipUnless(sys.platform == 'darwin', 'native macOS system /tmp alias')
+    def test_adapter_accepts_private_state_below_system_tmp_alias(self):
+        with tempfile.TemporaryDirectory(dir='/tmp') as directory:
+            store = Store(Path(directory) / 'channel-state', {'synthetic': True})
+            try:
+                store.put('sentinel', {'preserved': True})
+                self.assertEqual(store.get('sentinel'), {'preserved': True})
+            finally:
+                store.close()
+
     def test_existing_world_readable_database_is_rejected_before_mutation(self):
         state = self.root/'state'
         state.mkdir(mode=0o700)
@@ -143,6 +154,19 @@ class ChannelPathSecurityTests(unittest.TestCase):
             Store(state, {})
         self.assertEqual(db.read_bytes(), b'unchanged')
         self.assertEqual(db.stat().st_mode & 0o777, 0o644)
+
+    def test_private_json_validates_the_open_file_permissions_and_link_count(self):
+        path = self.root / 'settings.json'
+        path.write_text('{"fixture": true}')
+        path.chmod(0o600)
+        self.assertEqual(private_json(path), {'fixture': True})
+        path.chmod(0o644)
+        with self.assertRaises(ValueError):
+            private_json(path)
+        path.chmod(0o600)
+        os.link(path, self.root / 'linked.json')
+        with self.assertRaises(ValueError):
+            private_json(path)
 
     def test_state_file_and_parent_symlinks_and_hardlinks_are_rejected(self):
         for kind in ('symlink', 'hardlink'):

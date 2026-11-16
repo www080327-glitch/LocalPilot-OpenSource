@@ -16,6 +16,7 @@ export interface ChatDraft {
   model: string;
   title: string;
   input?: string;
+  timeoutSeconds?: number;
   scope: string;
 }
 

@@ -5,6 +5,9 @@ use std::io::{Read, Write};
 use std::os::unix::net::{UnixListener, UnixStream};
 use std::sync::atomic::{AtomicBool, Ordering};
 
+pub const ANIMATION_INTERVAL: Duration =
+    Duration::from_nanos(1_000_000_000 / pet_edge::ANIMATION_FPS);
+
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(default, deny_unknown_fields)]
 pub struct PetSettings {
@@ -51,11 +54,11 @@ pub struct PetState {
     pub mini_glass: AtomicBool,
     pub restoring: AtomicBool,
     pub ready_scheduled: AtomicBool,
-    pub restore_target: Mutex<Option<tauri::PhysicalPosition<i32>>>,
+    pub browser_reduce_motion: AtomicBool,
     pub standalone: AtomicBool,
     pub settings: Mutex<PetSettings>,
     pub position_save: Mutex<Option<tauri::async_runtime::JoinHandle<()>>>,
-    pub sprite: Mutex<Option<super::pet_assets::Sprite>>,
+    pub sprite: Mutex<Option<super::pet_assets::Atlas>>,
     pub pose: Mutex<(u32, u32)>,
     pub bubble_height: std::sync::atomic::AtomicU32,
     pub dragging: AtomicBool,
@@ -163,6 +166,15 @@ pub fn control_server(app: &tauri::AppHandle) -> Result<bool, String> {
                         (data(&app), super::pet_macos::diagnostics(&app))
                     {
                         let _ = save(&root.join("pet-window-diagnostics.json"), &report);
+                    }
+                }
+                "measure_animation" => {
+                    if app
+                        .state::<crate::test_profile::TestProfile>()
+                        .client
+                        .is_some()
+                    {
+                        let _ = app.emit_to("pet", "pet-measure-animation", ());
                     }
                 }
                 "hide" => {
@@ -414,15 +426,35 @@ pub fn bubble_origin(
     pet: (i32, i32, u32, u32),
     area: (i32, i32, u32, u32),
     size: (u32, u32),
+    anchor: pet_edge::Anchor,
 ) -> (i32, i32) {
     let (x, y, w, _h) = pet;
     let (ax, ay, aw, ah) = area;
     let (bw, bh) = size;
-    let left = x + w as i32 - bw as i32;
-    let above = y - bh as i32 - 8;
-    let by = if above >= ay { above } else { y + 8 };
+    let mini = pet_edge::chat_box(anchor);
+    let factor = w as f64 / pet_edge::VIEW_W;
+    let (mx, my, mw, mh) = (
+        (mini[0] * factor) as i32,
+        (mini[1] * factor) as i32,
+        (mini[2] * factor) as i32,
+        (mini[3] * factor) as i32,
+    );
+    let left = matches!(
+        anchor,
+        pet_edge::Anchor::TopLeft | pet_edge::Anchor::LeftEdge | pet_edge::Anchor::BottomLeft
+    );
+    let bx = if left {
+        x + mx
+    } else {
+        x + mx + mw - bw as i32
+    };
+    let by = match anchor {
+        pet_edge::Anchor::TopLeft | pet_edge::Anchor::TopRight => y + my,
+        pet_edge::Anchor::BottomLeft | pet_edge::Anchor::BottomRight => y + my + mh - bh as i32,
+        _ => y + my + mh / 2 - bh as i32 / 2,
+    };
     (
-        left.clamp(ax, ax + (aw.saturating_sub(bw)) as i32),
+        bx.clamp(ax, ax + (aw.saturating_sub(bw)) as i32),
         by.clamp(ay, ay + (ah.saturating_sub(bh)) as i32),
     )
 }
@@ -448,37 +480,16 @@ pub fn follow(app: &tauri::AppHandle) -> Result<(), String> {
         .clamp(180, 420);
     let bh = (height as f64 * scale).min(area.size.height as f64) as u32;
     let anchor = app.state::<PetState>().edge.lock().unwrap().anchor;
-    let mini = pet_edge::chat_box(anchor);
-    let factor = s.width as f64 / pet_edge::VIEW_W;
-    let (mx, my, mw, mh) = (
-        (mini[0] * factor) as i32,
-        (mini[1] * factor) as i32,
-        (mini[2] * factor) as i32,
-        (mini[3] * factor) as i32,
-    );
-    let left = matches!(
-        anchor,
-        pet_edge::Anchor::TopLeft | pet_edge::Anchor::LeftEdge | pet_edge::Anchor::BottomLeft
-    );
-    let x = if left {
-        p.x + mx
-    } else {
-        p.x + mx + mw - bw as i32
-    };
-    let y = match anchor {
-        pet_edge::Anchor::TopLeft | pet_edge::Anchor::TopRight => p.y + my,
-        pet_edge::Anchor::BottomLeft | pet_edge::Anchor::BottomRight => p.y + my + mh - bh as i32,
-        _ => p.y + my + mh / 2 - bh as i32 / 2,
-    };
-    let (x, y) = (
-        x.clamp(
+    let (x, y) = bubble_origin(
+        (p.x, p.y, s.width, s.height),
+        (
             area.position.x,
-            area.position.x + area.size.width.saturating_sub(bw) as i32,
-        ),
-        y.clamp(
             area.position.y,
-            area.position.y + area.size.height.saturating_sub(bh) as i32,
+            area.size.width,
+            area.size.height,
         ),
+        (bw, bh),
+        anchor,
     );
     bubble
         .set_size(tauri::PhysicalSize::new(bw, bh))
@@ -514,7 +525,7 @@ pub fn expand(app: &tauri::AppHandle, value: bool, focus: bool) -> Result<(), St
         .state::<PetState>()
         .expanded
         .swap(value, Ordering::Relaxed);
-    if previous == value {
+    if previous == value && !(value && focus) {
         return Ok(());
     }
     pet_edge::chat(app, value);
@@ -529,7 +540,7 @@ pub fn expand(app: &tauri::AppHandle, value: bool, focus: bool) -> Result<(), St
             b.hide().map_err(|e| e.to_string())?;
         }
     }
-    app.emit("pet-state", json!({"expanded":value}))
+    app.emit("pet-state", json!({"expanded":value,"focus":focus}))
         .map_err(|e| e.to_string())?;
     Ok(())
 }
@@ -661,8 +672,6 @@ pub fn create(app: &tauri::AppHandle) -> Result<(), String> {
                 a.position.x + a.size.width as i32 - (430.0 * m.scale_factor()) as i32,
                 a.position.y + a.size.height as i32 - (170.0 * m.scale_factor()) as i32,
             ));
-        *app.state::<PetState>().restore_target.lock().unwrap() =
-            Some(tauri::PhysicalPosition::new(x, y));
         pet.set_position(tauri::PhysicalPosition::new(x, y))
             .map_err(|e| e.to_string())?;
     }
@@ -675,8 +684,10 @@ pub fn create(app: &tauri::AppHandle) -> Result<(), String> {
     // never posts input, activates another app, or records pointer history.
     let handle = app.clone();
     tauri::async_runtime::spawn(async move {
+        let mut frames = tokio::time::interval(ANIMATION_INTERVAL);
+        frames.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
         loop {
-            tokio::time::sleep(Duration::from_millis(50)).await;
+            frames.tick().await;
             let Some(window) = handle.get_webview_window("pet") else {
                 break;
             };
@@ -686,6 +697,7 @@ pub fn create(app: &tauri::AppHandle) -> Result<(), String> {
             }
             if !window.is_visible().unwrap_or(false) {
                 tokio::time::sleep(Duration::from_millis(500)).await;
+                frames.reset();
                 continue;
             }
             let main = handle.clone();
@@ -763,6 +775,20 @@ pub async fn pet_action(
             .map_err(|e| e.to_string())?;
             rx.await.map_err(|e| e.to_string())?
         }
+        "animation_report" => {
+            if app
+                .state::<crate::test_profile::TestProfile>()
+                .client
+                .is_none()
+            {
+                return Err("动画采样仅用于独立测试目录".into());
+            }
+            save(
+                &data(&app)?.join("pet-animation-probe.json"),
+                &value.ok_or("缺少采样结果")?,
+            )?;
+            Ok(json!({}))
+        }
         "state" => Ok(
             json!({"settings":settings(&app),"material":private_json(&data(&app)?.join("pet-material.json")).ok(),"native_pointer":cfg!(target_os = "macos"),"mlx_supported":cfg!(all(target_os = "macos", target_arch = "aarch64")),"expanded":app.state::<PetState>().expanded.load(Ordering::Relaxed),"edge":pet_edge::snapshot(&app)}),
         ),
@@ -789,17 +815,11 @@ pub async fn pet_action(
             settle(&app)?;
             Ok(json!({}))
         }
-        "pose" => {
-            let v = value.ok_or("缺少角色帧")?;
-            let x = v["column"]
-                .as_u64()
-                .filter(|v| *v < 8)
-                .ok_or("角色帧无效")? as u32;
-            let y = v["row"]
-                .as_u64()
-                .filter(|v| *v < 11)
-                .ok_or("角色状态无效")? as u32;
-            *app.state::<PetState>().pose.lock().unwrap() = (x, y);
+        "motion_preference" => {
+            let reduced = value.and_then(|v| v.as_bool()).ok_or("动态效果偏好无效")?;
+            app.state::<PetState>()
+                .browser_reduce_motion
+                .store(reduced, Ordering::Relaxed);
             Ok(json!({}))
         }
         "resize_bubble" => {
@@ -1046,23 +1066,55 @@ mod tests {
     #[test]
     fn edge_placement() {
         assert_eq!(
-            bubble_origin((950, 750, 160, 140), (0, 25, 1200, 830), (380, 460)),
-            (730, 282)
+            bubble_origin(
+                (950, 750, 160, 140),
+                (0, 25, 1200, 830),
+                (380, 460),
+                pet_edge::Anchor::BottomRight
+            ),
+            (663, 359)
         );
         assert_eq!(
-            bubble_origin((5, 30, 160, 140), (0, 25, 1200, 830), (380, 460)),
-            (0, 38)
+            bubble_origin(
+                (5, 30, 160, 140),
+                (0, 25, 1200, 830),
+                (380, 460),
+                pet_edge::Anchor::TopLeft
+            ),
+            (71, 104)
         );
     }
     #[test]
     fn negative_monitor_and_small_workarea() {
         assert_eq!(
-            bubble_origin((-1200, 50, 160, 140), (-1440, 24, 1440, 850), (380, 460)),
-            (-1420, 58)
+            bubble_origin(
+                (-1200, 50, 160, 140),
+                (-1440, 24, 1440, 850),
+                (380, 460),
+                pet_edge::Anchor::RightEdge
+            ),
+            (-1440, 24)
         );
         assert_eq!(
-            bubble_origin((0, 0, 160, 140), (0, 0, 300, 200), (380, 460)),
+            bubble_origin(
+                (0, 0, 160, 140),
+                (0, 0, 300, 200),
+                (380, 460),
+                pet_edge::Anchor::RightEdge
+            ),
             (0, 0)
+        );
+    }
+    #[test]
+    fn bubble_follows_the_same_thought_anchor_at_double_scale() {
+        let a = pet_edge::Anchor::RightEdge;
+        assert_eq!(
+            bubble_origin((100, 400, 240, 220), (0, 0, 1440, 900), (320, 420), a),
+            (0, 242)
+        );
+        assert_eq!(
+            bubble_origin((200, 800, 480, 440), (0, 0, 2880, 1800), (640, 840), a),
+            (0, 484)
         );
     }
 }

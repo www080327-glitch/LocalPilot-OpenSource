@@ -9,6 +9,7 @@ import sys
 import tempfile
 import threading
 import unittest
+from unittest.mock import patch
 
 from localpilot_service.security import private_json
 from localpilot_suite.product_control import dispatch
@@ -70,12 +71,24 @@ class LocalEndpointDiscoveryTests(unittest.TestCase):
         self.assertEqual(self.seen, ['/v1/models'] * 5)
 
     def test_wrong_urls_are_rejected_before_network_or_files(self):
-        for url in ['http://example.test:8080/v1', 'http://127.0.0.1/v1',
+        for url in ['http://example.test:8080/v1', 'http://127.0.0.1:0/v1',
                     'http://user:secret@127.0.0.1:8080/v1', self.endpoint + '?key=secret']:
             with self.subTest(url=url), self.assertRaises(ValueError):
                 self.command('discover_local_endpoint', {'base_url': url})
         self.assertEqual(self.seen, [])
         self.assertFalse(self.home.exists())
+
+    def test_pasted_server_origin_is_normalized_before_catalog_request(self):
+        for value in [self.endpoint.removesuffix('/v1'), self.endpoint.removesuffix('v1'),
+                      '  ' + self.endpoint + '/  ']:
+            result = self.command('discover_local_endpoint', {'base_url': value})
+            self.assertEqual(result['models'][0]['id'], 'cpu-model-a')
+        self.assertEqual(self.seen, ['/v1/models'] * 3)
+
+    def test_default_http_port_is_a_valid_local_endpoint(self):
+        from localpilot_suite.model_configuration import local_endpoint_url
+        self.assertEqual(local_endpoint_url('http://localhost'), 'http://127.0.0.1:80/v1')
+        self.assertEqual(local_endpoint_url('http://[::1]/v1/'), 'http://[::1]:80/v1')
 
 
 @unittest.skipUnless(platform.system() == 'Linux', 'real detached lifecycle test runs on Linux')
@@ -143,6 +156,62 @@ class PortableSetupProcessTests(unittest.TestCase):
         self.assertEqual(reopened['status'], 'ready')
         self.assertIn('cpu-agent', private_json(self.home / 'service.json')['routes'])
         self.assertEqual(client.request('/localpilot/v1/sessions/' + old_session['id'])['id'], old_session['id'])
+
+    def test_cloud_provider_setup_preserves_local_routes_and_existing_sessions(self):
+        self.cli('desktop-init', '--workspace', str(self.workspace))
+        original = private_json(self.home / 'service.json')
+        key_file = self.root / 'synthetic-provider.key'
+        key_file.write_text('synthetic-provider-key-not-for-network\n')
+        key_file.chmod(0o600)
+        configured = self.cli('cloud-configure', '--provider', 'openai', '--key-file', str(key_file))
+        self.assertEqual(configured['provider'], 'openai')
+        self.assertEqual(configured['model'], 'gpt-6-luna')
+        self.assertEqual(configured['api_connection'], 'NOT_PROBED')
+        self.assertFalse(configured['credential_copied'])
+        self.assertIsNone(configured['cooperative_route'])
+        config = private_json(self.home / 'service.json')
+        self.assertEqual(config['routes']['default'], original['routes']['default'])
+        backend = config['routes']['openai-agent']['backend']
+        self.assertEqual(backend['protocol'], 'responses')
+        self.assertEqual(backend['key_file'], str(key_file))
+        self.assertNotIn('synthetic-provider-key-not-for-network', (self.home / 'clients.env').read_text())
+        from localpilot_service.cli import connection
+        client = connection(self.home)
+        session = client.request('/localpilot/v1/sessions', {'model': 'openai-agent'}, key='cloud-provider-fixture')
+        deepseek = self.cli('cloud-configure', '--key-file', str(key_file))
+        self.assertEqual(deepseek['provider'], 'deepseek')
+        after = private_json(self.home / 'service.json')
+        self.assertEqual(after['routes']['openai-agent'], config['routes']['openai-agent'])
+        self.assertEqual(client.request('/localpilot/v1/sessions/' + session['id'])['id'], session['id'])
+        self.assertEqual(self.cli('cloud-configure', '--provider', 'openai', '--key-file', str(key_file))['status'], 'already_configured')
+
+    def test_cloud_setup_failure_restores_both_configs_and_services(self):
+        self.cli('desktop-init', '--workspace', str(self.workspace))
+        paths = [self.home / name for name in ('service.json', 'companion.json', 'clients.env')]
+        originals = {path.name: path.read_bytes() for path in paths}
+        key_file = self.root / 'synthetic-provider.key'
+        key_file.write_text('synthetic-provider-key-not-for-network\n')
+        key_file.chmod(0o600)
+        from localpilot_suite import installation
+        from localpilot_suite.desktop_setup import configure_cloud
+        original_service = installation.service
+        failed = False
+
+        def fail_companion_recovery_once(home, module, action):
+            nonlocal failed
+            if module == 'companion' and action == 'recover' and not failed:
+                failed = True
+                raise ValueError('synthetic Companion recovery failure')
+            return original_service(home, module, action)
+
+        with patch.dict(os.environ, self.env), patch.object(
+                installation, 'service', side_effect=fail_companion_recovery_once):
+            with self.assertRaisesRegex(ValueError, 'synthetic Companion'):
+                configure_cloud(self.home, str(key_file), provider='openai')
+        for path in paths:
+            self.assertTrue(path.read_bytes() == originals[path.name], path.name + ' was not restored')
+        self.assertEqual(original_service(self.home, 'core', 'status')['status'], 'ready')
+        self.assertEqual(original_service(self.home, 'companion', 'status')['status'], 'running')
 
 
 if __name__ == '__main__':

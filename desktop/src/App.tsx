@@ -8,6 +8,7 @@ import { TaskInspector } from "./components/TaskInspector";
 import { latestConversations, conversationTitle } from "./conversations";
 import { compatibleEffort, thinkingKey } from "./modelThinking";
 import { shouldSubmitEnter, type EnterBehavior } from "./inputBehavior";
+import { taskDuration, taskDurations } from "./executionBudget";
 import { ensureLocalModelLoaded, usableAgentModels } from "./modelLoading";
 import { observedModelShare, subagentTraces } from "./collaboration";
 import { classifyConversations, useConversationProjects } from "./projects";
@@ -246,6 +247,7 @@ export default function App() {
   const [agentProfile, setAgentProfile] = useState<"standard" | "minimal">(
     "standard",
   );
+  const [timeoutSeconds, setTimeoutSeconds] = useState<number>(600);
   const [permissionMode, setPermissionMode] = useState(
     stored(
       "lp.permissionMode",
@@ -283,7 +285,9 @@ export default function App() {
       useState<Preferences>(initialPreferences),
     [sessionPrefs, setSessionPrefs] = useState<Preferences>(initialPreferences),
     [preferenceOpen, setPreferenceOpen] = useState(false),
-    [libraryOpen, setLibraryOpen] = useState(false),
+    [libraryOpen, setLibraryOpen] = useState(
+      () => new URLSearchParams(location.search).get("view") === "models",
+    ),
     [toolsOpen, setToolsOpen] = useState(false),
     [developerOpen, setDeveloperOpen] = useState(false),
     [chatId, setChatId] = useState(
@@ -298,6 +302,7 @@ export default function App() {
           model: string;
           title: string;
           input?: string;
+          timeoutSeconds?: number;
           scope: string;
         }
       >
@@ -312,6 +317,13 @@ export default function App() {
   const persistQueue = useRef(Promise.resolve()),
     preferenceWriteVersion = useRef(0),
     restoreDone = useRef(false);
+  useEffect(() => {
+    if (!desktop) return;
+    const subscription = listen("pet-open-models", () => setLibraryOpen(true));
+    return () => {
+      void subscription.then((stop) => stop());
+    };
+  }, []);
   const connection = useServiceConnection(taskState, {
     setModel,
     setError,
@@ -362,6 +374,7 @@ export default function App() {
       setInput(draft.input || "");
       setSessionPrefs(draft.preferences);
       setModel(draft.model);
+      setTimeoutSeconds(taskDuration(draft.timeoutSeconds).seconds);
     },
     onFreshDraft: (draft, missingSession) => {
       newChat();
@@ -369,6 +382,7 @@ export default function App() {
         setInput(draft.input || "");
         setSessionPrefs(draft.preferences);
         setModel(draft.model);
+        setTimeoutSeconds(taskDuration(draft.timeoutSeconds).seconds);
       }
       if (missingSession)
         setToast(
@@ -390,6 +404,16 @@ export default function App() {
       setSelected(task.id);
       setModel(view.model);
       setMessages(view.messages);
+      setTimeoutSeconds(
+        taskDuration(
+          (drafts[task.session_id]?.scope === scope
+            ? drafts[task.session_id]?.timeoutSeconds
+            : undefined) ??
+            task.timeout_seconds ??
+            turns[task.id]?.timeout_seconds,
+          task.desktop_options?.execution_budget,
+        ).seconds,
+      );
       if (task.required_action) setTab("activity");
       setAgentProfile(
         task.desktop_options?.agent_profile === "minimal"
@@ -470,6 +494,7 @@ export default function App() {
             ? input.trim().split("\n")[0].slice(0, 32)
             : old[chatId]?.title || "新会话",
           input,
+          timeoutSeconds,
           scope,
         },
       };
@@ -477,6 +502,7 @@ export default function App() {
   }, [
     chatId,
     input,
+    timeoutSeconds,
     model,
     sessionPrefs,
     scope,
@@ -732,6 +758,7 @@ export default function App() {
     setModel(defaultModel || (supportedRouting ? "__auto__" : ""));
 
     setAgentProfile("standard");
+    setTimeoutSeconds(600);
     setPermissionMode(permissionDefault);
     setRight(false);
     setPermissionOpen(false);
@@ -978,6 +1005,10 @@ export default function App() {
           );
         let effectiveModel = model;
         const caps = health?.compatibility?.capabilities || [];
+        const budgetSupported = caps.includes("desktop_execution_budget_v1");
+        const executionBudget = taskDuration(timeoutSeconds).budget;
+        if (executionBudget === "extended" && !budgetSupported)
+          throw Error("请更新 Core 组件后使用长任务时限。");
         const requestPreferences = {
           ...sessionPrefs,
           effort: compatibleEffort(chosen, sessionPrefs.effort),
@@ -1019,6 +1050,14 @@ export default function App() {
                           permissionMode,
                       }
                     : {}),
+                  ...(budgetSupported
+                    ? {
+                        execution_budget: executionBudget,
+                        expected_execution_budget:
+                          currentTask?.desktop_options?.execution_budget ||
+                          "standard",
+                      }
+                    : {}),
                 },
               });
             } else if (
@@ -1040,6 +1079,9 @@ export default function App() {
                 permission_mode: permissionMode,
                 agent_profile: agentProfile,
                 source: sessionPrefs.source,
+                ...(budgetSupported
+                  ? { execution_budget: executionBudget }
+                  : {}),
                 ...(workspaceGrant ? { workspace_grant: workspaceGrant } : {}),
                 key: [
                   chatId,
@@ -1048,6 +1090,7 @@ export default function App() {
                   permissionMode,
                   agentProfile,
                   sessionPrefs.source,
+                  executionBudget,
                 ].join("|"),
               },
             });
@@ -1112,6 +1155,7 @@ export default function App() {
           cloudConsent: cloud || caps.includes("desktop_permissions_v3"),
           effort: requestPreferences.effort,
           preferences: requestPreferences,
+          timeoutSeconds,
         });
         await Promise.all(
           attachments.files.map((f) =>
@@ -1385,10 +1429,7 @@ export default function App() {
           <div className="sidebar-brand">
             <Mark small />
             <span>LocalPilot</span>
-            <span
-              className="version"
-              title={packageInfo.version}
-            >
+            <span className="version" title={packageInfo.version}>
               {packageInfo.version}
             </span>
           </div>
@@ -2138,6 +2179,32 @@ export default function App() {
                   }}
                   onLibrary={() => setLibraryOpen(true)}
                 />
+                <select
+                  className="task-duration"
+                  aria-label="下次任务时限"
+                  title="长任务使用扩展执行预算，权限模式保持独立；随时可以取消。"
+                  value={timeoutSeconds}
+                  disabled={busy || (!!currentTask && !currentTask.quiescent)}
+                  onChange={(event) =>
+                    setTimeoutSeconds(Number(event.target.value))
+                  }
+                >
+                  {taskDurations.map((option) => (
+                    <option
+                      key={option.seconds}
+                      value={option.seconds}
+                      disabled={
+                        option.budget === "extended" &&
+                        !preview &&
+                        !health?.compatibility?.capabilities?.includes(
+                          "desktop_execution_budget_v1",
+                        )
+                      }
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
                 {
                   <div className="effort-anchor" ref={effortAnchor}>
                     <button

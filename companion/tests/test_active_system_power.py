@@ -3,6 +3,7 @@ import unittest
 from unittest.mock import patch
 
 from companion.config import Config
+from companion.model.backend import ModelManager
 from companion.runtime.power import LowPowerPolicy
 
 
@@ -56,3 +57,20 @@ class ActiveSystemPowerTests(unittest.TestCase):
         with patch('companion.runtime.power.sys.platform', 'darwin'), patch(
                 'companion.runtime.power.subprocess.check_output', side_effect=subprocess.TimeoutExpired('pmset', 2)):
             self.assertTrue(self.policy().active())
+
+    def test_model_requests_reuse_the_system_policy_observation_cache(self):
+        manager = ModelManager(Config(backend='local-http', low_power_policy='system',
+                                      allow_local_on_battery=True))
+        with patch('companion.runtime.power.sys.platform', 'linux'), patch(
+                'companion.runtime.linux_power.low_power', return_value=True) as query:
+            for _ in range(2):
+                result = manager.complete([{'role': 'user', 'content': 'fixture'}])
+                self.assertEqual(result['error_stage'], 'power_policy')
+            self.assertEqual(query.call_count, 1)
+        self.assertEqual(manager.inferences, 0)
+
+    def test_idle_model_tick_does_not_query_host_power(self):
+        manager = ModelManager(Config(backend='disabled', low_power_policy='system'))
+        with patch.object(manager.power, 'active') as query:
+            manager.tick()
+            query.assert_not_called()

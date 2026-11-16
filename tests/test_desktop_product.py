@@ -62,11 +62,73 @@ class DesktopProductTests(unittest.TestCase):
         self.denied(409,lambda:self.switch(s,'minimal'))
         self.service.sessions[s['id']].active_task=None
 
+    def test_explicit_standard_budget_upgrades_a_legacy_full_session(self):
+        session = self.session('full')
+        self.assertNotIn('execution_budget', session['desktop_options'])
+        path = '/localpilot/v1/desktop-sessions/' + session['id'] + '/profile'
+        update = {'client_subject': 'codex', 'agent_profile': 'standard',
+                  'expected_profile': 'standard', 'execution_budget': 'standard',
+                  'expected_execution_budget': 'standard'}
+        selected = self.operator.request(path, update)
+        self.assertEqual(selected['id'], session['id'])
+        self.assertEqual(selected['desktop_options']['execution_budget'], 'standard')
+        self.stop(); self.service.suspend(); self.start()
+        restored = self.service.session_snapshot(session['id'])
+        self.assertEqual(restored['desktop_options']['execution_budget'], 'standard')
+        self.assertEqual(self.operator.request(path, update)['id'], session['id'])
+
+    def test_explicit_extended_budget_and_day_deadline_survive_restart(self):
+        from localpilot_api.service import MAX_TASK_TIMEOUT
+        session = self.session('full')
+        path = '/localpilot/v1/desktop-sessions/' + session['id'] + '/profile'
+        update = {'client_subject': 'codex', 'agent_profile': 'standard', 'expected_profile': 'standard',
+                  'execution_budget': 'extended', 'expected_execution_budget': 'standard'}
+        switched = self.operator.request(path, update)
+        self.assertEqual(switched['desktop_options']['execution_budget'], 'extended')
+        self.assertEqual(self.service.sessions[session['id']].runtime.budgets.max_steps, 2048)
+        task = self.done(self.codex.submit('A long task may finish early.', session_id=session['id'],
+            timeout_seconds=MAX_TASK_TIMEOUT, idempotency_key='day-deadline'))
+        self.assertEqual(task['timeout_seconds'], MAX_TASK_TIMEOUT)
+        deadline = task['deadline']
+        self.assertGreaterEqual(deadline - task['created_at'], MAX_TASK_TIMEOUT)
+        self.denied(400, lambda: self.codex.submit('Too long.', session_id=session['id'],
+            timeout_seconds=MAX_TASK_TIMEOUT + 1, idempotency_key='beyond-day'))
+        self.stop(); self.service.suspend(); self.start()
+        restored = self.codex.status(task['id'])
+        self.assertEqual(restored['deadline'], deadline)
+        self.assertEqual(restored['timeout_seconds'], MAX_TASK_TIMEOUT)
+        self.assertEqual(self.service.sessions[session['id']].runtime.budgets.max_steps, 2048)
+        self.denied(409, lambda: self.operator.request(path, {**update, 'execution_budget': 'standard'}))
+        self.operator.request(path, {**update, 'execution_budget': 'standard', 'expected_execution_budget': 'extended'})
+        self.assertEqual(self.service.sessions[session['id']].runtime.budgets.max_steps, 8)
+        self.assertEqual(self.codex.status(task['id'])['desktop_options']['execution_budget'], 'extended')
+        self.assertEqual(len(self.backend.requests), 1)
+
     def test_desktop_authorization_is_idempotent_even_after_restart(self):
         first=self.session('safe');again=self.session('safe');self.assertEqual(first['id'],again['id'])
         self.stop();self.service.suspend();self.start()
         self.assertEqual(self.session('safe')['id'],first['id'])
         self.assertEqual(len(self.service.sessions),1)
+
+    def test_profile_checkpoint_failure_restores_named_runtime_state(self):
+        from copy import deepcopy
+        from unittest.mock import patch
+        from agent.persistence import configuration
+        from localpilot_service.desktop_sessions import switch_profile
+        selected = self.session('full')
+        session = self.service.sessions[selected['id']]
+        runtime = session.runtime
+        before = deepcopy(configuration(runtime))
+        messages = runtime.messages[:]
+        with patch.object(self.service, '_checkpoint', side_effect=OSError('controlled storage failure')):
+            with self.assertRaises(OSError):
+                switch_profile(self.server, self.access.principals['operator'], selected['id'], {
+                    'client_subject': 'codex', 'agent_profile': 'minimal', 'expected_profile': 'standard',
+                    'permission_mode': 'isolated', 'expected_permission_mode': 'full',
+                    'execution_budget': 'extended', 'expected_execution_budget': 'standard'})
+        self.assertEqual(configuration(runtime), before)
+        self.assertEqual(runtime.messages, messages)
+        self.assertEqual(session.desktop_options['permission_mode'], 'full')
 
     def test_only_operator_can_authorize_session_options(self):
         body={'client_subject':'codex','model':'localpilot','source':'balanced','options':{'permission_mode':'full','agent_profile':'standard'}}

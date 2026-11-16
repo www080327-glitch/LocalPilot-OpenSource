@@ -168,9 +168,9 @@ class SessionToolCalls:
                     self.registry.plugin_request_id = f'{self._plugin_namespace}/turn:{self.turn_id}/call:{call.id}'
                 if self._async_enabled:
                     with external(self._state_condition):
-                        result = self.registry.call(call.name, args, approved=approved, receipt_id=call.id, scope_approval=scope_approval)
+                        result = self.registry._call_prevalidated(call.name, args, approved=approved, receipt_id=call.id, scope_approval=scope_approval)
                 else:
-                    result = self.registry.call(call.name, args, approved=approved, receipt_id=call.id, scope_approval=scope_approval)
+                    result = self.registry._call_prevalidated(call.name, args, approved=approved, receipt_id=call.id, scope_approval=scope_approval)
             payload = self._payload(result)
             from .host_tools import qualified_shell
             completed_shell_failure = (qualified_shell(self.registry,call.name) and isinstance(result,dict)

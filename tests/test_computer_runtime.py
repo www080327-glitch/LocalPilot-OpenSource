@@ -10,6 +10,7 @@ from agent.backends import BackendCapabilities, BackendResponse, Message, ModelI
 from agent.registry import create_default_registry
 from agent.safety import CapabilityPolicy
 from agent.session import AgentSession, SessionBudgets, SessionState
+from agent.tool_protocol import ToolArgumentsError
 from computer.cli import control
 from computer.runtime import ComputerRuntime, ControlState
 
@@ -507,7 +508,7 @@ class ComputerTests(unittest.TestCase):
         self.assertEqual(self.action()["status"], "denied")
 
     def test_host_policy_arguments_cannot_be_injected(self):
-        with self.assertRaises(TypeError):
+        with self.assertRaisesRegex(ToolArgumentsError, r'\$\.allow_frontmost: unexpected field'):
             self.action(allow_frontmost=True)
         self.assertEqual(self.adapter.sent, 0)
 

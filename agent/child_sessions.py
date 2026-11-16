@@ -8,7 +8,7 @@ from .registry import ToolRegistry, create_default_registry
 from .safety import CapabilityPolicy
 
 
-def create_child(owner, record, budgets, thinking, *, source=None, inherit_tools=False):
+def create_child(owner, record, budgets, thinking, *, source=None, inherit_tools=False, inherit_profile=True):
     from .session import AgentSession
 
     parent = source or owner
@@ -24,7 +24,7 @@ def create_child(owner, record, budgets, thinking, *, source=None, inherit_tools
     data_policy = DataPolicy(local_only=parent.hard_data_policy.local_only if parent.hybrid else target == 'local')
     capabilities = CapabilityPolicy(read=ceiling.read, write=ceiling.write and not read_only,
         execute=ceiling.execute and not read_only, read_only=ceiling.read_only or read_only)
-    registry = _child_registry(parent, capabilities, data_policy)
+    registry = _child_registry(parent, capabilities, data_policy, inherit_profile=inherit_profile)
     child = AgentSession(registry, backend=backend,
         local_backend=parent.local_backend if parent.hybrid else None,
         cloud_backend=parent.cloud_backend if parent.hybrid else None,
@@ -47,7 +47,7 @@ def create_child(owner, record, budgets, thinking, *, source=None, inherit_tools
     if inherit_tools:
         if parent.child_registry_factory is None:
             _inherit_tools(parent, child)
-        child._child_tool_contract_revision = 1
+        child._child_tool_contract_revision = 2 if inherit_profile else 1
     child._cancel_parent = child._ledger_parent = owner
     child._worker_id = record['id']
     child._eligible = lambda: bool(child.current_backend.health_check()) if child.primary == 'local' else False
@@ -74,7 +74,7 @@ def registry_contract(factory, identity):
     return json.loads(json.dumps(identity, sort_keys=True, allow_nan=False))
 
 
-def _child_registry(parent, capabilities, data_policy):
+def _child_registry(parent, capabilities, data_policy, *, inherit_profile=True):
     factory = parent.child_registry_factory
     if factory is not None:
         registry = factory(parent.workspace, permission_mode=parent.permission_mode,
@@ -87,7 +87,9 @@ def _child_registry(parent, capabilities, data_policy):
         if actual != inherited:
             raise ValueError('Child registry factory changed inherited workspace, permissions or data policy')
     else:
-        registry = create_default_registry(parent.workspace, permission_mode=parent.permission_mode,
+        registry = create_default_registry(parent.workspace,
+            profile=parent.registry.profile if inherit_profile else 'standard',
+            tool_profile=parent.registry.tool_profile if inherit_profile else None, permission_mode=parent.permission_mode,
             capabilities=capabilities, data_policy=data_policy,
             file_operations='move_file' in parent.registry._tools)
         registry.scope_policy = deepcopy(getattr(parent.registry, 'scope_policy', None))
@@ -115,8 +117,9 @@ def _inherit_authorization(parent, child):
 def _inherit_tools(parent, child):
     scope = child.registry.scope_policy
     if scope and scope.get('revision') in {2, 3}:
-        from .host_tools import register
-        register(child.registry, scope['mode'], scope['private_roots'])
+        from .host_tools import register, SHELL_MAX_TIMEOUT
+        register(child.registry, scope['mode'], scope['private_roots'],
+                 max_timeout=scope.get('shell_max_timeout', SHELL_MAX_TIMEOUT))
     options = getattr(parent, '_plugin_options', None)
     if options:
         from localpilot_plugins.adapter import configure_session

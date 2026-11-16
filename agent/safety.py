@@ -175,8 +175,6 @@ class PermissionGateway:
             return "approval_required"
         if mode == PermissionMode.APPROVE_MUTATIONS.value:
             return "allowed" if read_only else "approval_required"
-        if mode == PermissionMode.FULL_PERMISSION.value:
-            return "allowed"
         if read_only:
             return "allowed"
         if self.judge is None:
@@ -185,9 +183,6 @@ class PermissionGateway:
             assessment = self.judge(operation, risk, reasons, resource)
             if not isinstance(assessment, RiskAssessment):
                 raise ValueError("Judge must return RiskAssessment")
-            # Validate even if a subclass bypassed the dataclass constructor.
-            RiskAssessment(assessment.risk_level, assessment.reason,
-                           assessment.potential_impact, assessment.recommended_action)
         except Exception as error:
             self.record({"operation": operation, "status": "judge_unavailable",
                          "error_type": type(error).__name__})

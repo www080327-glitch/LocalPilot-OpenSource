@@ -185,7 +185,7 @@ class UpgradeTransactionTests(unittest.TestCase):
         restored=upgrades.execute(self.home,plan['id'],rollback=True)
         self.assertEqual(restored['status'],'rolled_back')
         self.assertEqual(restored['rollback_steps'][-1]['module'],'channels')
-        result=subprocess.run([self.python,'-c','import localpilot_channels;print(localpilot_channels.VERSION)'],capture_output=True,text=True,check=True,cwd=self.home)
+        result=subprocess.run([self.python,'-I','-c','import localpilot_channels;print(localpilot_channels.VERSION)'],capture_output=True,text=True,check=True,cwd=self.home)
         self.assertEqual(result.stdout.strip(),'0.1.0a3')
         self.assert_preserved()
 
@@ -202,7 +202,7 @@ class UpgradeTransactionTests(unittest.TestCase):
         self.assertEqual(result['status'],'failed_rolled_back')
         self.assertEqual(result['attempted'],['core'])
         self.assertEqual([row['module'] for row in result['rollback_steps']],['core','channels'])
-        observed=subprocess.run([self.python,'-c','import localpilot_channels;print(localpilot_channels.VERSION)'],capture_output=True,text=True,check=True,cwd=self.home)
+        observed=subprocess.run([self.python,'-I','-c','import localpilot_channels;print(localpilot_channels.VERSION)'],capture_output=True,text=True,check=True,cwd=self.home)
         self.assertEqual(observed.stdout.strip(),'0.1.0a3')
         self.assert_preserved()
 

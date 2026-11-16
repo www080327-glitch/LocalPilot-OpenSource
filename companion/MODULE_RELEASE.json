@@ -1,5 +1,5 @@
 {
-  "version": "0.5.7b7",
+  "version": "0.5.7b8",
   "module": "companion",
   "api": "1.0",
   "companion_contract": "1.0",
@@ -10,5 +10,6 @@
   "implementation_source_branch": "codex/companion-desktop-pet-20261025",
   "base_commit": "36b6b72ba286c6a0c13b89f8f40b7b71bf0bc8aa",
   "integration_manifest": "docs/integration/20261025/SOURCE_MANIFEST.json",
-  "portability_evidence": "docs/evidence/linux-completion-20261116/RESULTS.md"
+  "portability_evidence": "docs/evidence/linux-completion-20261116/RESULTS.md",
+  "audit_evidence": "../docs/development/AUDIT_20261117.md"
 }

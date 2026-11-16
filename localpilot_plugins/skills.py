@@ -117,9 +117,14 @@ class SkillRegistry:
             self.review_path(name, scope).unlink(missing_ok=True)
         return {"id": name, "status": "removed"}
 
-    def load(self, name, scope, available_tools=(), version="5.0.0b16"):
+    def load(self, name, scope, available_tools=(), version=None):
         from packaging.specifiers import SpecifierSet
         from packaging.version import Version
+        if version is None:
+            from localpilot_service import VERSION
+            version = VERSION
+        version = Version(version)
+        available_tools = set(available_tools)
         stack = []
         loaded = {}
 
@@ -127,7 +132,7 @@ class SkillRegistry:
             if current in stack or len(stack) >= 16:
                 raise ValueError("Cyclic or excessively deep Skill dependency")
             if current in loaded:
-                return
+                return loaded[current]
             value = self.get(current, scope)
             manifest = value["manifest"]
             actual = digest([manifest, value["instructions"]])
@@ -135,20 +140,20 @@ class SkillRegistry:
             approval = read_json(approval_path) if approval_path.exists() else {}
             if not value["enabled"] or actual != value["reviewed_sha256"] or actual != value["bundle_sha256"] or actual != approval.get('bundle_sha256'):
                 raise ValueError("Skill disabled or changed since review")
-            if Version(version) not in SpecifierSet(manifest["requires_localpilot"]):
+            if version not in SpecifierSet(manifest["requires_localpilot"]):
                 raise ValueError("Skill is incompatible with this LocalPilot version")
-            if set(manifest["tools"]) - set(available_tools):
+            if set(manifest["tools"]) - available_tools:
                 raise ValueError("Skill tool requirements unavailable; a Skill cannot install or authorize tools")
             stack.append(current)
             for dependency, constraint in manifest["dependencies"].items():
-                dependency_value = self.get(dependency, scope)
-                if Version(dependency_value["manifest"]["version"]) not in SpecifierSet(constraint):
+                dependency_value = visit(dependency)
+                if Version(dependency_value["version"]) not in SpecifierSet(constraint):
                     raise ValueError("Skill dependency version mismatch")
-                visit(dependency)
             stack.pop()
             loaded[current] = {"id": current, "version": manifest["version"],
                 "description": manifest["description"], "bundle_sha256": actual,
                 "instructions": value["instructions"], "inputs": manifest["inputs"], "outputs": manifest["outputs"]}
+            return loaded[current]
         visit(identifier(name))
         return {"status": "ok", "scope": scope, "skills": list(loaded.values()),
                 "trust": "reviewed_user_guidance_below_host_policy", "authority_granted": False}

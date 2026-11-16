@@ -1,5 +1,5 @@
 {
-  "version": "0.2.0b31",
+  "version": "0.2.0b32",
   "module": "suite",
   "api": "1.0",
   "companion_contract": "1.0",
@@ -11,5 +11,6 @@
   "installation_base_commit": "36b6b72b",
   "installation_extension": "Local-only first-run, bounded recovery, installer transfer and private backup/restore",
   "integration_manifest": "docs/integration/20261025/SOURCE_MANIFEST.json",
-  "portability_evidence": "docs/evidence/linux-completion-20261116/RESULTS.md"
+  "portability_evidence": "docs/evidence/linux-completion-20261116/RESULTS.md",
+  "audit_evidence": "../docs/development/AUDIT_20261117.md"
 }

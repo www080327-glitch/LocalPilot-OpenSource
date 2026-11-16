@@ -1,4 +1,5 @@
 """P0 causal verification and parent/child accounting: scripted models/AX, real files/API."""
+from contextlib import nullcontext
 from copy import deepcopy
 import json
 from pathlib import Path
@@ -148,17 +149,13 @@ class P0ReliabilityTests(unittest.TestCase):
         backend = Backend(answer(None, call("delegate", {"task": "set input", "backend_preference": "cloud", "read_only": False}, "delegate")),
             answer(None, call("inspect_tree", {"app": APP}, "child-read")), write, recover, answer("verified"))
         service = self.service(backend, computer)
-        t = self.settle(service, service.create_task(TaskRequest("set input"))["id"])
-        if unknown:
-            def fault(*args, **kwargs):
-                computer.state = __import__("computer.runtime", fromlist=["ControlState"]).ControlState.RESYNC
-                computer.pause_requested.set()
-                return {"status": "error", "error": "action_outcome_unknown", "action_sent": None,
-                    "action_may_have_applied": True, "verified": None, "postcondition": condition(), "app": APP}
-            with patch.object(computer, "act", side_effect=fault):
-                t = self.action(service, t)
-        else:
-            t = self.action(service, t)
+        def fault(*args, **kwargs):
+            computer.state = __import__("computer.runtime", fromlist=["ControlState"]).ControlState.RESYNC
+            computer.pause_requested.set()
+            return {"status": "error", "error": "action_outcome_unknown", "action_sent": None,
+                "action_may_have_applied": True, "verified": None, "postcondition": condition(), "app": APP}
+        with patch.object(computer, "act", side_effect=fault) if unknown else nullcontext():
+            t = self.settle(service, service.create_task(TaskRequest("set input"))["id"])
         self.assertEqual(t["status"], "requires_human")
         self.assertTrue([r for r in t["tools"] if r["name"] == "set_value" and r.get("worker_id")])
         self.assertTrue(self.sessions[-1]._computer_pending_actions()[0])
@@ -251,8 +248,7 @@ class P0ReliabilityTests(unittest.TestCase):
         backend = Backend(answer(None, call("delegate", {"task": "create then error", "backend_preference": "cloud", "read_only": False}, "delegate")),
             create("first.txt"), RuntimeError("injected worker failure"), answer("parent claims completion"))
         service = self.service(backend)
-        t = self.settle(service, service.create_task(TaskRequest("work"))["id"])
-        done = self.action(service, t)
+        done = self.settle(service, service.create_task(TaskRequest("work"))["id"])
         self.assertEqual(done["status"], "incomplete")
         self.assertEqual(len([r for r in done["tools"] if r["name"] == "apply_patch" and r["payload"].get("ok")]), 1)
         self.assertEqual(done["result"]["runtime_metrics"]["model_attempts"], 4)
@@ -377,8 +373,7 @@ class P0ReliabilityTests(unittest.TestCase):
         backend = Backend(answer(None, call("delegate", {"task": "set new", "backend_preference": "cloud", "read_only": False}, "delegate")),
             answer(None, call("inspect_tree", {"app": APP}, "read")), write, answer("must not run"))
         service = self.service(backend, computer)
-        t = self.settle(service, service.create_task(TaskRequest("set new"))["id"])
-        service.act(t["id"], "approve", t["required_action"]["id"])
+        t = service.create_task(TaskRequest("set new"))
         try:
             self.assertTrue(entered.wait(3))
             service.cancel(t["id"])
@@ -399,8 +394,7 @@ class P0ReliabilityTests(unittest.TestCase):
             answer(None, call("read_file", {"path": "note.txt"}, "same")), answer("child"), answer("parent"), answer("next"))
         (self.root / "note.txt").write_text("fact")
         service = self.service(backend)
-        t = self.settle(service, service.create_task(TaskRequest("read"))["id"])
-        done = self.action(service, t)
+        done = self.settle(service, service.create_task(TaskRequest("read"))["id"])
         self.assertEqual(done["status"], "completed")
         ids = [r["receipt_id"] for r in done["tools"]]
         self.assertEqual(len(ids), len(set(ids)))
@@ -431,9 +425,8 @@ class P0ReliabilityTests(unittest.TestCase):
             if session.depth:
                 computer.take_over()
             return original(session, task)
-        t = self.settle(service, service.create_task(TaskRequest("work"))["id"])
         with patch.object(AgentSession, "run_turn", pause_child):
-            t = self.action(service, t)
+            t = self.settle(service, service.create_task(TaskRequest("work"))["id"])
         self.assertEqual(t["status"], "requires_human")
         done = self.action(service, t, "resume")
         self.assertEqual(done["status"], "incomplete")

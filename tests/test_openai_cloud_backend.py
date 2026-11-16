@@ -12,6 +12,7 @@ import unittest
 from unittest.mock import patch
 
 from agent.backends import Message
+from agent.cloud_credentials import CloudCredentialError
 from agent.local_http import LocalBackendError
 from agent.persistence import backend_identity
 from agent.policy import DataPolicy
@@ -42,7 +43,7 @@ class OpenAICloudConfigurationTests(unittest.TestCase):
 
     def test_missing_key_plain_http_and_local_template_rejected(self):
         with patch.dict(os.environ, {"OPENAI_API_KEY": ""}):
-            with self.assertRaisesRegex(ValueError, "explicit API token"):
+            with self.assertRaisesRegex(CloudCredentialError, "missing_credentials"):
                 build_backend({"kind": "openai", "model": "fixture"}, DataPolicy())
         for options in ({"base_url": "http://127.0.0.1:9/v1"},
                         {"chat_template_kwargs": {"enable_thinking": False}}):
@@ -68,7 +69,7 @@ class OpenAICloudConfigurationTests(unittest.TestCase):
 
 
 @unittest.skipUnless(shutil.which("openssl"), "Local TLS fixture requires openssl")
-class OpenAICloudTransportTests(unittest.TestCase):
+class OpenAICloudFixture(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.cert_dir = tempfile.TemporaryDirectory()
@@ -100,6 +101,8 @@ class OpenAICloudTransportTests(unittest.TestCase):
         return build_backend({"kind": "openai", "model": "mock-local",
                               "base_url": self.model.base_url, **options}, DataPolicy())
 
+
+class OpenAICloudTransportTests(OpenAICloudFixture):
     def test_json_tool_call_and_sse_report_reasoning_usage(self):
         backend = self.backend(capabilities={"reasoning": True}, reasoning_efforts=["low"])
         self.model.add(completion(calls=[tool_call("read_file", {"path": "fact.txt"})]))

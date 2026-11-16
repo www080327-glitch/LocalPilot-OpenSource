@@ -24,6 +24,7 @@ HUMAN_EVENTS = {"ComputerFallbackRequired", "ComputerFocusRequired", "ComputerRe
                 "ComputerHumanTakeover"}
 HUMAN_ERRORS = {"secure_element_requires_human", "unsupported_action", "foreground_action_required",
                 "background_contract_unknown", "locked_or_unknown", "accessibility_not_trusted"}
+MAX_TASK_TIMEOUT = 24 * 60 * 60
 
 
 def identifier(prefix):
@@ -112,6 +113,7 @@ class TaskRecord:
     generation: int = 0
     control_pending: bool = False
     deadline: float | None = None
+    timeout_seconds: float | None = None
     recovery: dict | None = None
     host_action: dict | None = None
     request_key_digest: str | None = None
@@ -128,12 +130,14 @@ class TaskService:
     Sessions/tasks are bounded; an optional store restores durable checkpoints.
     """
     def __init__(self, routes, *, max_sessions=64, max_tasks=512, max_events=4096,
-                 max_timeout=3600, persistence=None, auto_resume=False, async_policy=None,
+                 max_timeout=MAX_TASK_TIMEOUT, persistence=None, auto_resume=False, async_policy=None,
                  session_initializer=None, resource_finalizer=None, configuration_migration=None):
         if not routes or not all(isinstance(k, str) and callable(v) for k, v in routes.items()):
             raise ValueError("routes must map logical model IDs to AgentSession factories")
         if any(type(v) is not int or v <= 0 for v in (max_sessions, max_tasks, max_events, max_timeout)):
             raise ValueError("Service limits must be positive integers")
+        if max_timeout > MAX_TASK_TIMEOUT:
+            raise ValueError(f'Maximum task timeout is {MAX_TASK_TIMEOUT} seconds')
         self.routes = dict(routes)
         self.session_initializer = session_initializer
         self.resource_finalizer = resource_finalizer
@@ -498,6 +502,7 @@ class TaskService:
                 output_cap = session.runtime.budgets.max_output_tokens
             task.output_cap = output_cap
             task.deadline = time.time() + timeout
+            task.timeout_seconds = timeout
             task.timer = threading.Timer(timeout, lambda: self.cancel(task.id, "timed_out"))
             task.timer.daemon = True
             self._emit(task, "task.created", self._snapshot(task))
@@ -737,6 +742,7 @@ class TaskService:
         return deepcopy({"id": task.id, "object": "localpilot.task", "session_id": task.session_id,
             'user_input':question,**metadata,'pause_requested':session.active_task==task.id and session.runtime._host_pause_requested,
             "model": task.model, "session_model": session.model, "previous_task_id": task.previous_task_id, "created_at": task.created_at,
+            'deadline': task.deadline, 'timeout_seconds': task.timeout_seconds,
             "status": task.status, "quiescent": not task.executing and not task.control_pending, "result": task.result,
             "streamed_text": task.pending_text if task.executing else "",
             "required_action": task.required_action, "error": task.error, "output": task.output,

@@ -12,10 +12,6 @@ def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=True).encode()).hexdigest()
 
 
-def regular_path(path):
-    return private_file(path)
-
-
 class Store:
     def __init__(self, directory, configuration):
         root = canonical_path(directory)
@@ -26,7 +22,7 @@ class Store:
         self.owner = self.db = None
         try:
             for name in ('owner.sqlite3', 'owner.sqlite3-journal', 'channels.sqlite3', 'channels.sqlite3-wal', 'channels.sqlite3-shm'):
-                regular_path(root / name)
+                private_file(root / name)
             private_file(root / 'owner.sqlite3', create=True)
             private_file(root / 'channels.sqlite3', create=True)
             self.owner = sqlite3.connect(root / 'owner.sqlite3', timeout=0, check_same_thread=False)
@@ -42,8 +38,6 @@ class Store:
             if old is not None and old != configuration:
                 raise ValueError('channel_configuration_changed_explicit_migration_required')
             self.put('configuration', configuration)
-            for name in ('owner.sqlite3', 'channels.sqlite3', 'channels.sqlite3-wal', 'channels.sqlite3-shm'):
-                regular_path(root / name)
         except Exception:
             self.close()
             raise

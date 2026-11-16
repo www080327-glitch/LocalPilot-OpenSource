@@ -20,6 +20,7 @@ from urllib.parse import urlsplit
 from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_opener
 
 from companion.observers.events import redact_text
+from companion.config import MAX_AGENT_TASK_TIMEOUT_SECONDS
 
 
 STATUSES = {"queued", "running", "cancelling", "completed", "incomplete", "failed",
@@ -244,9 +245,9 @@ class LocalPilotProvider:
         self.task_timeout = getattr(config, "localpilot_task_timeout_seconds", 120)
         self.max_context = getattr(config, "localpilot_max_context_chars", 16000)
         self.max_input_bytes = 4096
-        for value in (self.timeout, self.task_timeout):
-            if type(value) not in (int, float) or not math.isfinite(value) or not 0 < value <= 3600:
-                raise ValueError("LocalPilot timeouts must be finite within (0, 3600]")
+        for value, limit in ((self.timeout, 3600), (self.task_timeout, MAX_AGENT_TASK_TIMEOUT_SECONDS)):
+            if type(value) not in (int, float) or not math.isfinite(value) or not 0 < value <= limit:
+                raise ValueError(f"LocalPilot timeouts must be finite within (0, {limit}]")
         if not isinstance(self.key_env, str) or not ENV_NAME.fullmatch(self.key_env):
             raise ValueError("LocalPilot API key environment variable name is invalid")
         if not isinstance(self.route, str) or not self.route or len(self.route) > 160:

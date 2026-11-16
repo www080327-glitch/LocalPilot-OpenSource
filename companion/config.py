@@ -12,6 +12,7 @@ def path(value):
 
 
 SENSITIVE = {".ssh", ".gnupg", ".aws", ".azure", ".config", ".git", ".venv", "node_modules", "Keychains", "Cookies", "Login Data"}
+MAX_AGENT_TASK_TIMEOUT_SECONDS = 86400
 
 
 def default_data_dir():
@@ -263,7 +264,7 @@ class Config:
                 raise ValueError(f"{key} must be finite and positive")
         if c.observation_raw_ttl_days > c.observation_ttl_days:
             raise ValueError("Raw observation retention exceeds event retention")
-        if c.localpilot_timeout_seconds > 120 or c.localpilot_task_timeout_seconds > 3600:
+        if c.localpilot_timeout_seconds > 120 or c.localpilot_task_timeout_seconds > MAX_AGENT_TASK_TIMEOUT_SECONDS:
             raise ValueError("LocalPilot timeout exceeds bounded limit")
         if c.localpilot_api_key_env and not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", c.localpilot_api_key_env):
             raise ValueError("Invalid LocalPilot API key environment name")

@@ -1,6 +1,6 @@
 # LocalPilot Desktop
 
-2026-11-16 source candidate: Desktop **5.0.1-rc.9**; Core **5.0.0b26**; Suite **0.2.0b31**; Companion **0.5.7b7**; Channels **0.1.0a3**. Linux 原生桌面、离线模块资源和 DEB 构建入口已接入；本轮构建基线为 Debian 13 x86_64 / 系统 CPython 3.13。Intel Mac 仍待物理设备验收。本源码候选不是已发布的新 Release。
+2026-11-17 source candidate: Desktop **5.0.1-rc.10**; Core **5.0.0b27**; Suite **0.2.0b32**; Companion **0.5.7b8**; Channels **0.1.0a4**. Linux 原生桌面、离线模块资源和 DEB 构建入口已接入；本轮构建基线为 Debian 13 x86_64 / 系统 CPython 3.13。Intel Mac 仍待物理设备验收。本源码候选不是已发布的新 Release。
 
 ## 快速安装
 

@@ -55,9 +55,9 @@ python3 ../scripts/check-candidate-versions.py
 python3 scripts/check-bundled-backends.py --arch "$LP_GUI_ARCH"
 [ ! -e "$LP_GUI_OUTPUT" ] || { echo 'Existing output preserved' >&2; exit 1; }
 if [ -n "${LP_GUI_TEST_CONFIG:-}" ]; then
-  npm run tauri -- build --bundles app --config "$LP_GUI_TEST_CONFIG"
+  npm run tauri -- build --bundles app --config "$LP_GUI_TEST_CONFIG" -- --locked
 else
-  npm run tauri -- build --bundles app
+  npm run tauri -- build --bundles app -- --locked
 fi
 # C dependencies can retain host paths in Mach-O debug symbols even when Rust
 # source locations are remapped. Strip only this newly generated ad-hoc APP.

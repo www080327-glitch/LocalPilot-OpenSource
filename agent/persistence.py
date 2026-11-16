@@ -199,8 +199,9 @@ def snapshot_runtime(runtime):
         snapshot['host_acceptance'] = runtime.verification_callback.identity
     if getattr(runtime.registry, 'plugin_manager', None):
         snapshot['plugin_namespace'] = runtime._plugin_namespace
-    if getattr(runtime, '_child_tool_contract_revision', None) == 1:
-        snapshot['child_tool_contract'] = {'revision': 1, 'schemas_sha256': digest(dumps(runtime.registry.schemas()))}
+    revision = getattr(runtime, '_child_tool_contract_revision', None)
+    if revision in (1, 2):
+        snapshot['child_tool_contract'] = {'revision': revision, 'schemas_sha256': digest(dumps(runtime.registry.schemas()))}
     if runtime.async_policy:
         snapshot['async'] = {'policy': policy_snapshot(runtime.async_policy)}
     if runtime.finalization_policy:
@@ -348,10 +349,14 @@ def restore_runtime(runtime, data, *, conservative_interrupts=False, child_paren
         record = next(r for r in runtime.subagents if r["id"] == worker_id)
         from .child_sessions import create_child
         contract = child_data.get('child_tool_contract')
+        revision = contract['revision'] if contract else None
+        if revision not in (None, 1, 2):
+            raise PersistenceError('Unsupported child tool contract')
         child = create_child(runtime, record, SessionBudgets(**child_data['budgets']),
             unpack(child_data['fields'])['thinking_mode'],
-            source=(child_parents or {}).get(worker_id), inherit_tools=contract is not None)
-        if contract is not None and contract != {'revision': 1, 'schemas_sha256': digest(dumps(child.registry.schemas()))}:
+            source=(child_parents or {}).get(worker_id), inherit_tools=contract is not None,
+            inherit_profile=revision == 2)
+        if contract is not None and contract != {'revision': revision, 'schemas_sha256': digest(dumps(child.registry.schemas()))}:
             child.close()
             raise PersistenceError('Child tool contract changed')
         restore_runtime(child, child_data, conservative_interrupts=bool(runtime.finalization_policy or runtime.async_policy or conservative_interrupts))

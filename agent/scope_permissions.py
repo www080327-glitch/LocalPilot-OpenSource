@@ -14,7 +14,7 @@ from .safety import READ_TOOLS, sensitive_path
 from .permission_context import dispatch_access
 
 FILE_TOOLS = READ_TOOLS | {'make_directory', 'move_file', 'copy_file', 'apply_patch'}
-MODES = {'isolated', 'request', 'workspace', 'full'}
+MODES = {'isolated', 'request', 'workspace', 'full', 'ask', 'safe', 'uncertain'}
 
 
 def configure(registry, mode, private_roots=(), revision=1):

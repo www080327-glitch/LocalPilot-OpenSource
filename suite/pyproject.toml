@@ -3,12 +3,12 @@ requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 [project]
 name = "localpilot-suite"
-version = "0.2.0b31"
+version = "0.2.0b32"
 description = "Thin installation and CLI coordination for independent LocalPilot and Companion services"
 requires-python = ">=3.11"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
-dependencies = ["localpilot-agent-service>=5.0.0b26,<6", "localpilot-companion>=0.5.7b7,<0.6"]
+dependencies = ["localpilot-agent-service>=5.0.0b27,<6", "localpilot-companion>=0.5.7b8,<0.6"]
 [project.scripts]
 localpilot = "localpilot_suite.cli:main"
 [tool.setuptools.packages.find]

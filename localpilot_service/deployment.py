@@ -14,7 +14,6 @@ from agent.session import AgentSession, SessionBudgets
 from localpilot_api.service import TaskService
 from .security import AccessPolicy, Principal, private_json
 from .server import ServiceServer
-from .backend_contract import generation_options
 from .route_backends import build_backend, cooperation_routes, initial_backend, CLOUD_KINDS
 from .verification import configured_verifier, configured_execution_check
 
@@ -65,7 +64,7 @@ def build(config_path):
         if kind in {"vllm", "remote-vllm", "omlx", "local-openai", "remote-openai"}:
             allowed.update({"include_stream_usage", "chat_template_kwargs"})
         if kind == "openai":
-            allowed.add("include_stream_usage")
+            allowed.update({"include_stream_usage", "protocol"})
         if kind == "deepseek":
             allowed.add("agent_engine")
         if set(backend_spec) - allowed:
@@ -74,7 +73,6 @@ def build(config_path):
             raise ValueError("Unknown agent engine")
         if type(backend_spec.get("include_stream_usage", False)) is not bool:
             raise ValueError("include_stream_usage must be a boolean host option")
-        generation_options(backend_spec.get("generation_parameters", {}))
         cloud = kind in CLOUD_KINDS
         workers, cooperative_policy, cooperative_profiles = cooperation_routes(name, spec, config['routes'], workspace)
         partner = bool(workers)

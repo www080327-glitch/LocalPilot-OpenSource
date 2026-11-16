@@ -1100,7 +1100,9 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
 
     def _runtime_preapproved(self, target):
         return self.permission_mode == "full-permission" and (
-            target == "local" or self.hybrid is not None and self.hybrid.policy.egress.mode == "CLOUD_ALLOWED")
+            target == "local" or self.hybrid is not None and self.hybrid.policy.egress.mode == "CLOUD_ALLOWED"
+            or self.hybrid is None and self.routing_policy == RoutingPolicy.CLOUD_ONLY
+            and not self.hard_data_policy.local_only)
 
     def _switch_request(self, call, args):
         target = args["target"]

@@ -16,12 +16,24 @@ class PluginTool:
         self.kind, self.name, self.schema = kind, name, schema
         validate_schema(schema)
         self.policy = deepcopy(item["review"])
+        self.prompt_schemas = {}
+        if kind == 'prompt':
+            for prompt in item['catalog']['prompts']:
+                self.prompt_schemas[prompt['name']] = {'type': 'object',
+                    'properties': {arg['name']: {'type': 'string'} for arg in prompt.get('arguments', [])},
+                    'required': [arg['name'] for arg in prompt.get('arguments', []) if arg.get('required')],
+                    'additionalProperties': False}
+
+    def _requires_host_approval(self):
+        return self.registry.gateway.mode != 'full-permission'
 
     def validate_arguments(self, arguments):
         # Validate before AgentSession persists a dispatch intent.
         validate_input(arguments, self.schema)
         if self.kind == "tool" and self.policy["tools"][self.name].get("argument_schema"):
             validate_input(arguments, self.policy["tools"][self.name]["argument_schema"])
+        if self.kind == 'prompt':
+            validate_input(arguments.get('arguments', {}), self.prompt_schemas[arguments['name']])
 
     def permission_resource(self, arguments):
         item = self.manager.get(self.server)
@@ -102,7 +114,7 @@ def attach(registry, home, *, agent=True):
                                 strip_prose(child)
                 strip_prose(parameters)
                 registry.register(name, function, ToolRiskMetadata(read_only=not mutating, mutating=mutating,
-                    external_side_effect=mutating, network_access=policy["network_access"], requires_host_approval=True),
+                    external_side_effect=mutating, network_access=policy["network_access"]),
                     schema={"type": "function", "function": {"name": name,
                         "description": "External MCP server " + item["config"]["id"] + ". Host review: " + summary,
                         "parameters": parameters}})

@@ -153,7 +153,7 @@ class PluginManager:
             item.update(review=deepcopy(policy), enabled=False, generation=uuid.uuid4().hex)
             save_json(self._path(server), item)
         self._close(server)
-        return {"id": server, "status": "reviewed_disabled", "per_call_gateway_approval": True}
+        return {"id": server, "status": "reviewed_disabled", "approval_policy": "per_call_except_full_permission"}
 
     def enable(self, server, enabled=True):
         with locked(self.home):
@@ -209,7 +209,7 @@ class PluginManager:
             raise ValueError("Reviewed source changed")
 
     def invoke(self, server, kind, name, arguments, *, generation, request_id, cancel_event=None):
-        """Called only by the registered Gateway adapter, after host approval."""
+        """Called by the Gateway adapter after the host permission decision."""
         if not isinstance(request_id, str) or not 1 <= len(request_id) <= 512:
             raise ValueError('A bounded stable host operation identity is required')
         self.cancelled.clear()
@@ -222,19 +222,6 @@ class PluginManager:
         observation = kind != "tool" or policy["tools"][name]["effect"] == "observation"
         if kind == "tool":
             tool = next(t for t in item["catalog"]["tools"] if t["name"] == name)
-            validate_input(arguments, tool["inputSchema"])
-            if policy["tools"][name].get("argument_schema"):
-                validate_input(arguments, policy["tools"][name]["argument_schema"])
-        elif kind == "resource":
-            if arguments["uri"] not in policy["resources"]:
-                raise ValueError("Resource URI has not been reviewed")
-        elif kind == "prompt":
-            if arguments["name"] not in policy["prompts"]:
-                raise ValueError("Prompt has not been reviewed")
-            prompt = next(p for p in item["catalog"]["prompts"] if p["name"] == arguments["name"])
-            fields = {arg["name"]: {"type": "string"} for arg in prompt.get("arguments", [])}
-            validate_input(arguments.get("arguments", {}), {"type": "object", "properties": fields,
-                "required": [arg["name"] for arg in prompt.get("arguments", []) if arg.get("required")], "additionalProperties": False})
         secrets = list(self._credentials(item["config"]).values())
         signature = digest([server, generation, kind, name, arguments])
         key = digest([server, request_id])
@@ -302,7 +289,7 @@ class PluginManager:
                          "resource_scope": policy["scope"], "plugin_egress": policy["plugin_egress"],
                          "network_access": policy["network_access"],
                          'network_observation': 'UNKNOWN_downstream_network_not_OS_monitored',
-                         'scope_enforcement': 'Host_argument_schema_and_per_call_approval; process_or_remote_internals_unobservable'}, secrets)
+                         'scope_enforcement': 'Host_argument_schema_and_permission_policy; process_or_remote_internals_unobservable'}, secrets)
         # Bound before persisting or returning; truncation preserves UNKNOWN.
         if len(json.dumps(result).encode()) > 48000:
             result.pop("data", None)

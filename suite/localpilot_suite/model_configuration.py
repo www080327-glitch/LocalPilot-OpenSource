@@ -281,13 +281,13 @@ def local_endpoint_url(endpoint):
     if not isinstance(endpoint, str):
         raise ValueError('Local endpoint must be a URL')
     try:
-        parsed = urlsplit(endpoint)
+        parsed = urlsplit(endpoint.strip())
         loopback = parsed.hostname == 'localhost' or ipaddress.ip_address(parsed.hostname).is_loopback
-        port = parsed.port
+        port = parsed.port if parsed.port is not None else 80
     except (ValueError, TypeError):
         raise ValueError('A direct local OpenAI-compatible endpoint such as http://127.0.0.1:1234/v1 is required') from None
     if (parsed.scheme != 'http' or not loopback or not port or parsed.username or parsed.password
-            or parsed.query or parsed.fragment or parsed.path.rstrip('/') != '/v1'):
+            or parsed.query or parsed.fragment or parsed.path.rstrip('/') not in {'', '/v1'}):
         raise ValueError('A direct local OpenAI-compatible endpoint such as http://127.0.0.1:1234/v1 is required')
     host = '127.0.0.1' if parsed.hostname == 'localhost' else parsed.hostname
     if ':' in host:

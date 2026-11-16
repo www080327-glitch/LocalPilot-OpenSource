@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { listen } from "@tauri-apps/api/event";
 import { call } from "../bridge";
 import type { PetSettings } from "./policy";
+import { petEvents } from "./events";
+import { measurePetAnimation } from "./animationProbe";
+import type { EdgePack, EdgePresentation, PetAsset, RenderPart } from "./types";
 const W = 240,
   H = 220;
 export default function EdgeCharacter({
@@ -11,49 +13,46 @@ export default function EdgeCharacter({
   nativePointer,
   aside,
 }: {
-  asset: any;
+  asset: PetAsset | null;
   settings: PetSettings;
   systemReduce: boolean;
   nativePointer: boolean;
   aside: string;
 }) {
-  const [edge, setEdge] = useState<any>(null),
-    [pack, setPack] = useState<any>(null),
+  const [edge, setEdge] = useState<EdgePresentation | null>(null),
+    [pack, setPack] = useState<EdgePack | undefined>(),
     [error, setError] = useState("");
   const pointer = useRef<{ x: number; y: number; dragged: boolean } | null>(
     null,
   );
   useEffect(() => setPack(asset?.edge), [asset]);
   useEffect(() => {
-    let stopped = false;
-    const stops: (() => void)[] = [];
-    const sub = async (name: string, fn: (v: any) => void) => {
-      const stop = await listen(name, (e) => {
-        if (!stopped) fn(e.payload);
-      });
-      if (stopped) stop();
-      else stops.push(stop);
-    };
-    void sub("pet-edge", setEdge);
-    void sub("pet-edge-asset", setPack);
-    void call("pet_edge", { action: "state" })
+    const events = petEvents((error) => setError(String(error)));
+    let stopProbe = () => {};
+    void events.on<EdgePresentation>("pet-edge", setEdge);
+    void events.on<EdgePack>("pet-edge-asset", setPack);
+    void events.on("pet-measure-animation", () => {
+      stopProbe();
+      stopProbe = measurePetAnimation((error) => setError(String(error)));
+    });
+    void call<EdgePresentation>("pet_edge", { action: "state" })
       .then(setEdge)
       .catch((e) => setError(String(e)));
     return () => {
-      stopped = true;
-      stops.forEach((s) => s());
+      events.close();
+      stopProbe();
     };
   }, []);
   const act = (action: string) =>
     void call("pet_edge", { action }).catch((e) => setError(String(e)));
   const sourceFor = (name: string) =>
     name === "legacy" ? asset : name === "edge" ? pack : pack?.extras?.[name];
-  const art = (part: any, cls: string) => {
+  const art = (part: RenderPart | null | undefined, cls: string) => {
     if (!part) return null;
     const src = sourceFor(part.source);
-    if (!src?.url) return null;
-    const r = part.rect || [0, 0, 1, 1],
-      b = part.box || [0, 0, 0, 0],
+    if (!src?.url || !src.width || !src.height) return null;
+    const r = part.rect,
+      b = part.box,
       scale = b[2] / r[2];
     return (
       <span
@@ -65,11 +64,11 @@ export default function EdgeCharacter({
           top: b[1],
           width: b[2],
           height: b[3],
-          opacity: part.opacity ?? 1,
+          opacity: part.opacity,
           backgroundImage: `url(${src.url})`,
           backgroundSize: `${src.width * scale}px ${src.height * scale}px`,
           backgroundPosition: `${-r[0] * scale}px ${-r[1] * scale}px`,
-          transform: `rotate(${part.angle || 0}deg)`,
+          transform: `rotate(${part.angle}deg)`,
           transformOrigin: "50% 50%",
         }}
       />
@@ -77,7 +76,8 @@ export default function EdgeCharacter({
   };
   const r = edge?.render,
     chat = edge?.chat_box || [0, 0, 140, 104];
-  const working = ["thinking", "executing"].includes(edge?.activity);
+  const working =
+    edge?.activity === "thinking" || edge?.activity === "executing";
   const caption = settings.quiet
     ? "聊聊…"
     : working
@@ -92,7 +92,12 @@ export default function EdgeCharacter({
       data-working={working}
       data-anchor={edge?.anchor}
       data-direction={edge?.direction}
-      data-reduce={systemReduce || !settings.animation || settings.quiet}
+      data-reduce={
+        systemReduce ||
+        !settings.animation ||
+        settings.quiet ||
+        edge?.motion === false
+      }
       style={{ width: W, height: H, transform: `scale(${settings.size})` }}
     >
       <button
@@ -127,7 +132,7 @@ export default function EdgeCharacter({
           {art(r, "edge-main")}
         </span>
         {art(r?.tail, "edge-tail")}
-        {r?.water > 0 && (
+        {r && r.water > 0 && (
           <svg
             className="edge-water"
             viewBox="0 0 240 20"

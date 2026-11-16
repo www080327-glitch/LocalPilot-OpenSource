@@ -73,6 +73,17 @@ class FullPermissionRoutingTests(unittest.TestCase):
         self.assertEqual(runtime.pending_approval["kind"], "delegate")
         self.assertEqual(cloud.requests, [])
 
+    def test_cloud_only_full_delegate_reuses_configured_cloud_authorization(self):
+        cloud = Backend(answer(None, call('delegate', {'task': 'Summarize the public task.',
+            'backend_preference': 'cloud', 'read_only': True})),
+            answer('Worker summary.'), answer('Collected summary.'))
+        runtime = self.runtime(None, cloud, policy='cloud-only')
+        result = runtime.run_turn('Delegate the public summary.')
+        self.assertEqual(result.status, 'completed')
+        self.assertEqual(len(cloud.requests), 3)
+        self.assertIsNone(runtime.pending_approval)
+        self.assertEqual(runtime.subagents[0]['status'], 'completed')
+
     def test_full_permission_retains_explicit_local_only_boundary(self):
         local = Local(answer(None, switch("cloud")), answer("Cloud is unavailable under local-only policy."))
         cloud = Backend(answer("Must not be requested"))

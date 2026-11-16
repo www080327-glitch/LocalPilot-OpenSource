@@ -90,7 +90,14 @@ class ToolRegistry:
         with dispatch_access(self.gateway.mode == "full-permission"):
             return self._call(name, arguments, approved=approved, receipt_id=receipt_id, scope_approval=scope_approval)
 
-    def _call(self, name, arguments, *, approved=False, receipt_id=None, scope_approval=None):
+    def _call_prevalidated(self, name, arguments, *, approved=False, receipt_id=None, scope_approval=None):
+        """AgentSession already validated this proposal before its durable intent."""
+        from .permission_context import dispatch_access
+        with dispatch_access(self.gateway.mode == 'full-permission'):
+            return self._call(name, arguments, approved=approved, receipt_id=receipt_id,
+                              scope_approval=scope_approval, validated=True)
+
+    def _call(self, name, arguments, *, approved=False, receipt_id=None, scope_approval=None, validated=False):
         """Dispatch only host-registered tools; model arguments cannot change policy."""
         self.last_dispatch_started = False
         self.last_read_receipt = None
@@ -109,9 +116,10 @@ class ToolRegistry:
             raise ValueError("Tool arguments cannot override workspace or permission policy.")
         from .scope_permissions import workspace_arguments
         arguments = workspace_arguments(self, name, arguments)
-        validate_arguments(name, arguments, self.schemas())
-        self.validate_extension_arguments(name, arguments)
-        inspect.signature(function).bind(workspace_root=self.workspace_root, **arguments)
+        if not validated:
+            validate_arguments(name, arguments, self.schemas())
+            self.validate_extension_arguments(name, arguments)
+            inspect.signature(function).bind(workspace_root=self.workspace_root, **arguments)
         from .scope_permissions import proposal, execute as scoped_execute
         request = proposal(self, name, arguments)
         if request:

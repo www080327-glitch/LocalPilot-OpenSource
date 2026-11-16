@@ -689,7 +689,13 @@ pub async fn configure_cloud_key(
     n: State<'_, Native>,
     key: String,
     confirmed: bool,
+    provider: Option<String>,
+    model: Option<String>,
 ) -> Result<Value, String> {
+    let provider = provider.as_deref().unwrap_or("deepseek");
+    if !["deepseek", "openai"].contains(&provider) {
+        return Err(fail("不支持此云端提供商"));
+    }
     if !confirmed
         || key.len() < 16
         || key.len() > 512
@@ -701,7 +707,7 @@ pub async fn configure_cloud_key(
     fs::create_dir_all(&root).map_err(|_| fail("无法保存密钥"))?;
     fs::set_permissions(&root, fs::Permissions::from_mode(0o700))
         .map_err(|_| fail("密钥目录权限错误"))?;
-    let path = root.join(format!("deepseek-{}.key", uuid::Uuid::new_v4()));
+    let path = root.join(format!("{provider}-{}.key", uuid::Uuid::new_v4()));
     use std::io::Write;
     let mut f = fs::OpenOptions::new()
         .write(true)
@@ -712,14 +718,15 @@ pub async fn configure_cloud_key(
     f.write_all(key.as_bytes())
         .map_err(|_| fail("密钥保存失败"))?;
     f.sync_all().map_err(|_| fail("密钥未持久化"))?;
-    checked_cli(
-        current(&n),
-        vec![
-            "cloud-configure".into(),
-            format!("--key-file={}", path.display()),
-        ],
-    )
-    .await
+    let mut args = vec![
+        "cloud-configure".into(),
+        format!("--key-file={}", path.display()),
+        format!("--provider={provider}"),
+    ];
+    if let Some(model) = model {
+        args.push(format!("--model={model}"));
+    }
+    checked_cli(current(&n), args).await
 }
 #[tauri::command]
 pub async fn pet_expand(app: tauri::AppHandle, expanded: bool) -> Result<(), String> {
