@@ -192,9 +192,12 @@ class SessionWorkers:
         self._usage.extend(child._usage[accounted.get("usage", 0):])
         accounted["usage"] = len(child._usage)
         for receipt in child.tool_history[accounted.get("receipts", 0):]:
-            self.tool_history.append({**deepcopy(receipt), "turn_id": self.turn_id,
+            projected = {**deepcopy(receipt), "turn_id": self.turn_id,
                 "worker_id": worker_id, "source_turn_id": receipt["turn_id"],
-                "receipt_id": f"worker:{worker_id}/{receipt['receipt_id']}"})
+                "receipt_id": f"worker:{worker_id}/{receipt['receipt_id']}"}
+            if receipt.get('repaired_proposals'):
+                projected['repaired_proposals'] = [f"worker:{worker_id}/{rid}" for rid in receipt['repaired_proposals']]
+            self.tool_history.append(projected)
         if len(child.tool_history) != accounted.get("receipts", 0):
             self.working.cache.invalidate()
         accounted["receipts"] = len(child.tool_history)
@@ -220,11 +223,11 @@ class SessionWorkers:
             if (payload.get("ok") and not receipt.get("receipt_reused")) or rejected:
                 unfinished.pop(signature, None)
                 repaired = set(receipt.get('repaired_proposals', []))
-                # Child receipt IDs gain the worker prefix when projected into parent.
+                # Older projections retained child-local repair references.
                 for old_signature, old_receipt in list(unfinished.items()):
                     old_id = old_receipt['receipt_id']
                     source_id = old_id.split('/', 1)[1] if old_receipt.get('worker_id') else old_id
-                    if old_receipt.get('worker_id') == receipt.get('worker_id') and source_id in repaired:
+                    if old_receipt.get('worker_id') == receipt.get('worker_id') and (old_id in repaired or source_id in repaired):
                         unfinished.pop(old_signature)
             elif receipt.get("worker_id") == worker_id:
                 # Capability denial is failed work, not the host withdrawing

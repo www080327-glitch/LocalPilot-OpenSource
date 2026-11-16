@@ -10,7 +10,7 @@ LocalPilot 采用 Apache 2.0 开源协议，致力于让强大、易用且低成
 
 ## 当前源码组件版本
 
-本源码树包含 Desktop **5.0.1-rc.10**、Core **5.0.0b27**、Suite **0.2.0b32**、Companion **0.5.7b8** 和独立 Channels **0.1.0a4**。源码版本不代表已经发布或通过全部原生安装验收；可用发行资产以 GitHub Releases 为准。
+本源码树包含 Desktop **5.0.1-rc.11**、Core **5.0.0b28**、Suite **0.2.0b32**、Companion **0.5.7b8** 和独立 Channels **0.1.0a4**。源码版本不代表已经发布或通过全部原生安装验收；可用发行资产以 GitHub Releases 为准。
 
 本轮增加完整权限下的显式长任务预算、OpenAI Responses 接入、Super Agent 实际模型验证，以及桌宠 30 Hz 动画和交互修正。四类各 10 项独立修复、逐项证据和未完成的平台验收统一记录在 [本轮完整审计](docs/development/AUDIT_20261117.md)。公开 ITBench-AA 测试只使用 40 道公开题与 LocalPilot 自身运行时；其结果不是 Artificial Analysis 官方榜单分数。两小时运行、最终原生包与公开题评测以该报告的实际状态为准。
 

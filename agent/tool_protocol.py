@@ -127,3 +127,28 @@ def resolves_patch_rejection(rejected, successful):
         return False
 
 
+def resolves_shell_rejection(rejected, successful):
+    """Settle only an undispatched Shell proposal whose timeout was corrected."""
+    import json
+    failed, completed = rejected['payload'].get('result'), successful['payload'].get('result')
+    if (rejected['name'] != 'shell' or successful['name'] != 'shell'
+            or rejected['payload'].get('error', {}).get('type') != 'schema_validation'
+            or not isinstance(failed, dict) or failed.get('stage') != 'not_dispatched'
+            or failed.get('action_sent') is not False or failed.get('action_may_have_applied') is not False
+            or rejected.get('side_effect_status') != 'not_completed'
+            or not successful['payload'].get('ok') or successful.get('receipt_reused')
+            or successful.get('side_effect_status') != 'completed'
+            or not isinstance(completed, dict) or completed.get('process_completed') is not True
+            or rejected.get('worker_id') != successful.get('worker_id')):
+        return False
+    try:
+        before, after = json.loads(rejected['arguments']), json.loads(successful['arguments'])
+        if not isinstance(before, dict) or before.get('command') != after['command']:
+            return False
+        before.pop('timeout', None)
+        after.pop('timeout', None)
+        return before == after
+    except (ValueError, KeyError, TypeError):
+        return False
+
+

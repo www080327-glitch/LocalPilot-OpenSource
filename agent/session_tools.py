@@ -279,7 +279,8 @@ class SessionToolCalls:
         partial_effect = isinstance(result, dict) and (bool(result.get("applied")) or result.get("action_sent") is True) and not payload.get("ok")
         unknown_effect = isinstance(result, dict) and result.get("action_may_have_applied") is True
         from .host_tools import qualified_shell
-        completed_shell_failure = (qualified_shell(self.registry,call.name) and isinstance(result,dict)
+        host_shell = qualified_shell(self.registry, call.name)
+        completed_shell_failure = (host_shell and isinstance(result,dict)
             and result.get('status')=='nonzero_exit' and result.get('process_completed') is True)
         record = {"signature": self._signature(call), "arguments": call.arguments,
                   "payload": deepcopy(payload), "read_receipt": deepcopy(read_receipt),
@@ -289,10 +290,11 @@ class SessionToolCalls:
                   "side_effect_status": "unknown" if unknown_effect else "failed_process" if completed_shell_failure else "partial" if partial_effect else "completed" if payload.get("ok") else "not_completed"}
         context = self._call_context.pop(self._call_key(call), {})
         record["receipt_reused"] = context.pop("receipt_reused", False)
-        from .tool_protocol import resolves_patch_rejection
+        from .tool_protocol import resolves_patch_rejection, resolves_shell_rejection
         current = {'name': call.name, **record}
         repaired_proposals = [r['receipt_id'] for r in self.tool_history
-            if r['turn_id'] == self.turn_id and resolves_patch_rejection(r, current)]
+            if r['turn_id'] == self.turn_id and (resolves_patch_rejection(r, current)
+                or host_shell and resolves_shell_rejection(r, current))]
         if repaired_proposals:
             record['repaired_proposals'] = repaired_proposals
         if self.computer:
