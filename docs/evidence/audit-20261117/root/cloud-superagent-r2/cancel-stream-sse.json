@@ -1,0 +1,320 @@
+[
+  {
+    "event": "task.created",
+    "data": {
+      "sequence": 1,
+      "type": "task.created",
+      "task_id": "resp_62062d38a6e64ca59e42e5f946b29c9c",
+      "session_id": "sess_8ecf590438b741eca7560b5ed09796d6",
+      "data": {
+        "id": "resp_62062d38a6e64ca59e42e5f946b29c9c",
+        "object": "localpilot.task",
+        "session_id": "sess_8ecf590438b741eca7560b5ed09796d6",
+        "user_input": "Write the integers from 1 to 10000, one per line, without skipping any.",
+        "execution_model": "gpt-6-luna",
+        "desktop_options": null,
+        "thinking": {
+          "requested": null,
+          "effective": "medium",
+          "supported": [
+            "none",
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ]
+        },
+        "pause_requested": false,
+        "model": "companion-reasoning",
+        "session_model": "companion-reasoning",
+        "previous_task_id": null,
+        "created_at": 1794849160,
+        "deadline": 1794849520.4296587,
+        "timeout_seconds": 360,
+        "status": "queued",
+        "quiescent": true,
+        "result": null,
+        "streamed_text": "",
+        "required_action": null,
+        "error": null,
+        "output": [],
+        "tools": [],
+        "goals": [],
+        "subagents": [],
+        "computer": null,
+        "completion": null,
+        "last_event_id": 0,
+        "service": {
+          "request_id": "req_f94e4c4159b843f3a7407f35ae395464",
+          "client_subject": "http",
+          "route_decision": {
+            "selection": "explicit",
+            "selected": "companion-reasoning",
+            "backend_model": "gpt-6-luna",
+            "decisions": [
+              {
+                "model": "companion-reasoning",
+                "reason": "selected"
+              }
+            ],
+            "backend_fallback": false
+          },
+          "origin_agent": "http",
+          "parent_task_id": null,
+          "external_delegation_depth": 1,
+          "external_redelegation_allowed": false,
+          "low_power_consent": false
+        }
+      }
+    }
+  },
+  {
+    "event": "task.status",
+    "data": {
+      "sequence": 2,
+      "type": "task.status",
+      "task_id": "resp_62062d38a6e64ca59e42e5f946b29c9c",
+      "session_id": "sess_8ecf590438b741eca7560b5ed09796d6",
+      "data": {
+        "id": "resp_62062d38a6e64ca59e42e5f946b29c9c",
+        "object": "localpilot.task",
+        "session_id": "sess_8ecf590438b741eca7560b5ed09796d6",
+        "user_input": "Write the integers from 1 to 10000, one per line, without skipping any.",
+        "execution_model": "gpt-6-luna",
+        "desktop_options": null,
+        "thinking": {
+          "requested": null,
+          "effective": "medium",
+          "supported": [
+            "none",
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ]
+        },
+        "pause_requested": false,
+        "model": "companion-reasoning",
+        "session_model": "companion-reasoning",
+        "previous_task_id": null,
+        "created_at": 1794849160,
+        "deadline": 1794849520.4296587,
+        "timeout_seconds": 360,
+        "status": "running",
+        "quiescent": false,
+        "result": null,
+        "streamed_text": "",
+        "required_action": null,
+        "error": null,
+        "output": [],
+        "tools": [],
+        "goals": [],
+        "subagents": [],
+        "computer": null,
+        "completion": null,
+        "last_event_id": 1,
+        "service": {
+          "request_id": "req_f94e4c4159b843f3a7407f35ae395464",
+          "client_subject": "http",
+          "route_decision": {
+            "selection": "explicit",
+            "selected": "companion-reasoning",
+            "backend_model": "gpt-6-luna",
+            "decisions": [
+              {
+                "model": "companion-reasoning",
+                "reason": "selected"
+              }
+            ],
+            "backend_fallback": false
+          },
+          "origin_agent": "http",
+          "parent_task_id": null,
+          "external_delegation_depth": 1,
+          "external_redelegation_allowed": false,
+          "low_power_consent": false
+        }
+      }
+    }
+  },
+  {
+    "event": "runtime.event",
+    "data": {
+      "sequence": 3,
+      "type": "runtime.event",
+      "task_id": "resp_62062d38a6e64ca59e42e5f946b29c9c",
+      "session_id": "sess_8ecf590438b741eca7560b5ed09796d6",
+      "data": {
+        "sequence": 2,
+        "type": "TurnStarted",
+        "data": {
+          "planning": false
+        },
+        "turn_id": 1,
+        "timestamp": "2026-11-16T17:12:40.432740+00:00"
+      }
+    }
+  },
+  {
+    "event": "runtime.event",
+    "data": {
+      "sequence": 4,
+      "type": "runtime.event",
+      "task_id": "resp_62062d38a6e64ca59e42e5f946b29c9c",
+      "session_id": "sess_8ecf590438b741eca7560b5ed09796d6",
+      "data": {
+        "sequence": 3,
+        "type": "CloudEgressDecision",
+        "data": {
+          "request_sha256": "3d7db46da247ed7ecb1c4dffa4db0bcb19c876ae719e610822e352b427fd2d0f",
+          "backend_id": "selected",
+          "handoff_sha256": "530ff2c9fd2acc6c38721d3d7616c65cbb0f9f350348bdb074b5850aa2f60090",
+          "bytes": 3498,
+          "categories": [
+            "task",
+            "canonical_receipt_metadata",
+            "tool_schema"
+          ],
+          "allowed_body_paths": [],
+          "reason": "current task model inference; minimum canonical handoff",
+          "decision": "allowed"
+        },
+        "turn_id": 1,
+        "timestamp": "2026-11-16T17:12:40.435015+00:00"
+      }
+    }
+  },
+  {
+    "event": "runtime.event",
+    "data": {
+      "sequence": 5,
+      "type": "runtime.event",
+      "task_id": "resp_62062d38a6e64ca59e42e5f946b29c9c",
+      "session_id": "sess_8ecf590438b741eca7560b5ed09796d6",
+      "data": {
+        "sequence": 4,
+        "type": "ModelRequestStarted",
+        "data": {
+          "primary": "cloud",
+          "model": "gpt-6-luna",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "parent"
+        },
+        "turn_id": 1,
+        "timestamp": "2026-11-16T17:12:40.435324+00:00"
+      }
+    }
+  },
+  {
+    "event": "runtime.event",
+    "data": {
+      "sequence": 6,
+      "type": "runtime.event",
+      "task_id": "resp_62062d38a6e64ca59e42e5f946b29c9c",
+      "session_id": "sess_8ecf590438b741eca7560b5ed09796d6",
+      "data": {
+        "sequence": 5,
+        "type": "ModelBudgetEstimated",
+        "data": {
+          "estimator": "mixed_text_estimate_v1",
+          "context_capacity_units": 1050000,
+          "request_units": 822,
+          "remaining_context_units": 1040922,
+          "remaining_turn_units": 67108864,
+          "legacy_turn_request_bytes": 2402,
+          "estimated_context_tokens": {
+            "input_tokens": 822,
+            "output_tokens": 8192,
+            "margin_tokens": 64,
+            "total_tokens": 9078,
+            "estimator": "mixed_text_estimate_v1",
+            "measured": false
+          },
+          "max_output_tokens": 8192,
+          "protected_final_units": 33834
+        },
+        "turn_id": 1,
+        "timestamp": "2026-11-16T17:12:40.435349+00:00"
+      }
+    }
+  },
+  {
+    "event": "runtime.event",
+    "data": {
+      "sequence": 7,
+      "type": "runtime.event",
+      "task_id": "resp_62062d38a6e64ca59e42e5f946b29c9c",
+      "session_id": "sess_8ecf590438b741eca7560b5ed09796d6",
+      "data": {
+        "sequence": 6,
+        "type": "ModelAttempt",
+        "data": {
+          "attempt": 1,
+          "request_bytes": 2402,
+          "role": "parent",
+          "phase": "exploring"
+        },
+        "turn_id": 1,
+        "timestamp": "2026-11-16T17:12:40.435379+00:00"
+      }
+    }
+  },
+  {
+    "event": "runtime.event",
+    "data": {
+      "sequence": 8,
+      "type": "runtime.event",
+      "task_id": "resp_62062d38a6e64ca59e42e5f946b29c9c",
+      "session_id": "sess_8ecf590438b741eca7560b5ed09796d6",
+      "data": {
+        "sequence": 7,
+        "type": "HybridModelDispatchAuthorized",
+        "data": {
+          "attempt_id": 0,
+          "backend_id": "selected"
+        },
+        "turn_id": 1,
+        "timestamp": "2026-11-16T17:12:40.437656+00:00"
+      }
+    }
+  },
+  {
+    "event": "runtime.event",
+    "data": {
+      "sequence": 9,
+      "type": "runtime.event",
+      "task_id": "resp_62062d38a6e64ca59e42e5f946b29c9c",
+      "session_id": "sess_8ecf590438b741eca7560b5ed09796d6",
+      "data": {
+        "sequence": 8,
+        "type": "ModelResponseStarted",
+        "data": {
+          "primary": "cloud"
+        },
+        "turn_id": 1,
+        "timestamp": "2026-11-16T17:12:40.438409+00:00"
+      }
+    }
+  },
+  {
+    "event": "runtime.event",
+    "data": {
+      "sequence": 10,
+      "type": "runtime.event",
+      "task_id": "resp_62062d38a6e64ca59e42e5f946b29c9c",
+      "session_id": "sess_8ecf590438b741eca7560b5ed09796d6",
+      "data": {
+        "sequence": 9,
+        "type": "TextDelta",
+        "data": {
+          "text": "I"
+        },
+        "turn_id": 1,
+        "timestamp": "2026-11-16T17:12:59.192716+00:00"
+      }
+    }
+  }
+]

@@ -1,0 +1,228 @@
+{
+  "id": "resp_62062d38a6e64ca59e42e5f946b29c9c",
+  "object": "localpilot.task",
+  "session_id": "sess_8ecf590438b741eca7560b5ed09796d6",
+  "user_input": "Write the integers from 1 to 10000, one per line, without skipping any.",
+  "execution_model": "gpt-6-luna",
+  "desktop_options": null,
+  "thinking": {
+    "requested": null,
+    "effective": "medium",
+    "supported": [
+      "none",
+      "low",
+      "medium",
+      "high",
+      "xhigh",
+      "max"
+    ]
+  },
+  "pause_requested": false,
+  "model": "companion-reasoning",
+  "session_model": "companion-reasoning",
+  "previous_task_id": null,
+  "created_at": 1794849160,
+  "deadline": 1794849520.4296587,
+  "timeout_seconds": 360,
+  "status": "cancelled",
+  "quiescent": true,
+  "result": {
+    "text": "Turn stopped by the host.",
+    "prompt_version": "localpilot-v5-v1",
+    "status": "cancelled",
+    "runtime_status": "cancelled",
+    "deliverable_status": "incomplete",
+    "verification_status": "not_run",
+    "engineering_status": "incomplete",
+    "task_outcome": "incomplete",
+    "task_succeeded": false,
+    "verification": null,
+    "runtime_metrics": {
+      "model_attempts": 1,
+      "request_utf8_bytes": 2402,
+      "response_bytes": 0,
+      "response_bytes_source": "complete_responses_only",
+      "failed_attempts": 1,
+      "failed_attempt_provider_usage": null,
+      "admission_units": 133474,
+      "finalization_reason": null,
+      "final_reserve_units": 33834,
+      "state_bytes": 1473,
+      "cache_bytes": 0,
+      "hybrid": {
+        "calls": 1,
+        "actual_api_cost": "UNKNOWN",
+        "local_resource_cost": "adapter_wall_seconds_only",
+        "backend_id": "selected",
+        "generation": 0,
+        "switching_overhead_seconds": 0,
+        "by_backend": {
+          "selected": {
+            "kind": "cloud",
+            "calls": 1,
+            "known_input_tokens": 0,
+            "known_output_tokens": 0,
+            "unknown_usage_calls": 1,
+            "known_request_wall_seconds": 18.765820264816284,
+            "known_inference_seconds": 18.763574838638306,
+            "known_queue_seconds": 0.0022516250610351562,
+            "unknown_inference_time_calls": 0,
+            "unknown_latency_calls": 0,
+            "estimated_api_cost_usd": null,
+            "cost_source": "host_rate_estimate_only",
+            "configured_models": [
+              "gpt-6-luna"
+            ],
+            "prompt_cache_hit_tokens": null,
+            "prompt_cache_miss_tokens": null,
+            "cache_hit_ratio": null,
+            "cache_usage_unknown_calls": 1,
+            "wall_output_tokens_per_second": 0.0,
+            "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+          }
+        },
+        "source_mix": {
+          "scope": "current_task_including_children",
+          "by_source": {
+            "local": {
+              "admitted_requests": 0,
+              "dispatched_requests": 0,
+              "request_share": 0.0,
+              "known_input_output_tokens": 0,
+              "token_share": null,
+              "unknown_usage_requests": 0
+            },
+            "cloud": {
+              "admitted_requests": 1,
+              "dispatched_requests": 1,
+              "request_share": 1.0,
+              "known_input_output_tokens": 0,
+              "token_share": null,
+              "unknown_usage_requests": 1
+            }
+          },
+          "requests_without_dispatch_evidence": 0,
+          "token_share_status": "UNKNOWN",
+          "actual_cost_status": "UNKNOWN"
+        }
+      }
+    },
+    "completion": {
+      "execution": "settled",
+      "delivery": "incomplete",
+      "attempts": 0,
+      "history": [],
+      "readiness": null,
+      "ledger_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "receipt_count": 0,
+      "obligations": {
+        "pending_approval": false,
+        "queued_calls": 0,
+        "unfinished_goals": 0,
+        "unfinished_workers": 0,
+        "worker_obligations": false,
+        "computer_obligations": 0,
+        "unfinished_handoff": 0,
+        "unknown_receipts": 0,
+        "mutation_intent": false
+      }
+    },
+    "tool_budget": {
+      "tool_count": 0,
+      "schema_utf8_bytes": 2,
+      "prompt_utf8_bytes": 0,
+      "schema_tokens": null,
+      "prompt_tokens": null,
+      "estimated_schema_tokens_bytes_div_4": 1,
+      "estimated_prompt_tokens_bytes_div_4": 0,
+      "token_count_status": "estimate_only_without_tokenizer",
+      "scope": "Compact JSON schemas and raw prompt; excludes provider framing, chat template, task and history."
+    },
+    "prompt_profile": "minimal_0",
+    "tool_profile": "compact",
+    "total_steps": 0,
+    "total_tool_calls": 0,
+    "reported_models": [],
+    "model_latency_seconds": 0,
+    "cache": {
+      "status": "unavailable",
+      "hit_tokens": null,
+      "miss_tokens": null,
+      "hit_ratio": null
+    },
+    "model_calls": [],
+    "runtime_metrics_scope": "latest_runtime_turn"
+  },
+  "streamed_text": "",
+  "required_action": null,
+  "error": null,
+  "output": [
+    {
+      "role": "assistant",
+      "content": "I",
+      "status": "incomplete"
+    }
+  ],
+  "tools": [],
+  "goals": [],
+  "subagents": [],
+  "computer": null,
+  "completion": {
+    "execution": "settled",
+    "delivery": "incomplete",
+    "attempts": 0,
+    "history": [],
+    "readiness": null,
+    "ledger_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "receipt_count": 0,
+    "obligations": {
+      "pending_approval": false,
+      "queued_calls": 0,
+      "unfinished_goals": 0,
+      "unfinished_workers": 0,
+      "worker_obligations": false,
+      "computer_obligations": 0,
+      "unfinished_handoff": 0,
+      "unknown_receipts": 0,
+      "mutation_intent": false
+    }
+  },
+  "last_event_id": 18,
+  "service": {
+    "request_id": "req_f94e4c4159b843f3a7407f35ae395464",
+    "client_subject": "http",
+    "route_decision": {
+      "selection": "explicit",
+      "selected": "companion-reasoning",
+      "backend_model": "gpt-6-luna",
+      "decisions": [
+        {
+          "model": "companion-reasoning",
+          "reason": "selected"
+        }
+      ],
+      "backend_fallback": false
+    },
+    "origin_agent": "http",
+    "parent_task_id": null,
+    "external_delegation_depth": 1,
+    "external_redelegation_allowed": false,
+    "low_power_consent": false
+  },
+  "receipt_summary": {
+    "count": 0,
+    "unknown_effects": 0
+  },
+  "file_operation_verification": {
+    "status": "NOT_RUN",
+    "scope": "filesystem effects only",
+    "receipts": 0
+  },
+  "verification_summary": {
+    "runtime_status": "cancelled",
+    "deliverable_status": "incomplete",
+    "verification_status": "not_run",
+    "engineering_status": "incomplete",
+    "task_outcome": "incomplete"
+  }
+}

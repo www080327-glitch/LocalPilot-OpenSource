@@ -1,0 +1,25 @@
+test_openai_routes_use_private_file_despite_inherited_default_environment (test_cloud_credential_configuration.CloudCredentialConfigurationTests.test_openai_routes_use_private_file_despite_inherited_default_environment) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.015s
+
+OK
+test_default_http_port_is_a_valid_local_endpoint (test_local_endpoint_portability.LocalEndpointDiscoveryTests.test_default_http_port_is_a_valid_local_endpoint) ... ok
+test_first_run_catalog_and_discovery_do_not_initialize_or_infer (test_local_endpoint_portability.LocalEndpointDiscoveryTests.test_first_run_catalog_and_discovery_do_not_initialize_or_infer) ... ok
+test_invalid_models_and_redirect_are_reported_without_inference (test_local_endpoint_portability.LocalEndpointDiscoveryTests.test_invalid_models_and_redirect_are_reported_without_inference) ... ok
+test_pasted_server_origin_is_normalized_before_catalog_request (test_local_endpoint_portability.LocalEndpointDiscoveryTests.test_pasted_server_origin_is_normalized_before_catalog_request) ... ok
+test_wrong_urls_are_rejected_before_network_or_files (test_local_endpoint_portability.LocalEndpointDiscoveryTests.test_wrong_urls_are_rejected_before_network_or_files) ... ok
+test_cloud_provider_setup_preserves_local_routes_and_existing_sessions (test_local_endpoint_portability.PortableSetupProcessTests.test_cloud_provider_setup_preserves_local_routes_and_existing_sessions) ... ok
+test_cloud_setup_failure_restores_both_configs_and_services (test_local_endpoint_portability.PortableSetupProcessTests.test_cloud_setup_failure_restores_both_configs_and_services) ... /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py:1127: ResourceWarning: subprocess 87 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py:1127: ResourceWarning: subprocess 94 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_first_run_save_activate_and_reopen_keep_existing_session (test_local_endpoint_portability.PortableSetupProcessTests.test_first_run_save_activate_and_reopen_keep_existing_session) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 28.437s
+
+OK

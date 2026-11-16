@@ -1,0 +1,49 @@
+{
+  "measurement": "real WebKit rAF observations of laid-out sprite geometry, opacity, transform and sprite crop; phase averages; not monitor photometry",
+  "target_fps": 30,
+  "minimum_qualified_phase_average_fps": 24,
+  "source_atlas_frames_per_direction": 8,
+  "device_pixel_ratio": 1,
+  "samples": [
+    {
+      "sample": "animation-click-1.json",
+      "mode": "RETRACTING",
+      "sample_duration_ms": 1150,
+      "raf_observations": 66,
+      "raf_fps": 56.52173913043478,
+      "visual_changes": 34,
+      "visual_change_fps": 29.1005291005291,
+      "passes_24_fps_phase_average": true
+    },
+    {
+      "sample": "animation-click-1.json",
+      "mode": "PEEKING",
+      "sample_duration_ms": 1339,
+      "raf_observations": 81,
+      "raf_fps": 59.74607916355489,
+      "visual_changes": 39,
+      "visual_change_fps": 29.45736434108527,
+      "passes_24_fps_phase_average": true
+    },
+    {
+      "sample": "animation-same-side-2.json",
+      "mode": "RETRACTING",
+      "sample_duration_ms": 1136,
+      "raf_observations": 71,
+      "raf_fps": 61.61971830985915,
+      "visual_changes": 31,
+      "visual_change_fps": 26.785714285714285,
+      "passes_24_fps_phase_average": true
+    },
+    {
+      "sample": "animation-same-side-2.json",
+      "mode": "PEEKING",
+      "sample_duration_ms": 1347,
+      "raf_observations": 83,
+      "raf_fps": 60.87602078693393,
+      "visual_changes": 39,
+      "visual_change_fps": 29.253271747498076,
+      "passes_24_fps_phase_average": true
+    }
+  ]
+}

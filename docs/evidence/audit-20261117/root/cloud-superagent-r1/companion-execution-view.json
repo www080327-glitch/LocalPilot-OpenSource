@@ -1,0 +1,403 @@
+{
+  "status": "completed",
+  "phase": "completed",
+  "task_id": "resp_90ec51ccd6db4b458164d0aea4495cdc",
+  "session_id": "sess_6214d70836d04cdfadf9c648a3ab36c8",
+  "quiescent": true,
+  "task_execution": "completed",
+  "agent_response": "LP-LINUX-REAL-7319",
+  "reasoning_help_requested": false,
+  "semantic_status": "UNVERIFIED",
+  "goal_verified": false,
+  "unknown_mutation": false,
+  "cache_usage": {
+    "status": "PROVIDER_REPORTED",
+    "input_tokens": 5114,
+    "output_tokens": 31,
+    "cache_hit_tokens": 1636,
+    "cache_miss_tokens": 3478,
+    "cache_hit_ratio": 0.3199061400078217,
+    "cost": "UNKNOWN_NOT_INVOICE",
+    "models": [
+      "gpt-6-luna"
+    ]
+  },
+  "runtime_status": "completed",
+  "deliverable_status": "present",
+  "route_decision": {
+    "selection": "explicit",
+    "selected": "localpilot",
+    "backend_model": "gpt-6-luna",
+    "decisions": [
+      {
+        "model": "localpilot",
+        "reason": "selected"
+      }
+    ],
+    "backend_fallback": false
+  },
+  "model_resource": null,
+  "required_action": null,
+  "recovery": null,
+  "error": null,
+  "completion": {
+    "execution": "settled",
+    "delivery": "delivered",
+    "attempts": 1,
+    "history": [
+      {
+        "attempt": 1,
+        "kind": "delivered",
+        "text_sha256": "959bdcb21748f9ffb3fd3a703c0748c5f095c1743352a65b7b4c7546dc12a6bf",
+        "ledger_sha256": "722b3f3e97a3983a1492b78eec411c1619fcd474a824e8c535f4aad492827b63"
+      }
+    ],
+    "readiness": null,
+    "ledger_sha256": "722b3f3e97a3983a1492b78eec411c1619fcd474a824e8c535f4aad492827b63",
+    "receipt_count": 1,
+    "obligations": {
+      "pending_approval": false,
+      "queued_calls": 0,
+      "unfinished_goals": 0,
+      "unfinished_workers": 0,
+      "worker_obligations": false,
+      "computer_obligations": 0,
+      "unfinished_handoff": 0,
+      "unknown_receipts": 0,
+      "mutation_intent": false
+    }
+  },
+  "verification_status": "not_run",
+  "engineering_status": "unverified",
+  "last_event_id": 35,
+  "task": {
+    "id": "resp_90ec51ccd6db4b458164d0aea4495cdc",
+    "object": "localpilot.task",
+    "session_id": "sess_6214d70836d04cdfadf9c648a3ab36c8",
+    "user_input": "Use read_file to read fact.txt. Return its complete contents.",
+    "execution_model": "gpt-6-luna",
+    "desktop_options": {
+      "permission_mode": "full",
+      "agent_profile": "standard",
+      "prompt_revision": 2,
+      "scope_revision": 3
+    },
+    "thinking": {
+      "requested": null,
+      "effective": "medium",
+      "supported": [
+        "none",
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ]
+    },
+    "pause_requested": false,
+    "model": "localpilot",
+    "session_model": "localpilot",
+    "previous_task_id": null,
+    "created_at": 1794849110,
+    "deadline": 1794849470.811535,
+    "timeout_seconds": 360,
+    "status": "completed",
+    "quiescent": true,
+    "result": {
+      "text": "LP-LINUX-REAL-7319",
+      "prompt_version": "localpilot-v5-v1",
+      "status": "completed",
+      "runtime_status": "completed",
+      "deliverable_status": "present",
+      "verification_status": "not_run",
+      "engineering_status": "unverified",
+      "task_outcome": "unverified",
+      "task_succeeded": false,
+      "verification": null,
+      "runtime_metrics": {
+        "model_attempts": 2,
+        "request_utf8_bytes": 31267,
+        "response_bytes": 917,
+        "response_bytes_source": "complete_responses_only",
+        "failed_attempts": 0,
+        "failed_attempt_provider_usage": null,
+        "admission_units": 32184,
+        "finalization_reason": null,
+        "final_reserve_units": 39718,
+        "state_bytes": 2104,
+        "cache_bytes": 479,
+        "hybrid": {
+          "calls": 2,
+          "actual_api_cost": "UNKNOWN",
+          "local_resource_cost": "adapter_wall_seconds_only",
+          "backend_id": "selected",
+          "generation": 0,
+          "switching_overhead_seconds": 0,
+          "by_backend": {
+            "selected": {
+              "kind": "cloud",
+              "calls": 2,
+              "known_input_tokens": 5114,
+              "known_output_tokens": 31,
+              "unknown_usage_calls": 0,
+              "known_request_wall_seconds": 14.711736917495728,
+              "known_inference_seconds": 14.705703496932983,
+              "known_queue_seconds": 0.006043434143066406,
+              "unknown_inference_time_calls": 0,
+              "unknown_latency_calls": 0,
+              "estimated_api_cost_usd": null,
+              "cost_source": "host_rate_estimate_only",
+              "configured_models": [
+                "gpt-6-luna"
+              ],
+              "prompt_cache_hit_tokens": 1636,
+              "prompt_cache_miss_tokens": 3478,
+              "cache_hit_ratio": 0.3199061400078217,
+              "cache_usage_unknown_calls": 0,
+              "wall_output_tokens_per_second": 2.1080256382474563,
+              "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+            }
+          },
+          "source_mix": {
+            "scope": "current_task_including_children",
+            "by_source": {
+              "local": {
+                "admitted_requests": 0,
+                "dispatched_requests": 0,
+                "request_share": 0.0,
+                "known_input_output_tokens": 0,
+                "token_share": 0.0,
+                "unknown_usage_requests": 0
+              },
+              "cloud": {
+                "admitted_requests": 2,
+                "dispatched_requests": 2,
+                "request_share": 1.0,
+                "known_input_output_tokens": 5145,
+                "token_share": 1.0,
+                "unknown_usage_requests": 0
+              }
+            },
+            "requests_without_dispatch_evidence": 0,
+            "token_share_status": "PROVIDER_REPORTED",
+            "actual_cost_status": "UNKNOWN"
+          }
+        }
+      },
+      "completion": {
+        "execution": "settled",
+        "delivery": "delivered",
+        "attempts": 1,
+        "history": [
+          {
+            "attempt": 1,
+            "kind": "delivered",
+            "text_sha256": "959bdcb21748f9ffb3fd3a703c0748c5f095c1743352a65b7b4c7546dc12a6bf",
+            "ledger_sha256": "722b3f3e97a3983a1492b78eec411c1619fcd474a824e8c535f4aad492827b63"
+          }
+        ],
+        "readiness": null,
+        "ledger_sha256": "722b3f3e97a3983a1492b78eec411c1619fcd474a824e8c535f4aad492827b63",
+        "receipt_count": 1,
+        "obligations": {
+          "pending_approval": false,
+          "queued_calls": 0,
+          "unfinished_goals": 0,
+          "unfinished_workers": 0,
+          "worker_obligations": false,
+          "computer_obligations": 0,
+          "unfinished_handoff": 0,
+          "unknown_receipts": 0,
+          "mutation_intent": false
+        }
+      },
+      "tool_budget": {
+        "tool_count": 13,
+        "schema_utf8_bytes": 4094,
+        "prompt_utf8_bytes": 1222,
+        "schema_tokens": null,
+        "prompt_tokens": null,
+        "estimated_schema_tokens_bytes_div_4": 1024,
+        "estimated_prompt_tokens_bytes_div_4": 306,
+        "token_count_status": "estimate_only_without_tokenizer",
+        "scope": "Compact JSON schemas and raw prompt; excludes provider framing, chat template, task and history."
+      },
+      "prompt_profile": "standard",
+      "tool_profile": "compact",
+      "total_steps": 2,
+      "total_tool_calls": 1,
+      "reported_models": [
+        "gpt-6-luna"
+      ],
+      "model_latency_seconds": 14.712198679000721,
+      "cache": {
+        "status": "available",
+        "hit_tokens": 1636,
+        "miss_tokens": 3478,
+        "hit_ratio": 0.3199061400078217
+      },
+      "model_calls": [
+        {
+          "latency_seconds": 7.388756259002548,
+          "tool_call_count": 1,
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 2424,
+          "reported_model": "gpt-6-luna",
+          "input_tokens": 2424,
+          "output_tokens": 19,
+          "finish_reason": "tool_calls"
+        },
+        {
+          "latency_seconds": 7.323442419998173,
+          "tool_call_count": 0,
+          "prompt_cache_hit_tokens": 1636,
+          "prompt_cache_miss_tokens": 1054,
+          "reported_model": "gpt-6-luna",
+          "input_tokens": 2690,
+          "output_tokens": 12,
+          "finish_reason": "stop"
+        }
+      ],
+      "runtime_metrics_scope": "latest_runtime_turn"
+    },
+    "streamed_text": "",
+    "required_action": null,
+    "error": null,
+    "output": [
+      {
+        "role": "assistant",
+        "content": null,
+        "tool_calls": [
+          {
+            "id": "call_bzjH1N8mBzR4QJx6NSQensoJ",
+            "type": "function",
+            "function": {
+              "name": "read_file",
+              "arguments": "{\"path\":\"fact.txt\"}"
+            }
+          }
+        ]
+      },
+      {
+        "role": "tool",
+        "content": "{\"ok\": true, \"result\": \"LP-LINUX-REAL-7319\\n\"}",
+        "tool_call_id": "call_bzjH1N8mBzR4QJx6NSQensoJ"
+      },
+      {
+        "role": "assistant",
+        "content": "LP-LINUX-REAL-7319"
+      }
+    ],
+    "tools": [
+      {
+        "turn_id": 1,
+        "id": "call_bzjH1N8mBzR4QJx6NSQensoJ",
+        "name": "read_file",
+        "signature": "8e6a1b96db631606df7489109847a2f742e8adcc7cb1143bc7e763628efce27d",
+        "arguments": "{\"path\":\"fact.txt\"}",
+        "payload": {
+          "ok": true,
+          "result": "LP-LINUX-REAL-7319\n"
+        },
+        "read_receipt": {
+          "evidence_id": "read-90c873027510e9a6",
+          "source_call_id": "call_bzjH1N8mBzR4QJx6NSQensoJ",
+          "version": {
+            "path": "fact.txt",
+            "sha256": "aedb13edc7bce268025dde5b96bfc2708138312df4b0164f03b013eb736229c5",
+            "size_bytes": 19
+          },
+          "coverage": {
+            "kind": "full_file",
+            "truncated": false,
+            "excerpt_complete": true,
+            "scope": "whole_file",
+            "excerpt_bytes": 19
+          },
+          "excerpt": {
+            "text": "LP-LINUX-REAL-7319\n",
+            "omitted_bytes": 0
+          },
+          "reused": false,
+          "new_coverage": true
+        },
+        "receipt_id": "turn:1/call:call_bzjH1N8mBzR4QJx6NSQensoJ/entry:0",
+        "status": "completed",
+        "side_effect_completed": true,
+        "side_effect_status": "completed",
+        "receipt_reused": false
+      }
+    ],
+    "goals": [],
+    "subagents": [],
+    "computer": null,
+    "completion": {
+      "execution": "settled",
+      "delivery": "delivered",
+      "attempts": 1,
+      "history": [
+        {
+          "attempt": 1,
+          "kind": "delivered",
+          "text_sha256": "959bdcb21748f9ffb3fd3a703c0748c5f095c1743352a65b7b4c7546dc12a6bf",
+          "ledger_sha256": "722b3f3e97a3983a1492b78eec411c1619fcd474a824e8c535f4aad492827b63"
+        }
+      ],
+      "readiness": null,
+      "ledger_sha256": "722b3f3e97a3983a1492b78eec411c1619fcd474a824e8c535f4aad492827b63",
+      "receipt_count": 1,
+      "obligations": {
+        "pending_approval": false,
+        "queued_calls": 0,
+        "unfinished_goals": 0,
+        "unfinished_workers": 0,
+        "worker_obligations": false,
+        "computer_obligations": 0,
+        "unfinished_handoff": 0,
+        "unknown_receipts": 0,
+        "mutation_intent": false
+      }
+    },
+    "last_event_id": 35,
+    "service": {
+      "request_id": "req_238f2044a7b4445089450fcc978c62b4",
+      "client_subject": "companion",
+      "route_decision": {
+        "selection": "explicit",
+        "selected": "localpilot",
+        "backend_model": "gpt-6-luna",
+        "decisions": [
+          {
+            "model": "localpilot",
+            "reason": "selected"
+          }
+        ],
+        "backend_fallback": false
+      },
+      "origin_agent": "companion",
+      "parent_task_id": null,
+      "external_delegation_depth": 1,
+      "external_redelegation_allowed": false,
+      "control_ticket": "3ae81292aaac4e728022f07d493c89f8",
+      "low_power_consent": false
+    },
+    "receipt_summary": {
+      "count": 1,
+      "unknown_effects": 0
+    },
+    "file_operation_verification": {
+      "status": "NOT_RUN",
+      "scope": "filesystem effects only",
+      "receipts": 0
+    },
+    "verification_summary": {
+      "runtime_status": "completed",
+      "deliverable_status": "present",
+      "verification_status": "not_run",
+      "engineering_status": "unverified",
+      "task_outcome": "unverified"
+    }
+  },
+  "progress_text": "",
+  "progress_snapshot": true
+}

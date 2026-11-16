@@ -1,0 +1,55 @@
+{
+  "recorded_at_utc": "2026-11-16T17:29:42.104522+00:00",
+  "kind": "targeted credential-source regression; real backend factories, local HTTP/TLS/SQLite; synthetic credentials and model responses",
+  "source_base_commit": "b420b97f18e452dc983c49e81cf7cfb87e7e82bb",
+  "source_dirty": true,
+  "source_sha256": {
+    "localpilot_service/route_backends.py": "c127d02ed9b9abade292c99094d24290acb3beb8e01ab6d4925bdc79429c27ae",
+    "suite/localpilot_suite/desktop_setup.py": "7a7650b98a6ed5f116fb0930567dfc048fdbb07704bcb7cf0988382e8f65acf8",
+    "tests/test_openai_credential_sources.py": "5c2f202ae06b743c8d51ea2d46e0517008772597f580006d6736efc89fe9ee5a",
+    "suite/tests/test_cloud_credential_configuration.py": "05ff6c0407a0a764a2d1e2a33dd499f8c6c0dab21d5027d3754c333027468473"
+  },
+  "groups": [
+    {
+      "name": "Core OpenAI credential sources, Responses and Chat",
+      "executed": 17,
+      "passed": 17,
+      "skipped": 0,
+      "log": "core-targeted-r1.log"
+    },
+    {
+      "name": "Suite generated cloud route credential selection",
+      "executed": 1,
+      "passed": 1,
+      "skipped": 0,
+      "log": "suite-targeted-r1.log"
+    },
+    {
+      "name": "Suite local endpoint and cloud configuration/recovery",
+      "executed": 8,
+      "passed": 8,
+      "skipped": 0,
+      "log": "suite-targeted-r1.log"
+    }
+  ],
+  "executed": 26,
+  "passed": 26,
+  "skipped": 0,
+  "failures": 0,
+  "errors": 0,
+  "external_api_calls": 0,
+  "real_credentials_read": false,
+  "commands": [
+    "python -m unittest tests.test_openai_credential_sources tests.test_openai_responses tests.test_openai_cloud_backend -v",
+    "python -m unittest discover -s suite/tests -p test_cloud_credential_configuration.py -v",
+    "python -m unittest discover -s suite/tests -p test_local_endpoint_portability.py -v"
+  ],
+  "notes": [
+    "Overlaps earlier regression groups; do not add to a deduplicated whole-project count.",
+    "Suite rollback test emitted subprocess ResourceWarning; both processes belong to its synthetic service fixture, and the test run completed OK."
+  ],
+  "log_sha256": {
+    "core-targeted-r1.log": "4b07a9382965d02cc26cfe0051210a3a78941270afc08518912aa5bccb808ae2",
+    "suite-targeted-r1.log": "97bf179830428435a11818cf534c1f7babb53c0baee04167b0282fb36691777a"
+  }
+}

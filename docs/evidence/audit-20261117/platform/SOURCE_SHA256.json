@@ -1,0 +1,24 @@
+{
+  "scope": "platform audit owned source, tests and CLI documentation; shared Core Responses source is independently owned",
+  "baseline": "b420b97",
+  "files": {
+    "suite/localpilot_suite/channel_runtime.py": "bfb029d77f6621abe487efa50f656bc28bd861d8b3549af20859394f358d67a5",
+    "suite/localpilot_suite/desktop_setup.py": "5eb5564dfa32e4a8b0a18c7f139be8f037d566c2d1f58daddcbef51150082b74",
+    "suite/localpilot_suite/channel_paths.py": "de4953d80a4951dacbb539804b98af66b42d150e37acb5dbe78b4d785a6816cb",
+    "suite/localpilot_suite/model_configuration.py": "15d2b36a68e1509851b7b09c330512787e498a4899f813192e0cc658bdb9c0a9",
+    "suite/localpilot_suite/channel_product.py": "bab46a8e7d931fa632f9451a01425d8a8b737b24f52deed536dc19b37442e36a",
+    "suite/localpilot_suite/product_control.py": "4fc4cb67394c2f960f3caa6e1729ba2c6cec942ffcce34eaeb86d761461be311",
+    "suite/localpilot_suite/cli.py": "57acd610ffb9a933d3616a356ad0b3affb9d552a0b9460d85e1c785e32869639",
+    "localpilot_channels/security.py": "de4953d80a4951dacbb539804b98af66b42d150e37acb5dbe78b4d785a6816cb",
+    "localpilot_channels/store.py": "2da5a31b84dff7ed7abbc037d1b784b98004b4dd933e06d4abdcb4b0e567524c",
+    "companion/model/backend.py": "cc8e6766d57f2a809cbb6d04242ad8539669fa72e26c3ea656937d733f8a33aa",
+    "desktop/scripts/build-macos.sh": "5dd747a2e383bf6c6a891c516d4a6330e9f211448d635d09320720587bcaa34b",
+    "tests/test_channel_review_security.py": "ceccf3050cdd37758b061410199b4f7a07b5b915b78a52f8cf413780b785b60a",
+    "suite/tests/test_channel_runtime.py": "5f50138cdf45a2178aa856ea57b892dd9d0a2b41308c568cff0cfe301c611ccf",
+    "suite/tests/test_local_endpoint_portability.py": "36f5b9c620920af94760b38e445fa46544ee78f074ae125e846ca9a615bf1c43",
+    "suite/tests/test_channel_product.py": "6f4af98e9877d26a1eee3c2d159050ceabfd163d0c5f50314c40470f1f60f850",
+    "suite/tests/test_upgrade_transaction.py": "fe8454e3eb5e93cc7816a7622ccf3c281a2a7cd573f785e5250b3e00e2b7becd",
+    "companion/tests/test_active_system_power.py": "53718bc4cb163d8fd27516af3ee30d2e06f683351cbb97ffd3a288b3030d84e2",
+    "suite/docs/SUITE_CLI.md": "1bf8bfe4c3babd00954c701180d6fcd75d4b6569b02202d62190d6c1570c782b"
+  }
+}

@@ -1,0 +1,15 @@
+command: /workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python -m unittest discover -s desktop/tests -p test_macos_artifacts.py -v
+test_current_arm_lock_requires_distinct_reviewed_intel_wheels (test_macos_artifacts.MacArtifactTests.test_current_arm_lock_requires_distinct_reviewed_intel_wheels) ... ok
+test_exact_local_artifacts_produce_a_new_lock_without_changing_versions (test_macos_artifacts.MacArtifactTests.test_exact_local_artifacts_produce_a_new_lock_without_changing_versions) ... ok
+test_existing_download_is_hash_verified_without_network_or_overwrite (test_macos_artifacts.MacArtifactTests.test_existing_download_is_hash_verified_without_network_or_overwrite) ... ok
+test_intel_wheel_requires_cpython_314_abi_and_supported_macos (test_macos_artifacts.MacArtifactTests.test_intel_wheel_requires_cpython_314_abi_and_supported_macos) ... ok
+test_lock_checks_distribution_python_requirement (test_macos_artifacts.MacArtifactTests.test_lock_checks_distribution_python_requirement) ... ok
+test_native_record_requires_matching_source_target_and_real_artifact_hash (test_macos_artifacts.MacArtifactTests.test_native_record_requires_matching_source_target_and_real_artifact_hash) ... ok
+test_platform_tags_do_not_treat_arm64_or_linux_as_intel_mac (test_macos_artifacts.MacArtifactTests.test_platform_tags_do_not_treat_arm64_or_linux_as_intel_mac) ... ok
+test_pypi_selection_uses_compatible_abi_and_skips_yanked_files (test_macos_artifacts.MacArtifactTests.test_pypi_selection_uses_compatible_abi_and_skips_yanked_files) ... ok
+test_static_openssl_license_is_bundled_and_wheel_record_is_regenerated (test_macos_artifacts.MacArtifactTests.test_static_openssl_license_is_bundled_and_wheel_record_is_regenerated) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.021s
+
+OK

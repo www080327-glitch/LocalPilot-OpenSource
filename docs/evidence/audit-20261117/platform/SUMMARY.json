@@ -1,0 +1,81 @@
+{
+  "started_utc": "2026-11-16T16:58:36.835108+00:00",
+  "head": "b420b97f18e452dc983c49e81cf7cfb87e7e82bb",
+  "source_dirty": true,
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "source_pythonpath": "absolute repository and suite paths",
+  "runs": [
+    {
+      "name": "suite",
+      "exit_code": 1,
+      "seconds": 48.328,
+      "tests": 122,
+      "skipped": 1,
+      "log": "suite-r1.log",
+      "sha256": "a407dc4d2daf0118a826acc38a7d385f5c284416167694ffcf03199c4a634c2e"
+    },
+    {
+      "name": "companion",
+      "exit_code": 0,
+      "seconds": 31.988,
+      "tests": 724,
+      "skipped": 33,
+      "log": "companion-r1.log",
+      "sha256": "96517348baf698afe7b40a545543e031738e40767545c66a92acd8f84258caba",
+      "passed": 691
+    },
+    {
+      "name": "channels",
+      "exit_code": 0,
+      "seconds": 3.634,
+      "tests": 58,
+      "skipped": 6,
+      "log": "channels-r1.log",
+      "sha256": "967bc0356913f6616093bba441071c5e398e4b94ff386be6052f7f184e06d1a4",
+      "passed": 52
+    },
+    {
+      "name": "macos-artifacts",
+      "exit_code": 0,
+      "seconds": 0.121,
+      "tests": 9,
+      "skipped": 0,
+      "log": "macos-artifacts-r1.log",
+      "sha256": "431d1cae6c48c81d65869b16181a6a4adf6efae62bcc0c9e21a3aa9b5ed4a80c",
+      "passed": 9
+    },
+    {
+      "name": "suite-final",
+      "exit_code": 0,
+      "seconds": 47.994,
+      "tests": 122,
+      "skipped": 1,
+      "log": "suite-r2.log",
+      "sha256": "b12097b61790fd1b9afcb3e91ec346274d105f56f8535bc222013b5d54a75284",
+      "passed": 121
+    }
+  ],
+  "prior_failures": [
+    {
+      "run": "suite-r1",
+      "errors": 2,
+      "reason": "Two installed-wheel assertions inherited repository PYTHONPATH; isolated -I probes now inspect the installed wheel, matching the upgrade implementation."
+    }
+  ],
+  "final": {
+    "tests": 913,
+    "passed": 873,
+    "skipped": 40,
+    "failures": 0,
+    "errors": 0,
+    "groups": [
+      "suite-final",
+      "companion",
+      "channels",
+      "macos-artifacts"
+    ],
+    "native_macos_build": "NOT_RUN",
+    "physical_macos_acceptance": "NOT_RUN",
+    "external_model_requests": "NOT_RUN_BY_PLATFORM_AUDIT"
+  }
+}

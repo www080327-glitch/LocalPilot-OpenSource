@@ -1,0 +1,50 @@
+{
+  "home": "/tmp/platform-cloud-rollback-ixjfx8ty/home",
+  "calls": [
+    {
+      "module": "core",
+      "action": "stop",
+      "result": {
+        "status": "stopped"
+      }
+    },
+    {
+      "module": "companion",
+      "action": "stop",
+      "result": {
+        "status": "stopped"
+      }
+    },
+    {
+      "module": "core",
+      "action": "stop",
+      "result": {
+        "status": "stopped"
+      }
+    },
+    {
+      "module": "companion",
+      "action": "stop",
+      "result": {
+        "status": "stopped"
+      }
+    },
+    {
+      "module": "core",
+      "action": "recover",
+      "result": {
+        "status": "ready",
+        "version": "5.0.0b21",
+        "recovered": true
+      }
+    },
+    {
+      "module": "companion",
+      "action": "recover",
+      "injected_failure": true
+    }
+  ],
+  "observed": {
+    "status": "stopped"
+  }
+}

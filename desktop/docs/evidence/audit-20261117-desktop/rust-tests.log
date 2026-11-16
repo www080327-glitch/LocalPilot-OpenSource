@@ -1,0 +1,66 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.52s
+     Running unittests src/main.rs (/workspace/scratch/2a488f6eabf5/validation/linux-20261116/desktop/target/debug/build/localpilot-desktop/4192c7b960433367/out/localpilot_desktop-4192c7b960433367)
+
+running 59 tests
+test channels::tests::rejects_shell_paths_and_webview_secrets ... ok
+test developer::tests::quote_never_interpolates_shell ... ok
+test maintenance::tests::linux_release_selection_does_not_offer_a_macos_bundle ... ok
+test maintenance::tests::archive_verification_rejects_wrong_hash_size_source_and_symlink ... ok
+test maintenance::tests::live_read_only_maintenance ... ignored, Real read-only GitHub and local APP scan; explicit low-power acceptance only
+test maintenance::tests::offline_release_failure_is_unknown ... ignored, Real GitHub client through a deliberately unreachable process proxy; no system network changes
+test maintenance::tests::recommended_v5_updates_legacy_and_edge_candidates ... ok
+test maintenance::tests::release_rejects_forged_origins_and_no_data ... ok
+test maintenance::tests::prerelease_and_draft_cannot_become_latest ... ok
+test pet_agent::tests::ambiguous_submission_cannot_be_replaced ... ok
+test maintenance::tests::release_selection_requires_the_running_architecture ... ok
+test maintenance::tests::release_selection_ignores_other_modules_and_orders_semver ... ok
+test pet_edge::tests::anchors_respect_dock_work_area_and_negative_monitors ... ok
+test pet_edge::tests::explicit_positions_keep_the_requested_side ... ok
+test pet_assets::tests::atlas_crops_each_row_once_and_preserves_frame_registration ... ok
+test pet_edge::tests::animation_steps_follow_elapsed_time_and_finish_at_the_selected_anchor ... ok
+test maintenance::tests::scanner_rejects_unrelated_apps_and_symlink_traversal ... ok
+test pet_edge::tests::native_sprite_hit_uses_the_rendered_crop_transform_and_alpha ... ok
+test pet_edge::tests::optional_comic_art_falls_back_to_the_imported_edge_pose ... ok
+test pet_edge::tests::signed_drag_uses_real_appkit_vector ... ok
+test pet_edge::tests::task_state_survives_visual_interrupts ... ok
+test pet_edge::tests::thought_bubble_hit_matches_visible_ellipse_and_dots ... ok
+test pet_native::tests::bubble_follows_the_same_thought_anchor_at_double_scale ... ok
+test pet_native::tests::edge_placement ... ok
+test pet_edge::tests::reduced_motion_relocation_has_no_dive_or_reveal_frames ... ok
+test preferences::tests::fresh_user_is_not_completed ... ok
+test preferences::tests::local_only_fails_closed_on_unknown_egress ... ok
+test preferences::tests::persistence_and_no_implicit_completion ... ok
+test preferences::tests::preferences_require_complete_negotiation ... ok
+test preferences::tests::strict_preference_validation ... ok
+test product::tests::attachment_reference_is_native_selected_and_version_bound ... ok
+test product::tests::attachment_symlink_cannot_bypass_source_selection ... ok
+test product::tests::folder_import_skips_credentials_and_tracks_byte_budget ... ok
+test pet_native::tests::negative_monitor_and_small_workarea ... ok
+test test_profile::tests::canonical_alias_reopens_the_same_test_store ... ok
+test platform::tests::revealing_attachment_does_not_execute_it ... ok
+test developer::tests::unknown_fields_and_raw_secrets_rejected ... ok
+test preferences::tests::cloud_only_selects_explicit_cloud_adapters_not_local_cloud_permission ... ok
+test test_profile::tests::test_webviews_share_a_root_store_and_separate_other_roots ... ok
+test test_profile::tests::invalid_test_root_fails_before_configuring_any_webview ... ok
+test tests::definitive_refusal_is_not_an_ambiguous_failure ... ok
+test tests::loopback_only ... ok
+test tests::pending_namespace_includes_origin_subject_and_disposition ... ok
+test tests::read_allowlist ... ok
+test test_profile::tests::ordinary_app_keeps_its_original_webview_profile ... ok
+test tests::real_core_recovery_and_identity ... ignored, starts released Core HTTP with a scripted model; set LP_GUI_TEST_PYTHON
+test tests::private_credentials_reject_public_permissions_and_shell ... ok
+test tests::sse_fragmented_unicode_and_crlf ... ok
+test tests::startup_recovery_requires_the_exact_healthy_authenticated_service ... ok
+test platform::tests::module_copy_preserves_executable_and_relative_link ... ok
+test tests::mixed_sse_line_endings ... ok
+test product::tests::image_thumbnail_is_bounded_and_preserves_original_bytes ... ok
+test tests::strips_credentials ... ok
+test tests::unrelated_sessions_do_not_inherit_pending_submission_quarantine ... ok
+test upgrades::tests::historical_app_plans_cannot_cross_daily_and_test_identities ... ok
+test developer::tests::complete_catalog_has_all_frozen_fields ... ok
+test tests::suite_tools_cannot_inject_commands_or_unreviewed_authority ... ok
+test developer::tests::data_cannot_become_extra_flags ... ok
+test developer::tests::all_developer_parameters_generate_bounded_argv ... ok
+
+test result: ok. 56 passed; 0 failed; 3 ignored; 0 measured; 0 filtered out; finished in 0.07s
+

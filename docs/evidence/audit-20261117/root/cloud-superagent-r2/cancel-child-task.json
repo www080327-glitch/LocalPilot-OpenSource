@@ -1,0 +1,600 @@
+{
+  "id": "resp_1cca43bbbbb54d20a8c08d49747a074c",
+  "object": "localpilot.task",
+  "session_id": "sess_a7ebd23fb78b4d11a49ece24f30330f3",
+  "user_input": "Delegate one cloud child with mode async and read_only false. The child must use shell to run exactly /workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python long-child.py with timeout 240. Then wait_children. Do not run the script in the parent.",
+  "execution_model": "gpt-6-luna",
+  "desktop_options": {
+    "permission_mode": "full",
+    "agent_profile": "standard",
+    "execution_budget": "standard",
+    "prompt_revision": 2,
+    "scope_revision": 3
+  },
+  "thinking": {
+    "requested": null,
+    "effective": "medium",
+    "supported": [
+      "none",
+      "low",
+      "medium",
+      "high",
+      "xhigh",
+      "max"
+    ]
+  },
+  "pause_requested": false,
+  "model": "localpilot",
+  "session_model": "localpilot",
+  "previous_task_id": null,
+  "created_at": 1794849143,
+  "deadline": 1794849503.7943106,
+  "timeout_seconds": 360,
+  "status": "cancelled",
+  "quiescent": true,
+  "result": {
+    "text": "Turn stopped by the host.",
+    "prompt_version": "localpilot-v5-v1",
+    "status": "cancelled",
+    "runtime_status": "cancelled",
+    "deliverable_status": "incomplete",
+    "verification_status": "not_run",
+    "engineering_status": "incomplete",
+    "task_outcome": "unknown",
+    "task_succeeded": false,
+    "verification": null,
+    "runtime_metrics": {
+      "model_attempts": 3,
+      "request_utf8_bytes": 49795,
+      "response_bytes": 6527,
+      "response_bytes_source": "complete_responses_only",
+      "failed_attempts": 0,
+      "failed_attempt_provider_usage": null,
+      "admission_units": 56322,
+      "finalization_reason": null,
+      "final_reserve_units": 40870,
+      "state_bytes": 3030,
+      "cache_bytes": 0,
+      "hybrid": {
+        "calls": 3,
+        "actual_api_cost": "UNKNOWN",
+        "local_resource_cost": "adapter_wall_seconds_only",
+        "backend_id": "selected",
+        "generation": 0,
+        "switching_overhead_seconds": 0,
+        "by_backend": {
+          "selected": {
+            "kind": "cloud",
+            "calls": 3,
+            "known_input_tokens": 8163,
+            "known_output_tokens": 208,
+            "unknown_usage_calls": 0,
+            "known_request_wall_seconds": 20.64437222480774,
+            "known_inference_seconds": 20.629517316818237,
+            "known_queue_seconds": 0.014890432357788086,
+            "unknown_inference_time_calls": 0,
+            "unknown_latency_calls": 0,
+            "estimated_api_cost_usd": null,
+            "cost_source": "host_rate_estimate_only",
+            "configured_models": [
+              "gpt-6-luna"
+            ],
+            "prompt_cache_hit_tokens": 4466,
+            "prompt_cache_miss_tokens": 3697,
+            "cache_hit_ratio": 0.5471027808403773,
+            "cache_usage_unknown_calls": 0,
+            "wall_output_tokens_per_second": 10.08264017066593,
+            "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+          }
+        },
+        "source_mix": {
+          "scope": "current_task_including_children",
+          "by_source": {
+            "local": {
+              "admitted_requests": 0,
+              "dispatched_requests": 0,
+              "request_share": 0.0,
+              "known_input_output_tokens": 0,
+              "token_share": 0.0,
+              "unknown_usage_requests": 0
+            },
+            "cloud": {
+              "admitted_requests": 3,
+              "dispatched_requests": 3,
+              "request_share": 1.0,
+              "known_input_output_tokens": 8371,
+              "token_share": 1.0,
+              "unknown_usage_requests": 0
+            }
+          },
+          "requests_without_dispatch_evidence": 0,
+          "token_share_status": "PROVIDER_REPORTED",
+          "actual_cost_status": "UNKNOWN"
+        }
+      }
+    },
+    "completion": {
+      "execution": "unknown_blocked",
+      "delivery": "incomplete",
+      "attempts": 0,
+      "history": [],
+      "readiness": null,
+      "ledger_sha256": "dc76679390f3a7f3410b313d6d5ed334d40f90b1b91c1028b97999a0ad6d7356",
+      "receipt_count": 3,
+      "obligations": {
+        "pending_approval": false,
+        "queued_calls": 0,
+        "unfinished_goals": 0,
+        "unfinished_workers": 0,
+        "worker_obligations": true,
+        "computer_obligations": 0,
+        "unfinished_handoff": 0,
+        "unknown_receipts": 1,
+        "mutation_intent": false
+      }
+    },
+    "tool_budget": {
+      "tool_count": 13,
+      "schema_utf8_bytes": 4094,
+      "prompt_utf8_bytes": 1222,
+      "schema_tokens": null,
+      "prompt_tokens": null,
+      "estimated_schema_tokens_bytes_div_4": 1024,
+      "estimated_prompt_tokens_bytes_div_4": 306,
+      "token_count_status": "estimate_only_without_tokenizer",
+      "scope": "Compact JSON schemas and raw prompt; excludes provider framing, chat template, task and history."
+    },
+    "prompt_profile": "standard",
+    "tool_profile": "compact",
+    "total_steps": 3,
+    "total_tool_calls": 3,
+    "reported_models": [
+      "gpt-6-luna"
+    ],
+    "model_latency_seconds": 20.646298400999513,
+    "cache": {
+      "status": "available",
+      "hit_tokens": 4466,
+      "miss_tokens": 3697,
+      "hit_ratio": 0.5471027808403773
+    },
+    "model_calls": [
+      {
+        "latency_seconds": 7.841102822996618,
+        "tool_call_count": 1,
+        "prompt_cache_hit_tokens": 1648,
+        "prompt_cache_miss_tokens": 941,
+        "reported_model": "gpt-6-luna",
+        "input_tokens": 2589,
+        "output_tokens": 136,
+        "finish_reason": "tool_calls"
+      },
+      {
+        "latency_seconds": 5.972633145000145,
+        "tool_call_count": 1,
+        "prompt_cache_hit_tokens": 1648,
+        "prompt_cache_miss_tokens": 1213,
+        "reported_model": "gpt-6-luna",
+        "input_tokens": 2861,
+        "output_tokens": 24,
+        "finish_reason": "tool_calls"
+      },
+      {
+        "latency_seconds": 6.8325624330027495,
+        "tool_call_count": 1,
+        "prompt_cache_hit_tokens": 1170,
+        "prompt_cache_miss_tokens": 1543,
+        "reported_model": "gpt-6-luna",
+        "input_tokens": 2713,
+        "output_tokens": 48,
+        "finish_reason": "tool_calls"
+      }
+    ],
+    "runtime_metrics_scope": "latest_runtime_turn"
+  },
+  "streamed_text": "",
+  "required_action": null,
+  "error": null,
+  "output": [
+    {
+      "role": "assistant",
+      "content": null,
+      "tool_calls": [
+        {
+          "id": "call_oY0ey1h9eb54XhjZ1y5KmWw3",
+          "type": "function",
+          "function": {
+            "name": "delegate",
+            "arguments": "{\"backend_preference\":\"cloud\",\"mode\":\"async\",\"read_only\":false,\"task\":\"Use the shell tool to run exactly this command: /workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python long-child.py with timeout 240. Do not run any other command. Report the shell result.\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "{\"ok\": true, \"result\": {\"status\": \"queued\", \"worker_id\": \"1.1\"}}",
+      "tool_call_id": "call_oY0ey1h9eb54XhjZ1y5KmWw3"
+    },
+    {
+      "role": "assistant",
+      "content": null,
+      "tool_calls": [
+        {
+          "id": "call_j5CEZ443daRzEt0U1EZHuFJY",
+          "type": "function",
+          "function": {
+            "name": "wait_children",
+            "arguments": "{}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "{\"ok\": true, \"result\": [{\"worker_id\": \"1.1\", \"status\": \"cancelled\", \"collected\": true, \"text\": \"Turn stopped by the host.\", \"usage\": {\"token_units\": 15319, \"tool_proposals\": 1, \"attempts\": 1, \"request_bytes\": 14612, \"response_bytes\": 707, \"failed_attempts\": 0}, \"obligation_status\": \"unresolved\", \"approval\": null, \"timeline\": [{\"event\": \"start\", \"at\": 1794849151.6707144}, {\"event\": \"cancelled\", \"at\": 1794849158.889811}]}]}",
+      "tool_call_id": "call_j5CEZ443daRzEt0U1EZHuFJY"
+    }
+  ],
+  "tools": [
+    {
+      "turn_id": 1,
+      "id": "call_oY0ey1h9eb54XhjZ1y5KmWw3",
+      "name": "delegate",
+      "signature": "cac023e233216aad75f346f38396fed477f478c52f45e0d843f113130adf75f5",
+      "arguments": "{\"backend_preference\":\"cloud\",\"mode\":\"async\",\"read_only\":false,\"task\":\"Use the shell tool to run exactly this command: /workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python long-child.py with timeout 240. Do not run any other command. Report the shell result.\"}",
+      "payload": {
+        "ok": true,
+        "result": {
+          "status": "queued",
+          "worker_id": "1.1"
+        }
+      },
+      "read_receipt": null,
+      "receipt_id": "turn:1/call:call_oY0ey1h9eb54XhjZ1y5KmWw3/entry:0",
+      "status": "completed",
+      "side_effect_completed": true,
+      "side_effect_status": "completed",
+      "receipt_reused": false
+    },
+    {
+      "turn_id": 1,
+      "id": "call_tov9JBBE1lyN6EaLhATqlOeG",
+      "name": "shell",
+      "signature": "83adc80b16a199cd4620d72407778133d18dd04cce607bda05e9c66ee6bdbc1a",
+      "arguments": "{\"command\":\"/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python long-child.py\",\"timeout\":240}",
+      "payload": {
+        "ok": false,
+        "result": {
+          "status": "cancelled",
+          "exit_code": -9,
+          "stdout": "",
+          "stderr": "",
+          "truncated": false,
+          "action_sent": true,
+          "process_completed": false,
+          "partial_effects_possible": false,
+          "action_may_have_applied": true,
+          "replay_allowed": false,
+          "verification": "NOT_RUN",
+          "network": "available",
+          "sandbox_mode": "full"
+        },
+        "error": {
+          "type": "cancelled",
+          "message": "Tool operation did not complete successfully."
+        }
+      },
+      "read_receipt": null,
+      "receipt_id": "worker:1.1/turn:1/call:call_tov9JBBE1lyN6EaLhATqlOeG/entry:0",
+      "status": "failed",
+      "side_effect_completed": true,
+      "side_effect_status": "unknown",
+      "receipt_reused": false,
+      "worker_id": "1.1",
+      "source_turn_id": 1
+    },
+    {
+      "turn_id": 1,
+      "id": "call_j5CEZ443daRzEt0U1EZHuFJY",
+      "name": "wait_children",
+      "signature": "73fc579b8ccc0592f813ec9f051f337a000070dd93aea6d4a5037d5ffe51cec2",
+      "arguments": "{}",
+      "payload": {
+        "ok": true,
+        "result": [
+          {
+            "worker_id": "1.1",
+            "status": "cancelled",
+            "collected": true,
+            "text": "Turn stopped by the host.",
+            "usage": {
+              "token_units": 15319,
+              "tool_proposals": 1,
+              "attempts": 1,
+              "request_bytes": 14612,
+              "response_bytes": 707,
+              "failed_attempts": 0
+            },
+            "obligation_status": "unresolved",
+            "approval": null,
+            "timeline": [
+              {
+                "event": "start",
+                "at": 1794849151.6707144
+              },
+              {
+                "event": "cancelled",
+                "at": 1794849158.889811
+              }
+            ]
+          }
+        ]
+      },
+      "read_receipt": null,
+      "receipt_id": "turn:1/call:call_j5CEZ443daRzEt0U1EZHuFJY/entry:2",
+      "status": "completed",
+      "side_effect_completed": true,
+      "side_effect_status": "completed",
+      "receipt_reused": false
+    }
+  ],
+  "goals": [],
+  "subagents": [
+    {
+      "id": "1.1",
+      "turn_id": 1,
+      "backend": "cloud",
+      "tier": null,
+      "provider": "openai",
+      "configured_model": "gpt-6-luna",
+      "status": "cancelled",
+      "task": "Use the shell tool to run exactly this command: /workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python long-child.py with timeout 240. Do not run any other command. Report the shell result.",
+      "permission_mode": "full-permission",
+      "read_only": false,
+      "workspace": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-superagent-r2/workspace",
+      "depth": 1,
+      "backend_id": "selected",
+      "async": true,
+      "call": {
+        "id": "call_oY0ey1h9eb54XhjZ1y5KmWw3",
+        "type": "function",
+        "function": {
+          "name": "delegate",
+          "arguments": "{\"backend_preference\":\"cloud\",\"mode\":\"async\",\"read_only\":false,\"task\":\"Use the shell tool to run exactly this command: /workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python long-child.py with timeout 240. Do not run any other command. Report the shell result.\"}"
+        }
+      },
+      "reservation": {
+        "_attempts": 30,
+        "_tool_proposals": 60,
+        "_token_units": 8388608
+      },
+      "collected": true,
+      "queued_at": 1794849151.6526933,
+      "timeline": [
+        {
+          "event": "start",
+          "at": 1794849151.6707144
+        },
+        {
+          "event": "cancelled",
+          "at": 1794849158.889811
+        }
+      ],
+      "receipts": [
+        {
+          "turn_id": 1,
+          "id": "call_tov9JBBE1lyN6EaLhATqlOeG",
+          "name": "shell",
+          "signature": "83adc80b16a199cd4620d72407778133d18dd04cce607bda05e9c66ee6bdbc1a",
+          "arguments": "{\"command\":\"/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python long-child.py\",\"timeout\":240}",
+          "payload": {
+            "ok": false,
+            "result": {
+              "status": "cancelled",
+              "exit_code": -9,
+              "stdout": "",
+              "stderr": "",
+              "truncated": false,
+              "action_sent": true,
+              "process_completed": false,
+              "partial_effects_possible": false,
+              "action_may_have_applied": true,
+              "replay_allowed": false,
+              "verification": "NOT_RUN",
+              "network": "available",
+              "sandbox_mode": "full"
+            },
+            "error": {
+              "type": "cancelled",
+              "message": "Tool operation did not complete successfully."
+            }
+          },
+          "read_receipt": null,
+          "receipt_id": "turn:1/call:call_tov9JBBE1lyN6EaLhATqlOeG/entry:0",
+          "status": "failed",
+          "side_effect_completed": true,
+          "side_effect_status": "unknown",
+          "receipt_reused": false
+        }
+      ],
+      "approval": null,
+      "pending_calls": [],
+      "usage": {
+        "token_units": 15319,
+        "tool_proposals": 1,
+        "attempts": 1,
+        "request_bytes": 14612,
+        "response_bytes": 707,
+        "failed_attempts": 0
+      },
+      "model_calls": 1,
+      "hybrid_usage": {
+        "calls": 1,
+        "actual_api_cost": "UNKNOWN",
+        "local_resource_cost": "adapter_wall_seconds_only",
+        "backend_id": "selected",
+        "generation": 0,
+        "switching_overhead_seconds": 0,
+        "by_backend": {
+          "selected": {
+            "kind": "cloud",
+            "calls": 1,
+            "known_input_tokens": 2713,
+            "known_output_tokens": 48,
+            "unknown_usage_calls": 0,
+            "known_request_wall_seconds": 6.832226753234863,
+            "known_inference_seconds": 6.824065208435059,
+            "known_queue_seconds": 0.008169174194335938,
+            "unknown_inference_time_calls": 0,
+            "unknown_latency_calls": 0,
+            "estimated_api_cost_usd": null,
+            "cost_source": "host_rate_estimate_only",
+            "configured_models": [
+              "gpt-6-luna"
+            ],
+            "prompt_cache_hit_tokens": 1170,
+            "prompt_cache_miss_tokens": 1543,
+            "cache_hit_ratio": 0.4312569111684482,
+            "cache_usage_unknown_calls": 0,
+            "wall_output_tokens_per_second": 7.033930440856337,
+            "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+          }
+        },
+        "source_mix": {
+          "scope": "current_task_including_children",
+          "by_source": {
+            "local": {
+              "admitted_requests": 0,
+              "dispatched_requests": 0,
+              "request_share": 0.0,
+              "known_input_output_tokens": 0,
+              "token_share": 0.0,
+              "unknown_usage_requests": 0
+            },
+            "cloud": {
+              "admitted_requests": 1,
+              "dispatched_requests": 1,
+              "request_share": 1.0,
+              "known_input_output_tokens": 2761,
+              "token_share": 1.0,
+              "unknown_usage_requests": 0
+            }
+          },
+          "requests_without_dispatch_evidence": 0,
+          "token_share_status": "PROVIDER_REPORTED",
+          "actual_cost_status": "UNKNOWN"
+        }
+      },
+      "current_backend_id": "selected",
+      "judge_calls": 0,
+      "judge_provider_usage": "NOT_APPLICABLE",
+      "unfinished_calls": [
+        {
+          "turn_id": 1,
+          "id": "call_tov9JBBE1lyN6EaLhATqlOeG",
+          "name": "shell",
+          "signature": "83adc80b16a199cd4620d72407778133d18dd04cce607bda05e9c66ee6bdbc1a",
+          "arguments": "{\"command\":\"/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python long-child.py\",\"timeout\":240}",
+          "payload": {
+            "ok": false,
+            "result": {
+              "status": "cancelled",
+              "exit_code": -9,
+              "stdout": "",
+              "stderr": "",
+              "truncated": false,
+              "action_sent": true,
+              "process_completed": false,
+              "partial_effects_possible": false,
+              "action_may_have_applied": true,
+              "replay_allowed": false,
+              "verification": "NOT_RUN",
+              "network": "available",
+              "sandbox_mode": "full"
+            },
+            "error": {
+              "type": "cancelled",
+              "message": "Tool operation did not complete successfully."
+            }
+          },
+          "read_receipt": null,
+          "receipt_id": "worker:1.1/turn:1/call:call_tov9JBBE1lyN6EaLhATqlOeG/entry:0",
+          "status": "failed",
+          "side_effect_completed": true,
+          "side_effect_status": "unknown",
+          "receipt_reused": false,
+          "worker_id": "1.1",
+          "source_turn_id": 1
+        }
+      ],
+      "obligation_status": "unresolved",
+      "text": "Turn stopped by the host."
+    }
+  ],
+  "computer": null,
+  "completion": {
+    "execution": "unknown_blocked",
+    "delivery": "incomplete",
+    "attempts": 0,
+    "history": [],
+    "readiness": null,
+    "ledger_sha256": "dc76679390f3a7f3410b313d6d5ed334d40f90b1b91c1028b97999a0ad6d7356",
+    "receipt_count": 3,
+    "obligations": {
+      "pending_approval": false,
+      "queued_calls": 0,
+      "unfinished_goals": 0,
+      "unfinished_workers": 0,
+      "worker_obligations": true,
+      "computer_obligations": 0,
+      "unfinished_handoff": 0,
+      "unknown_receipts": 1,
+      "mutation_intent": false
+    }
+  },
+  "last_event_id": 63,
+  "recovery": {
+    "class": "TERMINAL",
+    "epoch": 0,
+    "automatic_tool_replay": false,
+    "reason": "unproven_external_effect",
+    "effect_state": "UNKNOWN_BLOCKED"
+  },
+  "service": {
+    "request_id": "req_0dce7ad75e72464fb8b85962339fba6d",
+    "client_subject": "http",
+    "route_decision": {
+      "selection": "explicit",
+      "selected": "localpilot",
+      "backend_model": "gpt-6-luna",
+      "decisions": [
+        {
+          "model": "localpilot",
+          "reason": "selected"
+        }
+      ],
+      "backend_fallback": false
+    },
+    "origin_agent": "http",
+    "parent_task_id": null,
+    "external_delegation_depth": 1,
+    "external_redelegation_allowed": false,
+    "low_power_consent": false
+  },
+  "receipt_summary": {
+    "count": 3,
+    "unknown_effects": 1
+  },
+  "file_operation_verification": {
+    "status": "NOT_RUN",
+    "scope": "filesystem effects only",
+    "receipts": 0
+  },
+  "verification_summary": {
+    "runtime_status": "cancelled",
+    "deliverable_status": "incomplete",
+    "verification_status": "not_run",
+    "engineering_status": "incomplete",
+    "task_outcome": "unknown"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "command": [
+    "bash",
+    "/workspace/scratch/c0f3ec78c621/validation/native-audit-20261117/launch-pet-overlay.sh",
+    "/workspace/scratch/c0f3ec78c621/validation/native-audit-20261117/extracted/usr/bin/localpilot-desktop-test",
+    "/workspace/scratch/c0f3ec78c621/validation/native-audit-20261117/profile-d"
+  ],
+  "started_utc": "2026-11-16T17:12:41Z",
+  "display": ":0",
+  "xdg_session_type": "x11",
+  "webkit_disable_sandbox_present": false,
+  "candidate_sha256": "c79066b761da62eb9944ab7f0c42f097035b0a669153ecc3e6a7da41703a24d8",
+  "scope": "Validation-only read-only helper overlay with standard bubblewrap private /dev and the single existing X11 auth file read-only at its original path; current Desktop with previous verified b26 backend resources; UI-only validation candidate, no system installation, no WebKit sandbox disable.",
+  "pid": 22599,
+  "returncode": 143,
+  "finished_utc": "2026-11-16T17:19:02Z"
+}

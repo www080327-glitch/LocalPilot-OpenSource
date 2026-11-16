@@ -1,0 +1,134 @@
+{
+  "status": "running",
+  "phase": "submitted",
+  "task_id": "resp_90ec51ccd6db4b458164d0aea4495cdc",
+  "session_id": "sess_6214d70836d04cdfadf9c648a3ab36c8",
+  "quiescent": false,
+  "task_execution": "not_completed",
+  "agent_response": "",
+  "reasoning_help_requested": false,
+  "semantic_status": "RUNNING",
+  "goal_verified": false,
+  "unknown_mutation": false,
+  "cache_usage": {
+    "status": "UNKNOWN",
+    "input_tokens": null,
+    "output_tokens": null,
+    "cache_hit_tokens": null,
+    "cache_miss_tokens": null,
+    "cache_hit_ratio": null
+  },
+  "runtime_status": "running",
+  "deliverable_status": "unknown",
+  "route_decision": {
+    "selection": "explicit",
+    "selected": "localpilot",
+    "backend_model": "gpt-6-luna",
+    "decisions": [
+      {
+        "model": "localpilot",
+        "reason": "selected"
+      }
+    ],
+    "backend_fallback": false
+  },
+  "model_resource": null,
+  "required_action": null,
+  "recovery": null,
+  "error": null,
+  "completion": null,
+  "verification_status": "unknown",
+  "engineering_status": "unverified",
+  "last_event_id": 2,
+  "task": {
+    "id": "resp_90ec51ccd6db4b458164d0aea4495cdc",
+    "object": "localpilot.task",
+    "session_id": "sess_6214d70836d04cdfadf9c648a3ab36c8",
+    "user_input": "Use read_file to read fact.txt. Return its complete contents.",
+    "execution_model": "gpt-6-luna",
+    "desktop_options": {
+      "permission_mode": "full",
+      "agent_profile": "standard",
+      "prompt_revision": 2,
+      "scope_revision": 3
+    },
+    "thinking": {
+      "requested": null,
+      "effective": "medium",
+      "supported": [
+        "none",
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ]
+    },
+    "pause_requested": false,
+    "model": "localpilot",
+    "session_model": "localpilot",
+    "previous_task_id": null,
+    "created_at": 1794849110,
+    "deadline": 1794849470.811535,
+    "timeout_seconds": 360,
+    "status": "running",
+    "quiescent": false,
+    "result": null,
+    "streamed_text": "",
+    "required_action": null,
+    "error": null,
+    "output": [],
+    "tools": [],
+    "goals": [],
+    "subagents": [],
+    "computer": null,
+    "completion": null,
+    "last_event_id": 2,
+    "service": {
+      "request_id": "req_238f2044a7b4445089450fcc978c62b4",
+      "client_subject": "companion",
+      "route_decision": {
+        "selection": "explicit",
+        "selected": "localpilot",
+        "backend_model": "gpt-6-luna",
+        "decisions": [
+          {
+            "model": "localpilot",
+            "reason": "selected"
+          }
+        ],
+        "backend_fallback": false
+      },
+      "origin_agent": "companion",
+      "parent_task_id": null,
+      "external_delegation_depth": 1,
+      "external_redelegation_allowed": false,
+      "control_ticket": "3ae81292aaac4e728022f07d493c89f8",
+      "low_power_consent": false
+    },
+    "receipt_summary": {
+      "count": 0,
+      "unknown_effects": 0
+    },
+    "file_operation_verification": {
+      "status": "NOT_RUN",
+      "scope": "filesystem effects only",
+      "receipts": 0
+    },
+    "verification_summary": {
+      "runtime_status": "UNKNOWN",
+      "deliverable_status": "UNKNOWN",
+      "verification_status": "UNKNOWN",
+      "engineering_status": "UNKNOWN",
+      "task_outcome": "UNKNOWN"
+    }
+  },
+  "progress_text": "",
+  "progress_snapshot": true,
+  "submission_id": "companion-execution",
+  "context_digest": "c660ed3896eb208015bad6fc5717eda3221c22a5e1c38137c9445950c2e3e172",
+  "submitted": true,
+  "evidence_level": "IMPLEMENTED",
+  "automatic_retry": false,
+  "submission_attempted": true
+}
