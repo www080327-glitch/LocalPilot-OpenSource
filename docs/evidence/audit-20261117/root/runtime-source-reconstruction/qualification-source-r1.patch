@@ -1,0 +1,114 @@
+diff --git a/agent/openai_responses.py b/agent/openai_responses.py
+index 4c063072ea21becc1816972e09022b3cfe3151c5..bb79e6862237130b124aca055046a67480b1705a 100644
+--- a/agent/openai_responses.py
++++ b/agent/openai_responses.py
+@@ -4,7 +4,6 @@ from copy import deepcopy
+ from dataclasses import replace
+ import hashlib
+ import json
+-import re
+ from urllib.request import build_opener
+ 
+ from .backends import BackendChunk, BackendResponse, Message, ToolCall
+@@ -29,9 +28,7 @@ class OpenAIResponsesBackend(LocalHTTPBackend):
+             options['supports_reasoning'] = True
+         if options['supports_reasoning'] and not options.get('reasoning_efforts'):
+             efforts = ('low', 'medium', 'high', 'xhigh', 'max')
+-            if re.fullmatch(r'gpt-5\.5(?:-\d{4}-\d{2}-\d{2})?', options['model']):
+-                efforts = ('none', 'low', 'medium', 'high', 'xhigh')
+-            elif options['model'].startswith(('gpt-6-luna', 'gpt-6-sol', 'gpt-6.1-terra')):
++            if options['model'].startswith(('gpt-6-luna', 'gpt-6-sol', 'gpt-6.1-terra')):
+                 efforts = ('none',) + efforts
+             options['reasoning_efforts'] = efforts
+         super().__init__(base_url=base_url,
+diff --git a/localpilot_service/__init__.py b/localpilot_service/__init__.py
+index db0fd387984efc590aacf8308505f6ba758e41ce..d75b4c337460174f852847885ccea614615f7b1e 100644
+--- a/localpilot_service/__init__.py
++++ b/localpilot_service/__init__.py
+@@ -1,2 +1,2 @@
+ """Authenticated packaging of the existing LocalPilot runtime."""
+-VERSION = "5.0.0b27"
++VERSION = "5.0.0b26"
+diff --git a/localpilot_service/desktop_sessions.py b/localpilot_service/desktop_sessions.py
+index ee562958b71f7a805233111a93db23bb582f2dfa..8dea184636906a9f9acb3e59d42c4cde611a1aca 100644
+--- a/localpilot_service/desktop_sessions.py
++++ b/localpilot_service/desktop_sessions.py
+@@ -29,11 +29,6 @@ def apply_options(runtime, options):
+         runtime._desktop_base_capabilities = runtime.registry.gateway.capabilities
+     if not hasattr(runtime, '_desktop_base_budgets'):
+         runtime._desktop_base_budgets = runtime.budgets
+-    if runtime.hybrid and not hasattr(runtime, '_desktop_base_cloud_limits'):
+-        runtime._desktop_base_cloud_limits = {
+-            'request_bytes': runtime.hybrid.policy.egress.max_request_bytes,
+-            'requests': runtime.hybrid.policy.max_cloud_requests_per_turn,
+-        }
+     runtime.budgets = (replace(runtime._desktop_base_budgets, **EXTENDED_BUDGET)
+         if options.get('execution_budget', 'standard') == 'extended' else runtime._desktop_base_budgets)
+     if options.get("workspace_grant"):
+@@ -65,16 +60,7 @@ def apply_options(runtime, options):
+         if runtime.hybrid:
+             from agent.hybrid import CloudEgressPolicy
+             ep=runtime.hybrid.policy.egress
+-            if ep.mode!='LOCAL_ONLY':
+-                limits = runtime._desktop_base_cloud_limits
+-                # Old persisted sessions have no explicit execution-budget field.
+-                # Preserve their identity until the host selects the new contract.
+-                use_budget = mode == 'full' and 'execution_budget' in options
+-                request_bytes = max(limits['request_bytes'], runtime.budgets.max_token_units) if use_budget else limits['request_bytes']
+-                requests = max(limits['requests'], runtime.budgets.max_steps) if use_budget else limits['requests']
+-                runtime.hybrid.policy = replace(runtime.hybrid.policy,
+-                    egress=CloudEgressPolicy('CLOUD_ALLOWED', ep.allowed_paths, request_bytes),
+-                    max_cloud_requests_per_turn=requests)
++            if ep.mode!='LOCAL_ONLY': runtime.hybrid.policy=replace(runtime.hybrid.policy,egress=CloudEgressPolicy('CLOUD_ALLOWED',ep.allowed_paths,ep.max_request_bytes))
+     elif options['permission_mode']=='isolated':
+         runtime.permission_mode=runtime.registry.gateway.mode='approve-all'
+     if options["permission_mode"] in {"isolated", "request", "workspace"} or options.get("scope_revision") in {1,2,3}:
+@@ -231,7 +217,7 @@ def switch_profile(server, principal, session_id, body):
+         desired_budget = body.get('execution_budget', current_budget)
+         declared=server.catalog.get(session.model,{}).get('reasoning_toggle')
+         desired_toggle=({'model':declared['model'],'default':declared['default']} if declared and declared.get('supported') else options.get('thinking_toggle'))
+-        if current==body['agent_profile'] and desired_mode==options['permission_mode'] and desired_budget==current_budget and ('execution_budget' not in body or 'execution_budget' in options) and options.get('thinking_toggle')==desired_toggle and options.get('prompt_revision')==2 and (desired_mode not in {'isolated','request','workspace','full'} or options.get('scope_revision')==3):
++        if current==body['agent_profile'] and desired_mode==options['permission_mode'] and desired_budget==current_budget and options.get('thinking_toggle')==desired_toggle and options.get('prompt_revision')==2 and (desired_mode not in {'isolated','request','workspace','full'} or options.get('scope_revision')==3):
+             return service.session_snapshot(session_id)
+         if 'expected_execution_budget' in body and current_budget != body['expected_execution_budget']:
+             raise APIError('Execution budget changed in another client', 'budget_conflict', 409)
+diff --git a/localpilot_service/route_backends.py b/localpilot_service/route_backends.py
+index 9b7f2c01a00881099ccae5dd1bfc91315ad280e7..0e90f78c49d3ea09ffc97e1290837cd3d4407f1f 100644
+--- a/localpilot_service/route_backends.py
++++ b/localpilot_service/route_backends.py
+@@ -4,7 +4,7 @@ import os
+ from pathlib import Path
+ 
+ from agent.backends import LocalBackend
+-from agent.cloud_credentials import CloudCredentialError, resolve_openai_key
++from agent.cloud_credentials import resolve_openai_key
+ from agent.cooperative import CooperativePolicy
+ from .backend_contract import (ManagedLocalBackend, ServiceDeepSeekBackend,
+     ServiceDeepSeekNativeBackend, ServiceDeepSeekOptimizedBackend, ServiceOMLXBackend,
+@@ -31,12 +31,11 @@ def build_backend(spec, data_policy, *, manager=None, worker_thinking=None, cach
+             data_policy=data_policy, generation_parameters=spec.get('generation_parameters'))
+     else:
+         capabilities = spec.get('capabilities', {})
+-        key_env = spec.get('api_key_env')
++        key_env = spec.get('api_key_env', 'OPENAI_API_KEY' if kind == 'openai' else None)
+         key = os.environ.get(key_env) if key_env else None
+         if kind == 'openai':
+-            if 'api_key_env' in spec and not key:
+-                raise CloudCredentialError('missing_credentials')
+-            key = resolve_openai_key(key, key_file=spec.get('key_file'))
++            key = resolve_openai_key(os.environ.get(spec['api_key_env']) if spec.get('api_key_env') else None,
++                                     key_file=spec.get('key_file'))
+         base_url = spec.get('base_url', 'https://api.openai.com/v1') if kind == 'openai' else spec['base_url']
+         if cloud and kind != 'openai' and (not key or not base_url.startswith('https://')):
+             raise ValueError('Remote inference requires HTTPS and an explicit API token')
+diff --git a/scripts/qualify_openai_agent.py b/scripts/qualify_openai_agent.py
+index ab248cb23a1a5b08cb09314a300e92489107d905..39d02fee4f42efde7f8a941430c83c4e306d81d9 100644
+--- a/scripts/qualify_openai_agent.py
++++ b/scripts/qualify_openai_agent.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Exercise the real Core over HTTP with an explicitly funded OpenAI key.
++"""Exercise the real packaged Core over HTTP with an explicitly funded OpenAI key.
+ 
+ Only synthetic fixtures enter the model. Credentials remain in a private file;
+ the evidence directory contains no copied key or client bearer tokens.

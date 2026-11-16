@@ -15,13 +15,18 @@ This report was prepared by independently reading the archived receipts and veri
 | Companion reasoning and execution clients | 2/2 PASS | Ordinary client submission/retrieval completed, with a read receipt on the execution path. |
 | Heterogeneous delegation | 2/2 PASS within the stated scope | Actual local and cloud child reads; the local-parent run later switched its parent to cloud. |
 | [Finite engineering acceptance](engineering-luna-r1/RESULTS.md) | PASS | Frozen `91dd87c` Core; two genuine async children; original external 17 tests and four CLI cases passed. |
-| Two-hour Full + extended soak | **RUNNING** | No completion or endurance claim yet. |
+| Original two-hour soak R1 | **INCOMPLETE: execution-session continuity lost** | 210 heartbeats, last observed 6,270.103 seconds; no terminal receipt or finished marker. |
+| Final-source two-hour soak R3 | **RUNNING** | Fresh 7,200-second run from `91dd87c`; its time is not added to R1. |
 | Forty public ITBench-AA cases | **RUNNING** | No score, grading result, or completion claim yet. |
 | Final native package | **PASS for build and extracted-package UI verification** | Separate [final-package evidence](../../../../desktop/docs/evidence/audit-20261117-desktop/final-package/RESULTS.md); these earlier model runs remain source-based. |
 
 The root owner will append the completed long-run and benchmark evidence separately. [Benchmark R1](itbench-aa-r1/ABORTED.json) was aborted after four terminal `CloudEgressDenied` failures at the hidden 131,072-byte ceiling; a fifth started case was interrupted. That historical runtime defect and its receipts are distinct from R2's timeout-unit error and remain preserved. No score is assigned to the aborted R1 run.
 
 The frozen ITBench study's phrase `packaged Core HTTP` is historical wording: the candidate service actually loads Core from the frozen `qualification-source-r2` through `PYTHONPATH`. Its source manifest identifies that snapshot. It is not a model run from the installed RC10 DEB; the frozen study is retained unchanged.
+
+The initial long-run executor handles later disappeared together and their progress files stopped updating. [The independently reviewed interrupted-soak archive](cloud-soak-2h-r1-interrupted/RESULTS.md) preserves the 210 heartbeats and missing completion evidence; the cause is unknown and no application-permission cause has been established. A fresh, full 7,200-second soak now uses the final frozen source. Its future result must stand on its own.
+
+ITBench R2 also encountered dataset-download `URLError` / tunnel 403 failures before some candidates started, plus two candidates whose executing sessions lost continuity. The unmodified original runner is being resumed: existing terminal receipts are reused, previously started unfinished candidates are retained as interrupted without another model attempt, and only never-started remaining candidates begin. A separately declared transport continuation will address only the original download failures that never started a model. No grading has begun, and these pending steps carry no score claim.
 
 ## Evidence integrity and source identity
 
@@ -57,6 +62,8 @@ Only `localpilot_service/desktop_sessions.py` differs between those two recorded
 | `scripts/qualify_openai_agent.py` | `633d2d9019caf7065dae46396b6b5e619cb15ce293f9f59c56648cd256da895a` |
 
 The final source publication is a later identity. [SOURCE_PUBLICATION.json](SOURCE_PUBLICATION.json) records remote commit `91dd87c6fd4678c103d6383dec1c1385deb38f9a` and local commit `e34532c1969b6494d0eba8918d84695d14fe12c6` with identical Git tree `c19b18071de42ed42feb25519671a559f38dec18`. The local commit/tree relationship was also checked directly for this report. The root owner subsequently ran the 38-test frozen-source check from a clean checkout of that remote commit. That check is additional evidence; it does not change the source identities of the earlier actual API runs or establish that they ran the final RC10 native package.
+
+[Generated Runtime reconstruction patches](runtime-source-reconstruction/README.md) now preserve the exact R1 and R2 bytes that differ from `91dd87c` within each recorded 110-file subset. Actual `git apply` followed by all-file hash checks reproduced both manifests, 110/110. This restores the recorded Runtime subset, not a complete historical Desktop tree or dependencies; the missing intermediate smoke bytes are not invented.
 
 ## Actual provider protocol checks
 

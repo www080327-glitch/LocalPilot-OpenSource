@@ -1,0 +1,45 @@
+{
+  "status": "INCOMPLETE_EXECUTION_SESSION_LOSS",
+  "qualification_result_exists": false,
+  "finished_marker_exists": false,
+  "credential_value_found": false,
+  "files": [
+    {
+      "path": "core.log",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r1/core.log",
+      "bytes": 109,
+      "sha256": "fd808189f39f2423184bf6035b53bd447d5ce8e07411a4829c62770479753ae3"
+    },
+    {
+      "path": "resolved-runtime-budgets.json",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r1/resolved-runtime-budgets.json",
+      "bytes": 1238,
+      "sha256": "603b4a44b1de4ac5bf6159d496350670ecdebffe64db9e461e10bf7130580dd8"
+    },
+    {
+      "path": "soak-progress.json",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r1/soak-progress.json",
+      "bytes": 157,
+      "sha256": "b075b0d77615d2391edfce8bc1136aea3c844ca528ded81710010a1d4b9f135d"
+    },
+    {
+      "path": "workspace/heartbeat.py",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r1/workspace/heartbeat.py",
+      "bytes": 428,
+      "sha256": "4e9f4268aac5734a99a5f5e641c40c78929d6675a954b281a19d48e4cd61da0e"
+    },
+    {
+      "path": "workspace/heartbeat.jsonl",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r1/workspace/heartbeat.jsonl",
+      "bytes": 6569,
+      "sha256": "83cf6ec0a61567217506eb923827ac7c7351519340c94dfc7b1457dcec8e861e"
+    },
+    {
+      "path": "executor-interruption-20261116.json",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/executor-interruption-20261116.json",
+      "bytes": 4048,
+      "sha256": "a60cae9cde550f3ee4b1585d0a002e2b6c92560bc0be7c8d5bb4520c91eeae37"
+    }
+  ],
+  "scope": "Interrupted original run; no synthesized terminal task receipt and no completion claim"
+}
