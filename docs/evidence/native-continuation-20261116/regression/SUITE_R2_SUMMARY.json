@@ -1,0 +1,16 @@
+{
+  "name": "suite-r2",
+  "command": [
+    "<PREVIOUS_WORKSPACE>/LocalPilot-OpenSource/.venv/bin/python",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "suite/tests",
+    "-v"
+  ],
+  "source_commit": "59fad12de6f57006fc7510805af2dfd1718c16ea",
+  "returncode": 0,
+  "wall_seconds": 25.064,
+  "summary": "m_after_core (test_upgrade_transaction.UpgradeTransactionTests.test_legacy_core_requires_channels_artifacts_and_restores_them_after_core) ... ok\ntest_old_upgrade_receipt_cannot_overwrite_a_later_component_version (test_upgrade_transaction.UpgradeTransactionTests.test_old_upgrade_receipt_cannot_overwrite_a_later_component_version) ... ok\ntest_reviewed_copies_are_independent_and_detect_tampering (test_upgrade_transaction.UpgradeTransactionTests.test_reviewed_copies_are_independent_and_detect_tampering) ... ok\ntest_running_owned_process_blocks_without_terminating_it (test_upgrade_transaction.UpgradeTransactionTests.test_running_owned_process_blocks_without_terminating_it) ... ok\ntest_successful_pip_but_failed_import_rolls_back_all_changed_components (test_upgrade_transaction.UpgradeTransactionTests.test_successful_pip_but_failed_import_rolls_back_all_changed_components) ... ok\n\n----------------------------------------------------------------------\nRan 115 tests in 24.873s\n\nOK (skipped=1)\n"
+}

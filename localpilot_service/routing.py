@@ -1,5 +1,6 @@
 """Admission decisions over a host registry; no model downloads or fallback."""
 from localpilot_api.service import APIError
+from .route_backends import CLOUD_KINDS
 
 SOURCES = ('local_only', 'local_first', 'balanced', 'cloud_first', 'cloud_only')
 OBJECTIVES = ('speed', 'quality', 'efficiency', 'balanced')
@@ -20,7 +21,7 @@ def validate_preferences(value):
     return dict(value)
 
 def is_cloud(entry):
-    return entry.get('adapter') in {'deepseek','deepseek-native','remote-openai','remote-vllm'} or entry.get('cloud_egress') != 'LOCAL_ONLY'
+    return entry.get('adapter') in CLOUD_KINDS or entry.get('cloud_egress') != 'LOCAL_ONLY'
 
 def select_route(routes, catalog, *, explicit=None, preferences=(), required=(), routing_preferences=None):
     policy = validate_preferences(routing_preferences)
@@ -45,7 +46,7 @@ def select_route(routes, catalog, *, explicit=None, preferences=(), required=(),
         status = entry.get("deployment_status", "ready")
         # A local primary with an approved cloud partner is hybrid, not pure
         # cloud. Egress permission alone cannot establish provider location.
-        pure_cloud = entry.get('adapter') in {'deepseek','deepseek-native','remote-openai','remote-vllm'}
+        pure_cloud = entry.get('adapter') in CLOUD_KINDS
         forbidden = policy and ((policy['source']=='local_only' and is_cloud(entry)) or (policy['source']=='cloud_only' and not pure_cloud))
         reason = 'model_source_forbidden' if forbidden else "model_not_deployed" if status in {"not_deployed", "downloading", "loading"} else "model_unavailable" if status != "ready" else "model_capability_insufficient" if set(required) - set(entry.get("capabilities", [])) else "selected"
         decisions.append({"model": public, "reason": reason})

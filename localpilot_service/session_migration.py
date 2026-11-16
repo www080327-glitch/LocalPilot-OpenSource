@@ -1,5 +1,6 @@
 """Host-authorized model changes preserve canonical history and worker provenance."""
 from copy import deepcopy
+from dataclasses import replace
 
 from localpilot_api.service import APIError
 
@@ -48,6 +49,11 @@ def switch_model(server, principal, session_id, body):
         except Exception:
             raise APIError('Target route could not be prepared; the original conversation is unchanged', 'model_switch_unavailable', 503) from None
         old_runtime = session.runtime
+        if (getattr(old_runtime, '_legacy_worker_budget_preserved', False)
+                and old_runtime.budgets.max_worker_token_units == 32768
+                and getattr(candidate, '_worker_budget_defaulted', False)):
+            candidate.budgets = replace(candidate.budgets, max_worker_token_units=32768)
+            candidate._legacy_worker_budget_preserved = True
         old = (session.model, session.runtime, session.base_prompt, session.desktop_options, session.thinking_override, session.child_route_contexts)
         try:
             apply_options(candidate, options)

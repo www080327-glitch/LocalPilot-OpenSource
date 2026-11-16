@@ -174,10 +174,10 @@ def core_models(home):
         return []
     config = private_json(home / 'service.json')
     return [{'id': name, 'name': route['backend'].get('model', name),
-        'cloud':route['backend'].get('kind') in {'deepseek','deepseek-native','remote-openai','remote-vllm'},
+        'cloud':route['backend'].get('kind') in {'deepseek','deepseek-native','openai','remote-openai','remote-vllm'},
         'ready': route['backend'].get('kind') != 'unavailable' and route['backend'].get('model') != 'not-selected'}
         for name, route in config['routes'].items()
-        if route['backend'].get('kind') in {'unavailable', 'omlx', 'local-openai', 'vllm','deepseek','deepseek-native','remote-openai','remote-vllm'}
+        if route['backend'].get('kind') in {'unavailable', 'omlx', 'local-openai', 'vllm','deepseek','deepseek-native','openai','remote-openai','remote-vllm'}
         and not route.get('reasoning_only') and not route.get('managed_local_model') and not name.startswith('channel-')]
 
 def status(home, kind, include_login=False):
@@ -331,7 +331,7 @@ def bind(home, kind, hub, state_dir, state, args):
         raise ValueError('CHANNEL_LOCAL_MODEL_ROUTE_REQUIRED')
     route_name = 'channel-' + kind + '-' + uuid.uuid4().hex[:12]
     template = config['routes'][model]
-    cloud=template['backend']['kind'] in {'deepseek','deepseek-native','remote-openai','remote-vllm'}
+    cloud=template['backend']['kind'] in {'deepseek','deepseek-native','openai','remote-openai','remote-vllm'}
     if type(args.get('allow_cloud',False)) is not bool or (cloud and args.get('allow_cloud') is not True):
         raise ValueError('CHANNEL_CLOUD_REQUIRES_EXPLICIT_HOST_CONFIRMATION')
     workspace = validate_workspace(home,state['workspace']) if state.get('workspace') else default_workspace(home,kind)

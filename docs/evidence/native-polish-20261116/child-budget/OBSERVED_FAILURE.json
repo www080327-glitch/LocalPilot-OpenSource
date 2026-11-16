@@ -1,0 +1,126 @@
+{
+  "kind": "CHILD_ADMISSION_BEFORE_FIRST_TOOL",
+  "source_sqlite": "<WORKSPACE>/validation/polish-20261116/model/prescribed-delegation-r1/core-private/data/runtime.sqlite3",
+  "parent_session_id": "sess_b49471242d2142a7baddecda0f8661c6",
+  "child_id": "1.1",
+  "parent_budget": {
+    "max_output_tokens": 512,
+    "max_primary_switches_per_turn": 1,
+    "max_steps": 6,
+    "max_subagent_depth": 1,
+    "max_subagents_per_turn": 2,
+    "max_token_units": 100000,
+    "max_tool_calls": 8,
+    "max_worker_output_tokens": 512,
+    "max_worker_steps": 3,
+    "max_worker_token_units": 32768,
+    "max_worker_tool_calls": 4
+  },
+  "child_budget": {
+    "max_output_tokens": 512,
+    "max_primary_switches_per_turn": 1,
+    "max_steps": 3,
+    "max_subagent_depth": 1,
+    "max_subagents_per_turn": 0,
+    "max_token_units": 32768,
+    "max_tool_calls": 2,
+    "max_worker_output_tokens": 512,
+    "max_worker_steps": 3,
+    "max_worker_token_units": 32768,
+    "max_worker_tool_calls": 4
+  },
+  "child_fields": {},
+  "child_record": {
+    "status": "error",
+    "task": "Read the contents of fact.txt using read_file with path=\"fact.txt\"",
+    "model_calls": 1,
+    "usage": {
+      "attempts": 1,
+      "failed_attempts": 0,
+      "request_bytes": 10293,
+      "response_bytes": 2424,
+      "token_units": 12717,
+      "tool_proposals": 0
+    },
+    "receipts": [],
+    "read_only": true,
+    "configured_model": "localpilot-qwen35-2b-q8_0-qualified"
+  },
+  "events": [
+    {
+      "data": {
+        "planning": false
+      },
+      "sequence": 2,
+      "timestamp": "2026-11-16T10:19:20.196986+00:00",
+      "turn_id": 1,
+      "type": "TurnStarted"
+    },
+    {
+      "data": {
+        "admission_units": 0,
+        "attempts": 0,
+        "reason": "token_reserve",
+        "reserve_units": 20924
+      },
+      "sequence": 3,
+      "timestamp": "2026-11-16T10:19:20.200629+00:00",
+      "turn_id": 1,
+      "type": "FinalizingStarted"
+    },
+    {
+      "data": {
+        "model": "localpilot-qwen35-2b-q8_0-qualified",
+        "phase": "finalizing",
+        "primary": "local",
+        "role": "worker",
+        "thinking": null
+      },
+      "sequence": 4,
+      "timestamp": "2026-11-16T10:19:20.203294+00:00",
+      "turn_id": 1,
+      "type": "ModelRequestStarted"
+    },
+    {
+      "data": {
+        "context_capacity_units": 8192,
+        "estimated_context_tokens": {
+          "estimator": "mixed_text_estimate_v1",
+          "input_tokens": 3453,
+          "margin_tokens": 70,
+          "measured": false,
+          "output_tokens": 512,
+          "total_tokens": 4035
+        },
+        "estimator": "mixed_text_estimate_v1",
+        "legacy_turn_request_bytes": 10293,
+        "max_output_tokens": 512,
+        "protected_final_units": 20924,
+        "remaining_context_units": 4157,
+        "remaining_turn_units": 32768,
+        "request_units": 3453
+      },
+      "sequence": 5,
+      "timestamp": "2026-11-16T10:19:20.203334+00:00",
+      "turn_id": 1,
+      "type": "ModelBudgetEstimated"
+    },
+    {
+      "data": {
+        "finish_reason": "length",
+        "response_bytes": 2424,
+        "role": "worker"
+      },
+      "sequence": 522,
+      "timestamp": "2026-11-16T10:20:26.908568+00:00",
+      "turn_id": 1,
+      "type": "ModelResponseCompleted"
+    }
+  ],
+  "code_paths": [
+    "agent/session.py: run_turn final reserve",
+    "agent/session_models.py: _exploration_limit and _model_request admission",
+    "agent/session_types.py: SessionBudgets.max_worker_token_units default 32768"
+  ],
+  "source_freeze_sha256": "e6f6bf16864dff9c3f7e9dfc6691129cbbbdc2d4c5693357ce023db089a14316"
+}

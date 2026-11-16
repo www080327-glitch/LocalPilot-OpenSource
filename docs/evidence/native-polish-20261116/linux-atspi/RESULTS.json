@@ -1,0 +1,102 @@
+{
+  "format": 1,
+  "date": "2026-11-16",
+  "module": "companion",
+  "version": "0.5.7b6",
+  "source_scope": "Final integration tree, Companion Python source, tests and module metadata; source unchanged across full regression.",
+  "full_regression": {
+    "tests": 720,
+    "pass": 687,
+    "skip": 33,
+    "fail": 0,
+    "error": 0,
+    "seconds": 32.925,
+    "environment": "Linux exec process, CPython 3.12.14"
+  },
+  "native_final": {
+    "tests": 8,
+    "pass": 8,
+    "skip": 0,
+    "fail": 0,
+    "error": 0,
+    "seconds": 1.526,
+    "environment": "Real CUA Linux X11 desktop; owned Xvfb/D-Bus/GTK with distro CPython 3.13 helper"
+  },
+  "overlap": {
+    "tests_in_both": 8,
+    "native_pass_already_in_full_pass": 7,
+    "native_pass_previously_skipped_by_full": 1,
+    "optional_pass_previously_skipped_by_full": 7
+  },
+  "unique_current_coverage": {
+    "tests": 720,
+    "pass": 695,
+    "remaining_skip": 25,
+    "fail": 0,
+    "error": 0
+  },
+  "remaining_skip_categories": {
+    "macos_swift": 25
+  },
+  "failure_history": [
+    {
+      "run": "initial-native-r1",
+      "outcome": "FAIL",
+      "reason": "Owned static label not observed"
+    },
+    {
+      "run": "diagnostic-r1",
+      "outcome": "FAIL",
+      "reason": "Different inherited accessibility buses; no owned registered application after 35 seconds"
+    },
+    {
+      "run": "diagnostic-r2",
+      "outcome": "FAIL",
+      "reason": "Private bus fixed; old Text API still returns read_error_count=1 and no label"
+    },
+    {
+      "run": "diagnostic-r3",
+      "outcome": "EXPECTED_FAIL",
+      "reason": "Real Accessible.get_text TypeError; explicit Text.get_text on same Label returns correct static text"
+    },
+    {
+      "run": "snapshot-candidate-r4",
+      "outcome": "PASS",
+      "tests": 8,
+      "seconds": 1.516
+    },
+    {
+      "run": "final-optional-r1",
+      "outcome": "PASS",
+      "tests": 7,
+      "seconds": 18.755
+    }
+  ],
+  "not_established": [
+    "Wayland observation",
+    "Pulse/PipeWire-Pulse capture",
+    "logind sleep/wake",
+    "DEB installation or upgrade rollback",
+    "Physical Intel Mac",
+    "macOS WebKit isolation/TCC",
+    "Whole-app all-day monitoring",
+    "Model answer quality",
+    "User-data LoRA training"
+  ],
+  "weights_credentials_user_data_included": false,
+  "optional_final": {
+    "run": "final-optional-r1",
+    "tests": 7,
+    "pass": 7,
+    "skip": 0,
+    "fail": 0,
+    "error": 0,
+    "seconds": 18.755,
+    "portable_training": 5,
+    "real_whisper_public_jfk": 2,
+    "environment": "Existing pinned CPU Torch/Transformers/PEFT environment; all ASR executable/model/sample/license hashes and source commit match prior identity; no model or audio downloads",
+    "production_source_unchanged": 152,
+    "scope": "Companion offline only; no Core service or provider. Does not qualify ongoing Core budget/wire-schema edits."
+  },
+  "optional_snapshot_note": "All 152 prior source/metadata hashes match. Recursive optional snapshot includes 99 existing wheel-build copies; all 251 entries stayed unchanged during this run. Expanded key set does not indicate production source modification."
+}

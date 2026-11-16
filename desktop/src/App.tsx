@@ -340,7 +340,11 @@ export default function App() {
     if (profile.maintenance_return) setUpdatesOpen(true);
   }, [profile.maintenance_return]);
   const scope = `${profile.home}|${profile.origin}|${health?.client_subject || ""}`;
-  const openTask = useSessionRecovery(taskState, {
+  const {
+    openTask,
+    sessionId: documentSessionId,
+    confirmSession,
+  } = useSessionRecovery(taskState, {
     preferencesReady,
     completed: globals.completed,
     health,
@@ -354,9 +358,22 @@ export default function App() {
     onError: showError,
     onPreferences: setSessionPrefs,
     onDraft: (draft) => {
+      setError("");
       setInput(draft.input || "");
       setSessionPrefs(draft.preferences);
       setModel(draft.model);
+    },
+    onFreshDraft: (draft, missingSession) => {
+      newChat();
+      if (draft) {
+        setInput(draft.input || "");
+        setSessionPrefs(draft.preferences);
+        setModel(draft.model);
+      }
+      if (missingSession)
+        setToast(
+          "上次会话在当前服务中不可用，已打开新草稿；历史与待核对提交保留。",
+        );
     },
     onOpen: (task, view) => {
       ++preferenceWriteVersion.current;
@@ -435,7 +452,7 @@ export default function App() {
       return;
     setDrafts((old) => {
       if (!input.trim()) {
-        if (!old[chatId]) return old;
+        if (!old[chatId] || old[chatId].scope !== scope) return old;
         if (!chatId.startsWith("draft-")) {
           if (!old[chatId].input) return old;
           return { ...old, [chatId]: { ...old[chatId], input: "" } };
@@ -761,6 +778,7 @@ export default function App() {
         setPending([]);
         setSessionPrefs({ ...globals.defaults });
         setChatId(`draft-${crypto.randomUUID()}`);
+        setInput("");
         restoreDone.current = false;
         setHealth(null);
         setCompHealth(null);
@@ -1034,6 +1052,7 @@ export default function App() {
               },
             });
             useSession = session.id;
+            confirmSession(session.id);
             effectiveModel = session.model;
             if (caps.includes("omlx_thinking_toggle_v1"))
               await call<Json>("product_control", {
@@ -1368,9 +1387,9 @@ export default function App() {
             <span>LocalPilot</span>
             <span
               className="version"
-              title={`${packageInfo.version} · 思考修复版`}
+              title={packageInfo.version}
             >
-              RC.7 · 思考修复
+              {packageInfo.version}
             </span>
           </div>
           <button className="new-chat" onClick={newChat}>
@@ -1931,11 +1950,7 @@ export default function App() {
               "attachments_v2",
             ) && (
               <DocumentPanel
-                sessionId={
-                  (currentTask?.session_id || chatId || "").startsWith("sess_")
-                    ? currentTask?.session_id || chatId
-                    : null
-                }
+                sessionId={preview ? null : documentSessionId}
                 refresh={`${currentTask?.id || ""}:${currentTask?.status || ""}`}
                 onError={showError}
               />
@@ -2469,7 +2484,7 @@ export default function App() {
           <div className="onboarding-intro">
             <Mark />
             <span className="eyebrow">
-              WELCOME TO LOCALPILOT · {packageInfo.version} · 思考修复版
+              WELCOME TO LOCALPILOT · {packageInfo.version}
             </span>
             <p>
               检测设备、准备服务，再接受推荐或跳过下载。以后可以在模型库随时调整。

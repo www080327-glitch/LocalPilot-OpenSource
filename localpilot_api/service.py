@@ -233,6 +233,7 @@ class TaskService:
                 migration = getattr(self, 'configuration_migration', None)
                 if migration is None or not migration(runtime, payload):
                     raise PersistenceError("Host configuration changed; explicit migration required")
+                cfg = digest(dumps(configuration(runtime)))
                 migrated.append((sid,getattr(migration,'checkpoint_point','host_restore_private_paths_rebased')))
             if runtime.async_policy:
                 runtime._state_condition, runtime._scheduler = self.condition, self.scheduler

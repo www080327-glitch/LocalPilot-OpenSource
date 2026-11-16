@@ -13,6 +13,7 @@ mod pet_macos;
 mod pet_native;
 mod platform;
 mod product;
+mod test_profile;
 use channels::channel_control;
 use pet_agent::{pet_agent, pet_core};
 use pet_assets::pet_asset;
@@ -240,22 +241,8 @@ fn save(path: &Path, value: &impl Serialize) -> Result<(), String> {
     fs::rename(&tmp, path).map_err(|_| fail("提交状态失败"))
 }
 fn data(app: &tauri::AppHandle) -> Result<PathBuf, String> {
-    let p = if [
-        "io.localpilot.desktop.test",
-        "io.localpilot.desktop.channels.test",
-    ]
-    .contains(&app.config().identifier.as_str())
-    {
-        if let Some(root) = std::env::var_os("LP_INSTALL_TEST_ROOT") {
-            let root = PathBuf::from(root);
-            let marker = private_json(&root.join("test-owner.json"))?;
-            if !root.is_absolute() || marker["purpose"] != "LocalPilot installation E2E" {
-                return Err(fail("测试目录身份无效"));
-            }
-            root.join("client")
-        } else {
-            return Err(fail("隔离测试应用需要指定测试目录；日常安装未改动"));
-        }
+    let p = if let Some(client) = &app.state::<test_profile::TestProfile>().client {
+        client.clone()
     } else {
         app.path()
             .app_data_dir()
@@ -2225,12 +2212,21 @@ fn main() {
         }
         return;
     }
+    let test_profile = test_profile::TestProfile::configure(
+        context.config_mut(),
+        std::env::var_os("LP_INSTALL_TEST_ROOT").map(PathBuf::from),
+    )
+    .unwrap_or_else(|error| {
+        eprintln!("{error}");
+        std::process::exit(2);
+    });
     if pet_native::standalone() {
         // Do not construct and immediately destroy a hidden WebView: AppKit's
         // file dialog can otherwise resurrect its empty native parent window.
         context.config_mut().app.windows.clear();
     }
     tauri::Builder::default()
+        .manage(test_profile)
         .manage(Native::default())
         .manage(pet_native::PetState::default())
         .on_window_event(|window, event| {
@@ -2569,7 +2565,15 @@ mod tests {
             let recovered=submit_record(&proxy,&path,&mut unknown,true).await.unwrap();let repeated=submit_record(&proxy,&path,&mut unknown,true).await.unwrap();assert_eq!(recovered["id"],repeated["id"]);
             let tasks=request(&p,"GET","/localpilot/v1/tasks",None,None).await.unwrap();assert_eq!(tasks["tasks"].as_array().unwrap().len(),2);
             let b=Profile{home:cfg["home_b"].as_str().unwrap().into(),..p.clone()};assert_eq!(request(&b,"GET","/localpilot/v1/tasks",None,None).await.unwrap()["tasks"].as_array().unwrap().len(),0);
-            println!("REAL_CORE_SCRIPTED_MODEL: closed-session rejected, next submission accepted, lost-POST same-key recovery yields one task, two identities isolated; tasks=2");
+            let session_path=format!("/localpilot/v1/sessions/{}",next_task["session_id"].as_str().unwrap());
+            assert_eq!(request(&p,"GET",&session_path,None,None).await.unwrap()["id"],next_task["session_id"]);
+            for (profile,path) in [(&b,session_path.as_str()),(&p,"/localpilot/v1/sessions/sess_missingfixture")] {
+                let error=request(profile,"GET",path,None,None).await.unwrap_err();
+                let body=error.strip_prefix("HTTP 404 · ").expect("confirmed HTTP 404");
+                let value: Value=serde_json::from_str(body).unwrap();
+                assert_eq!(value["error"]["code"],"session_not_found");
+            }
+            println!("REAL_CORE_SCRIPTED_MODEL: closed-session rejected, next submission accepted, lost-POST same-key recovery yields one task, two identities isolated, known Session GET succeeds, foreign/missing Session GET confirms session_not_found 404; tasks=2");
         });
         drop(child.stdin.take());
         assert!(child.wait().unwrap().success());

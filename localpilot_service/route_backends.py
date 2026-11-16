@@ -7,10 +7,10 @@ from agent.backends import LocalBackend
 from agent.cooperative import CooperativePolicy
 from .backend_contract import (ManagedLocalBackend, ServiceDeepSeekBackend,
     ServiceDeepSeekNativeBackend, ServiceDeepSeekOptimizedBackend, ServiceOMLXBackend,
-    ServiceOpenAIBackend, ServiceVLLMBackend)
+    ServiceOpenAIBackend, ServiceOpenAICloudBackend, ServiceVLLMBackend)
 
 
-CLOUD_KINDS = {'deepseek', 'deepseek-native', 'remote-openai', 'remote-vllm'}
+CLOUD_KINDS = {'deepseek', 'deepseek-native', 'remote-openai', 'remote-vllm', 'openai'}
 LOCAL_KINDS = {'omlx', 'vllm', 'local-openai'}
 
 
@@ -30,18 +30,21 @@ def build_backend(spec, data_policy, *, manager=None, worker_thinking=None, cach
             data_policy=data_policy, generation_parameters=spec.get('generation_parameters'))
     else:
         capabilities = spec.get('capabilities', {})
-        key = os.environ.get(spec['api_key_env']) if spec.get('api_key_env') else None
-        if cloud and (not key or not spec['base_url'].startswith('https://')):
+        key_env = spec.get('api_key_env', 'OPENAI_API_KEY' if kind == 'openai' else None)
+        key = os.environ.get(key_env) if key_env else None
+        base_url = spec.get('base_url', 'https://api.openai.com/v1') if kind == 'openai' else spec['base_url']
+        if cloud and kind != 'openai' and (not key or not base_url.startswith('https://')):
             raise ValueError('Remote inference requires HTTPS and an explicit API token')
         adapter = (ManagedLocalBackend if manager else ServiceVLLMBackend if kind in {'vllm','remote-vllm'} else
-                   ServiceOMLXBackend if kind == 'omlx' else ServiceOpenAIBackend)
+                   ServiceOMLXBackend if kind == 'omlx' else ServiceOpenAICloudBackend if kind == 'openai' else
+                   ServiceOpenAIBackend)
         backend = adapter(**({'manager':manager} if manager else {'api_key':key}),
-            base_url=spec['base_url'], model=spec['model'],
+            base_url=base_url, model=spec['model'],
             effective_context=spec.get('context_budget', 131072), timeout=spec.get('timeout', 30), allow_remote=cloud,
             supports_tool_calling=capabilities.get('tool_calling', kind not in {'vllm','remote-vllm'}),
             supports_streaming=capabilities.get('streaming', True), supports_vision=capabilities.get('vision', False),
             supports_reasoning=capabilities.get('reasoning'), reasoning_efforts=spec.get('reasoning_efforts', ()),
-            include_stream_usage=spec.get('include_stream_usage', kind in {'omlx','vllm','remote-vllm'}),
+            include_stream_usage=spec.get('include_stream_usage', kind in {'omlx','vllm','remote-vllm','openai'}),
             chat_template_kwargs=spec.get('chat_template_kwargs'),
             generation_parameters=spec.get('generation_parameters'))
         backend.is_local = not cloud

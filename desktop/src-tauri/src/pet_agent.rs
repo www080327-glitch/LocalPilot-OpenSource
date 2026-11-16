@@ -55,15 +55,16 @@ pub async fn pet_core(
         let window = if let Some(w) = app.get_webview_window("main") {
             w
         } else {
-            tauri::WebviewWindowBuilder::new(
-                &app,
-                "main",
-                tauri::WebviewUrl::App("index.html".into()),
-            )
-            .title("LocalPilot Test · 首次设置")
-            .inner_size(1200.0, 800.0)
-            .build()
-            .map_err(|e| e.to_string())?
+            app.state::<crate::test_profile::TestProfile>()
+                .webview(tauri::WebviewWindowBuilder::new(
+                    &app,
+                    "main",
+                    tauri::WebviewUrl::App("index.html".into()),
+                ))
+                .title("LocalPilot Test · 首次设置")
+                .inner_size(1200.0, 800.0)
+                .build()
+                .map_err(|e| e.to_string())?
         };
         pet_native::expand(&app, false, false)?;
         window.show().map_err(|e| e.to_string())?;
@@ -250,15 +251,16 @@ pub async fn pet_agent(
         let window = if let Some(window) = app.get_webview_window("main") {
             window
         } else {
-            tauri::WebviewWindowBuilder::new(
-                &app,
-                "main",
-                tauri::WebviewUrl::App(format!("index.html?petTask={id}").into()),
-            )
-            .title("LocalPilot · 查看宠物原任务")
-            .inner_size(1200.0, 800.0)
-            .build()
-            .map_err(|e| e.to_string())?
+            app.state::<crate::test_profile::TestProfile>()
+                .webview(tauri::WebviewWindowBuilder::new(
+                    &app,
+                    "main",
+                    tauri::WebviewUrl::App(format!("index.html?petTask={id}").into()),
+                ))
+                .title("LocalPilot · 查看宠物原任务")
+                .inner_size(1200.0, 800.0)
+                .build()
+                .map_err(|e| e.to_string())?
         };
         window.show().map_err(|e| e.to_string())?;
         window.set_focus().map_err(|e| e.to_string())?;

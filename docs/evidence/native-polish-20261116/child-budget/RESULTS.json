@@ -1,0 +1,39 @@
+{
+  "core_version": "5.0.0b25",
+  "suite_version": "0.2.0b30",
+  "baseline": {
+    "tests": 1,
+    "fail": 1,
+    "reason": "zero actual child read receipts"
+  },
+  "combined_baseline": {
+    "tests": 1,
+    "errors": 1,
+    "reason": "default budget and explicit path migration did not compose"
+  },
+  "final_targeted": {
+    "tests": 138,
+    "pass": 138,
+    "skip": 0,
+    "fail": 0,
+    "error": 0,
+    "seconds": 14.233
+  },
+  "new_tests": {
+    "tests": 5,
+    "pass": 5,
+    "included_in_targeted": true
+  },
+  "defaults": {
+    "parent": 262144,
+    "worker": 131072,
+    "old_preserved_worker": 32768
+  },
+  "model_evidence": "scripted model only; actual Runtime, file tools, HTTP and SQLite",
+  "production_diff": {
+    "added": 64,
+    "removed": 9
+  },
+  "private_fixture_count": 5,
+  "qwen_failures_relabelled": false
+}

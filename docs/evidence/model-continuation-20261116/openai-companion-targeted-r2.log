@@ -1,0 +1,21 @@
+test_local_only_refuses_explicit_openai_before_model_request (companion.tests.test_v044_service.ServiceContractTests.test_local_only_refuses_explicit_openai_before_model_request) ... ok
+test_explicit_openai_route_requires_confirmation_and_keeps_source_identity (companion.tests.test_v044_help_and_collaboration.HelpCollaborationTests.test_explicit_openai_route_requires_confirmation_and_keeps_source_identity) ... FAIL
+test_provider_change_after_review_cannot_send_question_elsewhere (companion.tests.test_v044_help_and_collaboration.HelpCollaborationTests.test_provider_change_after_review_cannot_send_question_elsewhere) ... ok
+
+======================================================================
+FAIL: test_explicit_openai_route_requires_confirmation_and_keeps_source_identity (companion.tests.test_v044_help_and_collaboration.HelpCollaborationTests.test_explicit_openai_route_requires_confirmation_and_keeps_source_identity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<SOURCE>/companion/tests/test_v044_help_and_collaboration.py", line 159, in test_explicit_openai_route_requires_confirmation_and_keeps_source_identity
+    self.assertEqual(final['status'],'completed')
+AssertionError: 'incomplete' != 'completed'
+- incomplete
+? --
++ completed
+?         +
+
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.191s
+
+FAILED (failures=1)

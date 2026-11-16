@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useRef, type RefObject } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type RefObject,
+} from "react";
 import { listen } from "@tauri-apps/api/event";
 import { call, desktop } from "../bridge";
 import { textOf, type Json, type Message, type Task } from "../domain";
@@ -62,6 +68,16 @@ export function restoredConversation(
 }
 export type RestoredConversation = ReturnType<typeof restoredConversation>;
 
+export function isMissingSession(error: unknown): boolean {
+  const match = /^(?:Error: )?HTTP 404 · (.+)$/s.exec(String(error));
+  if (!match) return false;
+  try {
+    return JSON.parse(match[1])?.error?.code === "session_not_found";
+  } catch {
+    return false;
+  }
+}
+
 interface RecoveryOptions {
   preferencesReady: boolean;
   completed: boolean;
@@ -75,6 +91,7 @@ interface RecoveryOptions {
   model: string;
   onOpen: (task: Task, view: RestoredConversation) => void;
   onDraft: (draft: ChatDraft) => void;
+  onFreshDraft: (draft?: ChatDraft, missingSession?: boolean) => void;
   onPreferences: (preferences: Preferences) => void;
   onError: (error: unknown) => void;
 }
@@ -82,6 +99,18 @@ interface RecoveryOptions {
 export function useSessionRecovery(state: TaskState, options: RecoveryOptions) {
   const current = useRef({ state, options });
   current.current = { state, options };
+  const [confirmed, setConfirmed] = useState<{
+    id: string;
+    scope: string;
+  } | null>(null);
+  const serviceScope = `${options.scope}|${options.health?.client_generation || ""}`;
+  const confirmSession = useCallback((id: string) => {
+    const { options } = current.current;
+    setConfirmed({
+      id,
+      scope: `${options.scope}|${options.health?.client_generation || ""}`,
+    });
+  }, []);
   const openTask = useCallback((task: Task) => {
     const { state, options } = current.current;
     const view = restoredConversation(
@@ -115,24 +144,75 @@ export function useSessionRecovery(state: TaskState, options: RecoveryOptions) {
       options.restoreDone.current
     )
       return;
-    options.restoreDone.current = true;
     let id = "";
     try {
       id = JSON.parse(localStorage.getItem("lp.currentTask") || '""');
     } catch {
       /* Broken local selection has no authority over server history. */
     }
-    const task = state.tasks.find((value) => value.id === id);
-    if (task) openTask(task);
-    else if (options.drafts[options.chatId]?.scope === options.scope)
-      options.onDraft(options.drafts[options.chatId]);
+    const task =
+      state.tasks.find((value) => value.id === id) ||
+      state.tasks
+        .filter((value) => value.session_id === options.chatId)
+        .sort((a, b) => (b.created_at || 0) - (a.created_at || 0))[0];
+    const cached = options.drafts[options.chatId];
+    const draft = cached?.scope === options.scope ? cached : undefined;
+    if (task) {
+      openTask(task);
+      options.restoreDone.current = true;
+      return;
+    }
+    if (!options.chatId.startsWith("sess_")) {
+      if (draft) options.onDraft(draft);
+      else if (cached) options.onFreshDraft();
+      options.restoreDone.current = true;
+      return;
+    }
+    // A cached id is a selection, not evidence that the connected service
+    // owns this Session. Only its authenticated 404 permits a fresh draft.
+    let disposed = false;
+    void (async () => {
+      try {
+        const session = await call<Json>("api", {
+          method: "GET",
+          path: `/localpilot/v1/sessions/${options.chatId}`,
+        });
+        if (disposed) return;
+        const taskId = session.active_task_id || session.last_task_id;
+        if (taskId) {
+          const recovered = await call<Task>("api", {
+            method: "GET",
+            path: `/localpilot/v1/tasks/${taskId}`,
+          });
+          if (disposed) return;
+          state.updateTask(recovered);
+          openTask(recovered);
+        } else {
+          confirmSession(session.id);
+          if (draft) options.onDraft(draft);
+        }
+        options.restoreDone.current = true;
+      } catch (error) {
+        if (disposed) return;
+        if (isMissingSession(error)) {
+          options.onFreshDraft(draft, true);
+          options.restoreDone.current = true;
+        } else options.onError(error);
+      }
+    })();
+    return () => {
+      disposed = true;
+    };
   }, [
     options.preferencesReady,
     options.completed,
     options.health,
+    options.scope,
+    options.chatId,
     state.tasks,
     options.historyReady,
     openTask,
+    confirmSession,
   ]);
   useEffect(() => {
     if (!desktop) return;
@@ -161,5 +241,13 @@ export function useSessionRecovery(state: TaskState, options: RecoveryOptions) {
       void stop.then((off) => off());
     };
   }, [openTask]);
-  return openTask;
+  const selected = state.tasks.find((task) => task.id === state.selected);
+  const sessionId =
+    options.historyReady && options.health
+      ? selected?.session_id ||
+        (confirmed?.scope === serviceScope && confirmed.id === options.chatId
+          ? confirmed.id
+          : null)
+      : null;
+  return { openTask, sessionId, confirmSession };
 }

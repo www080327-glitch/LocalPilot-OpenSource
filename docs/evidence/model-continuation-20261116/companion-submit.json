@@ -1,0 +1,119 @@
+{
+  "status": "running",
+  "phase": "submitted",
+  "task_id": "resp_ee3b91201a1c4fbd8c7de80a2021edd7",
+  "session_id": "sess_b3f16b4a25d040649b8638ac1278ef96",
+  "quiescent": false,
+  "task_execution": "not_completed",
+  "agent_response": "",
+  "reasoning_help_requested": false,
+  "semantic_status": "RUNNING",
+  "goal_verified": false,
+  "unknown_mutation": false,
+  "cache_usage": {
+    "status": "UNKNOWN",
+    "input_tokens": null,
+    "output_tokens": null,
+    "cache_hit_tokens": null,
+    "cache_miss_tokens": null,
+    "cache_hit_ratio": null
+  },
+  "runtime_status": "running",
+  "deliverable_status": "unknown",
+  "route_decision": {
+    "selection": "explicit",
+    "selected": "localpilot",
+    "backend_model": "localpilot-qwen35-2b-q8_0-qualified",
+    "decisions": [
+      {
+        "model": "localpilot",
+        "reason": "selected"
+      }
+    ],
+    "backend_fallback": false
+  },
+  "model_resource": null,
+  "required_action": null,
+  "recovery": null,
+  "error": null,
+  "completion": null,
+  "verification_status": "unknown",
+  "engineering_status": "unverified",
+  "last_event_id": 2,
+  "task": {
+    "id": "resp_ee3b91201a1c4fbd8c7de80a2021edd7",
+    "object": "localpilot.task",
+    "session_id": "sess_b3f16b4a25d040649b8638ac1278ef96",
+    "user_input": "Use read_file exactly once with {\"path\":\"fact.txt\"}. The path is relative to the workspace. After the tool returns the complete file contents, return them directly in your final answer without calling another tool.",
+    "execution_model": "localpilot-qwen35-2b-q8_0-qualified",
+    "desktop_options": null,
+    "thinking": {
+      "requested": null,
+      "effective": null,
+      "supported": []
+    },
+    "pause_requested": false,
+    "model": "localpilot",
+    "session_model": "localpilot",
+    "previous_task_id": null,
+    "created_at": 1794836123,
+    "status": "running",
+    "quiescent": false,
+    "result": null,
+    "streamed_text": "",
+    "required_action": null,
+    "error": null,
+    "output": [],
+    "tools": [],
+    "goals": [],
+    "subagents": [],
+    "computer": null,
+    "completion": null,
+    "last_event_id": 2,
+    "service": {
+      "request_id": "req_353d18ae8a144138bff5aa083528a9ec",
+      "client_subject": "companion",
+      "route_decision": {
+        "selection": "explicit",
+        "selected": "localpilot",
+        "backend_model": "localpilot-qwen35-2b-q8_0-qualified",
+        "decisions": [
+          {
+            "model": "localpilot",
+            "reason": "selected"
+          }
+        ],
+        "backend_fallback": false
+      },
+      "origin_agent": "companion",
+      "parent_task_id": null,
+      "external_delegation_depth": 1,
+      "external_redelegation_allowed": false,
+      "low_power_consent": false
+    },
+    "receipt_summary": {
+      "count": 0,
+      "unknown_effects": 0
+    },
+    "file_operation_verification": {
+      "status": "NOT_RUN",
+      "scope": "filesystem effects only",
+      "receipts": 0
+    },
+    "verification_summary": {
+      "runtime_status": "UNKNOWN",
+      "deliverable_status": "UNKNOWN",
+      "verification_status": "UNKNOWN",
+      "engineering_status": "UNKNOWN",
+      "task_outcome": "UNKNOWN"
+    }
+  },
+  "progress_text": "",
+  "progress_snapshot": true,
+  "submission_id": "continuation-companion-read",
+  "context_digest": "0ae5ecdb149f84aa9e1264175bf2a0d9bb0b13dd570524f712516e2d1670e80c",
+  "submitted": true,
+  "evidence_level": "IMPLEMENTED",
+  "automatic_retry": false,
+  "submission_attempted": true
+}

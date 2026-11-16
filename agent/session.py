@@ -384,6 +384,8 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
                     schema['function']['parameters']['properties'].update({
                         'backend_id': {'type': 'string', 'enum': eligible},
                         'model': {'type': 'string', 'description': 'Exact registered configured model assertion; not an arbitrary provider model.'}})
+                    if schema['function']['name'] == 'delegate' and not any(self.hybrid.kind(k) == 'cloud' for k in eligible):
+                        schema['function']['parameters']['properties'].pop('tier', None)
                     if self.harness_policy or self.engine_policy:
                         key='target' if schema['function']['name']=='request_model_switch' else 'backend_preference'
                         schema['function']['parameters']['properties'][key]['enum']=sorted({self.hybrid.kind(k) for k in eligible})
@@ -393,7 +395,7 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
         if self.async_policy and self.runtime_tools:
             next(s for s in schemas if s['function']['name'] == 'delegate')['function']['parameters']['properties']['mode'] = {"type":"string", "enum":["sync","async"]}
             schemas.extend(deepcopy(ASYNC_SCHEMAS))
-        workspace_schemas = self.registry.schemas()
+        workspace_schemas = self.registry.schemas(for_model=True)
         if self.harness_policy or self.engine_policy:
             caps = self.registry.gateway.capabilities
             writable = caps.write and not caps.read_only and not self._planning and not self.registry.gateway.plan_read_only and not self._finalizing
@@ -551,7 +553,7 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
             messages=[m.to_dict() for m in self.messages], model_calls=list(self._usage),
             prompt_version="localpilot-v5-v1" if self.engine_policy else f"{self.prompt_profile}-v0.1" if self.legacy else "runtime-v2-computer-use-alpha" if self.computer else "runtime-v1.4",
             status=status, approvals=[self._approval_view()] if self.pending_approval else None,
-            tool_budget=measure_tool_budget(self.registry.schemas(), self.base_prompt),
+            tool_budget=measure_tool_budget(self.registry.schemas(for_model=True), self.base_prompt),
             prompt_profile=self.prompt_profile, tool_profile=self.registry.tool_profile,
             runtime_status=status,
             deliverable_status=("missing" if not (self._turn_text if text is None else text).strip() else
@@ -710,6 +712,10 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
             raise ValueError("Invalid stop reason")
         self._stop_reason = reason
         self._stop_requested.set()
+        # A synchronous child Shell cannot reach its parent check until the tool returns.
+        for child in tuple(self._children.values()):
+            if child.state != SessionState.SESSION_FINISHED:
+                child.request_cancel(reason)
         plugin_manager = getattr(self.registry, 'plugin_manager', None)
         if plugin_manager:
             plugin_manager.cancel()

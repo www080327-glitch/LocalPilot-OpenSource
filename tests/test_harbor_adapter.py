@@ -62,6 +62,25 @@ class HarborAdapterTests(unittest.IsolatedAsyncioTestCase):
             else:
                 os.environ[key] = previous
 
+    async def test_explicit_openai_uses_cloud_contract_without_local_template(self):
+        from localpilot_service.backend_contract import ServiceOpenAICloudBackend
+        from scripts.localpilot_harbor import LocalPilotHarborAgent
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as directory, patch.dict(os.environ, {"OPENAI_API_KEY": "fixture-only"}):
+            agent = LocalPilotHarborAgent(directory, "operator-selected-model",
+                endpoint="https://api.openai.com/v1", provider_kind="openai", max_output_tokens=256)
+            self.assertIsInstance(agent.backend, ServiceOpenAICloudBackend)
+            self.assertFalse(agent.data_policy.local_only)
+            payload = agent.backend._payload([], None, 256, stream=True)
+            self.assertEqual(payload["max_completion_tokens"], 256)
+            self.assertEqual(payload["stream_options"], {"include_usage": True})
+            self.assertNotIn("temperature", payload)
+            self.assertNotIn("max_tokens", payload)
+            with self.assertRaisesRegex(ValueError, "template"):
+                LocalPilotHarborAgent(directory, "operator-selected-model",
+                    endpoint="https://api.openai.com/v1", provider_kind="openai",
+                    chat_template_kwargs={"enable_thinking": False})
+
     async def test_official_base_agent_and_configured_product_backend(self):
         from harbor.agents.base import BaseAgent
         from localpilot_service.backend_contract import ServiceOpenAIBackend

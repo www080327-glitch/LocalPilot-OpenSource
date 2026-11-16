@@ -59,11 +59,13 @@ def build(config_path):
         engine = spec.get('engine', 'legacy')
         if engine not in {'legacy', 'v5'}: raise ValueError('Unknown internal agent engine')
         kind = backend_spec["kind"]
-        if kind not in {"vllm", "remote-vllm", "omlx", "local-openai", "deepseek", "deepseek-native", "remote-openai", "unavailable"}:
+        if kind not in {"vllm", "remote-vllm", "omlx", "local-openai", "deepseek", "deepseek-native", "remote-openai", "openai", "unavailable"}:
             raise ValueError("Unknown backend adapter")
         allowed = {"kind", "model", "base_url", "context_budget", "timeout", "api_key_env", "key_file", "capabilities", "reasoning_efforts", "generation_parameters"}
         if kind in {"vllm", "remote-vllm", "omlx", "local-openai", "remote-openai"}:
             allowed.update({"include_stream_usage", "chat_template_kwargs"})
+        if kind == "openai":
+            allowed.add("include_stream_usage")
         if kind == "deepseek":
             allowed.add("agent_engine")
         if set(backend_spec) - allowed:
@@ -162,6 +164,7 @@ def build(config_path):
             raise ValueError("Packaged service requires host approval for mutations")
         def factory(callback, b=dict(backend_spec), w=workspace, p=permission, cap=capabilities,
                     dp=hard_policy, budgets=budget, is_cloud=cloud, ep=egress,
+                    worker_budget_defaulted='max_worker_token_units' not in budget_values,
                     paths=tuple(spec.get("cloud_egress_paths", ())), thinking=spec.get("thinking"),
                     verification=verification, verifier=verifier, cache_stable_prefix=cache_stable_prefix,
                     prompt_profile=prompt_profile, tool_profile=tool_profile, reasoning_only=reasoning_only, model_host=model_host, engine=engine, workers=workers,
@@ -212,6 +215,7 @@ def build(config_path):
                 strict_task=strict_task, completion_check=execution_check,
                 async_policy=route_async_policy,
                 event_callback=callback, retry_policy=RetryPolicy(max_attempts=2 if engine == 'v5' or b.get("agent_engine") == "deepseek_optimized" else 1), verification_callback=session_verifier)
+            runtime._worker_budget_defaulted = worker_budget_defaulted
             runtime._workspace_grants=workspace_grants
             if plugins is not None:
                 from localpilot_plugins.adapter import configure_session
@@ -274,8 +278,8 @@ def build(config_path):
     try:
         from .documents import DocumentEngine
         documents = DocumentEngine(data / 'documents-v2')
-        from .restore_migration import configured_migration
-        migration = configured_migration(config)
+        from .restore_migration import configured_migration, worker_budget_compatibility
+        migration = worker_budget_compatibility(configured_migration(config))
         service = TaskService(routes, persistence=data / "runtime.sqlite3", auto_resume=False,
             async_policy=async_policy,
             configuration_migration=migration,

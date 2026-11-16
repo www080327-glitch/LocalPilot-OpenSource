@@ -1,0 +1,33 @@
+{
+  "observed_at": "2026-11-16T09:40:51.571180+00:00",
+  "source_base": "d846fef0f4b442d57e6e37f856a59c5a1a1337de",
+  "docker_client": null,
+  "docker_sockets": {
+    "/var/run/docker.sock": false,
+    "/run/codex-docker/docker.sock": false
+  },
+  "credentials_present": {
+    "OPENAI_API_KEY": false,
+    "DEEPSEEK_API_KEY": false
+  },
+  "host_available_bytes": 8261992448,
+  "workspace_free_bytes": 43436265472,
+  "formal_study": "NOT_RUN",
+  "paid_model_requests": 0,
+  "docker_probe": {
+    "status": "BLOCKED",
+    "error_type": "FileNotFoundError",
+    "reason": "[Errno 2] No such file or directory: 'docker'"
+  },
+  "process_alias_reproduction": {
+    "process_stopped": true,
+    "requested_cwd_is_symlink": true,
+    "psutil_cwd_matches_canonical": true,
+    "psutil_cwd_matches_requested": false,
+    "baseline_duplicate_launcher_detected": false,
+    "baseline_continuation_accepted": false,
+    "patched_duplicate_launcher_detected": true,
+    "patched_continuation_same_process": true,
+    "patched_replayed_trials": 0
+  }
+}

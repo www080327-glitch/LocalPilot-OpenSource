@@ -1,0 +1,15 @@
+test_compact_model_sees_skill_catalog_without_changing_stored_contract (tests.test_pa_skills.SelectedSkillTests.test_compact_model_sees_skill_catalog_without_changing_stored_contract) ... ERROR
+
+======================================================================
+ERROR: test_compact_model_sees_skill_catalog_without_changing_stored_contract (tests.test_pa_skills.SelectedSkillTests.test_compact_model_sees_skill_catalog_without_changing_stored_contract)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<REPOSITORY>/tests/test_pa_skills.py", line 74, in test_compact_model_sees_skill_catalog_without_changing_stored_contract
+    self.assertIn("Summarize public activity records", model_schema["function"]["description"])
+                                                       ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+KeyError: 'description'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.078s
+
+FAILED (errors=1)

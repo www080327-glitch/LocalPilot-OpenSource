@@ -2,7 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 
 // These fixtures exercise real React controls through a synthetic native bridge.
 // Actual HTTP discovery and service activation are covered by Suite tests.
-async function intelBridge(page: Page, system = "Darwin") {
+async function intelBridge(page: Page, system = "Darwin", stage = 1) {
   await page.route("**/src/bridge.ts", (route) =>
     route.fulfill({
       contentType: "text/javascript",
@@ -13,7 +13,7 @@ async function intelBridge(page: Page, system = "Darwin") {
       window.intelCalls=[];
       export async function call(command,args={}){
         window.intelCalls.push({command,args});
-        if(command==='setup_progress')return {stage:1};
+        if(command==='setup_progress')return {stage:${stage}};
         if(command==='discover_suites')return {installations:[]};
         if(command==='bootstrap_product')return {setup:{companion_ready:true}};
         if(command==='model_manager')return {supported:false,models:{models:[]}};
@@ -48,14 +48,33 @@ async function intelBridge(page: Page, system = "Darwin") {
 test("Linux setup uses the same explicit HTTP route without offering MLX", async ({
   page,
 }) => {
-  await intelBridge(page, "Linux");
+  await intelBridge(page, "Linux", 0);
   await page.goto("/tests/ui/intel-fixture.html");
+  await expect(
+    page.getByText("请使用与当前 Linux 发行版和处理器匹配的安装包。", {
+      exact: false,
+    }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("macOS 需要 15 或更新版本。", { exact: false }),
+  ).toHaveCount(0);
+  await page.getByRole("button", { name: "开始准备 Agent", exact: true }).click();
   const form = page.getByRole("region", { name: "连接本机模型服务" });
   await expect(form).toBeVisible();
+  await expect(
+    form.getByText("可连接 llama.cpp 等推理程序的本机 OpenAI 兼容服务。", {
+      exact: false,
+    }),
+  ).toBeVisible();
+  await expect(form.getByText("Intel Mac", { exact: false })).toHaveCount(0);
   await expect(page.getByRole("button", { name: /安装 oMLX/ })).toHaveCount(0);
   await form.getByRole("button", { name: "检查连接并读取模型列表" }).click();
   await form.getByLabel("服务报告的模型").selectOption("fixture-gguf");
   await form.getByLabel("上下文 token 上限").fill("2048");
+  await expect(
+    form.getByRole("button", { name: "保存本机模型配置", exact: true }),
+  ).toBeDisabled();
+  await form.getByLabel("上下文 token 上限").fill("4096");
   await form
     .getByRole("button", { name: "保存本机模型配置", exact: true })
     .click();

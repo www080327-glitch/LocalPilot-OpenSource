@@ -1,0 +1,12 @@
+test_catalog_order_is_stable (tests.test_pa_skills.SelectedSkillTests.test_catalog_order_is_stable) ... ok
+test_compact_model_sees_skill_catalog_without_changing_stored_contract (tests.test_pa_skills.SelectedSkillTests.test_compact_model_sees_skill_catalog_without_changing_stored_contract) ... ok
+test_dependency_change_invalidates_selected_catalog_and_disabled_skill_stops_loading (tests.test_pa_skills.SelectedSkillTests.test_dependency_change_invalidates_selected_catalog_and_disabled_skill_stops_loading) ... ok
+test_model_sees_catalog_then_loads_reviewed_body_without_second_approval (tests.test_pa_skills.SelectedSkillTests.test_model_sees_catalog_then_loads_reviewed_body_without_second_approval) ... ok
+test_reviewed_content_change_changes_configuration_and_rejects_stale_loader (tests.test_pa_skills.SelectedSkillTests.test_reviewed_content_change_changes_configuration_and_rejects_stale_loader) ... ok
+test_worker_loads_same_reviewed_skill_and_restores_its_tool_contract (tests.test_pa_skills.SelectedSkillTests.test_worker_loads_same_reviewed_skill_and_restores_its_tool_contract) ... ok
+test_compact_model_receives_path_semantics_without_changing_stored_contract (tests.test_inference_backend.InferenceBackendTests.test_compact_model_receives_path_semantics_without_changing_stored_contract) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.635s
+
+OK

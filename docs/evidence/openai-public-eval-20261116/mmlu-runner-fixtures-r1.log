@@ -1,0 +1,41 @@
+test_frozen_selection_is_reproducible_and_covers_all_categories (tests.test_public_model_eval.PublicModelEvaluationTests.test_frozen_selection_is_reproducible_and_covers_all_categories) ... ok
+test_malformed_dataset_and_existing_protocol_are_not_silently_changed (tests.test_public_model_eval.PublicModelEvaluationTests.test_malformed_dataset_and_existing_protocol_are_not_silently_changed) ... ok
+test_only_an_exact_final_answer_line_is_graded (tests.test_public_model_eval.PublicModelEvaluationTests.test_only_an_exact_final_answer_line_is_graded) ... ok
+test_real_http_keeps_all_32_attempts_errors_usage_and_raw_responses (tests.test_public_model_eval.PublicModelEvaluationTests.test_real_http_keeps_all_32_attempts_errors_usage_and_raw_responses) ... {"public_model_question": 23, "status": "FAIL", "seconds": 0.0037332209994929144}
+{"public_model_question": 11, "status": "FAIL", "seconds": 0.0011254340006416896}
+{"public_model_question": 7, "status": "ERROR", "seconds": 0.0006944709984963993}
+{"public_model_question": 22, "status": "PASS", "seconds": 0.002727707998928963}
+{"public_model_question": 16, "status": "PASS", "seconds": 0.0008367569989786716}
+{"public_model_question": 5, "status": "PASS", "seconds": 0.0011807770006271312}
+{"public_model_question": 53, "status": "PASS", "seconds": 0.0005936779998592101}
+{"public_model_question": 30, "status": "PASS", "seconds": 0.0006128780005383305}
+{"public_model_question": 40, "status": "PASS", "seconds": 0.0005833930008520838}
+{"public_model_question": 3, "status": "PASS", "seconds": 0.0006996590000198921}
+{"public_model_question": 41, "status": "PASS", "seconds": 0.0006526580000354443}
+{"public_model_question": 12, "status": "PASS", "seconds": 0.0009384999993926613}
+{"public_model_question": 19, "status": "PASS", "seconds": 0.000605025999902864}
+{"public_model_question": 34, "status": "PASS", "seconds": 0.0006969250007387018}
+{"public_model_question": 14, "status": "PASS", "seconds": 0.0008056599999690661}
+{"public_model_question": 9, "status": "PASS", "seconds": 0.0006015109993313672}
+{"public_model_question": 1, "status": "PASS", "seconds": 0.0008153649996529566}
+{"public_model_question": 43, "status": "PASS", "seconds": 0.001025752999339602}
+{"public_model_question": 26, "status": "PASS", "seconds": 0.0007828750003682217}
+{"public_model_question": 54, "status": "PASS", "seconds": 0.0007999009994819062}
+{"public_model_question": 38, "status": "PASS", "seconds": 0.0007024240003374871}
+{"public_model_question": 51, "status": "PASS", "seconds": 0.0008896770013961941}
+{"public_model_question": 55, "status": "PASS", "seconds": 0.0009696470006019808}
+{"public_model_question": 52, "status": "PASS", "seconds": 0.0007082720003381837}
+{"public_model_question": 6, "status": "PASS", "seconds": 0.0008780089992797002}
+{"public_model_question": 29, "status": "PASS", "seconds": 0.0008415229985985206}
+{"public_model_question": 21, "status": "PASS", "seconds": 0.0006060579999029869}
+{"public_model_question": 8, "status": "PASS", "seconds": 0.0006600189990422223}
+{"public_model_question": 31, "status": "PASS", "seconds": 0.0006652970005234238}
+{"public_model_question": 46, "status": "PASS", "seconds": 0.0006818820002081338}
+{"public_model_question": 4, "status": "PASS", "seconds": 0.0007950029994390206}
+{"public_model_question": 28, "status": "PASS", "seconds": 0.0008919659994717222}
+ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.548s
+
+OK

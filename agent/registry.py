@@ -222,9 +222,17 @@ class ToolRegistry:
                 bounded["risk_summary"]["reasons"] = ["Result exceeded output limit; obtain focused evidence."]
         return bounded
 
-    def schemas(self):
+    def schemas(self, *, for_model=False):
         schemas = deepcopy([schema for schema in TOOL_SCHEMAS + FILE_SCHEMAS if schema["function"]["name"] in self._tools] + self._extension_schemas)
         if self.tool_profile == "compact":
+            if for_model:
+                # Parameter prose carries path/units semantics. Keep the stored
+                # contract unchanged so existing Sessions and children restore.
+                for schema in schemas:
+                    # Skill purposes live in this catalog; bodies stay on demand.
+                    if schema["function"]["name"] != "load_skill":
+                        schema["function"].pop("description", None)
+                return schemas
             # Remove prose only: names, types, required fields and constraints stay identical.
             def strip_descriptions(value):
                 if isinstance(value, dict):

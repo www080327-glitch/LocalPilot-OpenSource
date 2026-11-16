@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "run_date": "2026-11-16",
+  "timezone": "Asia/Shanghai",
+  "status": "PASS_WITH_VALIDATION_ENVIRONMENT_FAILURES_RETAINED",
+  "desktop": "5.0.1-rc.9",
+  "core": "5.0.0b25",
+  "suite": "0.2.0b30",
+  "companion": "0.5.7b6",
+  "channels": "0.1.0a3",
+  "git_base": "d846fef0f4b442d57e6e37f856a59c5a1a1337de",
+  "source_dirty_at_build": true,
+  "candidate_sha256": "6cb3172ca81b9a8eeedf22f69d091585d19d1a157682f5ada8ce7bba43d1e11a",
+  "deb_sha256": "bc91d6709645580ec788a4ddc9f995c9c9e9683bbff34215751669b7778a82d6",
+  "execution": "real Linux X11 Tauri WebKitGTK; extracted DEB with validated helper read-only overlay; default WebKit sandbox retained",
+  "system_deb_installation": "NOT_RUN",
+  "model_tasks_submitted": 0,
+  "core_database_counts": {
+    "a": {
+      "checkpoints": 0,
+      "journal": 0
+    },
+    "b": {
+      "checkpoints": 0,
+      "journal": 0
+    }
+  },
+  "cases": [
+    {
+      "name": "A reopens old unsent draft, dark theme and local_only preference",
+      "status": "PASS",
+      "run": "r14-a"
+    },
+    {
+      "name": "B first run does not inherit A setup, draft or theme",
+      "status": "PASS",
+      "run": "r15-b"
+    },
+    {
+      "name": "B installs isolated bundled runtime and completes setup",
+      "status": "PASS",
+      "run": "r15-b"
+    },
+    {
+      "name": "A after B retains its draft and preferences",
+      "status": "PASS",
+      "run": "r16-a-reopen"
+    },
+    {
+      "name": "B reopen retains its own draft, system theme and balanced preference",
+      "status": "PASS",
+      "run": "r17-b-reopen"
+    },
+    {
+      "name": "A symlink root reuses A store and restored draft with canonical wrapper temporary directories",
+      "status": "PASS",
+      "run": "r20-a-alias"
+    },
+    {
+      "name": "all owned launched candidates and descendant services stopped",
+      "status": "PASS"
+    }
+  ],
+  "retained_failures": [
+    {
+      "run": "r14-a-stop-wrong-executor",
+      "classification": "ABORTED_IDENTITY",
+      "detail": "Exec and desktop have distinct PID namespaces; verification aborted before any signal. Retried in native terminal."
+    },
+    {
+      "run": "r18-a-alias",
+      "classification": "ERROR_VALIDATION_WRAPPER",
+      "detail": "bubblewrap refused symlink bind destination before the application started."
+    },
+    {
+      "run": "r19-a-alias",
+      "classification": "PARTIAL_PROFILE_PASS_SERVICE_RECOVERY_ERROR",
+      "detail": "Canonical writable bind restored same WebKit store/theme, but raw alias TMPDIR/XDG_RUNTIME_DIR coincided with service recovery failure. Passing canonical temporary/runtime directories while retaining alias LP_INSTALL_TEST_ROOT resolved this in r20; individual variable cause is not isolated."
+    }
+  ],
+  "not_covered": [
+    "macOS or Intel hardware",
+    "system DEB installation, upgrade, rollback",
+    "Wayland, system audio, logind sleep",
+    "dynamic pet/bubble window interaction",
+    "additional native Session 404/SSE/model execution"
+  ],
+  "production_desktop_changes_in_this_continuation": [],
+  "native_ui_cleanup": "STOPPED; owned_remaining=[] for every started candidate"
+}

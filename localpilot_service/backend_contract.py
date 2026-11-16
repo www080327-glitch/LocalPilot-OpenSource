@@ -1,9 +1,10 @@
 """Host generation options on existing Chat Completions adapters, without fallback."""
 import math
+from urllib.request import build_opener
 from agent.deepseek import DeepSeekBackend
 from agent.deepseek_optimized import DeepSeekOptimizedBackend
 from agent.deepseek_native import DeepSeekNativeBackend
-from agent.local_http import LocalHTTPBackend
+from agent.local_http import LocalHTTPBackend, _NoRedirect
 from agent.omlx import OMLXBackend
 
 
@@ -73,6 +74,33 @@ class ServiceOpenAIBackend(HostGenerationMixin, LocalHTTPBackend):
         super().__init__(*args, **kwargs)
         if self.include_stream_usage:
             self.service_contract["include_stream_usage"] = True
+
+
+class ServiceOpenAICloudBackend(ServiceOpenAIBackend):
+    """Explicit OpenAI Chat Completions contract; existing compatible routes stay unchanged."""
+
+    is_local = False
+    provider = "openai"
+
+    def __init__(self, *, base_url="https://api.openai.com/v1", api_key=None,
+                 include_stream_usage=True, **kwargs):
+        if not isinstance(base_url, str) or not base_url.startswith("https://") or not api_key:
+            raise ValueError("OpenAI requires HTTPS and an explicit API token")
+        if kwargs.get("chat_template_kwargs"):
+            raise ValueError("OpenAI does not accept local chat template overrides")
+        kwargs.setdefault("allow_remote", True)
+        kwargs.setdefault("service_location", "remote")
+        super().__init__(base_url=base_url, api_key=api_key,
+                         include_stream_usage=include_stream_usage, **kwargs)
+        self._opener = build_opener(_NoRedirect())
+        self.service_contract.update(protocol="openai_chat_completions_v1",
+            max_output_parameter="max_completion_tokens", proxy="environment")
+
+    def _payload(self, *args, **kwargs):
+        payload = super()._payload(*args, **kwargs)
+        if "max_tokens" in payload:
+            payload["max_completion_tokens"] = payload.pop("max_tokens")
+        return payload
 
 
 class ServiceOMLXBackend(HostGenerationMixin, OMLXBackend):

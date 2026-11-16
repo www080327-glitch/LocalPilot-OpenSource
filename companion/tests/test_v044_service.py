@@ -325,6 +325,14 @@ class ServiceContractTests(unittest.TestCase):
         self.assertEqual(result["error"]["code"], "cloud_approval_required")
         self.assertEqual(provider.network_calls, 0)
 
+    def test_local_only_refuses_explicit_openai_before_model_request(self):
+        self.server.catalog['localpilot'].update(adapter='openai',cloud_egress='LOCAL_ONLY')
+        result=self.submit()
+        self.assertEqual(result['error']['code'],'host_policy_mismatch')
+        self.assertFalse(result['submission_attempted'])
+        self.assertEqual(self.backend.requests,[])
+        self.assertEqual(len(self.service.tasks),0)
+
     def test_lost_submit_response_reuses_persisted_key_after_host_restart(self):
         from companion.escalation.localpilot import TransportFailure
         app = self.host()

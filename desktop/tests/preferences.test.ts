@@ -10,6 +10,19 @@ import {
 } from "../src/preferences";
 import { previewModels } from "../src/preview";
 describe("preference authority", () => {
+  it("offers explicit OpenAI routes only to cloud-capable source choices", () => {
+    const model = {
+      ...previewModels[0],
+      adapter: "openai",
+      cloud_egress: "CLOUD_ALLOWED",
+    };
+    expect(
+      sourceAllows({ ...initialPreferences, source: "cloud_only" }, model),
+    ).toBe(true);
+    expect(
+      sourceAllows({ ...initialPreferences, source: "local_only" }, model),
+    ).toBe(false);
+  });
   it("does not treat a local primary with cloud permission as pure cloud", () =>
     expect(
       sourceAllows(

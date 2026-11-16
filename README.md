@@ -10,9 +10,11 @@ LocalPilot 采用 Apache 2.0 开源协议，致力于让强大、易用且低成
 
 ## 当前源码组件版本
 
-本源码树包含 Desktop **5.0.1-rc.8**、Core **5.0.0b23**、Suite **0.2.0b28**、Companion **0.5.7b5** 和独立 Channels **0.1.0a3**。源码版本不代表已经发布或通过全部原生安装验收；可用发行资产以 GitHub Releases 为准。
+本源码树包含 Desktop **5.0.1-rc.9**、Core **5.0.0b26**、Suite **0.2.0b31**、Companion **0.5.7b7** 和独立 Channels **0.1.0a3**。源码版本不代表已经发布或通过全部原生安装验收；可用发行资产以 GitHub Releases 为准。
 
-2026-11-16 Linux 续作在已合入的 PR #13 上补齐宿主 Shell、Tauri/Linux 构建、发行版 Python 离线组件、XDG/systemd、电源读取、只读桌面来源和本地会议转写，并增加独立测试集及显式 CPU/CUDA 后训练入口。真实 Linux 模型测试保留 **5 PASS / 4 FAIL**，没有把调用成功当成任务质量通过。当前范围与全部计划对照见 [Linux 适配与计划状态](docs/development/LINUX_COMPLETION_20261116.md)，命令、结果和失败历史见 [本轮验收记录](docs/evidence/linux-completion-20261116/RESULTS.md)。
+2026-11-16 在 PR #14 基线上继续修复缓存 Session 的认证恢复、Test APP 的独立 WebView 存储和 Harbor 原进程路径别名，并增加显式 OpenAI 云端后端。续作补齐 Companion 的 OpenAI 准入和提供方记录，以及 compact 模式下的 Skills 用途目录。Linux 实际 WebKit 已完成 A/B 草稿、主题、来源偏好隔离及重开检查。云端真实模型使用官方 **Qwen3.5-2B** 的受控 Q8_0 转换；固定 **MMLU-Pro 32 题**与不同批次产品任务分别记录，不据小样本声称 AA 排名。当前范围见 [实现与状态](docs/development/NATIVE_POLISH_20261116.md)，最终交付、包身份和剩余项见 [续作验收记录](docs/evidence/native-continuation-20261116/RESULTS.md)；[前阶段全部结果](docs/evidence/native-polish-20261116/RESULTS.md)及失败保持可查。
+
+上一轮 Linux 适配补齐宿主 Shell、Tauri/DEB 构建、发行版 Python 离线组件、XDG/systemd、电源读取、只读桌面来源和本地会议转写，并增加显式 CPU/CUDA 后训练入口。此前 Qwen2.5-0.5B 的 **5 PASS / 4 FAIL** 及其原协议保留在 [Linux 适配与计划状态](docs/development/LINUX_COMPLETION_20261116.md)和 [原验收记录](docs/evidence/linux-completion-20261116/RESULTS.md)，不由新模型结果覆盖。
 
 此前 Intel 接入已补齐本机 CPU/HTTP 入口、模型列表、真实上下文预算和配置应用；PR #13 的 M1 Max 回归仍是 arm64 证据。Intel 真机要求与原结果保留在 [平台支持与验收](docs/development/PLATFORM_SUPPORT_20261116.md) 和 [原生跟进记录](docs/evidence/intel-device-followup-20261116/RESULTS.md)。
 
@@ -26,9 +28,9 @@ LocalPilot 采用 Apache 2.0 开源协议，致力于让强大、易用且低成
 
 | 平台 | 当前可用路径 | 验收边界 |
 | --- | --- | --- |
-| Apple Silicon Mac | macOS 15+ 桌面 APP；oMLX/MLX 或已有本地 HTTP 服务；云端模型 | PR #13 的 arm64 构建和回归通过，候选未安装或运行真实任务；本轮 RC.8 仍需原生复验。 |
+| Apple Silicon Mac | macOS 15+ 桌面 APP；oMLX/MLX 或已有本地 HTTP 服务；云端模型 | 既有 arm64 构建和回归通过；RC.8 本机首次设置报告 Session 404。本轮 RC.9 已修复对应软件路径，原生 WebKit 隔离及 Qwen3.6-35B 任务仍需 Mac 复验。 |
 | **Intel Mac** | **优先支持本地 HTTP + CPU 推理**；Core/Suite CLI、Companion 服务；x86_64 桌面资源与构建路径 | 代码和跨平台协议测试已补齐；尚无通过 Intel 真机验收的安装包。桌面构建仍要求 macOS 15+。 |
-| **Linux x86_64** | **CLI、受限/Full Shell、HTTP/SSE、恢复、本地模型；Tauri/DEB 构建入口；Companion 文件/文字及可选桌面/音轨接入** | Debian 13 实测服务、Shell、真实 CPU 模型和 ASR；图形会话、物理音轨、登录/睡眠与安装升级仍需对应环境。Wayland 无通用全局窗口保证。 |
+| **Linux x86_64** | **CLI、受限/Full Shell、HTTP/SSE、恢复、本地模型；Tauri/DEB 构建入口；Companion 文件/文字及可选桌面/音轨接入** | Debian 13 实测服务、Shell、真实 Qwen3.5-2B；Chromium UI 47/47 通过，使用合成原生桥；实际 X11/WebKit 首次设置及 A/B profile 重开通过。原生检查使用明确的只读依赖映射，系统 DEB 首装/升级/回滚、Wayland、音轨及登录/睡眠仍未验收。 |
 | Linux aarch64 / 其他发行版 | 架构分支和 Node 资源入口；源码 CLI 可按系统依赖安装 | 本轮未做对应机器、ELF、系统依赖或桌面实测；不称为已验收平台。 |
 
 Intel 本地推理使用外部 CPU 服务，例如 [llama.cpp](https://github.com/ggml-org/llama.cpp) 与兼容的 GGUF 模型。LocalPilot 的 HTTP 路径不依赖 MLX 或 MPS；是否使用 CPU、Metal 或其他加速由模型服务器决定。现有 MLX 权重不能直接当作 GGUF 使用，内置 MLX/LoRA 也不会自动变成 Intel CPU 实现。[LM Studio 官方系统要求](https://lmstudio.ai/docs/app/system-requirements)目前不支持 Intel Mac，因此不把它作为 Intel 安装方案。
@@ -91,14 +93,29 @@ localpilot agent --allow-local-on-battery '读取工作文件夹里的项目说�
 
 ### Linux 桌面候选
 
-Linux 桌面采用发行版原生 DEB，内含四组件 wheel 与隔离环境，依赖构建时匹配的系统 Python minor、GTK/WebKit；不含模型。本轮构建的是 **Debian 13 x86_64 独立 Test 候选**，包信息和 SHA-256 见 [桌面验收记录](desktop/docs/evidence/linux-20261116/RESULTS.md)，构建命令见 [Linux 桌面说明](desktop/docs/development/LINUX_20261116.md)。取得**与自己发行版和架构匹配、已核对 SHA-256 的候选包**后：
+Linux 桌面采用发行版原生 DEB，内含四组件 wheel 与隔离环境，依赖构建时匹配的系统 Python minor、GTK/WebKit；不含模型。本轮构建的是 **Debian 13 x86_64 独立 Test 候选**，包信息和 SHA-256 见 [续作验收记录](docs/evidence/native-continuation-20261116/RESULTS.md)，构建命令见 [Linux 桌面说明](desktop/docs/development/LINUX_20261116.md)。取得**与自己发行版和架构匹配、已核对 SHA-256 的候选包**后安装：
 
 ```sh
-sudo apt install ./LocalPilot-Test-5.0.1-rc.8-linux-x86_64.deb
+sudo apt install ./LocalPilot-Test-5.0.1-rc.9-linux-x86_64.deb
+```
+
+Test 候选要求显式的独立测试目录。首次创建一个尚不存在的目录并写入私有身份标记：
+
+```sh
+export LP_INSTALL_TEST_ROOT="$HOME/LocalPilot-Test-rc9"
+(umask 077; mkdir "$LP_INSTALL_TEST_ROOT" && \
+  printf '%s\n' '{"purpose":"LocalPilot installation E2E"}' \
+    > "$LP_INSTALL_TEST_ROOT/test-owner.json")
 localpilot-desktop-test
 ```
 
-这是独立候选包的安装形式，当前没有新的公开 Linux Release 下载；本轮验证了提取后的运行，真实系统首装/升级仍待验收。Test 包使用自己的身份，不替换日常身份。较新 Debian 构建不能据此承诺兼容所有旧 Ubuntu；AppImage/Flatpak 尚未交付。Companion 可选桌面观察、systemd 和本地音轨的配置见 [Linux Companion](docs/development/LINUX_COMPANION_20261116.md)。
+再次打开时复用同一个目录，无需重建或改写标记：
+
+```sh
+LP_INSTALL_TEST_ROOT="$HOME/LocalPilot-Test-rc9" localpilot-desktop-test
+```
+
+这是独立候选包的安装形式，当前没有新的公开 Linux Release 下载；DEB 提取、自检与模块运行已有验证。实际 X11/WebKit 的首次设置、A/B 隔离和重开已验证，系统首装/升级/回滚仍待验收。Test 包使用自己的身份和明确的数据目录；普通正式身份不要求这个测试变量。较新 Debian 构建不能据此承诺兼容所有旧 Ubuntu；AppImage/Flatpak 尚未交付。Companion 可选桌面观察、systemd 和本地音轨的配置见 [Linux Companion](docs/development/LINUX_COMPANION_20261116.md)。
 
 ### Apple Silicon：已有桌面安装包
 
@@ -156,7 +173,7 @@ Intel 原生构建入口和依赖来源见 [Intel 桌面构建说明](desktop/do
 
 ## 模型和任务设置
 
-Apple Silicon 可通过 oMLX 连接 MLX 模型；Intel 与 Linux 可连接已有本地 OpenAI 兼容服务。是否适合当前任务还取决于模型的工具调用能力、可用内存和实际上下文长度。DeepSeek 通过 API 接入，密钥保存在本机私有目录。
+Apple Silicon 可通过 oMLX 连接 MLX 模型；Intel 与 Linux 可连接已有本地 OpenAI 兼容服务。是否适合当前任务还取决于模型的工具调用能力、可用内存和实际上下文长度。DeepSeek 通过 API 接入；OpenAI 可通过新的显式 `openai` 路由接入主 Agent、子 Agent 和五档来源策略，配置方法见 [OpenAI 与公开评估说明](docs/development/OPENAI_AND_PUBLIC_EVALUATION_20261116.md)。密钥只使用本机私有凭据机制，不写进路由 JSON。当前没有 OpenAI 专用密钥向导，实际 API 可用性、usage 和费用必须分别核实。
 
 来源选项包括完全本地、本地优先、平衡、云端优先和完全云端。完全本地不会调用云端模型；使用云端模型时，允许读取的任务上下文会交给所选服务处理。
 
@@ -216,7 +233,7 @@ npm run dev
 
 Companion → 主 Agent → 多子 Agent、五档来源偏好、按需 Skills、来源记忆、人工审阅训练数据与受管缓存已有实现。Linux 增加固定依赖的 CPU/CUDA LoRA/全参数训练和独立测试集比较，CPU 上已实际更新并重载微型模型；这不代表真实个人数据的训练收益。固定提示/Skill 在本轮 llama.cpp 上验证了热缓存和显式磁盘恢复；外部 HTTP 模型服务器的通用自动缓存管理尚未实现。
 
-**主 Agent 不弱于主流产品、真实多模型协作质量、LoRA 增益和跨后端永久 KV 缓存均没有得到完整实测证明**。旧 534 次正式对照仍为 1 PASS、3 FAIL、13 ERROR、517 无最终结果。系统音轨、真实睡眠唤醒和 Intel 原生验收仍有缺项；当前完整状态见 [Linux 适配与计划对照](docs/development/LINUX_COMPLETION_20261116.md)。
+**主 Agent 不弱于主流产品、真实多模型协作质量、LoRA 增益和跨后端永久 KV 缓存均没有得到完整实测证明**。旧 534 次正式对照仍为 1 PASS、3 FAIL、13 ERROR、517 无最终结果。MMLU-Pro 小样本提供模型知识题证据，不替代 Agent 任务对照。系统音轨、真实睡眠唤醒和 Intel 原生验收仍有缺项；当前完整状态见 [本轮计划对照](docs/development/NATIVE_POLISH_20261116.md)，剩余实际设备工作见 [Work 继续执行提示词](docs/development/WORK_NATIVE_POLISH_20261116.md)。
 
 遇到问题时，请附上版本、模型名称、操作步骤和错误提示。提交日志前先检查并移除 API 密钥和个人信息。
 

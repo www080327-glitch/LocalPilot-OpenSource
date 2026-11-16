@@ -155,7 +155,8 @@ def read_atspi_tree(window, atspi, options):
                 node['parent'] = parent
             if role in static and chars:
                 text_interface = item.get_text_iface()
-                text = text_interface.get_text(0, min(500, chars, text_interface.get_character_count())) if text_interface else item.get_name()[:min(500, chars)]
+                # PyGObject's Accessible.get_text shadows the Text interface method.
+                text = atspi.Text.get_text(text_interface, 0, min(500, chars, text_interface.get_character_count())) if text_interface else item.get_name()[:min(500, chars)]
                 if text:
                     node['text'] = text
                     chars -= len(text)

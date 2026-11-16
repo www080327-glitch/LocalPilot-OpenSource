@@ -98,7 +98,7 @@ export function LocalEndpointForm({
     <section className="local-endpoint-form" aria-label="连接本机模型服务">
       <h3>连接本机模型服务</h3>
       <p className="muted">
-        Intel Mac 可使用 llama.cpp 等推理程序的本机 OpenAI 兼容服务。
+        可连接 llama.cpp 等推理程序的本机 OpenAI 兼容服务。
         先启动服务并加载支持工具调用的模型，再填写地址。CPU 或 GPU
         加速由推理服务选择；模型权重不包含在 LocalPilot 中。
       </p>

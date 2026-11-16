@@ -180,6 +180,24 @@ class ChannelProductTests(unittest.TestCase):
             self.call('configure',{**args,'allow_cloud':True})
             route=next(v for k,v in change.call_args.args[2]['routes'].items() if k.startswith('channel-'))
             self.assertEqual(route['cloud_egress'],'REQUIRES_APPROVAL');self.assertEqual(route['cloud_egress_paths'],[])
+
+    def test_openai_channel_is_cloud_and_keeps_explicit_egress_consent(self):
+        hub,state,sender=self.prepare_binding()
+        config=gui.private_json(self.home/'service.json')
+        config['routes']['openai-worker']={'backend':{'kind':'openai','model':'operator-selected-model',
+            'api_key_env':'LOCALPILOT_OPENAI_KEY'},'workspace':'/unused'}
+        channels.save(self.home/'service.json',config)
+        selected=next(row for row in gui.core_models(self.home) if row['id']=='openai-worker')
+        self.assertTrue(selected['cloud'])
+        args={'senders':[sender],'model':'openai-worker','allow_write':False,'confirmed':True}
+        with patch.object(channels,'main',return_value={'status':'stopped'}),patch.object(gui,'change_core') as change:
+            with self.assertRaisesRegex(ValueError,'CLOUD_REQUIRES'):self.call('configure',args)
+            change.assert_not_called()
+            self.call('configure',{**args,'allow_cloud':True})
+            route=next(v for k,v in change.call_args.args[2]['routes'].items() if k.startswith('channel-'))
+        self.assertEqual(route['backend'],config['routes']['openai-worker']['backend'])
+        self.assertEqual(route['cloud_egress'],'REQUIRES_APPROVAL')
+        self.assertEqual(route['cloud_egress_paths'],[])
     def test_disconnect_rotates_to_read_only_and_keeps_host_history_scope(self):
         hub,state_dir,sender=self.prepare_binding()
         captures=[]

@@ -1,0 +1,117 @@
+[
+  {
+    "name": "legacy-fixture-r1",
+    "sqlite_sha256": "5d8378c8c0074fd0b72cdf29dd1bde3411b8af74aa62aee3b518595c4b358c3b",
+    "checkpoint_count": 1,
+    "journal_rows": 14,
+    "runtime_budget": 32768,
+    "unknown_receipts": 1,
+    "source_budget_sha256": "319bea9bf3bbba132991c09f16c3ff562eff5db7b9e2c43c6129e096799f9ae9",
+    "command_sha256": "ec02de03659061a64342a1f38368dfd6d097ad3ce427f7cac743df1714c92816",
+    "command": {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "import runpy,sys;sys.path.insert(0,sys.argv[1]);runpy.run_path(sys.argv[2],run_name='legacy_fixture')['create_legacy_checkpoint'](sys.argv[3])",
+        "<WORKSPACE>/LocalPilot-polish-20261116",
+        "<WORKSPACE>/LocalPilot-polish-final-20261116/tests/test_worker_admission_budget.py",
+        "/tmp/tmpqe2kh97_/service.json"
+      ],
+      "cwd": "<WORKSPACE>/LocalPilot-polish-20261116",
+      "source_budget_sha256": "319bea9bf3bbba132991c09f16c3ff562eff5db7b9e2c43c6129e096799f9ae9"
+    },
+    "database_in_git": false
+  },
+  {
+    "name": "legacy-fixture-r2",
+    "sqlite_sha256": "082af65edf7389eb7b954f75653210dd001f69cf5eb67c1d369837429b09388e",
+    "checkpoint_count": 2,
+    "journal_rows": 32,
+    "runtime_budget": 32768,
+    "unknown_receipts": 1,
+    "source_budget_sha256": "319bea9bf3bbba132991c09f16c3ff562eff5db7b9e2c43c6129e096799f9ae9",
+    "command_sha256": "11d3748254e78141a24bb4559ce360e41223db1049114c95c32ea261d5dc202f",
+    "command": {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "import runpy,sys;sys.path.insert(0,sys.argv[1]);runpy.run_path(sys.argv[2],run_name='legacy_fixture')['create_legacy_checkpoint'](sys.argv[3])",
+        "<WORKSPACE>/LocalPilot-polish-20261116",
+        "<WORKSPACE>/LocalPilot-polish-final-20261116/tests/test_worker_admission_budget.py",
+        "/tmp/tmp540_unjr/service.json"
+      ],
+      "cwd": "<WORKSPACE>/LocalPilot-polish-20261116",
+      "source_budget_sha256": "319bea9bf3bbba132991c09f16c3ff562eff5db7b9e2c43c6129e096799f9ae9"
+    },
+    "database_in_git": false
+  },
+  {
+    "name": "legacy-fixture-r3",
+    "sqlite_sha256": "f08b00c2e9c211464302274247c2d99a1e876e19c6de771229f86e65e413b826",
+    "checkpoint_count": 2,
+    "journal_rows": 32,
+    "runtime_budget": 32768,
+    "unknown_receipts": 1,
+    "source_budget_sha256": "319bea9bf3bbba132991c09f16c3ff562eff5db7b9e2c43c6129e096799f9ae9",
+    "command_sha256": "c09500a9318db1888815c78551a83b7c53641a2a484c605f299a82a6e7771c6c",
+    "command": {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "import runpy,sys;sys.path.insert(0,sys.argv[1]);runpy.run_path(sys.argv[2],run_name='legacy_fixture')['create_legacy_checkpoint'](sys.argv[3])",
+        "<WORKSPACE>/LocalPilot-polish-20261116",
+        "<WORKSPACE>/LocalPilot-polish-final-20261116/tests/test_worker_admission_budget.py",
+        "/tmp/tmpszwd751b/service.json"
+      ],
+      "cwd": "<WORKSPACE>/LocalPilot-polish-20261116",
+      "source_budget_sha256": "319bea9bf3bbba132991c09f16c3ff562eff5db7b9e2c43c6129e096799f9ae9"
+    },
+    "database_in_git": false
+  },
+  {
+    "name": "legacy-fixture-r4",
+    "sqlite_sha256": "ccc15cecf6696cc2d25f1f19d6454a505e990302a7fda2fade8f6632d00fe96d",
+    "checkpoint_count": 2,
+    "journal_rows": 32,
+    "runtime_budget": 32768,
+    "unknown_receipts": 1,
+    "source_budget_sha256": "319bea9bf3bbba132991c09f16c3ff562eff5db7b9e2c43c6129e096799f9ae9",
+    "command_sha256": "5cd7b7d25d87159f4712e6d62c3eca6e55290c012b0a33b4830d9d62a3faa5ba",
+    "command": {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "import runpy,sys;sys.path.insert(0,sys.argv[1]);runpy.run_path(sys.argv[2],run_name='legacy_fixture')['create_legacy_checkpoint'](sys.argv[3])",
+        "<WORKSPACE>/LocalPilot-polish-20261116",
+        "<WORKSPACE>/LocalPilot-polish-final-20261116/tests/test_worker_admission_budget.py",
+        "/tmp/tmpfr9ewj2u/service.json"
+      ],
+      "cwd": "<WORKSPACE>/LocalPilot-polish-20261116",
+      "source_budget_sha256": "319bea9bf3bbba132991c09f16c3ff562eff5db7b9e2c43c6129e096799f9ae9"
+    },
+    "database_in_git": false
+  },
+  {
+    "name": "legacy-fixture-r5",
+    "sqlite_sha256": "6c75f5566a6abb04db9a46ae88007e1cc515ba8a2646d442d6534f06066b9a0c",
+    "checkpoint_count": 2,
+    "journal_rows": 32,
+    "runtime_budget": 32768,
+    "unknown_receipts": 1,
+    "source_budget_sha256": "319bea9bf3bbba132991c09f16c3ff562eff5db7b9e2c43c6129e096799f9ae9",
+    "command_sha256": "b10de4a7c684d60f1be966bffd52d4cace5adad80c918fff9a1a0e04b36c6893",
+    "command": {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "import runpy,sys;sys.path.insert(0,sys.argv[1]);runpy.run_path(sys.argv[2],run_name='legacy_fixture')['create_legacy_checkpoint'](sys.argv[3])",
+        "<WORKSPACE>/LocalPilot-polish-20261116",
+        "<WORKSPACE>/LocalPilot-polish-final-20261116/tests/test_worker_admission_budget.py",
+        "/tmp/tmpkprhkqtn/service.json"
+      ],
+      "cwd": "<WORKSPACE>/LocalPilot-polish-20261116",
+      "source_budget_sha256": "319bea9bf3bbba132991c09f16c3ff562eff5db7b9e2c43c6129e096799f9ae9"
+    },
+    "database_in_git": false
+  }
+]

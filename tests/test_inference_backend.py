@@ -200,6 +200,30 @@ class InferenceBackendTests(unittest.TestCase):
         self.assertEqual(messages[-2]["reasoning_content"], "need evidence")
         self.assertEqual(messages[-1]["tool_call_id"], "c1")
 
+    def test_compact_model_receives_path_semantics_without_changing_stored_contract(self):
+        from agent.persistence import configuration
+
+        (self.root / "fact.txt").write_text("owned fact 7492")
+        registry = create_default_registry(self.root, profile="minimal")
+        session = AgentSession(registry, local_backend=self.backend, policy="local-only",
+            streaming=False, runtime_tools=False)
+        contract_before = configuration(session)["schemas"]
+        self.server.add(completion(calls=[tool_call("read_file", {"path": "fact.txt"})]))
+        self.server.add(completion("owned fact 7492"))
+        self.assertEqual(session.run_turn("Read fact.txt.").status, "completed")
+        tools = {item["function"]["name"]: item["function"]
+                 for item in self.server.requests[0]["tools"]}
+        self.assertIn("relative to the workspace root", tools["read_file"]["parameters"]["properties"]["path"]["description"])
+        self.assertIn("Seconds", tools["execute"]["parameters"]["properties"]["timeout"]["description"])
+        change = tools["apply_patch"]["parameters"]["properties"]["changes"]["items"]["properties"]
+        self.assertIn("exact unique match", change["old_text"]["description"])
+        self.assertEqual(session.tool_history[0]["name"], "read_file")
+        self.assertIn("owned fact 7492", self.server.requests[1]["messages"][-1]["content"])
+        self.assertEqual(configuration(session)["schemas"], contract_before)
+        self.assertNotIn("description", contract_before[0]["function"]["parameters"]["properties"]["path"])
+        with self.assertRaises(ValueError):
+            registry.call("read_file", {"path": str(self.root / "fact.txt")})
+
     def test_interrupted_reasoning_and_tool_fragments_are_not_replayed(self):
         for delta in ({"reasoning_content": "thinking"}, {"tool_calls": [{"index": 0, "id": "c1", "function": {"name": "apply_patch", "arguments": "{"}}]}):
             body = ("data: " + json.dumps({"choices": [{"delta": delta}]}) + "\n\n").encode()

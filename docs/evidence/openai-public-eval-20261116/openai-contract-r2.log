@@ -1,0 +1,42 @@
+test_explicit_kind_defaults_and_legacy_identity (tests.test_openai_cloud_backend.OpenAICloudConfigurationTests.test_explicit_kind_defaults_and_legacy_identity) ... ok
+test_five_mode_source_filter_recognizes_openai (tests.test_openai_cloud_backend.OpenAICloudConfigurationTests.test_five_mode_source_filter_recognizes_openai) ... ok
+test_missing_key_plain_http_and_local_template_rejected (tests.test_openai_cloud_backend.OpenAICloudConfigurationTests.test_missing_key_plain_http_and_local_template_rejected) ... ok
+test_explicit_cloud_transport_inherits_https_proxy (tests.test_openai_cloud_backend.OpenAICloudTransportTests.test_explicit_cloud_transport_inherits_https_proxy) ... ok
+test_http_failure_and_redirect_keep_original_request (tests.test_openai_cloud_backend.OpenAICloudTransportTests.test_http_failure_and_redirect_keep_original_request) ... ok
+test_json_tool_call_and_sse_report_reasoning_usage (tests.test_openai_cloud_backend.OpenAICloudTransportTests.test_json_tool_call_and_sse_report_reasoning_usage) ... ok
+test_task_uses_product_tools_and_restores_without_replay (tests.test_openai_cloud_backend.OpenAICloudTransportTests.test_task_uses_product_tools_and_restores_without_replay) ... ERROR
+test_backup_is_sqlite_snapshot_and_never_overwrites (tests.test_service_contracts.ServiceContractsTests.test_backup_is_sqlite_snapshot_and_never_overwrites) ... ok
+test_deployed_stream_usage_reaches_provider_and_checkpoint_identity (tests.test_service_contracts.ServiceContractsTests.test_deployed_stream_usage_reaches_provider_and_checkpoint_identity) ... ok
+test_formal_deployment_entrypoint_and_health (tests.test_service_contracts.ServiceContractsTests.test_formal_deployment_entrypoint_and_health) ... ok
+test_generation_schema_and_restore_fingerprint (tests.test_service_contracts.ServiceContractsTests.test_generation_schema_and_restore_fingerprint) ... ok
+test_host_verification_rejects_changed_resource_and_wrong_text (tests.test_service_contracts.ServiceContractsTests.test_host_verification_rejects_changed_resource_and_wrong_text) ... ok
+test_manager_http_adapter_uses_protected_fixed_endpoint (tests.test_service_contracts.ServiceContractsTests.test_manager_http_adapter_uses_protected_fixed_endpoint) ... ok
+test_openapi_schema_validates_real_task_evidence (tests.test_service_contracts.ServiceContractsTests.test_openapi_schema_validates_real_task_evidence) ... ok
+test_service_to_scripted_openai_model_api_and_real_connection_failure (tests.test_service_contracts.ServiceContractsTests.test_service_to_scripted_openai_model_api_and_real_connection_failure) ... ok
+test_docker_default_context_and_accelerator_are_not_assumed (tests.test_harbor_study_runner.ResourcePreflightTests.test_docker_default_context_and_accelerator_are_not_assumed) ... ok
+test_guest_free_space_must_belong_to_fresh_matching_daemon (tests.test_harbor_study_runner.ResourcePreflightTests.test_guest_free_space_must_belong_to_fresh_matching_daemon) ... ok
+test_preflight_uses_actual_official_schema_subprocess_and_readonly_docker_probe (tests.test_harbor_study_runner.ResourcePreflightTests.test_preflight_uses_actual_official_schema_subprocess_and_readonly_docker_probe) ... skipped 'Pinned Harbor schema environment'
+test_real_probe_cli_output_checks_vm_memory_before_run (tests.test_harbor_study_runner.ResourcePreflightTests.test_real_probe_cli_output_checks_vm_memory_before_run) ... ok
+test_requirements_use_peak_task_and_registered_memory_reserve (tests.test_harbor_study_runner.ResourcePreflightTests.test_requirements_use_peak_task_and_registered_memory_reserve) ... ok
+test_changed_prior_evidence_is_detected (tests.test_harbor_study_runner.StudyResumeTests.test_changed_prior_evidence_is_detected) ... ok
+test_continue_exact_stopped_process_without_starting_another (tests.test_harbor_study_runner.StudyResumeTests.test_continue_exact_stopped_process_without_starting_another) ... ok
+test_directory_alias_preserves_exact_process_identity (tests.test_harbor_study_runner.StudyResumeTests.test_directory_alias_preserves_exact_process_identity) ... ok
+test_duplicate_or_incomplete_result_blocks_resume (tests.test_harbor_study_runner.StudyResumeTests.test_duplicate_or_incomplete_result_blocks_resume) ... ok
+test_official_resume_schema_keeps_cancelled_results (tests.test_harbor_study_runner.StudyResumeTests.test_official_resume_schema_keeps_cancelled_results) ... skipped 'Pinned Harbor schema environment'
+test_preflight_cli_writes_failures_without_starting_a_job (tests.test_harbor_study_runner.StudyResumeTests.test_preflight_cli_writes_failures_without_starting_a_job) ... ok
+test_terminal_error_is_preserved_and_never_selected_for_retry (tests.test_harbor_study_runner.StudyResumeTests.test_terminal_error_is_preserved_and_never_selected_for_retry) ... ok
+test_unsettled_trial_blocks_instead_of_deleting_directory (tests.test_harbor_study_runner.StudyResumeTests.test_unsettled_trial_blocks_instead_of_deleting_directory) ... ok
+
+======================================================================
+ERROR: test_task_uses_product_tools_and_restores_without_replay (tests.test_openai_cloud_backend.OpenAICloudTransportTests.test_task_uses_product_tools_and_restores_without_replay)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-20261116/tests/test_openai_cloud_backend.py", line 153, in test_task_uses_product_tools_and_restores_without_replay
+    self.assertFalse(final["service"]["route_decision"]["backend_fallback"])
+                     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+KeyError: 'route_decision'
+
+----------------------------------------------------------------------
+Ran 28 tests in 7.039s
+
+FAILED (errors=1, skipped=2)

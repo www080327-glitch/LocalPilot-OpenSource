@@ -11,7 +11,7 @@ from urllib.parse import urlsplit
 from urllib.request import build_opener, ProxyHandler, Request
 
 MODES = {'local-first', 'balanced', 'cloud-first', 'local-only', 'cloud-only'}
-CLOUD = {'deepseek', 'deepseek-native', 'remote-openai', 'remote-vllm'}
+CLOUD = {'deepseek', 'deepseek-native', 'openai', 'remote-openai', 'remote-vllm'}
 LOCAL = {'local-openai', 'omlx', 'vllm'}
 BUDGETS = {'max_steps': 48, 'max_tool_calls': 64, 'max_token_units': 4194304,
            'max_output_tokens': 4096, 'max_worker_steps': 12, 'max_worker_tool_calls': 16,

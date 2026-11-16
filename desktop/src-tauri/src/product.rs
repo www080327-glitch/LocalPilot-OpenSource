@@ -665,15 +665,16 @@ pub async fn pet_handoff(
     let window = if let Some(w) = app.get_webview_window("main") {
         w
     } else {
-        tauri::WebviewWindowBuilder::new(
-            &app,
-            "main",
-            tauri::WebviewUrl::App("index.html?handoff".into()),
-        )
-        .title("LocalPilot · 审核宠物任务")
-        .inner_size(1200.0, 800.0)
-        .build()
-        .map_err(|e| e.to_string())?
+        app.state::<crate::test_profile::TestProfile>()
+            .webview(tauri::WebviewWindowBuilder::new(
+                &app,
+                "main",
+                tauri::WebviewUrl::App("index.html?handoff".into()),
+            ))
+            .title("LocalPilot · 审核宠物任务")
+            .inner_size(1200.0, 800.0)
+            .build()
+            .map_err(|e| e.to_string())?
     };
     window.show().map_err(|_| fail("无法显示主窗口"))?;
     window.set_focus().map_err(|_| fail("无法切换窗口"))?;

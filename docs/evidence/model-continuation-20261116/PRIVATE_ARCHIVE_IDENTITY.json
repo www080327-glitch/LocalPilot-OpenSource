@@ -1,0 +1,14 @@
+{
+  "file": "localpilot-model-continuation-evidence-20261116.tar.gz",
+  "bytes": 67392,
+  "sha256": "9bf6674dcccad0be99b4b00896a53bd956588aa2dc206fda632f91b6cf1f82cc",
+  "contains": "Original synthetic tasks, receipts, protocols, provider logs, regression logs, frozen runner and pre-cancellation-fix session source",
+  "excludes": [
+    "model weights",
+    "KV binary cache",
+    "SQLite databases",
+    "service configuration",
+    "client credential files",
+    "dependency environments"
+  ]
+}

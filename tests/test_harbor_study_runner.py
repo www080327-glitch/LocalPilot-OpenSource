@@ -109,6 +109,37 @@ class StudyResumeTests(unittest.TestCase):
             process.terminate()
             process.wait(timeout=3)
 
+    @unittest.skipUnless(hasattr(signal,'SIGSTOP'),'POSIX stop/continue contract')
+    def test_directory_alias_preserves_exact_process_identity(self):
+        import psutil
+        runtime=self.fixture.root/'runtime'
+        runtime.mkdir()
+        alias=self.fixture.root/'runtime alias'
+        alias.symlink_to(runtime, target_is_directory=True)
+        other=self.fixture.root/'other'
+        other.mkdir()
+        command=[sys.executable,'-c','import os,signal,time; os.kill(os.getpid(),signal.SIGSTOP); time.sleep(30)',
+                 '--config',str(self.directory/'configs'/f"{self.job['name']}.json")]
+        process=subprocess.Popen(command,cwd=alias)
+        try:
+            deadline=time.monotonic()+3
+            while psutil.Process(process.pid).status()!=psutil.STATUS_STOPPED and time.monotonic()<deadline:
+                time.sleep(0.01)
+            self.assertEqual(Path(psutil.Process(process.pid).cwd()).resolve(), runtime.resolve())
+            with self.assertRaisesRegex(ValueError,'Existing Harbor process'):
+                reject_live_launcher(command,alias)
+            reject_live_launcher(command,other)
+            with self.assertRaisesRegex(ValueError,'not the original'):
+                continue_process(process.pid,command,other)
+            report=continue_process(process.pid,command,alias)
+            self.assertEqual(report['replayed_trials'],0)
+            self.assertEqual(report['processes'][0]['pid'],process.pid)
+            self.assertNotEqual(psutil.Process(process.pid).status(),psutil.STATUS_STOPPED)
+        finally:
+            os.kill(process.pid,signal.SIGCONT)
+            process.terminate()
+            process.wait(timeout=3)
+
     @unittest.skipUnless(os.environ.get('LOCALPILOT_HARBOR_CONTRACT')=='1','Pinned Harbor schema environment')
     def test_official_resume_schema_keeps_cancelled_results(self):
         from scripts.harbor_run_contract import inspect

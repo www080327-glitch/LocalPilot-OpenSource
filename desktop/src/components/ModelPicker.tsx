@@ -7,6 +7,7 @@ import {
   Monitor,
 } from "lucide-react";
 import { label, type Model } from "../domain";
+import { cloudAdapters } from "../preferences";
 import { Popover } from "./Popover";
 
 type ModelPickerProps = {
@@ -86,12 +87,7 @@ export function ModelPicker({
                 className={model === m.id ? "selected" : ""}
               >
                 <span>
-                  {[
-                    "deepseek",
-                    "deepseek-native",
-                    "remote-openai",
-                    "remote-vllm",
-                  ].includes(m.adapter) ? (
+                  {cloudAdapters.includes(m.adapter) ? (
                     <Cloud size={16} />
                   ) : (
                     <Monitor size={16} />

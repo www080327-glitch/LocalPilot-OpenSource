@@ -210,6 +210,35 @@ class ModelConfigurationTests(unittest.TestCase):
             self.cooperate()
         self.assertEqual((self.home / 'service.json').read_bytes(), after)
 
+    def test_explicit_openai_route_participates_in_five_modes_as_cloud(self):
+        self.config['routes']['route-b'].update(cloud_egress='REQUIRES_APPROVAL',
+            backend={'kind': 'openai', 'model': 'operator-selected-model',
+                     'api_key_env': 'LOCALPILOT_OPENAI_FIXTURE', 'context_budget': 32768})
+        save(self.home / 'service.json', self.config)
+        catalog = self.dispatch('model_configuration', {})['models']
+        worker = next(row for row in catalog if row['id'] == 'worker')
+        self.assertTrue(worker['cooperation_supported'])
+        self.assertEqual(worker['adapter'], 'openai')
+        modes = ('local-only', 'local-first', 'balanced', 'cloud-first', 'cloud-only')
+        for mode in modes:
+            primary, partner = ('worker', 'primary') if mode == 'cloud-only' else ('primary', 'worker')
+            self.dispatch('configure_cooperation', {'name': 'agent-' + mode, 'primary': primary,
+                'partners': [partner], 'mode': mode, 'async_enabled': True})
+        with patch.dict(os.environ, LOCALPILOT_OPENAI_FIXTURE='synthetic-openai-' + 'z' * 32):
+            server = self.service()
+            for mode in modes:
+                name = 'agent-' + mode
+                session = server.service.create_session(model=name)
+                runtime = server.service.sessions[session['id']].runtime
+                backends = list(runtime.hybrid.catalog.values())
+                self.assertEqual(sum(not backend.is_local for backend in backends), 1)
+                saved = private_json(self.home / 'service.json')['routes'][name]
+                self.assertEqual(saved['cloud_egress'],
+                    'LOCAL_ONLY' if mode == 'local-only' else 'REQUIRES_APPROVAL')
+        self.assertEqual(private_json(self.home / 'service.json')['routes']['route-b']['backend'],
+                         self.config['routes']['route-b']['backend'])
+        self.assertNotIn('synthetic-openai-', json.dumps(self.dispatch('model_configuration', {})))
+
 
 if __name__ == '__main__':
     unittest.main()

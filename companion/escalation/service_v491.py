@@ -170,13 +170,13 @@ class LocalPilotProvider(NativeTransport):
         try:
             registry = self._request("/localpilot/v1/model-registry", cloud_approved=cloud_approved)
             entry = next((m for m in registry.get("models", []) if m.get("id") == kwargs["route"]), None)
-            if not entry or entry.get("adapter") not in {"omlx","local-openai", "deepseek", "deepseek-native","remote-openai"}:
+            if not entry or entry.get("adapter") not in {"omlx","local-openai", "deepseek", "deepseek-native","openai","remote-openai"}:
                 return refused(TransportFailure("route_policy_unknown"))
             if entry.get('deployment_status','ready')!='ready':return refused(TransportFailure('model_not_deployed',409))
             if mode == "reasoning" and (entry.get("reasoning_only") is not True or entry.get("prompt_profile") not in {"minimal_0", "minimal_1"}):
                 return refused(TransportFailure("analysis_route_not_isolated"))
-            if not self.host_local_only and entry.get("adapter") not in {"deepseek","deepseek-native"}:
-                return refused(TransportFailure("cloud_backend_not_deepseek"))
+            if not self.host_local_only and entry.get("adapter") not in {"deepseek","deepseek-native","openai"}:
+                return refused(TransportFailure("cloud_backend_not_supported"))
             if mode=="execution" and (entry.get("prompt_profile")!="standard" or entry.get("reasoning_only") is True):
                 return refused(TransportFailure("standard_execution_route_required"))
             if mode=="reasoning" and self.host_local_only:kwargs["instructions"]=REASONING_INSTRUCTIONS

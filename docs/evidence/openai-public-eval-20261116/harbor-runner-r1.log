@@ -1,0 +1,18 @@
+test_docker_default_context_and_accelerator_are_not_assumed (tests.test_harbor_study_runner.ResourcePreflightTests.test_docker_default_context_and_accelerator_are_not_assumed) ... ok
+test_guest_free_space_must_belong_to_fresh_matching_daemon (tests.test_harbor_study_runner.ResourcePreflightTests.test_guest_free_space_must_belong_to_fresh_matching_daemon) ... ok
+test_preflight_uses_actual_official_schema_subprocess_and_readonly_docker_probe (tests.test_harbor_study_runner.ResourcePreflightTests.test_preflight_uses_actual_official_schema_subprocess_and_readonly_docker_probe) ... skipped 'Pinned Harbor schema environment'
+test_real_probe_cli_output_checks_vm_memory_before_run (tests.test_harbor_study_runner.ResourcePreflightTests.test_real_probe_cli_output_checks_vm_memory_before_run) ... ok
+test_requirements_use_peak_task_and_registered_memory_reserve (tests.test_harbor_study_runner.ResourcePreflightTests.test_requirements_use_peak_task_and_registered_memory_reserve) ... ok
+test_changed_prior_evidence_is_detected (tests.test_harbor_study_runner.StudyResumeTests.test_changed_prior_evidence_is_detected) ... ok
+test_continue_exact_stopped_process_without_starting_another (tests.test_harbor_study_runner.StudyResumeTests.test_continue_exact_stopped_process_without_starting_another) ... ok
+test_directory_alias_preserves_exact_process_identity (tests.test_harbor_study_runner.StudyResumeTests.test_directory_alias_preserves_exact_process_identity) ... ok
+test_duplicate_or_incomplete_result_blocks_resume (tests.test_harbor_study_runner.StudyResumeTests.test_duplicate_or_incomplete_result_blocks_resume) ... ok
+test_official_resume_schema_keeps_cancelled_results (tests.test_harbor_study_runner.StudyResumeTests.test_official_resume_schema_keeps_cancelled_results) ... skipped 'Pinned Harbor schema environment'
+test_preflight_cli_writes_failures_without_starting_a_job (tests.test_harbor_study_runner.StudyResumeTests.test_preflight_cli_writes_failures_without_starting_a_job) ... ok
+test_terminal_error_is_preserved_and_never_selected_for_retry (tests.test_harbor_study_runner.StudyResumeTests.test_terminal_error_is_preserved_and_never_selected_for_retry) ... ok
+test_unsettled_trial_blocks_instead_of_deleting_directory (tests.test_harbor_study_runner.StudyResumeTests.test_unsettled_trial_blocks_instead_of_deleting_directory) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.612s
+
+OK (skipped=2)

@@ -1,8 +1,12 @@
-# LocalPilot Companion 0.5.7b5
+# LocalPilot Companion 0.5.7b7
 
 [公开桌面版本与候选记录](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases) · [安装与个人素材](../docs/releases/desktop-5.0.0/INSTALL.md)。本页为独立 Companion 服务，不改变其版本和授权边界；历史版本记录不代表当前候选已通过原生验收。
 
 Independent service and CLI. Apple Silicon macOS can use the bundled MLX worker; Intel macOS and Linux can use an explicitly configured local OpenAI-compatible HTTP model server. File observation, source imports and SQLite memory use the portable service. macOS has Swift observation and meeting helpers; Linux now has optional AT-SPI/X11 read-only observation and Pulse/PipeWire-Pulse audio with local whisper.cpp. Actual graphical sessions, audio hardware and sleep/wake still require device validation. A configured authenticated LocalPilot API provides larger reasoning and explicitly confirmed standard Agent work. Companion contains no LocalPilot Runtime and has no implicit tool approval authority.
+
+Companion 0.5.7b6 fixes the real PyGObject static-text interface call and preserves the desktop accessibility bus address. Owned X11/GTK observation, input/password exclusion and pause were verified in a real Linux graphical session; Wayland, audio and system sleep/wake remain separate device checks. [Native fix and regression evidence](../docs/evidence/native-polish-20261116/linux-atspi/RESULTS.md).
+
+Companion 0.5.7b7 also admits the explicit OpenAI Core route for separately approved cloud consultation and reports its actual provider in the visible control. Local-only policy still rejects cloud routes. This is verified by real HTTP/SQLite transport tests with scripted responses; live OpenAI credentials and billing were not available. [Continuation evidence](../docs/evidence/native-continuation-20261116/RESULTS.md).
 
 Linux configuration, optional system packages and explicit systemd user startup: [Linux Companion](../docs/development/LINUX_COMPANION_20261116.md). Reviewed train/validation/test exports, offline LoRA/full training and exact-match evaluation: [Post-training workflow](../docs/development/REVIEWED_TRAINING_20261116.md). Neither observation nor the model starts training automatically.
 
@@ -18,7 +22,7 @@ companion --config /path/to/companion.json ui --show
 
 Help confirmation permits submitting a task. Tool approval stays with the Core Permission Gateway and a separate trusted operator. Cloud consultation needs its own explicit consent and a new question-only Session. Closing a card, declining help, and stopping a task are distinct actions. UNKNOWN never authorizes replay.
 
-API and client contract: 1.0. Current integrated Core: 5.0.0b23 (API 1.0). Historical 4.9.2 RC consumer evidence remains historical. Initial migration from old Companion 0.5.4 requires upgrading Companion first. Keep data outside the installation directory.
+API and client contract: 1.0. Current integrated Core: 5.0.0b26 (API 1.0). Historical 4.9.2 RC consumer evidence remains historical. Initial migration from old Companion 0.5.4 requires upgrading Companion first. Keep data outside the installation directory.
 
 This is a scoped release candidate. A real ordinary arithmetic prompt produced an incorrect 0.8B answer; factual accuracy is not guaranteed by the routing or host verifier. See the joint release report and failure ledger. The portable Linux service has regression coverage; Intel hardware, native macOS lifecycle and all-day stability still require device validation.
 

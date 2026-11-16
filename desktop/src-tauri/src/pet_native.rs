@@ -549,46 +549,50 @@ pub fn create(app: &tauri::AppHandle) -> Result<(), String> {
     app.state::<PetState>()
         .ready_scheduled
         .store(false, Ordering::Relaxed);
-    let pet = tauri::WebviewWindowBuilder::new(
-        app,
-        "pet",
-        tauri::WebviewUrl::App("index.html?pet=character".into()),
-    )
-    .title("Companion · DeepSeek 娘")
-    .visible(false)
-    .inner_size(pet_edge::VIEW_W * prefs.size, pet_edge::VIEW_H * prefs.size)
-    .decorations(false)
-    .transparent(true)
-    .background_color(tauri::window::Color(0, 0, 0, 0))
-    .shadow(false)
-    .always_on_top(prefs.topmost)
-    .skip_taskbar(true)
-    .focused(false)
-    .resizable(false)
-    .build()
-    .map_err(|e| e.to_string())?;
+    let pet = app
+        .state::<crate::test_profile::TestProfile>()
+        .webview(tauri::WebviewWindowBuilder::new(
+            app,
+            "pet",
+            tauri::WebviewUrl::App("index.html?pet=character".into()),
+        ))
+        .title("Companion · DeepSeek 娘")
+        .visible(false)
+        .inner_size(pet_edge::VIEW_W * prefs.size, pet_edge::VIEW_H * prefs.size)
+        .decorations(false)
+        .transparent(true)
+        .background_color(tauri::window::Color(0, 0, 0, 0))
+        .shadow(false)
+        .always_on_top(prefs.topmost)
+        .skip_taskbar(true)
+        .focused(false)
+        .resizable(false)
+        .build()
+        .map_err(|e| e.to_string())?;
     super::pet_macos::transparent(&pet)?;
     #[cfg(target_os = "macos")]
     pet.set_ignore_cursor_events(true)
         .map_err(|e| e.to_string())?;
     super::pet_macos::install(app);
-    let bubble = tauri::WebviewWindowBuilder::new(
-        app,
-        "pet-bubble",
-        tauri::WebviewUrl::App("index.html?pet=bubble".into()),
-    )
-    .title("Companion 对话")
-    .inner_size(320.0, 180.0)
-    .decorations(false)
-    .transparent(true)
-    .background_color(tauri::window::Color(0, 0, 0, 0))
-    .always_on_top(prefs.topmost)
-    .skip_taskbar(true)
-    .visible(false)
-    .focused(false)
-    .resizable(false)
-    .build()
-    .map_err(|e| e.to_string())?;
+    let bubble = app
+        .state::<crate::test_profile::TestProfile>()
+        .webview(tauri::WebviewWindowBuilder::new(
+            app,
+            "pet-bubble",
+            tauri::WebviewUrl::App("index.html?pet=bubble".into()),
+        ))
+        .title("Companion 对话")
+        .inner_size(320.0, 180.0)
+        .decorations(false)
+        .transparent(true)
+        .background_color(tauri::window::Color(0, 0, 0, 0))
+        .always_on_top(prefs.topmost)
+        .skip_taskbar(true)
+        .visible(false)
+        .focused(false)
+        .resizable(false)
+        .build()
+        .map_err(|e| e.to_string())?;
     #[cfg(target_os = "macos")]
     let material = {
         let workspace = objc2_app_kit::NSWorkspace::sharedWorkspace();

@@ -1,0 +1,595 @@
+{
+  "id": "resp_a8efe93ddc0741f8aabc8233ddfb949e",
+  "object": "localpilot.task",
+  "session_id": "sess_2374b762b42a4257a5a50395075bac5b",
+  "user_input": "Use delegate exactly once with this argument object: {\"backend_preference\":\"local\",\"read_only\":false,\"task\":\"Use shell once with the command printf child-started >> child-cancel.txt; sleep 60. Wait for the command to finish.\",\"budget\":{\"steps\":3,\"tools\":2}}. Omit tier, backend_id and model. Do not execute the command in the parent.",
+  "execution_model": "localpilot-qwen35-2b-q8_0-qualified",
+  "desktop_options": {
+    "permission_mode": "workspace",
+    "agent_profile": "standard",
+    "prompt_revision": 2,
+    "scope_revision": 3
+  },
+  "thinking": {
+    "requested": null,
+    "effective": null,
+    "supported": []
+  },
+  "pause_requested": false,
+  "model": "localpilot",
+  "session_model": "localpilot",
+  "previous_task_id": null,
+  "created_at": 1794835802,
+  "status": "incomplete",
+  "quiescent": true,
+  "result": {
+    "text": "I need to deliver a concise response from the evidence. However, I realize that **no actual command was executed successfully** in this turn, even though the `delegate` tool returned `\"ok\": true`.\n\nLooking at the execution trace:\n- The `delegate` call completed with status `not_run` (for worker_id) and `unknown_receipts: 0`\n- The child result showed a shell command was executed via the `shell` tool, but this happened **after** our turn, not during it\n- Crucially, **there is no evidence that `child-cancel.txt` or any output file exists in the workspace** (the only file listed is `fact.txt`)\n\nWithout verification证据证明 the worker completed successfully and created/updated the required files, I cannot report PASSing. All my obligations remain UNFILLED:\n- No receipt has \"completed\" status with evidence proving file creation/update after delegate execution\n   \nAll remaining child obligations are unknown to me; any report will have at least one `unknown_receipts` count nonzero.\n\nI need to explicitly request approval for this new verification attempt using the provided shell command and confirming successful completion of the target files since our turn only completed \"delegate\" which led to a worker that may not have done the actual work as intended.",
+    "prompt_version": "localpilot-v5-v1",
+    "status": "completed",
+    "runtime_status": "completed",
+    "deliverable_status": "incomplete",
+    "verification_status": "not_run",
+    "engineering_status": "unverified",
+    "task_outcome": "unverified",
+    "task_succeeded": false,
+    "verification": null,
+    "runtime_metrics": {
+      "model_attempts": 5,
+      "request_utf8_bytes": 85592,
+      "response_bytes": 4634,
+      "response_bytes_source": "complete_responses_only",
+      "failed_attempts": 0,
+      "failed_attempt_provider_usage": null,
+      "admission_units": 90226,
+      "finalization_reason": "step_reserve",
+      "final_reserve_units": 38136,
+      "state_bytes": 2903,
+      "cache_bytes": 0,
+      "hybrid": {
+        "calls": 5,
+        "actual_api_cost": "UNKNOWN",
+        "local_resource_cost": "adapter_wall_seconds_only",
+        "backend_id": "selected",
+        "generation": 0,
+        "switching_overhead_seconds": 0,
+        "by_backend": {
+          "selected": {
+            "kind": "local",
+            "calls": 5,
+            "known_input_tokens": 22298,
+            "known_output_tokens": 1040,
+            "unknown_usage_calls": 0,
+            "known_request_wall_seconds": 320.52248215675354,
+            "known_inference_seconds": 320.48890376091003,
+            "known_queue_seconds": 0.03361010551452637,
+            "unknown_inference_time_calls": 0,
+            "unknown_latency_calls": 0,
+            "estimated_api_cost_usd": null,
+            "cost_source": "host_rate_estimate_only",
+            "configured_models": [
+              "localpilot-qwen35-2b-q8_0-qualified"
+            ],
+            "prompt_cache_hit_tokens": 3107,
+            "prompt_cache_miss_tokens": 19191,
+            "cache_hit_ratio": 0.13933985110772268,
+            "cache_usage_unknown_calls": 0,
+            "wall_output_tokens_per_second": 3.2450421459079815,
+            "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+          }
+        },
+        "source_mix": {
+          "scope": "current_task_including_children",
+          "by_source": {
+            "local": {
+              "admitted_requests": 5,
+              "dispatched_requests": 5,
+              "request_share": 1.0,
+              "known_input_output_tokens": 23338,
+              "token_share": 1.0,
+              "unknown_usage_requests": 0
+            },
+            "cloud": {
+              "admitted_requests": 0,
+              "dispatched_requests": 0,
+              "request_share": 0.0,
+              "known_input_output_tokens": 0,
+              "token_share": 0.0,
+              "unknown_usage_requests": 0
+            }
+          },
+          "requests_without_dispatch_evidence": 0,
+          "token_share_status": "PROVIDER_REPORTED",
+          "actual_cost_status": "UNKNOWN"
+        }
+      }
+    },
+    "completion": {
+      "execution": "settled",
+      "delivery": "delivered",
+      "attempts": 1,
+      "history": [
+        {
+          "attempt": 1,
+          "kind": "delivered",
+          "text_sha256": "2cd17bb2107562d08b1672ca3600707770303ff3b465a8190624ab0133574cc6",
+          "ledger_sha256": "74f55b422d8a1fb8ad22fc537b70d4775d678b1d5aafdc6a0ecc160ecbe61874"
+        }
+      ],
+      "readiness": null,
+      "ledger_sha256": "74f55b422d8a1fb8ad22fc537b70d4775d678b1d5aafdc6a0ecc160ecbe61874",
+      "receipt_count": 3,
+      "obligations": {
+        "pending_approval": false,
+        "queued_calls": 0,
+        "unfinished_goals": 0,
+        "unfinished_workers": 0,
+        "worker_obligations": false,
+        "computer_obligations": 0,
+        "unfinished_handoff": 0,
+        "unknown_receipts": 0,
+        "mutation_intent": false
+      }
+    },
+    "tool_budget": {
+      "tool_count": 13,
+      "schema_utf8_bytes": 4094,
+      "prompt_utf8_bytes": 1222,
+      "schema_tokens": null,
+      "prompt_tokens": null,
+      "estimated_schema_tokens_bytes_div_4": 1024,
+      "estimated_prompt_tokens_bytes_div_4": 306,
+      "token_count_status": "estimate_only_without_tokenizer",
+      "scope": "Compact JSON schemas and raw prompt; excludes provider framing, chat template, task and history."
+    },
+    "prompt_profile": "standard",
+    "tool_profile": "compact",
+    "total_steps": 5,
+    "total_tool_calls": 3,
+    "reported_models": [
+      "localpilot-qwen35-2b-q8_0-qualified"
+    ],
+    "model_latency_seconds": 320.5235164170008,
+    "cache": {
+      "status": "available",
+      "hit_tokens": 3107,
+      "miss_tokens": 19191,
+      "hit_ratio": 0.13933985110772268
+    },
+    "model_calls": [
+      {
+        "latency_seconds": 67.2515980859971,
+        "tool_call_count": 1,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 4230,
+        "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+        "input_tokens": 4230,
+        "output_tokens": 155,
+        "finish_reason": "tool_calls"
+      },
+      {
+        "latency_seconds": 68.70744140400348,
+        "tool_call_count": 1,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 4264,
+        "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+        "input_tokens": 4264,
+        "output_tokens": 176,
+        "finish_reason": "tool_calls"
+      },
+      {
+        "latency_seconds": 42.527585208001256,
+        "tool_call_count": 1,
+        "prompt_cache_hit_tokens": 2478,
+        "prompt_cache_miss_tokens": 2426,
+        "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+        "input_tokens": 4904,
+        "output_tokens": 184,
+        "finish_reason": "tool_calls"
+      },
+      {
+        "latency_seconds": 65.71563094999874,
+        "tool_call_count": 0,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 3728,
+        "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+        "input_tokens": 3728,
+        "output_tokens": 261,
+        "finish_reason": "stop"
+      },
+      {
+        "latency_seconds": 76.32126076900022,
+        "tool_call_count": 0,
+        "prompt_cache_hit_tokens": 629,
+        "prompt_cache_miss_tokens": 4543,
+        "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+        "input_tokens": 5172,
+        "output_tokens": 264,
+        "finish_reason": "stop"
+      }
+    ],
+    "runtime_metrics_scope": "latest_runtime_turn"
+  },
+  "streamed_text": "",
+  "required_action": null,
+  "error": null,
+  "output": [
+    {
+      "role": "assistant",
+      "content": "Looking at this task, I need to use `delegate` exactly once for a shell command. The budget is generous (steps: 3, tools: 2) so I can execute the requested operation within those constraints.\n\nLet me use delegate to run the specified shell command:",
+      "tool_calls": [
+        {
+          "id": "HHHoaqDZ1penrKOCc7DYn0Ni7ifBli7A",
+          "type": "function",
+          "function": {
+            "name": "delegate",
+            "arguments": "{\"task\":\"Use shell once with the command printf child-started >> child-cancel.txt; sleep 60. Wait for the command to finish.\",\"backend_preference\":\"local\",\"budget\":{\"steps\":3,\"tools\":2},\"read_only\":false}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "{\"ok\": true, \"result\": {\"status\": \"ok\", \"worker_id\": \"1.1\", \"text\": \"Based on the evidence, I need to:\\n1. Confirm `child-cancel.txt` exists in the workspace for the shell command to create a log entry\\n2. Execute the shell command using `shell` tool with the specific argument object `{\\\\\\\"backend_preference\\\\\\\":\\\\\\\"local\\\\\\\",\\\\\\\"read_only\\\\\\\":false,\\\\\\\"task\\\\\\\":\\\\\\\"Use shell once with the command printf child-started >> child-cancel.txt; sleep 60. Wait for the command to finish.\\\\\\\"}` and note that I should not execute it in the parent\\n\\nThe workspace already shows `fact.txt` exists. Now I'll run the shell tool with the required parameters:\\n\\n<tool_call>\\n<function=execute>\\n<parameter=argv>\\n[\\\"shell\\\", \\\"--arg_list\\\", \\\"{\\\\\\\"backend_preference\\\\\\\":\\\\\\\"local\\\\\\\",\\\\\\\"read_only\\\\\\\":false,\\\\\\\"task\\\\\\\":\\\\\\\"Use shell once with the command printf child-started >> child-cancel.txt; sleep 60. Wait for the command to finish.\\\\\\\",\\\\\\\"timeout_ns\\\\\\\":9223372036854769231}\\n\\\"]\\n</parameter>\\n<parameter=parent_handoff>{\\\"goal\\\":\\\"Use shell once with the command printf child-started >> child-cancel.txt; sleep 60. Wait for the command to finish.\\\"}</parameter>\\n</tool_call>\", \"tool_calls\": 2, \"tier\": null, \"provider\": \"unknown\", \"configured_model\": \"localpilot-qwen35-2b-q8_0-qualified\", \"runtime_status\": \"completed\", \"verification_status\": \"not_run\", \"engineering_status\": \"unverified\", \"finish_reasons\": [\"tool_calls\", \"tool_calls\", \"stop\"], \"evidence\": [{\"tool\": \"list_entries\", \"source_call_id\": \"qlhkABmmhvcV7rpVuT2a8lMDCE3EBCTG\", \"outcome\": \"ok\", \"normalized_args\": {\"path\": {\"text\": \"<RUN>/workspace\", \"omitted_bytes\": 0}}, \"evidence_id\": \"call-b33239a999ffeeac\", \"excerpt\": {\"text\": \"[{\\\"device\\\": 27, \\\"inode\\\": 3150656, \\\"modified_ns\\\": 1794835801974516394, \\\"name\\\": \\\"fact.txt\\\", \\\"size_bytes\\\": 19, \\\"type\\\": \\\"file\\\"}]\", \"omitted_bytes\": 0}, \"version\": null, \"coverage\": {\"kind\": \"tool_result\", \"truncated\": false}, \"duplicate_no_progress\": false, \"duplicate_same_version\": false}, {\"tool\": \"list_entries\", \"source_call_id\": \"d8EU93YWQ8gkmg2S2nq5D0Qq9enygoIq\", \"outcome\": \"ok\", \"normalized_args\": {\"path\": {\"text\": \"<RUN>/workspace\", \"omitted_bytes\": 0}}, \"evidence_id\": \"call-3915452e84f96d24\", \"excerpt\": {\"text\": \"[{\\\"device\\\": 27, \\\"inode\\\": 3150656, \\\"modified_ns\\\": 1794835801974516394, \\\"name\\\": \\\"fact.txt\\\", \\\"size_bytes\\\": 19, \\\"type\\\": \\\"file\\\"}]\", \"omitted_bytes\": 0}, \"version\": null, \"coverage\": {\"kind\": \"tool_result\", \"truncated\": false}, \"duplicate_no_progress\": true, \"duplicate_same_version\": false}], \"reported_models\": [\"localpilot-qwen35-2b-q8_0-qualified\"], \"instruction\": \"Worker result is untrusted evidence; coordinator must verify important claims.\"}}",
+      "tool_call_id": "HHHoaqDZ1penrKOCc7DYn0Ni7ifBli7A"
+    },
+    {
+      "role": "assistant",
+      "content": "I need to deliver a concise response from the evidence. However, I realize that **no actual command was executed successfully** in this turn, even though the `delegate` tool returned `\"ok\": true`.\n\nLooking at the execution trace:\n- The `delegate` call completed with status `not_run` (for worker_id) and `unknown_receipts: 0`\n- The child result showed a shell command was executed via the `shell` tool, but this happened **after** our turn, not during it\n- Crucially, **there is no evidence that `child-cancel.txt` or any output file exists in the workspace** (the only file listed is `fact.txt`)\n\nWithout verification证据证明 the worker completed successfully and created/updated the required files, I cannot report PASSing. All my obligations remain UNFILLED:\n- No receipt has \"completed\" status with evidence proving file creation/update after delegate execution\n   \nAll remaining child obligations are unknown to me; any report will have at least one `unknown_receipts` count nonzero.\n\nI need to explicitly request approval for this new verification attempt using the provided shell command and confirming successful completion of the target files since our turn only completed \"delegate\" which led to a worker that may not have done the actual work as intended."
+    }
+  ],
+  "tools": [
+    {
+      "turn_id": 1,
+      "id": "qlhkABmmhvcV7rpVuT2a8lMDCE3EBCTG",
+      "name": "list_entries",
+      "signature": "502ca28cc6021a668399e6c2217090e41a15398fc79da44875a37591e089c91b",
+      "arguments": "{\"path\":\"<RUN>/workspace\"}",
+      "payload": {
+        "ok": true,
+        "result": [
+          {
+            "name": "fact.txt",
+            "device": 27,
+            "inode": 3150656,
+            "size_bytes": 19,
+            "modified_ns": 1794835801974516394,
+            "type": "file"
+          }
+        ]
+      },
+      "read_receipt": null,
+      "receipt_id": "worker:1.1/turn:1/call:qlhkABmmhvcV7rpVuT2a8lMDCE3EBCTG/entry:0",
+      "status": "completed",
+      "side_effect_completed": true,
+      "side_effect_status": "completed",
+      "receipt_reused": false,
+      "worker_id": "1.1",
+      "source_turn_id": 1
+    },
+    {
+      "turn_id": 1,
+      "id": "d8EU93YWQ8gkmg2S2nq5D0Qq9enygoIq",
+      "name": "list_entries",
+      "signature": "502ca28cc6021a668399e6c2217090e41a15398fc79da44875a37591e089c91b",
+      "arguments": "{\"path\":\"<RUN>/workspace\"}",
+      "payload": {
+        "ok": true,
+        "result": [
+          {
+            "name": "fact.txt",
+            "device": 27,
+            "inode": 3150656,
+            "size_bytes": 19,
+            "modified_ns": 1794835801974516394,
+            "type": "file"
+          }
+        ]
+      },
+      "read_receipt": null,
+      "receipt_id": "worker:1.1/turn:1/call:d8EU93YWQ8gkmg2S2nq5D0Qq9enygoIq/entry:1",
+      "status": "completed",
+      "side_effect_completed": true,
+      "side_effect_status": "completed",
+      "receipt_reused": false,
+      "worker_id": "1.1",
+      "source_turn_id": 1
+    },
+    {
+      "turn_id": 1,
+      "id": "HHHoaqDZ1penrKOCc7DYn0Ni7ifBli7A",
+      "name": "delegate",
+      "signature": "2af3a81eb40de4d10737c3f3b22ce24365eb532464377696ae841fbdd4f467d6",
+      "arguments": "{\"task\":\"Use shell once with the command printf child-started >> child-cancel.txt; sleep 60. Wait for the command to finish.\",\"backend_preference\":\"local\",\"budget\":{\"steps\":3,\"tools\":2},\"read_only\":false}",
+      "payload": {
+        "ok": true,
+        "result": {
+          "status": "ok",
+          "worker_id": "1.1",
+          "text": "Based on the evidence, I need to:\n1. Confirm `child-cancel.txt` exists in the workspace for the shell command to create a log entry\n2. Execute the shell command using `shell` tool with the specific argument object `{\\\"backend_preference\\\":\\\"local\\\",\\\"read_only\\\":false,\\\"task\\\":\\\"Use shell once with the command printf child-started >> child-cancel.txt; sleep 60. Wait for the command to finish.\\\"}` and note that I should not execute it in the parent\n\nThe workspace already shows `fact.txt` exists. Now I'll run the shell tool with the required parameters:\n\n<tool_call>\n<function=execute>\n<parameter=argv>\n[\"shell\", \"--arg_list\", \"{\\\"backend_preference\\\":\\\"local\\\",\\\"read_only\\\":false,\\\"task\\\":\\\"Use shell once with the command printf child-started >> child-cancel.txt; sleep 60. Wait for the command to finish.\\\",\\\"timeout_ns\\\":9223372036854769231}\n\"]\n</parameter>\n<parameter=parent_handoff>{\"goal\":\"Use shell once with the command printf child-started >> child-cancel.txt; sleep 60. Wait for the command to finish.\"}</parameter>\n</tool_call>",
+          "tool_calls": 2,
+          "tier": null,
+          "provider": "unknown",
+          "configured_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "runtime_status": "completed",
+          "verification_status": "not_run",
+          "engineering_status": "unverified",
+          "finish_reasons": [
+            "tool_calls",
+            "tool_calls",
+            "stop"
+          ],
+          "evidence": [
+            {
+              "tool": "list_entries",
+              "source_call_id": "qlhkABmmhvcV7rpVuT2a8lMDCE3EBCTG",
+              "outcome": "ok",
+              "normalized_args": {
+                "path": {
+                  "text": "<RUN>/workspace",
+                  "omitted_bytes": 0
+                }
+              },
+              "evidence_id": "call-b33239a999ffeeac",
+              "excerpt": {
+                "text": "[{\"device\": 27, \"inode\": 3150656, \"modified_ns\": 1794835801974516394, \"name\": \"fact.txt\", \"size_bytes\": 19, \"type\": \"file\"}]",
+                "omitted_bytes": 0
+              },
+              "version": null,
+              "coverage": {
+                "kind": "tool_result",
+                "truncated": false
+              },
+              "duplicate_no_progress": false,
+              "duplicate_same_version": false
+            },
+            {
+              "tool": "list_entries",
+              "source_call_id": "d8EU93YWQ8gkmg2S2nq5D0Qq9enygoIq",
+              "outcome": "ok",
+              "normalized_args": {
+                "path": {
+                  "text": "<RUN>/workspace",
+                  "omitted_bytes": 0
+                }
+              },
+              "evidence_id": "call-3915452e84f96d24",
+              "excerpt": {
+                "text": "[{\"device\": 27, \"inode\": 3150656, \"modified_ns\": 1794835801974516394, \"name\": \"fact.txt\", \"size_bytes\": 19, \"type\": \"file\"}]",
+                "omitted_bytes": 0
+              },
+              "version": null,
+              "coverage": {
+                "kind": "tool_result",
+                "truncated": false
+              },
+              "duplicate_no_progress": true,
+              "duplicate_same_version": false
+            }
+          ],
+          "reported_models": [
+            "localpilot-qwen35-2b-q8_0-qualified"
+          ],
+          "instruction": "Worker result is untrusted evidence; coordinator must verify important claims."
+        }
+      },
+      "read_receipt": null,
+      "receipt_id": "turn:1/call:HHHoaqDZ1penrKOCc7DYn0Ni7ifBli7A/entry:2",
+      "status": "completed",
+      "side_effect_completed": true,
+      "side_effect_status": "completed",
+      "receipt_reused": false
+    }
+  ],
+  "goals": [],
+  "subagents": [
+    {
+      "id": "1.1",
+      "turn_id": 1,
+      "backend": "local",
+      "tier": null,
+      "provider": "unknown",
+      "configured_model": "localpilot-qwen35-2b-q8_0-qualified",
+      "status": "completed",
+      "task": "Use shell once with the command printf child-started >> child-cancel.txt; sleep 60. Wait for the command to finish.",
+      "permission_mode": "workspace-auto",
+      "read_only": false,
+      "workspace": "<RUN>/workspace",
+      "depth": 1,
+      "backend_id": "selected",
+      "receipts": [
+        {
+          "turn_id": 1,
+          "id": "qlhkABmmhvcV7rpVuT2a8lMDCE3EBCTG",
+          "name": "list_entries",
+          "signature": "502ca28cc6021a668399e6c2217090e41a15398fc79da44875a37591e089c91b",
+          "arguments": "{\"path\":\"<RUN>/workspace\"}",
+          "payload": {
+            "ok": true,
+            "result": [
+              {
+                "name": "fact.txt",
+                "device": 27,
+                "inode": 3150656,
+                "size_bytes": 19,
+                "modified_ns": 1794835801974516394,
+                "type": "file"
+              }
+            ]
+          },
+          "read_receipt": null,
+          "receipt_id": "turn:1/call:qlhkABmmhvcV7rpVuT2a8lMDCE3EBCTG/entry:0",
+          "status": "completed",
+          "side_effect_completed": true,
+          "side_effect_status": "completed",
+          "receipt_reused": false
+        },
+        {
+          "turn_id": 1,
+          "id": "d8EU93YWQ8gkmg2S2nq5D0Qq9enygoIq",
+          "name": "list_entries",
+          "signature": "502ca28cc6021a668399e6c2217090e41a15398fc79da44875a37591e089c91b",
+          "arguments": "{\"path\":\"<RUN>/workspace\"}",
+          "payload": {
+            "ok": true,
+            "result": [
+              {
+                "name": "fact.txt",
+                "device": 27,
+                "inode": 3150656,
+                "size_bytes": 19,
+                "modified_ns": 1794835801974516394,
+                "type": "file"
+              }
+            ]
+          },
+          "read_receipt": null,
+          "receipt_id": "turn:1/call:d8EU93YWQ8gkmg2S2nq5D0Qq9enygoIq/entry:1",
+          "status": "completed",
+          "side_effect_completed": true,
+          "side_effect_status": "completed",
+          "receipt_reused": false
+        }
+      ],
+      "approval": null,
+      "pending_calls": [],
+      "usage": {
+        "token_units": 53586,
+        "tool_proposals": 2,
+        "attempts": 3,
+        "request_bytes": 50913,
+        "response_bytes": 2673,
+        "failed_attempts": 0
+      },
+      "model_calls": 3,
+      "hybrid_usage": {
+        "calls": 3,
+        "actual_api_cost": "UNKNOWN",
+        "local_resource_cost": "adapter_wall_seconds_only",
+        "backend_id": "selected",
+        "generation": 0,
+        "switching_overhead_seconds": 0,
+        "by_backend": {
+          "selected": {
+            "kind": "local",
+            "calls": 3,
+            "known_input_tokens": 12896,
+            "known_output_tokens": 621,
+            "unknown_usage_calls": 0,
+            "known_request_wall_seconds": 176.9499819278717,
+            "known_inference_seconds": 176.93205904960632,
+            "known_queue_seconds": 0.017943859100341797,
+            "unknown_inference_time_calls": 0,
+            "unknown_latency_calls": 0,
+            "estimated_api_cost_usd": null,
+            "cost_source": "host_rate_estimate_only",
+            "configured_models": [
+              "localpilot-qwen35-2b-q8_0-qualified"
+            ],
+            "prompt_cache_hit_tokens": 2478,
+            "prompt_cache_miss_tokens": 10418,
+            "cache_hit_ratio": 0.19215260545905707,
+            "cache_usage_unknown_calls": 0,
+            "wall_output_tokens_per_second": 3.5098218114665736,
+            "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+          }
+        },
+        "source_mix": {
+          "scope": "current_task_including_children",
+          "by_source": {
+            "local": {
+              "admitted_requests": 3,
+              "dispatched_requests": 3,
+              "request_share": 1.0,
+              "known_input_output_tokens": 13517,
+              "token_share": 1.0,
+              "unknown_usage_requests": 0
+            },
+            "cloud": {
+              "admitted_requests": 0,
+              "dispatched_requests": 0,
+              "request_share": 0.0,
+              "known_input_output_tokens": 0,
+              "token_share": 0.0,
+              "unknown_usage_requests": 0
+            }
+          },
+          "requests_without_dispatch_evidence": 0,
+          "token_share_status": "PROVIDER_REPORTED",
+          "actual_cost_status": "UNKNOWN"
+        }
+      },
+      "current_backend_id": "selected",
+      "unfinished_calls": [],
+      "obligation_status": "resolved",
+      "reported_models": [
+        "localpilot-qwen35-2b-q8_0-qualified"
+      ]
+    }
+  ],
+  "computer": null,
+  "completion": {
+    "execution": "settled",
+    "delivery": "delivered",
+    "attempts": 1,
+    "history": [
+      {
+        "attempt": 1,
+        "kind": "delivered",
+        "text_sha256": "2cd17bb2107562d08b1672ca3600707770303ff3b465a8190624ab0133574cc6",
+        "ledger_sha256": "74f55b422d8a1fb8ad22fc537b70d4775d678b1d5aafdc6a0ecc160ecbe61874"
+      }
+    ],
+    "readiness": null,
+    "ledger_sha256": "74f55b422d8a1fb8ad22fc537b70d4775d678b1d5aafdc6a0ecc160ecbe61874",
+    "receipt_count": 3,
+    "obligations": {
+      "pending_approval": false,
+      "queued_calls": 0,
+      "unfinished_goals": 0,
+      "unfinished_workers": 0,
+      "worker_obligations": false,
+      "computer_obligations": 0,
+      "unfinished_handoff": 0,
+      "unknown_receipts": 0,
+      "mutation_intent": false
+    }
+  },
+  "last_event_id": 878,
+  "service": {
+    "request_id": "req_53486e2789c1481da3a37ad96d521f25",
+    "client_subject": "http",
+    "route_decision": {
+      "selection": "explicit",
+      "selected": "localpilot",
+      "backend_model": "localpilot-qwen35-2b-q8_0-qualified",
+      "decisions": [
+        {
+          "model": "localpilot",
+          "reason": "selected"
+        }
+      ],
+      "backend_fallback": false
+    },
+    "origin_agent": "http",
+    "parent_task_id": null,
+    "external_delegation_depth": 1,
+    "external_redelegation_allowed": false,
+    "low_power_consent": false
+  },
+  "receipt_summary": {
+    "count": 3,
+    "unknown_effects": 0
+  },
+  "file_operation_verification": {
+    "status": "NOT_RUN",
+    "scope": "filesystem effects only",
+    "receipts": 0
+  },
+  "verification_summary": {
+    "runtime_status": "completed",
+    "deliverable_status": "incomplete",
+    "verification_status": "not_run",
+    "engineering_status": "unverified",
+    "task_outcome": "unverified"
+  }
+}

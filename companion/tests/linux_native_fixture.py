@@ -80,6 +80,9 @@ def check():
         if not display.isdecimal():
             raise RuntimeError('Owned Xvfb returned invalid display')
         os.environ.update(DISPLAY=':' + display, XDG_SESSION_TYPE='x11', NO_AT_BRIDGE='0')
+        subprocess.run(['gdbus', 'call', '--session', '--dest', 'org.freedesktop.DBus',
+            '--object-path', '/org/freedesktop/DBus', '--method', 'org.freedesktop.DBus.UpdateActivationEnvironment',
+            str({'DISPLAY':os.environ['DISPLAY']})], check=True, capture_output=True, timeout=5)
         subprocess.run(['gdbus', 'call', '--session', '--dest', 'org.a11y.Bus', '--object-path', '/org/a11y/bus',
             '--method', 'org.freedesktop.DBus.Properties.Set', 'org.a11y.Status', 'IsEnabled', '<true>'],
             check=True, capture_output=True, timeout=5)
