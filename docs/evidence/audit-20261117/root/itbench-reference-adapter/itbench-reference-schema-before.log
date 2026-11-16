@@ -1,0 +1,42 @@
+test_missing_root_flags_default_to_false (tests.test_itbench_scoring.ITBenchScoringTests.test_missing_root_flags_default_to_false) ... ERROR
+test_null_namespace_is_missing_but_other_identity_fields_remain_typed (tests.test_itbench_scoring.ITBenchScoringTests.test_null_namespace_is_missing_but_other_identity_fields_remain_typed) ... ERROR
+test_identical_duplicate_ids_preserve_one_identity_and_root_group (tests.test_itbench_scoring.ITBenchScoringTests.test_identical_duplicate_ids_preserve_one_identity_and_root_group) ... ERROR
+test_conflicting_duplicate_identity_or_root_flag_is_rejected (tests.test_itbench_scoring.ITBenchScoringTests.test_conflicting_duplicate_identity_or_root_flag_is_rejected) ... ok
+
+======================================================================
+ERROR: test_missing_root_flags_default_to_false (tests.test_itbench_scoring.ITBenchScoringTests.test_missing_root_flags_default_to_false)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/tests/test_itbench_scoring.py", line 150, in test_missing_root_flags_default_to_false
+    self.assertEqual(grading.ground_truth(value), self.truth)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/scripts/grade_itbench_aa.py", line 291, in ground_truth
+    raise ValueError('Invalid or duplicate ground-truth entity')
+ValueError: Invalid or duplicate ground-truth entity
+
+======================================================================
+ERROR: test_null_namespace_is_missing_but_other_identity_fields_remain_typed (tests.test_itbench_scoring.ITBenchScoringTests.test_null_namespace_is_missing_but_other_identity_fields_remain_typed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/tests/test_itbench_scoring.py", line 160, in test_null_namespace_is_missing_but_other_identity_fields_remain_typed
+    self.assertEqual(grading.ground_truth(value), expected)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/scripts/grade_itbench_aa.py", line 294, in ground_truth
+    raise ValueError('Entity identifying metadata must be text')
+ValueError: Entity identifying metadata must be text
+
+======================================================================
+ERROR: test_identical_duplicate_ids_preserve_one_identity_and_root_group (tests.test_itbench_scoring.ITBenchScoringTests.test_identical_duplicate_ids_preserve_one_identity_and_root_group)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/tests/test_itbench_scoring.py", line 171, in test_identical_duplicate_ids_preserve_one_identity_and_root_group
+    self.assertEqual(grading.ground_truth(value), self.truth)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/scripts/grade_itbench_aa.py", line 291, in ground_truth
+    raise ValueError('Invalid or duplicate ground-truth entity')
+ValueError: Invalid or duplicate ground-truth entity
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+FAILED (errors=3)

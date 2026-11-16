@@ -1,0 +1,40 @@
+test_same_file_updates_are_sequential_with_one_write_and_receipt (tests.test_agent_coding.CodingTests.test_same_file_updates_are_sequential_with_one_write_and_receipt) ... ERROR
+test_full_session_child_accepts_same_file_update_and_noop (tests.test_agent_coding.CodingTests.test_full_session_child_accepts_same_file_update_and_noop) ... FAIL
+
+======================================================================
+ERROR: test_same_file_updates_are_sequential_with_one_write_and_receipt (tests.test_agent_coding.CodingTests.test_same_file_updates_are_sequential_with_one_write_and_receipt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<source_root>/tests/test_agent_coding.py", line 94, in test_same_file_updates_are_sequential_with_one_write_and_receipt
+    result = self.registry.call("apply_patch", {"changes":changes})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<source_root>/agent/registry.py", line 91, in call
+    return self._call(name, arguments, approved=approved, receipt_id=receipt_id, scope_approval=scope_approval)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<source_root>/agent/registry.py", line 136, in _call
+    return self._invoke(name, function, arguments)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<source_root>/agent/registry.py", line 186, in _invoke
+    result = function(workspace_root=self.workspace_root, **arguments)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<source_root>/agent/patches.py", line 65, in apply_patch
+    raise ValueError("Patch paths must be distinct files, not the workspace root")
+ValueError: Patch paths must be distinct files, not the workspace root
+
+======================================================================
+FAIL: test_full_session_child_accepts_same_file_update_and_noop (tests.test_agent_coding.CodingTests.test_full_session_child_accepts_same_file_update_and_noop)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<source_root>/tests/test_agent_coding.py", line 131, in test_full_session_child_accepts_same_file_update_and_noop
+    self.assertEqual(final.status, "completed")
+AssertionError: 'incomplete' != 'completed'
+- incomplete
+? --
++ completed
+?         +
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.044s
+
+FAILED (failures=1, errors=1)

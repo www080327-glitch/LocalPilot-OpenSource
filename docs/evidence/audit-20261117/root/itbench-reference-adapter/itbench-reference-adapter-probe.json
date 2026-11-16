@@ -1,0 +1,44 @@
+{
+  "scope": "Only field-equality booleans, counts and source hashes; no reference values or candidate answers.",
+  "old_grader_sha256": "26ca645748a5272409bbc74f92e366a7d2b95138a86e92fec2d94db86733f8f0",
+  "new_grader_sha256": "4cd3f405f7a4d1c05edb6bf5d5530657c69de6b934bf59c2cdf01df7e2f20b76",
+  "reference_sha256": "6073f64edc4e011fbf4d4677ca04f5b4ff84d2041d1786c0f54b3e3e7392a745",
+  "reference_bytes": 185557,
+  "candidate_receipts_verified": 40,
+  "candidate_active_core_count": 0,
+  "duplicate_rows": 1,
+  "duplicate_comparisons": [
+    {
+      "raw_identity_fields_equal": {
+        "id": true,
+        "name": true,
+        "namespace": true,
+        "kind": true,
+        "filter": true
+      },
+      "normalized_identity_fields_equal": {
+        "id": true,
+        "name": true,
+        "namespace": true,
+        "kind": true,
+        "filter": true
+      },
+      "defaulted_root_flags_equal": true,
+      "all_allowed_fields_equal": true
+    }
+  ],
+  "conflicting_duplicate_count": 0,
+  "normalization_prompt_unchanged": true,
+  "judge_settings_unchanged": true,
+  "old_parse": "ValueError",
+  "adapted_parse": "PASS",
+  "adapted_parsed_cases": 40,
+  "adapted_scenario_set_matches": true,
+  "adapted_identity_rows": 277,
+  "adapted_judge_identity_has_no_root_flags": true,
+  "grading_directory_exists": false,
+  "judge_backend_constructed": false,
+  "external_model_api_calls": 0,
+  "raw_reference_written": false,
+  "candidate_answers_read": false
+}

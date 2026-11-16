@@ -1,0 +1,56 @@
+{
+  "stage": "Final targeted regression including public description contract and readability-only line wrap",
+  "files": [
+    {
+      "file": "agent/patches.py",
+      "sha256": "b6cd298a2f5862948fa98a3195fe0a9cc96573810cf4dd4938d332eec39256d9"
+    },
+    {
+      "file": "agent/schemas.py",
+      "sha256": "344646d8fa22b7ff92787f25f5ea8f57e06455abd3cc8cd0c04e1c2afff85394"
+    },
+    {
+      "file": "tests/test_agent_coding.py",
+      "sha256": "da0a4d4620f3fafcdbaa01a26f65eb3a4de2eb1905efcad6a38ce3a233cce6f6"
+    }
+  ],
+  "frozen_b28_head": "03535fe943f64f49e9e3d79e7949aca6c9ec9b87",
+  "frozen_b28_patches_sha256": "bb2393534bd6374dcf1caa31ca697318e38974466f4e8dcca7a9cec0a8aebe8b",
+  "unchanged_protected_files": [
+    {
+      "file": "agent/tool_protocol.py",
+      "sha256": "e3f80f187fb907dc6798bea6f15a0362614ff7d2bab7acf44eb044f831f40015",
+      "matches_frozen_b28": true
+    },
+    {
+      "file": "agent/session.py",
+      "sha256": "21d063687674e0cd69b1918c7eea60ca081d9a536768ab89f8db972a1bf6d6a3",
+      "matches_frozen_b28": true
+    }
+  ],
+  "tests": {
+    "run": 74,
+    "passed": 73,
+    "skipped": 1,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 4.584
+  },
+  "publication_status": "Version and new remote source commit pending owner publication; no package or real-model qualification claimed.",
+  "frozen_b28_schemas_sha256": "248bc056da84f85cfd2102e91726ab28d6e5250dff4c90dbff13615ee9b3c217",
+  "diff_numstat": {
+    "agent/patches.py": {
+      "added": 15,
+      "removed": 8
+    },
+    "agent/schemas.py": {
+      "added": 1,
+      "removed": 1
+    },
+    "tests/test_agent_coding.py": {
+      "added": 92,
+      "removed": 0
+    }
+  },
+  "only_apply_patch_description_changed_in_schemas": true
+}

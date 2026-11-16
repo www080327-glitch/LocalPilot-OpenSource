@@ -1,0 +1,99 @@
+diff --git a/scripts/grade_itbench_aa.py b/scripts/grade_itbench_aa.py
+index 86fbaa050c82a9cd138dc8564714ddfd5ec27e31..404a9eddd90861583c179698286561b1c0ee1ae1 100644
+--- a/scripts/grade_itbench_aa.py
++++ b/scripts/grade_itbench_aa.py
+@@ -287,18 +287,26 @@ def ground_truth(value):
+     groups, roots = {}, set()
+     for entity in value['groups']:
+         if (not isinstance(entity, dict) or not isinstance(entity.get('id'), str) or not entity['id']
+-                or entity['id'] in groups or type(entity.get('root_cause')) is not bool):
++                or type(entity.get('root_cause', False)) is not bool):
+             raise ValueError('Invalid or duplicate ground-truth entity')
+         for field in ('name', 'namespace', 'kind'):
++            if field == 'namespace' and entity.get(field) is None:
++                continue
+             if field in entity and not isinstance(entity[field], str):
+                 raise ValueError('Entity identifying metadata must be text')
+         if 'filter' in entity and (not isinstance(entity['filter'], list)
+                                   or not all(isinstance(item, str) for item in entity['filter'])):
+             raise ValueError('Entity filters must be a list of text')
+-        groups[entity['id']] = {key: entity[key] for key in
+-                               ('id', 'name', 'namespace', 'kind', 'filter') if key in entity}
+-        if entity['root_cause']:
+-            roots.add(entity['id'])
++        entity_id, root_cause = entity['id'], entity.get('root_cause', False)
++        identifying = {key: entity[key] for key in ('id', 'name', 'namespace', 'kind', 'filter')
++                       if key in entity and not (key == 'namespace' and entity[key] is None)}
++        if entity_id in groups:
++            if groups[entity_id] != identifying or (entity_id in roots) != root_cause:
++                raise ValueError('Conflicting duplicate ground-truth entity')
++            continue
++        groups[entity_id] = identifying
++        if root_cause:
++            roots.add(entity_id)
+     aliases = value.get('aliases', [])
+     if not isinstance(aliases, list) or not all(isinstance(alias, list) and all(
+             isinstance(entity_id, str) and entity_id in groups for entity_id in alias) for alias in aliases):
+diff --git a/tests/test_itbench_scoring.py b/tests/test_itbench_scoring.py
+index 7c9a122e8c5388733d8f8019434ff3913bdd5fc4..9e2c08c0b0c233e017059cc0cb59fdc03aeba330 100644
+--- a/tests/test_itbench_scoring.py
++++ b/tests/test_itbench_scoring.py
+@@ -130,7 +130,9 @@ class ITBenchScoringTests(unittest.TestCase):
+         value['groups'][0]['root_cause'] = 'true'
+         bad.append(value)
+         value = synthetic_truth()
+-        value['groups'].append(deepcopy(value['groups'][0]))
++        duplicate = deepcopy(value['groups'][0])
++        duplicate['root_cause'] = False
++        value['groups'].append(duplicate)
+         bad.append(value)
+         value = synthetic_truth()
+         for entity in value['groups']:
+@@ -140,6 +142,47 @@ class ITBenchScoringTests(unittest.TestCase):
+             with self.subTest(value=value), self.assertRaises(ValueError):
+                 grading.ground_truth(value)
+ 
++    def test_missing_root_flags_default_to_false(self):
++        value = synthetic_truth()
++        for entity in value['groups']:
++            if not entity['root_cause']:
++                del entity['root_cause']
++        self.assertEqual(grading.ground_truth(value), self.truth)
++        value['groups'][0]['root_cause'] = None
++        with self.assertRaises(ValueError):
++            grading.ground_truth(value)
++
++    def test_null_namespace_is_missing_but_other_identity_fields_remain_typed(self):
++        value = synthetic_truth()
++        del value['groups'][0]['namespace']
++        expected = grading.ground_truth(value)
++        value['groups'][0]['namespace'] = None
++        self.assertEqual(grading.ground_truth(value), expected)
++        for field in ('name', 'kind'):
++            invalid = deepcopy(value)
++            invalid['groups'][0][field] = None
++            with self.subTest(field=field), self.assertRaises(ValueError):
++                grading.ground_truth(invalid)
++
++    def test_identical_duplicate_ids_preserve_one_identity_and_root_group(self):
++        value = synthetic_truth()
++        value['groups'].extend(deepcopy(value['groups'][:2]))
++        del value['groups'][-1]['root_cause']
++        actual = grading.ground_truth(value)
++        self.assertEqual(actual, self.truth)
++        self.assertEqual(len(actual.judge_input['groups']), len(synthetic_truth()['groups']))
++
++    def test_conflicting_duplicate_identity_or_root_flag_is_rejected(self):
++        for field, changed in (('name', 'different'), ('namespace', 'different'),
++                               ('kind', 'Service'), ('filter', ['different']),
++                               ('root_cause', False)):
++            value = synthetic_truth()
++            duplicate = deepcopy(value['groups'][0])
++            duplicate[field] = changed
++            value['groups'].append(duplicate)
++            with self.subTest(field=field), self.assertRaises(ValueError):
++                grading.ground_truth(value)
++
+     def test_judge_format_order_names_length_and_ids_are_checked(self):
+         prediction = factors('test/Deployment/a', 'test/ConfigMap/b')
+         valid = normalization(prediction, ['cause-a', None])

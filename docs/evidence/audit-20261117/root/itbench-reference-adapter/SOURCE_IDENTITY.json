@@ -1,0 +1,87 @@
+{
+  "candidate_active_core_count_at_native_probes": 0,
+  "candidate_answer_files_read_by_probes": false,
+  "candidate_receipts_verified_before_reference_fetch": 40,
+  "candidate_source_manifest_sha256": "c8f42a51536163e7f7ddee04823cc103d03a0e26913201cad8108e959b6d84c2",
+  "candidate_summary_header": {
+    "completed": 30,
+    "errors": 3,
+    "graded": false,
+    "outputs_valid": 32,
+    "planned": 40
+  },
+  "candidate_summary_sha256": "d907738d8ad3cec9164379d3a53a069664821278447b7f993c66dfdb4d1c6310",
+  "changed_top_level_nodes": [
+    "ground_truth"
+  ],
+  "external_model_api_calls_by_probes": 0,
+  "grading_directory_exists_at_archive": false,
+  "judge_backend_constructed_by_probes": false,
+  "new_grader_publication_binding": "Pending owner grader-only commit and clean checkout; expected bytes are fixed above.",
+  "new_grader_sha256": "4cd3f405f7a4d1c05edb6bf5d5530657c69de6b934bf59c2cdf01df7e2f20b76",
+  "new_test_sha256": "dc8297c0fb05ee25cdb5029d8fb04ee3e52bbd3356cf06750b9e4f783b0a8cf1",
+  "old_grader_also_matches_frozen_91dd87c": true,
+  "old_grader_sha256": "26ca645748a5272409bbc74f92e366a7d2b95138a86e92fec2d94db86733f8f0",
+  "old_test_sha256": "a140347e53f5f734b2d8c42f1635f589e2d11f7e3bc9c3f699bbcc7447c2c91e",
+  "patch_baseline_commit": "03535fe943f64f49e9e3d79e7949aca6c9ec9b87",
+  "patch_sha256": "2bb6bf3c1924ec9fccbec7c14f8d372a8c1fc55f7032ea2cfa8080a58fbe40f4",
+  "raw_reference_written": false,
+  "reference_bytes": 185557,
+  "reference_sha256": "6073f64edc4e011fbf4d4677ca04f5b4ff84d2041d1786c0f54b3e3e7392a745",
+  "schema_version": 1,
+  "scope": "Reference input-shape adapter only; candidate receipts, prompt, runtime, frozen scoring criteria, model and budgets unchanged.",
+  "tests": {
+    "after_full_existing_module": {
+      "passed": 22,
+      "run": 22,
+      "seconds": 2.145
+    },
+    "before_new_controls": {
+      "errors": 3,
+      "passed": 1,
+      "run": 4
+    }
+  },
+  "unchanged_protocol_nodes": {
+    "JUDGE_MAX_TOKENS": {
+      "matches_old": true,
+      "sha256": "beb347020c70b31ee70a3f0be62419237ca94286ab36bd560b9126ad8e29b9ca"
+    },
+    "JUDGE_MODEL": {
+      "matches_old": true,
+      "sha256": "0399e5af6f5f455e543835fb0004b9647a2851dbd238aabe5f7abbd8b1f06e42"
+    },
+    "JUDGE_REASONING": {
+      "matches_old": true,
+      "sha256": "e72c72ac4a14d828fa9d2a8f55c71065997657d61f9f21dca9e92b9b4abb89e2"
+    },
+    "NORMALIZATION_PROMPT": {
+      "matches_old": true,
+      "sha256": "c5e7b59e21f5563e676e6b37af5874bbb4b284a4ad5df2fb3787bdc0cdd17093"
+    },
+    "completed_run": {
+      "matches_old": true,
+      "sha256": "1b0f5f8606fc95b87c53af1ea5a79d58dd4aa6a4fd12bbbf2b3670efdee8e55b"
+    },
+    "grade_run": {
+      "matches_old": true,
+      "sha256": "cf896370fa3ba573ee5bd23369e054f1481e86f958634902010dc3924b345fa1"
+    },
+    "make_judge": {
+      "matches_old": true,
+      "sha256": "152583dfe30f31f98e5bf85e6035256f74d6f3919143942433537626abfa3ce2"
+    },
+    "parse_normalization": {
+      "matches_old": true,
+      "sha256": "eb07eab633c0c56eb8598f8d9fd4aa6305620bf0b00c5fc54c82aaff49d32607"
+    },
+    "score_entities": {
+      "matches_old": true,
+      "sha256": "d9b7b5c81698751251151133c6e6eea905865dab85303ebcf84fcb301c793bc5"
+    },
+    "summarize": {
+      "matches_old": true,
+      "sha256": "c97a565de6c7ffcc2acc359f3fdfcc3be960bbf54762e958522db17a0d44a647"
+    }
+  }
+}

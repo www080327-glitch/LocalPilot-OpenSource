@@ -1,0 +1,36 @@
+{
+  "stage": "Final targeted regression after multi-update production change",
+  "files": [
+    {
+      "file": "agent/patches.py",
+      "sha256": "b4b8aaa4023e3b63597648c48fe67cf867196d09ce456b9f7ca8e73acd65e3b8"
+    },
+    {
+      "file": "tests/test_agent_coding.py",
+      "sha256": "da0a4d4620f3fafcdbaa01a26f65eb3a4de2eb1905efcad6a38ce3a233cce6f6"
+    }
+  ],
+  "frozen_b28_head": "03535fe943f64f49e9e3d79e7949aca6c9ec9b87",
+  "frozen_b28_patches_sha256": "bb2393534bd6374dcf1caa31ca697318e38974466f4e8dcca7a9cec0a8aebe8b",
+  "unchanged_protected_files": [
+    {
+      "file": "agent/tool_protocol.py",
+      "sha256": "e3f80f187fb907dc6798bea6f15a0362614ff7d2bab7acf44eb044f831f40015",
+      "matches_frozen_b28": true
+    },
+    {
+      "file": "agent/session.py",
+      "sha256": "21d063687674e0cd69b1918c7eea60ca081d9a536768ab89f8db972a1bf6d6a3",
+      "matches_frozen_b28": true
+    }
+  ],
+  "tests": {
+    "run": 74,
+    "passed": 73,
+    "skipped": 1,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 4.734
+  },
+  "publication_status": "Version and new remote source commit pending owner publication; no package or real-model qualification claimed."
+}

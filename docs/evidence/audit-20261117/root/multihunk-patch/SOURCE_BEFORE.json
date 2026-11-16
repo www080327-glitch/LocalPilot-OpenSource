@@ -1,0 +1,14 @@
+{
+  "stage": "Before production change, with new regression tests present",
+  "git_head": "d0c08d29f06957cee017ef182bec392c23e81ba6",
+  "files": [
+    {
+      "file": "agent/patches.py",
+      "sha256": "bb2393534bd6374dcf1caa31ca697318e38974466f4e8dcca7a9cec0a8aebe8b"
+    },
+    {
+      "file": "tests/test_agent_coding.py",
+      "sha256": "9891d40d2b1d06cb74466118c9505820da0ff4aa96baf9e453f099dba0f3f13e"
+    }
+  ]
+}

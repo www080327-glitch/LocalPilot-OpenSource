@@ -19,12 +19,14 @@ The initial integration assessment was prepared independently from archived rece
 | [b28 native engineering R3](engineering-luna-r3-b28-native/RESULTS.md) | Overall FAIL; semantic PASS | External 17 tests and four CLI cases passed; repeated-file patch rejection left parser child and parent incomplete. |
 | Original two-hour soak R1 | **INCOMPLETE: execution-session continuity lost** | 210 heartbeats, last observed 6,270.103 seconds; no terminal receipt or finished marker. |
 | [Two-hour soak R3](cloud-soak-2h-r3-interrupted/RESULTS.md) | **INCOMPLETE: second execution-session loss** | `91dd87c`; 97 heartbeats, last 2,880.051 seconds; no terminal result or readback. |
-| Current-source two-hour soak R4 | **RUNNING** | `03535fe` / Core b28, native desktop Terminal, actual Python 3.12.14; a fresh full 7,200-second run, without adding earlier time. |
+| b28 two-hour soak R4 | **RUNNING** | `03535fe` / Core b28, native desktop Terminal, actual Python 3.12.14; a fresh full 7,200-second run, without adding earlier time or reassigning it to b29. |
 | [Original forty-case ITBench R2](itbench-aa-r2/RESULTS.md) | **40 terminal receipts; ungraded** | 26 completed, 28 format-valid; original failures and interrupted attempts preserved. |
 | ITBench pre-candidate transport continuation | **40 terminal receipts; ungraded** | 30 completed / 32 format-valid. Started interruptions 025, 033 and 035 are retained; the grader rejected reference schema before any judge request. |
 | RC10 native package | **PASS for build and extracted-package UI verification** | Separate [RC10 evidence](../../../../desktop/docs/evidence/audit-20261117-desktop/final-package/RESULTS.md); these earlier model runs remain source-based. |
 | [Current RC11 / Core b28 package](../../../../desktop/docs/evidence/audit-20261117-desktop/final-package-rc11/RESULTS.md) | **PASS for build and native short checks** | Source `03535fe`; 40 wheels / 286 source files verified; no system installation, new animation measurement, or binary Release upload claim. |
 | [Shell timeout and Full child repair](shell-timeout-repair/RESULTS.md) | **72 PASS / 1 existing macOS SKIP** | Additional implementation checks, scripted model replies with real Shell and parent/child execution; no benchmark reclassification. |
+| [b29 same-file multi-update](multihunk-patch/RESULTS.md) | **73 PASS / 1 existing macOS SKIP** | Actual Registry / Full parent-child / filesystem checks; same-file updates commit once after whole-batch preflight. Old R3 remains FAIL. |
+| [Reference schema adapter](itbench-reference-adapter/RESULTS.md) | **22 PASS; all 40 reference scenarios parsed** | Input-only adaptation before any real judge call, with unchanged prompt, model, budgets and scoring rules. |
 
 The root owner will append the completed long-run and benchmark evidence separately. [Benchmark R1](itbench-aa-r1/ABORTED.json) was aborted after four terminal `CloudEgressDenied` failures at the hidden 131,072-byte ceiling; a fifth started case was interrupted. That historical runtime defect and its receipts are distinct from R2's timeout-unit error and remain preserved. No score is assigned to the aborted R1 run.
 
