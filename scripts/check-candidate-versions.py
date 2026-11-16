@@ -1,8 +1,9 @@
 """Fail before packaging when current code/module/README versions disagree."""
 from pathlib import Path
-import json,tomllib
+import json,runpy,tomllib
 root=Path(__file__).resolve().parents[1]
 core=tomllib.loads((root/'pyproject.toml').read_text())['project']['version']
+assert runpy.run_path(str(root/'localpilot_service/__init__.py'))['VERSION']==core,'localpilot_service.VERSION differs from pyproject.toml'
 suite=tomllib.loads((root/'suite/pyproject.toml').read_text())['project']['version']
 companion=tomllib.loads((root/'companion/pyproject.toml').read_text())['project']['version']
 desktop=json.loads((root/'desktop/package.json').read_text())['version']
