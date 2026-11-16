@@ -19,7 +19,12 @@ export function WorkspaceScope({
       args: { operation: "list" },
     }).then((x) => {
       setGrants(x.grants);
-      if (selected && !x.grants.some((g: any) => g.id === selected && !g.revoked && g.usable !== false)) {
+      if (
+        selected &&
+        !x.grants.some(
+          (g: any) => g.id === selected && !g.revoked && g.usable !== false,
+        )
+      ) {
         onSelect("");
         onError("文件夹授权已失效，请重新选择文件夹。");
       }
@@ -30,9 +35,14 @@ export function WorkspaceScope({
     const sync = () => refresh().catch(() => {});
     window.addEventListener("focus", sync);
     const timer = window.setInterval(sync, 15000);
-    return () => { window.removeEventListener("focus", sync); window.clearInterval(timer); };
+    return () => {
+      window.removeEventListener("focus", sync);
+      window.clearInterval(timer);
+    };
   }, [selected]);
-  const active = grants.find((g) => g.id === selected && !g.revoked && g.usable !== false);
+  const active = grants.find(
+    (g) => g.id === selected && !g.revoked && g.usable !== false,
+  );
   return (
     <div className="workspace-scope">
       <button
@@ -50,7 +60,7 @@ export function WorkspaceScope({
         <section aria-label="文件夹授权设置">
           <p>
             仅授权你选择的目录。读取可查看文件；整理可建目录、移动、重命名和复制；修改还允许编辑。所有范围均关闭
-            Shell。风险档位、云端披露和 macOS 系统权限分别检查。
+            Shell。风险档位、云端披露和操作系统权限分别检查。
           </p>
           <label>
             操作范围{" "}
@@ -122,9 +132,10 @@ export function WorkspaceScope({
             </button>
           )}
           <p>
-            若系统拒绝访问：在 macOS「系统设置 → 隐私与安全性 →
-            文件与文件夹」为实际 LocalPilot
-            执行进程授权，然后重新选择。服务会检查实际访问；选择窗口成功不代表系统授权已传递。
+            若系统拒绝访问：macOS 请在「系统设置 → 隐私与安全性 →
+            文件与文件夹」为实际执行进程授权；Linux
+            请检查当前用户对目录及父目录的访问权限。
+            然后重新选择。服务会检查实际访问；选择窗口成功不代表系统授权已传递。
           </p>
         </section>
       )}

@@ -9,6 +9,7 @@ import plistlib
 from queue import Empty, Full, Queue
 import re
 import shutil
+import signal
 import subprocess
 import sys
 import threading
@@ -73,6 +74,14 @@ def build_meeting_helper(app):
     return str(binary)
 
 
+def meeting_launch(config, capture, locale, session_id, private):
+    if sys.platform.startswith('linux'):
+        from .linux_meeting import launch
+        return launch(config, capture, locale, session_id)
+    binary = build_meeting_helper(private.root / 'MeetingTranscriber.app')
+    return [binary, '--locale', locale, '--session', session_id, '--capture', capture], helper_environment(), {}
+
+
 class MeetingCapture:
     def __init__(self, service):
         self.service = service
@@ -91,9 +100,13 @@ class MeetingCapture:
 
     def status(self):
         active = self.state["state"] in ACTIVE or (self.process is not None and self.process.poll() is None)
-        return {"status":"active" if active else "ok", "meeting":dict(self.state),
-                "supported_host":sys.platform == "darwin", "capture_availability":"checked_on_explicit_start",
+        result = {"status":"active" if active else "ok", "meeting":dict(self.state),
+                "supported_host":sys.platform == "darwin" or sys.platform.startswith('linux'), "capture_availability":"checked_on_explicit_start",
                 "coverage":"仅自动转写所选麦克风/系统音轨，可能误识别、重复或遗漏；说话者与事实未经验证，不保存音视频。"}
+        if sys.platform.startswith('linux'):
+            from .linux_meeting import capabilities
+            result['capabilities'] = capabilities(self.service.config)
+        return result
 
     def start(self, capture, locale="zh-CN", label=None):
         if capture not in {"microphone", "system", "both"} or not isinstance(locale, str) or not re.fullmatch(r"[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8}){0,3}", locale):
@@ -108,14 +121,15 @@ class MeetingCapture:
             self.stop()
         if self.service.privacy.paused():
             return {"status":"unavailable", "reason":"observation_paused", "meeting":dict(self.state)}
+        session_id = str(uuid.uuid4())
         try:
-            binary = build_meeting_helper(self.service.private.root / "MeetingTranscriber.app")
+            command, environment, identity = meeting_launch(self.service.config, capture, locale, session_id, self.service.private)
         except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as error:
-            self.state = {"state":"unavailable", "detail":"macos_required" if sys.platform != "darwin" else "helper_build_failed",
+            detail = str(error)[:300] if sys.platform.startswith('linux') else 'macos_required' if sys.platform != 'darwin' else 'helper_build_failed'
+            self.state = {"state":"unavailable", "detail":detail,
                           "capture":capture, "locale":locale, "label":label, "error_type":type(error).__name__, "segments":0, "sources":{}}
             self._save()
             return self.status() | {"status":"unavailable"}
-        session_id = str(uuid.uuid4())
         self.output = PrivateData(PrivateData(self.service.private.root / "meetings").root / ("meeting-"+session_id))
         registered = self.service.sources.connect("meeting", str(self.output.root), label, False)
         self.state = {"session_id":session_id, "state":"starting", "capture":capture, "locale":locale,
@@ -123,6 +137,7 @@ class MeetingCapture:
                       "segments":0, "sources":{name:{"state":"starting"} for name in
                           (["mic", "system"] if capture == "both" else ["mic"] if capture == "microphone" else ["system"])},
                       "raw_audio_saved":False, "cloud_fallback":False}
+        self.state.update(identity)
         self.discard = False
         self.failure = None
         self.seen.clear()
@@ -130,8 +145,8 @@ class MeetingCapture:
         self.overflow.clear()
         self._save()
         try:
-            self.process = subprocess.Popen([binary, "--locale", locale, "--session", session_id, "--capture", capture],
-                stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, env=helper_environment(), start_new_session=True)
+            self.process = subprocess.Popen(command,
+                stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, env=environment, start_new_session=True)
         except OSError as error:
             self.state.update(state="failed", detail="helper_launch_failed", error_type=type(error).__name__)
             self._save()
@@ -166,11 +181,17 @@ class MeetingCapture:
                 process.wait(timeout=13)
             except subprocess.TimeoutExpired:
                 self.failure = "helper_stop_required_termination"
-                process.terminate()
+                if self.state.get('backend') == 'ffmpeg_pulse_whisper_cpp':
+                    os.killpg(process.pid, signal.SIGTERM)
+                else:
+                    process.terminate()
                 try:
                     process.wait(timeout=2)
                 except subprocess.TimeoutExpired:
-                    process.kill()
+                    if self.state.get('backend') == 'ffmpeg_pulse_whisper_cpp':
+                        os.killpg(process.pid, signal.SIGKILL)
+                    else:
+                        process.kill()
                     process.wait(timeout=3)
             if self.reader:
                 self.reader.join(timeout=2)

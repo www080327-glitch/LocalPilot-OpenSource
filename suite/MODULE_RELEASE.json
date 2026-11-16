@@ -1,9 +1,9 @@
 {
-  "version": "0.2.0b27",
+  "version": "0.2.0b28",
   "module": "suite",
   "api": "1.0",
   "companion_contract": "1.0",
-  "admission": "PORTABLE_SOURCE_CANDIDATE_NATIVE_INTEL_PENDING",
+  "admission": "LINUX_SOURCE_CANDIDATE_NATIVE_DEVICE_QUALIFICATION_PARTIAL",
   "source_history_exported": false,
   "weights_credentials_user_data_included": false,
   "publication": "source candidate; no formal GitHub Release",
@@ -11,5 +11,5 @@
   "installation_base_commit": "36b6b72b",
   "installation_extension": "Local-only first-run, bounded recovery, installer transfer and private backup/restore",
   "integration_manifest": "docs/integration/20261025/SOURCE_MANIFEST.json",
-  "portability_evidence": "docs/evidence/intel-portability-20261116/RESULTS.md"
+  "portability_evidence": "docs/evidence/linux-completion-20261116/RESULTS.md"
 }

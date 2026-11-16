@@ -169,8 +169,10 @@ export function SetupAssistant({
             选择本地模型或填写 DeepSeek 密钥，即可开始。微信连接可以稍后再做。
           </p>
           <p className="micro muted">
-            macOS 15
-            或更新版本。已有安装、模型和工作区会保留；需要下载时会单独确认。
+            {hw?.system === "Linux"
+              ? "请使用与当前 Linux 发行版和处理器匹配的安装包。"
+              : "macOS 需要 15 或更新版本。"}
+            已有安装、模型和工作区会保留；需要下载时会单独确认。
           </p>
         </div>
       )}

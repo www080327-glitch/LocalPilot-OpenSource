@@ -1,10 +1,12 @@
 import hashlib
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 from pathlib import Path
 import subprocess
 import sys
 import tempfile
 import time
+import threading
 import unittest
 
 from companion.config import Config
@@ -268,6 +270,112 @@ class ReviewedTrainingTests(unittest.TestCase):
         plan = json.loads(result.stdout)
         self.assertEqual(plan["training"], "NOT_RUN")
         self.assertFalse((self.root / "cli-plan" / "training.log").exists())
+
+    def test_held_out_source_groups_never_enter_training_or_validation(self):
+        from companion.model.reviewed_data import load_dataset
+        for number in range(5):
+            _, memory_id, _ = self.source(f'held-{number}', f'Unique reviewed record {number}')
+            self.add(f'What does record {number} say?', f'Approved answer {number}', ids=[memory_id])
+        exported = self.app.command({'command': 'training_export', 'test_fraction': .2})
+        manifest, splits, _ = load_dataset(exported['directory'], require_test=True)
+        self.assertEqual({name: len(rows) for name, rows in splits.items()}, {'train': 3, 'valid': 1, 'test': 1})
+        owners = {}
+        for row in manifest['samples']:
+            for group in row['groups']:
+                self.assertIn(owners.setdefault(group, row['split']), {row['split']})
+        repeated = self.app.training.export(test_fraction=.2)
+        for name in splits:
+            first = Path(exported['directory']) / (name + '.jsonl')
+            self.assertEqual(first.read_bytes(), (Path(repeated['directory']) / first.name).read_bytes())
+        plan = prepare(self.model(), exported['directory'], self.root / 'held-out-plan')
+        self.assertFalse(plan['config']['test'])
+        self.assertEqual(plan['held_out_test'], 'reserved_not_used_by_trainer')
+
+    def test_held_out_export_requires_three_independent_groups(self):
+        self.export_pair()
+        with self.assertRaisesRegex(ValueError, '3 independent'):
+            self.app.training.export(test_fraction=.2)
+        for fraction in (True, -.1, .5, float('nan')):
+            with self.subTest(fraction=fraction), self.assertRaises(ValueError):
+                self.app.training.export(test_fraction=fraction)
+
+    def test_final_evaluation_rejects_missing_changed_or_shared_test_sources(self):
+        from companion.model.reviewed_data import load_dataset
+        exported = self.export_pair()
+        with self.assertRaisesRegex(ValueError, 'held-out test'):
+            load_dataset(exported['directory'], require_test=True)
+        _, mid, _ = self.source('third', 'Third independent fact')
+        self.add('Third question', 'Third answer', ids=[mid])
+        exported = self.app.training.export(test_fraction=.2)
+        manifest_path = Path(exported['manifest'])
+        manifest = json.loads(manifest_path.read_text())
+        manifest['samples'][0]['groups'] = manifest['samples'][1]['groups']
+        manifest_path.write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(ValueError, 'crosses'):
+            load_dataset(exported['directory'], require_test=True)
+        exported = self.app.training.export(test_fraction=.2)
+        test_path = Path(exported['directory']) / 'test.jsonl'
+        test_path.write_text(test_path.read_text() + '\n')
+        with self.assertRaisesRegex(ValueError, 'hash'):
+            load_dataset(exported['directory'], require_test=True)
+
+    def test_real_http_held_out_evaluation_omits_targets_and_preserves_errors(self):
+        from companion.model.evaluation import evaluate, compare
+        for number in range(3):
+            _, mid, _ = self.source(f'eval-{number}', f'Public evaluation source {number}')
+            self.add(f'Public evaluation question {number}', 'Approved concise target', ids=[mid])
+        exported = self.app.training.export(test_fraction=.2)
+        requests = []
+
+        class Handler(BaseHTTPRequestHandler):
+            def log_message(self, *args):
+                pass
+
+            def do_POST(self):
+                request = json.loads(self.rfile.read(int(self.headers['Content-Length'])))
+                requests.append(request)
+                if request['model'] == 'failure':
+                    self.send_response(503)
+                    self.end_headers()
+                    return
+                answer = 'Approved concise target' if request['model'] == 'candidate' else 'A different answer'
+                payload = {'model': request['model'], 'choices': [{'finish_reason': 'stop', 'message': {'content': answer}}]}
+                if request['model'] == 'candidate':
+                    payload['usage'] = {'prompt_tokens': 12, 'completion_tokens': 3, 'total_tokens': 15}
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(json.dumps(payload).encode())
+
+        server = ThreadingHTTPServer(('127.0.0.1', 0), Handler)
+        thread = threading.Thread(target=lambda: server.serve_forever(poll_interval=.02))
+        thread.start()
+        self.addCleanup(server.server_close)
+        self.addCleanup(thread.join)
+        self.addCleanup(server.shutdown)
+        endpoint = f'http://127.0.0.1:{server.server_port}/v1'
+        reports = {model: evaluate(exported['directory'], endpoint, model, self.root / model)
+                   for model in ('baseline', 'candidate', 'failure')}
+        self.assertEqual(reports['candidate']['exact_matches'], 1)
+        self.assertEqual(reports['baseline']['cases'][0]['usage'], 'UNKNOWN')
+        self.assertEqual(reports['candidate']['cases'][0]['usage']['total_tokens'], 15)
+        self.assertEqual(reports['failure']['status'], 'completed_with_errors')
+        self.assertEqual(reports['failure']['errors'], 1)
+        self.assertEqual(reports['failure']['exact_matches'], 0)
+        self.assertEqual(len(requests), 3)
+        for request in requests:
+            self.assertEqual([message['role'] for message in request['messages']], ['system', 'user'])
+            self.assertNotIn('Approved concise target', json.dumps(request))
+        comparison = compare(self.root / 'baseline/evaluation.json', self.root / 'candidate/evaluation.json')
+        self.assertEqual(comparison['improved_cases'], 1)
+        self.assertEqual(comparison['regressed_cases'], 0)
+        self.assertEqual(comparison['statistical_superiority'], 'NOT_ESTABLISHED')
+        self.assertFalse(comparison['model_promoted'])
+        candidate_path = self.root / 'candidate/evaluation.json'
+        candidate = json.loads(candidate_path.read_text())
+        candidate['max_tokens'] += 1
+        candidate_path.write_text(json.dumps(candidate))
+        with self.assertRaisesRegex(ValueError, 'conditions differ'):
+            compare(self.root / 'baseline/evaluation.json', candidate_path)
 
     @unittest.skipIf(readiness()["ready"], "This check exercises genuinely unavailable training prerequisites")
     def test_execution_without_prerequisites_truthfully_stays_not_run(self):

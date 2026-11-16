@@ -340,10 +340,10 @@ class ObservationController:
             return service.sources.accessible(row)
         if row.get("source") == "file_observer":
             return service.scope.allowed(row.get("source_reference", ""))
-        if row.get("source") in {"nsworkspace", "accessibility"}:
+        if row.get("source") in {"nsworkspace", "accessibility", "linux_desktop", "linux_accessibility"}:
             bundle = row.get("object", {}).get("bundle_id", "")
             captured_content = row.get("object", {}).get("content_authorized", False)
-            if (row.get("source") == "accessibility" and (service.config.native_window_exclusions
+            if (row.get("source") in {"accessibility", "linux_accessibility", "linux_desktop"} and (service.config.native_window_exclusions
                     or getattr(service.config, "native_controlled_target", None)
                     or row.get("object", {}).get("capture_scope") == "controlled_owned_application")
                     and row.get("object", {}).get("acquisition_scope") != service.privacy.consent_id()):
@@ -351,6 +351,6 @@ class ObservationController:
                 return False
             from companion.observers.native import native_options, app_scope_allowed, content_scope_allowed
             options = native_options(service.config)
-            return (service.privacy.native_allowed() and (row["source"] != "accessibility" or service.config.native_ax_enabled)
+            return (service.privacy.native_allowed() and (row["source"] not in {"accessibility", "linux_accessibility"} or service.config.native_ax_enabled)
                     and app_scope_allowed(bundle, options) and (not captured_content or content_scope_allowed(bundle, options)))
         return row.get("source") in {"localpilot", "explicit_user_statement"} or row.get("source") == "session" and service.privacy.native_allowed()

@@ -197,6 +197,7 @@ def start(home, manager=None):
         config = private_json(home / 'service.json')
         manager = manager or config.get('process_manager', 'launchd' if sys.platform=='darwin' else 'detached')
         if manager not in {'launchd','detached'}:raise ValueError('Unknown service process manager')
+        if manager == 'launchd' and sys.platform != 'darwin':raise ValueError('launchd requires macOS; use the detached manager on Linux')
         import socket
         with socket.socket() as probe:
             probe.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -495,7 +496,8 @@ def main(argv=None):
             c = private_json(home / 'connection.json')
             value = {'url':c['url'], 'token_env':c['token_env'], 'home':str(home), 'credentials':'REDACTED'}
         elif args.action == 'doctor':
-            checks = {'version':VERSION, 'platform':sys.platform, 'model_health':'NOT_PROBED', 'local_inference_disabled':os.environ.get('LOCALPILOT_DISABLE_LOCAL_MODELS') == '1', 'configuration':configuration_checks(home)}
+            from agent.host_tools import shell_capabilities
+            checks = {'version':VERSION, 'platform':sys.platform, 'host_shell':shell_capabilities(), 'model_health':'NOT_PROBED', 'local_inference_disabled':os.environ.get('LOCALPILOT_DISABLE_LOCAL_MODELS') == '1', 'configuration':configuration_checks(home)}
             c = connection(home)
             try:checks.update(service=compatible(c), compatibility='PASS')
             except (URLError, OSError):checks.update(service='UNREACHABLE', compatibility='NOT_RUN')

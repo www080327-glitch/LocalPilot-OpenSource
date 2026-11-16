@@ -7,7 +7,7 @@ export async function call<T = any>(
 ): Promise<T> {
   if (!desktop)
     throw new Error(
-      "请在 LocalPilot macOS 应用中连接服务。浏览器仅提供明确标记的设计预览。",
+      "请在 LocalPilot 桌面应用中连接服务。浏览器仅提供明确标记的设计预览。",
     );
   return invoke<T>(command, args);
 }

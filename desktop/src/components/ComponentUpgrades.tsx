@@ -30,9 +30,11 @@ function result(value: Json) {
 export function ComponentUpgrades({
   cliReady,
   maintenanceReturn = false,
+  desktopAppUpgrade = true,
 }: {
   cliReady: boolean;
   maintenanceReturn?: boolean;
+  desktopAppUpgrade?: boolean;
 }) {
   const [plan, setPlan] = useState<Json | null>(null);
   const [receipt, setReceipt] = useState<Json | null>(null);
@@ -109,11 +111,14 @@ export function ComponentUpgrades({
         wheel，先生成完整计划。安装前核对组合依赖；安装或验证失败时按相反顺序恢复。用户数据、模型和任务收据保留。
       </p>
       <div className="management-actions">
-        {[
-          ["bundle", "GUI 与四个组件一起升级"],
-          ["all", "仅升级独立组件"],
-          ["desktop", "仅升级 GUI"],
-        ].map(([module, label]) => (
+        {(desktopAppUpgrade
+          ? [
+              ["bundle", "GUI 与四个组件一起升级"],
+              ["all", "仅升级独立组件"],
+              ["desktop", "仅升级 GUI"],
+            ]
+          : [["all", "升级独立组件"]]
+        ).map(([module, label]) => (
           <button
             className="secondary"
             disabled={!desktop || !cliReady || busy}
@@ -131,6 +136,12 @@ export function ComponentUpgrades({
           读取升级记录
         </button>
       </div>
+      {!desktopAppUpgrade && (
+        <p className="micro muted">
+          Linux GUI 使用系统包管理器安装或降级 DEB。此处审阅和执行
+          Core、Companion、Suite、Channels 的组件升级与失败回滚。
+        </p>
+      )}
       <details>
         <summary>单个组件</summary>
         <div className="management-actions">

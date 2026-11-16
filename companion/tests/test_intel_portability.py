@@ -215,7 +215,10 @@ class PortableHTTPTests(unittest.TestCase):
                 self.assertEqual(answer["model"]["status"], "not_called")
                 if sys.platform != "darwin":
                     meeting = cli.client(self.config, {"command":"meeting_status"})
-                    self.assertFalse(meeting["supported_host"])
+                    self.assertEqual(meeting['supported_host'], sys.platform.startswith('linux'))
+                    if sys.platform.startswith('linux'):
+                        self.assertFalse(meeting['capabilities']['model_available'])
+                        self.assertEqual(meeting['meeting']['state'], 'idle')
                     self.assertNotEqual(status["native_observer"]["state"], "running")
             finally:
                 process.terminate()

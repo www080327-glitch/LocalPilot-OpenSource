@@ -33,7 +33,7 @@ class ShellFailureRepairTests(unittest.TestCase):
                 self.assertEqual(recovery_class(runtime),'SAFE_TO_RESUME')
                 self.assertEqual(sum(r['name']=='shell' for r in runtime.tool_history),1)
             finally:runtime.close()
-    @unittest.skipUnless(sys.platform == "darwin", "NOT_RUN: requires native macOS host Shell/Seatbelt")
+    @unittest.skipUnless(sys.platform in {"darwin", "linux"}, "NOT_RUN: requires native POSIX host Shell")
     def test_timeout_still_preserves_uncertain_effects(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp).resolve()

@@ -1,0 +1,26 @@
+{
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "LocalPilot",
+        "width": 1440,
+        "height": 940,
+        "minWidth": 540,
+        "minHeight": 600,
+        "titleBarStyle": "Visible",
+        "hiddenTitle": false,
+        "backgroundColor": "#171a20",
+        "transparent": false
+      }
+    ]
+  },
+  "bundle": {
+    "targets": ["deb"],
+    "linux": {
+      "deb": {
+        "depends": ["python3", "xdg-utils", "zenity", "bubblewrap"]
+      }
+    }
+  }
+}

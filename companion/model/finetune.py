@@ -23,7 +23,7 @@ MLX_SOURCE = "https://github.com/ml-explore/mlx-lm/blob/ed1fca4cef15a824c5f1702c
 def prepare(model, dataset, output, *, method="lora", iterations=100, rank=8, layers=None,
             max_seq_length=2048, batch_size=1, seed=17, learning_rate=1e-5):
     layers = (-1 if method == "full" else 4) if layers is None else layers
-    model, dataset, output, manifest, model_config, base_config_sha256 = _inputs(
+    model, dataset, output, manifest, model_config, base_config_sha256 = training_inputs(
         model, dataset, output, method, iterations, rank, layers, max_seq_length, batch_size, seed, learning_rate)
     private = PrivateData(output)
     config = {"model":str(model), "data":str(dataset), "train":True, "test":False,
@@ -44,6 +44,7 @@ def prepare(model, dataset, output, *, method="lora", iterations=100, rank=8, la
             "base_config_sha256":base_config_sha256,
             "dataset_sha256":manifest["sha256"], "counts":manifest["counts"],
             "manifest_sha256":hashlib.sha256((dataset / "manifest.json").read_bytes()).hexdigest(),
+            "held_out_test":"reserved_not_used_by_trainer" if manifest['counts'].get('test') else "NOT_PROVIDED",
             "config":config, "command":[sys.executable, "-m", "mlx_lm", "lora", "--config", str(config_path)],
             "offline":True, "requirements":MLX_REQUIREMENT, "readiness":checks,
             "token_budget":"NOT_RUN", "base_model_modification":False,
@@ -115,7 +116,7 @@ def execute(plan):
     return plan
 
 
-def _inputs(model, dataset, output, method, iterations, rank, layers, max_seq_length, batch_size, seed, rate):
+def training_inputs(model, dataset, output, method, iterations, rank, layers, max_seq_length, batch_size, seed, rate):
     if method not in {"lora", "full"}:
         raise ValueError("Use lora or full; reinforcement learning is not implemented by this launcher")
     for name, value, minimum, maximum in (("iterations", iterations, 1, 1000000), ("rank", rank, 1, 128),
@@ -138,27 +139,11 @@ def _inputs(model, dataset, output, method, iterations, rank, layers, max_seq_le
     tokenizer_config = json.loads(tokenizer_bytes)
     # 0.31.3 hard-codes tokenizer trust_remote_code=True; no config flag overrides it.
     if not isinstance(tokenizer_config, dict) or model_config.get("auto_map") or tokenizer_config.get("auto_map"):
-        raise ValueError("This MLX version requires a standard local tokenizer without custom auto_map code")
+        raise ValueError("Reviewed local training requires a standard local tokenizer without custom auto_map code")
     if method == "full" and (model_config.get("quantization") or model_config.get("quantization_config")):
         raise ValueError("Full training requires unquantized base weights; use lora for a quantized model")
-    manifest_bytes, _ = read_regular_file(dataset / "manifest.json", 8*1024*1024)
-    manifest = json.loads(manifest_bytes)
-    if not isinstance(manifest, dict) or manifest.get("schema") != "companion-reviewed-training-v1" or not isinstance(manifest.get("sha256"), dict) or not isinstance(manifest.get("counts"), dict):
-        raise ValueError("Use a Companion reviewed training export")
-    for split in ("train", "valid"):
-        filename = split + ".jsonl"
-        content, _ = read_regular_file(dataset / filename, 64*1024*1024)
-        if hashlib.sha256(content).hexdigest() != manifest["sha256"].get(filename):
-            raise ValueError("Dataset hash no longer matches the reviewed export: " + filename)
-        rows = [json.loads(line) for line in content.decode("utf-8").splitlines() if line.strip()]
-        if not rows or len(rows) != manifest["counts"].get(split) or len(rows) < batch_size:
-            raise ValueError("Each reviewed split must contain at least one complete batch")
-        for row in rows:
-            messages = row.get("messages") if isinstance(row, dict) else None
-            if (not isinstance(messages, list) or len(messages) != 3 or
-                    [message.get("role") for message in messages if isinstance(message, dict)] != ["system", "user", "assistant"] or
-                    any(not isinstance(message.get("content"), str) or not message["content"].strip() for message in messages)):
-                raise ValueError("Training rows require complete system/user/reviewed-answer messages")
+    from companion.model.reviewed_data import load_dataset
+    manifest, _, _ = load_dataset(dataset, batch_size=batch_size)
     return model, dataset, output, manifest, model_config, {
         'config.json':hashlib.sha256(model_bytes).hexdigest(),
         'tokenizer_config.json':hashlib.sha256(tokenizer_bytes).hexdigest()}

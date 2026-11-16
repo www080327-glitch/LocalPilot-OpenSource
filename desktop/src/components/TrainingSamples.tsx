@@ -170,6 +170,7 @@ export function TrainingSamples() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [exported, setExported] = useState<Json | null>(null);
+  const [heldOut, setHeldOut] = useState(false);
 
   async function refresh() {
     const [recent, saved] = await Promise.all([
@@ -276,6 +277,15 @@ export function TrainingSamples() {
         导出按独立来源划分训练与验证数据。导出文件包含已审阅的私人文本；
         撤销来源或删除样本不会自动删除此前导出的独立文件。
       </p>
+      <label>
+        <input
+          type="checkbox"
+          checked={heldOut}
+          disabled={busy}
+          onChange={(event) => setHeldOut(event.target.checked)}
+        />
+        保留独立测试集（至少 3 组来源）
+      </label>
       <button
         className="secondary"
         disabled={!desktop || busy}
@@ -283,7 +293,9 @@ export function TrainingSamples() {
           void run(async () => {
             setExported(null);
             setExported(
-              await trainingCommand(companionRequest, "training_export"),
+              await trainingCommand(companionRequest, "training_export", {
+                test_fraction: heldOut ? 0.2 : 0,
+              }),
             );
             setNotice("已导出人工审阅样本；未启动模型训练。");
           })
@@ -292,7 +304,18 @@ export function TrainingSamples() {
         导出已审阅样本
       </button>
       {exported && (
-        <pre className="json">{JSON.stringify(exported, null, 2)}</pre>
+        <>
+          {exported.counts && (
+            <p role="status">
+              训练 {exported.counts.train ?? 0} 条 · 验证{" "}
+              {exported.counts.valid ?? 0} 条
+              {exported.counts.test !== undefined
+                ? ` · 独立测试 ${exported.counts.test} 条`
+                : " · 未保留独立测试集"}
+            </p>
+          )}
+          <pre className="json">{JSON.stringify(exported, null, 2)}</pre>
+        </>
       )}
       {busy && <p role="status">正在读取或保存样本…</p>}
       {notice && <p role="status">{notice}</p>}

@@ -11,6 +11,7 @@ import json
 import os
 from pathlib import Path
 import selectors
+import shutil
 import signal
 import socket
 import ssl
@@ -37,7 +38,7 @@ SHELL_MAX_TIMEOUT = 3600
 
 
 def shell(workspace_root, command, timeout=SHELL_DEFAULT_TIMEOUT, access='workspace', *, mode, private_roots=(), cancel_event=None):
-    if sys.platform!='darwin':raise ValueError('This host Shell requires macOS Seatbelt')
+    if sys.platform not in {'darwin', 'linux'}:raise ValueError('Host Shell requires macOS or Linux')
     if not isinstance(command,str) or not 1<=len(command)<=16000 or '\0' in command:raise ValueError('Invalid shell command')
     if isinstance(timeout,bool) or not isinstance(timeout,(float,int)) or not math.isfinite(timeout) or not 0<timeout<=SHELL_MAX_TIMEOUT:raise ValueError(f'Shell timeout must be positive and at most {SHELL_MAX_TIMEOUT} seconds')
     if access not in {'workspace','full'}:raise ValueError('Unknown Shell access scope')
@@ -46,7 +47,12 @@ def shell(workspace_root, command, timeout=SHELL_DEFAULT_TIMEOUT, access='worksp
     env={k:v for k,v in os.environ.items() if k in {'HOME','LANG','LOGNAME','SHELL','TMPDIR','USER','XPC_FLAGS','XPC_SERVICE_NAME','__CF_USER_TEXT_ENCODING'}}
     env['PATH']='/opt/homebrew/bin:/usr/local/bin:'+os.environ.get('PATH','/usr/bin:/bin:/usr/sbin:/sbin')
     launcher = ['/bin/bash','--noprofile','--norc','-c',command]
-    if effective != 'full': launcher = ['/usr/bin/sandbox-exec','-p',profile(Path(workspace_root).resolve(),effective,private_roots),*launcher]
+    if effective != 'full':
+        if sys.platform == 'darwin':
+            launcher = ['/usr/bin/sandbox-exec','-p',profile(Path(workspace_root).resolve(),effective,private_roots),*launcher]
+        else:
+            from .linux_sandbox import shell_launcher
+            launcher = shell_launcher(launcher, workspace_root, effective)
     p=subprocess.Popen(launcher,
         cwd=workspace_root,env=env,
         stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,stderr=subprocess.PIPE,start_new_session=True)
@@ -70,6 +76,16 @@ def shell(workspace_root, command, timeout=SHELL_DEFAULT_TIMEOUT, access='worksp
             'exit_code':p.returncode,**{k:v.decode(errors='replace') for k,v in output.items()},'truncated':truncated,
             'action_sent':True,'process_completed':not (timed_out or cancelled) and p.returncode>=0,'partial_effects_possible':not (timed_out or cancelled) and p.returncode>0,'action_may_have_applied':timed_out or cancelled or p.returncode<0,'replay_allowed':False,
             'verification':'NOT_RUN','network':'available','sandbox_mode':effective}
+
+
+def shell_capabilities():
+    """Report prerequisites separately from an actual scoped execution probe."""
+    backend = 'seatbelt' if sys.platform == 'darwin' else 'bubblewrap' if sys.platform == 'linux' else None
+    binary = '/usr/bin/sandbox-exec' if backend == 'seatbelt' else shutil.which('bwrap') if backend else None
+    return {'platform': sys.platform, 'full': backend is not None,
+            'scoped_backend': backend, 'scoped_launcher_available': bool(binary and Path(binary).is_file()),
+            'scoped_execution': 'NOT_PROBED', 'network': 'available',
+            'write_scope': 'workspace_and_os_temp_or_read_only'}
 
 
 def public_get(workspace_root, url):
@@ -98,6 +114,7 @@ def public_get(workspace_root, url):
 
 def register(registry, mode, private_roots):
     from .permissions import ToolRiskMetadata
+    # These descriptions are part of existing durable Session fingerprints.
     tools=[('shell',partial(shell,mode=mode,private_roots=private_roots),
             ToolRiskMetadata(mutating=True,requires_shell=True,external_side_effect=True),
             {'command':{'type':'string'},'timeout':{'type':'number','exclusiveMinimum':0,'maximum':SHELL_MAX_TIMEOUT,'default':SHELL_DEFAULT_TIMEOUT},'access':{'type':'string','enum':['workspace','full']}},['command'],

@@ -1,6 +1,6 @@
 {
   "name": "localpilot-desktop",
-  "version": "5.0.1-rc.7",
+  "version": "5.0.1-rc.8",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,6 +11,7 @@
     "test:ui": "playwright test",
     "format": "prettier --write src tests && cargo fmt --manifest-path src-tauri/Cargo.toml",
     "release:macos": "./scripts/build-macos.sh",
+    "release:linux": "./scripts/build-linux.sh",
     "check:docs": "python3 scripts/check-docs.py"
   },
   "dependencies": {

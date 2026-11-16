@@ -2,9 +2,11 @@
 from copy import deepcopy
 from dataclasses import asdict
 import json
+import sys
 import time
 from .async_runtime import external
 from .hybrid import HybridController, HybridPolicy
+from .host_tools import qualified_shell
 from .backends import BackendCapabilities, BackendResponse, Message
 from .context import context_units, ContextTooSmall
 from .context_budget import request_budget, context_tokens
@@ -215,6 +217,13 @@ class SessionModelCalls:
                         'remaining': self.budgets.max_token_units - self._token_units - self._reserved_child_budget('_token_units'),
                         'slots': recovery_slots if self.finalization_policy else 1,
                         'output_units': output_reserves if self.finalization_policy else self._request_output_tokens * 16}
+            if (sys.platform == 'linux' and qualified_shell(self.registry, 'shell')
+                    and any(schema['function']['name'] == 'shell' for schema in schemas or ())):
+                # Platform facts belong to the current request, not frozen checkpoint contracts.
+                state_view = {**(state_view or {}), 'host_shell': {
+                    'platform': 'linux', 'executable': '/bin/bash', 'scoped_backend': 'bubblewrap',
+                    'permission_mode': self.permission_mode,
+                    'contract': 'Persisted macOS labels are historical; this Shell executes on Linux. Full uses the current Linux user without an app sandbox. Confined modes require bubblewrap and restrict writes, not network. Current host permissions remain authoritative.'}}
             view, compacted = transfer(request_messages, schemas, window,
                 self._request_output_tokens + max(64, window // 50),
                 plan=self.active_plan, goals=self._goal_records(),

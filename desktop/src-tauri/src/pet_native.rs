@@ -61,9 +61,13 @@ pub struct PetState {
     pub dragging: AtomicBool,
     pub instance_lock: Mutex<Option<fs::File>>,
     pub generation: std::sync::atomic::AtomicU64,
+    #[cfg(target_os = "macos")]
     pub down_count: std::sync::atomic::AtomicU32,
+    #[cfg(target_os = "macos")]
     pub drag_event_count: std::sync::atomic::AtomicU32,
+    #[cfg(target_os = "macos")]
     pub up_count: std::sync::atomic::AtomicU32,
+    #[cfg(target_os = "macos")]
     pub drag_count: std::sync::atomic::AtomicU32,
     pub edge: Mutex<pet_edge::EdgeState>,
     pub submission_lock: tokio::sync::Mutex<()>,
@@ -251,6 +255,11 @@ pub async fn pet_runtime(
     let config = Path::new(&p.home).join("companion.json");
     let launch = data(&app)?.join("pet-runtime-v1.json");
     if action == "choose_python" {
+        if !cfg!(all(target_os = "macos", target_arch = "aarch64")) {
+            return Err(
+                "此入口仅配置 Apple Silicon MLX；请在主窗口模型库配置本机 OpenAI 兼容端点。".into(),
+            );
+        }
         let file = rfd::AsyncFileDialog::new()
             .set_title("选择已有的 Python 模型运行程序（不下载）")
             .pick_file()
@@ -277,8 +286,8 @@ pub async fn pet_runtime(
         return Ok(json!({"status":"ok","text":"模型运行程序已保存；重启轻聊服务后生效。"}));
     }
     if action == "choose_model" {
-        if !cfg!(target_arch = "aarch64") {
-            return Err("此模型文件夹入口需要 MLX。Intel Mac 请在主窗口模型库配置本机 OpenAI 兼容端点，并勾选同时用于 Companion。".into());
+        if !cfg!(all(target_os = "macos", target_arch = "aarch64")) {
+            return Err("此模型文件夹入口需要 Apple Silicon MLX。请在主窗口模型库配置本机 OpenAI 兼容端点，并勾选同时用于 Companion。".into());
         }
         let folder = rfd::AsyncFileDialog::new()
             .set_title("选择已有的轻量本地模型文件夹（不下载）")
@@ -316,48 +325,56 @@ pub async fn pet_runtime(
     {
         return Ok(json!({"status":"running"}));
     }
-    let resources = app
-        .path()
-        .resource_dir()
-        .map_err(|e| e.to_string())?
-        .join("bundled-backends/runtime");
-    let python = private_json(&launch)
-        .ok()
-        .and_then(|v| v["python"].as_str().map(PathBuf::from))
-        .unwrap_or_else(|| resources.join("bin/python3.14"));
-    let action = action.clone();
-    tauri::async_runtime::spawn_blocking(move || {
-        let mut cmd = std::process::Command::new(&python);
-        cmd.env_clear();
-        for key in ["HOME", "PATH", "TMPDIR", "LANG", "LC_CTYPE"] {
-            if let Ok(value) = std::env::var(key) {
-                cmd.env(key, value);
+    #[cfg(not(target_os = "macos"))]
+    {
+        let result = checked_cli(p, vec!["companion".into(), action]).await?;
+        return Ok(redacted(result));
+    }
+    #[cfg(target_os = "macos")]
+    {
+        let resources = app
+            .path()
+            .resource_dir()
+            .map_err(|e| e.to_string())?
+            .join("bundled-backends/runtime");
+        let python = private_json(&launch)
+            .ok()
+            .and_then(|v| v["python"].as_str().map(PathBuf::from))
+            .unwrap_or_else(|| resources.join("bin/python3.14"));
+        let action = action.clone();
+        tauri::async_runtime::spawn_blocking(move || {
+            let mut cmd = std::process::Command::new(&python);
+            cmd.env_clear();
+            for key in ["HOME", "PATH", "TMPDIR", "LANG", "LC_CTYPE"] {
+                if let Ok(value) = std::env::var(key) {
+                    cmd.env(key, value);
+                }
             }
-        }
-        // Only the reviewed packaged Companion is added. The selected Python's
-        // own MLX installation supplies optional inference dependencies.
-        cmd.env("PYTHONPATH", resources.join("lib/python3.14/site-packages"))
-            .env("PYTHONNOUSERSITE", "1")
-            .env("HF_HUB_OFFLINE", "1")
-            .env("TRANSFORMERS_OFFLINE", "1");
-        if python.starts_with(&resources) {
-            cmd.env("PYTHONHOME", &resources);
-        }
-        let out = cmd
-            .args(["-m", "companion", "--config"])
-            .arg(config)
-            .arg(action)
-            .output()
-            .map_err(|_| "无法启动已有的轻聊运行程序".to_string())?;
-        if !out.status.success() {
-            return Err("轻聊服务未启动；请检查模型运行程序与独立配置。".into());
-        }
-        let result: Value =
-            serde_json::from_slice(&out.stdout).map_err(|_| "轻聊服务返回格式无效")?;
-        Ok(redacted(result))
-    })
-    .await
-    .map_err(|e| e.to_string())?
+            // Only the reviewed packaged Companion is added. The selected Python's
+            // own MLX installation supplies optional inference dependencies.
+            cmd.env("PYTHONPATH", resources.join("lib/python3.14/site-packages"))
+                .env("PYTHONNOUSERSITE", "1")
+                .env("HF_HUB_OFFLINE", "1")
+                .env("TRANSFORMERS_OFFLINE", "1");
+            if python.starts_with(&resources) {
+                cmd.env("PYTHONHOME", &resources);
+            }
+            let out = cmd
+                .args(["-m", "companion", "--config"])
+                .arg(config)
+                .arg(action)
+                .output()
+                .map_err(|_| "无法启动已有的轻聊运行程序".to_string())?;
+            if !out.status.success() {
+                return Err("轻聊服务未启动；请检查模型运行程序与独立配置。".into());
+            }
+            let result: Value =
+                serde_json::from_slice(&out.stdout).map_err(|_| "轻聊服务返回格式无效")?;
+            Ok(redacted(result))
+        })
+        .await
+        .map_err(|e| e.to_string())?
+    }
 }
 fn settings(app: &tauri::AppHandle) -> PetSettings {
     app.state::<PetState>().settings.lock().unwrap().clone()
@@ -551,6 +568,7 @@ pub fn create(app: &tauri::AppHandle) -> Result<(), String> {
     .build()
     .map_err(|e| e.to_string())?;
     super::pet_macos::transparent(&pet)?;
+    #[cfg(target_os = "macos")]
     pet.set_ignore_cursor_events(true)
         .map_err(|e| e.to_string())?;
     super::pet_macos::install(app);
@@ -571,34 +589,42 @@ pub fn create(app: &tauri::AppHandle) -> Result<(), String> {
     .resizable(false)
     .build()
     .map_err(|e| e.to_string())?;
-    let workspace = objc2_app_kit::NSWorkspace::sharedWorkspace();
-    let reduce = workspace.accessibilityDisplayShouldReduceTransparency();
-    let material = if reduce {
-        "solid"
-    } else {
-        let options = window_vibrancy::LiquidGlassOptions::new(
-            window_vibrancy::NSGlassEffectViewStyle::Clear,
-        )
-        .opaque(false)
-        .radius(26.0)
-        .interactive(false);
-        match window_vibrancy::apply_liquid_glass(&bubble, options) {
-            Ok(()) => "liquid_glass",
-            Err(_) => {
-                window_vibrancy::apply_vibrancy(
-                    &bubble,
-                    window_vibrancy::NSVisualEffectMaterial::Popover,
-                    None,
-                    Some(26.0),
-                )
-                .map_err(|e| e.to_string())?;
-                "native_vibrancy"
+    #[cfg(target_os = "macos")]
+    let material = {
+        let workspace = objc2_app_kit::NSWorkspace::sharedWorkspace();
+        let reduce = workspace.accessibilityDisplayShouldReduceTransparency();
+        if reduce {
+            "solid"
+        } else {
+            let options = window_vibrancy::LiquidGlassOptions::new(
+                window_vibrancy::NSGlassEffectViewStyle::Clear,
+            )
+            .opaque(false)
+            .radius(26.0)
+            .interactive(false);
+            match window_vibrancy::apply_liquid_glass(&bubble, options) {
+                Ok(()) => "liquid_glass",
+                Err(_) => {
+                    window_vibrancy::apply_vibrancy(
+                        &bubble,
+                        window_vibrancy::NSVisualEffectMaterial::Popover,
+                        None,
+                        Some(26.0),
+                    )
+                    .map_err(|e| e.to_string())?;
+                    "native_vibrancy"
+                }
             }
         }
     };
+    #[cfg(not(target_os = "macos"))]
+    let material = {
+        let _ = bubble;
+        "solid"
+    };
     save(
         &data(app)?.join("pet-material.json"),
-        &json!({"material":material,"reduce_motion":workspace.accessibilityDisplayShouldReduceMotion()}),
+        &json!({"material":material,"reduce_motion":platform::reduce_motion()}),
     )?;
     let _ = super::pet_macos::thought_glass(app);
     let _ = app.emit("pet-material", json!({"material":material}));
@@ -671,6 +697,7 @@ pub fn create(app: &tauri::AppHandle) -> Result<(), String> {
                 {
                     return;
                 }
+                #[cfg(target_os = "macos")]
                 if let (Ok(cursor), Ok(origin), Ok(size)) = (
                     window.cursor_position(),
                     window.outer_position(),
@@ -733,7 +760,7 @@ pub async fn pet_action(
             rx.await.map_err(|e| e.to_string())?
         }
         "state" => Ok(
-            json!({"settings":settings(&app),"material":private_json(&data(&app)?.join("pet-material.json")).ok(),"expanded":app.state::<PetState>().expanded.load(Ordering::Relaxed),"edge":pet_edge::snapshot(&app)}),
+            json!({"settings":settings(&app),"material":private_json(&data(&app)?.join("pet-material.json")).ok(),"native_pointer":cfg!(target_os = "macos"),"mlx_supported":cfg!(all(target_os = "macos", target_arch = "aarch64")),"expanded":app.state::<PetState>().expanded.load(Ordering::Relaxed),"edge":pet_edge::snapshot(&app)}),
         ),
         "toggle" => {
             let v = !app.state::<PetState>().expanded.load(Ordering::Relaxed);

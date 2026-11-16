@@ -1,9 +1,10 @@
-from dataclasses import dataclass, fields
+from dataclasses import dataclass, field, fields
 from pathlib import Path
 import json
 import os
 import re
 import secrets
+import sys
 
 
 def path(value):
@@ -13,9 +14,17 @@ def path(value):
 SENSITIVE = {".ssh", ".gnupg", ".aws", ".azure", ".config", ".git", ".venv", "node_modules", "Keychains", "Cookies", "Login Data"}
 
 
+def default_data_dir():
+    if sys.platform.startswith('linux'):
+        configured = os.environ.get('XDG_DATA_HOME', '')
+        root = Path(configured) if configured and Path(configured).is_absolute() else Path.home() / '.local' / 'share'
+        return str(root / 'LocalPilotCompanion')
+    return '~/Library/Application Support/LocalPilotCompanion'
+
+
 @dataclass
 class Config:
-    data_dir: str = "~/Library/Application Support/LocalPilotCompanion"
+    data_dir: str = field(default_factory=default_data_dir)
     watch_dirs: tuple = ()
     exclude_dirs: tuple = ()
     mode: str = "eco"
@@ -83,6 +92,11 @@ class Config:
     native_ax_max_depth: int = 5
     # Explicit validation-only owned process; absent preserves foreground scope.
     native_controlled_target: dict = None
+    meeting_microphone_source: str = ''
+    meeting_system_source: str = ''
+    meeting_whisper_command: str = ''
+    meeting_whisper_model: str = ''
+    meeting_whisper_model_sha256: str = ''
     observation_ttl_days: float = 30
     observation_raw_ttl_days: float = 7
     observation_record_limit: int = 10000
@@ -124,6 +138,17 @@ class Config:
         if unknown:
             raise ValueError(f"Unknown config keys: {sorted(unknown)}")
         c = cls(**raw)
+        for key in ('meeting_microphone_source', 'meeting_system_source'):
+            value = getattr(c, key)
+            if not isinstance(value, str) or value and not re.fullmatch(r'[A-Za-z0-9_.:-]{1,240}', value):
+                raise ValueError('Meeting audio sources require explicit PulseAudio device names')
+        for key in ('meeting_whisper_command', 'meeting_whisper_model'):
+            value = getattr(c, key)
+            if not isinstance(value, str) or value and (not Path(value).is_absolute() or any(ord(char) < 32 for char in value)):
+                raise ValueError('Linux transcription requires absolute executable/model paths')
+        if (not isinstance(c.meeting_whisper_model_sha256, str)
+                or c.meeting_whisper_model_sha256 and not re.fullmatch(r'[0-9a-f]{64}', c.meeting_whisper_model_sha256)):
+            raise ValueError('Meeting model identity requires a lowercase SHA-256')
         from companion.runtime.power import LowPowerPolicy
         LowPowerPolicy(c)
         if type(c.allow_local_on_battery) is not bool or type(c.allow_automatic_cloud) is not bool:

@@ -116,22 +116,30 @@ class TrainingExamples:
                 removed += self.delete(row["id"])["removed"]
         return removed
 
-    def export(self, seed=17, validation_fraction=.2):
+    def export(self, seed=17, validation_fraction=.2, test_fraction=0):
         if type(seed) is not int or not 0 <= seed < 2**32 or type(validation_fraction) not in (int, float) or not math.isfinite(validation_fraction) or not 0 < validation_fraction < .5:
             raise ValueError("Use a nonnegative 32-bit seed and a validation fraction between 0 and 0.5")
+        if type(test_fraction) not in (int, float) or not math.isfinite(test_fraction) or not 0 <= test_fraction < .5 or test_fraction + validation_fraction >= 1:
+            raise ValueError("Use a test fraction between 0 and 0.5, leaving training examples")
         examples = self.list()["examples"]
         if not examples or any(not row["available"] for row in examples):
             raise ValueError("Export requires reviewed examples whose referenced observations are currently readable")
         prepared = [self._prepare(row) for row in examples]
         groups = _source_groups(prepared)
-        if len(groups) < 2:
-            raise ValueError("At least two independent source/scenario groups are needed for train/validation separation")
+        minimum_groups = 3 if test_fraction else 2
+        if len(groups) < minimum_groups:
+            raise ValueError(f"At least {minimum_groups} independent source/scenario groups are needed for the requested splits")
         random.Random(seed).shuffle(groups)
-        valid_ids = {sample_id for group in groups[:max(1, round(len(groups)*validation_fraction))] for sample_id in group}
+        valid_count = min(max(1, round(len(groups)*validation_fraction)), len(groups) - minimum_groups + 1)
+        test_count = min(max(1, round(len(groups)*test_fraction)), len(groups) - valid_count - 1) if test_fraction else 0
+        valid_ids = {sample_id for group in groups[:valid_count] for sample_id in group}
+        test_ids = {sample_id for group in groups[valid_count:valid_count+test_count] for sample_id in group}
         splits = {"train":[], "valid":[]}
+        if test_fraction:
+            splits['test'] = []
         provenance = []
         for row in prepared:
-            split = "valid" if row["id"] in valid_ids else "train"
+            split = "test" if row['id'] in test_ids else "valid" if row["id"] in valid_ids else "train"
             splits[split].append(row["sample"])
             provenance.append({"id":row["id"], "split":split, "purpose":row["purpose"],
                                "groups":sorted(row["groups"]), "observations":row["sources"]})
@@ -144,10 +152,12 @@ class TrainingExamples:
             output.write(split + ".jsonl", content)
             hashes[split + ".jsonl"] = hashlib.sha256(content.encode()).hexdigest()
         manifest = {"schema":"companion-reviewed-training-v1", "id":export_id, "created_at":time.time(),
-                    "seed":seed, "validation_fraction":validation_fraction, "source_group_count":len(groups),
+                    "seed":seed, "validation_fraction":validation_fraction, "test_fraction":test_fraction,
+                    "source_group_count":len(groups),
                     "counts":{key:len(rows) for key, rows in splits.items()}, "sha256":hashes,
                     "samples":provenance, "label_origin":"explicit_user_review", "training":"NOT_RUN",
                     "quality":"NOT_EVALUATED", "contains_private_text":True,
+                    "evaluation_scope":"held_out_source_groups" if test_fraction else "no_held_out_test_set",
                     "revocation_policy":"Independent exported files must be deleted separately; future exports recheck current source access.",
                     "format":"mlx-lm chat messages; only the reviewed final answer is a training target"}
         output.write("manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")

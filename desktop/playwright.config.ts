@@ -5,11 +5,22 @@ export default defineConfig({
   use: {
     baseURL: "http://127.0.0.1:1420",
     viewport: { width: 1440, height: 940 },
+    launchOptions: process.env.LP_UI_CHROMIUM_EXECUTABLE
+      ? { executablePath: process.env.LP_UI_CHROMIUM_EXECUTABLE }
+      : undefined,
   },
   webServer: {
     command: "npm run dev",
     url: "http://127.0.0.1:1420",
     reuseExistingServer: true,
   },
-  reporter: [["list"], ["json", { outputFile: `${process.env.LP_UI_EVIDENCE_DIR || "docs/evidence/runs/" + Date.now()}/browser-tests.json` }]],
+  reporter: [
+    ["list"],
+    [
+      "json",
+      {
+        outputFile: `${process.env.LP_UI_EVIDENCE_DIR || "docs/evidence/runs/" + Date.now()}/browser-tests.json`,
+      },
+    ],
+  ],
 });

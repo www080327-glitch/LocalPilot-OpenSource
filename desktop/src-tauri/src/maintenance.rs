@@ -15,7 +15,8 @@ use std::{
 use tauri::State;
 
 const REPO: &str = "https://github.com/www080327-glitch/LocalPilot-OpenSource";
-const RELEASES: &str = "https://api.github.com/repos/www080327-glitch/LocalPilot-OpenSource/releases";
+const RELEASES: &str =
+    "https://api.github.com/repos/www080327-glitch/LocalPilot-OpenSource/releases";
 const MAX_BODY: usize = 4 * 1024 * 1024;
 #[derive(Default)]
 pub struct Maintenance {
@@ -70,6 +71,7 @@ fn gh() -> Result<PathBuf, String> {
     for p in [
         PathBuf::from("/opt/homebrew/bin/gh"),
         PathBuf::from("/usr/local/bin/gh"),
+        PathBuf::from("/usr/bin/gh"),
         home()?.join("homebrew/bin/gh"),
         home()?.join(".local/bin/gh"),
     ] {
@@ -95,14 +97,28 @@ fn release_url(s: &str) -> bool {
         && u.query().is_none()
         && u.fragment().is_none()
         && (u.path() == "/www080327-glitch/LocalPilot-OpenSource/releases"
-            || u.path().starts_with("/www080327-glitch/LocalPilot-OpenSource/releases/"))
+            || u.path()
+                .starts_with("/www080327-glitch/LocalPilot-OpenSource/releases/"))
         && !u.path().contains("..")
 }
 fn select_release(rows: &Value, current: &str) -> Result<Value, String> {
-    let arch = if cfg!(target_arch = "aarch64") { "arm64" } else { "x86_64" };
-    select_release_for_arch(rows, current, arch)
+    let arch = if cfg!(target_arch = "aarch64") {
+        "arm64"
+    } else {
+        "x86_64"
+    };
+    select_release_for_platform(rows, current, std::env::consts::OS, arch)
 }
+#[cfg(test)]
 fn select_release_for_arch(rows: &Value, current: &str, arch: &str) -> Result<Value, String> {
+    select_release_for_platform(rows, current, "macos", arch)
+}
+fn select_release_for_platform(
+    rows: &Value,
+    current: &str,
+    system: &str,
+    arch: &str,
+) -> Result<Value, String> {
     let list = rows.as_array().ok_or("GitHub Release JSON 格式错误")?;
     let mut candidates = list
         .iter()
@@ -129,10 +145,14 @@ fn select_release_for_arch(rows: &Value, current: &str, arch: &str) -> Result<Va
         .iter()
         .filter_map(|a| {
             let name = a["name"].as_str()?;
-            let allowed = [
-                format!("LocalPilot-{version}-{arch}.dmg"),
-                format!("LocalPilot-{version}-{arch}.app.zip"),
-            ];
+            let allowed = if system == "linux" {
+                vec![format!("LocalPilot-{version}-linux-{arch}.deb")]
+            } else {
+                vec![
+                    format!("LocalPilot-{version}-{arch}.dmg"),
+                    format!("LocalPilot-{version}-{arch}.app.zip"),
+                ]
+            };
             if !allowed.iter().any(|n| n == name) {
                 return None;
             }
@@ -150,7 +170,7 @@ fn select_release_for_arch(rows: &Value, current: &str, arch: &str) -> Result<Va
         })
         .collect::<Vec<_>>();
     if assets.is_empty() {
-        return Err(format!("Release 无有效 macOS {arch} GUI 制品"));
+        return Err(format!("Release 无有效 {system} {arch} GUI 制品"));
     }
     let current = Version::parse(current).map_err(|_| "当前 GUI 版本无效")?;
     Ok(
@@ -175,7 +195,10 @@ async fn public_releases() -> Result<Value, String> {
             .map_err(|_| "GitHub 网络连接失败；状态 UNKNOWN，请检查网络后重试")?;
         let status = res.status();
         if !status.is_success() {
-            return Err(format!("GitHub HTTP {}；无法确认最新版本。404 可能是公开 Release 不可用；请核对仓库页面。",status.as_u16()));
+            return Err(format!(
+                "GitHub HTTP {}；无法确认最新版本。404 可能是公开 Release 不可用；请核对仓库页面。",
+                status.as_u16()
+            ));
         }
         let mut stream = res.bytes_stream();
         let mut bytes = Vec::new();
@@ -369,6 +392,12 @@ fn signature(path: &Path) -> Value {
 }
 fn scan_roots() -> Result<Vec<PathBuf>, String> {
     let h = home()?;
+    if cfg!(target_os = "linux") {
+        return Ok(vec![
+            h.join("Downloads"),
+            h.join(".local/share/localpilot-desktop-builds"),
+        ]);
+    }
     let mut roots = vec![
         PathBuf::from("/Applications"),
         h.join("Applications"),
@@ -376,11 +405,12 @@ fn scan_roots() -> Result<Vec<PathBuf>, String> {
         h.join(".local/share/localpilot-desktop-builds"),
     ];
     let base = h.join("Desktop/aic竞赛");
-    let mut repos = vec![base.join("LocalPilot-GUI")];
+    let repos = vec![base.join("LocalPilot-GUI")];
     // Source-tree discovery belongs to development builds. Embedding the
     // manifest directory in a release leaks the maintainer's absolute path.
     #[cfg(debug_assertions)]
-    {
+    let repos = {
+        let mut repos = repos;
         let compile_root = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .parent()
             .unwrap()
@@ -388,7 +418,8 @@ fn scan_roots() -> Result<Vec<PathBuf>, String> {
         if compile_root.join("package.json").is_file() {
             repos.push(compile_root)
         }
-    }
+        repos
+    };
     for repo in repos {
         roots.push(repo.join("release"));
         for mode in ["debug", "release"] {
@@ -449,8 +480,10 @@ fn visit(
     }
     if m.is_file() {
         let name = path.file_name().unwrap_or_default().to_string_lossy();
-        if name.starts_with("LocalPilot") && (name.ends_with(".dmg") || name.ends_with(".zip")) {
-            items.push(json!({"path":path,"kind":if name.contains("source"){"SOURCE_ARCHIVE"}else if name.ends_with(".dmg"){"DMG"}else{"APP_ZIP"},"bytes":m.len(),"allocated_bytes":m.blocks()*512,"sha256":hash_file(path).ok(),"protected":true,"reason":"待与真实 Release 哈希核对；源码包始终保留"}));
+        if name.starts_with("LocalPilot")
+            && (name.ends_with(".dmg") || name.ends_with(".zip") || name.ends_with(".deb"))
+        {
+            items.push(json!({"path":path,"kind":if name.contains("source"){"SOURCE_ARCHIVE"}else if name.ends_with(".dmg"){"DMG"}else if name.ends_with(".deb"){"DEB"}else{"APP_ZIP"},"bytes":m.len(),"allocated_bytes":m.blocks()*512,"sha256":hash_file(path).ok(),"protected":true,"reason":"待与真实 Release 哈希核对；源码包始终保留"}));
         }
         return;
     }
@@ -576,7 +609,7 @@ pub async fn desktop_storage_scan(n: State<'_, Maintenance>) -> Result<Value, St
 }
 #[tauri::command]
 pub fn desktop_installation(n: State<Maintenance>) -> Value {
-    json!({"last_check":n.latest.lock().unwrap().clone(),"version":env!("CARGO_PKG_VERSION"),"executable":std::env::current_exe().ok(),"release_page":format!("{REPO}/releases"),"build":"本地维护候选，尚未发布"})
+    json!({"last_check":n.latest.lock().unwrap().clone(),"version":env!("CARGO_PKG_VERSION"),"platform":std::env::consts::OS,"architecture":std::env::consts::ARCH,"desktop_upgrade":if cfg!(target_os="macos"){"app_transaction"}else{"system_package_manager"},"executable":std::env::current_exe().ok(),"release_page":format!("{REPO}/releases"),"build":"本地维护候选，尚未发布"})
 }
 #[tauri::command]
 pub async fn desktop_open_release(
@@ -600,8 +633,7 @@ pub async fn desktop_open_release(
         return Err("拒绝未授权的 Release 地址".into());
     }
     tauri::async_runtime::spawn_blocking(move || {
-        let mut c = Command::new("/usr/bin/open");
-        c.arg(url);
+        let c = super::platform::open_command(url);
         run(c, 5, 1024).map(|_| ())
     })
     .await
@@ -619,8 +651,15 @@ pub async fn desktop_verify_archive(n: State<'_, Maintenance>) -> Result<Value, 
         return Err("请先在一小时内成功检查真实 Release".into());
     }
     let file = rfd::AsyncFileDialog::new()
-        .set_title("选择从本次 GitHub Release 下载的 DMG 或 APP ZIP（只读校验）")
-        .add_filter("Desktop 安装包", &["dmg", "zip"])
+        .set_title("选择从本次 GitHub Release 下载的安装包（只读校验）")
+        .add_filter(
+            "Desktop 安装包",
+            if cfg!(target_os = "linux") {
+                &["deb"]
+            } else {
+                &["dmg", "zip"]
+            },
+        )
         .pick_file()
         .await
         .ok_or("已取消校验")?;
@@ -663,7 +702,7 @@ fn verify_archive(path: &Path, latest: &Value) -> Result<Value, String> {
     Ok(
         json!({"status":"SHA256_VERIFIED", "path":path, "sha256":actual, "bytes":m.len(),
         "source":asset["url"], "checked_at":stamp(), "signature":"ARCHIVE_ONLY_NOT_APP_SIGNATURE_VERIFIED",
-        "guidance":"仅验证来自本次 Release 的安装包字节。解包后仍需 codesign --verify --deep --strict；ad-hoc 签名不证明开发者身份。请先退出 GUI，保留旧 APP 用于回滚，再在 Finder 人工安装；不要删除或替换后端和用户数据。"}),
+        "guidance":if cfg!(target_os="linux") { "仅验证来自本次 Release 的安装包字节。退出 GUI 后使用系统包管理器安装对应发行版的 DEB；保留前一个 DEB 用于显式降级。用户数据与模型不随安装包删除。" } else { "仅验证来自本次 Release 的安装包字节。解包后仍需 codesign --verify --deep --strict；ad-hoc 签名不证明开发者身份。请先退出 GUI，保留旧 APP 用于回滚，再在 Finder 人工安装；不要删除或替换后端和用户数据。" }}),
     )
 }
 
@@ -681,12 +720,34 @@ mod tests {
     fn release_selection_requires_the_running_architecture() {
         let mut intel = row("desktop-v5.0.0");
         intel["assets"][0]["name"] = json!("LocalPilot-5.0.0-x86_64.dmg");
-        intel["assets"][0]["browser_download_url"] = json!(format!("{REPO}/releases/download/desktop-v5.0.0/LocalPilot-5.0.0-x86_64.dmg"));
+        intel["assets"][0]["browser_download_url"] = json!(format!(
+            "{REPO}/releases/download/desktop-v5.0.0/LocalPilot-5.0.0-x86_64.dmg"
+        ));
         let rows = json!([intel]);
         let selected = select_release_for_arch(&rows, "5.0.0", "x86_64").unwrap();
         assert_eq!(selected["assets"][0]["name"], "LocalPilot-5.0.0-x86_64.dmg");
         assert!(select_release_for_arch(&rows, "5.0.0", "arm64").is_err());
-        assert!(select_release_for_arch(&json!([row("desktop-v5.0.0")]), "5.0.0", "x86_64").is_err());
+        assert!(
+            select_release_for_arch(&json!([row("desktop-v5.0.0")]), "5.0.0", "x86_64").is_err()
+        );
+    }
+    #[test]
+    fn linux_release_selection_does_not_offer_a_macos_bundle() {
+        let mut release = row("desktop-v5.0.0");
+        let mut deb = release["assets"][0].clone();
+        deb["name"] = json!("LocalPilot-5.0.0-linux-x86_64.deb");
+        deb["browser_download_url"] = json!(format!(
+            "{REPO}/releases/download/desktop-v5.0.0/LocalPilot-5.0.0-linux-x86_64.deb"
+        ));
+        release["assets"].as_array_mut().unwrap().push(deb);
+        let rows = json!([release]);
+        let chosen = select_release_for_platform(&rows, "5.0.0", "linux", "x86_64").unwrap();
+        assert_eq!(chosen["assets"].as_array().unwrap().len(), 1);
+        assert_eq!(
+            chosen["assets"][0]["name"],
+            "LocalPilot-5.0.0-linux-x86_64.deb"
+        );
+        assert!(select_release_for_platform(&rows, "5.0.0", "linux", "arm64").is_err());
     }
     #[test]
     fn release_selection_ignores_other_modules_and_orders_semver() {
@@ -756,7 +817,10 @@ mod tests {
             serde_json::to_vec(&info).unwrap(),
         )
         .unwrap();
-        std::os::unix::fs::symlink("/Applications", root.join("external")).unwrap();
+        let external = root.with_extension("external");
+        fs::create_dir(&external).unwrap();
+        fs::write(external.join("LocalPilot-outside.deb"), b"outside scan").unwrap();
+        std::os::unix::fs::symlink(&external, root.join("external")).unwrap();
         std::os::unix::fs::symlink(root.join("Other.app"), root.join("LocalPilotImpostor.app"))
             .unwrap();
         let mut items = vec![];
@@ -778,6 +842,7 @@ mod tests {
         fs::remove_dir(root.join("Other.app/Contents")).unwrap();
         fs::remove_dir(root.join("Other.app")).unwrap();
         fs::remove_dir(root).unwrap();
+        fs::remove_dir_all(external).unwrap();
     }
     #[test]
     fn archive_verification_rejects_wrong_hash_size_source_and_symlink() {

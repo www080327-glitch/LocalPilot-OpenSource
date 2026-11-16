@@ -150,7 +150,7 @@ class ObservationPrivacy:
         if not isinstance(obj, dict):
             return None
         bundle = obj.get("bundle_id", "")
-        if raw.get("source") not in {"nsworkspace", "accessibility", "session"}:
+        if raw.get("source") not in {"nsworkspace", "accessibility", "linux_desktop", "linux_accessibility", "session"}:
             return None
         from companion.observers.native import native_options, app_scope_allowed, content_scope_allowed
         options = native_options(self.config)
@@ -186,7 +186,7 @@ class ObservationPrivacy:
             if exact_titles and title is None:
                 return None
         metadata_keys = {"role", "nodes", "node_count", "coverage", "state", "notification", "reason", "truncated",
-                         "ax_permission", "lock_state", "session_state", "screen_state", "sleep_state", "read_errors", "unsupported_notifications", "ax_error",
+                         "ax_permission", "lock_state", "idle_state", "session_state", "screen_state", "sleep_state", "read_errors", "unsupported_notifications", "ax_error",
                          "read_status", "complete", "structural_complete", "attributes_complete", "content_truncated", "read_error_count", "pruned_count", "shared_core_version", "window_coverage", "read_scope", "capture_scope", "target_descriptor_sha256", "profile_pruned_count", "window_references"}
         proof = {k:v for k,v in proof.items() if k in metadata_keys | {"window_title"}}
         obj = {k:v for k,v in obj.items() if k in {"bundle_id", "pid", "app", "window_id"}}
@@ -224,7 +224,7 @@ class ObservationPrivacy:
                 nodes.append(clean)
                 accepted_ids.add(node_id)
             proof["nodes"] = nodes
-        if raw.get("source") == "accessibility" and not self.config.native_ax_enabled:
+        if raw.get("source") in {"accessibility", "linux_accessibility"} and not self.config.native_ax_enabled:
             return None
         if raw.get("kind") == "ax.snapshot":
             states = {"READ_SUCCESS_EMPTY", "READ_SUCCESS_NONEMPTY", "READ_FAILED", "READ_PARTIAL", "UNKNOWN"}

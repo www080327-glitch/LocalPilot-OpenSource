@@ -11,12 +11,36 @@ export function MeetingCapture({
   const [capture, setCapture] = useState("microphone");
   const [locale, setLocale] = useState("zh-CN");
   const [label, setLabel] = useState("");
+  const linux =
+    controller.result?.capabilities?.backend === "ffmpeg_pulse_whisper_cpp";
+  const capabilities = controller.result?.capabilities;
   return (
     <section>
       <h4>本机会话与会议转写</h4>
       <p className="muted">
-        点击开始后采集所选音轨并在本机转写。系统音轨由系统屏幕与音频捕捉权限控制，不保存视频；缺少本机语音识别能力时显示不可用。模型和音轨的真实可用性以当前状态为准。
+        点击开始后采集所选音轨并在本机转写，不保存音视频。
+        {linux
+          ? "Linux 使用已选择的麦克风或系统音频来源；需运行当前用户的音频服务并配置本地转写模型。"
+          : "系统音轨由系统屏幕与音频捕捉权限控制；缺少本机语音识别能力时显示不可用。"}
+        模型和音轨的真实可用性以当前状态为准。
       </p>
+      {linux && (
+        <p className="micro muted" role="status">
+          音频服务：{capabilities.pulse_socket_available ? "已发现" : "未发现"}{" "}
+          · 本地转写工具：
+          {capabilities.ffmpeg_available && capabilities.whisper_available
+            ? "已配置"
+            : "待安装或配置"}{" "}
+          · 模型文件与校验：
+          {capabilities.model_available && capabilities.model_hash_configured
+            ? "已配置，启动时核验"
+            : "待配置"}{" "}
+          · 麦克风来源：
+          {capabilities.microphone_configured ? "已选择" : "未选择"} ·
+          系统音频来源：
+          {capabilities.system_source_configured ? "已选择" : "未选择"}
+        </p>
+      )}
       <label>
         采集音轨
         <select

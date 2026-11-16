@@ -103,7 +103,7 @@ def main():
     parser.add_argument("--config", required=True)
     parser.add_argument("--json", action="store_true")
     sub = parser.add_subparsers(dest="action", required=True)
-    for name in ("run", "start", "stop", "status", "popup", "ui", "ui-build", "ui-snapshot", "recent-memories", "reminders", "notices", "index", "retention", "privacy", "native-build", "escalation-status", "source-list", "source-coverage", "training-examples", "meeting-status", "meeting-stop", "meeting-build"):
+    for name in ("run", "start", "stop", "status", "popup", "ui", "ui-build", "ui-snapshot", "recent-memories", "reminders", "notices", "index", "retention", "privacy", "native-build", "escalation-status", "source-list", "source-coverage", "training-examples", "meeting-status", "meeting-stop", "meeting-build", "meeting-devices"):
         action = sub.add_parser(name)
         if name == "ui":
             action.add_argument("--show", action="store_true")
@@ -134,6 +134,8 @@ def main():
     training_export = sub.add_parser("training-export")
     training_export.add_argument("--seed", type=int, default=17)
     training_export.add_argument("--validation-fraction", type=float, default=.2)
+    training_export.add_argument("--test-fraction", type=float, default=0,
+                                 help="Reserve independent source groups for final evaluation; requires at least three groups")
     meeting = sub.add_parser("meeting-start")
     meeting.add_argument("--capture", required=True, choices=["microphone", "system", "both"])
     meeting.add_argument("--locale", default="zh-CN")
@@ -185,6 +187,10 @@ def main():
     launch = sub.add_parser("launchd")
     launch.add_argument("operation", choices=["render", "install", "uninstall", "status"])
     launch.add_argument("--confirm", action="store_true")
+    systemd = sub.add_parser('systemd', help='Explicit Linux user service registration')
+    systemd.add_argument('operation', choices=['render', 'install', 'uninstall', 'status'])
+    systemd.add_argument('--confirm', action='store_true')
+    systemd.add_argument('--environment-file', help='Private systemd EnvironmentFile for Core/provider credentials')
     smoke = sub.add_parser("model-smoke")
     smoke.add_argument("--prompt", default="用一句中文向用户问早上好。")
     args = parser.parse_args()
@@ -209,9 +215,18 @@ def main():
         elif args.action == "meeting-build":
             from companion.observers.meeting import build_meeting_helper
             result = {"status":"ok", "helper":build_meeting_helper(PrivateData(config.data_dir).root / "MeetingTranscriber.app")}
+        elif args.action == 'meeting-devices':
+            if sys.platform.startswith('linux'):
+                from companion.observers.linux_meeting import devices
+                result = devices()
+            else:
+                result = {'status':'unavailable', 'reason':'Linux PulseAudio source listing requires Linux'}
         elif args.action == "launchd":
             from companion.runtime.launchd import manage
             result = manage(args.operation, args.config, PrivateData(config.data_dir), args.confirm)
+        elif args.action == 'systemd':
+            from companion.runtime.systemd import manage
+            result = manage(args.operation, args.config, PrivateData(config.data_dir), args.confirm, args.environment_file)
         elif args.action == "model-smoke":
             from companion.model import ModelManager
             from companion.runtime.service import SYSTEM
@@ -245,7 +260,7 @@ def main():
                 elif args.action == 'training-candidates':
                     command['limit'] = args.limit
                 elif args.action == "training-export":
-                    command.update(seed=args.seed, validation_fraction=args.validation_fraction)
+                    command.update(seed=args.seed, validation_fraction=args.validation_fraction, test_fraction=args.test_fraction)
             elif args.action.startswith("meeting-"):
                 command = {"command":args.action.replace("-", "_")}
                 if args.action == "meeting-start":

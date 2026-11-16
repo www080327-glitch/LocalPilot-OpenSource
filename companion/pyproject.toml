@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "localpilot-companion"
-version = "0.5.7b4"
+version = "0.5.7b5"
 description = "Independent read-only local AI companion"
 requires-python = ">=3.11"
 license = "Apache-2.0"
@@ -13,6 +13,7 @@ dependencies = ["watchdog>=6,<7", "pypdf>=6,<7", "psutil>=7,<8"]
 
 [project.optional-dependencies]
 mlx = ["mlx-lm>=0.31.3,<0.32"]
+training = ["torch==2.9.1; sys_platform == 'linux'", "transformers==4.57.3", "peft==0.18.1", "safetensors==0.7.0"]
 validation = ["reportlab>=4,<5", "python-docx>=1.2,<2", "python-pptx>=1,<2", "openpyxl>=3.1,<4"]
 
 [project.scripts]

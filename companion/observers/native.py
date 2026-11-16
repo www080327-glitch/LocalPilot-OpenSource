@@ -32,12 +32,14 @@ SECRET = re.compile(
     r"-----BEGIN[^\n]*PRIVATE KEY|密码|口令|密钥|令牌", re.I)
 INPUT_ROLES = {"AXTextField", "AXTextArea", "AXComboBox", "AXSearchField", "AXSecureTextField"}
 BLOCKED_APPS = {"com.apple.keychainaccess", "com.agilebits.onepassword-osx",
-                "com.1password.1password", "com.bitwarden.desktop", "io.localpilot.companion.ui"}
+                "com.1password.1password", "com.bitwarden.desktop", "io.localpilot.companion.ui",
+                "linux.1password", "linux.bitwarden", "linux.Bitwarden", "linux.keepassxc", "linux.keepassx",
+                "linux.seahorse", "linux.localpilot-desktop"}
 APP_KINDS = {"app.launched", "app.terminated", "app.activated", "app.deactivated",
              "app.hidden", "app.unhidden", "ax.snapshot"}
 SYSTEM_KINDS = {"system.will_sleep", "system.did_wake", "system.screens_sleep",
                 "system.screens_wake", "session.became_active", "session.resigned_active",
-                "workspace.space_changed", "observation.status"}
+                "workspace.space_changed", "observation.status", "session.idle_changed"}
 
 
 def _digest(path):
@@ -317,7 +319,7 @@ def filter_native_event(event, options):
     if not isinstance(event, dict):
         return None
     source = event.get("source")
-    if not isinstance(source, str) or source not in {"macos.workspace", "macos.ax", "macos.observer"}:
+    if not isinstance(source, str) or source not in {"macos.workspace", "macos.ax", "macos.observer", "linux.desktop", "linux.atspi", "linux.session"}:
         return None
     kind = event.get("kind")
     if not isinstance(kind, str) or kind not in APP_KINDS | SYSTEM_KINDS:
@@ -346,6 +348,8 @@ def filter_native_event(event, options):
     result_obj = {"bundle_id": bundle} if kind in APP_KINDS else {"type": "system"}
     if kind in APP_KINDS and type(obj.get("pid")) is int and obj["pid"] > 0:
         result_obj["pid"] = obj["pid"]
+    if source == 'linux.desktop' and isinstance(obj.get('window_id'), str) and re.fullmatch(r'0x[0-9a-fA-F]{1,16}', obj['window_id']):
+        result_obj['window_id'] = obj['window_id']
     evidence = event.get("evidence", {})
     if not isinstance(evidence, dict):
         return None
@@ -376,7 +380,7 @@ def filter_native_event(event, options):
         if options.get("content_window_allowlist") and title is None:
             return None
     safe = {}
-    for key in ("notification", "reason", "coverage", "ax_permission", "lock_state", "session_state", "screen_state", "sleep_state", "fixture_origin", "self_ax_role", "read_status", "shared_core_version", "window_coverage", "read_scope", "capture_scope", "target_descriptor_sha256"):
+    for key in ("notification", "reason", "coverage", "ax_permission", "lock_state", "idle_state", "session_state", "screen_state", "sleep_state", "fixture_origin", "self_ax_role", "read_status", "shared_core_version", "window_coverage", "read_scope", "capture_scope", "target_descriptor_sha256"):
         value = _safe_text(evidence.get(key), 160)
         if value is not None:
             safe[key] = value
@@ -475,7 +479,9 @@ def filter_native_event(event, options):
         safe["window_references"] = references
     # Compute identity from the accepted evidence, never from rejected values.
     identity = json.dumps([event["source"], kind, result_obj, safe], sort_keys=True, ensure_ascii=False)
-    source = "accessibility" if event["source"] == "macos.ax" else "nsworkspace" if kind in APP_KINDS else "session"
+    source = ('linux_accessibility' if event['source'] == 'linux.atspi' else
+              'linux_desktop' if event['source'] == 'linux.desktop' else
+              'accessibility' if event['source'] == 'macos.ax' else 'nsworkspace' if kind in APP_KINDS else 'session')
     return {"timestamp": parsed.timestamp(), "source": source,
             "kind": kind, "object": result_obj, "evidence": safe,
             "confidence": 1.0 if kind != "ax.snapshot" else 0.8,
@@ -682,3 +688,10 @@ class NativeObserver:
     def resume(self):
         self._paused = False
         return self.start()
+
+
+def native_observer(config, callback):
+    if sys.platform.startswith('linux'):
+        from .linux import LinuxNativeObserver
+        return LinuxNativeObserver(config, callback)
+    return NativeObserver(config, callback)

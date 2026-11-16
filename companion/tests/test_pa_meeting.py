@@ -58,7 +58,9 @@ sys.exit({exit_code if exit_code is not None else 0 if terminal == 'stopped' els
                 "started_at":time.time()-1, "ended_at":time.time(), "final":final}
 
     def start(self, helper, capture="both"):
-        with patch("companion.observers.meeting.build_meeting_helper", return_value=str(helper)):
+        def launcher(config, selected, locale, session, private):
+            return [str(helper), '--session', session], None, {}
+        with patch("companion.observers.meeting.meeting_launch", side_effect=launcher):
             return self.app.command({"command":"meeting_start", "capture":capture, "label":"Synthetic meeting"})
 
     def until(self, condition):
@@ -78,10 +80,10 @@ sys.exit({exit_code if exit_code is not None else 0 if terminal == 'stopped' els
         self.assertEqual(self.app.sources.list()["sources"], [])
 
     @unittest.skipIf(sys.platform == "darwin", "Do not request actual OS permissions in the portable suite")
-    def test_non_macos_explicit_start_is_unavailable_without_source_or_process(self):
+    def test_unconfigured_linux_explicit_start_is_unavailable_without_source_or_process(self):
         result = self.app.command({"command":"meeting_start", "capture":"both"})
         self.assertEqual(result["status"], "unavailable")
-        self.assertEqual(result["meeting"]["detail"], "macos_required")
+        self.assertIn('linux_meeting_requires:' if sys.platform.startswith('linux') else 'macos_required', result['meeting']['detail'])
         self.assertIsNone(self.app.meetings.process)
         self.assertEqual(self.app.sources.list()["sources"], [])
 

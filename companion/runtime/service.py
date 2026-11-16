@@ -66,11 +66,11 @@ class Companion:
             config.native_app_exclusions = tuple(exclusions)
         self.scope = ReadScope(config)
         from companion.memory.observations import ObservationMemory
-        from companion.observers.native import NativeObserver
+        from companion.observers.native import native_observer
         self.observation_memory = ObservationMemory(self.store, aliases=config.project_aliases, source_allowed=self.observation_accessible)
         self.privacy = ObservationPrivacy(config, self.store, self.scope)
         self.workflow = WorkflowSignals(config.active_sustained_minutes)
-        self.native = NativeObserver(config, self.enqueue_native)
+        self.native = native_observer(config, self.enqueue_native)
         self.retriever = (BM25Retriever if config.retrieval_backend == "bm25" else LexicalRetriever)(self.store, source_allowed=self.legacy_memory_accessible, aliases=config.project_aliases)
         self.verifier = SourceVerifier(self.store, self.scope)
         self.model = ModelManager(config, self.store)

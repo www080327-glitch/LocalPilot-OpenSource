@@ -27,8 +27,16 @@ class ChannelRuntimeTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'INSUFFICIENT_DISK'):runtime.install(self.home)
             opener.assert_not_called()
     def test_unsupported_architecture_is_explicit(self):
-        with patch.object(runtime.platform,'system',return_value='Linux'):
+        with patch.object(runtime.platform,'system',return_value='Linux'),patch.object(runtime.platform,'machine',return_value='riscv64'):
             with self.assertRaisesRegex(ValueError,'PLATFORM_NOT_SUPPORTED'):runtime.install(self.home)
+    def test_linux_archives_are_distinct_from_macos_and_unknown_hosts_reject(self):
+        for architecture, name in [('x86_64', 'linux-x64'), ('aarch64', 'linux-arm64')]:
+            filename, checksum = runtime.runtime_archive('Linux', architecture)
+            self.assertIn(name, filename)
+            self.assertEqual(len(checksum), 64)
+            self.assertNotIn(checksum, {row[1] for row in runtime.ARCHIVES.values()})
+        with self.assertRaisesRegex(ValueError, 'PLATFORM_NOT_SUPPORTED'):
+            runtime.runtime_archive('Windows', 'AMD64')
     def test_complete_verified_download_resumes_without_network(self):
         root=self.home/'channel-node';root.mkdir(mode=0o700)
         name=runtime.ARCHIVES['arm64'][0];path=root/(name+'.part')

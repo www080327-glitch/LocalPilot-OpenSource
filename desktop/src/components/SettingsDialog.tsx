@@ -351,7 +351,7 @@ export function SettingsDialog({
               查看模拟工作区
             </button>
             <p className="micro muted">
-              浏览器只提供设计预览；真实接入通过 macOS 原生连接层。
+              浏览器只提供设计预览；真实接入通过桌面应用的原生连接层。
             </p>
           </section>
         </div>
