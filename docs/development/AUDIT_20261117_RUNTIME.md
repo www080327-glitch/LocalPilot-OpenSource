@@ -93,7 +93,7 @@ The pinned component runtime has Python 3.13.5, MCP 1.26.0, and packaging 26.0. 
 
 The 187-test group skipped the two explicitly macOS-only Seatbelt tests (`test_full_shell_runs_and_writes_a_real_file` and `test_read_only_shell_can_read_but_os_denies_writes`). Linux scoped Shell and cancellation ran. An earlier command referenced `test_runtime_stabilization`, whose historical benchmark dependency is absent from the public tree; its module raised `SkipTest` during explicit loading. That command is **NOT_RUN**, not included in the passing counts.
 
-These test groups overlap; their counts must not be added as distinct test coverage. Root owns the final full-project regression, actual OpenAI evaluation, two-hour soak, versioning, packaging, commit, and publication. This document neither claims those checks have finished nor changes old evidence.
+These historical test groups overlap; their counts must not be added as distinct test coverage. The root owner subsequently completed [Core regression R2](../evidence/audit-20261117/root/core-regression-r2.log): 1,616 tests, 1,525 passed and 91 skipped, with no failures. Source was published at `91dd87c`; [the final Linux package report](../../desktop/docs/evidence/audit-20261117-desktop/final-package/RESULTS.md) binds the clean build and extracted-package native checks to that source. [Actual model results](../evidence/audit-20261117/root/RESULTS.md) and the [finite engineering acceptance](../evidence/audit-20261117/root/engineering-luna-r1/RESULTS.md) remain separate, source-identified evidence. These additions do not change the identities or counts of the historical groups above.
 
 ### Full-regression fixture alignment
 
@@ -114,7 +114,7 @@ and these are not additional audit items.
 `python -m unittest tests.test_finalization_recovery tests.test_v2_p0_reliability
 tests.test_computer_runtime tests.test_local_native_backend -v` completed with
 **169 tests passed in 2.287 seconds**. The first full-regression log remains
-unchanged; the final full-project rerun is owned by root.
+unchanged; the completed Core R2 rerun is linked above.
 
 ## Limitations: reasoning state and request prefixes
 

@@ -1,0 +1,319 @@
+{
+  "index": 1,
+  "scenario": "Scenario-1",
+  "dataset_revision": "76df38a82288f75ba9e41dc8c515033332497473",
+  "attempt": 1,
+  "output_valid": false,
+  "task_status": "failed",
+  "input_bytes": 1179752596,
+  "input_files": 90,
+  "download_seconds": 245.55556538299425,
+  "task_id": "resp_e7dbbf12d71a42b6b85f4795458ad160",
+  "task_error": {
+    "code": "runtime_error",
+    "message": "denied_size"
+  },
+  "required_action": null,
+  "task_seconds": 146.04448039900308,
+  "model_calls": [
+    {
+      "latency_seconds": 3.4665132950030966,
+      "tool_call_count": 1,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 1883,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 3375,
+      "output_tokens": 52,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 9.554819621997012,
+      "tool_call_count": 1,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 2431,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 3923,
+      "output_tokens": 65,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 10.377144081998267,
+      "tool_call_count": 2,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 4812,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 6304,
+      "output_tokens": 260,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 10.905841481006064,
+      "tool_call_count": 3,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 7248,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 8740,
+      "output_tokens": 383,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 9.65976218799915,
+      "tool_call_count": 1,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 11172,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 12664,
+      "output_tokens": 249,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 10.889898474997608,
+      "tool_call_count": 1,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 11844,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 13336,
+      "output_tokens": 424,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 11.821053460997064,
+      "tool_call_count": 3,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 13895,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 15387,
+      "output_tokens": 728,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 10.526429029996507,
+      "tool_call_count": 1,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 19148,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 20640,
+      "output_tokens": 242,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 14.29350976999558,
+      "tool_call_count": 2,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 20695,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 22187,
+      "output_tokens": 708,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 16.11563368899806,
+      "tool_call_count": 4,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 23222,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 24714,
+      "output_tokens": 966,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 23.302812626003288,
+      "tool_call_count": 4,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 28082,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 29574,
+      "output_tokens": 1646,
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "runtime_metrics": {
+    "model_attempts": 11,
+    "request_utf8_bytes": 863358,
+    "response_bytes": 81419,
+    "response_bytes_source": "complete_responses_only",
+    "failed_attempts": 0,
+    "failed_attempt_provider_usage": null,
+    "admission_units": 944777,
+    "finalization_reason": null,
+    "final_reserve_units": 64248,
+    "state_bytes": 6797,
+    "cache_bytes": 0,
+    "hybrid": {
+      "calls": 11,
+      "actual_api_cost": "UNKNOWN",
+      "local_resource_cost": "adapter_wall_seconds_only",
+      "backend_id": "selected",
+      "generation": 0,
+      "switching_overhead_seconds": 0,
+      "by_backend": {
+        "selected": {
+          "kind": "cloud",
+          "calls": 11,
+          "known_input_tokens": 160844,
+          "known_output_tokens": 5723,
+          "unknown_usage_calls": 0,
+          "known_request_wall_seconds": 130.90582013130188,
+          "known_inference_seconds": 130.85708093643188,
+          "known_queue_seconds": 0.04889726638793945,
+          "unknown_inference_time_calls": 0,
+          "unknown_latency_calls": 0,
+          "estimated_api_cost_usd": null,
+          "cost_source": "host_rate_estimate_only",
+          "configured_models": [
+            "gpt-6-luna"
+          ],
+          "prompt_cache_hit_tokens": 16412,
+          "prompt_cache_miss_tokens": 144432,
+          "cache_hit_ratio": 0.10203675611151178,
+          "cache_usage_unknown_calls": 0,
+          "wall_output_tokens_per_second": 43.73473685218559,
+          "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+        }
+      },
+      "source_mix": {
+        "scope": "current_task_including_children",
+        "by_source": {
+          "local": {
+            "admitted_requests": 0,
+            "dispatched_requests": 0,
+            "request_share": 0.0,
+            "known_input_output_tokens": 0,
+            "token_share": 0.0,
+            "unknown_usage_requests": 0
+          },
+          "cloud": {
+            "admitted_requests": 11,
+            "dispatched_requests": 11,
+            "request_share": 1.0,
+            "known_input_output_tokens": 166567,
+            "token_share": 1.0,
+            "unknown_usage_requests": 0
+          }
+        },
+        "requests_without_dispatch_evidence": 0,
+        "token_share_status": "PROVIDER_REPORTED",
+        "actual_cost_status": "UNKNOWN"
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "manage_goal",
+      "status": "completed",
+      "arguments": "{\"action\":\"create\",\"description\":\"Analyze the offline Kubernetes snapshot, identify minimal independent contributing resources using corroborated incident evidence, and write/verify agent_output.json in the workspace.\",\"id\":\"incident\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"find . -maxdepth 3 -type f -printf '%p\\\\t%s bytes\\\\n' | sort\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "failed",
+      "arguments": "{\"command\":\"python -c \\\"import json,glob,os; p=sorted(glob.glob('alerts/alerts_at_*.json')); print('files',len(p));\\\\nfor f in [p[0],p[len(p)//2],p[-1], 'alerts/alerts_in_alerting_state_2025-12-15T175546.713186Z.json']:\\\\n d=json.load(open(f)); print('\\\\\\\\n',os.path.basename(f)); print(json.dumps(d,indent=2)[:6000])\\\"\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"head -c 2200 k8s_events_raw.tsv; printf '\\\\n--- OBJECT HEADER ---\\\\n'; head -c 1800 k8s_objects_raw.tsv; printf '\\\\n--- DIRS ---\\\\n'; find . -maxdepth 2 -type d -print | sort\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c \\\"import json,glob,os; p=sorted(glob.glob('alerts/alerts_at_*.json')); print('files',len(p)); [print('\\\\\\\\n'+os.path.basename(f)+'\\\\\\\\n'+json.dumps(json.load(open(f)),indent=2)[:5000]) for f in [p[0],p[len(p)//2],p[-1],'alerts/alerts_in_alerting_state_2025-12-15T175546.713186Z.json']]\\\"\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c \\\"import pandas as pd; f=pd.read_csv('k8s_events_raw.tsv',sep='\\\\\\\\t'); print(f.columns.tolist(),len(f)); print(f[['Timestamp','Body','ResourceAttributes','LogAttributes']].tail(3).to_string(index=False,max_colwidth=250))\\\"\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c \\\"import pandas as pd; f=pd.read_csv('k8s_objects_raw.tsv',sep='\\\\\\\\t',usecols=['Timestamp','Body','ResourceAttributes','LogAttributes']); print(len(f)); print(f[['Timestamp','ResourceAttributes','LogAttributes']].groupby(['ResourceAttributes','LogAttributes'],dropna=False).size().to_string()[:10000])\\\"\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "failed",
+      "arguments": "{\"command\":\"python -c \\\"import json,glob,collections,os; files=sorted(glob.glob('alerts/alerts_at_*.json')); seen=collections.defaultdict(list);\\\\n[seen[(a['labels'].get('alertname'),a['labels'].get('namespace'),a['labels'].get('service_name'),a['labels'].get('pod'),a['labels'].get('severity'),a.get('state'))].append(os.path.basename(f).split('T')[-1][:8]) for f in files for a in json.load(open(f))];\\\\n[print(k,'first',v[0],'last',v[-1],'n',len(v)) for k,v in seen.items() if any(x and x not in ('KubeClientCertificateExpiration',) for x in k)]\\\"\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c $'import json,glob,collections,os\\\\nfiles=sorted(glob.glob(\\\"alerts/alerts_at_*.json\\\"))\\\\nseen=collections.defaultdict(list)\\\\nfor f in files:\\\\n for a in json.load(open(f)):\\\\n  l=a[\\\"labels\\\"]; k=(l.get(\\\"alertname\\\"),l.get(\\\"namespace\\\"),l.get(\\\"service_name\\\"),l.get(\\\"pod\\\"),l.get(\\\"severity\\\"),a.get(\\\"state\\\")); seen[k].append(os.path.basename(f).split(\\\"T\\\")[-1][:8])\\\\nfor k,v in seen.items(): print(k,\\\"first\\\",v[0],\\\"last\\\",v[-1],\\\"n\\\",len(v))\\\\nprint(\\\"ALERTING SNAPSHOT\\\",json.dumps(json.load(open(\\\"alerts/alerts_in_alerting_state_2025-12-15T175546.713186Z.json\\\")),indent=2))'\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c $'import pandas as pd,json\\\\ndf=pd.read_csv(\\\"k8s_events_raw.tsv\\\",sep=\\\"\\\\\\\\t\\\",usecols=[\\\"Timestamp\\\",\\\"Body\\\"])\\\\nfor _,r in df.iterrows():\\\\n try:\\\\n  x=json.loads(r.Body)[\\\"object\\\"]\\\\n  if x.get(\\\"type\\\")==\\\"Warning\\\" or x.get(\\\"reason\\\") in (\\\"FailedCreate\\\",\\\"FailedScheduling\\\",\\\"BackOff\\\",\\\"FailedMount\\\",\\\"Unhealthy\\\",\\\"Killing\\\",\\\"OOMKilled\\\"):\\\\n   print(r.Timestamp,x.get(\\\"type\\\"),x.get(\\\"reason\\\"),x.get(\\\"involvedObject\\\",{}).get(\\\"namespace\\\"),x.get(\\\"involvedObject\\\",{}).get(\\\"kind\\\"),x.get(\\\"involvedObject\\\",{}).get(\\\"name\\\"),\\\"count\\\",x.get(\\\"count\\\",x.get(\\\"deprecatedCount\\\")),x.get(\\\"message\\\"))\\\\n except Exception: pass'\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c $'import pandas as pd\\\\nf=pd.read_csv(\\\"otel_logs_raw.tsv\\\",sep=\\\"\\\\\\\\t\\\",usecols=[\\\"Timestamp\\\",\\\"SeverityText\\\",\\\"ServiceName\\\",\\\"Body\\\",\\\"ResourceAttributes\\\",\\\"LogAttributes\\\"])\\\\nprint(\\\"rows\\\",len(f),\\\"services\\\",f.ServiceName.value_counts().head(40).to_dict(),\\\"severity\\\",f.SeverityText.value_counts().to_dict())\\\\nq=f[f.SeverityText.astype(str).str.contains(\\\"ERROR|FATAL|WARN\\\",case=False,na=False)]\\\\nprint(\\\"interesting severity rows\\\",len(q)); print(q[[\\\"Timestamp\\\",\\\"SeverityText\\\",\\\"ServiceName\\\",\\\"Body\\\",\\\"ResourceAttributes\\\",\\\"LogAttributes\\\"]].tail(50).to_string(index=False,max_colwidth=260))'\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "failed",
+      "arguments": "{\"command\":\"python -c $'import pandas as pd\\\\nf=pd.read_csv(\\\"otel_traces_raw.tsv\\\",sep=\\\"\\\\\\\\t\\\",usecols=[\\\"Timestamp\\\",\\\"TraceId\\\",\\\"SpanId\\\",\\\"ServiceName\\\",\\\"Body\\\",\\\"ResourceAttributes\\\",\\\"LogAttributes\\\"])\\\\nprint(\\\"rows\\\",len(f),\\\"services\\\",f.ServiceName.value_counts().to_dict()); print(f.head(2).to_string(index=False,max_colwidth=400))'\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"head -c 2000 otel_traces_raw.tsv; printf '\\\\n--- logs header ---\\\\n'; head -c 800 otel_logs_raw.tsv; printf '\\\\n--- raw file names not dirs ---\\\\n'; find . -maxdepth 1 -type f -printf '%f %s\\\\n'\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c $'import pandas as pd\\\\nf=pd.read_csv(\\\"otel_traces_raw.tsv\\\",sep=\\\"\\\\\\\\t\\\",usecols=[\\\"Timestamp\\\",\\\"TraceId\\\",\\\"SpanId\\\",\\\"ParentSpanId\\\",\\\"SpanName\\\",\\\"SpanKind\\\",\\\"ServiceName\\\",\\\"Duration\\\",\\\"StatusCode\\\",\\\"StatusMessage\\\"],low_memory=False)\\\\nprint(\\\"rows\\\",len(f),\\\"statuses\\\",f.StatusCode.value_counts(dropna=False).to_dict())\\\\ne=f[f.StatusCode.astype(str).str.lower().eq(\\\"error\\\")]\\\\nprint(\\\"errors\\\",len(e)); print(e.groupby([\\\"ServiceName\\\",\\\"SpanName\\\",\\\"StatusMessage\\\"],dropna=False).size().sort_values(ascending=False).head(35).to_string()); print(\\\"\\\\\\\\nErrors time/service:\\\",e.assign(minute=e.Timestamp.str.slice(0,16)).groupby([\\\"minute\\\",\\\"ServiceName\\\"]).size().to_string()[:6000])'\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c $'import pandas as pd\\\\nf=pd.read_csv(\\\"otel_objects\\\" if False else \\\"k8s_objects_raw.tsv\\\",sep=\\\"\\\\\\\\t\\\",usecols=[\\\"Timestamp\\\",\\\"Body\\\",\\\"ResourceAttributes\\\",\\\"LogAttributes\\\"],low_memory=False)\\\\n# Filter objects by relevant workload/controller/namespace using parsed serialized Kubernetes objects\\\\nfor _,r in f.iterrows():\\\\n b=r.Body\\\\n if any(t in b for t in [\\\"frontend-proxy\\\",\\\"frontend-675fd7b5c5\\\",\\\"checkout-5dccddf8bb\\\",\\\"flagd-c47676d99\\\",\\\"load-generator-c7cbc4c99\\\",\\\"ResourceQuota\\\",\\\"NetworkPolicy\\\"]):\\\\n  try:\\\\n   import json; o=json.loads(b); m=o.get(\\\"metadata\\\",{}); ns=m.get(\\\"namespace\\\", \\\"cluster\\\"); k=o.get(\\\"kind\\\"); name=m.get(\\\"name\\\")\\\\n   if k in [\\\"Deployment\\\",\\\"Pod\\\",\\\"ReplicaSet\\\",\\\"Service\\\",\\\"ConfigMap\\\",\\\"ResourceQuota\\\",\\\"NetworkPolicy\\\"]:\\\\n    print(r.Timestamp,ns,k,name, str({\\\"spec\\\":o.get(\\\"spec\\\"),\\\"status\\\":o.get(\\\"status\\\")})[:1600])\\\\n  except Exception: pass'\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c $'import pandas as pd\\\\nf=pd.read_csv(\\\"otel_traces_raw.tsv\\\",sep=\\\"\\\\\\\\t\\\",usecols=[\\\"Timestamp\\\",\\\"TraceId\\\",\\\"SpanId\\\",\\\"ParentSpanId\\\",\\\"SpanName\\\",\\\"SpanKind\\\",\\\"ServiceName\\\",\\\"Duration\\\",\\\"StatusCode\\\",\\\"StatusMessage\\\"],low_memory=False)\\\\ne=f[(f.StatusCode==\\\"Error\\\") & ~f.ServiceName.isin([\\\"frontend-proxy\\\",\\\"load-generator\\\",\\\"frontend\\\"]) ]\\\\nprint(e[[\\\"Timestamp\\\",\\\"TraceId\\\",\\\"SpanId\\\",\\\"ParentSpanId\\\",\\\"ServiceName\\\",\\\"SpanName\\\",\\\"Duration\\\",\\\"StatusMessage\\\"]].to_string(index=False,max_colwidth=240))'\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c $'import pandas as pd\\\\nf=pd.read_csv(\\\"otel_logs_raw.tsv\\\",sep=\\\"\\\\\\\\t\\\",usecols=[\\\"Timestamp\\\",\\\"SeverityText\\\",\\\"ServiceName\\\",\\\"Body\\\",\\\"ResourceAttributes\\\"],low_memory=False)\\\\nq=f[f.Body.astype(str).str.contains(\\\"400|500|504|error|fail|timeout|refused|unavailable\\\",case=False,na=False)]\\\\nprint(\\\"hits\\\",len(q)); print(q.groupby([\\\"ServiceName\\\",\\\"SeverityText\\\"]).size().sort_values(ascending=False).head(30).to_string()); print(q[q.ServiceName.isin([\\\"email\\\",\\\"checkout\\\",\\\"frontend\\\",\\\"frontend-proxy\\\",\\\"flagd\\\",\\\"load-generator\\\"])][[\\\"Timestamp\\\",\\\"ServiceName\\\",\\\"SeverityText\\\",\\\"Body\\\",\\\"ResourceAttributes\\\"]].head(35).to_string(index=False,max_colwidth=300))'\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"head -c 1500 metrics/service_checkout_raw.tsv; printf '\\\\n--- service email ---\\\\n'; head -c 1500 metrics/service_email_raw.tsv; printf '\\\\n--- checkout pod ---\\\\n'; head -c 1500 metrics/pod_checkout-5dccddf8bb-vh65b_raw.tsv\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c $'import pandas as pd,json,collections\\\\nf=pd.read_csv(\\\"k8s_objects_raw.tsv\\\",sep=\\\"\\\\\\\\t\\\",usecols=[\\\"Timestamp\\\",\\\"Body\\\"],low_memory=False); ks=collections.Counter(); names=collections.Counter()\\\\nfor b in f.Body:\\\\n try:\\\\n  o=json.loads(b); ks[o.get(\\\"kind\\\")]+=1; names[o.get(\\\"kind\\\")+\\\"/\\\"+o.get(\\\"metadata\\\",{}).get(\\\"name\\\",\\\"\\\")]+=1\\\\n except: pass\\\\nprint(\\\"kinds\\\",ks); print(\\\"topology-like\\\",[(k,v) for k,v in names.items() if \\\"topology\\\" in k.lower() or \\\"quota\\\" in k.lower() or \\\"networkpolicy\\\" in k.lower()])'\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c $'import pandas as pd\\\\nf=pd.read_csv(\\\"otel_traces_raw.tsv\\\",sep=\\\"\\\\\\\\t\\\",usecols=[\\\"Timestamp\\\",\\\"TraceId\\\",\\\"SpanId\\\",\\\"ParentSpanId\\\",\\\"SpanName\\\",\\\"SpanKind\\\",\\\"ServiceName\\\",\\\"Duration\\\",\\\"StatusCode\\\",\\\"StatusMessage\\\",\\\"SpanAttributes\\\",\\\"ResourceAttributes\\\"],low_memory=False)\\\\nq=f[(f.ServiceName==\\\"checkout\\\") & f.StatusMessage.astype(str).str.contains(\\\"email service\\\",na=False)]\\\\nprint(\\\"business failures\\\",len(q)); print(q[[\\\"Timestamp\\\",\\\"TraceId\\\",\\\"SpanName\\\",\\\"Duration\\\",\\\"StatusCode\\\",\\\"StatusMessage\\\",\\\"SpanAttributes\\\"]].head(6).to_string(index=False,max_colwidth=800)); tid=q.TraceId.iloc[0]; print(\\\"TRACE\\\",tid); t=f[f.TraceId==tid].sort_values(\\\"Timestamp\\\"); print(t[[\\\"Timestamp\\\",\\\"ServiceName\\\",\\\"SpanName\\\",\\\"SpanKind\\\",\\\"Duration\\\",\\\"StatusCode\\\",\\\"StatusMessage\\\",\\\"SpanAttributes\\\"]].to_string(index=False,max_colwidth=500))'\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c $'import pandas as pd\\\\nf=pd.read_csv(\\\"k8s_objects_raw.tsv\\\",sep=\\\"\\\\\\\\t\\\",usecols=[\\\"Timestamp\\\",\\\"Body\\\"],low_memory=False)\\\\nfor _,r in f.iterrows():\\\\n try:\\\\n  import json; o=json.loads(r.Body); m=o.get(\\\"metadata\\\",{}); ns=m.get(\\\"namespace\\\"); n=m.get(\\\"name\\\"); k=o.get(\\\"kind\\\")\\\\n  if ns==\\\"otel-demo\\\" and k in (\\\"Deployment\\\",\\\"Pod\\\",\\\"Service\\\") and n in (\\\"email\\\",\\\"checkout\\\",\\\"frontend\\\",\\\"frontend-proxy\\\",\\\"flagd\\\",\\\"product-catalog\\\",\\\"recommendation\\\",\\\"load-generator\\\"):\\\\n   s=o.get(\\\"spec\\\",{}); st=o.get(\\\"status\\\",{}); tpl=s.get(\\\"template\\\",{}).get(\\\"spec\\\",{}); cs=tpl.get(\\\"containers\\\",[]);\\\\n   print(r.Timestamp,k,n,\\\"gen\\\",m.get(\\\"generation\\\"),\\\"replicas\\\",s.get(\\\"replicas\\\"),\\\"status\\\",{x:st.get(x) for x in (\\\"replicas\\\",\\\"readyReplicas\\\",\\\"availableReplicas\\\",\\\"updatedReplicas\\\",\\\"phase\\\",\\\"restartCount\\\")},\\\"containers\\\",[{\\\"name\\\":c.get(\\\"name\\\"),\\\"image\\\":c.get(\\\"image\\\"),\\\"resources\\\":c.get(\\\"resources\\\"),\\\"env\\\":c.get(\\\"env\\\")} for c in cs])\\\\n except Exception: pass'\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c $'import pandas as pd,ast\\\\nf=pd.read_csv(\\\"metrics/service_checkout_raw.tsv\\\",sep=\\\"\\\\\\\\t\\\"); print(\\\"metrics\\\",f.metric_name.value_counts().to_dict());\\\\nfor m,g in f.groupby(\\\"metric_name\\\"):\\\\n print(\\\"\\\\\\\\n\\\",m,\\\"rows\\\",len(g),\\\"range\\\",g.timestamp.min(),g.timestamp.max()); print(g[[\\\"timestamp\\\",\\\"value\\\",\\\"service_name\\\",\\\"bucket_le\\\",\\\"metric_type\\\",\\\"status_code\\\",\\\"tags\\\"]].tail(6).to_string(index=False,max_colwidth=250))'\",\"timeout\":120,\"access\":\"workspace\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c $'import pandas as pd\\\\nf=pd.read_csv(\\\"otel_logs_raw.tsv\\\",sep=\\\"\\\\\\\\t\\\",usecols=[\\\"Timestamp\\\",\\\"SeverityText\\\",\\\"ServiceName\\\",\\\"Body\\\",\\\"ResourceAttributes\\\"],low_memory=False)\\\\nq=f[(f.ServiceName.isin([\\\"email\\\",\\\"checkout\\\",\\\"frontend\\\",\\\"frontend-proxy\\\"])) & (f.Timestamp>=\\\"2025-12-15 17:23\\\") & (f.Timestamp<=\\\"2025-12-15 18:18\\\")]\\\\nprint(\\\"counts\\\",q.groupby([\\\"ServiceName\\\",\\\"SeverityText\\\"]).size().to_dict()); print(\\\"\\\\\\\\nEMAIL\\\",q[q.ServiceName==\\\"email\\\"][[\\\"Timestamp\\\",\\\"SeverityText\\\",\\\"Body\\\",\\\"ResourceAttributes\\\"]].head(30).to_string(index=False,max_colwidth=500)); print(\\\"\\\\\\\\nCHECKOUT\\\",q[q.ServiceName==\\\"checkout\\\"][[\\\"Timestamp\\\",\\\"SeverityText\\\",\\\"Body\\\"]].head(15).to_string(index=False,max_colwidth=500))'\",\"timeout\":120,\"access\":\"workspace\"}"
+    }
+  ],
+  "total_seconds": 391.921775513998,
+  "owned_core_stopped": true
+}

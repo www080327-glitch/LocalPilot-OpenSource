@@ -2,20 +2,22 @@
 
 ## 范围和状态
 
-基线为 `b420b97`。本轮负责 Suite 安装、配置、恢复、渠道协调；独立 Channels Python 后台；Companion 后台模型生命周期；Desktop 平台构建脚本。可见 UI、桌宠窗口和 Core Responses Runtime 由其他审计分支负责人处理。本文件只记录本范围，未提交、未推送、未改版本号，也未修改历史证据。
+基线为 `b420b97`。本轮负责 Suite 安装、配置、恢复、渠道协调；独立 Channels Python 后台；Companion 后台模型生命周期；Desktop 平台构建脚本。可见 UI、桌宠窗口和 Core Responses Runtime 由其他审计分支负责人处理。本文件只记录本范围；源码随后已由主负责人统一发布为 `91dd87c`，组件版本、最终构建与交付状态见[总报告](AUDIT_20261117.md)。历史证据未修改。
 
 本轮检查了模块入口、首次准备、模型端点、私有凭据引用、进程恢复、渠道安装与账号准备、模型电源策略、Python 运行时定位和原生打包路径。没有发现现成 `.github/workflows` 或其他 CI 配置，因此沿用仓库已有 `unittest`、依赖锁、轮包和原生构建脚本，不新增 CI 工具或流程。
 
 执行记录见 [平台回归摘要](../evidence/audit-20261117/platform/SUMMARY.json)。测试使用绝对仓库及 Suite `PYTHONPATH`，避免子进程更换工作目录后误导入开发环境中旧版本的 Core。首次回滚故障注入的相对路径问题保留为 [测试环境诊断](../evidence/audit-20261117/platform/test-harness-relative-pythonpath-diagnostic.json)，不记为产品缺陷。
 
-| 最终回归组 | 执行 | PASS | SKIP | 结果与记录 |
+| 较早平台回归快照 | 执行 | PASS | SKIP | 结果与记录 |
 | --- | ---: | ---: | ---: | --- |
 | Suite 完整测试 | 122 | 121 | 1 | [suite-r2.log](../evidence/audit-20261117/platform/suite-r2.log) |
 | Companion 完整测试 | 724 | 691 | 33 | [companion-r1.log](../evidence/audit-20261117/platform/companion-r1.log) |
 | 根目录 Channels 测试 | 58 | 52 | 6 | [channels-r1.log](../evidence/audit-20261117/platform/channels-r1.log) |
 | macOS artifact 静态/本地文件测试 | 9 | 9 | 0 | [macos-artifacts-r1.log](../evidence/audit-20261117/platform/macos-artifacts-r1.log) |
 
-上述最终四组共执行 913 项，873 PASS、40 SKIP，无失败；不与较早定向测试重复累计，也不能再与涵盖 Channels 的 Core 全量重复累计。首轮 Suite 的两个独立 wheel 导入错误保留在 [suite-r1.log](../evidence/audit-20261117/platform/suite-r1.log)。本范围修改文件身份另见 [SOURCE_SHA256.json](../evidence/audit-20261117/platform/SOURCE_SHA256.json)。
+上述历史四组共执行 913 项，873 PASS、40 SKIP，无失败；不与较早定向测试重复累计，也不能再与涵盖 Channels 的 Core 全量重复累计。首轮 Suite 的两个独立 wheel 导入错误保留在 [suite-r1.log](../evidence/audit-20261117/platform/suite-r1.log)。本范围修改文件身份另见 [SOURCE_SHA256.json](../evidence/audit-20261117/platform/SOURCE_SHA256.json)。
+
+后续整合后的全量日志另行保留：[Suite R2](../evidence/audit-20261117/root/suite-regression-r2.log)为 **123 项 = 122 PASS + 1 SKIP**，[Companion R2](../evidence/audit-20261117/root/companion-regression-r2.log)为 **727 项 = 694 PASS + 33 SKIP**，均无失败。它们是后续源码快照的独立结果，不覆盖原日志，也不与上表相加。
 
 交付前的凭据来源复核又修复 P-B5、P-B6。使用真实 route/backend 工厂、合成密钥以及已有 HTTP/TLS/SQLite 服务用例，定向执行 26 项，26 PASS、0 SKIP、0 失败。该组与上述测试有交集，不累加为全项目去重总数；它对应后续两处生产修改的验证。日志及四个源码/测试文件哈希见 [凭据来源回归](../evidence/audit-20261117/platform/credential-sources-r1/SUMMARY.json)。
 
@@ -50,7 +52,7 @@ OpenAI 入口只负责配置，返回 `api_connection=NOT_PROBED`。本范围回
 | P-R2 | Channels `command` 已在入口把 stop、cancel_login、exit 交给 `stop_owned`，后面仍有不可达的 exit 及重复停止分支。 | 删除不可达路径，保留后段实际可达的 disconnect；现有退出、后台偏好、断开和历史状态测试继续覆盖。 |
 | P-R3 | 两处升级回滚测试的独立 wheel 验证子进程没有隔离开发 `PYTHONPATH`，在绝对源码路径环境中导入源码包而非刚恢复的 wheel；产生两个假失败，且无法证明安装结果。 | 与升级实现一致，为独立解释器探测添加 `-I`。保留首轮两项错误的日志，复验真实 pip 安装、失败回滚和独立 wheel 导入。 |
 
-以上每项仅归一种分类，共 6 个 Bug、3 个维护问题、3 个操作简化、3 个重复防御问题。首次准备的就绪等待归入 P-R1，不另计 Bug；云端入口内部的路由辅助函数也不额外计数。
+以上每项仅归一种分类，共 6 个 Bug、2 个生产维护问题、1 个测试夹具维护问题、3 个操作简化、3 个重复防御问题。P-R3 仅改善验证可靠性，不占总报告的十项生产维护额度。首次准备的就绪等待归入 P-R1，不另计 Bug；云端入口内部的路由辅助函数也不额外计数。
 
 ### 过度防御与重复检查
 

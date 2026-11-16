@@ -14,11 +14,14 @@ This report was prepared by independently reading the archived receipts and veri
 | Child and stream cancellation | R1 ERROR; R2 PASS | First-run rate-limit errors are retained; cancellation was measured in the second run. |
 | Companion reasoning and execution clients | 2/2 PASS | Ordinary client submission/retrieval completed, with a read receipt on the execution path. |
 | Heterogeneous delegation | 2/2 PASS within the stated scope | Actual local and cloud child reads; the local-parent run later switched its parent to cloud. |
+| [Finite engineering acceptance](engineering-luna-r1/RESULTS.md) | PASS | Frozen `91dd87c` Core; two genuine async children; original external 17 tests and four CLI cases passed. |
 | Two-hour Full + extended soak | **RUNNING** | No completion or endurance claim yet. |
 | Forty public ITBench-AA cases | **RUNNING** | No score, grading result, or completion claim yet. |
 | Final native package | **PASS for build and extracted-package UI verification** | Separate [final-package evidence](../../../../desktop/docs/evidence/audit-20261117-desktop/final-package/RESULTS.md); these earlier model runs remain source-based. |
 
-The root owner will append the completed long-run, benchmark, and packaging evidence separately. The retained initial benchmark parameter/unit error is not replaced by the running attempt; its active data was outside this review.
+The root owner will append the completed long-run and benchmark evidence separately. [Benchmark R1](itbench-aa-r1/ABORTED.json) was aborted after four terminal `CloudEgressDenied` failures at the hidden 131,072-byte ceiling; a fifth started case was interrupted. That historical runtime defect and its receipts are distinct from R2's timeout-unit error and remain preserved. No score is assigned to the aborted R1 run.
+
+The frozen ITBench study's phrase `packaged Core HTTP` is historical wording: the candidate service actually loads Core from the frozen `qualification-source-r2` through `PYTHONPATH`. Its source manifest identifies that snapshot. It is not a model run from the installed RC10 DEB; the frozen study is retained unchanged.
 
 ## Evidence integrity and source identity
 
@@ -174,6 +177,12 @@ These deterministic/local-fixture tests support the implementation but are disti
 The original Core R1 failures remain available. The fixture corrections aligned the affected tests with Full cloud preauthorization and earlier argument-boundary rejection while preserving their child-effect, interruption, accounting, and no-replay assertions; that work is described in [the runtime audit](../../../development/AUDIT_20261117_RUNTIME.md). The different R1/R2 test totals are recorded as separate runs, not presented as an unchanged test set.
 
 A separate earlier command, `python -m unittest tests.test_openai_responses tests.test_itbench_scoring -q`, reported **28 tests in 8.315 seconds, OK**, only in the execution tool output. Its stdout/stderr was **not saved to a file**, so there is no original log path to cite. The new 38-test file is a separately executed frozen-source check, not a reconstructed or renamed copy of that earlier output.
+
+## Final-source finite engineering task
+
+[The independent engineering review](engineering-luna-r1/RESULTS.md) verifies the actual model task, source identity, original acceptance files, saved tool receipts and artifact hashes. Core loaded clean source `91dd87c`; the newly added runner has its own frozen SHA-256. In 336.94 seconds, two async children implemented CSV parsing and Decimal aggregation, and the parent implemented the CLI, collected their work and ran the complete test suite. After Core stopped, the runner used the original, unchanged acceptance files in a separate directory: **17 tests and four CLI cases passed**. Protocol, orchestration and semantic criteria all passed.
+
+The archive retains the first unconfigured-tier delegation failure, a status-query argument error and a child implementation error that the child repaired before acceptance. The initial `STRONG` enum was schema-valid, but the fixture had no tier mapping; explicit `route:worker` subsequently resolved. This does not qualify a configured STRONG tier. The 97.07-second child-lifecycle overlap includes model waits and tools, and the aggregate 36 model calls already include both children. Core's internal `verification_status=not_run` remains unchanged: the engineering PASS belongs to the external acceptance, not a rewritten internal status. The result is a bounded synthetic engineering check, distinct from a two-hour Shell, public benchmark and native-package test.
 
 ## Remaining limits
 

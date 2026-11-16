@@ -1,0 +1,20 @@
+{
+  "status": "ABORTED_FOR_RUNTIME_DEFECT",
+  "tool_exit_code": 130,
+  "reason": "Four initial scenarios failed with CloudEgressDenied denied_size at the hidden 131072-byte ceiling. Stop all remaining work; retain initial failures; repair runtime before a separately identified full run. No reference labels were used.",
+  "planned": 40,
+  "candidate_started": [
+    "case-005",
+    "case-001",
+    "case-002",
+    "case-004",
+    "case-003"
+  ],
+  "result_files": [
+    "case-001",
+    "case-002",
+    "case-004",
+    "case-003"
+  ],
+  "time_unix": 1794849434.3276577
+}
