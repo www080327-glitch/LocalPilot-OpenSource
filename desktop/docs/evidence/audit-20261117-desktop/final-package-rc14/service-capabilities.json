@@ -1,0 +1,79 @@
+{
+  "utc": "2026-11-16T21:57:06Z",
+  "scope": "Read-only packaged service health and task inventory; no task or model request",
+  "health": {
+    "status": "ready",
+    "version": "5.0.0b31",
+    "persistence": true,
+    "compatibility": {
+      "agent_service_api": "1.0",
+      "companion_client_contract": "1.0",
+      "api_supported": {
+        "minimum": "1.0",
+        "maximum_exclusive": "2.0"
+      },
+      "minimum_companion": "0.5.5rc1",
+      "capabilities": [
+        "durable_tasks",
+        "durable_idempotency",
+        "sse_cursor",
+        "operator_approval",
+        "cancel",
+        "safe_resume",
+        "unknown_quarantine",
+        "verification_dimensions",
+        "model_registry",
+        "explicit_cloud_egress",
+        "resource_control_v1",
+        "omlx_thinking_toggle_v1",
+        "desktop_permissions_v3",
+        "task_low_power_consent_v1",
+        "task_outcome_v1",
+        "routing_preferences_v1",
+        "model_manager_read_v1",
+        "model_health_read_v1",
+        "session_thinking_v1",
+        "model_resource_v1",
+        "pause_v1",
+        "lifecycle_suspend_v1",
+        "desktop_session_v1",
+        "desktop_session_idempotency_v1",
+        "desktop_profile_switch_v1",
+        "desktop_execution_budget_v1",
+        "desktop_model_switch_v1",
+        "desktop_child_history_v1",
+        "route_orchestration_v1",
+        "model_source_mix_v1",
+        "attachments_v1",
+        "attachments_v2",
+        "workspace_grants_v1",
+        "bounded_file_operations_v1"
+      ],
+      "limits": {
+        "task_input_json_utf8_bytes": 4096,
+        "attachment_batch_bytes": 2147483648,
+        "attachment_metadata_bytes": 8388608,
+        "task_timeout_seconds": 86400
+      },
+      "local_agent_constraints": {
+        "version": 1,
+        "minimum_context": 4096,
+        "excluded_size_classes": [],
+        "basis": "existing_core_eligibility_policy_not_a_quality_benchmark"
+      },
+      "model_health": "NOT_PROBED"
+    },
+    "active_task_count": 0,
+    "model_health": "NOT_PROBED",
+    "client_subject": "companion",
+    "client_generation": 0,
+    "resource_control_version": 1
+  },
+  "task_count": 0,
+  "module_versions": {
+    "localpilot-agent-service": "5.0.0b31",
+    "localpilot-suite": "0.2.0b32",
+    "localpilot-companion": "0.5.7b8",
+    "localpilot-channels": "0.1.0a4"
+  }
+}

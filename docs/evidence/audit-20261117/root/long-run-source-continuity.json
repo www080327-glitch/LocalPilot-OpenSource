@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "kind": "READ_ONLY_SOURCE_CONTINUITY_COMPARISON",
+  "created_at_utc": "2026-11-16T21:58:08.064962+00:00",
+  "sources": {
+    "b28": {
+      "remote_commit": "03535fe943f64f49e9e3d79e7949aca6c9ec9b87",
+      "tree": "1792d58af7858208db5018a747d78a1c75848edf",
+      "clean_checkout_verified": true,
+      "core_version": "5.0.0b28"
+    },
+    "b31": {
+      "remote_commit": "c5439659a579b2ee9e74fd53e6d3232fe12fb855",
+      "tree": "d0b0b33b036587ef0f0a802ca728419e9a444587",
+      "clean_checkout_verified": true,
+      "core_version": "5.0.0b31"
+    }
+  },
+  "method": "Verify both frozen checkouts are clean and at the declared remote commit/tree; compare actual file SHA256 and inspect the complete relevant Git diff. No tests, model/API calls, process control or production edits.",
+  "long_run_attribution": {
+    "measured_source": "b28",
+    "requested_duration_seconds": 7200,
+    "baseline_run_verdict": "Reported only by the separate b28 long-run receipts; not assessed or changed by this source-only comparison.",
+    "b31_two_hour_run_performed_by_this_review": false,
+    "evidence_not_relabelled": true
+  },
+  "identical_file_hash_semantics": "Every SHA256 in identical_sha256 was computed independently from both frozen checkouts and matched exactly; the single value applies to b28 and b31.",
+  "identical_sha256": {
+    "shell_execution_and_readback": {
+      "agent/host_tools.py": "b608085a7b71162bcbabcbf1fcb599466f72bb2de6199829dfa59b0cdc8bdad1",
+      "agent/commands.py": "3c0094d52053678ab12e8793bbbcfab1cdc73a1210aa7f8f62c9225a5a0e8780",
+      "agent/linux_sandbox.py": "0aa712cd45b1733be9cf55f5774e30b72deefb2ba1239087722ebd3add4ecabf",
+      "agent/tools.py": "39218bb14759df98b8b418137328b69c3935b421cfe93624712c9b4697d39c95",
+      "agent/safe_files.py": "a9fc146a6c741590572367e2b5007a5027bf6389a69173e1d1df065ce556fd77"
+    },
+    "permissions_and_full_extended_profile": {
+      "agent/safety.py": "245f3eb1fa3c8b959c5889c36d2e6541c5c79a4cdd3e94f6adf03f8a41466e12",
+      "agent/permissions.py": "02a0d62d35e443b1882da19872e83ce42e2865de0dcdee7979e66210ce96784b",
+      "agent/permission_context.py": "4fca4f9ade1c106bfd39911291d1effeea388d26f3ec9e9a9ba2ada2d25eb77d",
+      "agent/scope_permissions.py": "074f66c77365207ec905655bfa6d87b0b9a870f2e5c84583e8af215217ca1cd6",
+      "agent/policy.py": "e8e0382a12a8dd4f53fb4e5ca8e286c61c4404640371a06bdc3b0c1fcd790914",
+      "agent/registry.py": "4444438554a8f772c8ffd1066db7b2e395bdd37d5b5264bda9666b8bc3094745",
+      "localpilot_service/desktop_sessions.py": "7abe1f6f6280378818414c7cea18d971cc4851942395b54b0604402f87101398"
+    },
+    "budgets_deadlines_cancel_and_receipts": {
+      "agent/session.py": "21d063687674e0cd69b1918c7eea60ca081d9a536768ab89f8db972a1bf6d6a3",
+      "agent/session_types.py": "5344cd6694bd805b64294dbae06b184f92f9ed365878d4e2c1d97f73f1d2a8db",
+      "agent/session_tools.py": "cc45fd513b7d0e2c421befe5c9b9b16df029e1353ec447b9f966ae3e1e7a4a39",
+      "agent/session_models.py": "fe886088b2ba74962bd03f0b20a6ad8bf76d52845e0f739a11c43dfd6080e04f",
+      "agent/tool_protocol.py": "e3f80f187fb907dc6798bea6f15a0362614ff7d2bab7acf44eb044f831f40015",
+      "agent/tool_budget.py": "fd2c3f0a1ac6d9bd2d824fd05a5371087c25b3086b29885fb15449d005622639",
+      "agent/context_budget.py": "1840d39af0ac9c3e2a4aaff88ca3c2865f28be10b51885b70f89af5598b5cff5",
+      "agent/async_runtime.py": "9f20cb35ccc01d1d20a6fe963877d067a37ddce50fc6ecf6ce4384cb6fc64beb",
+      "agent/child_sessions.py": "738ba86bbc33e525232db5779bf7394c23efe57b39df41ea96c5b89824cf416f",
+      "agent/persistence.py": "dd6d952622710ec0269e9a74a82fdff24e26f7fda8084f30d85a3bd78ce24dd0",
+      "agent/hybrid.py": "a6e8324c6a2d8fda6a9e8cbb13c0a227a7fe84ff1f1fa2e7bb44aed59b4bceab",
+      "agent/retry.py": "8816209f602000020d9f1116058d2a43063fbcefb1df2a691f930194ff141c54",
+      "localpilot_api/service.py": "10854adfa30373106e277d1d99394584cd2aedfa3b55256dd3169bb641197e56",
+      "localpilot_api/client.py": "c1f903f54b0e9e3bca4104fd8672ee9dc0045623e84ffc039817c91743808f71",
+      "localpilot_api/server.py": "9c0c68b192f9b58b1a2eaa84ad255a5f03911430892bb885a0e5aa776c3941dd",
+      "localpilot_service/task_control.py": "c63d71975f85dce0f39be904ef7a57701b08b140c616118c346773825dc6d2a7"
+    },
+    "openai_transport_credentials_and_routing": {
+      "agent/openai_responses.py": "21e6f7dc1faa6b0fa68260f432fc54b9c9a07b2954743393108142b6e7383d3c",
+      "agent/openai_backend.py": "e77c59205d806d623e9db5a2d2dac9f3d6a2a56975046a1857eec925b37f97dd",
+      "agent/local_http.py": "001039ea35404a2a6ac17d0c50d17935a744dc12363fc93d7ceb8ac61308776b",
+      "agent/backends.py": "abdcdb77e2007ffd930ddd1e0906c3cf7c71673a1f06c2c32390981915032e5e",
+      "agent/cloud_credentials.py": "234a6a856e48144fc5b1457e7178e94c2bb0d16e043a93200c5375b8444a52eb",
+      "agent/deepseek.py": "9bd8f8fa6478ca02c9ef6ca65e86745b2ddedca01e24a2b7ee2a22cc4f50905d",
+      "localpilot_service/backend_contract.py": "ee59717c9735e168c2d0bcd40973a64fe068a0c6dd7729bb91df0a9348254223",
+      "localpilot_service/route_backends.py": "c127d02ed9b9abade292c99094d24290acb3beb8e01ab6d4925bdc79429c27ae",
+      "localpilot_service/deployment.py": "150bf1daa17f7378a930f8672304f2ed4b1eb85cc687b1eed3c5e7d4549b39c4",
+      "localpilot_service/routing.py": "da00c643487dad5c0c499c50509d1c16329410ca95c2ca9fbdb8cb6ac1e455ef",
+      "localpilot_service/adapter.py": "4b812d501f1ea762bac717a60a230d82c062aa4f021e67744f27d07b658327fa",
+      "localpilot_service/server.py": "e195cc3c082340322dd73b04414250a84a9cc3677bdd530fa89640db6bed9193",
+      "localpilot_service/cli.py": "848a1222460d445cbb579a99c39c58a1b15533c3734af0aaa4cb9e0216adf208",
+      "localpilot_service/sdk.py": "bd85eca6c50b8c7104f5109ea83e0c9678bb4e67cfc875564634d690acc3d88b",
+      "localpilot_service/security.py": "d58aecd611fa10c36b638cfb388cdacd8b5fb58a17bd0a8cef45d8780aa51919"
+    },
+    "long_run_qualification": {
+      "scripts/qualify_openai_agent.py": "a860afd95c17ec86bdd1b738ae7a4223fd3985eadd262c84259e4f396acf3238",
+      "scripts/qualify_linux_model.py": "ed5c8dedf4de8d083f555da81df5185f1a2cbf7b56a17773800bba4bed16b839"
+    },
+    "other_openai_qualification_unchanged": {
+      "scripts/qualify_openai_engineering.py": "108f948c1b32fa9de95e48a1a84ede4b4b78a3d3ecfabe1c9977e4b7e21cc0fb",
+      "scripts/qualify_openai_superagent.py": "b76e12a0dce07990c41e56a9c36d9ef6f25cadffb9663d8dbb92eb10f74f5841"
+    }
+  },
+  "changed_core_runtime_source_files": [
+    {
+      "file": "agent/patches.py",
+      "b28_sha256": "bb2393534bd6374dcf1caa31ca697318e38974466f4e8dcca7a9cec0a8aebe8b",
+      "b31_sha256": "b6cd298a2f5862948fa98a3195fe0a9cc96573810cf4dd4938d332eec39256d9",
+      "change_and_scope": "Same-file update entries are prepared in input order in memory and committed once; create/delete mixtures remain rejected. The soak requests Shell plus read_file, not apply_patch."
+    },
+    {
+      "file": "agent/schemas.py",
+      "b28_sha256": "248bc056da84f85cfd2102e91726ab28d6e5250dff4c90dbff13615ee9b3c217",
+      "b31_sha256": "344646d8fa22b7ff92787f25f5ea8f57e06455abd3cc8cd0c04e1c2afff85394",
+      "change_and_scope": "Only apply_patch description documents input-order updates and original expected_sha256 identity. Shell schema fields and limits are unchanged; the overall model-facing tool catalogue text is nevertheless different."
+    },
+    {
+      "file": "agent/session_workers.py",
+      "b28_sha256": "68466835bc45eba1fd3668993868b116ee3911fdc13fa54470871b34fc2ab52e",
+      "b31_sha256": "cd2a4e30ece228b2de9db9710d2b4409f3395416dc5d3ee7729ef5aed97f139b",
+      "change_and_scope": "Only _sync_child excludes settled failed_process receipts and list_directory/FileNotFoundError/not_completed observations from unfinished child calls. The soak requests a single parent Shell and read_file, not delegation. No Shell launch/wait/deadline implementation changed."
+    },
+    {
+      "file": "localpilot_service/__init__.py",
+      "b28_sha256": "cbc5f821de80e7796353bf2c534b9d716c181df323942a86bb49925b9978d542",
+      "b31_sha256": "1fe67309030df4b77d8541a29b81845e45ece60b3193bd43e5bae8bc51ceee52",
+      "change_and_scope": "Service VERSION changes from 5.0.0b28 to 5.0.0b31; actual service identity now matches package metadata."
+    }
+  ],
+  "changed_release_metadata": {
+    "description": "Core b28 to b31 and Desktop RC11 to RC14 version values; desktop dependency lockfile changes are root package version only.",
+    "files": [
+      {
+        "file": "pyproject.toml",
+        "b28_sha256": "71ece7ba83147d75b1f8aebc764ab36a8cbbb4a286be9020bc1a41e1f831f7e3",
+        "b31_sha256": "641cebaea2fac643f6e17e704910331b9c02b655cf94b50e98fe8ac1ef616f7e"
+      },
+      {
+        "file": "MODULE_RELEASE.json",
+        "b28_sha256": "7269b15f92ba74ad6346fcb222105e7ae703c195fe159ab01acbaaf287ab1db9",
+        "b31_sha256": "47fd6db3a13d7fe6525a1f8c30475dafae80f6db0e32f1dbc3f82d5905d7f455"
+      },
+      {
+        "file": "desktop/package.json",
+        "b28_sha256": "c6e59fe167bf3997e51b55c8310741d7a811083cccb12c0f25c719d441124e36",
+        "b31_sha256": "2e67241b1097fdcec6d87cb64a1e53f7ea17b60dd01133df17b22481f4823311"
+      },
+      {
+        "file": "desktop/package-lock.json",
+        "b28_sha256": "60a94ce56b0bbe5a19d3f90a2e3fd9d7525ae8e8fa075b13fb6f08601ed2161d",
+        "b31_sha256": "f8773d8ba009fafa122451f0b65efa22205fd1abb74d05acac333fb20fd80414"
+      },
+      {
+        "file": "desktop/src-tauri/Cargo.toml",
+        "b28_sha256": "904167f30bc34c46a83ddf19f6f4f1683f87094b44419f63f4c3229adbca782e",
+        "b31_sha256": "2097c3996ceb1a38cd1ef0b72cd406829fbb8ff30d2da7d58c69576115f010b1"
+      },
+      {
+        "file": "desktop/src-tauri/Cargo.lock",
+        "b28_sha256": "e7f7e97a1900380af57e728461c9f885936d30ed9b91f999a07540fee3c4a06e",
+        "b31_sha256": "43c0a6078cc295da3016dcc3e6a3118984689ad06d14112fcec9816affbf72cf"
+      },
+      {
+        "file": "desktop/src-tauri/tauri.conf.json",
+        "b28_sha256": "14aa93ec274b620347c3001c149ebaf4d2d4a02dd9f1c50750f55a5a047be2e7",
+        "b31_sha256": "b219938c09991fb0854bec4cc124f9506662224761d07b8cadb83c1015c3ea07"
+      }
+    ]
+  },
+  "changed_auxiliary_scripts": [
+    {
+      "file": "scripts/check-candidate-versions.py",
+      "b28_sha256": "ed691b76eec77c7bb9771849697d4d5f5a84f533d64c450e60be767daf5a4a0d",
+      "b31_sha256": "e9b076b67dc56b8eea9680495dbcc65b6e05147089f2b92b70bd1569a118950a",
+      "scope": "Adds the service VERSION constant to the release consistency check. This checker is not invoked by the soak runner."
+    },
+    {
+      "file": "scripts/grade_itbench_aa.py",
+      "b28_sha256": "26ca645748a5272409bbc74f92e366a7d2b95138a86e92fec2d94db86733f8f0",
+      "b31_sha256": "4cd3f405f7a4d1c05edb6bf5d5530657c69de6b934bf59c2cdf01df7e2f20b76",
+      "scope": "Adapts official reference-data schema parsing; unrelated to the Shell soak and not imported by its runner. No reference labels were read for this comparison."
+    }
+  ],
+  "qualifier_contract_unchanged": {
+    "runner": "scripts/qualify_openai_agent.py",
+    "core_start_helper": "scripts/qualify_linux_model.py",
+    "case": "soak",
+    "model": "gpt-6-luna",
+    "protocol": "responses",
+    "reasoning": "medium",
+    "permission_mode": "full",
+    "execution_budget": "extended",
+    "requested_heartbeat_seconds": 7200,
+    "requested_shell_timeout_seconds": 7320,
+    "task_timeout_seconds": 7800,
+    "qualifier_wait_timeout_seconds": 7860,
+    "model_http_timeout_seconds": 180,
+    "heartbeat_interval_seconds": 30,
+    "post_shell_action": "read_file of completion marker",
+    "source_reference": "CloudCore configuration/session/submit/finish and soak() are byte-identical."
+  },
+  "conclusion": "The checked implementation of host Shell execution, Full/extended permissions and limits, deadlines/cancellation, OpenAI transport and the long-run qualifier is byte-identical. Changes to patch preparation and child-receipt settlement do not alter the specified single-parent successful Shell/readback mechanism. No additional two-hour execution was run for this comparison.",
+  "limits": [
+    "The two-hour empirical result remains attributed to b28; byte-identical execution components are source-continuity evidence, not a measured b31 two-hour result.",
+    "The complete product source is not identical: all changed runtime files are listed, including the changed apply_patch tool description. Model-facing tool catalogue bytes and therefore complete API request bytes need not match.",
+    "This review does not assert identical model responses, interpreter/OS environment, network conditions, packaging or installed application behavior.",
+    "The soak specifies no apply_patch or delegate work; actual run receipts establish which tools executed. This static review neither creates nor replaces those receipts.",
+    "A successful long Shell does not exercise the changed multi-update path or exceptional child-failure settlement paths; their separate regression and engineering receipts provide their own scope."
+  ]
+}

@@ -1,0 +1,235 @@
+{
+  "previous_manifest_sha256": "32f4c51a84417af2ed49ded0408588e77633bf012ccc0c0ee3b2799ace2428b8",
+  "verified_payload_files": 57,
+  "all_unchanged": true,
+  "files": {
+    "01-initial-rc13.png": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "02-prepare-components-rc13.png": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "03-connected-components-no-model.png": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "04-openai-empty-key.png": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "04b-cloud-provider-selection.png": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "05-ready-components-rc13.png": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "06-live-service-inspection-first-result.png": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "07-first-setup-blocked-before-stop.png": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "08-owned-stop-receipt.png": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "08-stopped-windows.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "RESULTS.md": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "SHA256SUMS": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "build-config.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "build-linux-test.log.gz": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "build-native-exit.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "build-native-job.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "build-native-launcher.sh": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "build-native-supervisor.py": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "build-rc13-native.log.gz": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "build-recipe.sh": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "candidate-identity.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "candidate-versions.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "companion-service.log.gz": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "core-service.log.gz": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "fixture-j-manifest.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "frozen-service-version.py": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "inspect-service.py": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "inspect-service.sh": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "launch-j.py": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "launch-j.sh": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "launch-owned-webview-minimal.sh": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "launch-pet-overlay.sh": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "launch.py": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "launch.sh": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "make-fixture-j.py": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "native-no-model-requests.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "native-rc13-i-process.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "native-rc13-i-stop.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "native-rc13-i.log.gz": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "package-results.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "pet-control-j.py": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "prepare-resources.log.gz": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "previous-rc12-evidence-integrity.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "qualification-scope.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "runtime-version-mismatch.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "service-capabilities.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "source-snapshot.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "stop.py": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "test-owner-i.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "test-owner-j.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "verified-modules.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "verified-source-after-build.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "verified-source-before-build.json": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "wheel-channels.log.gz": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "wheel-companion.log.gz": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "wheel-core.log.gz": {
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    "wheel-suite.log.gz": {
+      "bytes_match": true,
+      "sha256_match": true
+    }
+  }
+}

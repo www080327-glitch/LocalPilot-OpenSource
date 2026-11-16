@@ -1,0 +1,50 @@
+{
+  "source_commit": "c5439659a579b2ee9e74fd53e6d3232fe12fb855",
+  "source_tree": "d0b0b33b036587ef0f0a802ca728419e9a444587",
+  "source_dirty": false,
+  "artifact": "/workspace/scratch/c0f3ec78c621/validation/package-b31-b8-b32-LtvhM6/build-source/desktop/release/linux-test-v5.0.1-rc.14/20261117-064919-35957/LocalPilot-Test-5.0.1-rc.14-linux-x86_64.deb",
+  "artifact_sha256": "66aed474856ffa958ec07d383dd8f31840bbbdabbd0613e229ce342f9b78ce61",
+  "artifact_bytes": 114637332,
+  "elf": "/workspace/scratch/c0f3ec78c621/validation/package-b31-b8-b32-LtvhM6/native-smoke/extracted/usr/bin/localpilot-desktop-test",
+  "elf_sha256": "75ffa8be30e8a7c73c4cc7806c29cd65d6d9e115bb78e07e5bf097c09dee864c",
+  "bundle_self_check": {
+    "architecture": "x86_64",
+    "bundle_id": "io.localpilot.desktop.test",
+    "modules": {
+      "localpilot-agent-service": "5.0.0b31",
+      "localpilot-channels": "0.1.0a4",
+      "localpilot-companion": "0.5.7b8",
+      "suite": "0.2.0b32"
+    },
+    "services_started": false,
+    "status": "bundle_self_check_passed",
+    "user_data_opened": false,
+    "verified_wheels": 40,
+    "version": "5.0.1-rc.14"
+  },
+  "extracted_runtime": {
+    "status": "PASS",
+    "modules": [
+      "agent",
+      "companion",
+      "localpilot_suite",
+      "localpilot_channels",
+      "pydantic_core",
+      "PIL._imaging",
+      "cryptography.hazmat.bindings._rust"
+    ],
+    "module_versions": {
+      "suite": "0.2.0b32",
+      "localpilot-agent-service": "5.0.0b31",
+      "localpilot-companion": "0.5.7b8",
+      "localpilot-channels": "0.1.0a4"
+    },
+    "pip_check": "No broken requirements found.",
+    "node": {
+      "status": "PASS",
+      "version": "v22.23.4",
+      "sha256": "b8492284c76a54baf58d61668dd0e41ee0fc98adabf9503d30f05d08f55b4406"
+    }
+  },
+  "installed_system_wide": false
+}

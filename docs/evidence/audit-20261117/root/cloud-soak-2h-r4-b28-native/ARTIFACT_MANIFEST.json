@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-11-16T22:07:39.170672+00:00",
+  "scope": "Independent source-loaded b28 R4 only; no earlier duration added, no later release identity substituted. Explicit public allowlist, terminal-only archive.",
+  "source_commit": "03535fe943f64f49e9e3d79e7949aca6c9ec9b87",
+  "source_tree": "1792d58af7858208db5018a747d78a1c75848edf",
+  "runner_sha256": "a860afd95c17ec86bdd1b738ae7a4223fd3985eadd262c84259e4f396acf3238",
+  "manifest_self_excluded": true,
+  "archive_file_count_excluding_manifest": 18,
+  "archive_bytes_excluding_manifest": 98423,
+  "missing_allowlisted_files": [],
+  "excluded": [
+    "core-private/",
+    "service and client credential configuration",
+    "SQLite/WAL",
+    "credential files",
+    "whole workspace",
+    "model weights"
+  ],
+  "files": [
+    {
+      "archive_path": "RESULTS.json",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r4-b28-native/RESULTS.json",
+      "original_bytes": 15871,
+      "original_sha256": "396ffdf394b8d822b9d9ae6468935eae756a084302db6456a186bec3dbd2dfc7",
+      "archive_bytes": 15871,
+      "archive_sha256": "396ffdf394b8d822b9d9ae6468935eae756a084302db6456a186bec3dbd2dfc7",
+      "transformation": "identity"
+    },
+    {
+      "archive_path": "soak-task.json.gz",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r4-b28-native/soak-task.json",
+      "original_bytes": 12572,
+      "original_sha256": "72211eb678c85ba258484099fe3b2d53ff2db16c9d33d23462a07ea7aa9e504e",
+      "archive_bytes": 3505,
+      "archive_sha256": "fdb3d5b2dceb92704f2717bdb7dc10e16abf56ea9d32cd8e8155c6bdddcd9f21",
+      "transformation": "gzip.compress(mtime=0), decompressed bytes unchanged"
+    },
+    {
+      "archive_path": "soak-progress.json",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r4-b28-native/soak-progress.json",
+      "original_bytes": 154,
+      "original_sha256": "ee65eae1124a2f7ae8c3d58f8735733f0a0ffa62f450486a82dc43eb6cdb0a9a",
+      "archive_bytes": 154,
+      "archive_sha256": "ee65eae1124a2f7ae8c3d58f8735733f0a0ffa62f450486a82dc43eb6cdb0a9a",
+      "transformation": "identity"
+    },
+    {
+      "archive_path": "resolved-runtime-budgets.json",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r4-b28-native/resolved-runtime-budgets.json",
+      "original_bytes": 1238,
+      "original_sha256": "603b4a44b1de4ac5bf6159d496350670ecdebffe64db9e461e10bf7130580dd8",
+      "archive_bytes": 1238,
+      "archive_sha256": "603b4a44b1de4ac5bf6159d496350670ecdebffe64db9e461e10bf7130580dd8",
+      "transformation": "identity"
+    },
+    {
+      "archive_path": "core.log",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r4-b28-native/core.log",
+      "original_bytes": 109,
+      "original_sha256": "61d7c1147bbe86ae80f73e2ba6e18f1f25a2ade8e165b7eda474ab5a3d552bf6",
+      "archive_bytes": 109,
+      "archive_sha256": "61d7c1147bbe86ae80f73e2ba6e18f1f25a2ade8e165b7eda474ab5a3d552bf6",
+      "transformation": "identity"
+    },
+    {
+      "archive_path": "heartbeat.py",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r4-b28-native/workspace/heartbeat.py",
+      "original_bytes": 428,
+      "original_sha256": "4e9f4268aac5734a99a5f5e641c40c78929d6675a954b281a19d48e4cd61da0e",
+      "archive_bytes": 428,
+      "archive_sha256": "4e9f4268aac5734a99a5f5e641c40c78929d6675a954b281a19d48e4cd61da0e",
+      "transformation": "identity"
+    },
+    {
+      "archive_path": "heartbeat.jsonl",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r4-b28-native/workspace/heartbeat.jsonl",
+      "original_bytes": 7471,
+      "original_sha256": "962d44983d89d1f4cfee590ca0ed3e318422a55d1d0ef3323c865b542a10a396",
+      "archive_bytes": 7471,
+      "archive_sha256": "962d44983d89d1f4cfee590ca0ed3e318422a55d1d0ef3323c865b542a10a396",
+      "transformation": "identity"
+    },
+    {
+      "archive_path": "soak-finished.txt",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r4-b28-native/workspace/soak-finished.txt",
+      "original_bytes": 24,
+      "original_sha256": "4a780a56e5db021c969dc0e2f379d9b61c062ff436247ac92e920507a8a29a24",
+      "archive_bytes": 24,
+      "archive_sha256": "4a780a56e5db021c969dc0e2f379d9b61c062ff436247ac92e920507a8a29a24",
+      "transformation": "identity"
+    },
+    {
+      "archive_path": "outer.log",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r4-b28-native.log",
+      "original_bytes": 13853,
+      "original_sha256": "d58d6176e8ec90ad3ed4efe82b981b6939c9fe9c0838e8c49153432b00b58e34",
+      "archive_bytes": 13853,
+      "archive_sha256": "d58d6176e8ec90ad3ed4efe82b981b6939c9fe9c0838e8c49153432b00b58e34",
+      "transformation": "identity"
+    },
+    {
+      "archive_path": "job.json",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r4-b28-native-job.json",
+      "original_bytes": 1368,
+      "original_sha256": "e7357caeafdbcd948a938ce9d06ee9f99480cfb6643a5bc442a4a88bcbb595bc",
+      "archive_bytes": 1332,
+      "archive_sha256": "45b652838f2c76d9d69b3611d823d2e66e8c21c59274e6766993540923478185",
+      "transformation": "Only known private key filepath replaced with <private_key_file>"
+    },
+    {
+      "archive_path": "native-surface.json",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r4-b28-native-surface.json",
+      "original_bytes": 273,
+      "original_sha256": "5b1627e6752c6da182aacb63f5b5b684cfbb5ad552688524bc9f40eb52376b9b",
+      "archive_bytes": 273,
+      "archive_sha256": "5b1627e6752c6da182aacb63f5b5b684cfbb5ad552688524bc9f40eb52376b9b",
+      "transformation": "identity"
+    },
+    {
+      "archive_path": "exit.json",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r4-b28-native-exit.json",
+      "original_bytes": 98,
+      "original_sha256": "52b9cb18b3f6c930d834a630d5160ee096d5ecc271edab4522c0805e4f14f214",
+      "archive_bytes": 98,
+      "archive_sha256": "52b9cb18b3f6c930d834a630d5160ee096d5ecc271edab4522c0805e4f14f214",
+      "transformation": "identity"
+    },
+    {
+      "archive_path": "launcher.sh",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/run_soak_b28_native.sh",
+      "original_bytes": 808,
+      "original_sha256": "a64dbc3af18abf80c051a533e2102a1ac71ed487f49063a2f0e4a31d949f176a",
+      "archive_bytes": 808,
+      "archive_sha256": "a64dbc3af18abf80c051a533e2102a1ac71ed487f49063a2f0e4a31d949f176a",
+      "transformation": "identity; no key filepath present"
+    },
+    {
+      "archive_path": "supervisor.py",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/run_qualification_job.py",
+      "original_bytes": 1279,
+      "original_sha256": "31eebe99550dec0e33fa8cb03206fe2350dde070f185dd1ff25498d7d712af8d",
+      "archive_bytes": 1279,
+      "archive_sha256": "31eebe99550dec0e33fa8cb03206fe2350dde070f185dd1ff25498d7d712af8d",
+      "transformation": "identity"
+    },
+    {
+      "archive_path": "runner.py",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/final-source-b28/scripts/qualify_openai_agent.py",
+      "original_bytes": 10257,
+      "original_sha256": "a860afd95c17ec86bdd1b738ae7a4223fd3985eadd262c84259e4f396acf3238",
+      "archive_bytes": 10257,
+      "archive_sha256": "a860afd95c17ec86bdd1b738ae7a4223fd3985eadd262c84259e4f396acf3238",
+      "transformation": "identity"
+    },
+    {
+      "archive_path": "core-harness.py",
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/final-source-b28/scripts/qualify_linux_model.py",
+      "original_bytes": 26953,
+      "original_sha256": "ed5c8dedf4de8d083f555da81df5185f1a2cbf7b56a17773800bba4bed16b839",
+      "archive_bytes": 26953,
+      "archive_sha256": "ed5c8dedf4de8d083f555da81df5185f1a2cbf7b56a17773800bba4bed16b839",
+      "transformation": "identity"
+    },
+    {
+      "archive_path": "VERIFICATION.json",
+      "original_path": null,
+      "original_bytes": null,
+      "original_sha256": null,
+      "archive_bytes": 7208,
+      "archive_sha256": "b953ff17db1119bbe7d2d04114ee4606f6ededf73cc0de230143d05c4d88b665",
+      "transformation": "Authored independent post-terminal review; no model or business-test rerun"
+    },
+    {
+      "archive_path": "RESULTS.md",
+      "original_path": null,
+      "original_bytes": null,
+      "original_sha256": null,
+      "archive_bytes": 7562,
+      "archive_sha256": "e79c93a7b1890b7a690a03a2b7c7143d5895aa4043b07f7e6001f5acc09dfee6",
+      "transformation": "Authored independent post-terminal review; no model or business-test rerun"
+    }
+  ]
+}

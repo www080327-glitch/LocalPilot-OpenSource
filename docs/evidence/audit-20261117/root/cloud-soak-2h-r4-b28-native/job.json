@@ -1,0 +1,25 @@
+{
+  "command": [
+    "/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python",
+    "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/final-source-b28/scripts/qualify_openai_agent.py",
+    "--case",
+    "soak",
+    "--soak-seconds",
+    "7200",
+    "--output",
+    "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r4-b28-native",
+    "--key-file",
+    "<private_key_file>"
+  ],
+  "cwd": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/final-source-b28",
+  "log": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r4-b28-native.log",
+  "exit_receipt": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r4-b28-native-exit.json",
+  "heartbeat": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r4-b28-native/workspace/heartbeat.jsonl",
+  "source_commit": "03535fe943f64f49e9e3d79e7949aca6c9ec9b87",
+  "source_tree": "1792d58af7858208db5018a747d78a1c75848edf",
+  "source_dirty": false,
+  "runner_sha256": "a860afd95c17ec86bdd1b738ae7a4223fd3985eadd262c84259e4f396acf3238",
+  "supervisor_sha256": "31eebe99550dec0e33fa8cb03206fe2350dde070f185dd1ff25498d7d712af8d",
+  "execution_surface": "Existing native desktop Terminal foreground; no network/proxy/TLS configuration changed",
+  "duration_seconds": 7200
+}
