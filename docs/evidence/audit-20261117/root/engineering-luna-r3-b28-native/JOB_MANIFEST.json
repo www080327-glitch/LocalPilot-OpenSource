@@ -1,0 +1,18 @@
+{
+  "prepared_at_utc": "2026-11-16T20:22:20.996828+00:00",
+  "prepared_without_execution": true,
+  "job_file": "engineering-luna-r3-b28-native.job.sh",
+  "job_sha256": "0a13a03353c9aec25b240d26a6abcf49ac6547439d3443fb563ddd251c6e2c55",
+  "job_bytes": 4121,
+  "source_head": "03535fe943f64f49e9e3d79e7949aca6c9ec9b87",
+  "source_tree": "1792d58af7858208db5018a747d78a1c75848edf",
+  "runner_sha256": "108f948c1b32fa9de95e48a1a84ede4b4b78a3d3ecfabe1c9977e4b7e21cc0fb",
+  "entrypoint": "Native Terminal foreground; owner-controlled start",
+  "environment_change": "Only fixed task-tool Python directory prepended to inherited PATH; no proxy/TLS changes.",
+  "validation": [
+    "bash -n PASS",
+    "Embedded Python compile PASS",
+    "New output absent"
+  ],
+  "output": "<run_root>"
+}

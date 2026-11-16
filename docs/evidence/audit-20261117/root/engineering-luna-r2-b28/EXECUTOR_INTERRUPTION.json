@@ -1,0 +1,62 @@
+{
+  "kind": "EXECUTOR_SESSION_INTERRUPTION_OBSERVATION",
+  "observed_files_at_utc": "2026-11-16T20:21:56.802981+00:00",
+  "parent_report": {
+    "reported_at_utc": "2026-11-16T20:19:50Z",
+    "exec_session_id": 5638,
+    "session_observation": "Unknown process id",
+    "functions_store": "reset",
+    "live_agents_observed": [
+      "root"
+    ]
+  },
+  "last_saved_progress": {
+    "elapsed_seconds": 105.6069087989963,
+    "task_id": "resp_c2a5daa5b6eb44528135c6073c44ade7",
+    "status": "running",
+    "quiescent": false,
+    "tools": []
+  },
+  "results_present": false,
+  "execution_end_present": false,
+  "exit_code": null,
+  "owned_core_stopped": null,
+  "classification": "Infrastructure interruption; no terminal result. Neither PASS nor a product-failure verdict.",
+  "limitations": [
+    "The saved progress is stale, not a live Core query.",
+    "No observed process termination or Core stop receipt is available."
+  ],
+  "action": "Original artifacts preserved. No automatic rerun, cancellation, source change or parameter change performed.",
+  "preserved_files": [
+    {
+      "file": "engineering-luna-r2-b28.EXECUTION_START.json",
+      "bytes": 846,
+      "sha256": "80418380723a2e75ff5b67c58135eefe675b31efa859c10a3248282d7a32e863",
+      "mtime_utc": "2026-11-16T20:10:46.420732+00:00"
+    },
+    {
+      "file": "engineering-luna-r2-b28.runner.py",
+      "bytes": 35662,
+      "sha256": "108f948c1b32fa9de95e48a1a84ede4b4b78a3d3ecfabe1c9977e4b7e21cc0fb",
+      "mtime_utc": "2026-11-16T20:10:46.420810+00:00"
+    },
+    {
+      "file": "engineering-luna-r2-b28.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_utc": "2026-11-16T20:10:46.420810+00:00"
+    },
+    {
+      "file": "engineering-luna-r2-b28/PROTOCOL.json",
+      "bytes": 14899,
+      "sha256": "37dff6f265575a10d3a7818fd18316357c44ec56bb467b0cbc2a56efbb2a57e2",
+      "mtime_utc": "2026-11-16T20:10:46.507485+00:00"
+    },
+    {
+      "file": "engineering-luna-r2-b28/engineering-progress.json",
+      "bytes": 157,
+      "sha256": "ec617402b872196623fb270c58aea59915cac2005facac40b335f4a3fc251cf6",
+      "mtime_utc": "2026-11-16T20:12:32.415665+00:00"
+    }
+  ]
+}

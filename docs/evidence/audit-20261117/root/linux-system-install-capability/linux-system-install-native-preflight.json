@@ -1,0 +1,48 @@
+{
+  "observed_utc": "2026-11-16T20:39:54.969305+00:00",
+  "surface": "Existing native Terminal ordinary shell",
+  "effective_uid": 1000,
+  "system_changes": false,
+  "commands": [
+    {
+      "command": [
+        "id"
+      ],
+      "returncode": 0,
+      "stdout": "uid=1000(agent) gid=1000(agent) groups=1000(agent)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "bash",
+        "-c",
+        "command -v sudo"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "dpkg-query",
+        "-W",
+        "-f=${binary:Package}\t${db:Status-Status}\t${Version}\n",
+        "local-pilot-test",
+        "python3",
+        "xdg-utils",
+        "zenity",
+        "bubblewrap",
+        "python3.13",
+        "libayatana-appindicator3-1",
+        "libwebkit2gtk-4.1-0",
+        "libgtk-3-0"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "dpkg-query: no packages found matching local-pilot-test\ndpkg-query: no packages found matching python3\ndpkg-query: no packages found matching xdg-utils\ndpkg-query: no packages found matching zenity\ndpkg-query: no packages found matching bubblewrap\ndpkg-query: no packages found matching python3.13\ndpkg-query: no packages found matching libayatana-appindicator3-1\ndpkg-query: no packages found matching libwebkit2gtk-4.1-0\ndpkg-query: no packages found matching libgtk-3-0\n"
+    }
+  ],
+  "installed_dependency_providers": [],
+  "provider_query_returncode": 0,
+  "provider_query_stderr": ""
+}
