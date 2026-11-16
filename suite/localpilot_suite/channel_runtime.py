@@ -20,6 +20,19 @@ ARCHIVES = {
     'arm64': ('node-v22.23.4-darwin-arm64.tar.gz', 'c9e1dbc748b33ed2d14f42445191ecaf14c56259c7a9a26d0042c49ec2b66428'),
     'x86_64': ('node-v22.23.4-darwin-x64.tar.gz', 'efcc2b0db6f94bf53eddb038fe2b370277a042bd29e4f19b8f8e23598795b819'),
 }
+LINUX_ARCHIVES = {
+    'aarch64': ('node-v22.23.4-linux-arm64.tar.gz', 'f7a1e486dbc8b286847815b477d4fb5e9fb963ed4489c3e1588853d685f589f9'),
+    'x86_64': ('node-v22.23.4-linux-x64.tar.gz', 'b8492284c76a54baf58d61668dd0e41ee0fc98adabf9503d30f05d08f55b4406'),
+}
+
+
+def runtime_archive(system=None, architecture=None):
+    system = platform.system() if system is None else system
+    architecture = platform.machine() if architecture is None else architecture
+    archives = ARCHIVES if system == 'Darwin' else LINUX_ARCHIVES if system == 'Linux' else {}
+    if architecture not in archives:
+        raise ValueError('CHANNEL_NODE_PLATFORM_NOT_SUPPORTED')
+    return archives[architecture]
 
 class NoRedirect(HTTPRedirectHandler):
     def redirect_request(self, *args, **kwargs):
@@ -47,13 +60,11 @@ def install(home):
         return _install(home)
 
 def _install(home):
-    if platform.system() != 'Darwin' or platform.machine() not in ARCHIVES:
-        raise ValueError('CHANNEL_NODE_PLATFORM_NOT_SUPPORTED')
+    name, checksum = runtime_archive()
     existing = installed(home)
     if existing:
         return {'status': 'installed', 'version': VERSION, 'downloaded': False}
     root = private_directory(home / 'channel-node', create=True)
-    name, checksum = ARCHIVES[platform.machine()]
     partial = private_file(root / (name + '.part'), create=True)
     cancel = root / 'cancel'
     cancel.unlink(missing_ok=True)
@@ -111,6 +122,7 @@ def _install(home):
             target.chmod(0o700 if target_name == 'node' else 0o600)
             os.replace(target, root / target_name)
     save(root / 'installation.json', {'version': VERSION, 'source': SOURCE + name,
+        'platform': platform.system(), 'architecture': platform.machine(),
         'archive_sha256': checksum, 'binary_sha256': digest(root / 'node'),
         'source_verification': 'HTTPS and pinned official SHASUMS256; release signature NOT_VERIFIED'})
     return {'status': 'installed', 'version': VERSION, 'downloaded': not used_bundled, 'bundled_runtime': used_bundled}

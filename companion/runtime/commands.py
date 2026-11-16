@@ -64,7 +64,7 @@ class CommandRouter:
             'training_review': lambda data: service.training.review(data.get('answer_id')),
             'training_examples': lambda data: service.training.list(),
             'training_example_delete': lambda data: service.training.delete(data.get('id')),
-            'training_export': lambda data: service.training.export(data.get('seed', 17), data.get('validation_fraction', .2)),
+            'training_export': lambda data: service.training.export(data.get('seed', 17), data.get('validation_fraction', .2), data.get('test_fraction', 0)),
             'shutdown': self.shutdown,
             'status': self.status,
             'submit_escalation': service.agent_tasks.submit,
@@ -238,8 +238,8 @@ class CommandRouter:
             raise ValueError("Exclusions require bounded bundle identifiers")
         service.native.stop()
         service.config.native_app_exclusions = tuple(dict.fromkeys(apps))
-        from companion.observers.native import NativeObserver
-        service.native = NativeObserver(service.config, service.enqueue_native)
+        from companion.observers.native import native_observer
+        service.native = native_observer(service.config, service.enqueue_native)
         service.store.set("ui_app_exclusions", list(service.config.native_app_exclusions))
         service.store.set("native_observation_consent", None)
         service.store.set("pending_escalation", None)

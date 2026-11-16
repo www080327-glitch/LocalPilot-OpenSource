@@ -2064,7 +2064,7 @@ export default function App() {
                       </details>
                       <p>
                         更改保留会话历史，在下次提交时生效。完全权限不再弹 APP
-                        内审批；macOS 自身权限仍需由系统允许。
+                        内审批；操作系统权限仍需由系统允许。
                       </p>
                     </Popover>
                   )}

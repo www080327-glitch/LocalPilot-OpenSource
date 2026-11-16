@@ -40,12 +40,14 @@ pub enum Mode {
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "UPPERCASE")]
+#[cfg_attr(not(target_os = "macos"), allow(dead_code))]
 pub enum Direction {
     Left,
     Right,
     Up,
     Down,
 }
+#[cfg(any(target_os = "macos", test))]
 pub fn direction(dx: f64, dy: f64) -> Direction {
     if dx.abs() >= dy.abs() {
         if dx < 0.0 {
@@ -75,10 +77,12 @@ pub fn origin(a: Anchor, area: (i32, i32, u32, u32), size: (u32, u32), offset: f
     }
 }
 pub struct Extra {
+    #[cfg_attr(not(target_os = "macos"), allow(dead_code))]
     pub sprite: pet_assets::Sprite,
     pub rect: [u32; 4],
 }
 pub struct Pack {
+    #[cfg_attr(not(target_os = "macos"), allow(dead_code))]
     pub sprite: pet_assets::Sprite,
     pub rects: Vec<[u32; 4]>,
     pub identity: String,
@@ -127,16 +131,6 @@ impl Default for EdgeState {
         }
     }
 }
-fn pose_name(a: Anchor) -> &'static str {
-    match a {
-        Anchor::TopLeft => "TOP_LEFT",
-        Anchor::TopRight => "TOP_RIGHT",
-        Anchor::LeftEdge => "LEFT_EDGE",
-        Anchor::RightEdge => "RIGHT_EDGE",
-        Anchor::BottomLeft => "BOTTOM_LEFT",
-        Anchor::BottomRight => "BOTTOM_RIGHT",
-    }
-}
 pub fn chat_box(a: Anchor) -> [f64; 4] {
     match a {
         Anchor::TopLeft => [100.0, 112.0, 140.0, 104.0],
@@ -156,6 +150,7 @@ fn bottom(a: Anchor) -> bool {
 fn top(a: Anchor) -> bool {
     matches!(a, Anchor::TopLeft | Anchor::TopRight)
 }
+#[cfg(target_os = "macos")]
 pub fn is_chat(app: &tauri::AppHandle, x: f64, y: f64) -> bool {
     let state = app.state::<pet_native::PetState>();
     let e = state.edge.lock().unwrap();
@@ -164,6 +159,7 @@ pub fn is_chat(app: &tauri::AppHandle, x: f64, y: f64) -> bool {
     }
     thought_hit(e.anchor, x, y)
 }
+#[cfg(any(target_os = "macos", test))]
 fn thought_hit(anchor: Anchor, x: f64, y: f64) -> bool {
     let [bx, by, _, _] = chat_box(anchor);
     let mut x = x - bx;
@@ -316,6 +312,7 @@ pub fn snapshot(app: &tauri::AppHandle) -> Value {
     let sprite = state.sprite.lock().unwrap();
     json!({"anchor":e.anchor,"mode":e.mode,"direction":e.direction,"reveal":e.reveal,"stage":if e.reveal<0.22{"AHOGE"}else if e.reveal<0.62{"EYES"}else{"HEAD_AND_HANDS"},"relocations":e.relocations,"render":render(&e,sprite.as_ref()),"chat_box":chat_box(e.anchor),"viewport":[VIEW_W,VIEW_H],"phase":e.phase,"mini_visible":e.mode!=Mode::ChatOpen,"mini_glass":state.mini_glass.load(Ordering::Relaxed),"thought_left":left(e.anchor),"thought_up":top(e.anchor),"activity":e.activity,"drag_history":e.drag_history,"placements":e.placements})
 }
+#[cfg(target_os = "macos")]
 pub fn hit(app: &tauri::AppHandle, x: f64, y: f64) -> bool {
     if is_chat(app, x, y) {
         return true;
@@ -440,6 +437,7 @@ pub fn initialize(app: &tauri::AppHandle) -> Result<(), String> {
     place(app)?;
     persist(app)
 }
+#[cfg(target_os = "macos")]
 pub fn drag(app: &tauri::AppHandle, dx: f64, dy: f64) {
     let state = app.state::<pet_native::PetState>();
     let mut e = state.edge.lock().unwrap();
@@ -462,6 +460,7 @@ pub fn drag(app: &tauri::AppHandle, dx: f64, dy: f64) {
         e.drag_history.push(json!({"direction":d,"dx":dx,"dy":dy,"row":match d {Direction::Left=>2,Direction::Right=>1,Direction::Up=>9,Direction::Down=>10}}));
     }
 }
+#[cfg(target_os = "macos")]
 pub fn end_drag(app: &tauri::AppHandle) {
     let state = app.state::<pet_native::PetState>();
     let mut e = state.edge.lock().unwrap();
@@ -569,9 +568,7 @@ pub fn relocate(app: &tauri::AppHandle, target: Option<Anchor>) -> Result<(), St
 pub fn tick(app: &tauri::AppHandle) {
     let state = app.state::<pet_native::PetState>();
     let prefs = state.settings.lock().unwrap().clone();
-    let motion = prefs.animation
-        && !prefs.quiet
-        && !objc2_app_kit::NSWorkspace::sharedWorkspace().accessibilityDisplayShouldReduceMotion();
+    let motion = prefs.animation && !prefs.quiet && !platform::reduce_motion();
     let mut e = state.edge.lock().unwrap();
     e.motion = motion;
     let elapsed = e.since.elapsed().as_millis() as f64;

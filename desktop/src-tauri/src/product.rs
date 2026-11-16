@@ -425,13 +425,12 @@ pub async fn open_attachment(n: State<'_, Native>, id: String) -> Result<(), Str
         return Err(fail("文件来源已变化"));
     }
     // Reveal only. An extension is not proof that launching a document is safe.
-    std::process::Command::new("/usr/bin/open")
-        .arg("-R")
-        .arg("--")
-        .arg(path)
+    platform::reveal_command(&path)?
         .status()
-        .map_err(|_| fail("无法打开文件"))?;
-    Ok(())
+        .map_err(|_| fail("无法显示文件位置"))?
+        .success()
+        .then_some(())
+        .ok_or_else(|| fail("文件管理器未能显示文件位置"))
 }
 #[tauri::command]
 pub async fn product_control(
@@ -570,13 +569,7 @@ pub async fn installation_backup(
 }
 #[tauri::command]
 pub async fn installation_location(app: tauri::AppHandle) -> Result<(), String> {
-    std::process::Command::new("/usr/bin/open")
-        .arg(data(&app)?)
-        .status()
-        .map_err(|_| fail("无法在 Finder 中显示用户数据"))?
-        .success()
-        .then_some(())
-        .ok_or_else(|| fail("Finder 未能打开数据目录"))
+    platform::open_target(data(&app)?)
 }
 #[tauri::command]
 pub async fn import_attachments(
@@ -813,7 +806,10 @@ mod tests {
 #[tauri::command]
 pub async fn discover_suites(app: tauri::AppHandle) -> Result<Value, String> {
     let home = app.path().home_dir().map_err(|_| fail("用户目录不可用"))?;
-    let support = home.join("Library/Application Support");
+    let support = app
+        .path()
+        .data_dir()
+        .map_err(|_| fail("应用数据目录不可用"))?;
     let mut found = Vec::new();
     if let Ok(entries) = fs::read_dir(&support) {
         for entry in entries.flatten().take(200) {

@@ -3,10 +3,11 @@ from pathlib import Path
 from types import SimpleNamespace
 import tempfile
 import sys
+import shutil
 import unittest
 from agent.acceptance import HostPythonAcceptance
 
-@unittest.skipUnless(sys.platform == 'darwin', 'macOS executor only')
+@unittest.skipUnless(sys.platform == 'darwin' or (sys.platform == 'linux' and shutil.which('bwrap') and shutil.which('unshare')), 'macOS Seatbelt or Linux bubblewrap/util-linux executor required')
 class HostAcceptanceTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(); self.addCleanup(self.tmp.cleanup)

@@ -2,13 +2,13 @@ import { test, expect, type Page } from "@playwright/test";
 
 // These fixtures exercise real React controls through a synthetic native bridge.
 // Actual HTTP discovery and service activation are covered by Suite tests.
-async function intelBridge(page: Page) {
+async function intelBridge(page: Page, system = "Darwin") {
   await page.route("**/src/bridge.ts", (route) =>
     route.fulfill({
       contentType: "text/javascript",
       body: `
       export const desktop=true;
-      const hardware={os:'Darwin',arch:'x86_64',chip:'Intel fixture',memory_bytes:16*1024**3,available_memory_bytes:8*1024**3,free_disk_bytes:30*1024**3,backends:[],models:[]};
+      const hardware={os:${JSON.stringify(system)},arch:'x86_64',chip:'CPU fixture',memory_bytes:16*1024**3,available_memory_bytes:8*1024**3,free_disk_bytes:30*1024**3,backends:[],models:[]};
       const configuredModels=[];
       window.intelCalls=[];
       export async function call(command,args={}){
@@ -44,6 +44,29 @@ async function intelBridge(page: Page) {
     }),
   );
 }
+
+test("Linux setup uses the same explicit HTTP route without offering MLX", async ({
+  page,
+}) => {
+  await intelBridge(page, "Linux");
+  await page.goto("/tests/ui/intel-fixture.html");
+  const form = page.getByRole("region", { name: "连接本机模型服务" });
+  await expect(form).toBeVisible();
+  await expect(page.getByRole("button", { name: /安装 oMLX/ })).toHaveCount(0);
+  await form.getByRole("button", { name: "检查连接并读取模型列表" }).click();
+  await form.getByLabel("服务报告的模型").selectOption("fixture-gguf");
+  await form.getByLabel("上下文 token 上限").fill("2048");
+  await form
+    .getByRole("button", { name: "保存本机模型配置", exact: true })
+    .click();
+  await expect(form.getByText("已保存路由：local-cpu")).toBeVisible();
+  const calls = await page.evaluate(() => (window as any).intelCalls);
+  expect(
+    calls.filter(
+      (item: any) => item.args.operation === "configure_local_endpoint",
+    ),
+  ).toHaveLength(1);
+});
 
 test("Intel setup discovers a local model and saves explicit CPU endpoint choices", async ({
   page,

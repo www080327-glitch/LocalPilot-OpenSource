@@ -34,7 +34,9 @@ export default function Pet() {
   const bubble = new URLSearchParams(location.search).get("pet") === "bubble";
   const [settings, setSettings] = useState<PetSettings>(defaults),
     [material, setMaterial] = useState("solid"),
-    [systemReduce, setSystemReduce] = useState(false);
+    [systemReduce, setSystemReduce] = useState(false),
+    [nativePointer, setNativePointer] = useState(true),
+    [mlxSupported, setMlxSupported] = useState(false);
   const [state, setState] = useState("idle"),
     [expanded, setExpanded] = useState(false),
     [visible, setVisible] = useState(true),
@@ -100,6 +102,8 @@ export default function Pet() {
           setExpanded(r.expanded);
           setMaterial(r.material?.material || "solid");
           setSystemReduce(r.material?.reduce_motion || false);
+          setNativePointer(r.native_pointer !== false);
+          setMlxSupported(r.mlx_supported === true);
         }
       })
       .catch((e) => setError(String(e)));
@@ -431,6 +435,7 @@ export default function Pet() {
         asset={asset}
         settings={settings}
         systemReduce={systemReduce}
+        nativePointer={nativePointer}
         aside={aside}
       />
     );
@@ -1001,28 +1006,38 @@ export default function Pet() {
                   停止轻聊服务
                 </button>
               </div>
-              <button
-                onClick={() =>
-                  call<any>("pet_runtime", { action: "choose_model" })
-                    .then((r) => {
-                      if (r.text) setError(r.text);
-                    })
-                    .catch(handleError)
-                }
-              >
-                选择已有的 0.8B 模型
-              </button>
-              <button
-                onClick={() =>
-                  call<any>("pet_runtime", { action: "choose_python" })
-                    .then((r) => {
-                      if (r.text) setError(r.text);
-                    })
-                    .catch(handleError)
-                }
-              >
-                选择已有的模型运行程序
-              </button>
+              {mlxSupported && (
+                <button
+                  onClick={() =>
+                    call<any>("pet_runtime", { action: "choose_model" })
+                      .then((r) => {
+                        if (r.text) setError(r.text);
+                      })
+                      .catch(handleError)
+                  }
+                >
+                  选择已有的 0.8B 模型
+                </button>
+              )}
+              {mlxSupported && (
+                <button
+                  onClick={() =>
+                    call<any>("pet_runtime", { action: "choose_python" })
+                      .then((r) => {
+                        if (r.text) setError(r.text);
+                      })
+                      .catch(handleError)
+                  }
+                >
+                  选择已有的模型运行程序
+                </button>
+              )}
+              {!mlxSupported && (
+                <p className="pet-explanation">
+                  在主窗口的模型库配置本机 HTTP 模型端点，并选择同时用于
+                  Companion。
+                </p>
+              )}
               <button
                 onClick={() =>
                   service("pause_observation", { paused: true })

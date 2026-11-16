@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { listen } from "@tauri-apps/api/event";
 import { call } from "../bridge";
 import type { PetSettings } from "./policy";
@@ -8,16 +8,21 @@ export default function EdgeCharacter({
   asset,
   settings,
   systemReduce,
+  nativePointer,
   aside,
 }: {
   asset: any;
   settings: PetSettings;
   systemReduce: boolean;
+  nativePointer: boolean;
   aside: string;
 }) {
   const [edge, setEdge] = useState<any>(null),
     [pack, setPack] = useState<any>(null),
     [error, setError] = useState("");
+  const pointer = useRef<{ x: number; y: number; dragged: boolean } | null>(
+    null,
+  );
   useEffect(() => setPack(asset?.edge), [asset]);
   useEffect(() => {
     let stopped = false;
@@ -93,10 +98,30 @@ export default function EdgeCharacter({
       <button
         className="edge-body"
         aria-label={`${asset?.label || "角色"}，点击身体换边，拖动移动`}
-        onClick={(e) => {
-          if (e.detail === 0) act("relocate");
+        onPointerDown={(e) => {
+          if (!nativePointer && e.button === 0)
+            pointer.current = { x: e.clientX, y: e.clientY, dragged: false };
         }}
-        onContextMenu={(e) => e.preventDefault()}
+        onPointerMove={(e) => {
+          const gesture = pointer.current;
+          if (nativePointer || !gesture || gesture.dragged || e.buttons !== 1)
+            return;
+          if (Math.hypot(e.clientX - gesture.x, e.clientY - gesture.y) < 5)
+            return;
+          gesture.dragged = true;
+          void call("pet_action", { action: "drag" }).catch((error) =>
+            setError(String(error)),
+          );
+        }}
+        onClick={(e) => {
+          if (e.detail === 0 || (!nativePointer && !pointer.current?.dragged))
+            act("relocate");
+          pointer.current = null;
+        }}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          if (!nativePointer) act("chat");
+        }}
       >
         <span className="edge-art-clip" style={{ opacity: r?.opacity ?? 0 }}>
           {art(r, "edge-main")}
@@ -133,7 +158,7 @@ export default function EdgeCharacter({
           pointerEvents: mini ? "auto" : "none",
         }}
         onClick={(e) => {
-          if (e.detail === 0) act("chat");
+          if (e.detail === 0 || !nativePointer) act("chat");
         }}
       >
         <svg viewBox="0 0 140 104" aria-hidden="true">

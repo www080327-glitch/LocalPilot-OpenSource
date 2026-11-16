@@ -1,6 +1,30 @@
-# LocalPilot Desktop 5.0.0
+# LocalPilot Desktop
 
-2026-11-16 source candidate: Desktop 5.0.1-rc.7; Core 5.0.0b22; Suite 0.2.0b27; Companion 0.5.7b4; Channels 0.1.0a3. Intel CPU endpoint support is under native qualification; this is not a new Release.
+2026-11-16 source candidate: Desktop **5.0.1-rc.8**; Core **5.0.0b23**; Suite **0.2.0b28**; Companion **0.5.7b5**; Channels **0.1.0a3**. Linux 原生桌面、离线模块资源和 DEB 构建入口已接入；本轮构建基线为 Debian 13 x86_64 / 系统 CPython 3.13。Intel Mac 仍待物理设备验收。本源码候选不是已发布的新 Release。
+
+## 快速安装
+
+在 [公开 Release](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases) 选择实际存在、匹配系统及架构的资产。当前 Linux 候选需要按 [Linux 构建与验收指南](docs/development/LINUX_20261116.md) 从源码构建；不要把下面的文件名当成已经发布的下载链接。
+
+Linux 构建成功后，在含有 `SHA256SUMS` 和 DEB 的输出目录执行：
+
+```sh
+sha256sum -c SHA256SUMS
+sudo apt install ./LocalPilot-5.0.1-rc.8-linux-x86_64.deb
+localpilot-desktop
+```
+
+首次设置可选择现有的本机 OpenAI 兼容模型端点，也可配置云端提供方。安装包不含模型权重；CPU / CUDA 推理由用户选择的本机服务提供。不要在 Linux 安装 macOS APP、使用 MLX 文件夹入口，或把 x86_64 DEB 安装到 ARM 设备。
+
+独立测试构建使用 `LocalPilot-Test-5.0.1-rc.8-linux-x86_64.deb`、命令 `localpilot-desktop-test` 和身份 `io.localpilot.desktop.test`，可与正式应用分开。Linux 桌面升级/降级由系统包管理器处理；设置中的组件事务仍独立管理 Core、Companion 和 Suite。该 DEB 依赖构建时的系统 Python **同一小版本**；本轮产物不承诺兼容 Debian 12、Ubuntu 或未实测的 ARM Linux。
+
+macOS 安装与隔离测试继续使用 [现有安装与回滚流程](../docs/development/MAC_PORTABILITY_20261114.md)；Intel 构建见 [Intel Mac 指南](docs/development/INTEL_MAC_20261116.md)。尚未核验的下载资产、安装、回滚或模型能力不作为通过项。
+
+## 平台范围
+
+Linux 使用标准窗口、桌面托盘、文件选择器、`xdg-open` 和普通 WebView 桌宠交互。macOS 的 AppKit、Liquid Glass 和透明像素点击穿透仅在 macOS 启用。Linux Companion 的 AT-SPI 只读观察与可选本地会议转写不等于 macOS Computer Use 的电脑操作能力。完整状态、系统依赖和剩余真机检查见 [Linux 指南](docs/development/LINUX_20261116.md)。
+
+## 既有 macOS 记录
 
 **历史 macOS arm64 5.0.0 版本说明（公开下载以 GitHub Release 实际资产为准）**，桌宠实现沿用已人工复核的 dev.23-edge.4。完整桌面使用 `LocalPilot.app` / `io.localpilot.desktop`；配套独立 Core **5.0.0b20**、Suite **0.2.0b21**、Companion **0.5.7b2**。
 
@@ -8,7 +32,7 @@
 
 [测试安装与回滚](../docs/development/MAC_PORTABILITY_20261114.md) · [当前桌面源码与验收边界](docs/development/PA_CONTINUATION_20261115.md) · [本机 Work 提示词](../docs/development/WORK_PA_COOPERATION_20261115.md) · [推荐版本清单](recommended-release.json) · [总说明](../README.md)
 
-**2026-11-16 Intel Mac 更新：** macOS 15+ 的 Intel 首次设置和模型库已接入本机 OpenAI 兼容端点，可读取模型列表、保存真实上下文配置，并在任务结束后显式重启服务应用。新增依赖获取和原生源码构建路径；尚无本轮验收通过的 Intel APP / DMG，不能安装 arm64 包代替。具体构建步骤、CPU 模型接入及待验收项见 [Intel Mac 指南](docs/development/INTEL_MAC_20261116.md)。Linux 原生桌面暂未完成。
+**2026-11-16 Intel Mac 更新：** macOS 15+ 的 Intel 首次设置和模型库已接入本机 OpenAI 兼容端点，可读取模型列表、保存真实上下文配置，并在任务结束后显式重启服务应用。新增依赖获取和原生源码构建路径；尚无本轮验收通过的 Intel APP / DMG，不能安装 arm64 包代替。具体构建步骤、CPU 模型接入及待验收项见 [Intel Mac 指南](docs/development/INTEL_MAC_20261116.md)。
 
 桌宠支持六个边缘 Anchor、缩回/重新探头、底部潜水鲸尾、真实左右拖动姿态、独立角色比例、透明穿透和局部原生 Liquid Glass。小气泡点击展开现有聊天窗；工具委派仍复用 Core 授权、提交账本和 SSE，不产生第二套 Runtime。个人角色素材与姿态包不随源码或制品分发。
 

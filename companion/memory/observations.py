@@ -511,7 +511,7 @@ class ObservationMemory:
                 'read_status', 'coverage', 'locator', 'timestamp_basis', 'capture_source',
                 'started_at', 'ended_at', 'automatic_transcription', 'completion_verified',
                 'file_sha256', 'epistemic', 'cue_start', 'cue_end'}}
-            if (row['source'] == 'accessibility' and row['kind'] == 'ax.snapshot'
+            if (row['source'] in {'accessibility', 'linux_accessibility'} and row['kind'] == 'ax.snapshot'
                     and row['raw_state'] == 'raw' and row['object'].get('content_authorized') is True):
                 excerpt = static_text_excerpt(row['evidence'])
                 if excerpt:

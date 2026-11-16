@@ -45,6 +45,7 @@ fn request_ok(kind: &str, action: &str, args: &Value) -> bool {
         && (action != "login" || kind == "wechat")
 }
 
+#[cfg(target_os = "macos")]
 fn native_input(app: &tauri::AppHandle, secret: bool) -> Result<Option<String>, String> {
     let (send, receive) = std::sync::mpsc::sync_channel(1);
     app.run_on_main_thread(move || {
@@ -101,6 +102,33 @@ fn native_input(app: &tauri::AppHandle, secret: bool) -> Result<Option<String>, 
     receive
         .recv()
         .map_err(|_| fail("原生输入已中断，未保存凭据"))?
+}
+
+#[cfg(not(target_os = "macos"))]
+fn native_input(_app: &tauri::AppHandle, secret: bool) -> Result<Option<String>, String> {
+    let mut command = std::process::Command::new("zenity");
+    command.args([
+        "--entry",
+        "--title=LocalPilot · QQ",
+        if secret {
+            "--text=输入 QQ AppSecret。仅写入本机私有渠道目录，不进入聊天或模型上下文。"
+        } else {
+            "--text=输入 QQ 官方机器人平台的 AppID。"
+        },
+    ]);
+    if secret {
+        command.arg("--hide-text");
+    }
+    let output = command
+        .output()
+        .map_err(|_| fail("需要系统 zenity 凭据输入窗口；未读取或保存密钥"))?;
+    match output.status.code() {
+        Some(0) => String::from_utf8(output.stdout)
+            .map(|text| Some(text.trim_end_matches(['\r', '\n']).to_string()))
+            .map_err(|_| fail("输入不是有效文字，未保存凭据")),
+        Some(1) => Ok(None),
+        _ => Err(fail("原生输入窗口未能运行，未保存凭据")),
+    }
 }
 
 pub fn run(cli: &Path, home: &str, kind: &str, action: &str, args: Value) -> Result<Value, String> {
@@ -214,13 +242,7 @@ pub async fn channel_control(
         return Err(fail("不支持的渠道操作"));
     }
     if action == "qq_console" {
-        let opened = std::process::Command::new("/usr/bin/open")
-            .arg("https://q.qq.com/")
-            .status()
-            .map_err(|_| fail("无法打开 QQ 官方平台"))?;
-        if !opened.success() {
-            return Err(fail("无法打开 QQ 官方平台"));
-        }
+        platform::open_target("https://q.qq.com/")?;
         return Ok(
             json!({"status":"official_platform_opened","authentication":"requires_user_operation"}),
         );
@@ -250,13 +272,7 @@ pub async fn channel_control(
         if !folder.starts_with(&home) {
             return Err(fail("诊断目录归属无法确认"));
         }
-        let opened = std::process::Command::new("/usr/bin/open")
-            .arg(folder)
-            .status()
-            .map_err(|_| fail("无法打开诊断目录"))?;
-        if !opened.success() {
-            return Err(fail("无法打开诊断目录"));
-        }
+        platform::open_target(folder)?;
         return Ok(json!({"status":"diagnostic_folder_opened","messages_included":false}));
     }
     // Use the candidate's reviewed Suite resource; an old connected CLI cannot supply code.

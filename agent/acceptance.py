@@ -1,14 +1,15 @@
 """Host-owned acceptance assertions; never registered as an Agent tool.
 
-The assertion file lives outside every Agent write scope. On macOS it runs
+The assertion file lives outside every Agent write scope. On macOS/Linux it runs
 read-only, without network, credentials or inherited Python configuration.
-Other platforms fail closed until an equivalent executor is qualified.
+Other platforms fail closed.
 """
 import hashlib
 import json
 import os
 from pathlib import Path
 import selectors
+import shutil
 import signal
 import subprocess
 import sys
@@ -59,7 +60,8 @@ class HostPythonAcceptance:
     def __call__(self, root, result):
         if Path(root).resolve() != self.workspace:
             raise ValueError('Acceptance workspace identity mismatch')
-        if sys.platform != 'darwin' or not Path('/usr/bin/sandbox-exec').exists():
+        supported = (sys.platform == 'darwin' and Path('/usr/bin/sandbox-exec').exists()) or (sys.platform == 'linux' and shutil.which('bwrap') and shutil.which('unshare'))
+        if not supported:
             return HostVerification('not_run', 'host_assertions:executor_unavailable', {})
         if self._source_hash() != self.source_sha256:
             return HostVerification('blocked', 'host_assertions:identity_changed', {})
@@ -67,20 +69,9 @@ class HostPythonAcceptance:
             versions = self._versions()
         except (OSError, ValueError):
             return HostVerification('failed', 'host_assertions:missing_output', {})
-        quote = lambda p: json.dumps(str(p), ensure_ascii=False)
-        runtime = Path(sys.base_prefix).resolve()
-        profile = '\n'.join([
-            '(version 1)', '(allow default)', '(deny network*)',
-            '(deny file-read*)', '(deny file-write*)', '(deny process-info*)',
-            '(allow process-info* (target self))', '(allow file-read-metadata)',
-            '(allow file-read* (literal "/"))',
-            *['(allow file-read* (subpath ' + quote(p) + '))' for p in
-              ['/System', '/usr/lib', '/usr/share', '/private/var/db/dyld', runtime, self.workspace]],
-            *['(allow file-read* (literal ' + quote(p) + '))' for p in
-              [Path(sys.executable).resolve(), self.assertions, '/dev/null', '/dev/urandom', '/dev/random']],
-        ])
-        process = subprocess.Popen(['/usr/bin/sandbox-exec', '-p', profile,
-            str(Path(sys.executable).resolve()), '-I', '-B', str(self.assertions), str(self.workspace)],
+        command = [str(Path(sys.executable).resolve()), '-I', '-B', str(self.assertions), str(self.workspace)]
+        launcher = self._launcher(command)
+        process = subprocess.Popen(launcher,
             cwd=self.workspace, env={'PATH': '/usr/bin:/bin', 'LANG': 'C.UTF-8'},
             stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True)
         deadline = time.monotonic() + self.timeout
@@ -120,6 +111,24 @@ class HostPythonAcceptance:
         good = status == 'passed'
         # No assertion source, expected answers, stdout or stderr enter feedback.
         return HostVerification(status, 'host_assertions:code_and_delivery', versions, good, good, True)
+
+    def _launcher(self, command):
+        if sys.platform == 'linux':
+            from .linux_sandbox import acceptance_launcher
+            return acceptance_launcher(command, self.workspace, self.assertions)
+        quote = lambda p: json.dumps(str(p), ensure_ascii=False)
+        runtime = Path(sys.base_prefix).resolve()
+        profile = '\n'.join([
+            '(version 1)', '(allow default)', '(deny network*)',
+            '(deny file-read*)', '(deny file-write*)', '(deny process-info*)',
+            '(allow process-info* (target self))', '(allow file-read-metadata)',
+            '(allow file-read* (literal "/"))',
+            *['(allow file-read* (subpath ' + quote(p) + '))' for p in
+              ['/System', '/usr/lib', '/usr/share', '/private/var/db/dyld', runtime, self.workspace]],
+            *['(allow file-read* (literal ' + quote(p) + '))' for p in
+              [Path(sys.executable).resolve(), self.assertions, '/dev/null', '/dev/urandom', '/dev/random']],
+        ])
+        return ['/usr/bin/sandbox-exec', '-p', profile, *command]
 
     def execution_check(self, root, projection):
         return self(root, None)

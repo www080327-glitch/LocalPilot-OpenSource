@@ -22,7 +22,7 @@ def evidence_type(source, kind, epistemic="factual", text="", evidence=None):
         return "MODEL_INFERRED"
     if source in {"document_extractor", "external_source"}:
         return "EXTERNAL_SOURCE"
-    if source in {"accessibility", "nsworkspace", "file_observer", "session", "directory_relation"}:
+    if source in {"accessibility", "nsworkspace", "linux_accessibility", "linux_desktop", "file_observer", "session", "directory_relation"}:
         return "OBSERVED"
     return "UNKNOWN"
 

@@ -18,7 +18,7 @@ export const permissionModes = [
     id: "full",
     name: "完全权限",
     description:
-      "按当前 macOS 用户权限自主读写、运行 Shell 和联网；允许内容交给所选云端模型，APP 内不再询问批准。",
+      "按当前系统用户权限自主读写、运行 Shell 和联网；允许内容交给所选云端模型，APP 内不再询问批准。",
   },
 ];
 export const legacyPermissions = [

@@ -56,7 +56,7 @@ class UpgradeTransactionTests(unittest.TestCase):
                  wheel(cls.artifacts,'suite','0.2.1',requires=('localpilot-agent-service>=5.0.0b1,<6','localpilot-companion>=0.5.7,<0.6')), wheel(cls.artifacts,'channels','0.1.0a4')]
         cls.base=cls.root/'base'
         venv.EnvBuilder(with_pip=True).create(cls.base)
-        subprocess.run([str(cls.base/'bin/python'),'-m','pip','install','--no-index','--no-deps',*map(str,cls.old)],
+        subprocess.run([str(cls.base/'bin/python'),'-I','-m','pip','install','--no-index','--no-deps',*map(str,cls.old)],
                        check=True,capture_output=True)
 
     @classmethod
@@ -130,7 +130,7 @@ class UpgradeTransactionTests(unittest.TestCase):
 
     def test_changed_installed_version_invalidates_old_plan(self):
         plan=self.plan()
-        subprocess.run([self.python,'-m','pip','install','--no-index','--no-deps','--force-reinstall',str(self.new[0])],
+        subprocess.run([self.python,'-I','-m','pip','install','--no-index','--no-deps','--force-reinstall',str(self.new[0])],
                        check=True,capture_output=True)
         with self.assertRaisesRegex(ValueError,'changed after review'):
             upgrades.execute(self.home,plan['id'])
@@ -141,7 +141,7 @@ class UpgradeTransactionTests(unittest.TestCase):
         self.assertEqual(upgrades.execute(self.home,plan['id'])['status'],'completed')
         folder=self.folder/'later';folder.mkdir()
         later=wheel(folder,'core','5.0.0b9')
-        subprocess.run([self.python,'-m','pip','install','--no-index','--no-deps','--force-reinstall',str(later)],check=True,capture_output=True)
+        subprocess.run([self.python,'-I','-m','pip','install','--no-index','--no-deps','--force-reinstall',str(later)],check=True,capture_output=True)
         with self.assertRaisesRegex(ValueError,'changed since this upgrade'):
             upgrades.execute(self.home,plan['id'],rollback=True)
         self.assertEqual(upgrades._runtime(self.python,self.home)['versions']['localpilot-agent-service'],'5.0.0b9')
@@ -157,7 +157,7 @@ class UpgradeTransactionTests(unittest.TestCase):
             plan['desktop']=upgrades.app_install.make_plan(source,test_app=True,home=self.folder/'app-home')
         plan['fingerprint']=upgrades._fingerprint(plan)
         save(self.home/'upgrades'/plan['id']/'plan.json',plan)
-        subprocess.run([self.python,'-m','pip','install','--no-index','--no-deps','--force-reinstall',str(self.new[0])],check=True,capture_output=True)
+        subprocess.run([self.python,'-I','-m','pip','install','--no-index','--no-deps','--force-reinstall',str(self.new[0])],check=True,capture_output=True)
         departed=subprocess.Popen([self.python,'-c','pass'])
         created=psutil.Process(departed.pid).create_time()
         departed.wait()
@@ -176,7 +176,7 @@ class UpgradeTransactionTests(unittest.TestCase):
         folder=self.folder/'legacy';folder.mkdir()
         legacy=wheel(folder,'core','5.0.0b1',legacy_channels=True)
         for artifact in (legacy,self.old[3]):
-            subprocess.run([self.python,'-m','pip','install','--no-index','--no-deps','--force-reinstall',str(artifact)],check=True,capture_output=True)
+            subprocess.run([self.python,'-I','-m','pip','install','--no-index','--no-deps','--force-reinstall',str(artifact)],check=True,capture_output=True)
         with self.assertRaisesRegex(ValueError,'Legacy Core wheel also owns Channels'):
             upgrades.plan(self.home,[self.new[0]],[legacy],python=self.python)
         plan=upgrades.plan(self.home,self.new,[legacy,*self.old[1:]],python=self.python)
@@ -193,7 +193,7 @@ class UpgradeTransactionTests(unittest.TestCase):
         folder=self.folder/'legacy-early';folder.mkdir()
         legacy=wheel(folder,'core','5.0.0b1',legacy_channels=True)
         for artifact in (legacy,self.old[3]):
-            subprocess.run([self.python,'-m','pip','install','--no-index','--no-deps','--force-reinstall',str(artifact)],check=True,capture_output=True)
+            subprocess.run([self.python,'-I','-m','pip','install','--no-index','--no-deps','--force-reinstall',str(artifact)],check=True,capture_output=True)
         invalid=wheel(folder,'core','5.0.0b8')
         with zipfile.ZipFile(invalid,'a') as archive:
             archive.writestr('localpilot_agent_service-5.0.0b8.data/unsupported-scheme/file.txt','forces a real pip install rejection')

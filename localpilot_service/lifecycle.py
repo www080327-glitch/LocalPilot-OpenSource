@@ -66,6 +66,8 @@ def launch(home):
 
 
 def unregister(home):
+    if sys.platform != 'darwin':
+        return {'status': 'not_registered', 'manager': 'detached', 'login_autostart': False}
     result=command('bootout',domain()+'/'+label(home))
     event(home,'launchd_unregister',returncode=result.returncode)
     return {'status':'unregistered' if result.returncode==0 else 'not_registered','login_autostart':False}

@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import platform
 import select
+import shutil
 import sqlite3
 import subprocess
 import sys
@@ -214,6 +215,40 @@ class CorePortabilityTests(unittest.TestCase):
         self.assertEqual(self.client.status(submitted['id'])['status'], 'cancelled')
         self.assertFalse((self.workspace / 'never.txt').exists())
         self.assertEqual(len(self.server.requests), 1)
+
+    @unittest.skipUnless(sys.platform == 'linux' and shutil.which('bwrap'), 'actual Linux scoped Shell required')
+    def test_linux_shell_over_http_keeps_unknown_receipt_across_restart(self):
+        self.initialize_service()
+        self.start_service()
+        session = self.operator.request('/localpilot/v1/desktop-sessions', {
+            'client_subject': 'http', 'model': 'localpilot', 'source': 'local_only',
+            'options': {'permission_mode': 'workspace', 'agent_profile': 'standard'}}, key='linux-shell-session')
+        self.add_stream(call=tool_call('shell', {'command': 'printf linux-http-762 > persisted.txt; cat persisted.txt'}, 'shell-first'))
+        self.add_stream(text='Read back linux-http-762')
+        task = self.client.submit('Create persisted.txt and read it back.', session_id=session['id'], idempotency_key='linux-shell-first')
+        completed = self.settled(task)
+        self.assertEqual(completed['status'], 'completed', completed)
+        self.assertEqual((self.workspace / 'persisted.txt').read_text(), 'linux-http-762')
+        self.add_stream(call=tool_call('shell', {'command': 'printf partial >> partial.txt; sleep 60'}, 'shell-cancel'))
+        cancelled = self.client.submit('Start the cancel fixture.', session_id=session['id'], idempotency_key='linux-shell-cancel')
+        deadline = time.monotonic() + 5
+        while not (self.workspace / 'partial.txt').exists() and time.monotonic() < deadline:
+            time.sleep(.01)
+        self.assertTrue((self.workspace / 'partial.txt').exists())
+        self.client.cancel(cancelled['id'])
+        terminal = self.settled(cancelled)
+        self.assertEqual(terminal['status'], 'cancelled', terminal)
+        self.assertTrue(terminal['quiescent'])
+        self.assertEqual(terminal['receipt_summary']['unknown_effects'], 1)
+        requests_before_restart = len(self.server.requests)
+        self.stop_service()
+        self.start_service()
+        restored = self.client.status(cancelled['id'])
+        self.assertEqual(restored['receipt_summary'], terminal['receipt_summary'])
+        replay = self.client.submit('Start the cancel fixture.', session_id=session['id'], idempotency_key='linux-shell-cancel')
+        self.assertEqual(replay['id'], cancelled['id'])
+        self.assertEqual((self.workspace / 'partial.txt').read_text(), 'partial')
+        self.assertEqual(len(self.server.requests), requests_before_restart)
 
     def test_inflight_http_cancel_does_not_dispatch_a_late_tool(self):
         self.initialize_service('--model-timeout', '10')

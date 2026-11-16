@@ -2,7 +2,7 @@
 
 随着 AI Agent 的发展，越来越多的人希望让 AI 真正帮助自己完成任务，但高昂的云端 API 费用让许多人望而却步。虽然本地模型可以降低使用成本，复杂的部署流程、模型与 Agent 的兼容问题，以及长上下文带来的推理延迟，仍让普通用户难以入门。
 
-为此，我们开发了 LocalPilot，一款面向大众的本地与云端协同 AI Agent。它将模型部署、管理和任务执行整合在一起，让用户无需复杂配置，就能轻松使用本地智能体。同时，我们针对 DeepSeek、Qwen 等模型优化了任务执行与长上下文缓存，并通过智能路由，让本地模型承担更多任务，在保持任务完成能力的同时降低云端费用。
+为此，我们开发了 LocalPilot，一款本地与云端协同 AI Agent。它将模型配置、管理、任务执行和个人助理整合在一起，支持由主 Agent 调用多个子 Agent，并按任务选择本地或云端模型。任务质量、速度和费用以实际模型与任务记录为准。
 
 LocalPilot 采用 Apache 2.0 开源协议，致力于让强大、易用且低成本的 AI Agent 走进更多人的生活。
 
@@ -10,9 +10,11 @@ LocalPilot 采用 Apache 2.0 开源协议，致力于让强大、易用且低成
 
 ## 当前源码组件版本
 
-本源码树包含 Desktop 5.0.1-rc.7、Core 5.0.0b22、Suite 0.2.0b27、Companion 0.5.7b4 和独立 Channels 0.1.0a3。源码版本不代表已经发布或通过原生安装验收；可用发行资产以 GitHub Releases 为准。
+本源码树包含 Desktop **5.0.1-rc.8**、Core **5.0.0b23**、Suite **0.2.0b28**、Companion **0.5.7b5** 和独立 Channels **0.1.0a3**。源码版本不代表已经发布或通过全部原生安装验收；可用发行资产以 GitHub Releases 为准。
 
-2026-11-16 更新优先补齐 **Intel Mac 的本地 CPU 模型入口**：首次向导和模型库可连接已有 OpenAI 兼容服务，读取模型列表，保存真实上下文预算，并显式应用配置；Core、Companion 修复无电池 Mac 的电源识别与不适用的 MLX 流程。Linux 已验证 Core/Companion 的可移植服务链路，原生桌面功能暂缓。详见 [平台支持与验收](docs/development/PLATFORM_SUPPORT_20261116.md)、[本轮测试记录](docs/evidence/intel-portability-20261116/RESULTS.md) 和 [剩余本机验收](docs/development/WORK_INTEL_20261116.md)。
+2026-11-16 Linux 续作在已合入的 PR #13 上补齐宿主 Shell、Tauri/Linux 构建、发行版 Python 离线组件、XDG/systemd、电源读取、只读桌面来源和本地会议转写，并增加独立测试集及显式 CPU/CUDA 后训练入口。真实 Linux 模型测试保留 **5 PASS / 4 FAIL**，没有把调用成功当成任务质量通过。当前范围与全部计划对照见 [Linux 适配与计划状态](docs/development/LINUX_COMPLETION_20261116.md)，命令、结果和失败历史见 [本轮验收记录](docs/evidence/linux-completion-20261116/RESULTS.md)。
+
+此前 Intel 接入已补齐本机 CPU/HTTP 入口、模型列表、真实上下文预算和配置应用；PR #13 的 M1 Max 回归仍是 arm64 证据。Intel 真机要求与原结果保留在 [平台支持与验收](docs/development/PLATFORM_SUPPORT_20261116.md) 和 [原生跟进记录](docs/evidence/intel-device-followup-20261116/RESULTS.md)。
 
 2026-11-15 的续作见 [PA 协作评测与来源一致性](docs/development/PA_COOPERATION_20261115.md)：公开评测增加同容器子 Agent 和共享总预算，Companion 保留完整来源依赖、稳定会议分段与人工样本审阅，补齐候选 adapter 加载入口，并继续拆分桌面与 Core 主干。[实际验证记录](docs/evidence/pa-cooperation-20261115/RESULTS.md)与 [Mac 续验记录](docs/evidence/pa-cooperation-20261115-mac/RESULTS.md)分别保留云端与原生结果。
 
@@ -24,9 +26,10 @@ LocalPilot 采用 Apache 2.0 开源协议，致力于让强大、易用且低成
 
 | 平台 | 当前可用路径 | 验收边界 |
 | --- | --- | --- |
-| Apple Silicon Mac | macOS 15+ 桌面 APP；oMLX/MLX 或已有本地 HTTP 服务；云端模型 | PR #11 的独立 arm64 APP 已构建、安装并重开。新源码的原生回归仍须单独执行。 |
+| Apple Silicon Mac | macOS 15+ 桌面 APP；oMLX/MLX 或已有本地 HTTP 服务；云端模型 | PR #13 的 arm64 构建和回归通过，候选未安装或运行真实任务；本轮 RC.8 仍需原生复验。 |
 | **Intel Mac** | **优先支持本地 HTTP + CPU 推理**；Core/Suite CLI、Companion 服务；x86_64 桌面资源与构建路径 | 代码和跨平台协议测试已补齐；尚无通过 Intel 真机验收的安装包。桌面构建仍要求 macOS 15+。 |
-| Linux | Python Core/Suite CLI、文件工具、HTTP/SSE、SQLite 恢复、Companion 文件/文字来源与本地 HTTP | 已在 Linux x86_64 测试真实服务进程。原生桌面、屏幕/窗口观察、实时会议音轨和宿主 Shell 尚未适配。 |
+| **Linux x86_64** | **CLI、受限/Full Shell、HTTP/SSE、恢复、本地模型；Tauri/DEB 构建入口；Companion 文件/文字及可选桌面/音轨接入** | Debian 13 实测服务、Shell、真实 CPU 模型和 ASR；图形会话、物理音轨、登录/睡眠与安装升级仍需对应环境。Wayland 无通用全局窗口保证。 |
+| Linux aarch64 / 其他发行版 | 架构分支和 Node 资源入口；源码 CLI 可按系统依赖安装 | 本轮未做对应机器、ELF、系统依赖或桌面实测；不称为已验收平台。 |
 
 Intel 本地推理使用外部 CPU 服务，例如 [llama.cpp](https://github.com/ggml-org/llama.cpp) 与兼容的 GGUF 模型。LocalPilot 的 HTTP 路径不依赖 MLX 或 MPS；是否使用 CPU、Metal 或其他加速由模型服务器决定。现有 MLX 权重不能直接当作 GGUF 使用，内置 MLX/LoRA 也不会自动变成 Intel CPU 实现。[LM Studio 官方系统要求](https://lmstudio.ai/docs/app/system-requirements)目前不支持 Intel Mac，因此不把它作为 Intel 安装方案。
 
@@ -35,6 +38,12 @@ Intel 本地推理使用外部 CPU 服务，例如 [llama.cpp](https://github.co
 ### Intel Mac / Linux：先用源码 CLI
 
 准备 Python 3.11 或更新版本、Git，以及一个已经启动的本机 OpenAI 兼容模型服务。Intel 源码入门建议使用标准 CPython 3.11–3.13；Python 3.14 的 macOS watchdog 依赖可能需要 Xcode Command Line Tools 从源码构建。以下命令安装 Core、Companion、Suite，不下载模型，也不启动观察。
+
+Debian/Ubuntu 用户可先准备源码 CLI 依赖。`bubblewrap` 和 `util-linux` 用于 Linux 受限 Shell 与宿主断言；还需要发行版允许对应的非特权 namespace。不可用时会明确失败。
+
+```sh
+sudo apt install git python3 python3-venv bubblewrap util-linux
+```
 
 ```sh
 git clone https://github.com/www080327-glitch/LocalPilot-OpenSource.git
@@ -78,7 +87,18 @@ localpilot ask --allow-local-on-battery '你好。'
 localpilot agent --allow-local-on-battery '读取工作文件夹里的项目说明。'
 ```
 
-该选项不会保存成后台授权或修改操作系统电源设置。用完后执行 `localpilot stop`；外部模型服务由它自己的启动方式停止。文件修改沿用批准流程，`localpilot task --help` 提供查询、批准和取消命令。Companion 的独立配置见 [Companion README](companion/README.md)。
+该选项不会保存成后台授权或修改操作系统电源设置。用完后执行 `localpilot stop`；外部模型服务由它自己的启动方式停止。上述 CLI 初始化默认提供文件 Agent；Shell 权限来自已授权的桌面 Session/宿主工具配置，不会因安装了 Bubblewrap 自动开放执行权限。文件修改沿用批准流程，`localpilot task --help` 提供查询、批准和取消命令。Companion 的独立配置见 [Companion README](companion/README.md)。
+
+### Linux 桌面候选
+
+Linux 桌面采用发行版原生 DEB，内含四组件 wheel 与隔离环境，依赖构建时匹配的系统 Python minor、GTK/WebKit；不含模型。本轮构建的是 **Debian 13 x86_64 独立 Test 候选**，包信息和 SHA-256 见 [桌面验收记录](desktop/docs/evidence/linux-20261116/RESULTS.md)，构建命令见 [Linux 桌面说明](desktop/docs/development/LINUX_20261116.md)。取得**与自己发行版和架构匹配、已核对 SHA-256 的候选包**后：
+
+```sh
+sudo apt install ./LocalPilot-Test-5.0.1-rc.8-linux-x86_64.deb
+localpilot-desktop-test
+```
+
+这是独立候选包的安装形式，当前没有新的公开 Linux Release 下载；本轮验证了提取后的运行，真实系统首装/升级仍待验收。Test 包使用自己的身份，不替换日常身份。较新 Debian 构建不能据此承诺兼容所有旧 Ubuntu；AppImage/Flatpak 尚未交付。Companion 可选桌面观察、systemd 和本地音轨的配置见 [Linux Companion](docs/development/LINUX_COMPANION_20261116.md)。
 
 ### Apple Silicon：已有桌面安装包
 
@@ -145,9 +165,9 @@ Apple Silicon 可通过 oMLX 连接 MLX 模型；Intel 与 Linux 可连接已有
 | 只读 | 可以读取文件和运行只读 Shell，不修改文件。 |
 | 请求批准 | 读取文件自动执行，修改和命令执行前询问。 |
 | 工作区写入 | 自动处理工作文件夹内的文件，超出范围的修改先询问。 |
-| 完全权限 | 使用当前 macOS 用户的读写、Shell 和联网权限，APP 内不再重复询问批准。 |
+| 完全权限 | 使用当前操作系统用户的读写、Shell 和联网权限，APP 内不再重复询问批准。 |
 
-macOS 本身的文件访问授权仍由系统控制。**完全权限下的 Shell 使用当前 macOS 用户权限，并不是独立的文件读取沙箱**；内置文件工具仍阻止直接访问 `.localpilot/secrets` 凭据目录，但不能把这项限制误认为 Shell 也无法访问系统用户可读取的文件。云端出站授权与文件权限分别控制。命令报错会保留错误信息，Agent 可以检查现状、修正命令；执行结果确实无法确认时，不会自动重做原操作。
+操作系统本身的文件访问授权仍由系统控制。**完全权限下的 Shell 使用当前 OS 用户权限，并不是独立的文件读取沙箱**；内置文件工具仍阻止直接访问 `.localpilot/secrets` 凭据目录，但不能把这项限制误认为 Shell 也无法访问系统用户可读取的文件。云端出站授权与文件权限分别控制。Linux 只读/工作区 Shell 使用 Bubblewrap，工作区模式另允许既有 OS 临时目录写入；详情见 [Linux Core](docs/development/LINUX_CORE_20261116.md)。命令报错会保留错误信息，Agent 可以检查现状、修正命令；执行结果确实无法确认时，不会自动重做原操作。
 
 ## 在微信里使用
 
@@ -179,7 +199,7 @@ npm ci
 npm run dev
 ```
 
-浏览器页面用于开发预览。运行原生桌面任务还需要 Rust、Xcode 命令行工具和独立组件资源，相关入口在 `desktop/scripts/`。Core 部署见 [SERVICE_DEPLOYMENT.md](SERVICE_DEPLOYMENT.md)，具体修复与开发说明在 [docs/development](docs/development)。
+浏览器页面用于开发预览。原生桌面还需要 Rust 和独立组件资源；macOS 使用 Xcode 工具链，Linux 使用发行版 GTK/WebKit 开发库。相关入口在 `desktop/scripts/`。Core 部署见 [SERVICE_DEPLOYMENT.md](SERVICE_DEPLOYMENT.md)，具体修复与开发说明在 [docs/development](docs/development)。
 
 | 目录 | 内容 |
 | --- | --- |
@@ -194,7 +214,9 @@ npm run dev
 
 目前提供的是 AIC 阶段的开发候选，公开桌面安装包仍仅有旧 macOS Apple Silicon 版本。模型速度、输出质量和费用会随模型、机器和任务变化。项目中的历史小样本实验不能代表所有任务。
 
-Companion → 主 Agent → 多子 Agent、五档来源偏好、按需 Skills、来源记忆、人工审阅 LoRA 数据与受管缓存已有实现。**主 Agent 不弱于主流产品、真实多模型协作质量、LoRA 增益和永久 KV 缓存均没有得到完整实测证明**。旧 534 次正式对照仍为 1 PASS、3 FAIL、13 ERROR、517 无最终结果。系统音轨、真实睡眠唤醒和 Intel 原生验收仍有缺项；完整状态见 [平台支持与计划对照](docs/development/PLATFORM_SUPPORT_20261116.md)。
+Companion → 主 Agent → 多子 Agent、五档来源偏好、按需 Skills、来源记忆、人工审阅训练数据与受管缓存已有实现。Linux 增加固定依赖的 CPU/CUDA LoRA/全参数训练和独立测试集比较，CPU 上已实际更新并重载微型模型；这不代表真实个人数据的训练收益。固定提示/Skill 在本轮 llama.cpp 上验证了热缓存和显式磁盘恢复；外部 HTTP 模型服务器的通用自动缓存管理尚未实现。
+
+**主 Agent 不弱于主流产品、真实多模型协作质量、LoRA 增益和跨后端永久 KV 缓存均没有得到完整实测证明**。旧 534 次正式对照仍为 1 PASS、3 FAIL、13 ERROR、517 无最终结果。系统音轨、真实睡眠唤醒和 Intel 原生验收仍有缺项；当前完整状态见 [Linux 适配与计划对照](docs/development/LINUX_COMPLETION_20261116.md)。
 
 遇到问题时，请附上版本、模型名称、操作步骤和错误提示。提交日志前先检查并移除 API 密钥和个人信息。
 

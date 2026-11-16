@@ -266,38 +266,56 @@ export function VersionManagement({
       )}
       {guide && (
         <div className="manual-update-guide">
-          <ol>
-            <li>
-              成功检查 GUI Release，打开官方页面下载适合当前 Mac
-              的安装包。列表按当前运行架构筛选；原生资格以发布记录为准。
-            </li>
-            <li>
-              在本页选择安装包，核对 GitHub 提供的 SHA256 与大小。缺少 digest
-              或校验失败时停止安装。
-            </li>
-            <li>
-              解包后在可信终端运行{" "}
-              <code>
-                codesign --verify --deep --strict /path/to/LocalPilot.app
-              </code>
-              。当前正式版为 ad-hoc
-              签名、未公证；这不证明开发者身份，勿绕过系统安全设置。
-            </li>
-            <li>
-              使用本页统一升级入口选择解包后的
-              APP，审阅版本、目标路径与回滚材料。 执行前需停止服务；GUI
-              会自行退出，由独立助手替换并重新打开。
-            </li>
-            <li>
-              重新打开并检查升级回执、版本、连接与会话。组件和 APP
-              失败会按所审阅计划回滚，
-              回滚未完成时保留日志与材料。随后显式恢复服务；已有任务不会自动重放。
-            </li>
-          </ol>
+          {installation?.platform === "linux" ? (
+            <ol>
+              <li>
+                从已核验的 GitHub Release 下载与当前架构、发行版和 Python
+                版本匹配的 DEB，并在本页核对 SHA256。
+              </li>
+              <li>
+                退出 GUI 并停止它管理的服务后，在系统软件安装器或可信终端安装
+                DEB。保留前一个已验证 DEB，以便通过系统包管理器显式降级。
+              </li>
+              <li>
+                重新打开，核对组件版本、连接与
+                Session；不会自动重放历史任务。独立组件的升级与失败回滚仍使用下方入口。
+              </li>
+            </ol>
+          ) : (
+            <ol>
+              <li>
+                成功检查 GUI Release，打开官方页面下载适合当前 Mac
+                的安装包。列表按当前运行架构筛选；原生资格以发布记录为准。
+              </li>
+              <li>
+                在本页选择安装包，核对 GitHub 提供的 SHA256 与大小。缺少 digest
+                或校验失败时停止安装。
+              </li>
+              <li>
+                解包后在可信终端运行{" "}
+                <code>
+                  codesign --verify --deep --strict /path/to/LocalPilot.app
+                </code>
+                。当前正式版为 ad-hoc
+                签名、未公证；这不证明开发者身份，勿绕过系统安全设置。
+              </li>
+              <li>
+                使用本页统一升级入口选择解包后的
+                APP，审阅版本、目标路径与回滚材料。 执行前需停止服务；GUI
+                会自行退出，由独立助手替换并重新打开。
+              </li>
+              <li>
+                重新打开并检查升级回执、版本、连接与会话。组件和 APP
+                失败会按所审阅计划回滚，
+                回滚未完成时保留日志与材料。随后显式恢复服务；已有任务不会自动重放。
+              </li>
+            </ol>
+          )}
         </div>
       )}
       <ComponentUpgrades
         cliReady={cliReady}
+        desktopAppUpgrade={installation?.platform !== "linux"}
         maintenanceReturn={maintenanceReturn}
       />
       <h4>存储与历史版本</h4>

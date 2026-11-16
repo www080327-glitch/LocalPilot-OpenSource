@@ -22,6 +22,9 @@ def external_power(battery):
                 return source == "AC Power"
         except (OSError, subprocess.SubprocessError):
             pass
+    elif sys.platform.startswith('linux'):
+        from .linux_power import external_power as linux_external_power
+        return linux_external_power()
     return None
 
 
@@ -84,6 +87,14 @@ class LowPowerPolicy:
 
     def active(self, now=None):
         if self.config.low_power_policy=='system':
+            if sys.platform.startswith('linux'):
+                from .linux_power import low_power
+                cached = getattr(self, '_linux_cached', (0, True))
+                if time.monotonic() - cached[0] < 15:
+                    return cached[1]
+                value = low_power()
+                self._linux_cached = (time.monotonic(), value is not False)
+                return value is not False
             if sys.platform!='darwin':return True
             source = None
             try:

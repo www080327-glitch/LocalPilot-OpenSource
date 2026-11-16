@@ -1,6 +1,7 @@
 """Deterministic local telemetry. CPU load is never converted into watts."""
 import plistlib
 import subprocess
+import sys
 import time
 
 
@@ -21,7 +22,10 @@ def snapshot():
     from companion.runtime.power import external_power
     on_ac=external_power(battery)
     watts=None
-    if on_ac is False:
+    if on_ac is False and sys.platform.startswith('linux'):
+        from companion.runtime.linux_power import battery_discharge
+        watts = battery_discharge()
+    elif on_ac is False and sys.platform == 'darwin':
         try:
             raw=subprocess.check_output(["/usr/sbin/ioreg","-rn","AppleSmartBattery","-a"],timeout=2)
             battery_data=plistlib.loads(raw)[0]
@@ -34,7 +38,7 @@ def snapshot():
         "memory_available_bytes":memory.available,"memory_total_bytes":memory.total,
         "memory_used_percent":memory.percent,"swap_used_bytes":psutil.swap_memory().used,
         "system_cpu_percent":psutil.cpu_percent(interval=None),"battery_discharge_watts":watts,
-        "energy_source":"battery_voltage_current" if watts is not None else "UNAVAILABLE",
+        "energy_source":("linux_power_supply" if sys.platform.startswith('linux') else "battery_voltage_current") if watts is not None else "UNAVAILABLE",
         "energy_scope":"battery electrical discharge only; AC system power unavailable",
         "gpu_utilization":None}
 

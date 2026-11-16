@@ -5,8 +5,13 @@ mod pet_edge;
 use pet_edge::pet_edge;
 mod channels;
 mod pet_assets;
+#[cfg(target_os = "macos")]
+mod pet_macos;
+#[cfg(not(target_os = "macos"))]
+#[path = "pet_portable.rs"]
 mod pet_macos;
 mod pet_native;
+mod platform;
 mod product;
 use channels::channel_control;
 use pet_agent::{pet_agent, pet_core};
@@ -491,38 +496,49 @@ fn appearance(
     window
         .set_theme(theme)
         .map_err(|_| fail("原生主题设置失败"))?;
-    let workspace = objc2_app_kit::NSWorkspace::sharedWorkspace();
-    let reduce = workspace.accessibilityDisplayShouldReduceTransparency();
-    let motion = workspace.accessibilityDisplayShouldReduceMotion() || reduce_motion;
-    if !glass || reduce {
-        window_vibrancy::clear_liquid_glass(&window)
-            .map_err(|e| format!("原生外观清理失败：{e}"))?;
-        let _ = window_vibrancy::clear_vibrancy(&window);
+    #[cfg(not(target_os = "macos"))]
+    {
+        let _ = glass;
         return Ok(
-            json!({"active":false,"status":if reduce {"系统减少透明度 · 使用实色界面"} else {"已关闭原生玻璃"},"reduce_motion":motion}),
+            json!({"active":false,"status":"使用系统窗口与实色界面","reduce_motion":reduce_motion}),
         );
     }
-    let options =
-        window_vibrancy::LiquidGlassOptions::new(window_vibrancy::NSGlassEffectViewStyle::Regular)
-            .interactive(!motion)
-            .radius(12.0);
-    match window_vibrancy::apply_liquid_glass(&window, options) {
-        Ok(()) => Ok(
-            json!({"active":true,"status":"Apple 原生 Liquid Glass 已启用","reduce_motion":motion}),
-        ),
-        Err(window_vibrancy::Error::UnsupportedPlatformVersion(_)) => {
-            window_vibrancy::apply_vibrancy(
-                &window,
-                window_vibrancy::NSVisualEffectMaterial::Sidebar,
-                None,
-                Some(12.0),
-            )
-            .map_err(|e| format!("原生材质不可用：{e}"))?;
-            Ok(
-                json!({"active":true,"status":"系统不支持 Liquid Glass · 使用原生 Sidebar 材质","reduce_motion":motion}),
-            )
+    #[cfg(target_os = "macos")]
+    {
+        let workspace = objc2_app_kit::NSWorkspace::sharedWorkspace();
+        let reduce = workspace.accessibilityDisplayShouldReduceTransparency();
+        let motion = workspace.accessibilityDisplayShouldReduceMotion() || reduce_motion;
+        if !glass || reduce {
+            window_vibrancy::clear_liquid_glass(&window)
+                .map_err(|e| format!("原生外观清理失败：{e}"))?;
+            let _ = window_vibrancy::clear_vibrancy(&window);
+            return Ok(
+                json!({"active":false,"status":if reduce {"系统减少透明度 · 使用实色界面"} else {"已关闭原生玻璃"},"reduce_motion":motion}),
+            );
         }
-        Err(e) => Err(format!("Liquid Glass 未启用：{e}")),
+        let options = window_vibrancy::LiquidGlassOptions::new(
+            window_vibrancy::NSGlassEffectViewStyle::Regular,
+        )
+        .interactive(!motion)
+        .radius(12.0);
+        match window_vibrancy::apply_liquid_glass(&window, options) {
+            Ok(()) => Ok(
+                json!({"active":true,"status":"Apple 原生 Liquid Glass 已启用","reduce_motion":motion}),
+            ),
+            Err(window_vibrancy::Error::UnsupportedPlatformVersion(_)) => {
+                window_vibrancy::apply_vibrancy(
+                    &window,
+                    window_vibrancy::NSVisualEffectMaterial::Sidebar,
+                    None,
+                    Some(12.0),
+                )
+                .map_err(|e| format!("原生材质不可用：{e}"))?;
+                Ok(
+                    json!({"active":true,"status":"系统不支持 Liquid Glass · 使用原生 Sidebar 材质","reduce_motion":motion}),
+                )
+            }
+            Err(e) => Err(format!("Liquid Glass 未启用：{e}")),
+        }
     }
 }
 #[tauri::command]
@@ -658,12 +674,20 @@ async fn pick_suite(kind: String) -> Result<Option<String>, String> {
     let dialog = rfd::AsyncFileDialog::new();
     let selected = if ["home", "workspace", "companion_folder"].contains(&kind.as_str()) {
         dialog
-            .set_title(if kind == "companion_folder" { "选择授权 Companion 只读同步的来源文件夹" } else { "选择 LocalPilot Suite 数据目录" })
+            .set_title(if kind == "companion_folder" {
+                "选择授权 Companion 只读同步的来源文件夹"
+            } else {
+                "选择 LocalPilot Suite 数据目录"
+            })
             .pick_folder()
             .await
     } else {
         dialog
-            .set_title(if kind == "companion_file" { "选择授权 Companion 读取的对话或会议文本" } else { "选择已安装的 localpilot 命令" })
+            .set_title(if kind == "companion_file" {
+                "选择授权 Companion 读取的对话或会议文本"
+            } else {
+                "选择已安装的 localpilot 命令"
+            })
             .pick_file()
             .await
     };
@@ -804,11 +828,7 @@ async fn open_model_manager(n: State<'_, Native>) -> Result<(), String> {
     {
         return Err(fail("只允许本机 oMLX 正式管理入口"));
     }
-    std::process::Command::new("/usr/bin/open")
-        .arg(url.as_str())
-        .spawn()
-        .map_err(|_| fail("无法打开管理入口"))?;
-    Ok(())
+    platform::open_target(url.as_str())
 }
 #[tauri::command]
 async fn model_resource(
@@ -847,6 +867,11 @@ async fn import_omlx_models(n: State<'_, Native>, confirmed: bool) -> Result<Val
 }
 #[tauri::command]
 fn open_omlx_setup() -> Result<(), String> {
+    if !cfg!(target_os = "macos") {
+        return Err(fail(
+            "oMLX 需要 Apple Silicon macOS；请配置本机 HTTP 模型端点",
+        ));
+    }
     let user_app = std::env::var_os("HOME")
         .map(PathBuf::from)
         .unwrap_or_default()
@@ -858,11 +883,7 @@ fn open_omlx_setup() -> Result<(), String> {
     } else {
         PathBuf::from("https://github.com/jundot/omlx/releases")
     };
-    std::process::Command::new("/usr/bin/open")
-        .arg(target)
-        .spawn()
-        .map_err(|_| fail("无法打开 oMLX 官方引导"))?;
-    Ok(())
+    platform::open_target(target)
 }
 #[tauri::command]
 async fn add_cloud_provider(n: State<'_, Native>) -> Result<Value, String> {
@@ -1054,11 +1075,35 @@ async fn companion(
     preferences: Option<Preferences>,
     args: Option<Value>,
 ) -> Result<Value, String> {
-    if !["status", "ask", "ui_snapshot", "escalation_status", "source_list", "source_connect", "source_sync", "source_set_enabled", "source_revoke", "source_coverage", "training_export", "training_review", "training_candidates", "training_examples", "training_example_add", "training_example_delete", "meeting_start", "meeting_stop", "meeting_status"].contains(&command.as_str()) {
+    if ![
+        "status",
+        "ask",
+        "ui_snapshot",
+        "escalation_status",
+        "source_list",
+        "source_connect",
+        "source_sync",
+        "source_set_enabled",
+        "source_revoke",
+        "source_coverage",
+        "training_export",
+        "training_review",
+        "training_candidates",
+        "training_examples",
+        "training_example_add",
+        "training_example_delete",
+        "meeting_start",
+        "meeting_stop",
+        "meeting_status",
+    ]
+    .contains(&command.as_str())
+    {
         return Err(fail("未开放的 Companion 操作"));
     }
     let mut body = args.unwrap_or_else(|| json!({}));
-    if !body.is_object() { return Err(fail("Companion 参数必须是对象")); }
+    if !body.is_object() {
+        return Err(fail("Companion 参数必须是对象"));
+    }
     body["command"] = json!(command);
     if command == "ask" {
         if let Some(ref prefs) = preferences {
@@ -1296,7 +1341,12 @@ async fn submit_task(
             .flatten()
         {
             if let Ok(rec) = private_json(&file.path()) {
-                if pending_blocks_session(&rec, &p.origin, &health["client_subject"], &body["session_id"]) {
+                if pending_blocks_session(
+                    &rec,
+                    &p.origin,
+                    &health["client_subject"],
+                    &body["session_id"],
+                ) {
                     return Err(fail(
                         "此 Session 存在提交状态未确认的原请求；请先查询或恢复原请求。",
                     ));
@@ -1905,19 +1955,9 @@ async fn bootstrap_product(
         let stage = modules.join(format!("install-{}", uuid::Uuid::new_v4()));
         let src = source.clone();
         let staging = stage.clone();
-        tauri::async_runtime::spawn_blocking(move || {
-            std::process::Command::new("/usr/bin/ditto")
-                .args(["--norsrc", "--noextattr"])
-                .arg(src)
-                .arg(staging)
-                .status()
-        })
-        .await
-        .map_err(|_| fail("模块安装被中断"))?
-        .map_err(|_| fail("无法复制离线模块"))?
-        .success()
-        .then_some(())
-        .ok_or("离线模块复制失败")?;
+        tauri::async_runtime::spawn_blocking(move || platform::copy_modules(&src, &staging))
+            .await
+            .map_err(|_| fail("模块安装被中断"))??;
         fs::rename(&stage, &module).map_err(|_| fail("模块目录已存在或无法提交安装"))?;
     }
     let prior = current(&n);
@@ -2148,12 +2188,12 @@ fn main() {
         // Read-only engineering smoke: no WebView, profile, user data or services.
         let result = (|| -> Result<Value, String> {
             use sha2::{Digest, Sha256};
-            let executable = std::env::current_exe().map_err(|_| "executable unavailable")?;
-            let resources = executable
-                .parent()
-                .and_then(Path::parent)
-                .ok_or("bundle layout invalid")?
-                .join("Resources/bundled-backends");
+            let resources = tauri::utils::platform::resource_dir(
+                context.package_info(),
+                &tauri::Env::default(),
+            )
+            .map_err(|_| "bundle resources unavailable")?
+            .join("bundled-backends");
             let manifest: Value = serde_json::from_slice(
                 &fs::read(resources.join("verified-modules.json"))
                     .map_err(|_| "resource manifest unavailable")?,
@@ -2249,6 +2289,7 @@ fn main() {
                 app.state::<pet_native::PetState>()
                     .standalone
                     .store(true, std::sync::atomic::Ordering::Relaxed);
+                #[cfg(target_os = "macos")]
                 app.set_activation_policy(tauri::ActivationPolicy::Accessory);
                 if let Some(w) = app.get_webview_window("main") {
                     w.destroy()?;
@@ -2466,10 +2507,30 @@ mod tests {
             "status":"unknown","body":{"session_id":"session-A","input":"write a file"}});
         let origin = "http://127.0.0.1:1";
         let subject = json!("a");
-        assert!(pending_blocks_session(&record, origin, &subject, &json!("session-A")));
-        assert!(!pending_blocks_session(&record, origin, &subject, &json!("session-B")));
-        assert!(!pending_blocks_session(&record, origin, &subject, &Value::Null));
-        assert!(!pending_blocks_session(&record, origin, &json!("b"), &json!("session-A")));
+        assert!(pending_blocks_session(
+            &record,
+            origin,
+            &subject,
+            &json!("session-A")
+        ));
+        assert!(!pending_blocks_session(
+            &record,
+            origin,
+            &subject,
+            &json!("session-B")
+        ));
+        assert!(!pending_blocks_session(
+            &record,
+            origin,
+            &subject,
+            &Value::Null
+        ));
+        assert!(!pending_blocks_session(
+            &record,
+            origin,
+            &json!("b"),
+            &json!("session-A")
+        ));
     }
 
     #[test]
