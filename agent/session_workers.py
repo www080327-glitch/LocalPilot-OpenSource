@@ -230,6 +230,10 @@ class SessionWorkers:
                     if old_receipt.get('worker_id') == receipt.get('worker_id') and (old_id in repaired or source_id in repaired):
                         unfinished.pop(old_signature)
             elif receipt.get("worker_id") == worker_id:
+                if (receipt["name"] == "list_directory"
+                        and payload.get("error", {}).get("type") == "FileNotFoundError"
+                        and receipt.get("side_effect_status") == "not_completed"):
+                    continue
                 # Capability denial is failed work, not the host withdrawing
                 # the obligation. Only explicit user_rejected settles it.
                 if receipt["name"] in WRITE_NAMES | {"verify"}:
