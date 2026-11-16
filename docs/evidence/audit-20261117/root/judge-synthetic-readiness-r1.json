@@ -1,0 +1,220 @@
+{
+  "kind": "FICTIONAL_NORMALIZER_TRANSPORT_READINESS",
+  "started_unix": 1794857873.337804,
+  "finished_unix": 1794857882.9260437,
+  "source_commit": "91dd87c6fd4678c103d6383dec1c1385deb38f9a",
+  "grader_sha256": "26ca645748a5272409bbc74f92e366a7d2b95138a86e92fec2d94db86733f8f0",
+  "reference_labels_loaded": false,
+  "dataset_case": false,
+  "inputs": {
+    "ground_truth": {
+      "groups": [
+        {
+          "id": "fictional-cache",
+          "name": "cache-v1",
+          "namespace": "toy-lab",
+          "kind": "Deployment"
+        }
+      ],
+      "aliases": []
+    },
+    "prediction": {
+      "contributing_factors": [
+        {
+          "name": "cache-v1",
+          "namespace": "toy-lab",
+          "kind": "Deployment",
+          "reasoning": "The named resource is the cache-v1 deployment in toy-lab."
+        }
+      ]
+    }
+  },
+  "result": {
+    "response": {
+      "message": {
+        "role": "assistant",
+        "content": "{\"contributing_factor_entities\":[{\"submitted_entity_name\":\"cache-v1\",\"normalized_gt_entity_id\":\"fictional-cache\",\"reasoning\":\"Prediction identifies Deployment cache-v1 in namespace toy-lab, matching the ground-truth entity with the same kind, name, and namespace.\"}]}",
+        "native_replay": {
+          "kind": "openai_responses_v1",
+          "model": "gpt-5.5",
+          "base_url": "https://api.openai.com/v1",
+          "sha256": "18e474a47de1f866c4e1073580ff6e640b6f41131185c635f6cac54fe0789fc2",
+          "items": [
+            {
+              "type": "reasoning",
+              "id": "rs_01517dc183a06e23016afb5b99547c87d0a4a0868242ca449b",
+              "summary": [],
+              "encrypted_content": "gAAAAABq-1uahe_pZJKUHpbawFhMossNC6kb2ikcAlx_uGbh1s5PtXLzWmW-YCheDn3qjqrf3FxDsRi5aP8mM5btm1LblnDZ68hR6L1vuKHUqmhwSBar3yrIG7LCPk0lggw-uPcI3JzveQfJdeEYsU6O2nJpYvwg-22irM2dwfBnxPqMdEYFMqy5AnN6_k82U4lmerCPVlcvZvbj0obcNqDJvLu9Y1S-p-AFekmjsZHCAuJHZPc5X0HUnJKi6BQ8qxAoK9rvMvuozPO0PnfExK9_G4ESh1fTY4jjHCz7kOXI00XMaryAxGRBQCTWBnvRJs2fzUlm4RUWLj4n88VbaWEBHvF5tyhakjFxJdaFSodzsyQ_M4blhB1lkQvyxCMXUVOtoJf_2JUe6GGkFR9xwqIAiBRxh8X2UM-jwuF2NNrCrzyvy72lkPXWY1t-rXV-C_Fv6p7uihSIUcguR9j3ulgAhlrUD2ge1doeluBV3vzyGG2c3nvNIDke3NSqGFVziwzNqFBExBNA4KoV4hVzcu4zT482hi4puWQ-ZSXO7PQETRZ2pwRFVufTStpP3WrJ5Bz8IIMIgVUpRVcib-Zht71aTyIaETdjg6R3YfYt3XDzbb44zB_Tv2orel_oc1ZALVujU5y9YuJqz5FE6ikz-YTJxkpV3BUmsbESlRuYtOWsdTKSsZpG3GsvuRu-MLgWAJn4gFcQbNYGbTgzT8-HlE_GiZMe_ORVT1r48bsqJ_sT4-xEZO-kcl-rl--Kht3PCZg7eqjWkKqt8AX9Z7Hv54Lzwy2pgPOd-AehjSUniu8wwpp9tiuRosmSeRpFyb0ur_AVavRM7221dOqlv3E3WFTZA4S2ZS0cUW5g8yZgoa5SQ9JUbywrCJdBSYEJR3gvhrcp8e8sf3B8o9yTZ4Ev4ru_GvpQmNwGPUZdGbScw4nR32CEoYNlLPI18OgYShJIhk_0M-AL8zShafBQFO96HlxElgqyA2TA8JRGfpRX9q6EVD4rD4N0gcbnc1khhVYEa1It_COfLgfvw8q48MXrAcWuQy3RjWfJQsasMpyUWkO-XDSUzk6wzGVNIMMFOi7Elk8u7UpSa49tRDvGLi2rZ3KYxmaE1UJ9uqtVKedHfpzYbE3dzAeBHGus8CbMNPExj8TzlXAT6DNkxqD01pCw0dbpv8vQvHmbh450ertAAYPMcAn7gNQofilQSXHqRPu1NUElBI01CQfmRKribu5F93eFQ3ffq1b5qCo7oimZW4m1XccBBNIfuZirOmaGzlRD2rutQ_5fnrXeV7zZ7gPdXIYhqRaZLcKHRpUMxk28_yityTSUIYgZGEXSR8CXoEsqm-Q4-_syFlwcsd479TRfUD5DLyYt-5gNJgQqtFqjUnwNbZIXZS3QRcH04cKZFC3Xo3Ar_AKuNBzPKwNVIq_y_KGTDHosUV2DWjClcOC5hs2PY7IVvtDcjqSfMEdSvcnkzZzrr9Zvgyqt7Jtmqc6kJuPXlJNXqtSlp7z0loiYQJvdZ8wqBMvvHbylVO4ZDol1VZ1Wbgn8_0fbqZa_5kjJcixGbye4BdY-Jdj9SL6S-L1BD_y8IRhqGXa7RsSidC422Jpd3UDdilyjLtzbUPMSS4O37z2Fz4sDvAJkQNVO_3jDcKK-8UJh41l13eoqKVUYfcppC0QrpkIYv5PSJzDfgFpUgg8stlTLmkBFnI0v6X-9kABkJKfNRxC9Aez3OYN62kXlmsQglbtFrexiNPMc3O8EW1UYNyMwYXDUL9TI1pQ_NlbADqtSeanDsFYNR0T4_07YxRnsfEpiSZ46bgbkkYlqyAkN5tBFt8zLdzQ6r1toG6PbsvQQds9XRRqZeKLSJFlU5TJj8O7C_42NvqAVc7gGSDhDwPB5NAOn0LY8E6Yyw0PE6oGuu0Sk1ptyNYm0iX3eciF34g1PyxebM7re-MSUUGcc4nsTMglfqqem-ZILLixXR9kpgZEWX5KsmujJECP7g07tpUz8XysJ5gSMTfmlzpsS01K7OQEnIwmyXFa0lay0MShJbWYxVA4ubXddIRm6WhLgO9PDCKyoy7HzfDIzYRJrGcGAph7BV2jIl0uZFIacVV_MSrqCfCSQ1q6bi0TskbMO4Fo57Ntn4TBTbkZB3nin5Wqm5CB6cOOit06L1FSIW0YHaKMsloSDp6zAMHcVVWVl3kZxSg58dUDrrWkCP4GqBtIaMA=="
+            },
+            {
+              "type": "message",
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "output_text",
+                  "text": "{\"contributing_factor_entities\":[{\"submitted_entity_name\":\"cache-v1\",\"normalized_gt_entity_id\":\"fictional-cache\",\"reasoning\":\"Prediction identifies Deployment cache-v1 in namespace toy-lab, matching the ground-truth entity with the same kind, name, and namespace.\"}]}"
+                }
+              ],
+              "phase": "final_answer"
+            }
+          ]
+        }
+      },
+      "usage": {
+        "prompt_tokens": 351,
+        "completion_tokens": 108,
+        "total_tokens": 459,
+        "provider_usage": {
+          "input_tokens": 351,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 0
+            },
+            "cached_tokens": 0
+          },
+          "output_tokens": 108,
+          "output_tokens_details": {
+            "reasoning_tokens": 45
+          },
+          "total_tokens": 459
+        },
+        "prompt_tokens_details": {
+          "cache_write_tokens": 0,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 0
+          },
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 45
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 351
+      },
+      "reported_model": "gpt-5.5-2026-04-23",
+      "finish_reason": "stop"
+    },
+    "status": "graded",
+    "score": 1.0,
+    "true_positive_groups": 1,
+    "false_positive_groups": 0,
+    "unmatched_predictions": 0,
+    "missed_root_groups": 0,
+    "root_groups": 1,
+    "provider_response": {
+      "id": "resp_01517dc183a06e23016afb5b98628087d08a1a18bb5528ba90",
+      "object": "response",
+      "created_at": 1794857880,
+      "status": "completed",
+      "access_programs": null,
+      "background": false,
+      "billing": {
+        "payer": "developer"
+      },
+      "completed_at": 1794857882,
+      "error": null,
+      "frequency_penalty": 0.0,
+      "image": {
+        "context_compression": "disabled"
+      },
+      "incomplete_details": null,
+      "input_transformations": [],
+      "instructions": null,
+      "max_output_tokens": 16384,
+      "max_tool_calls": null,
+      "model": "gpt-5.5-2026-04-23",
+      "moderation": null,
+      "output": [
+        {
+          "id": "rs_01517dc183a06e23016afb5b99547c87d0a4a0868242ca449b",
+          "type": "reasoning",
+          "content": [],
+          "encrypted_content": "gAAAAABq-1uahe_pZJKUHpbawFhMossNC6kb2ikcAlx_uGbh1s5PtXLzWmW-YCheDn3qjqrf3FxDsRi5aP8mM5btm1LblnDZ68hR6L1vuKHUqmhwSBar3yrIG7LCPk0lggw-uPcI3JzveQfJdeEYsU6O2nJpYvwg-22irM2dwfBnxPqMdEYFMqy5AnN6_k82U4lmerCPVlcvZvbj0obcNqDJvLu9Y1S-p-AFekmjsZHCAuJHZPc5X0HUnJKi6BQ8qxAoK9rvMvuozPO0PnfExK9_G4ESh1fTY4jjHCz7kOXI00XMaryAxGRBQCTWBnvRJs2fzUlm4RUWLj4n88VbaWEBHvF5tyhakjFxJdaFSodzsyQ_M4blhB1lkQvyxCMXUVOtoJf_2JUe6GGkFR9xwqIAiBRxh8X2UM-jwuF2NNrCrzyvy72lkPXWY1t-rXV-C_Fv6p7uihSIUcguR9j3ulgAhlrUD2ge1doeluBV3vzyGG2c3nvNIDke3NSqGFVziwzNqFBExBNA4KoV4hVzcu4zT482hi4puWQ-ZSXO7PQETRZ2pwRFVufTStpP3WrJ5Bz8IIMIgVUpRVcib-Zht71aTyIaETdjg6R3YfYt3XDzbb44zB_Tv2orel_oc1ZALVujU5y9YuJqz5FE6ikz-YTJxkpV3BUmsbESlRuYtOWsdTKSsZpG3GsvuRu-MLgWAJn4gFcQbNYGbTgzT8-HlE_GiZMe_ORVT1r48bsqJ_sT4-xEZO-kcl-rl--Kht3PCZg7eqjWkKqt8AX9Z7Hv54Lzwy2pgPOd-AehjSUniu8wwpp9tiuRosmSeRpFyb0ur_AVavRM7221dOqlv3E3WFTZA4S2ZS0cUW5g8yZgoa5SQ9JUbywrCJdBSYEJR3gvhrcp8e8sf3B8o9yTZ4Ev4ru_GvpQmNwGPUZdGbScw4nR32CEoYNlLPI18OgYShJIhk_0M-AL8zShafBQFO96HlxElgqyA2TA8JRGfpRX9q6EVD4rD4N0gcbnc1khhVYEa1It_COfLgfvw8q48MXrAcWuQy3RjWfJQsasMpyUWkO-XDSUzk6wzGVNIMMFOi7Elk8u7UpSa49tRDvGLi2rZ3KYxmaE1UJ9uqtVKedHfpzYbE3dzAeBHGus8CbMNPExj8TzlXAT6DNkxqD01pCw0dbpv8vQvHmbh450ertAAYPMcAn7gNQofilQSXHqRPu1NUElBI01CQfmRKribu5F93eFQ3ffq1b5qCo7oimZW4m1XccBBNIfuZirOmaGzlRD2rutQ_5fnrXeV7zZ7gPdXIYhqRaZLcKHRpUMxk28_yityTSUIYgZGEXSR8CXoEsqm-Q4-_syFlwcsd479TRfUD5DLyYt-5gNJgQqtFqjUnwNbZIXZS3QRcH04cKZFC3Xo3Ar_AKuNBzPKwNVIq_y_KGTDHosUV2DWjClcOC5hs2PY7IVvtDcjqSfMEdSvcnkzZzrr9Zvgyqt7Jtmqc6kJuPXlJNXqtSlp7z0loiYQJvdZ8wqBMvvHbylVO4ZDol1VZ1Wbgn8_0fbqZa_5kjJcixGbye4BdY-Jdj9SL6S-L1BD_y8IRhqGXa7RsSidC422Jpd3UDdilyjLtzbUPMSS4O37z2Fz4sDvAJkQNVO_3jDcKK-8UJh41l13eoqKVUYfcppC0QrpkIYv5PSJzDfgFpUgg8stlTLmkBFnI0v6X-9kABkJKfNRxC9Aez3OYN62kXlmsQglbtFrexiNPMc3O8EW1UYNyMwYXDUL9TI1pQ_NlbADqtSeanDsFYNR0T4_07YxRnsfEpiSZ46bgbkkYlqyAkN5tBFt8zLdzQ6r1toG6PbsvQQds9XRRqZeKLSJFlU5TJj8O7C_42NvqAVc7gGSDhDwPB5NAOn0LY8E6Yyw0PE6oGuu0Sk1ptyNYm0iX3eciF34g1PyxebM7re-MSUUGcc4nsTMglfqqem-ZILLixXR9kpgZEWX5KsmujJECP7g07tpUz8XysJ5gSMTfmlzpsS01K7OQEnIwmyXFa0lay0MShJbWYxVA4ubXddIRm6WhLgO9PDCKyoy7HzfDIzYRJrGcGAph7BV2jIl0uZFIacVV_MSrqCfCSQ1q6bi0TskbMO4Fo57Ntn4TBTbkZB3nin5Wqm5CB6cOOit06L1FSIW0YHaKMsloSDp6zAMHcVVWVl3kZxSg58dUDrrWkCP4GqBtIaMA==",
+          "summary": []
+        },
+        {
+          "id": "msg_01517dc183a06e23016afb5b99f58c87d0bc23236dc3acdd5a",
+          "type": "message",
+          "status": "completed",
+          "content": [
+            {
+              "type": "output_text",
+              "annotations": [],
+              "logprobs": [],
+              "text": "{\"contributing_factor_entities\":[{\"submitted_entity_name\":\"cache-v1\",\"normalized_gt_entity_id\":\"fictional-cache\",\"reasoning\":\"Prediction identifies Deployment cache-v1 in namespace toy-lab, matching the ground-truth entity with the same kind, name, and namespace.\"}]}"
+            }
+          ],
+          "phase": "final_answer",
+          "role": "assistant"
+        }
+      ],
+      "parallel_tool_calls": true,
+      "presence_penalty": 0.0,
+      "previous_response_id": null,
+      "prompt_cache_key": null,
+      "prompt_cache_retention": "24h",
+      "reasoning": {
+        "context": "current_turn",
+        "effort": "medium",
+        "mode": "standard",
+        "summary": null
+      },
+      "safety_identifier": null,
+      "service_tier": "default",
+      "store": false,
+      "temperature": 1.0,
+      "text": {
+        "format": {
+          "type": "text"
+        },
+        "verbosity": "medium"
+      },
+      "tool_choice": "auto",
+      "tool_usage": {
+        "image_gen": {
+          "input_tokens": 0,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 0
+          },
+          "total_tokens": 0
+        },
+        "web_search": {
+          "num_requests": 0
+        }
+      },
+      "tools": [],
+      "top_logprobs": 0,
+      "top_p": 0.98,
+      "truncation": "disabled",
+      "usage": {
+        "input_tokens": 351,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 0
+          },
+          "cached_tokens": 0
+        },
+        "output_tokens": 108,
+        "output_tokens_details": {
+          "reasoning_tokens": 45
+        },
+        "total_tokens": 459
+      },
+      "user": null,
+      "metadata": {}
+    },
+    "elapsed_seconds": 9.584291059996758
+  },
+  "scope": "One live GPT-5.5 call on fictional entity metadata through the frozen grader; no benchmark reference fetched or scored."
+}

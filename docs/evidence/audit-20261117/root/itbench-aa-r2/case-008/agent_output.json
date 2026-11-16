@@ -1,0 +1,9 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Deployment/frontend",
+      "reasoning": "The frontend Deployment's 100m CPU ceiling is the upstream fault: CPU throttling is firing before the frontend-proxy error-rate alert, and throttled frontend work is consistent with the upstream connection terminations and 503s. The frontend-proxy errors are downstream symptoms, not a second independent cause.",
+      "evidence": "alerts/alerts_at_2025-12-15T17-40-53.360631.json reports CPUThrottlingHigh firing since 17:25:45 for pod frontend-675fd7b5c5-zjtpt at 26.79%; k8s_objects_raw.tsv at 17:29:40 shows Deployment otel-demo/frontend with one ready replica and a 100m CPU limit (50m request). The later RequestErrorRate alert for frontend-proxy starts at 17:39:29. otel_logs_raw.tsv records 503 UC upstream_reset_before_response_started{connection_termination} responses routed to upstream cluster frontend (for example at 17:27:00 and 17:34:45), and otel_traces_raw.tsv at 17:34:45 shows the load-generator GET and frontend-proxy ingress ending in 503 while its frontend egress reports connection termination."
+    }
+  ]
+}

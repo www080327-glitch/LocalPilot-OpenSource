@@ -1,0 +1,9 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Deployment/product-catalog",
+      "reasoning": "The Deployment rolled out an image that cannot be pulled, and it scaled the previously healthy ReplicaSet to zero. Its only desired replica therefore stayed unavailable and the Service had no ready endpoint. This removed Product Catalog from the request path, causing the downstream frontend, recommendation, and checkout failures; the pod and endpoint symptoms are consequences of this Deployment fault, not independent causes.",
+      "evidence": "In k8s_events_raw.tsv, warning events for product-catalog pods at 2025-12-15 17:50:09 onward report failure to pull quay.io/it-bench/hello-bench-invalid:1.0.0 (401 UNAUTHORIZED), ErrImagePull, and ImagePullBackOff. In k8s_objects_raw.tsv at 17:50:44, otel-demo/Deployment/product-catalog specifies that image with replicas=1 and Available=False / MinimumReplicasUnavailable; its new ReplicaSet has no ready replica while the prior product-catalog-7c7f8b68dc ReplicaSet is scaled to 0. The product-catalog Endpoints object at 17:50:42 has only a notReadyAddresses entry for the new pod. The KubePodNotReady alert for that pod is firing (activeAt 17:50:42.434Z). Downstream evidence agrees: otel_traces_raw.tsv at 17:50:13 records frontend ProductCatalogService/GetProduct and recommendation ProductCatalogService/ListProducts gRPC UNAVAILABLE/connection-refused failures, plus checkout GetProduct failures; otel_logs_raw.tsv records frontend-proxy 500s for /api/products, /api/recommendations, and /api/checkout at the same time."
+    }
+  ]
+}

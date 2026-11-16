@@ -1,0 +1,9 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Pod/product-catalog-7c7f8b68dc-7rqh9",
+      "reasoning": "This pod is the sole ready endpoint behind the product-catalog service, and callers repeatedly see its GetProduct RPC stall and reset. Recommendation and checkout depend on ProductCatalog lookups, so these backend failures propagate into frontend/checkout latency, gateway timeouts, and the later loss of requests; the frontend, proxy, and checkout alerts are downstream symptoms rather than independent causes.",
+      "evidence": "k8s_objects_raw.tsv shows Endpoints/product-catalog mapping only 100.96.4.247 to this pod at 17:52:24; the pod is Running/Ready with zero restarts at 17:52:26. metrics/service_product-catalog_raw.tsv reports duration_p95 22,307 ms at 17:51:55, increasing to 22,954 ms by 17:58:25 and remaining there through 18:01:55. In otel_traces_raw.tsv, frontend ProductCatalogService/GetProduct calls fail at 17:52:40 with gRPC 14 UNAVAILABLE / read ECONNRESET; at 17:58:50 checkout's GetProduct fails with connection reset by peer after about 150.3 s (a preceding GetProduct call took about 106.8 s), and checkout reports failed to get product. The 18:11 alerts show RequestLatency for frontend, checkout, and frontend-proxy plus RequestErrorRate for frontend-proxy; the 18:12 alerts also show NoRequestsDetected for product-catalog and recommendation."
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Deployment/checkout",
+      "reasoning": "The Deployment's pod template contains an invalid checkout image reference with a newline between the image name and tag. The resulting pod is scheduled but cannot start because the image reference cannot be parsed, so the Deployment cannot provide its requested replica. This explains the checkout unavailability and the resulting loss of checkout traffic; the generated Pod is a symptom of this Deployment fault, not an independent factor.",
+      "evidence": "In the 2025-12-15 18:02:44 Kubernetes object snapshot, Deployment otel-demo/checkout requests 1 replica, has unavailableReplicas=1, and specifies image quay.io/it-bench/hello-bench-arm64 with an embedded newline before :1.0.0. Its Pod otel-demo/checkout-d75b77f99-hgc68 is Pending, scheduled, and not Ready. Warning events for that Pod begin at 17:54:59 and repeatedly report 'invalid reference format' and 'Error: InvalidImageName'. Alerts show PendingPodsDetected from 17:55:35, KubePodNotReady and KubeDeploymentReplicasMismatch from 17:55:21, and NoRequestsDetected for checkout from 17:57:05."
+    }
+  ]
+}

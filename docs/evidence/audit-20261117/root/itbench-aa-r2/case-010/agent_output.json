@@ -1,0 +1,14 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Deployment/kafka",
+      "reasoning": "The deployment rollout replaced the only Kafka broker, briefly leaving checkout unable to publish orders. Checkout's broker connection failures and open circuit breaker caused checkout latency and then propagated as 15-second checkout timeouts/504s at frontend-proxy; the checkout and proxy alerts are therefore downstream symptoms, not additional causes.",
+      "evidence": "The deployment events show kafka-5c9d7cc485 scaled up at 17:48:47 and the previous kafka-ff7884766 scaled down/killed at 17:48:49. Checkout logs at 17:48:52 report connection refused to kafka:9092 (100.65.62.181), followed by failed orders publishes and an open circuit breaker. Kafka's 17:50:17 log says it is bootstrapping a de-novo KRaft cluster. The firing alerts report checkout latency 15000 and frontend-proxy request error rate 0.40; frontend-proxy traces/logs show POST /api/checkout 504 response_timeout at about 15000 ms, while checkout traces show failed orders publish spans."
+    },
+    {
+      "name": "otel-demo/Deployment/flagd",
+      "reasoning": "flagd closes its long-lived EventStream with a server-side timeout; the corresponding ad client stream is marked failed, producing the independent ad request-error alert. The error is in the flag-evaluation control path, not an ad deployment/pod crash.",
+      "evidence": "The firing RequestErrorRate alert for ad is 0.0111 at 17:52:18. A matching trace (3f2cd688790f86a37438b24a1703be3f) has an ad EventStream client span starting 17:41:40, lasting about 600 seconds, with gRPC status 4; the flagd server span in the same trace ends with 'stream closed due to server-side timeout'. The ad service metric's EventStream error counter increments from 2 to 3 at 17:52:10, in the alert's time window."
+    }
+  ]
+}
