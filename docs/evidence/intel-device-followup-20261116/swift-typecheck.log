@@ -1,0 +1,9 @@
+companion/observers/MeetingTranscriber.swift:387:22: warning: 'installTap(onBus:bufferSize:format:block:)' was deprecated in macOS 27.0 [#DeprecatedDeclaration]
+385 |                 let format = node.outputFormat(forBus: 0)
+386 |                 guard format.sampleRate > 0, format.channelCount > 0 else { throw Failure.microphoneUnavailable }
+387 |                 node.installTap(onBus: 0, bufferSize: 2048, format: format) { buffer, _ in lane.append(buffer) }
+    |                      `- warning: 'installTap(onBus:bufferSize:format:block:)' was deprecated in macOS 27.0 [#DeprecatedDeclaration]
+388 |                 microphoneStarted = true
+389 |                 microphone.prepare()
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
