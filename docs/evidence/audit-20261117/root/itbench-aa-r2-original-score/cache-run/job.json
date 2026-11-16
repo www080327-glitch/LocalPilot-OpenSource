@@ -1,0 +1,22 @@
+{
+  "status": "READY_FROZEN_CACHE_ONLY",
+  "source_commit": "8e92deb8b6a0acbba1d139851b1d805246304c61",
+  "source_tree": "813a2544f1553d9c6a5e8a01982f2f512eec5e5b",
+  "cwd": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/final-source-b29",
+  "command": [
+    "/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python",
+    "-B",
+    "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/grade_original_r2_from_cache.py"
+  ],
+  "log": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-cache-grading-native.log",
+  "exit_receipt": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-cache-grading-native-exit.json",
+  "supervisor": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/run_qualification_job.py",
+  "supervisor_sha256": "31eebe99550dec0e33fa8cb03206fe2350dde070f185dd1ff25498d7d712af8d",
+  "script_sha256": "06176eefca63249d0ee3b586eaa03b820f27dcb7fe848772b51fb92f459ac448",
+  "grader_sha256": "4cd3f405f7a4d1c05edb6bf5d5530657c69de6b934bf59c2cdf01df7e2f20b76",
+  "prepared_sha256": "36c6470f8e780405e281302926a830ad188684557c868e13a0e185a21d04949e",
+  "python_version": "3.12.14",
+  "execution_surface": "One new independent native Terminal tab; inherited normal environment.",
+  "environment_change": "None",
+  "scope": "Original R2 cohort; all 34 unchanged cases reuse combined caches including low scores/failures. Six original transport failures count as zero. Backend factory guard forbids new judge requests. No candidate rerun or credential file access."
+}

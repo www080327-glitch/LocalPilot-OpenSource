@@ -1,0 +1,25 @@
+{
+  "status": "READY_FROZEN",
+  "source_commit": "8e92deb8b6a0acbba1d139851b1d805246304c61",
+  "source_tree": "813a2544f1553d9c6a5e8a01982f2f512eec5e5b",
+  "cwd": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/final-source-b29",
+  "command": [
+    "/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python",
+    "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/final-source-b29/scripts/grade_itbench_aa.py",
+    "--output",
+    "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed",
+    "--key-file",
+    "<private_key_file>"
+  ],
+  "log": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-native-grading-r2.log",
+  "exit_receipt": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-native-grading-r2-exit.json",
+  "supervisor": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/run_qualification_job.py",
+  "supervisor_sha256": "31eebe99550dec0e33fa8cb03206fe2350dde070f185dd1ff25498d7d712af8d",
+  "grader_sha256": "4cd3f405f7a4d1c05edb6bf5d5530657c69de6b934bf59c2cdf01df7e2f20b76",
+  "python_version": "3.12.14",
+  "execution_surface": "New independent native Terminal tab using the existing supervisor and inherited normal environment.",
+  "environment_change": "None; no PATH, network, proxy, TLS, or credential changes.",
+  "previous_failed_job": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-native-grading-job.json",
+  "scope": "First judge attempt after the verified input adapter; preserve all candidate receipts and prior logs. Prepared and authorized for one native Terminal launch; not yet started.",
+  "grading_protocol_change": "None: only ground_truth input-shape adaptation; normalization, scoring, fixed 40 denominator, model and budgets unchanged."
+}

@@ -1,0 +1,14 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Pod/product-catalog-757f656dc7-rgmt9",
+      "reasoning": "The product-catalog container repeatedly exited, intermittently removing the backend needed for product-list requests. That directly explains dependent recommendation calls failing with UNAVAILABLE/connection-refused errors; those are consequences, not separate frontend/recommendation causes.",
+      "evidence": "The Warning BackOff event for this pod is recorded at 2026-03-12 21:36:03 and again at 21:40:56. Its 21:36:45 Pod status has restartCount 2 and last termination exitCode 1. In the traces, recommendation spans for /oteldemo.ProductCatalogService/ListProducts fail with StatusCode.UNAVAILABLE and connection-refused/failed-to-connect errors. The product-catalog Endpoints object targets this pod."
+    },
+    {
+      "name": "otel-demo/Pod/valkey-cart-744b8475bb-6g6kd",
+      "reasoning": "The cart's Valkey backend was crash-looping, an independent loss of cart state service that explains the sustained cart failures and contributes to dependent checkout/frontend latency and errors. Those service alerts are downstream symptoms and are not listed as separate factors.",
+      "evidence": "The alert snapshots from 2026-03-12 21:52 through 22:00 fire KubePodCrashLooping (value 1, severity warning) for this pod. During the same interval, HighRequestLatency fires for cart and checkout at 15,000 ms, and HighRequestErrorRate fires for both (for example, at 22:00 cart 0.8889 and checkout 0.2889). The snapshot topology includes a valkey-cart Service and endpoint, consistent with the cart backend role."
+    }
+  ]
+}

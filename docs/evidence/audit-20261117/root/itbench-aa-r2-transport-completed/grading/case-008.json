@@ -1,0 +1,193 @@
+{
+  "index": 8,
+  "scenario": "Scenario-8",
+  "fingerprint": "18cabc86bcf19320a0cb38775929f93abaac27fb0f4625411e06885195ac2387",
+  "candidate_status": "completed",
+  "prediction_sha256": "ee52f680b70037ea563455f7f6f67f6d0fff9d48eb01a159c6f0d1b5a60309a5",
+  "prediction_count": 1,
+  "response": {
+    "message": {
+      "role": "assistant",
+      "content": "{\"contributing_factor_entities\":[{\"submitted_entity_name\":\"otel-demo/Deployment/frontend\",\"normalized_gt_entity_id\":null,\"reasoning\":\"Prediction identifies a Deployment named frontend in namespace otel-demo, but ground truth only provides a frontend Service; Deployment and Service are not compatible without an explicit alias.\"}]}",
+      "native_replay": {
+        "kind": "openai_responses_v1",
+        "model": "gpt-5.5",
+        "base_url": "https://api.openai.com/v1",
+        "sha256": "123166d794e426b8c8117cf2ba901ef1ad4b8fb206460978f30e54ae649a7789",
+        "items": [
+          {
+            "type": "reasoning",
+            "id": "rs_052ddb3718bc2961016afb6efc8cc487d0acee8ce579f303be",
+            "summary": [],
+            "encrypted_content": "gAAAAABq-278mlyGNh5GZakODdSSFf-vv6QfCQdIGFXr2ce_onttJFeMjWR18TVfrWu1SCItG951H5t04jE-OMYSXcIJLRGSCkNKy8k9c5j9_ogJOVJ1CkVfDDfZ4KGVhERGYG9Z_Q4u-2GsyIZfQwmQM3VWsR731XLPMn42jpl4MWj7Q8HZPyAOi0RJD4H7X9FbvNZbKIjYe8cwHwgDGya8Rfndq7ED7WEslefjbxtuv9LT4wYveA_spiXqpjr-HNR9969C9XIdq0CiIGkGFZWCENNaaamroF0c1aORZhbLKK1uJ6DylohxNk5y_hOTOMqXIl86qH0tQzNblDmbOfrX76U_WBffPMTdHxaM-N2CJqndpgq4MnqpWpw8n-Wc1O29KrSj-RjFnvyzZVM5dl7Lz_d8ozy_MS1qvTX3gy2y1SBA9JBq6Lox2CIqdD6T_a3RdJuiqVV5IJVvmVavqtuSnKytqLo9sOZE9yeN46EoS6guwAY_NzQR5b619cU1KQh5JQbA3XboLunYv39pIxcXgshvgAPO7e-_CDspbkvCawVLAtfdRgI1tkONgHip4OZzA37OijsC5xdT0UF9xhrbKyhsAMlsGAZaYi6tvzrmOm5bTylExgf1-jjb8vksZ4K_Is3iZQN_gi7Ur4VevDZrz5xoHBi5Y7cCVYln7IDfbZ7UNhGS52JFLGfnowxZlhcEaprA4jn0mfrUxezU2TagYfr63Hb53AtPGfGkFRcBHRX_ML7y6keqSdg-zJUPgXgc-lDth20GtaE54rSgNNNeexPOTv3LLAmJKl3bRNPUNBes-ZEZ3MFh-EqtpKFGrpewayZc35-aGiX0tvLYXdWRlaNRURVUhQQr_iPeC9p3-HcZYo8en0PQ-KUd383CpvXOoZu1K2kad7mRt_Uo1VQePtT0LqR0es3oKD-XQS95gS1-hVJnzFytKwCy40eyTl3FIBwNw3zdCcju2ew6JzQuktJIkxq2M5zlV_x6ppngL_a8O4yU6uLTz2beI3nz-0FQs5gxVDWKai5w1sv4qnDJt73cl0DS354NHY-GAsMNDDYC2cQaCNBoZi9x-9tRqDslIQQSUl2jVun7_I7Kha3ZB67fDFDBLM4G7zfqrvhXlPHjxW3M3boTBE3iXV7adSg2tyCOtuUwqyei_qJHfEmD2M817Ty6bDeeyglZQXE4Fj-HbbbHhqRzaphoPcEoq2GbTEg7-F5KGkYtlqZ0taeWmOsO_Dt8bpxbvKuPB2bwS49eDVsYGCCaGxnybEGsm1fMc1ezJNpPN-s9RqN2jg-Zj2qy_RZiHga8zZwE5ZP6608SG6CplBZPZQJIJLTfJ74dG23JRxBPJsSyle6sQe4hjMyIzddJSdz4RACRwVrqVyRXw_gilq_32ZZxvvx7HQOalWuoS5LmKaNrnoaK8kUjOsDZkOSVVEPDJjy5hvpamLNhPy7J8JNxyz0whaFJCnz56lsTChT7276BkSBtQ3JYJxa2v3sADIifCX7c3QTT8wMwLrA-kc9QuRAOyfzP2hFUQAhaA9YwaMs2QxOWpHnjK8i3nsFI1rpbpRJhvpVztNpK9Rn9RVnW-ui8EetzWyCcJWjxmB21MLSJ-DYVOXXbp0fgidaw8_qTDfMIjMZe7d4g4wDahnOyQtBDkoiv0JrgvzDRs15qOmTotSFzx4wNRl64rP3GG7aK73pOiTf27uiGPmIg8NsdpZU8sY-Q9joSmnGYOCwqSH0hlbAPElJNIIRbbU2yAGY70cn9rngcVgtR2CTR_e9nnrSQyECkEB_-TxMBzgSue7A7cBfWhmmPY3A8hXO4iIK-VzsDapWDK4HiAU_Ox7VKW6Mhh3qwfLinTPock4emByJR5WCL_Q1Ne4jMzK-BSJkL-ZZec-rQB0Utio7_YvplBOfwoO4jmZnDRWnfwmK_YxW_548S9c9MM-OGLYYMe7G2xatgEHG0S69eau5c0TzxMcNvPIFSvBB7XsVRH6gb4CbA2fsEg5nYhPW_ZM__FuNwsLWLIetBHE8KXctm4FQw_bdVTCY78lPiV4dMHPVS-BngQFjtJDXvye-9MGuig5K7N4HiBZnPlW3UXrOQQZUGqjift_3puyGO_RSkDHNimqA6VgjWkV5QehVV93o8lZl6SsvsaOHGGqX8qysL6iHhaQ-BCeRWICrpRFaQ9bGUOfk1igNCCaJ3UZR391f8CXl-t5Myo6PWR9We_3Dylcqxnvh5EnGhUZO58MLLGf5pHxgMe60_R71CFVvMrWkH_ySy__UbzPjnxY-OAB8mcqjFRS8qumobUYZRx0_ksU1Ubr8v8RkwZn8jpVENNvNnTVgZn-2k0k4WSHUG7lyoZdvDc7sfkwMS38dR_kI4EcJFkbqqcUajkliVaONtOMvpJ09UMw2fVqzzqHs-IaGD_mQd-YEni_jxMavivJ1noXnTAE7FdamHxTMGUW5peaw8hq34UKiDsLI-K92v1Bo3ShvWhP_z7qJeRGIKdxRIpJ1Ytu5SVw7mC39M9skUnoIiBIiUHo4_FIqvZ5U2YfPDbzimUlAKoC1p24Vv2nyHTFj6_ZtUIBnp-_-h8jmKZh8Usw4GHGPV-24_8bALrzao2-4dsnj8rAU1Jq4FolIAKXUbS-iI_S3uwZ6wwNkYEGf9UjKGu1tZJAiLryHfqlbi_GrFMlKpNc2KiCN9V40g69TErcjsYVcGj9P5BPd133u7_Bg19ld4mJQRGBQMyNTe8t8vc-igrNnywOPB8SCO6w5PuJ3JKmm1Kl4dvfmexzGK8gWH7Os0Z0JQjCMs1iB5reop2bmUJO-JCT1uFo5vs6be8H1ci7BOjtI3pzRJE4wuZ0SwRWtJJWsL21BKmqDs4wUNIYa9sVVSdE8Gk10vi9Jn_GtQ6VZQu8Q_AxwN7RbynETCS4iwadiXVKnnb3xxxYTql9KxWEy296Ky8FxrMnTJG9r0GNMYOiZDAgHVNVqxttf-GRUs19ineNUQdh-hzL4XCXaCbjn--4DcsJ-oN2Iod4XaMBBM-ofFegdPV4LmAAJVwR6VKPlBo3nxrNQsCqY-TrRCbT9EyZn_OJB-16ZEcBKeLWaVS3THKWA2j1HScn6naMcET4i0Vb-R6X10PyJQWlYGcTVw4REvY7WyHbsFwXLyGyxDaZ94Ptqh53dYtJIzXgjIeFZv7S4A7tXF7L45F_3IHih2kXf3bbyAwExuuXS8vcndOYvQ7DlnXlwM64kgnVD7kMHuuE8ABRimIT0NZJF0G3YQVJgCR1y1_uPXPxxr61ZRDjdcCHspvxUrlw=="
+          },
+          {
+            "type": "message",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "{\"contributing_factor_entities\":[{\"submitted_entity_name\":\"otel-demo/Deployment/frontend\",\"normalized_gt_entity_id\":null,\"reasoning\":\"Prediction identifies a Deployment named frontend in namespace otel-demo, but ground truth only provides a frontend Service; Deployment and Service are not compatible without an explicit alias.\"}]}"
+              }
+            ],
+            "phase": "final_answer"
+          }
+        ]
+      }
+    },
+    "usage": {
+      "prompt_tokens": 678,
+      "completion_tokens": 188,
+      "total_tokens": 866,
+      "provider_usage": {
+        "input_tokens": 678,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "cache_write_tokens_details": {
+            "ttl_30m_tokens": 0,
+            "ttl_12h_tokens": 0
+          }
+        },
+        "output_tokens": 188,
+        "output_tokens_details": {
+          "reasoning_tokens": 121
+        },
+        "total_tokens": 866
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_tokens_details": {
+          "ttl_30m_tokens": 0,
+          "ttl_12h_tokens": 0
+        }
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 121
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 678
+    },
+    "reported_model": "gpt-5.5-2026-04-23",
+    "finish_reason": "stop"
+  },
+  "status": "graded",
+  "score": 0.0,
+  "true_positive_groups": 0,
+  "false_positive_groups": 0,
+  "unmatched_predictions": 1,
+  "missed_root_groups": 1,
+  "root_groups": 1,
+  "provider_response": {
+    "input_transformations": [],
+    "id": "resp_052ddb3718bc2961016afb6efab48c87d0a80e2fd76dfaa20c",
+    "object": "response",
+    "created_at": 1794862842,
+    "completed_at": 1794862845,
+    "status": "completed",
+    "background": false,
+    "billing": {
+      "payer": "developer"
+    },
+    "frequency_penalty": 0.0,
+    "presence_penalty": 0.0,
+    "moderation": null,
+    "model": "gpt-5.5-2026-04-23",
+    "access_programs": null,
+    "previous_response_id": null,
+    "instructions": null,
+    "output": [
+      {
+        "type": "reasoning",
+        "id": "rs_052ddb3718bc2961016afb6efc8cc487d0acee8ce579f303be",
+        "summary": [],
+        "content": [],
+        "encrypted_content": "gAAAAABq-278mlyGNh5GZakODdSSFf-vv6QfCQdIGFXr2ce_onttJFeMjWR18TVfrWu1SCItG951H5t04jE-OMYSXcIJLRGSCkNKy8k9c5j9_ogJOVJ1CkVfDDfZ4KGVhERGYG9Z_Q4u-2GsyIZfQwmQM3VWsR731XLPMn42jpl4MWj7Q8HZPyAOi0RJD4H7X9FbvNZbKIjYe8cwHwgDGya8Rfndq7ED7WEslefjbxtuv9LT4wYveA_spiXqpjr-HNR9969C9XIdq0CiIGkGFZWCENNaaamroF0c1aORZhbLKK1uJ6DylohxNk5y_hOTOMqXIl86qH0tQzNblDmbOfrX76U_WBffPMTdHxaM-N2CJqndpgq4MnqpWpw8n-Wc1O29KrSj-RjFnvyzZVM5dl7Lz_d8ozy_MS1qvTX3gy2y1SBA9JBq6Lox2CIqdD6T_a3RdJuiqVV5IJVvmVavqtuSnKytqLo9sOZE9yeN46EoS6guwAY_NzQR5b619cU1KQh5JQbA3XboLunYv39pIxcXgshvgAPO7e-_CDspbkvCawVLAtfdRgI1tkONgHip4OZzA37OijsC5xdT0UF9xhrbKyhsAMlsGAZaYi6tvzrmOm5bTylExgf1-jjb8vksZ4K_Is3iZQN_gi7Ur4VevDZrz5xoHBi5Y7cCVYln7IDfbZ7UNhGS52JFLGfnowxZlhcEaprA4jn0mfrUxezU2TagYfr63Hb53AtPGfGkFRcBHRX_ML7y6keqSdg-zJUPgXgc-lDth20GtaE54rSgNNNeexPOTv3LLAmJKl3bRNPUNBes-ZEZ3MFh-EqtpKFGrpewayZc35-aGiX0tvLYXdWRlaNRURVUhQQr_iPeC9p3-HcZYo8en0PQ-KUd383CpvXOoZu1K2kad7mRt_Uo1VQePtT0LqR0es3oKD-XQS95gS1-hVJnzFytKwCy40eyTl3FIBwNw3zdCcju2ew6JzQuktJIkxq2M5zlV_x6ppngL_a8O4yU6uLTz2beI3nz-0FQs5gxVDWKai5w1sv4qnDJt73cl0DS354NHY-GAsMNDDYC2cQaCNBoZi9x-9tRqDslIQQSUl2jVun7_I7Kha3ZB67fDFDBLM4G7zfqrvhXlPHjxW3M3boTBE3iXV7adSg2tyCOtuUwqyei_qJHfEmD2M817Ty6bDeeyglZQXE4Fj-HbbbHhqRzaphoPcEoq2GbTEg7-F5KGkYtlqZ0taeWmOsO_Dt8bpxbvKuPB2bwS49eDVsYGCCaGxnybEGsm1fMc1ezJNpPN-s9RqN2jg-Zj2qy_RZiHga8zZwE5ZP6608SG6CplBZPZQJIJLTfJ74dG23JRxBPJsSyle6sQe4hjMyIzddJSdz4RACRwVrqVyRXw_gilq_32ZZxvvx7HQOalWuoS5LmKaNrnoaK8kUjOsDZkOSVVEPDJjy5hvpamLNhPy7J8JNxyz0whaFJCnz56lsTChT7276BkSBtQ3JYJxa2v3sADIifCX7c3QTT8wMwLrA-kc9QuRAOyfzP2hFUQAhaA9YwaMs2QxOWpHnjK8i3nsFI1rpbpRJhvpVztNpK9Rn9RVnW-ui8EetzWyCcJWjxmB21MLSJ-DYVOXXbp0fgidaw8_qTDfMIjMZe7d4g4wDahnOyQtBDkoiv0JrgvzDRs15qOmTotSFzx4wNRl64rP3GG7aK73pOiTf27uiGPmIg8NsdpZU8sY-Q9joSmnGYOCwqSH0hlbAPElJNIIRbbU2yAGY70cn9rngcVgtR2CTR_e9nnrSQyECkEB_-TxMBzgSue7A7cBfWhmmPY3A8hXO4iIK-VzsDapWDK4HiAU_Ox7VKW6Mhh3qwfLinTPock4emByJR5WCL_Q1Ne4jMzK-BSJkL-ZZec-rQB0Utio7_YvplBOfwoO4jmZnDRWnfwmK_YxW_548S9c9MM-OGLYYMe7G2xatgEHG0S69eau5c0TzxMcNvPIFSvBB7XsVRH6gb4CbA2fsEg5nYhPW_ZM__FuNwsLWLIetBHE8KXctm4FQw_bdVTCY78lPiV4dMHPVS-BngQFjtJDXvye-9MGuig5K7N4HiBZnPlW3UXrOQQZUGqjift_3puyGO_RSkDHNimqA6VgjWkV5QehVV93o8lZl6SsvsaOHGGqX8qysL6iHhaQ-BCeRWICrpRFaQ9bGUOfk1igNCCaJ3UZR391f8CXl-t5Myo6PWR9We_3Dylcqxnvh5EnGhUZO58MLLGf5pHxgMe60_R71CFVvMrWkH_ySy__UbzPjnxY-OAB8mcqjFRS8qumobUYZRx0_ksU1Ubr8v8RkwZn8jpVENNvNnTVgZn-2k0k4WSHUG7lyoZdvDc7sfkwMS38dR_kI4EcJFkbqqcUajkliVaONtOMvpJ09UMw2fVqzzqHs-IaGD_mQd-YEni_jxMavivJ1noXnTAE7FdamHxTMGUW5peaw8hq34UKiDsLI-K92v1Bo3ShvWhP_z7qJeRGIKdxRIpJ1Ytu5SVw7mC39M9skUnoIiBIiUHo4_FIqvZ5U2YfPDbzimUlAKoC1p24Vv2nyHTFj6_ZtUIBnp-_-h8jmKZh8Usw4GHGPV-24_8bALrzao2-4dsnj8rAU1Jq4FolIAKXUbS-iI_S3uwZ6wwNkYEGf9UjKGu1tZJAiLryHfqlbi_GrFMlKpNc2KiCN9V40g69TErcjsYVcGj9P5BPd133u7_Bg19ld4mJQRGBQMyNTe8t8vc-igrNnywOPB8SCO6w5PuJ3JKmm1Kl4dvfmexzGK8gWH7Os0Z0JQjCMs1iB5reop2bmUJO-JCT1uFo5vs6be8H1ci7BOjtI3pzRJE4wuZ0SwRWtJJWsL21BKmqDs4wUNIYa9sVVSdE8Gk10vi9Jn_GtQ6VZQu8Q_AxwN7RbynETCS4iwadiXVKnnb3xxxYTql9KxWEy296Ky8FxrMnTJG9r0GNMYOiZDAgHVNVqxttf-GRUs19ineNUQdh-hzL4XCXaCbjn--4DcsJ-oN2Iod4XaMBBM-ofFegdPV4LmAAJVwR6VKPlBo3nxrNQsCqY-TrRCbT9EyZn_OJB-16ZEcBKeLWaVS3THKWA2j1HScn6naMcET4i0Vb-R6X10PyJQWlYGcTVw4REvY7WyHbsFwXLyGyxDaZ94Ptqh53dYtJIzXgjIeFZv7S4A7tXF7L45F_3IHih2kXf3bbyAwExuuXS8vcndOYvQ7DlnXlwM64kgnVD7kMHuuE8ABRimIT0NZJF0G3YQVJgCR1y1_uPXPxxr61ZRDjdcCHspvxUrlw=="
+      },
+      {
+        "type": "message",
+        "id": "msg_052ddb3718bc2961016afb6efcb38887d0b2a35aacecf7940a",
+        "role": "assistant",
+        "status": "completed",
+        "content": [
+          {
+            "type": "output_text",
+            "text": "{\"contributing_factor_entities\":[{\"submitted_entity_name\":\"otel-demo/Deployment/frontend\",\"normalized_gt_entity_id\":null,\"reasoning\":\"Prediction identifies a Deployment named frontend in namespace otel-demo, but ground truth only provides a frontend Service; Deployment and Service are not compatible without an explicit alias.\"}]}",
+            "annotations": [],
+            "logprobs": []
+          }
+        ],
+        "phase": "final_answer"
+      }
+    ],
+    "error": null,
+    "incomplete_details": null,
+    "tools": [],
+    "tool_choice": "auto",
+    "parallel_tool_calls": true,
+    "prompt_cache_key": null,
+    "prompt_cache_retention": "24h",
+    "text": {
+      "format": {
+        "type": "text"
+      },
+      "verbosity": "medium"
+    },
+    "top_p": 0.98,
+    "top_logprobs": 0,
+    "temperature": 1.0,
+    "reasoning": {
+      "effort": "medium",
+      "context": "current_turn",
+      "summary": null,
+      "mode": "standard"
+    },
+    "user": null,
+    "usage": {
+      "input_tokens": 678,
+      "input_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_tokens_details": {
+          "ttl_30m_tokens": 0,
+          "ttl_12h_tokens": 0
+        }
+      },
+      "output_tokens": 188,
+      "output_tokens_details": {
+        "reasoning_tokens": 121
+      },
+      "total_tokens": 866
+    },
+    "tool_usage": {
+      "image_gen": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "input_tokens_details": {
+          "text_tokens": 0,
+          "image_tokens": 0
+        },
+        "output_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 0
+        }
+      },
+      "web_search": {
+        "num_requests": 0
+      }
+    },
+    "safety_identifier": null,
+    "store": false,
+    "metadata": {},
+    "max_output_tokens": 16384,
+    "max_tool_calls": null,
+    "service_tier": "default",
+    "truncation": "disabled",
+    "image": {
+      "context_compression": "disabled"
+    }
+  },
+  "elapsed_seconds": 2.938900574998115
+}

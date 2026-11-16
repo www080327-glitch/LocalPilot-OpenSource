@@ -1,0 +1,30 @@
+{
+  "source_commit": "8e92deb8b6a0acbba1d139851b1d805246304c61",
+  "source_tree": "813a2544f1553d9c6a5e8a01982f2f512eec5e5b",
+  "build": "PASS",
+  "native_ui": "PARTIAL_DEFERRED",
+  "observed": [
+    "RC12 real WebKit welcome",
+    "Bundled component preparation and connection",
+    "Model download skipped",
+    "Owned process shutdown"
+  ],
+  "not_run": [
+    "First setup completion",
+    "Main UI Core b29 label",
+    "Live service capability readback",
+    "Long-task selection",
+    "Animation sampling",
+    "Task or model submission",
+    "System-wide DEB install",
+    "macOS qualification",
+    "GitHub binary upload"
+  ],
+  "reason": "Root requested stopping further RC12 UI qualification after an independent b29 engineering failure; final short native qualification is reserved for a subsequent fixed candidate.",
+  "native_terminal_tabs": {
+    "build": 17,
+    "launch": 18,
+    "owned_stop": 19
+  },
+  "preserved_running_jobs": "No action was performed on native Terminal tab 8 or other validation jobs."
+}

@@ -1,0 +1,193 @@
+{
+  "index": 10,
+  "scenario": "Scenario-11",
+  "fingerprint": "72d5aa05deb6fefbedd262147f56e7a280a1d32074c7d6cffd24b82996078d7b",
+  "candidate_status": "completed",
+  "prediction_sha256": "ce69ef83bc43c81c3ad79fd68a5b8ed3a1b57a265a22d9c9e7652e017d6fb32b",
+  "prediction_count": 2,
+  "response": {
+    "message": {
+      "role": "assistant",
+      "content": "{\"contributing_factor_entities\":[{\"submitted_entity_name\":\"otel-demo/Deployment/kafka\",\"normalized_gt_entity_id\":null,\"reasoning\":\"Submitted resource is a Deployment named kafka in namespace otel-demo, but the only kafka ground-truth entity is a Service; same-named Service and Deployment are not automatically matched without an explicit alias.\"},{\"submitted_entity_name\":\"otel-demo/Deployment/flagd\",\"normalized_gt_entity_id\":null,\"reasoning\":\"Submitted resource is a Deployment named flagd in namespace otel-demo, while the ground-truth flagd-related entity is a ConfigMap named flagd-config; kinds and names do not support an identity match.\"}]}",
+      "native_replay": {
+        "kind": "openai_responses_v1",
+        "model": "gpt-5.5",
+        "base_url": "https://api.openai.com/v1",
+        "sha256": "e18a668b2fe9aae763a5ce4589b186e32c607c211e150d65d2b48e22a873d477",
+        "items": [
+          {
+            "type": "reasoning",
+            "id": "rs_002d00c989556a44016afb6f03900487d09e3e671d78530d96",
+            "summary": [],
+            "encrypted_content": "gAAAAABq-28D449bPYncY-GdF0YWJpxFDkaEoX5hCdcB4YkjS4c3YSc0GtlIBzyvK_Zkuh1zKt5nf0bKlhPDPcnKggao8Wqb8BIkoLS7KdzuXSoGTiPhP6cbd9SuwmWhZtCjB4OnV9R3HwFUbFP5j0xPxKBiYgdVyeVBKRFc-X5c7_yG27j9KO5W6DUdfpM-ehExo37pU4yLfY2gnF9ztz1L-qdDzlXULfCsZ1AKcmDJVEhnWGmcmNZxjE79IiDrQyM3kdanK4qIekk1vgytcn7ia6iWLRQjM-px9Cc96_qA2iPX1RWUrg-uq6Judx30IZE5gJvE49fX3zWyqwoq65FWTNov6b4RlwHwavX1YW2ZAfRfB_JAc7Ni3Va6FAuXWdojmwNuciQqCMzEUarkyBYps9Rc4fX2j_I35KeweO7yIapdgUlB--2Nr1njcxGGvdX0dcDcixNJCtbGIDg9OY7VKqtlOvkqQUCOrZW3XyG73JKBT1kYVSC3EbV0W0mCgEHQqnmFZfSpRzKPPPmujTIzix3ZRgvB95v-7bzXPY5fMvMDdcraZwV9yPA_aHHnvyrvmTW1UuZ8-wfQYk63DScP6m3n0gcLUNYf1nI3fCpFSJ1L66186y9JzzrSMY0khYcqXM9B3gaQqe6txn9jvkfMFokciH8d2zfE-J-e9_-04U1_YV40Rjy8Fxxw63p-kLNDCE-ElgpvfMzqMLVoGu9bSUUMNDn_dzoHZNeSCn4dJ7uI9rX10OPyQjd4VVMy3KJ_NSaV3MJLdu3dbx5M3VKKM9QojFT6NfUx-xRm6YLnVfqkHpvBaTn9gx1db6bIzi4bkwBC-nJCPyVzvGKyhBt040zoIccHMNwrtJbYFIzpswuUFJ4vYsh9gVeOR-JX37VS3eIJa3iwW_Fspz3HnOIjiSTmrchmbNi15ii0cdRvuRJ5R8JjJW9vc-UqMnQ4SJ2dx9c6CDaeidbzAD3XNiI5jBIp6011crPOS_SdpvDenLvsb025yezRtzTrRFR2bH1WJWcWm80tFJKLZEvgvhkNdOZuhn-iI3NjzaI6GjHdwgCA55mjzZP7JUf1dcDx9sLk8biijhSH0Sz-oVuMcqldbtJ7s6PnRlvd7ndnri57ZScYQ2kq0hE7v6l8Qh6MY7s-gGS_iDPGRrp6UOLA1G5prPffC_rJZX7sBPhqG3BkuhKUDfyZ_qnWbQ1OH1K0BYFNdCdhewd46ygy8TlgW8RmAIPFVwMujoiG2CorW_8JO14zh0keCSqB6Sq-9qkonEU_tz9f-Af7MBbV35KmVEmma9d3PeavUElsyqSm3ITQNJCjbx6BTOlyMFmlUvj5SjUopKtMBXFnX69Eqi35c3ssMK0eH6gL76iTaXgy58E_MKxQYTGOvPWwio6BtpS79Swn8WWyzYTOXIppm_3j-fH-R1FsBqHCIeU5kmwz7NC4OdS-sC2Cz-oTGueOELU5X6Hcx2SmDv-Vk2Yopm7zIDsEvfxeACs8kxFKjtu_-Jx2U57QWwiRlOxW0aVX8tSyXO6Y4euGcH2H3HEy17rcAJ0rLW-ipr5HkNaGnSGOxw8gBAFd33o0VU9r0V8P6f4RjaIO-fDlEZYQ6mFKMBdmnqnTcTn5kO34ru-1Ea_pN4WNRiFgms09-YpZDfuEyzn11WmE9bDXFfBlSgyusatmuxJbSK_nakfUJNDcYK8qBnd173AKYPVFxSKVb9s0aPGlr5ojHnJQbWdpwqVd_ONa2nYoUtCiqEMciWk3REIg30BgIvQgKqlKotWu-sKoidOsmtAHQk3kOsOtzTYlpv5uSel40UYT8xc4aFZIoJxwe0t5wV8r7eGtybmBtOql70FuUIA1yL52PA3hCSZxUkFDorl3dHSIdj52d6nOMPBAxvTgh_mIVnA1QdAIOJCFWx3J_B1-9qbgKx3ke6QSN1M6_VkH7yebtys7VhEX-dDhflbZfFlMYk_M0nvebmFNGBDbStIXSlfumUexqo_XOd4v0Tg9V-UQ5LoUAkqIcVGxwCM1pZ9vhkOKptf7U1QKkVba3d1JKh32EjL8ZZdGi8rxd6iXAPbczODQAqyq0mI29kkTTBkFAP1TPm-9SEM-1Q3c1HxLnPZDJFND7vAs4x6u1SgHmR86w7qScM93NmAuUeKz-0Y9lpIh-XXF98ysgfnS9BlZsdWzEWCKiI3KG6uxEBjUXqRh5HxVATbEyvaEJ2QY8YtmEWIMauca1qAMniCk1Yxhefi8oHlC8PODv4VOD__SH2UFTCSGMfUBtLEZah-QTuumFKn1whW09oUJCRgkTPWLVQTVJspE3lqFufN2QLr8mbaoUlBr8ecDB_VcS5FhB8N-lnyh6iW2pSPV4c3rCYI2bngiS-fxgyhTh-f6WTYHb0vcjE4f8xGK6ziLW1nMHgRRZUp3fWCR_LG2buOPgQWUyoAe5Aq7Y0oYD0cNnKUVEJnhpKF_h2OIVwkEj4kCUxhN-CrQbUSY3DikivD-Pe6rCL06tZnNRVQwBlOjKsI4Pkyb1hi4FW3NFdwy6c88uetkz2KduAdcGidkWjyWmM7s8AVVnTB2sowzrBqxulQfyI8eGXWSUtPiGuCEWN1fMyTihAlBwKoA_OQnNl21cfxZxZirR3RE-m0WtDzsfipBPJnaXyzVQdIHIKnNaF7WxTs4c2BH7pfBOvTVqxj69ToiN4dsM-L6RxJjiBk-ACA-tP0QICh7iDevyJsuvNrJjFNmv82PkzV366tjjAiSthHMQKpKyl75XAU7hjP-t-vH-MS7s3F2VHNlr1KYSDjzJmduGF-XzrTSijCVr0oW0_cHKjs8DKXNdK7dV77Az0o9o5dwPbqdizXr1pz8ot4p74PdY_wqSvV-9if3TkK1h7AJNlc1nYYvK-6rXYZfMJJU68Aab6npU9WogtgDuAZ1Gni5glN0d__XrbQNw0C8wgusc_dCbgKWYLtOOwxWKPha21Kej1IGymNImw5SE3XlxbtogMtVCvTpW2WuVQ027ffTi7Zu6UFTjqho4-ygGVdI8dueI4Uak-1vvlnQUC1oQdms_dVasRgWVBJCJfkn5T3InRmakg1uC2PaFUf4H2xzEwzmNVW-T09BIMiO-I-DIHIlZ45ugdD0WDGUxK9ZSM6HfKrP3yc97V9U7A5aQaISSTRsldH6YuW8kNo4Sw_GGMYXRFlJsoCZPMAtjrUqoEBbAF8y0j_pC-a3RBJpqvsAM6yJPlJXcdceXBF6ntr1D5H1zzZq89UUj0rsdncAFghJLve4bGZHg18fZEmkT-2PtU1tqB_-vcxb3YetMPzEVkiuRHRqyMlAizpqd-wiqyJjdeham5M4Lg7JgJaCdWG6_NCSQQyhRfbULz8bkujZnk7GD1hIHnEhWgiZCwXaUP7zPERXQ4X5x7-AdnUsqYLaRy4CZ5qp7zCvgUvvaKxsoRlirG98aRRDdrh1WtU4lSWIejhvhGXy9TOM-yrb08aT9UYOj6gldgbpCWFSayIyZNGuZ9AfbNmiRu2BlLBldPRmmC189H8mj3E3jl8tz4rk-04H-g5yozsKwPcb3vhXvbq0o845_MOId5cakcHjnFfKA54Cr8mX"
+          },
+          {
+            "type": "message",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "{\"contributing_factor_entities\":[{\"submitted_entity_name\":\"otel-demo/Deployment/kafka\",\"normalized_gt_entity_id\":null,\"reasoning\":\"Submitted resource is a Deployment named kafka in namespace otel-demo, but the only kafka ground-truth entity is a Service; same-named Service and Deployment are not automatically matched without an explicit alias.\"},{\"submitted_entity_name\":\"otel-demo/Deployment/flagd\",\"normalized_gt_entity_id\":null,\"reasoning\":\"Submitted resource is a Deployment named flagd in namespace otel-demo, while the ground-truth flagd-related entity is a ConfigMap named flagd-config; kinds and names do not support an identity match.\"}]}"
+              }
+            ],
+            "phase": "final_answer"
+          }
+        ]
+      }
+    },
+    "usage": {
+      "prompt_tokens": 797,
+      "completion_tokens": 294,
+      "total_tokens": 1091,
+      "provider_usage": {
+        "input_tokens": 797,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "cache_write_tokens_details": {
+            "ttl_30m_tokens": 0,
+            "ttl_12h_tokens": 0
+          }
+        },
+        "output_tokens": 294,
+        "output_tokens_details": {
+          "reasoning_tokens": 153
+        },
+        "total_tokens": 1091
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_tokens_details": {
+          "ttl_30m_tokens": 0,
+          "ttl_12h_tokens": 0
+        }
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 153
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 797
+    },
+    "reported_model": "gpt-5.5-2026-04-23",
+    "finish_reason": "stop"
+  },
+  "status": "graded",
+  "score": 0.0,
+  "true_positive_groups": 0,
+  "false_positive_groups": 0,
+  "unmatched_predictions": 2,
+  "missed_root_groups": 1,
+  "root_groups": 1,
+  "provider_response": {
+    "input_transformations": [],
+    "id": "resp_002d00c989556a44016afb6f0103b487d0b50140cbdd6759a9",
+    "object": "response",
+    "created_at": 1794862849,
+    "completed_at": 1794862853,
+    "status": "completed",
+    "background": false,
+    "billing": {
+      "payer": "developer"
+    },
+    "frequency_penalty": 0.0,
+    "presence_penalty": 0.0,
+    "moderation": null,
+    "model": "gpt-5.5-2026-04-23",
+    "access_programs": null,
+    "previous_response_id": null,
+    "instructions": null,
+    "output": [
+      {
+        "type": "reasoning",
+        "id": "rs_002d00c989556a44016afb6f03900487d09e3e671d78530d96",
+        "summary": [],
+        "content": [],
+        "encrypted_content": "gAAAAABq-28D449bPYncY-GdF0YWJpxFDkaEoX5hCdcB4YkjS4c3YSc0GtlIBzyvK_Zkuh1zKt5nf0bKlhPDPcnKggao8Wqb8BIkoLS7KdzuXSoGTiPhP6cbd9SuwmWhZtCjB4OnV9R3HwFUbFP5j0xPxKBiYgdVyeVBKRFc-X5c7_yG27j9KO5W6DUdfpM-ehExo37pU4yLfY2gnF9ztz1L-qdDzlXULfCsZ1AKcmDJVEhnWGmcmNZxjE79IiDrQyM3kdanK4qIekk1vgytcn7ia6iWLRQjM-px9Cc96_qA2iPX1RWUrg-uq6Judx30IZE5gJvE49fX3zWyqwoq65FWTNov6b4RlwHwavX1YW2ZAfRfB_JAc7Ni3Va6FAuXWdojmwNuciQqCMzEUarkyBYps9Rc4fX2j_I35KeweO7yIapdgUlB--2Nr1njcxGGvdX0dcDcixNJCtbGIDg9OY7VKqtlOvkqQUCOrZW3XyG73JKBT1kYVSC3EbV0W0mCgEHQqnmFZfSpRzKPPPmujTIzix3ZRgvB95v-7bzXPY5fMvMDdcraZwV9yPA_aHHnvyrvmTW1UuZ8-wfQYk63DScP6m3n0gcLUNYf1nI3fCpFSJ1L66186y9JzzrSMY0khYcqXM9B3gaQqe6txn9jvkfMFokciH8d2zfE-J-e9_-04U1_YV40Rjy8Fxxw63p-kLNDCE-ElgpvfMzqMLVoGu9bSUUMNDn_dzoHZNeSCn4dJ7uI9rX10OPyQjd4VVMy3KJ_NSaV3MJLdu3dbx5M3VKKM9QojFT6NfUx-xRm6YLnVfqkHpvBaTn9gx1db6bIzi4bkwBC-nJCPyVzvGKyhBt040zoIccHMNwrtJbYFIzpswuUFJ4vYsh9gVeOR-JX37VS3eIJa3iwW_Fspz3HnOIjiSTmrchmbNi15ii0cdRvuRJ5R8JjJW9vc-UqMnQ4SJ2dx9c6CDaeidbzAD3XNiI5jBIp6011crPOS_SdpvDenLvsb025yezRtzTrRFR2bH1WJWcWm80tFJKLZEvgvhkNdOZuhn-iI3NjzaI6GjHdwgCA55mjzZP7JUf1dcDx9sLk8biijhSH0Sz-oVuMcqldbtJ7s6PnRlvd7ndnri57ZScYQ2kq0hE7v6l8Qh6MY7s-gGS_iDPGRrp6UOLA1G5prPffC_rJZX7sBPhqG3BkuhKUDfyZ_qnWbQ1OH1K0BYFNdCdhewd46ygy8TlgW8RmAIPFVwMujoiG2CorW_8JO14zh0keCSqB6Sq-9qkonEU_tz9f-Af7MBbV35KmVEmma9d3PeavUElsyqSm3ITQNJCjbx6BTOlyMFmlUvj5SjUopKtMBXFnX69Eqi35c3ssMK0eH6gL76iTaXgy58E_MKxQYTGOvPWwio6BtpS79Swn8WWyzYTOXIppm_3j-fH-R1FsBqHCIeU5kmwz7NC4OdS-sC2Cz-oTGueOELU5X6Hcx2SmDv-Vk2Yopm7zIDsEvfxeACs8kxFKjtu_-Jx2U57QWwiRlOxW0aVX8tSyXO6Y4euGcH2H3HEy17rcAJ0rLW-ipr5HkNaGnSGOxw8gBAFd33o0VU9r0V8P6f4RjaIO-fDlEZYQ6mFKMBdmnqnTcTn5kO34ru-1Ea_pN4WNRiFgms09-YpZDfuEyzn11WmE9bDXFfBlSgyusatmuxJbSK_nakfUJNDcYK8qBnd173AKYPVFxSKVb9s0aPGlr5ojHnJQbWdpwqVd_ONa2nYoUtCiqEMciWk3REIg30BgIvQgKqlKotWu-sKoidOsmtAHQk3kOsOtzTYlpv5uSel40UYT8xc4aFZIoJxwe0t5wV8r7eGtybmBtOql70FuUIA1yL52PA3hCSZxUkFDorl3dHSIdj52d6nOMPBAxvTgh_mIVnA1QdAIOJCFWx3J_B1-9qbgKx3ke6QSN1M6_VkH7yebtys7VhEX-dDhflbZfFlMYk_M0nvebmFNGBDbStIXSlfumUexqo_XOd4v0Tg9V-UQ5LoUAkqIcVGxwCM1pZ9vhkOKptf7U1QKkVba3d1JKh32EjL8ZZdGi8rxd6iXAPbczODQAqyq0mI29kkTTBkFAP1TPm-9SEM-1Q3c1HxLnPZDJFND7vAs4x6u1SgHmR86w7qScM93NmAuUeKz-0Y9lpIh-XXF98ysgfnS9BlZsdWzEWCKiI3KG6uxEBjUXqRh5HxVATbEyvaEJ2QY8YtmEWIMauca1qAMniCk1Yxhefi8oHlC8PODv4VOD__SH2UFTCSGMfUBtLEZah-QTuumFKn1whW09oUJCRgkTPWLVQTVJspE3lqFufN2QLr8mbaoUlBr8ecDB_VcS5FhB8N-lnyh6iW2pSPV4c3rCYI2bngiS-fxgyhTh-f6WTYHb0vcjE4f8xGK6ziLW1nMHgRRZUp3fWCR_LG2buOPgQWUyoAe5Aq7Y0oYD0cNnKUVEJnhpKF_h2OIVwkEj4kCUxhN-CrQbUSY3DikivD-Pe6rCL06tZnNRVQwBlOjKsI4Pkyb1hi4FW3NFdwy6c88uetkz2KduAdcGidkWjyWmM7s8AVVnTB2sowzrBqxulQfyI8eGXWSUtPiGuCEWN1fMyTihAlBwKoA_OQnNl21cfxZxZirR3RE-m0WtDzsfipBPJnaXyzVQdIHIKnNaF7WxTs4c2BH7pfBOvTVqxj69ToiN4dsM-L6RxJjiBk-ACA-tP0QICh7iDevyJsuvNrJjFNmv82PkzV366tjjAiSthHMQKpKyl75XAU7hjP-t-vH-MS7s3F2VHNlr1KYSDjzJmduGF-XzrTSijCVr0oW0_cHKjs8DKXNdK7dV77Az0o9o5dwPbqdizXr1pz8ot4p74PdY_wqSvV-9if3TkK1h7AJNlc1nYYvK-6rXYZfMJJU68Aab6npU9WogtgDuAZ1Gni5glN0d__XrbQNw0C8wgusc_dCbgKWYLtOOwxWKPha21Kej1IGymNImw5SE3XlxbtogMtVCvTpW2WuVQ027ffTi7Zu6UFTjqho4-ygGVdI8dueI4Uak-1vvlnQUC1oQdms_dVasRgWVBJCJfkn5T3InRmakg1uC2PaFUf4H2xzEwzmNVW-T09BIMiO-I-DIHIlZ45ugdD0WDGUxK9ZSM6HfKrP3yc97V9U7A5aQaISSTRsldH6YuW8kNo4Sw_GGMYXRFlJsoCZPMAtjrUqoEBbAF8y0j_pC-a3RBJpqvsAM6yJPlJXcdceXBF6ntr1D5H1zzZq89UUj0rsdncAFghJLve4bGZHg18fZEmkT-2PtU1tqB_-vcxb3YetMPzEVkiuRHRqyMlAizpqd-wiqyJjdeham5M4Lg7JgJaCdWG6_NCSQQyhRfbULz8bkujZnk7GD1hIHnEhWgiZCwXaUP7zPERXQ4X5x7-AdnUsqYLaRy4CZ5qp7zCvgUvvaKxsoRlirG98aRRDdrh1WtU4lSWIejhvhGXy9TOM-yrb08aT9UYOj6gldgbpCWFSayIyZNGuZ9AfbNmiRu2BlLBldPRmmC189H8mj3E3jl8tz4rk-04H-g5yozsKwPcb3vhXvbq0o845_MOId5cakcHjnFfKA54Cr8mX"
+      },
+      {
+        "type": "message",
+        "id": "msg_002d00c989556a44016afb6f03b71087d0bcfc6f64c5d7678e",
+        "role": "assistant",
+        "status": "completed",
+        "content": [
+          {
+            "type": "output_text",
+            "text": "{\"contributing_factor_entities\":[{\"submitted_entity_name\":\"otel-demo/Deployment/kafka\",\"normalized_gt_entity_id\":null,\"reasoning\":\"Submitted resource is a Deployment named kafka in namespace otel-demo, but the only kafka ground-truth entity is a Service; same-named Service and Deployment are not automatically matched without an explicit alias.\"},{\"submitted_entity_name\":\"otel-demo/Deployment/flagd\",\"normalized_gt_entity_id\":null,\"reasoning\":\"Submitted resource is a Deployment named flagd in namespace otel-demo, while the ground-truth flagd-related entity is a ConfigMap named flagd-config; kinds and names do not support an identity match.\"}]}",
+            "annotations": [],
+            "logprobs": []
+          }
+        ],
+        "phase": "final_answer"
+      }
+    ],
+    "error": null,
+    "incomplete_details": null,
+    "tools": [],
+    "tool_choice": "auto",
+    "parallel_tool_calls": true,
+    "prompt_cache_key": null,
+    "prompt_cache_retention": "24h",
+    "text": {
+      "format": {
+        "type": "text"
+      },
+      "verbosity": "medium"
+    },
+    "top_p": 0.98,
+    "top_logprobs": 0,
+    "temperature": 1.0,
+    "reasoning": {
+      "effort": "medium",
+      "context": "current_turn",
+      "summary": null,
+      "mode": "standard"
+    },
+    "user": null,
+    "usage": {
+      "input_tokens": 797,
+      "input_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_tokens_details": {
+          "ttl_30m_tokens": 0,
+          "ttl_12h_tokens": 0
+        }
+      },
+      "output_tokens": 294,
+      "output_tokens_details": {
+        "reasoning_tokens": 153
+      },
+      "total_tokens": 1091
+    },
+    "tool_usage": {
+      "image_gen": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "input_tokens_details": {
+          "text_tokens": 0,
+          "image_tokens": 0
+        },
+        "output_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 0
+        }
+      },
+      "web_search": {
+        "num_requests": 0
+      }
+    },
+    "safety_identifier": null,
+    "store": false,
+    "metadata": {},
+    "max_output_tokens": 16384,
+    "max_tool_calls": null,
+    "service_tier": "default",
+    "truncation": "disabled",
+    "image": {
+      "context_compression": "disabled"
+    }
+  },
+  "elapsed_seconds": 4.511592645001656
+}

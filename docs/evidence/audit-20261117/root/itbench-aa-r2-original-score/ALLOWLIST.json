@@ -1,0 +1,735 @@
+{
+  "scope": "Only the explicitly listed public evidence files; no workspace, core-private, key, raw references or SQLite.",
+  "files": [
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/study.json",
+      "target": "study.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/RUN_SUMMARY.json",
+      "target": "RUN_SUMMARY.json.gz",
+      "transform": "gzip_mtime_0"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-001/case-result.json",
+      "target": "case-001/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-001/agent_output.json",
+      "target": "case-001/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-002/case-result.json",
+      "target": "case-002/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-002/agent_output.json",
+      "target": "case-002/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-003/case-result.json",
+      "target": "case-003/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-003/agent_output.json",
+      "target": "case-003/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-004/case-result.json",
+      "target": "case-004/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-005/case-result.json",
+      "target": "case-005/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-006/case-result.json",
+      "target": "case-006/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-006/agent_output.json",
+      "target": "case-006/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-007/case-result.json",
+      "target": "case-007/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-007/agent_output.json",
+      "target": "case-007/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-008/case-result.json",
+      "target": "case-008/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-008/agent_output.json",
+      "target": "case-008/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-009/case-result.json",
+      "target": "case-009/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-009/agent_output.json",
+      "target": "case-009/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-010/case-result.json",
+      "target": "case-010/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-010/agent_output.json",
+      "target": "case-010/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-011/case-result.json",
+      "target": "case-011/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-011/agent_output.json",
+      "target": "case-011/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-012/case-result.json",
+      "target": "case-012/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-012/agent_output.json",
+      "target": "case-012/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-013/case-result.json",
+      "target": "case-013/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-013/agent_output.json",
+      "target": "case-013/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-014/case-result.json",
+      "target": "case-014/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-014/agent_output.json",
+      "target": "case-014/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-015/case-result.json",
+      "target": "case-015/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-015/agent_output.json",
+      "target": "case-015/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-016/case-result.json",
+      "target": "case-016/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-016/agent_output.json",
+      "target": "case-016/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-017/case-result.json",
+      "target": "case-017/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-017/agent_output.json",
+      "target": "case-017/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-018/case-result.json",
+      "target": "case-018/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-018/agent_output.json",
+      "target": "case-018/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-019/case-result.json",
+      "target": "case-019/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-019/agent_output.json",
+      "target": "case-019/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-020/case-result.json",
+      "target": "case-020/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-020/agent_output.json",
+      "target": "case-020/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-021/case-result.json",
+      "target": "case-021/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-021/agent_output.json",
+      "target": "case-021/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-022/case-result.json",
+      "target": "case-022/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-022/agent_output.json",
+      "target": "case-022/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-023/case-result.json",
+      "target": "case-023/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-024/case-result.json",
+      "target": "case-024/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-025/case-result.json",
+      "target": "case-025/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-026/case-result.json",
+      "target": "case-026/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-027/case-result.json",
+      "target": "case-027/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-028/case-result.json",
+      "target": "case-028/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-029/case-result.json",
+      "target": "case-029/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-030/case-result.json",
+      "target": "case-030/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-031/case-result.json",
+      "target": "case-031/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-031/agent_output.json",
+      "target": "case-031/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-032/case-result.json",
+      "target": "case-032/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-032/agent_output.json",
+      "target": "case-032/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-033/case-result.json",
+      "target": "case-033/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-034/case-result.json",
+      "target": "case-034/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-034/agent_output.json",
+      "target": "case-034/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-035/case-result.json",
+      "target": "case-035/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-036/case-result.json",
+      "target": "case-036/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-036/agent_output.json",
+      "target": "case-036/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-037/case-result.json",
+      "target": "case-037/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-037/agent_output.json",
+      "target": "case-037/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-038/case-result.json",
+      "target": "case-038/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-038/agent_output.json",
+      "target": "case-038/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-039/case-result.json",
+      "target": "case-039/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-039/agent_output.json",
+      "target": "case-039/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-040/case-result.json",
+      "target": "case-040/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-040/agent_output.json",
+      "target": "case-040/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/manifest.json",
+      "target": "grading/manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-001.json",
+      "target": "grading/case-001.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-001.started.json",
+      "target": "grading/case-001.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-002.json",
+      "target": "grading/case-002.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-002.started.json",
+      "target": "grading/case-002.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-003.json",
+      "target": "grading/case-003.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-003.started.json",
+      "target": "grading/case-003.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-004.json",
+      "target": "grading/case-004.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-005.json",
+      "target": "grading/case-005.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-006.json",
+      "target": "grading/case-006.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-006.started.json",
+      "target": "grading/case-006.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-007.json",
+      "target": "grading/case-007.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-007.started.json",
+      "target": "grading/case-007.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-008.json",
+      "target": "grading/case-008.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-008.started.json",
+      "target": "grading/case-008.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-009.json",
+      "target": "grading/case-009.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-009.started.json",
+      "target": "grading/case-009.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-010.json",
+      "target": "grading/case-010.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-010.started.json",
+      "target": "grading/case-010.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-011.json",
+      "target": "grading/case-011.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-011.started.json",
+      "target": "grading/case-011.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-012.json",
+      "target": "grading/case-012.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-012.started.json",
+      "target": "grading/case-012.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-013.json",
+      "target": "grading/case-013.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-013.started.json",
+      "target": "grading/case-013.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-014.json",
+      "target": "grading/case-014.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-014.started.json",
+      "target": "grading/case-014.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-015.json",
+      "target": "grading/case-015.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-015.started.json",
+      "target": "grading/case-015.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-016.json",
+      "target": "grading/case-016.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-016.started.json",
+      "target": "grading/case-016.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-017.json",
+      "target": "grading/case-017.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-017.started.json",
+      "target": "grading/case-017.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-018.json",
+      "target": "grading/case-018.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-018.started.json",
+      "target": "grading/case-018.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-019.json",
+      "target": "grading/case-019.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-020.json",
+      "target": "grading/case-020.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-021.json",
+      "target": "grading/case-021.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-021.started.json",
+      "target": "grading/case-021.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-022.json",
+      "target": "grading/case-022.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-022.started.json",
+      "target": "grading/case-022.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-023.json",
+      "target": "grading/case-023.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-024.json",
+      "target": "grading/case-024.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-025.json",
+      "target": "grading/case-025.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-026.json",
+      "target": "grading/case-026.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-027.json",
+      "target": "grading/case-027.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-028.json",
+      "target": "grading/case-028.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-029.json",
+      "target": "grading/case-029.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-030.json",
+      "target": "grading/case-030.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-031.json",
+      "target": "grading/case-031.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-031.started.json",
+      "target": "grading/case-031.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-032.json",
+      "target": "grading/case-032.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-032.started.json",
+      "target": "grading/case-032.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-033.json",
+      "target": "grading/case-033.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-034.json",
+      "target": "grading/case-034.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-034.started.json",
+      "target": "grading/case-034.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-035.json",
+      "target": "grading/case-035.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-036.json",
+      "target": "grading/case-036.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-036.started.json",
+      "target": "grading/case-036.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-037.json",
+      "target": "grading/case-037.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-037.started.json",
+      "target": "grading/case-037.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-038.json",
+      "target": "grading/case-038.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-038.started.json",
+      "target": "grading/case-038.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-039.json",
+      "target": "grading/case-039.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-039.started.json",
+      "target": "grading/case-039.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-040.json",
+      "target": "grading/case-040.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-040.started.json",
+      "target": "grading/case-040.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/SUMMARY.json",
+      "target": "grading/SUMMARY.json.gz",
+      "transform": "gzip_mtime_0"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/CACHE_REUSE_PREPARED.json",
+      "target": "CACHE_REUSE_PREPARED.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/CACHE_REUSE.json",
+      "target": "CACHE_REUSE.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/grade_original_r2_from_cache.py",
+      "target": "cache-run/guard.py",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-cache-grading-native-job.json",
+      "target": "cache-run/job.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-cache-grading-native.log",
+      "target": "cache-run/grading.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-cache-grading-native-exit.json",
+      "target": "cache-run/exit.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/run_qualification_job.py",
+      "target": "cache-run/supervisor.py",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-grading-verification.json",
+      "target": "cache-run/VERIFICATION.json",
+      "transform": "copy"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "kind": "async missing-directory local regression evidence",
+  "files": [
+    {
+      "file": "AFTER.log",
+      "bytes": 4689,
+      "sha256": "cfa6f9b415ee27a6bb3e0be9e006589140652ab2f0171d96722861af4ca635b9"
+    },
+    {
+      "file": "BEFORE.log",
+      "bytes": 1153,
+      "sha256": "76cdaad93ca78b8bdbab519f3f4978b1bed8139d5042641797f22a8a7da3df88"
+    },
+    {
+      "file": "RESULTS.md",
+      "bytes": 4132,
+      "sha256": "98e26d4502afb50c2933e8090416c18cdf39ad95f2fbcc46b3bc1303e30bdf7e"
+    },
+    {
+      "file": "SOURCE_AFTER.json",
+      "bytes": 718,
+      "sha256": "4e6eea674abcd9c36b0857afff8eeb4e2df8e5b924574cf574007b2a79c2138e"
+    },
+    {
+      "file": "SOURCE_BEFORE.json",
+      "bytes": 437,
+      "sha256": "ccecc0db840d321e9ac3cfaba684b0eb39a980049169d9cc798ed1d7ff629090"
+    }
+  ],
+  "log_publication": [
+    {
+      "file": "BEFORE.log",
+      "original_file": "validation/audit-20261117/async-missing-directory-before.log",
+      "original_sha256": "04b71e45ac7c7fe5f7dffa40e2671faf2681bfde3116808e6590ac7828b8dd16",
+      "published_sha256": "76cdaad93ca78b8bdbab519f3f4978b1bed8139d5042641797f22a8a7da3df88",
+      "transformation": "Only exact primary repository absolute path prefix replaced with <source_root>",
+      "original_bytes": 1204,
+      "published_bytes": 1153
+    },
+    {
+      "file": "AFTER.log",
+      "original_file": "validation/audit-20261117/async-missing-directory-after.log",
+      "original_sha256": "cfa6f9b415ee27a6bb3e0be9e006589140652ab2f0171d96722861af4ca635b9",
+      "published_sha256": "cfa6f9b415ee27a6bb3e0be9e006589140652ab2f0171d96722861af4ca635b9",
+      "transformation": "Only exact primary repository absolute path prefix replaced with <source_root>",
+      "original_bytes": 4689,
+      "published_bytes": 4689
+    }
+  ]
+}

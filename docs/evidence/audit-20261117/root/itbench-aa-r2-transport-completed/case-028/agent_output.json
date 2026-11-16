@@ -1,0 +1,9 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Deployment/frontend",
+      "reasoning": "The single frontend replica is the only endpoint serving the frontend-proxy's frontend upstream. Its 100m CPU limit is being materially throttled, so load bursts can stall the frontend process and terminate upstream connections before responses; Envoy reports those resets as 503s. This upstream failure explains the frontend-proxy request-error alert, so the proxy is a downstream symptom rather than a separate contributing resource.",
+      "evidence": "k8s_objects_raw.tsv: the frontend Deployment has replicas=1 and sets the frontend container CPU request/limit to 50m/100m; its sole frontend Service endpoint is Pod frontend-675fd7b5c5-8qrfh at 100.96.2.139 (Service ClusterIP 100.70.94.93). Alerts: CPUThrottlingHigh for that frontend Pod was firing from 2025-12-15T17:27:11Z, at 25.08% in the 17:44 snapshot and 31.45% in the 18:11 snapshot. Metrics: container_cpu_cfs_throttled_periods_total / container_cpu_cfs_periods_total rose from 2,423/6,076 at 17:28 to 7,735/24,310 at 18:01. otel_logs_raw.tsv: frontend-proxy recorded 31 HTTP 503s from 17:30:27 through 18:00:55, each with UC upstream_reset_before_response_started{connection_termination}; their route cluster is frontend and the frontend upstream is 100.70.94.93:8080. The RequestErrorRate alert for frontend-proxy was firing at 1.11% in the 17:34 and 18:11 alert snapshots; service_frontend-proxy metrics also show ingress error calls increasing from 557 at 17:29 to 589 at 18:02."
+    }
+  ]
+}

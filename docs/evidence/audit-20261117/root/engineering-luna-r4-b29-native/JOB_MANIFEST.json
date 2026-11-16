@@ -1,0 +1,42 @@
+{
+  "prepared_at_utc": "2026-11-16T20:57:44.016512+00:00",
+  "prepared_without_execution": true,
+  "job_file": "engineering-luna-r4-b29-native.job.sh",
+  "job_sha256": "dbd0f194792244966c47c9dc6ab9f5315e450c1ce5d21c04b601d0f249ca56e4",
+  "job_bytes": 4126,
+  "source_head": "8e92deb8b6a0acbba1d139851b1d805246304c61",
+  "source_tree": "813a2544f1553d9c6a5e8a01982f2f512eec5e5b",
+  "runner_sha256": "108f948c1b32fa9de95e48a1a84ede4b4b78a3d3ecfabe1c9977e4b7e21cc0fb",
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "interpreter": "<task_python>",
+  "entrypoint": "Native Terminal new tab, one foreground attempt, owner-authorized start",
+  "environment_change": "Same as R3: fixed task-tool Python directory prepended to inherited PATH; no proxy/TLS changes.",
+  "changes_from_r3": [
+    "New frozen source checkout and expected commit/tree",
+    "New output and job names",
+    "Provenance-only attempt_reason text"
+  ],
+  "prompt_sha256": "9c2e3300ef2bff76b38b2c1c645f1bb9d1e112cff853a40779f4aeb8f69e693a",
+  "prompt_identical_to_r3": true,
+  "fixture_hashes_identical_to_r3": true,
+  "task_timeout_seconds": 1200,
+  "parent_limits": {
+    "steps": 100,
+    "tools": 200
+  },
+  "requested_child_limits": {
+    "steps": 20,
+    "tools": 40
+  },
+  "host_worker_limits": {
+    "steps": 30,
+    "tools": 60
+  },
+  "validation": [
+    "Clean frozen source and expected runner/hash confirmed",
+    "bash -n PASS",
+    "Embedded Python compile PASS",
+    "New output absent"
+  ],
+  "output": "<run_root>"
+}

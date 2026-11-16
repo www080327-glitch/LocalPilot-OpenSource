@@ -1,0 +1,24 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/scripts/continue_itbench_transport.py",
+    "--source",
+    "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/qualification-source-r2",
+    "--original",
+    "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2",
+    "--output",
+    "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed",
+    "--tree",
+    "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-source/tree.json",
+    "--key-file",
+    "<private_key_file>",
+    "--protocol",
+    "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/transport-continuation-protocol.json"
+  ],
+  "cwd": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117",
+  "log": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-transport-continuation.log",
+  "exit_receipt": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-transport-continuation-exit.json",
+  "supervisor_sha256": "31eebe99550dec0e33fa8cb03206fe2350dde070f185dd1ff25498d7d712af8d",
+  "driver_sha256": "17fe9d34b492e00e788393d2f2ce35df262658d9ccfb5ec058a74f72683221d6",
+  "wait_for": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/RUN_SUMMARY.json"
+}

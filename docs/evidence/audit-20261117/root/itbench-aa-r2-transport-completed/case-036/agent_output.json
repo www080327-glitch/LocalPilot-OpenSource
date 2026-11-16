@@ -1,0 +1,9 @@
+{
+  "contributing_factors": [
+    {
+      "name": "chaos-mesh/Schedule/otel-demo-shipping-quote-network-partition",
+      "reasoning": "This recurring Schedule is the upstream fault: it repeatedly launches NetworkChaos that partitions the shipping and quote pods. The broken shipping-to-quote path drives shipping latency/errors; checkout's PlaceOrder path calls the shipping-quote preparation path, so checkout failures then propagate to frontend and frontend-proxy. These are downstream symptoms of the same scheduled partition, not independent Deployment or Pod faults.",
+      "evidence": "In k8s_events_raw.tsv, the Schedule spawned a child at 18:00:00; its NetworkChaos child started and was applied to otel-demo/shipping-75d58f5d84-6xkt9 and both otel-demo/quote pods, then recovered at 18:00:55. Further children were spawned each minute through 18:08. The 18:02:48 alert snapshot shows RequestLatency for shipping (9.72e3 ms) and checkout (9.2e3 ms), and RequestErrorRate for shipping and checkout (0.5556), frontend (1.1111), and frontend-proxy (0.5556). In service_shipping_raw.tsv, /get-quote error counts rise from 0 at 17:59:14 to 113 at 18:02:14; service_checkout_raw.tsv shows the same increase for PlaceOrder, with its prepareOrderItemsAndShippingQuoteFromCart p95 rising from 1065 ms at 17:55:14 to 1319 ms at 18:02:14. The span labels in service_shipping_raw.tsv identify /get-quote and POST quote; service_checkout_raw.tsv identifies prepareOrderItemsAndShippingQuoteFromCart and PlaceOrder, tying the failures to the same request path. k8s_objects_raw.tsv shows shipping, quote, and checkout Deployments available and their Pods Ready at 18:00:25, arguing against a separate pod rollout/availability fault."
+    }
+  ]
+}

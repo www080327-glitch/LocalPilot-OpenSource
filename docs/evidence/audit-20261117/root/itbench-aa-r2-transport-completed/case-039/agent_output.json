@@ -1,0 +1,19 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/ResourceQuota/otel-demo-memory",
+      "reasoning": "The namespace memory quota is exhausted, so Kubernetes rejects replacement ad pods; the resulting absence of the ad backend surfaces as frontend request failures. This is the upstream cause, so the ad Deployment/ReplicaSet is not listed separately.",
+      "evidence": "The KubeQuotaExceeded alert reports 132.6% memory use. At 17:59 the ResourceQuota reports used=1901Mi against hard=1503238553600m (about 1.4Gi). At 17:54 the ReplicaSet/ad FailedCreate event says a 225Mi pod was forbidden because usage was 1901Mi and over the limit. The ad Endpoints object has no subsets, and frontend span metrics show errors for grpc.oteldemo.AdService/GetAds and GET /api/data."
+    },
+    {
+      "name": "otel-demo/Deployment/cart",
+      "reasoning": "The cart workload is independently CPU-throttled under request load, which can delay/fail its RPCs and contribute to frontend cart-operation errors; this CPU bottleneck is separate from the namespace memory quota.",
+      "evidence": "CPUThrottlingHigh fired for pod cart-755465879b-pdqqh at 17:49–17:52, peaking at 37.8% throttling (with subsequent readings above 27%). Pod CPU metrics over 17:35–18:00 show about 27.1% of CFS periods throttled. The Deployment template requests 15m CPU and limits the cart container to 45m; frontend span metrics also report errors on CartService/AddItem, CartService/GetCart, and /api/cart."
+    },
+    {
+      "name": "otel-demo/Deployment/frontend",
+      "reasoning": "The frontend is a separate failing upstream: frontend-proxy's 503s are explicitly upstream connection terminations from the frontend service, not proxy-side routing failures. The frontend's low CPU ceiling and substantial throttling provide a resource-level mechanism for these interrupted requests.",
+      "evidence": "RequestErrorRate alerts were firing for frontend (5.53 at 17:59) and frontend-proxy (2.69). In trace de128a625e0c5303ad3b69a58415ed8c, frontend-proxy returns HTTP 503 with response flag UC; its frontend egress span records error.reason=connection termination to upstream cluster frontend. The frontend Deployment sets a 100m CPU limit, and its pod's CFS counters show about 24.5% throttling over 17:35–18:00."
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+{
+  "index": 13,
+  "scenario": "Scenario-14",
+  "fingerprint": "65acf7f41b02730ae5db0c7caed32d047113809ad3ba29ef43f80ece7a7f3448",
+  "candidate_status": "completed",
+  "prediction_sha256": "a957c01d50bcbd2392553dff99e7df80ef06d453693ad75033284194614ec0dd",
+  "prediction_count": 2,
+  "response": {
+    "message": {
+      "role": "assistant",
+      "content": "{\"contributing_factor_entities\":[{\"submitted_entity_name\":\"otel-demo/Deployment/ad\",\"normalized_gt_entity_id\":\"ad-pod-1\",\"reasoning\":\"Submitted resource is the ad Deployment in namespace otel-demo; Deployment and Pod forms of the same workload match the ground-truth Pod entity with filter ad-.* in otel-demo.\"},{\"submitted_entity_name\":\"otel-demo/Deployment/payment\",\"normalized_gt_entity_id\":\"payment-pod-2\",\"reasoning\":\"Submitted resource is the payment Deployment in namespace otel-demo; Deployment and Pod forms of the same workload match the ground-truth Pod entity with filter payment-.* in otel-demo.\"}]}",
+      "native_replay": {
+        "kind": "openai_responses_v1",
+        "model": "gpt-5.5",
+        "base_url": "https://api.openai.com/v1",
+        "sha256": "6c342522d55fd5fad0324cc838c198e6a5dc242a45090967050b45f325894141",
+        "items": [
+          {
+            "type": "reasoning",
+            "id": "rs_0decdf783ce2407e016afb6f0e654887d0b5e2e9e7b0d2df25",
+            "summary": [],
+            "encrypted_content": "gAAAAABq-28Rpg_IeFGbc258nRTgPd0kL4KoH7fzsBusICPN16cF_8w1roXOAulwZbamY0RTfq-8K2dLbundszw6kx8FGe0dirqNRswwIDCSR_BBWEHlHadnT0jGXLjB2ONV6axJ1DHrKly36Hhg-KWIHY-FyGvAzv0oBUfaIrs1hVda_d5lctryr-atjDltq3s4N3UkKKJB-tk_t61_xbwNPr5u10FXnCmqN6jgdLS6ejDznpH9tBIbZFqHpWMZkq2WCP9ESl0Hik6q2Yph-Pn7OHOyR8-jZx5o0lP1BWNI-7EV7PIT0DQgfyC5kNFwMrOVY5bK_pLA1Y7Mcs13oFkyjK6OvTZxBedczdSSGHyiBxCiBjXJFUkB3iALTAgsH447kBSjm_2apL6gp30F91O2fDQiS0xAeR0vczmz72-rL-lCp8wzi0cepAuHg4mMVAAplhXdIzL1fdIPl29OMxMsEoT-T4_ltKVDxZzwXvRUsLGiWU-G-hHheShNlZYjvlZZFbxKzXgbygEkx0mihjF9C_HHI26BFaPjXeU_8L_ZyHExw1gLnHCLxem1yWiCQ49vs0eBP6GlqDXIMQj9P61zavMpKGkKl8ZEQE2aN4uorC4RF-IO5yiVWO4SCP7o7mlm-DD0sCldX3vqOZvHfIPMV8pYW9s3Jiqlk2HwIFIkIgTpXEnGis729F_0QQa0q4sgE6a7NNCKVZXyj486zUbDfMEaxlheDrSi7aCeBvJ5aIbCnjnZPOAnveXUsy2NbbxY95yxKqSBfgOeXsa7UEcEX2uRCyHoYHhbVt2uT78HN3a5p193K75GTYnczXOFgWq6g1pdJlf6kgthACYHhT2t7dca_hOHyK3WncGgiVJ05O0HSEV0jq-iNDqaMBy96eQt8ufoNBUjf_t-ShvLVuMExQ-CeQwo58xNWCtabIggeiwkGILwoctQtIjH8bghzgOA5jGouvT2uY-xGtKScDRM51FCNadl02SlM5VzMDrrMqFDfiYACa2l8k9fM2sq5-fGbqzr7Ldm7Q2PHKCf_QFGMNPyNUqky2QdFzPfkvESWhx_2WtTbvqupA2T-i0Dbu2bE4lv33EA04CNwwxZg_WBGmzlZe1wIf5puGBPY57VgfZfQjpkh88x8AehTBfRMz2R_y2yuQxv36fukPc780ytN2hfIvr7NGsXbVIkJRKHerHF0_XGQ_Gn9-FjbKZK9lF5l9Sx6vE9okqOxlvZsbry6lArQF6ltsLVG9O8CW979EVXgDXlEgIXRRBA6XVy6umXiRqxdFP0zf65ykqBLxzmLsXWzB7NmDohFQEqXR0eTRz8yGP9ZlVu0LGon7lNzDA0c4ERvCO3bsKApzRowu0MQU7N3JJ-xotB_Em3LD91WKO9tDmwm0SdrJwwvuyQmuIpSurAzCUPL6cnM-hs7FzhuSsblxW1KzE65OT0OkIGYeoWqe1230ztsvY68w-KZkQMcTsDHMZFUAkAf_j23fcRG2R3JAheNynrJ__qAhFd7JJDrFkdWC7DWNXCQUpFxkwcN2Q-FZzGu9IpBQFCsKeS9CyVhKKLGRdwjjmbB8nonVvXcy2KevwNB_33t5DVCsPd8KZC806aDpfw9gbcC0Xgqabza-4t0oBKfdAcyDaer05rjvpfDezGrF8H_ckENrgR7_5fFYe52vtKKCI5RQudC2JPwLyga4WkuIljSam4kqxG0xEbD5FpdFW2LqBwfnqlFgDQkpIXhzry1qMi4b2EH4gQoJSpW2m2-7bhDSC9BZoK7o4g-whY9uorPNIjjMMwtg4OS7bqU2fNDhDrG5rGYCaJ2yqboM1YspqUJAszqUl47lLUv_Gv5YhpmhnWEu0rvDzD3pCFCUaU28TgozgltnZeuf36VSam-Lu_-3YCuFGzNaiJzN9zohwqWywHVgO9JwxGNhrQNuZiTQ2PTPTo3fEkKvG7JTqk-O-ae8tiv2JNT2Gf68_RfyEb_HSu_VDnU1CDQ0i8H50p8sM9p7CPpSficiWeR1xyUXjCRAorML04LqlG8nyppVXU7j_g7XlE29tMKhEsMb6l7CcKVl9sOSbMJGRYvfTyt55GhVnd67GNLZMW82YgPjw2gF5jgwuWhU4_SwSgyp_TSak7rDVa-D-ATqAN9hmgRQYnfutzrv-UZ-xj41cFR3wKzbFgMUXD2jaS23v5Y6qmTTSrOiPtOaBOIcwvCfxb2mcAA6P7Xhy1PQPuy4ryJcqPvx7QIaEenh90fa8PHrW4fgvcMnicpvgLvd4T_yDxXZksarofBebgG2UyixEPbzkCGNxDYJkVEnr7oxvfTOjeWOL-rueudwhCJ9F9onpbqWcJRVItF6syR2HdE73_HXcxKyTeXzMlg2JiJOca_svEeF8iLlyswAH816eFjW3R0Cz5QmVEP6vqxOaJjfYf4NJFU94QVyAs6vC89liO8GCKViju4ef2jHEX4Zrsa3alU92M-w4CUWbT-dRk1eeOkzw6GK882i9_aWUXuDj8OPVHmqfzjcDp_KlreJ1ow4BfkGiBIaGyugjrGsZMqOdCu0QD25cXXfJwA4Oyye70"
+          },
+          {
+            "type": "message",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "{\"contributing_factor_entities\":[{\"submitted_entity_name\":\"otel-demo/Deployment/ad\",\"normalized_gt_entity_id\":\"ad-pod-1\",\"reasoning\":\"Submitted resource is the ad Deployment in namespace otel-demo; Deployment and Pod forms of the same workload match the ground-truth Pod entity with filter ad-.* in otel-demo.\"},{\"submitted_entity_name\":\"otel-demo/Deployment/payment\",\"normalized_gt_entity_id\":\"payment-pod-2\",\"reasoning\":\"Submitted resource is the payment Deployment in namespace otel-demo; Deployment and Pod forms of the same workload match the ground-truth Pod entity with filter payment-.* in otel-demo.\"}]}"
+              }
+            ],
+            "phase": "final_answer"
+          }
+        ]
+      }
+    },
+    "usage": {
+      "prompt_tokens": 1222,
+      "completion_tokens": 212,
+      "total_tokens": 1434,
+      "provider_usage": {
+        "input_tokens": 1222,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 0
+          },
+          "cached_tokens": 0
+        },
+        "output_tokens": 212,
+        "output_tokens_details": {
+          "reasoning_tokens": 74
+        },
+        "total_tokens": 1434
+      },
+      "prompt_tokens_details": {
+        "cache_write_tokens": 0,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 0
+        },
+        "cached_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 74
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1222
+    },
+    "reported_model": "gpt-5.5-2026-04-23",
+    "finish_reason": "stop"
+  },
+  "status": "graded",
+  "score": 0.0,
+  "true_positive_groups": 0,
+  "false_positive_groups": 2,
+  "unmatched_predictions": 0,
+  "missed_root_groups": 1,
+  "root_groups": 1,
+  "provider_response": {
+    "id": "resp_0decdf783ce2407e016afb6f0d262c87d0815cb8cd9d836a77",
+    "object": "response",
+    "created_at": 1794862861,
+    "status": "completed",
+    "access_programs": null,
+    "background": false,
+    "billing": {
+      "payer": "developer"
+    },
+    "completed_at": 1794862865,
+    "error": null,
+    "frequency_penalty": 0.0,
+    "image": {
+      "context_compression": "disabled"
+    },
+    "incomplete_details": null,
+    "input_transformations": [],
+    "instructions": null,
+    "max_output_tokens": 16384,
+    "max_tool_calls": null,
+    "model": "gpt-5.5-2026-04-23",
+    "moderation": null,
+    "output": [
+      {
+        "id": "rs_0decdf783ce2407e016afb6f0e654887d0b5e2e9e7b0d2df25",
+        "type": "reasoning",
+        "content": [],
+        "encrypted_content": "gAAAAABq-28Rpg_IeFGbc258nRTgPd0kL4KoH7fzsBusICPN16cF_8w1roXOAulwZbamY0RTfq-8K2dLbundszw6kx8FGe0dirqNRswwIDCSR_BBWEHlHadnT0jGXLjB2ONV6axJ1DHrKly36Hhg-KWIHY-FyGvAzv0oBUfaIrs1hVda_d5lctryr-atjDltq3s4N3UkKKJB-tk_t61_xbwNPr5u10FXnCmqN6jgdLS6ejDznpH9tBIbZFqHpWMZkq2WCP9ESl0Hik6q2Yph-Pn7OHOyR8-jZx5o0lP1BWNI-7EV7PIT0DQgfyC5kNFwMrOVY5bK_pLA1Y7Mcs13oFkyjK6OvTZxBedczdSSGHyiBxCiBjXJFUkB3iALTAgsH447kBSjm_2apL6gp30F91O2fDQiS0xAeR0vczmz72-rL-lCp8wzi0cepAuHg4mMVAAplhXdIzL1fdIPl29OMxMsEoT-T4_ltKVDxZzwXvRUsLGiWU-G-hHheShNlZYjvlZZFbxKzXgbygEkx0mihjF9C_HHI26BFaPjXeU_8L_ZyHExw1gLnHCLxem1yWiCQ49vs0eBP6GlqDXIMQj9P61zavMpKGkKl8ZEQE2aN4uorC4RF-IO5yiVWO4SCP7o7mlm-DD0sCldX3vqOZvHfIPMV8pYW9s3Jiqlk2HwIFIkIgTpXEnGis729F_0QQa0q4sgE6a7NNCKVZXyj486zUbDfMEaxlheDrSi7aCeBvJ5aIbCnjnZPOAnveXUsy2NbbxY95yxKqSBfgOeXsa7UEcEX2uRCyHoYHhbVt2uT78HN3a5p193K75GTYnczXOFgWq6g1pdJlf6kgthACYHhT2t7dca_hOHyK3WncGgiVJ05O0HSEV0jq-iNDqaMBy96eQt8ufoNBUjf_t-ShvLVuMExQ-CeQwo58xNWCtabIggeiwkGILwoctQtIjH8bghzgOA5jGouvT2uY-xGtKScDRM51FCNadl02SlM5VzMDrrMqFDfiYACa2l8k9fM2sq5-fGbqzr7Ldm7Q2PHKCf_QFGMNPyNUqky2QdFzPfkvESWhx_2WtTbvqupA2T-i0Dbu2bE4lv33EA04CNwwxZg_WBGmzlZe1wIf5puGBPY57VgfZfQjpkh88x8AehTBfRMz2R_y2yuQxv36fukPc780ytN2hfIvr7NGsXbVIkJRKHerHF0_XGQ_Gn9-FjbKZK9lF5l9Sx6vE9okqOxlvZsbry6lArQF6ltsLVG9O8CW979EVXgDXlEgIXRRBA6XVy6umXiRqxdFP0zf65ykqBLxzmLsXWzB7NmDohFQEqXR0eTRz8yGP9ZlVu0LGon7lNzDA0c4ERvCO3bsKApzRowu0MQU7N3JJ-xotB_Em3LD91WKO9tDmwm0SdrJwwvuyQmuIpSurAzCUPL6cnM-hs7FzhuSsblxW1KzE65OT0OkIGYeoWqe1230ztsvY68w-KZkQMcTsDHMZFUAkAf_j23fcRG2R3JAheNynrJ__qAhFd7JJDrFkdWC7DWNXCQUpFxkwcN2Q-FZzGu9IpBQFCsKeS9CyVhKKLGRdwjjmbB8nonVvXcy2KevwNB_33t5DVCsPd8KZC806aDpfw9gbcC0Xgqabza-4t0oBKfdAcyDaer05rjvpfDezGrF8H_ckENrgR7_5fFYe52vtKKCI5RQudC2JPwLyga4WkuIljSam4kqxG0xEbD5FpdFW2LqBwfnqlFgDQkpIXhzry1qMi4b2EH4gQoJSpW2m2-7bhDSC9BZoK7o4g-whY9uorPNIjjMMwtg4OS7bqU2fNDhDrG5rGYCaJ2yqboM1YspqUJAszqUl47lLUv_Gv5YhpmhnWEu0rvDzD3pCFCUaU28TgozgltnZeuf36VSam-Lu_-3YCuFGzNaiJzN9zohwqWywHVgO9JwxGNhrQNuZiTQ2PTPTo3fEkKvG7JTqk-O-ae8tiv2JNT2Gf68_RfyEb_HSu_VDnU1CDQ0i8H50p8sM9p7CPpSficiWeR1xyUXjCRAorML04LqlG8nyppVXU7j_g7XlE29tMKhEsMb6l7CcKVl9sOSbMJGRYvfTyt55GhVnd67GNLZMW82YgPjw2gF5jgwuWhU4_SwSgyp_TSak7rDVa-D-ATqAN9hmgRQYnfutzrv-UZ-xj41cFR3wKzbFgMUXD2jaS23v5Y6qmTTSrOiPtOaBOIcwvCfxb2mcAA6P7Xhy1PQPuy4ryJcqPvx7QIaEenh90fa8PHrW4fgvcMnicpvgLvd4T_yDxXZksarofBebgG2UyixEPbzkCGNxDYJkVEnr7oxvfTOjeWOL-rueudwhCJ9F9onpbqWcJRVItF6syR2HdE73_HXcxKyTeXzMlg2JiJOca_svEeF8iLlyswAH816eFjW3R0Cz5QmVEP6vqxOaJjfYf4NJFU94QVyAs6vC89liO8GCKViju4ef2jHEX4Zrsa3alU92M-w4CUWbT-dRk1eeOkzw6GK882i9_aWUXuDj8OPVHmqfzjcDp_KlreJ1ow4BfkGiBIaGyugjrGsZMqOdCu0QD25cXXfJwA4Oyye70",
+        "summary": []
+      },
+      {
+        "id": "msg_0decdf783ce2407e016afb6f0f7ebc87d0a95eb54189a56a21",
+        "type": "message",
+        "status": "completed",
+        "content": [
+          {
+            "type": "output_text",
+            "annotations": [],
+            "logprobs": [],
+            "text": "{\"contributing_factor_entities\":[{\"submitted_entity_name\":\"otel-demo/Deployment/ad\",\"normalized_gt_entity_id\":\"ad-pod-1\",\"reasoning\":\"Submitted resource is the ad Deployment in namespace otel-demo; Deployment and Pod forms of the same workload match the ground-truth Pod entity with filter ad-.* in otel-demo.\"},{\"submitted_entity_name\":\"otel-demo/Deployment/payment\",\"normalized_gt_entity_id\":\"payment-pod-2\",\"reasoning\":\"Submitted resource is the payment Deployment in namespace otel-demo; Deployment and Pod forms of the same workload match the ground-truth Pod entity with filter payment-.* in otel-demo.\"}]}"
+          }
+        ],
+        "phase": "final_answer",
+        "role": "assistant"
+      }
+    ],
+    "parallel_tool_calls": true,
+    "presence_penalty": 0.0,
+    "previous_response_id": null,
+    "prompt_cache_key": null,
+    "prompt_cache_retention": "24h",
+    "reasoning": {
+      "context": "current_turn",
+      "effort": "medium",
+      "mode": "standard",
+      "summary": null
+    },
+    "safety_identifier": null,
+    "service_tier": "default",
+    "store": false,
+    "temperature": 1.0,
+    "text": {
+      "format": {
+        "type": "text"
+      },
+      "verbosity": "medium"
+    },
+    "tool_choice": "auto",
+    "tool_usage": {
+      "image_gen": {
+        "input_tokens": 0,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 0
+        },
+        "output_tokens": 0,
+        "output_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 0
+        },
+        "total_tokens": 0
+      },
+      "web_search": {
+        "num_requests": 0
+      }
+    },
+    "tools": [],
+    "top_logprobs": 0,
+    "top_p": 0.98,
+    "truncation": "disabled",
+    "usage": {
+      "input_tokens": 1222,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 0
+        },
+        "cached_tokens": 0
+      },
+      "output_tokens": 212,
+      "output_tokens_details": {
+        "reasoning_tokens": 74
+      },
+      "total_tokens": 1434
+    },
+    "user": null,
+    "metadata": {}
+  },
+  "elapsed_seconds": 4.400250761995267
+}

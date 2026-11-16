@@ -1,0 +1,14 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Deployment/product-catalog",
+      "reasoning": "The product-catalog deployment's only replica was crash-looping and unavailable, so Kubernetes could not provide its endpoint to callers. Recommendation's ListProducts requests consequently failed, propagating failures through the frontend recommendation route and the frontend proxy; these are downstream symptoms, not separate frontend/proxy faults.",
+      "evidence": "At 2026-03-12 21:34:37 the Deployment condition Available=False (MinimumReplicasUnavailable); its product-catalog Pod was NotReady with restartCount=2 and two terminated containers at exitCode=1. Warning BackOff events for that Pod were recorded at 21:34:10 and 21:34:28, and the 21:34:37 product-catalog Endpoints object had only a notReadyAddresses entry. Recommendation traces at 21:35:01 show ListProducts returning UNAVAILABLE/failed to connect; the same trace's parent chain is recommendation -> frontend /api/recommendations -> frontend-proxy. HighRequestErrorRate alerts for frontend and frontend-proxy subsequently fired in the alert snapshots. The Deployment recovered by the 21:39 snapshot, so this factor is tied to the observed failing request window, not asserted as permanently unavailable."
+    },
+    {
+      "name": "otel-demo/Deployment/kafka",
+      "reasoning": "The Kafka broker does not provide the required orders topic, preventing the accounting consumer from consuming its input and producing a separate accounting latency/error path. This broker/topic failure is independent of the product-catalog endpoint failure; accounting is the affected consumer, not an additional upstream cause.",
+      "evidence": "At 2026-03-12 21:34:41 the accounting trace for 'orders receive' reports 'Subscribed topic not available: orders: Broker: Unknown topic or partition'; the corresponding accounting log records a consume error. The accounting service metrics report STATUS_CODE_ERROR calls (value 1 across scrapes from 21:37:29 through 21:39:29) and a duration histogram reaching the 15,000 bucket. A HighRequestLatency alert for accounting is firing in the 21:48 alert snapshot with current value 15,000 (annotation says above 5,000ms)."
+    }
+  ]
+}

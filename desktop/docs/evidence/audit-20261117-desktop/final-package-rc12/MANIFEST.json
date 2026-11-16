@@ -1,0 +1,166 @@
+{
+  "scope": "RC12 full-source build PASS; native UI partial and intentionally deferred; profile H zero submitted tasks and owned stop",
+  "source_commit": "8e92deb8b6a0acbba1d139851b1d805246304c61",
+  "files": {
+    "01-initial-rc12.png": {
+      "sha256": "1ad1b58b80b930e47cfb0e764d62e66b239993fc4ac67467d7b96b396e4729b6",
+      "bytes": 78736
+    },
+    "02-prepare-components-rc12.png": {
+      "sha256": "b560f2ad0d246bbf833ec0baeac3e5a29ea787f7cdd035c843a6a5a83bfd404b",
+      "bytes": 114543
+    },
+    "03-connected-components-no-model.png": {
+      "sha256": "0f11dca471acd259a8a12324e0579b5e9f2e88f6fb982cc3f67add2d76d6b8a4",
+      "bytes": 126613
+    },
+    "04-paused-before-completing-setup.png": {
+      "sha256": "c30d562adc1faeddf29082631cc599a4fc8c1dd66cba8945a7f3460c5aa7a57e",
+      "bytes": 124615
+    },
+    "05-owned-stop-receipt.png": {
+      "sha256": "13731551d29d819434b38c28bd645d27cb4b67eb608c25ad73954cd6038c5108",
+      "bytes": 57052
+    },
+    "05-stopped-windows.json": {
+      "sha256": "26924e94e6a4a3ffc2a3be5a6873438ed3bda3126edf03a68581f42d696a4040",
+      "bytes": 444
+    },
+    "RESULTS.md": {
+      "sha256": "f9f14a5e96c59a7b4e100fd9d5fbddc75fd2ffa9a2b73ad0365c723ed8ebba33",
+      "bytes": 6627
+    },
+    "SHA256SUMS": {
+      "sha256": "933197de451526de8c83884762fdb21c27322a5c0abc3acd25fcb26fbe257770",
+      "bytes": 111
+    },
+    "build-config.json": {
+      "sha256": "7443683b420c991f4a3ec193505cedcd5e68aff64200a547d5f5b00fa6e16503",
+      "bytes": 719
+    },
+    "build-linux-test.log.gz": {
+      "sha256": "8d8c6782ba6f87f54c006551c73c637b89ed41bea528837bc29729d6d9e9f85b",
+      "bytes": 5354
+    },
+    "build-native-exit.json": {
+      "sha256": "51691bc4a1c01b18b74d3477706b0eb828bc9bf7492271e1aed24bcc842ce7cd",
+      "bytes": 99
+    },
+    "build-native-job.json": {
+      "sha256": "51a89b4cc81e6856d1bec13c8d4a1e41a3b26267aaf33ed6dbf3f81ccf400cd7",
+      "bytes": 929
+    },
+    "build-native-launcher.sh": {
+      "sha256": "215e82df9facb5609e08e3348fd7d8e185e3b919617a281d1cf48d23ed8d54ea",
+      "bytes": 283
+    },
+    "build-native-supervisor.py": {
+      "sha256": "31eebe99550dec0e33fa8cb03206fe2350dde070f185dd1ff25498d7d712af8d",
+      "bytes": 1279
+    },
+    "build-rc12-native.log.gz": {
+      "sha256": "0006501a4971da6431a9c7b33bdb6af1d0050b4b37ec276489a82720e35e826f",
+      "bytes": 207
+    },
+    "build-recipe.sh": {
+      "sha256": "5b7a22efdcbbc0e36c4a21be12b940f9d554831d58157796c9fd94295e1c9b26",
+      "bytes": 5447
+    },
+    "candidate-identity.json": {
+      "sha256": "7ce2e163bde49533286b26048336ac2f1180e4e9fea12ee1bfa3d8dd5f651486",
+      "bytes": 1820
+    },
+    "candidate-versions.json": {
+      "sha256": "28a0e210f2a066d4a5416f9da8561035020b471d990fd02466b338272bcf2b06",
+      "bytes": 112
+    },
+    "desktop-source-continuity.json": {
+      "sha256": "5e417c17275958b4730949dc12e3eb1f64c3c9bf61a91a6553db08d757025cca",
+      "bytes": 341
+    },
+    "launch-owned-webview-minimal.sh": {
+      "sha256": "8edd7ebf185f13902e6a8a9dadb28b0c22fac966f542bb3b6cf19a8c1e91f4a4",
+      "bytes": 2146
+    },
+    "launch.py": {
+      "sha256": "aeb9b22d49280e643ffcd5896999289504a073f3dcbcf082eb54ad3ea700995e",
+      "bytes": 1469
+    },
+    "launch.sh": {
+      "sha256": "0be6e8dccea32848fea57767b53ceb86adb3ae321ef1b8303d786736b4c25486",
+      "bytes": 232
+    },
+    "native-no-model-requests.json": {
+      "sha256": "64f6fe8ac67e20f15431c8704d01260ac39a18054955850cecb81721c9797704",
+      "bytes": 1074
+    },
+    "native-rc12-h-process.json": {
+      "sha256": "0390f8ba403f515951d4235d57b0a765bf58183aa6197c343f63fbf8d65162cb",
+      "bytes": 952
+    },
+    "native-rc12-h-stop.json": {
+      "sha256": "b0044ba53035e57211f043d5e7a6716d190741cdea70a31672c655c55572dbe4",
+      "bytes": 1480
+    },
+    "native-rc12-h.log.gz": {
+      "sha256": "571c014183f0c6d98654a8fde8130bbbc94c92a05c1faea609383ea1fa9f1ea1",
+      "bytes": 288
+    },
+    "package-results.json": {
+      "sha256": "9d48f91eb8cf252e3e6e646527e0ae627d82bf4b74faf305ff59442c6237df93",
+      "bytes": 4685
+    },
+    "prepare-resources.log.gz": {
+      "sha256": "661ab1e47ccdf9fa41e208df87124b595291147c153828dc5cea99460a39d9f8",
+      "bytes": 3776
+    },
+    "previous-rc11-evidence-integrity.json": {
+      "sha256": "19f66998f232ede24c259fdaf1c308dcfc5fba38af8b3981a6db87b996165905",
+      "bytes": 177
+    },
+    "qualification-scope.json": {
+      "sha256": "5fdc0f3d06c1d27b2c3eadfb85d31eac52dda3a1f1a4b1807891d2c175bb97ef",
+      "bytes": 1024
+    },
+    "source-snapshot.json": {
+      "sha256": "e284ea03304ac68b6a037779a77ae48c883ddc68edb0be62ca60920270c60a1d",
+      "bytes": 347100
+    },
+    "stop.py": {
+      "sha256": "05dd7aafcf083f99e20b7cae373559b072741bd5e86fa908b5ec6f8129a5e4e0",
+      "bytes": 4625
+    },
+    "test-owner.json": {
+      "sha256": "48318d7c9bb98954fb1454186dd42e1fc1d86ec4afca5934103486cb979801ed",
+      "bytes": 285
+    },
+    "verified-modules.json": {
+      "sha256": "3260da59cc352f3aee75bb24fa5cde8d4f236b59ada0d591c837265b27815195",
+      "bytes": 6935
+    },
+    "verified-source-after-build.json": {
+      "sha256": "3260da59cc352f3aee75bb24fa5cde8d4f236b59ada0d591c837265b27815195",
+      "bytes": 6935
+    },
+    "verified-source-before-build.json": {
+      "sha256": "3260da59cc352f3aee75bb24fa5cde8d4f236b59ada0d591c837265b27815195",
+      "bytes": 6935
+    },
+    "wheel-channels.log.gz": {
+      "sha256": "a783ab9bf3dde3a5b0064312cb9668e37dc8da31df9ec1ceb36c2d16742edc1b",
+      "bytes": 917
+    },
+    "wheel-companion.log.gz": {
+      "sha256": "6221c275ece43ff22c2bd81f5d55787bd05ae65e339dd15e4409cd361b3dc974",
+      "bytes": 2769
+    },
+    "wheel-core.log.gz": {
+      "sha256": "e57338a9b972bd4cffff6cebfb9705e015005ca055805c6d34e48a01fc5ba3e2",
+      "bytes": 3872
+    },
+    "wheel-suite.log.gz": {
+      "sha256": "6e11ba7a397181d8c39908b38b57b98b99a3bf17920e052202b19bd20753e526",
+      "bytes": 1060
+    }
+  }
+}

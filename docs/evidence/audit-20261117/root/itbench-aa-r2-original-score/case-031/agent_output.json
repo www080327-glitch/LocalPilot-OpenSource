@@ -1,0 +1,9 @@
+{
+  "contributing_factors": [
+    {
+      "name": "chaos-mesh/Schedule/otel-demo-ad-jvm-chaos",
+      "reasoning": "This recurring Schedule is the upstream fault: it repeatedly creates JVMChaos experiments that target the ad container. The resulting ad process disruption explains the pod restart and loss of ad requests; frontend AdService/GetAds and /api/data failures then propagate into frontend-proxy request errors. The ad pod and the frontend/proxy alerts are downstream symptoms, not independent causes.",
+      "evidence": "k8s_events_raw.tsv: at 2025-12-15 17:54:00 the Schedule spawned JVMChaos otel-demo-ad-jvm-chaos-4c7dg; at 17:54:10 that experiment was applied to otel-demo/ad-554b849958-fcl25/ad. Further experiments were spawned around 17:55 and 17:57, with Forbid warnings while earlier experiments were still running. k8s_objects_raw.tsv: the ad Pod state recorded its previous container as OOMKilled (exit 137) at 17:54:35 with restartCount 1. Alerts: CPUThrottlingHigh for ad reached 99.96% from 17:54:37 and NoRequestsDetected for ad reported zero from 17:56:57; RequestErrorRate fired for frontend-proxy and frontend. service_frontend_raw.tsv showed error calls for grpc.oteldemo.AdService/GetAds and GET /api/data during 17:54-18:02; otel_logs_raw.tsv showed repeated HTTP 500 responses for frontend-proxy /api/data during 17:54-17:58."
+    }
+  ]
+}

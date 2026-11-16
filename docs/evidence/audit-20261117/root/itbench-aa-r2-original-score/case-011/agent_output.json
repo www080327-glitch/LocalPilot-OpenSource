@@ -1,0 +1,9 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Pod/frontend-675fd7b5c5-2psc4",
+      "reasoning": "This Pod is the sole frontend Service endpoint in the incident snapshots, and frontend-proxy's failing upstream calls terminate while connecting to that frontend endpoint. The errors are intermittent even though Kubernetes reports the Pod Running and Ready, so this is a serving/socket failure rather than a missing or unscheduled endpoint. It directly explains the frontend-proxy request-error alert; frontend-proxy is the observer of the reset, not an independent upstream cause.",
+      "evidence": "alerts/alerts_at_2025-12-15T17-46-01.889777.json has RequestErrorRate firing for otel-demo/frontend-proxy at 0.011111... (activeAt 17:44:02Z). In otel_logs_raw.tsv, frontend-proxy access logs at 17:42:19.785, 17:42:19.921, 17:42:34.977, and 17:43:55.372 return 503 UC with upstream_reset_before_response_started{connection_termination} for cluster frontend. In otel_traces_raw.tsv, frontend-proxy ingress spans have Error/503 and response_flags=UC, and their router frontend egress spans report error.reason=connection termination to 100.68.35.251:8080. k8s_objects_raw.tsv maps Service frontend's ClusterIP 100.68.35.251:8080 to the sole endpoint 100.96.5.154:8080, target Pod frontend-675fd7b5c5-2psc4; that Pod is Running/Ready in the 17:44 snapshot. metrics/service_frontend-proxy_raw.tsv also shows the ingress STATUS_CODE_ERROR counter rising from 441 at 17:43:19 to 442 at 17:44:19."
+    }
+  ]
+}

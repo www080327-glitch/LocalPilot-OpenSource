@@ -1,0 +1,9 @@
+{
+  "contributing_factors": [
+    {
+      "name": "chaos-mesh/Schedule/otel-demo-product-catalog-network-delay",
+      "reasoning": "This recurring Chaos Mesh schedule is the upstream disruption: its generated PodChaos executions repeatedly target the checkout pod, preventing the checkout backend from staying ready. With the only checkout endpoint unready, checkout requests and dependent checkout-path traffic fail or stop, explaining the CrashLoop and the subsequent no-request/error symptoms. The checkout pod and affected services are downstream symptoms, not independent root resources.",
+      "evidence": "In k8s_events_raw.tsv, executions from 2025-12-15 17:53 through 18:02 repeatedly report PodChaos Applied to otel-demo/checkout-5dccddf8bb-9dn2q, roughly once per minute, with TimeUp/Recovered about 55 seconds later (e.g. 17:55:00 Applied and 17:55:55 Recovered). BackOff warnings for that checkout pod begin at 17:55 and repeat through 18:00. In k8s_objects_raw.tsv at 18:02, that pod has 11 restarts and is waiting with reason CrashLoopBackOff; its Deployment has no ready/available replica, and the checkout Endpoints object lists its pod only under notReadyAddresses. Alerts at 18:11 include KubePodCrashLooping/CrashLoopBackOffPodsDetected, NoRequestsDetected for checkout and several downstream services, and elevated RequestErrorRate for frontend/frontend-proxy. These observations link the schedule's repeated target disruption to the failed checkout endpoint and the service symptoms."
+    }
+  ]
+}

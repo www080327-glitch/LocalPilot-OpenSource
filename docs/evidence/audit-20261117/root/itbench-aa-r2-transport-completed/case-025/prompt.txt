@@ -1,0 +1,27 @@
+Investigate the Kubernetes incident recorded in this offline snapshot.
+Use only the files in your working directory: /workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-025/workspace
+Do not use the network, lookup a benchmark answer, inspect sibling directories, or
+read any evaluator or service configuration. No reference diagnosis is provided.
+
+Find the smallest set of independent Kubernetes resources whose faults explain
+the incident. Support each selected resource with concrete observations from the
+snapshot. Inspect the alerts, event records, object state, logs, metrics, traces,
+and topology as relevant. Use shell and Python to filter the large tabular files;
+avoid dumping entire data files. Available Python includes numpy and pandas.
+The snapshot is historical: do not contact a cluster or try to repair one.
+
+Trace each symptom upstream. Omit a resource if a cause already in your answer
+fully explains its failure. Include multiple resources only when they introduce
+independent failures. A resource needs evidence during the incident, such as a
+firing alert, a warning event, abnormal metric, failing trace, or error log.
+An exhausted quota is a possible upstream cause; a deployment unable to create
+pods solely because of that quota is a resulting symptom.
+
+Write agent_output.json in the working directory. It must be a JSON object with
+one field, contributing_factors, containing a list of objects. Every object must
+have three string fields: name, reasoning, and evidence. Use resource identifiers
+in the form namespace/Kind/name; use cluster as the namespace for cluster-wide
+resources, and never append an object UID. The reasoning must explain causation;
+the evidence must identify the observations supporting it. Finish by stating that
+the file is ready. Do not ask for approval: this diagnostic work is authorized.
+You have at most 100 model steps and 20 minutes for this attempt.

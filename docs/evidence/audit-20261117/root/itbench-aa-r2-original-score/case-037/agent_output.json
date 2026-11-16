@@ -1,0 +1,9 @@
+{
+  "contributing_factors": [
+    {
+      "name": "chaos-mesh/Schedule/otel-demo-email-checkout-network-partition",
+      "reasoning": "This recurring Chaos Mesh schedule is the upstream fault: it repeatedly spawns the email-checkout network-partition experiment, disrupting checkout's calls to email. The resulting email connection timeouts make checkout requests extremely slow or fail; the checkout and frontend-proxy alerts are downstream symptoms, not independent resource faults. The email Service still had ready pod endpoints, so the evidence points to the scheduled network disruption rather than an absent email workload.",
+      "evidence": "In k8s_events_raw.tsv, Normal Spawned events for this Schedule start at 2025-12-15 17:38:00 and recur through 18:04, creating generated objects (for example, otel-demo-email-checkout-network-partition-r4sfn); repeated Forbid events say a prior generated job is still running. At 17:57, checkout WARN logs report failed POSTs to http://email:8080/send_order_confirmation with dial tcp 100.67.49.77:8080: i/o timeout. The object snapshot shows otel-demo/email Service at 100.67.49.77 with two email pod endpoints and both pods Running. Alerts around 18:01 show firing RequestLatency and RequestErrorRate for checkout and frontend-proxy; the linked trace e17b0407aaa013bc2e376ce131141bf4 has a 15-second frontend-proxy ingress 504 and a roughly 54-second checkout PlaceOrder. Metrics likewise record STATUS_CODE_ERROR on checkout client HTTP POST (value 37.0 at 18:00:54) and frontend-proxy ingress (value 587.0)."
+    }
+  ]
+}

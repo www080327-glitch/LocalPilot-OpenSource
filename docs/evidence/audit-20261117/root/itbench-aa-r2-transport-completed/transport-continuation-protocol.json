@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "declared_unix": 1794854721.9407113,
+  "original_cohort": "itbench-aa-r2",
+  "continuation_cohort": "itbench-aa-r2-transport-completed",
+  "reason": "Original dataset acquisition returned URLError Tunnel connection failed:403 before candidate start for multiple cases; later normal-client same-dataset download and digest verification succeeded.",
+  "declaration_phase": "Before reference download or any grading; original candidate runner still active",
+  "candidate_source_manifest_sha256": "c8f42a51536163e7f7ddee04823cc103d03a0e26913201cad8108e959b6d84c2",
+  "original_study_file_sha256": "48f91eb52521b364f07d5aa56791672d49e78fa747bc7643ef3c16ecef3803ca",
+  "selection": "Every original case meeting all eligibility conditions; selection never depends on candidate answer or quality score",
+  "eligibility": [
+    "Original40case summary finalized and all owned_core_stopped=true",
+    "Error type URLError with Tunnel connection failed:403 Forbidden",
+    "No task_status,task_id,model_calls,candidate-started.json or agent_output.json"
+  ],
+  "unchanged": [
+    "Frozen Runtime source",
+    "Candidate model gpt-6-luna",
+    "Responses protocol and medium reasoning",
+    "Prompt template",
+    "100modelsteps,200tools,8192outputtokens,1200second taskdeadline",
+    "All previously started candidates and their exact original receipts",
+    "40case denominator and zero for failed/incomplete/invalid candidates"
+  ],
+  "transport_change": "Run eligible cases serially using the same frozen run_case and download functions, inherited proxy and CA, original URLs and existing three per-file download attempts. No alternate route or policy change.",
+  "preservation": "OriginalR2 remains immutable. A new40case output directory copies every noneligible original public receipt byte-for-byte, and records source hashes and continuation-driver SHA before invoking recovered candidates.",
+  "repeat_rule": "No started model candidate is rerun, including failed or invalid outputs. Eligible recovery cases have zero previous model candidates; only dataset acquisition is repeated. Any continuation failure is retained.",
+  "grading_rule": "Fetch references only after all original and continuation candidate Cores stop. Grade the completed cohort with the frozen grader. Reuse matching cached normalization receipts for unchanged original candidates when reporting originalR2; no repeated judge selection or best-of outputs.",
+  "reporting": "Report originalR2 and the separate transport-completed40case cohort with explicit infrastructure counts and scheduling difference; not an officialAA result.",
+  "network_diagnostic_receipt": "network-diagnostic-1838.json",
+  "grading_supervisor_stop": {
+    "exec_session": 76806,
+    "exit_code": 130,
+    "grading_launch_present": false,
+    "grading_directory_present": false
+  }
+}
