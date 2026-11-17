@@ -1,5 +1,7 @@
 # Runtime audit — 2026-11-17 work batch
 
+Current-source continuation: [RC15 / Core b32 / Companion b9 persistent context](PERSISTENT_CONTEXT_20261117.md). The original audit items and historical runs below keep their own source identities.
+
 Baseline: `b420b97f18e452dc983c49e81cf7cfb87e7e82bb`. This audit changes the existing runtime, tool gateway, plugin adapter, and public service controls. It does not add another agent engine. Previous model failures and frozen evidence are unchanged.
 
 ## Scope and accounting

@@ -10,9 +10,11 @@ LocalPilot 采用 Apache 2.0 开源协议，致力于让强大、易用且低成
 
 ## 当前源码组件版本
 
-本源码树包含 Desktop **5.0.1-rc.14**、Core **5.0.0b31**、Suite **0.2.0b32**、Companion **0.5.7b8** 和独立 Channels **0.1.0a4**。源码版本不代表已经发布或通过全部原生安装验收；可用发行资产以 GitHub Releases 为准。
+本源码树包含 Desktop **5.0.1-rc.15**、Core **5.0.0b32**、Suite **0.2.0b32**、Companion **0.5.7b9** 和独立 Channels **0.1.0a4**。源码版本不代表已经发布或通过全部原生安装验收；可用发行资产以 GitHub Releases 为准。
 
-本轮增加完整权限下的显式长任务预算、OpenAI Responses 接入、Super Agent 实际模型验证，以及桌宠 30 Hz 动画和交互修正。四类各 10 项独立修复、逐项证据和未完成的平台验收统一记录在 [本轮完整审计](docs/development/AUDIT_20261117.md)。公开 ITBench-AA 测试只使用 40 道公开题与 LocalPilot 自身运行时；其结果不是 Artificial Analysis 官方榜单分数。两小时运行、最终原生包与公开题评测以该报告的实际状态为准。
+最新的 RC15 增加独立模型请求窗口、Companion 旧话检索与历史恢复，以及保留幂等收据的任务归档；具体实现、schema 2 升级/降级边界和验证结果见[常驻对话续作](docs/development/PERSISTENT_CONTEXT_20261117.md)。
+
+此前审计增加完整权限下的显式长任务预算、OpenAI Responses 接入、Super Agent 实际模型验证，以及桌宠 30 Hz 动画和交互修正。四类各 10 项独立修复、逐项证据和未完成的平台验收统一记录在 [本轮完整审计](docs/development/AUDIT_20261117.md)。公开 ITBench-AA 测试只使用 40 道公开题与 LocalPilot 自身运行时；其结果不是 Artificial Analysis 官方榜单分数。两小时运行、最终原生包与公开题评测以该报告的实际状态为准。
 
 2026-11-16 在 PR #14 基线上继续修复缓存 Session 的认证恢复、Test APP 的独立 WebView 存储和 Harbor 原进程路径别名，并增加显式 OpenAI 云端后端。续作补齐 Companion 的 OpenAI 准入和提供方记录，以及 compact 模式下的 Skills 用途目录。Linux 实际 WebKit 已完成 A/B 草稿、主题、来源偏好隔离及重开检查。云端真实模型使用官方 **Qwen3.5-2B** 的受控 Q8_0 转换；固定 **MMLU-Pro 32 题**与不同批次产品任务分别记录，不据小样本声称 AA 排名。当前范围见 [实现与状态](docs/development/NATIVE_POLISH_20261116.md)，最终交付、包身份和剩余项见 [续作验收记录](docs/evidence/native-continuation-20261116/RESULTS.md)；[前阶段全部结果](docs/evidence/native-polish-20261116/RESULTS.md)及失败保持可查。
 
@@ -30,10 +32,10 @@ LocalPilot 采用 Apache 2.0 开源协议，致力于让强大、易用且低成
 
 | 平台 | 当前可用路径 | 验收边界 |
 | --- | --- | --- |
-| Apple Silicon Mac | macOS 15+ 桌面 APP；oMLX/MLX 或已有本地 HTTP 服务；云端模型 | 既有 arm64 构建和回归通过；RC.8 本机首次设置报告 Session 404。本轮 RC.9 已修复对应软件路径，原生 WebKit 隔离及 Qwen3.6-35B 任务仍需 Mac 复验。 |
+| Apple Silicon Mac | macOS 15+ 桌面 APP；oMLX/MLX 或已有本地 HTTP 服务；云端模型 | 旧版本保留 arm64 构建和回归记录；RC15 新原生构建与交互尚未执行。当前 Mac 缺少完整 Xcode，受控 Test APP 槽仍被现有进程占用；不能由 Linux 或旧包验收推定通过。 |
 | **Intel Mac** | **优先支持本地 HTTP + CPU 推理**；Core/Suite CLI、Companion 服务；x86_64 桌面资源与构建路径 | 代码和跨平台协议测试已补齐；尚无通过 Intel 真机验收的安装包。桌面构建仍要求 macOS 15+。 |
-| **Linux x86_64** | **CLI、受限/Full Shell、HTTP/SSE、恢复、本地模型；Tauri/DEB 构建入口；Companion 文件/文字及可选桌面/音轨接入** | Debian 13 实测服务、Shell、真实 Qwen3.5-2B；Chromium UI 47/47 通过，使用合成原生桥；实际 X11/WebKit 首次设置及 A/B profile 重开通过。原生检查使用明确的只读依赖映射，系统 DEB 首装/升级/回滚、Wayland、音轨及登录/睡眠仍未验收。 |
-| Linux aarch64 / 其他发行版 | 架构分支和 Node 资源入口；源码 CLI 可按系统依赖安装 | 本轮未做对应机器、ELF、系统依赖或桌面实测；不称为已验收平台。 |
+| **Linux x86_64** | **CLI、受限/Full Shell、HTTP/SSE、恢复、本地模型；Tauri/DEB 构建入口；Companion 文件/文字及可选桌面/音轨接入** | RC15 对应源码的 Core / Companion 回归通过；新历史界面因当前浏览器环境受限未完成验收。旧版本保留真实模型、Chromium 合成桥与 RC14 X11/WebKit 记录；新包、x86_64 系统 DEB 循环、Wayland、音轨及登录/睡眠仍未验收。 |
+| Linux aarch64 / 其他发行版 | Ubuntu 24.04 arm64 的 RC14 Test DEB 已在目标环境构建并完成 apt 安装循环；其他发行版须独立构建 | RC13 重建夹具首装 → RC14 升级 → RC13 降级 → RC14 恢复均通过；该 VM 无 GUI。RC15 新源码不继承 RC14 包验收，其他发行版仍未验收。 |
 
 Intel 本地推理使用外部 CPU 服务，例如 [llama.cpp](https://github.com/ggml-org/llama.cpp) 与兼容的 GGUF 模型。LocalPilot 的 HTTP 路径不依赖 MLX 或 MPS；是否使用 CPU、Metal 或其他加速由模型服务器决定。现有 MLX 权重不能直接当作 GGUF 使用，内置 MLX/LoRA 也不会自动变成 Intel CPU 实现。[LM Studio 官方系统要求](https://lmstudio.ai/docs/app/system-requirements)目前不支持 Intel Mac，因此不把它作为 Intel 安装方案。
 
@@ -95,7 +97,7 @@ localpilot agent --allow-local-on-battery '读取工作文件夹里的项目说�
 
 ### Linux 桌面候选
 
-Linux 桌面采用发行版原生 DEB，内含四组件 wheel 与隔离环境，依赖构建时匹配的系统 Python minor、GTK/WebKit；不含模型。RC14 的 Debian 13 x86_64 原生短验见 [RC14 验收记录](desktop/docs/evidence/audit-20261117-desktop/final-package-rc14/RESULTS.md)；Ubuntu 24.04 arm64 的新 Test DEB 已另行通过系统首装、apt 升级和回滚，详见[续验](desktop/docs/evidence/audit-20261117-desktop/native-delivery-20261117/RESULTS.md)。两种架构的产物和哈希互不通用。当前没有公开 RC14 DEB 下载；重新构建必须使用该次输出的 `SHA256SUMS`，不能沿用历史制品哈希。取得**与自己发行版和架构匹配、已核对 SHA-256 的候选包**后安装：
+Linux 桌面采用发行版原生 DEB，内含四组件 wheel 与隔离环境，依赖构建时匹配的系统 Python minor、GTK/WebKit；不含模型。RC14 的 Debian 13 x86_64 原生短验见 [RC14 验收记录](desktop/docs/evidence/audit-20261117-desktop/final-package-rc14/RESULTS.md)；Ubuntu 24.04 arm64 已另行通过 RC13 重建夹具首装、升级 RC14、回滚 RC13 和恢复 RC14，详见[续验](desktop/docs/evidence/audit-20261117-desktop/native-delivery-20261117/RESULTS.md)。两种架构的产物和哈希互不通用。当前没有公开 RC14 DEB 下载；重新构建必须使用该次输出的 `SHA256SUMS`，不能沿用历史制品哈希。取得**与自己发行版和架构匹配、已核对 SHA-256 的候选包**后安装：
 
 ```sh
 sudo apt install ./LocalPilot-Test-5.0.1-rc.14-linux-x86_64.deb

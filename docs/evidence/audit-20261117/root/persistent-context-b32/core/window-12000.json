@@ -1,0 +1,29 @@
+{
+  "kind": "deterministic_session_context_probe",
+  "provider_calls": 0,
+  "source_sha256": {
+    "agent/context_v5.py": "4e2c49bcef256d15d666da960a0d712feae6b0051d9f5eb65a0e8679b4fbde76",
+    "agent/session_models.py": "7731f0846c6e6debc79ccc2fb9a1880278b36880be29a9ee90a9725ead3dad2b",
+    "agent/session.py": "5a2f51e25edd8e60dbfb392d2f5bc57f0f22d4e32455536c0553da40f7cd1b07",
+    "agent/persistence.py": "b37366404cd2389557f0120c454e5345bc67dfc053c32eba12d25753667d5178"
+  },
+  "turns": 40,
+  "incomplete_turns": 40,
+  "model_requests": 40,
+  "compactions": 18,
+  "consecutive_exact_input_prefix_extensions": 21,
+  "canonical_messages": 81,
+  "final_model_window_messages": 14,
+  "maximum_request_estimated_tokens_with_output_and_margin": 10581,
+  "context_token_capacity": 12000,
+  "final_canonical_message_bytes": 99331,
+  "final_model_window_bytes": 29328,
+  "blocked_goal_descriptions": [
+    "Problem 0: missing cancellation receipt; exact next action is retained.",
+    "Problem 1: unverified file hash; exact next action is retained.",
+    "Problem 2: Intel native interaction; exact next action is retained.",
+    "Problem 3: Companion focus restoration; exact next action is retained."
+  ],
+  "all_latest_states_keep_exact_task_and_goals": true,
+  "interpretation": "Synthetic model outputs; full AgentSession context/compaction implementation. This measures request layout, not model quality, native installation or unbounded canonical storage."
+}

@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "candidate": {
+    "baseline_commit": "e278f0677c8eed4c0d49b6b08a672e15fe56495d",
+    "candidate_commit": null,
+    "identity_rule": "Baseline plus working-tree modifications, identified by exact source SHA manifests; no new commit ID asserted",
+    "desktop": "5.0.1-rc.15",
+    "core": "5.0.0b32",
+    "companion": "0.5.7b9"
+  },
+  "overall": "COMPANION_PYTHON_AND_FRONTEND_BUILD_PASS_GUI_NOT_RUN",
+  "targeted": {
+    "tests": 101,
+    "passed": 101,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "unittest_seconds": 4.039
+  },
+  "full": {
+    "tests": 744,
+    "passed": 711,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 33,
+    "unittest_seconds": 34.718,
+    "wrapper_seconds": 35.242705025999385,
+    "source_files": 503,
+    "source_unchanged": true,
+    "source_before_sha256": "ff1ba29dd382727dff40a4e3b77190d9623633157fc89430ec5f5e2be76d46cd",
+    "source_after_sha256": "ff1ba29dd382727dff40a4e3b77190d9623633157fc89430ec5f5e2be76d46cd"
+  },
+  "frontend": {
+    "vitest_files": 13,
+    "vitest_tests": 74,
+    "passed": 74,
+    "build_exit_code": 0,
+    "source_files": 118,
+    "source_unchanged": true,
+    "source_manifest_sha256": "67453fece514c2008dbc671498c88ce24e0908e747609930b07593d477bf1484"
+  },
+  "ui_history": {
+    "cases_defined": 8,
+    "prior_launch_attempted": 7,
+    "launch_blocked_before_page": 7,
+    "added_after_order_review_not_run": 1,
+    "assertions_executed": 0,
+    "status": "NOT_RUN"
+  },
+  "development_runs_retained": {
+    "first_full": {
+      "tests": 736,
+      "passed": 663,
+      "failed": 9,
+      "errors": 31,
+      "skipped": 33,
+      "unittest_seconds": 37.374,
+      "log": "raw/companion/full-suite.log",
+      "interpretation": "Shared code was still changing; failures clustered around service task-submission HTTP 500. Do not substitute for the later frozen full run."
+    },
+    "first_archive_revision": {
+      "tests": 5,
+      "passed": 4,
+      "failed": 1,
+      "log": "raw/companion/archive-regression.log"
+    },
+    "baseline_regression": {
+      "tests": 10,
+      "passed": 4,
+      "failed": 6,
+      "errors": 0,
+      "skipped": 0,
+      "unittest_seconds": 0.574,
+      "log": "raw/companion/baseline-final-regression.log",
+      "local_baseline_commit": "54bc8e3c0983775b19eedb386de1271f8d3e3263",
+      "checked_production_files_equal_e278": [
+        "companion/memory/store.py",
+        "companion/runtime/dialogue.py",
+        "companion/runtime/routing.py"
+      ]
+    }
+  },
+  "archive": {
+    "archive": "companion-test-evidence.tar.gz",
+    "archive_bytes": 125728,
+    "archive_sha256": "cf70f0b15e1ffc5fbdf49a5d744ebdd118be8d9c712d384cea6ee17a8024fc78",
+    "payload_count": 32,
+    "payload_bytes": 727096
+  },
+  "retention": {
+    "default_retained_chat_rows": 10000,
+    "model_history_max_entries": 9,
+    "model_history_max_serialized_chars": 3000,
+    "excerpt_max_chars": 500,
+    "history_api_default_page": 30,
+    "history_api_max_page": 50
+  },
+  "boundaries": [
+    "Scripted generation is not a real-model quality claim",
+    "No new native APP or DEB is qualified by this evidence",
+    "No native macOS or optical animation measurement",
+    "No Tag, Release, merge or upload is performed by this evidence preparation",
+    "No indefinite retention or automatic idle paid summarization is claimed",
+    "Historical reports inside the archive remain historical; this summary and named final results identify current gate outcomes"
+  ]
+}

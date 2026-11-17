@@ -1,0 +1,40 @@
+{
+  "candidate_versions": {
+    "consistent": true,
+    "desktop": "5.0.1-rc.15",
+    "core": "5.0.0b32",
+    "suite": "0.2.0b32",
+    "companion": "0.5.7b9"
+  },
+  "git_diff_check": 0,
+  "rust_format": {
+    "status": "PASS",
+    "toolchain": "1.100.0",
+    "command": "cargo fmt --manifest-path desktop/src-tauri/Cargo.toml --check",
+    "exit_code": 0,
+    "log_bytes": 0,
+    "scope": "Formatting and Rust parser only, not native compilation"
+  },
+  "earlier_rust_setup_attempts": [
+    {
+      "log": "rust-format.log",
+      "result": "error: rustup could not choose a version of cargo to run, because one wasn't specified explicitly, and no default is configured.\nhelp: run 'rustup default stable' to download the latest stable release of Rust and set it as your default toolchain.\n"
+    },
+    {
+      "log": "rust-format-r2.log",
+      "result": "error: 'cargo-fmt' is not installed for the toolchain '1.100.0-x86_64-unknown-linux-gnu'.\nhelp: run `rustup component add rustfmt` to install it\n"
+    }
+  ],
+  "native_package": "NOT_RUN; pkg-config did not find gtk+-3.0 or webkit2gtk-4.1 in this host",
+  "desktop_docs": {
+    "command": "python3 desktop/scripts/check-docs.py",
+    "exit_code": 0,
+    "stdout": "PASS: live Markdown links, root policy, and original evidence bytes\n",
+    "scope": "Initial completed desktop doc check; final link review includes the subsequently added engineering evidence."
+  },
+  "desktop_docs_final": {
+    "command": "python3 desktop/scripts/check-docs.py",
+    "exit_code": 0,
+    "stdout": "PASS: live Markdown links, root policy, and original evidence bytes\n"
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "scope": "Service history implementation regressions, fresh four-wheel installed lifecycle, full Suite against Core b32 schema 2. These test sets overlap and must not be added.",
+  "service": {
+    "targeted_tests": 96,
+    "passed": 96,
+    "skipped": 0,
+    "seconds": 5.069,
+    "document_followup_tests": 11,
+    "document_followup_passed": 11,
+    "document_followup_seconds": 0.876,
+    "pre_fix_capacity_observation": "Closing/restarting at configured capacity still rejected new work; preserved in before-capacity.log.",
+    "document_pre_fix_observation": "Independent reviewer tool observation only; no original probe/traceback saved.",
+    "schema1_backup": "Real SQLite backup, private 0600, verified version/integrity/checkpoint receipts; migration does not overwrite original backups.",
+    "schema2_old_reader": "Actual b31 reader refused schema 2; database bytes unchanged.",
+    "source_hash_caveat": "service-review.json records hashes after the targeted run only. Use the separate final Core gate for frozen-source coverage."
+  },
+  "installed": {
+    "versions": {
+      "localpilot-agent-service": "5.0.0b32",
+      "localpilot-suite": "0.2.0b32",
+      "localpilot-companion": "0.5.7b9",
+      "localpilot-channels": "0.1.0a4"
+    },
+    "wheels": [
+      {
+        "file": "localpilot_agent_service-5.0.0b32-py3-none-any.whl",
+        "bytes": 584363,
+        "sha256": "095774e7f464e968e49ed7e45e3406166ce0244fbd79ddd11d57d040c4c826b3"
+      },
+      {
+        "file": "localpilot_channels-0.1.0a4-py3-none-any.whl",
+        "bytes": 45932,
+        "sha256": "154c473fd909aca5926543b4787506ca6adc5d0210c7bc248db1d9561ab202e6"
+      },
+      {
+        "file": "localpilot_companion-0.5.7b9-py3-none-any.whl",
+        "bytes": 356058,
+        "sha256": "753c5fcc3a5c252866d72c108e28f94cad2232401916907124e9d3db44767b91"
+      },
+      {
+        "file": "localpilot_suite-0.2.0b32-py3-none-any.whl",
+        "bytes": 108572,
+        "sha256": "e2851cbfd505251ffdae17e5f4f57525b2ce336210b7322629be521b714193d6"
+      }
+    ],
+    "tests_run": 12,
+    "passed": 12,
+    "skipped": 0,
+    "unittest_seconds": 5.711,
+    "wrapper_seconds": 5.838579958000992,
+    "source_files": 670,
+    "source_unchanged": true,
+    "installed_source_files": 286,
+    "pip_check": "No broken requirements found.",
+    "remaining_owned_processes": []
+  },
+  "suite": {
+    "tests_run": 123,
+    "passed": 122,
+    "skipped": [
+      "test_private_channel_state_under_system_tmp_preserves_owner_only_files (test_channel_product.ChannelProductTests.test_private_channel_state_under_system_tmp_preserves_owner_only_files) ... skipped 'macOS fixed system alias'"
+    ],
+    "unittest_seconds": 52.728,
+    "elapsed_seconds": 53.04850666600032,
+    "warnings": [
+      "test_cloud_setup_failure_restores_both_configs_and_services (test_local_endpoint_portability.PortableSetupProcessTests.test_cloud_setup_failure_restores_both_configs_and_services) ... /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py:1127: ResourceWarning: subprocess 172 is still running",
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py:1127: ResourceWarning: subprocess 179 is still running"
+    ],
+    "source_files_verified": 670,
+    "source_unchanged": true
+  },
+  "scope_limits": {
+    "model_calls": false,
+    "system_package_installation": false,
+    "native_gui": false,
+    "macos_arm64_or_intel_acceptance": false,
+    "real_platform_accounts": false,
+    "open_sessions_are_not_automatically_closed": true,
+    "unbounded_history_constant_time_claim": false
+  },
+  "runtime_environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "os_release": "PRETTY_NAME=\"Debian GNU/Linux 13 (trixie)\"\nNAME=\"Debian GNU/Linux\"\nVERSION_ID=\"13\"\nVERSION=\"13 (trixie)\"\nVERSION_CODENAME=trixie\nDEBIAN_VERSION_FULL=13.6\nID=debian\nHOME_URL=\"https://www.debian.org/\"\nSUPPORT_URL=\"https://www.debian.org/support\"\nBUG_REPORT_URL=\"https://bugs.debian.org/\"\n",
+    "build_tools": {
+      "build": "1.6.1",
+      "setuptools": "84.2.1",
+      "wheel": "0.48.0"
+    }
+  },
+  "source_identity": {
+    "base_commit": "e278f0677c8eed4c0d49b6b08a672e15fe56495d",
+    "uncommitted_candidate_changes": true,
+    "code_identity": "Per-file before/after hashes are the candidate binding; no claim that unchanged base commit contains these new changes."
+  }
+}

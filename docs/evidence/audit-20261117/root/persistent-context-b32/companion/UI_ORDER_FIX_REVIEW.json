@@ -1,0 +1,24 @@
+{
+  "finding": "Turning saved memory off then on after paging older history fetched and prepended the latest page again, reversing chronological order and resetting the cursor.",
+  "before_probe": {
+    "kind": "Actual uniqueMessages declaration and loadHistory merge expression extracted from production Pet.tsx; no browser or native transport executed",
+    "source_sha256": "343d44c1fdcf269b9d492c373dc94208b7250efae3c24039e8c07ab25a599cde",
+    "reproduced": true,
+    "archive_path": "raw/core/pet-history-order-review.json"
+  },
+  "change": "Preserve historyLoaded and the older cursor across the memory switch; reload only when no saved page has loaded. Keep a manual initial-history retry entry when an interrupted initial load has not completed.",
+  "after_sources": {
+    "desktop/src/Pet.tsx": {
+      "bytes": 44968,
+      "sha256": "d300f4a2777f677a517fbedf1f29f1895124caa8dde7817e36fd1214868d95f7"
+    },
+    "desktop/tests/ui/pet-history.spec.ts": {
+      "bytes": 11087,
+      "sha256": "21e141281e730d5bec3346ca729f19c868f15bdee8b76f610028fed214a03650"
+    }
+  },
+  "new_regression": "reenabling memory preserves loaded page order, live messages and the older cursor",
+  "browser_test_status": "NOT_RUN",
+  "post_change_verified": "npm test: 74 existing unit tests pass; npm run build passes. This is not a mounted-UI behavioral PASS.",
+  "python_changed": false
+}

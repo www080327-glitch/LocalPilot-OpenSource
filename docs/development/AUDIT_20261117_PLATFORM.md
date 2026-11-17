@@ -1,5 +1,7 @@
 # 2026-11-17 Suite、Channels、Companion 与平台构建审计
 
+Current-source continuation: [RC15 / Core b32 / Companion b9 persistent context](PERSISTENT_CONTEXT_20261117.md). The original audit items and historical runs below keep their own source identities.
+
 ## 范围和状态
 
 基线为 `b420b97`。本轮负责 Suite 安装、配置、恢复、渠道协调；独立 Channels Python 后台；Companion 后台模型生命周期；Desktop 平台构建脚本。可见 UI、桌宠窗口和 Core Responses Runtime 由其他审计分支负责人处理。本文件只记录本范围；源码随后已由主负责人统一发布为 `91dd87c`，组件版本、最终构建与交付状态见[总报告](AUDIT_20261117.md)。历史证据未修改。

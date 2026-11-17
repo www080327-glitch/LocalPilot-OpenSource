@@ -1,6 +1,8 @@
-# LocalPilot Companion 0.5.7b8
+# LocalPilot Companion 0.5.7b9
 
-[公开桌面版本与候选记录](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases) · [安装与个人素材](../docs/releases/desktop-5.0.0/INSTALL.md)。本页为独立 Companion 服务，不改变其版本和授权边界；历史版本记录不代表当前候选已通过原生验收。
+本次 **0.5.7b9** 修复仍保留的旧话检索、有限“继续”衔接、委派时传递同一历史，以及桌宠重开后的保存聊天恢复与分页。默认仍保留最多 10,000 条记录；遗忘和来源访问限制继续生效。实现、验证及原生界面边界见[常驻对话续作](../docs/development/PERSISTENT_CONTEXT_20261117.md)。
+
+[公开桌面版本与候选记录](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases) · [安装与当前平台边界](../README.md#简易快速安装)。本页为独立 Companion 服务，不改变其版本和授权边界；历史版本记录不代表当前候选已通过原生验收。
 
 Independent service and CLI. Apple Silicon macOS can use the bundled MLX worker; Intel macOS and Linux can use an explicitly configured local OpenAI-compatible HTTP model server. File observation, source imports and SQLite memory use the portable service. macOS has Swift observation and meeting helpers; Linux now has optional AT-SPI/X11 read-only observation and Pulse/PipeWire-Pulse audio with local whisper.cpp. Actual graphical sessions, audio hardware and sleep/wake still require device validation. A configured authenticated LocalPilot API provides larger reasoning and explicitly confirmed standard Agent work. Companion contains no LocalPilot Runtime and has no implicit tool approval authority.
 
@@ -24,7 +26,7 @@ companion --config /path/to/companion.json ui --show
 
 Help confirmation permits submitting a task. Tool approval stays with the Core Permission Gateway and a separate trusted operator. Cloud consultation needs its own explicit consent and a new question-only Session. Closing a card, declining help, and stopping a task are distinct actions. UNKNOWN never authorizes replay.
 
-API and client contract: 1.0. Current integrated Core: 5.0.0b27 (API 1.0). Historical 4.9.2 RC consumer evidence remains historical. Initial migration from old Companion 0.5.4 requires upgrading Companion first. Keep data outside the installation directory.
+API and client contract: 1.0. Current source integration: Core 5.0.0b32 (API 1.0). Historical 4.9.2 RC consumer evidence remains historical. Initial migration from old Companion 0.5.4 requires upgrading Companion first. Keep data outside the installation directory.
 
 This is a scoped release candidate. A real ordinary arithmetic prompt produced an incorrect 0.8B answer; factual accuracy is not guaranteed by the routing or host verifier. See the joint release report and failure ledger. The portable Linux service has regression coverage; Intel hardware, native macOS lifecycle and all-day stability still require device validation.
 
@@ -59,11 +61,11 @@ Linux 已提供系统电源读取、XDG 数据目录、显式 systemd 用户服�
 
 ## 桌面宠物候选（2026-10-25）
 
-隔离实现与边界见 [宠物架构](../docs/acceptance/companion-pet-20261025/ARCHITECTURE.md)。本候选复用 Companion 服务，新增 `pet_ask`、记忆控制和认证流式展示通道；不包含新的 Agent Runtime。独立 Tauri 测试包使用专属应用身份，不替换日常 LocalPilot.app。真实工具委派与长期性能尚未获准作为 Beta 通过结论。
+后续架构与接入边界见 [Companion PA](../docs/development/COMPANION_PA_20261114.md)。此历史候选复用 Companion 服务，新增 `pet_ask`、记忆控制和认证流式展示通道；不包含新的 Agent Runtime。独立 Tauri 测试包使用专属应用身份，不替换日常 LocalPilot.app。真实工具委派与长期性能尚未获准作为 Beta 通过结论。
 
-## 当前推荐桌宠
+## 桌宠形态与版本边界
 
-Desktop 5.0.0 沿用 dev.23-edge.4 的边缘姿态、方向动画、独立比例和原生玻璃气泡。通过完整桌面入口开启，个人资源不随制品分发。用户已确认 edge.4 玻璃和文字；新的全量真实模型回归未跑。[版本与验收边界](../docs/releases/desktop-5.0.0/RELEASE_NOTES.md)。上节 2026-10-25 的候选记录保留为历史，不能覆盖新版发布状态。
+Desktop 5.0.0 阶段沿用 dev.23-edge.4 的边缘姿态、方向动画、独立比例和原生玻璃气泡。通过完整桌面入口开启，个人资源不随制品分发。用户已确认 edge.4 玻璃和文字；新的全量真实模型回归未跑。当前源码的[交互与验收边界](../docs/development/AUDIT_20261117_DESKTOP.md)及[常驻聊天续作](../docs/development/PERSISTENT_CONTEXT_20261117.md)单独记录。上节 2026-10-25 的候选记录保留为历史，不能覆盖新版发布状态。
 
 ## PA 日常回顾与反馈（2026-11-14 历史候选）
 

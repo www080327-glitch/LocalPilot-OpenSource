@@ -1,0 +1,18 @@
+{
+  "file": "evidence.tar.gz",
+  "bytes": 149772,
+  "sha256": "f03e391333335ee32d2fb844e23e65bb5a75ef54e3ef46cc406e6a05c365428c",
+  "payload_count": 27,
+  "payload_bytes": 452653,
+  "deterministic_rebuild_matches": true,
+  "readback_all_payloads_match": true,
+  "payload_bytes_transformed": false,
+  "excluded": [
+    "databases",
+    "wheels",
+    "venv",
+    "environment files",
+    "keys",
+    "test working directories"
+  ]
+}

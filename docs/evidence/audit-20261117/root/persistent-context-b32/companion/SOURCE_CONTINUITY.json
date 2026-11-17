@@ -1,0 +1,33 @@
+{
+  "full_run_source_unchanged": true,
+  "post_full_run_changes": [
+    {
+      "file": "companion/README.md",
+      "tested_sha256": "41810ea417bcee5e08a9bc442e5732eb90fe1259d7f0a49ee9c6b2c25137f1db",
+      "current_sha256": "f43036489bd917bb59307861d657156f08e2d33c62f84ba43f6d8a7b09c721c2",
+      "classification": "documentation_only"
+    },
+    {
+      "file": "suite/README.md",
+      "tested_sha256": "dd1a0d49e45c0ec14713e92395dbbfa238fe76a5281d7c3d880b78a48f399298",
+      "current_sha256": "3333f56dc6a0748e071cb3c5723129b3a8f0da895b72cf959bde12314d18b8a6",
+      "classification": "documentation_only"
+    }
+  ],
+  "post_full_run_python_or_config_changes": [],
+  "targeted_owned_python_files_equal_full_run": true,
+  "targeted_owned_python_files": [
+    "companion/memory/store.py",
+    "companion/runtime/commands.py",
+    "companion/runtime/dialogue.py",
+    "companion/runtime/pet.py",
+    "companion/runtime/routing.py",
+    "companion/tests/test_chat_history_archive.py",
+    "companion/tests/test_pet_history.py"
+  ],
+  "later_ui_fix_files": [
+    "desktop/src/Pet.tsx",
+    "desktop/tests/ui/pet-history.spec.ts"
+  ],
+  "meaning": "The full run remains bound to its 503-file snapshot. Later documentation and UI changes are explicitly separated; no whole-tree equivalence is asserted."
+}

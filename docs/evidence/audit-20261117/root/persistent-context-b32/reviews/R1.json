@@ -1,0 +1,1875 @@
+{
+  "reviewed_at_utc": "2026-11-17T04:24:27.471018+00:00",
+  "reviewer": "/root/evidence_platform",
+  "scope": "docs/evidence/audit-20261117/root/persistent-context-b32",
+  "status": "PASS",
+  "method": "Read-only source/evidence inspection. No product tests, model calls, browser execution or source changes.",
+  "standalone_json_parsed": 31,
+  "archives": [
+    {
+      "scope": "core",
+      "file": "evidence.tar.gz",
+      "bytes": 134898,
+      "sha256": "e1c47e1b5d3f255c6ee73d8c56171eef1bf57e33abd3aee7d704a39a00abfb88",
+      "payload_count": 23,
+      "json_payloads_parsed": 10,
+      "payload_bytes": 817346
+    },
+    {
+      "scope": "live",
+      "file": "evidence.tar.gz",
+      "bytes": 23886,
+      "sha256": "70cae2cf29d7d833c5c4ea1dde6825338b8d515c7e3ea857cd5f737b21bd820d",
+      "payload_count": 20,
+      "json_payloads_parsed": 15,
+      "payload_bytes": 133925
+    },
+    {
+      "scope": "runtime",
+      "file": "evidence.tar.gz",
+      "bytes": 149772,
+      "sha256": "f03e391333335ee32d2fb844e23e65bb5a75ef54e3ef46cc406e6a05c365428c",
+      "payload_count": 27,
+      "json_payloads_parsed": 11,
+      "payload_bytes": 452653
+    },
+    {
+      "scope": "companion",
+      "file": "companion-test-evidence.tar.gz",
+      "bytes": 125728,
+      "sha256": "cf70f0b15e1ffc5fbdf49a5d744ebdd118be8d9c712d384cea6ee17a8024fc78",
+      "payload_count": 32,
+      "json_payloads_parsed": 14,
+      "payload_bytes": 727096
+    }
+  ],
+  "total_archive_payloads": 102,
+  "relative_links": [
+    {
+      "file": "RESULTS.md",
+      "target": "../../../../development/PERSISTENT_CONTEXT_20261117.md",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "core/RESULTS.md",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "companion/RESULTS.md",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "runtime/RESULTS.md",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "runtime/RESULTS.md",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "companion/RESULTS.md",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "live/RESULTS.md",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "core/RESULTS.md",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "browser/RESULTS.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "../../../../../desktop/docs/evidence/audit-20261117-desktop/native-delivery-20261117/RESULTS.md",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "SOURCE.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "BUILD_CHECKS.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "TARGETED_RESULTS.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "TARGETED_SOURCE_FILES.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "FULL_RESULTS.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "FULL_SOURCE_FILES.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "FRONTEND_RESULTS.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "FRONTEND_SOURCE_FILES.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "SOURCE_CONTINUITY.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "UI_ORDER_FIX_REVIEW.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "CUA_FALLBACK.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "companion-test-evidence.tar.gz",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "PAYLOAD_SHA256.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "PUBLICATION_TRANSFORMS.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "SUMMARY.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "core/RESULTS.md",
+      "target": "final-run.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "core/RESULTS.md",
+      "target": "skips.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "core/RESULTS.md",
+      "target": "window-5500.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "core/RESULTS.md",
+      "target": "window-12000.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "core/RESULTS.md",
+      "target": "evidence.tar.gz",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "core/RESULTS.md",
+      "target": "ARCHIVE.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "live/RESULTS.md",
+      "target": "run.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "live/RESULTS.md",
+      "target": "source-continuity.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "live/RESULTS.md",
+      "target": "responses.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "live/RESULTS.md",
+      "target": "prefix-comparisons.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "live/RESULTS.md",
+      "target": "evidence.tar.gz",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "live/RESULTS.md",
+      "target": "ARCHIVE.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "runtime/RESULTS.md",
+      "target": "../core/final-run.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "runtime/RESULTS.md",
+      "target": "SUMMARY.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "runtime/RESULTS.md",
+      "target": "evidence.tar.gz",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "runtime/RESULTS.md",
+      "target": "PAYLOAD_MANIFEST.json",
+      "exists": true,
+      "anchor": null
+    },
+    {
+      "file": "runtime/RESULTS.md",
+      "target": "ARCHIVE.json",
+      "exists": true,
+      "anchor": null
+    }
+  ],
+  "official_counts_and_sources": {
+    "core_final": {
+      "archive": "core",
+      "payload": "core-full-r2/core-full.log",
+      "tests": 1674,
+      "passed": 1575,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 99,
+      "seconds": 185.185
+    },
+    "companion_targeted": {
+      "archive": "companion",
+      "payload": "raw/companion/companion-final-targeted.log",
+      "tests": 101,
+      "passed": 101,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 4.039
+    },
+    "companion_final": {
+      "archive": "companion",
+      "payload": "raw/companion-full-r2/unittest.log",
+      "tests": 744,
+      "passed": 711,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 33,
+      "seconds": 34.718
+    },
+    "companion_first_failure": {
+      "archive": "companion",
+      "payload": "raw/companion/full-suite.log",
+      "tests": 736,
+      "passed": 663,
+      "failed": 9,
+      "errors": 31,
+      "skipped": 33,
+      "seconds": 37.374
+    },
+    "companion_baseline": {
+      "archive": "companion",
+      "payload": "raw/companion/baseline-final-regression.log",
+      "tests": 10,
+      "passed": 4,
+      "failed": 6,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.574
+    },
+    "service_targeted": {
+      "archive": "runtime",
+      "payload": "service/final-targeted-r2.log",
+      "tests": 96,
+      "passed": 96,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 5.069
+    },
+    "document_followup": {
+      "archive": "runtime",
+      "payload": "service/document-archive-fix-r1.log",
+      "tests": 11,
+      "passed": 11,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.876
+    },
+    "installed_lifecycle": {
+      "archive": "runtime",
+      "payload": "installed-r1/tests.log",
+      "tests": 12,
+      "passed": 12,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 5.711
+    },
+    "suite_final": {
+      "archive": "runtime",
+      "payload": "suite-r1/suite-full.log",
+      "tests": 123,
+      "passed": 122,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 1,
+      "seconds": 52.728
+    }
+  },
+  "source_continuity": [
+    {
+      "scope": "core_final",
+      "source_files": 287,
+      "before_after_equal": true,
+      "later_changes": []
+    },
+    {
+      "scope": "companion_final",
+      "source_files": 503,
+      "before_after_equal": true,
+      "later_changes": [
+        {
+          "file": "companion/README.md",
+          "tested_sha256": "41810ea417bcee5e08a9bc442e5732eb90fe1259d7f0a49ee9c6b2c25137f1db",
+          "current_sha256": "f43036489bd917bb59307861d657156f08e2d33c62f84ba43f6d8a7b09c721c2"
+        },
+        {
+          "file": "suite/README.md",
+          "tested_sha256": "dd1a0d49e45c0ec14713e92395dbbfa238fe76a5281d7c3d880b78a48f399298",
+          "current_sha256": "3333f56dc6a0748e071cb3c5723129b3a8f0da895b72cf959bde12314d18b8a6"
+        }
+      ]
+    },
+    {
+      "scope": "frontend_final",
+      "source_files": 118,
+      "before_after_equal": true,
+      "later_changes": []
+    },
+    {
+      "scope": "installed",
+      "source_files": 670,
+      "before_after_equal": true,
+      "later_changes": []
+    },
+    {
+      "scope": "suite",
+      "source_files": 670,
+      "before_after_equal": true,
+      "later_changes": []
+    }
+  ],
+  "published_source_mapping": [
+    {
+      "commit": "2f1d678be4e24b787f443f123391f273a177c1ef",
+      "tree": "d2ef57414647fb2f71ad53447790242ad2adf02b"
+    },
+    {
+      "commit": "06f59e913484cf14d92c9811f2137e4e777db163",
+      "tree": "d2ef57414647fb2f71ad53447790242ad2adf02b"
+    }
+  ],
+  "scope_notes": [
+    "Root RESULTS Markdown was manually checked against the named official run JSON and original log totals.",
+    "Overlapping test groups are not added into a unique test total.",
+    "Schema 2 backward refusal is evidence, not a new native RC15 rollback acceptance.",
+    "Document pre-fix review observation has no preserved original traceback and is not represented as a raw log.",
+    "Suite ResourceWarning lines are preserved; subsequent owned process check does not imply no warnings occurred.",
+    "Browser/native acceptance is NOT_RUN, independent of successful unit tests and TypeScript/Vite build."
+  ],
+  "engineering_status": "PENDING_OWNER_EVIDENCE_NOT_ASSESSED",
+  "corrected_findings": [
+    {
+      "file": "companion/RESULTS.md",
+      "observation": "Originally said only companion/README.md changed after the full gate; source continuity also listed suite/README.md.",
+      "resolution": "Companion owner corrected the prose and regenerated the artifact manifest before this stable review."
+    }
+  ],
+  "file_hashes_at_review": {
+    "BUILD_CHECKS.json": "b18faf54ffb2e4c504ca97fe2bd8680bf8e78ca14b0421183f50d4de785cd372",
+    "SOURCE.json": "02e803b77688cee1c8104061be6b7551ec86968b576bf5fd7423e6684af6858e",
+    "RESULTS.md": "195564867a1a0e44bd108305f57057315e12a1c43eaabc29761e16eb6ea2f3a4",
+    "live/ARCHIVE.json": "9bd406c7cdb2ae21fa2d596227ecf1bd3af372a151ec0db5525980b77bb0197a",
+    "live/run.json": "111fdccdcd388ce55d927b345b722a30196b3a7622a9f3e7311dd963f430f3ce",
+    "live/prefix-comparisons.json": "39ba510456e33da012957e2b7af77eddc6caf1c9987d6f77d3002ed29f5a8be3",
+    "live/responses.json": "79fbbc01a1463908e0ea58410960d7f6af9c664f50462fbd0f02321403bcf543",
+    "live/evidence.tar.gz": "70cae2cf29d7d833c5c4ea1dde6825338b8d515c7e3ea857cd5f737b21bd820d",
+    "live/RESULTS.md": "367c4242e198a463523c12cfaaba18b34a5d53c5718e15d28381a4d5b04eb95a",
+    "live/source-continuity.json": "5775d07ce7f5b068faec0f28cfe20d5c4ea90d0c59a96444a838021ae97c3879",
+    "core/ARCHIVE.json": "737dbb3214c3ed70795a97004813616b9ac318cdbea9a74e504ad87324ee6470",
+    "core/skips.json": "9927581795c70abc75bca017cb91d7caef019037f4a757027f2c77f0fe8d018f",
+    "core/window-5500.json": "a6455d263c8df096493e07b415ec6cf8b9b5cbda62364ff7575099ff6ae21503",
+    "core/window-12000.json": "373950e616d7355bd7b70865ef50effb3840ff29447d6661adb1c6a162734f4f",
+    "core/final-run.json": "560dcadd9798810e64822796ad39bbfd69f7af6577e9b89aac7860515f40c515",
+    "core/evidence.tar.gz": "e1c47e1b5d3f255c6ee73d8c56171eef1bf57e33abd3aee7d704a39a00abfb88",
+    "core/RESULTS.md": "c8af10297b2b6ed4da68cdbd54be1d1df974b9ba3f6c0d25011bbb329096c613",
+    "companion/FRONTEND_RESULTS.json": "94a4d953e6418ed9c72e35e6dcf1f4d62e2d31b14094dcec030c24046a9262ce",
+    "companion/SOURCE_CONTINUITY.json": "2105a7d76cfe341bc67b54fed7c24e9bb82a4c2f5c82468209ec4cd39e3c367a",
+    "companion/FRONTEND_SOURCE_FILES.json": "67453fece514c2008dbc671498c88ce24e0908e747609930b07593d477bf1484",
+    "companion/companion-test-evidence.tar.gz": "cf70f0b15e1ffc5fbdf49a5d744ebdd118be8d9c712d384cea6ee17a8024fc78",
+    "companion/SUMMARY.json": "c91852b83092e5975a5ec7eaa1e8ad530054811f3522dd36637ef14ac274f39f",
+    "companion/ARCHIVE_INTEGRITY.json": "aea83a7a5adfd41ef7336ee170f029ab71adbeb9c66d3fd2d021935726023f01",
+    "companion/CUA_FALLBACK.json": "737c2f38633173b8cc032b0b0e4aa5e944d63008f5f9f06773ed518d0cdb0c67",
+    "companion/TARGETED_RESULTS.json": "89746cf64647e8d61b49d2ccd5a4ea31896ba955b32bc15cd56b1499af798729",
+    "companion/ARTIFACT_MANIFEST.json": "d6ce370f86cee5fc31696c924d98c189e9f03ebd2d5f43f9a396643d9831a570",
+    "companion/FULL_RESULTS.json": "fd2fe1584cdc362d691b36eab70ebbf61ca4c8b923de655cd51113dbb3f2e030",
+    "companion/UI_ORDER_FIX_REVIEW.json": "6ecd5a149aeb7da7de3e198bd94fd614e68399745c36462f7f00b2d01512f4ce",
+    "companion/PUBLICATION_TRANSFORMS.json": "fd29001da15a9a364ecc3015d8a26e8b64f9ab3dc357d64ff24d3fd4d97f6b62",
+    "companion/TARGETED_SOURCE_FILES.json": "59566713e83dfa734eadfb334f55f603ee9344aedf752a2950cf14d7174ef69e",
+    "companion/PAYLOAD_SHA256.json": "ce71f7bf7a88cedb681d721a3ca11a2998fc620761188c26df04422c0eb5f209",
+    "companion/FULL_SOURCE_FILES.json": "ff1ba29dd382727dff40a4e3b77190d9623633157fc89430ec5f5e2be76d46cd",
+    "companion/RESULTS.md": "931da3afa8b79051d2f681dcf050eef1a1685f1842f5fb3e78423164e9dfb262",
+    "browser/RESULTS.json": "09d5bf655e280c7930799152196839da65efc75bc88dff94ad069e897a156f25",
+    "runtime/ARCHIVE.json": "4204374dcdfc5ecf4c8d207ebfb2681fe6612e4394b1da724472bc5a0d518fea",
+    "runtime/SUMMARY.json": "6c383fd5c00876676acfcfcead8d608d8b0d1055d6a89ea3e56852142d4a6fd4",
+    "runtime/PAYLOAD_MANIFEST.json": "b7308b2b2ef92443f769ca30fa77865773603186e7bbbb3915bc88b304377320",
+    "runtime/ARTIFACT_MANIFEST.json": "c2eec22f7d85c51c8286f559976e57f60923673396f3aaef60fd08f707063fbe",
+    "runtime/evidence.tar.gz": "f03e391333335ee32d2fb844e23e65bb5a75ef54e3ef46cc406e6a05c365428c",
+    "runtime/RESULTS.md": "78d8bb7529b105988e49d5ca8427e0d7fc17a28a3cf59026d3b52dda6e7bd7ec"
+  },
+  "checks_passed": 315,
+  "checks_total": 315,
+  "issues": [],
+  "checks": [
+    {
+      "check": "json:BUILD_CHECKS.json",
+      "passed": true
+    },
+    {
+      "check": "json:SOURCE.json",
+      "passed": true
+    },
+    {
+      "check": "json:browser/RESULTS.json",
+      "passed": true
+    },
+    {
+      "check": "json:companion/ARCHIVE_INTEGRITY.json",
+      "passed": true
+    },
+    {
+      "check": "json:companion/ARTIFACT_MANIFEST.json",
+      "passed": true
+    },
+    {
+      "check": "json:companion/CUA_FALLBACK.json",
+      "passed": true
+    },
+    {
+      "check": "json:companion/FRONTEND_RESULTS.json",
+      "passed": true
+    },
+    {
+      "check": "json:companion/FRONTEND_SOURCE_FILES.json",
+      "passed": true
+    },
+    {
+      "check": "json:companion/FULL_RESULTS.json",
+      "passed": true
+    },
+    {
+      "check": "json:companion/FULL_SOURCE_FILES.json",
+      "passed": true
+    },
+    {
+      "check": "json:companion/PAYLOAD_SHA256.json",
+      "passed": true
+    },
+    {
+      "check": "json:companion/PUBLICATION_TRANSFORMS.json",
+      "passed": true
+    },
+    {
+      "check": "json:companion/SOURCE_CONTINUITY.json",
+      "passed": true
+    },
+    {
+      "check": "json:companion/SUMMARY.json",
+      "passed": true
+    },
+    {
+      "check": "json:companion/TARGETED_RESULTS.json",
+      "passed": true
+    },
+    {
+      "check": "json:companion/TARGETED_SOURCE_FILES.json",
+      "passed": true
+    },
+    {
+      "check": "json:companion/UI_ORDER_FIX_REVIEW.json",
+      "passed": true
+    },
+    {
+      "check": "json:core/ARCHIVE.json",
+      "passed": true
+    },
+    {
+      "check": "json:core/final-run.json",
+      "passed": true
+    },
+    {
+      "check": "json:core/skips.json",
+      "passed": true
+    },
+    {
+      "check": "json:core/window-12000.json",
+      "passed": true
+    },
+    {
+      "check": "json:core/window-5500.json",
+      "passed": true
+    },
+    {
+      "check": "json:live/ARCHIVE.json",
+      "passed": true
+    },
+    {
+      "check": "json:live/prefix-comparisons.json",
+      "passed": true
+    },
+    {
+      "check": "json:live/responses.json",
+      "passed": true
+    },
+    {
+      "check": "json:live/run.json",
+      "passed": true
+    },
+    {
+      "check": "json:live/source-continuity.json",
+      "passed": true
+    },
+    {
+      "check": "json:runtime/ARCHIVE.json",
+      "passed": true
+    },
+    {
+      "check": "json:runtime/ARTIFACT_MANIFEST.json",
+      "passed": true
+    },
+    {
+      "check": "json:runtime/PAYLOAD_MANIFEST.json",
+      "passed": true
+    },
+    {
+      "check": "json:runtime/SUMMARY.json",
+      "passed": true
+    },
+    {
+      "check": "core:archive_sha256",
+      "passed": true
+    },
+    {
+      "check": "core:regular_relative_members",
+      "passed": true
+    },
+    {
+      "check": "core:unique_members",
+      "passed": true
+    },
+    {
+      "check": "core:member_names",
+      "passed": true
+    },
+    {
+      "check": "core:member_count",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core/context-targets-r1.log",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core/context-targets-r2.log",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core/initial-targets.log",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core/measure_window.py",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core/owned-source-hashes.json",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core/pet-history-order-review.json",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core/request-history-r1.log",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core/request-history-r2.log",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core/request-history-r3.log",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core/request-history-r4.log",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core/request-history-r5.log",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core/request-history-r6.log",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core/request-history-r7.log",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core/window-after-headroom-12000.json",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core/window-after-headroom-5500.json",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core/window-before-headroom.json",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core/window-final-12000.json",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core/window-final-5500.json",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core-full-r1/core-full.log",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core-full-r1/run.json",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core-full-r2/core-full.log",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core-full-r2/run.json",
+      "passed": true
+    },
+    {
+      "check": "core:payload:core-full-r2/skip-classification.json",
+      "passed": true
+    },
+    {
+      "check": "live:archive_sha256",
+      "passed": true
+    },
+    {
+      "check": "live:regular_relative_members",
+      "passed": true
+    },
+    {
+      "check": "live:unique_members",
+      "passed": true
+    },
+    {
+      "check": "live:member_names",
+      "passed": true
+    },
+    {
+      "check": "live:member_count",
+      "passed": true
+    },
+    {
+      "check": "live:payload:live-luna-r1/RESULTS.json",
+      "passed": true
+    },
+    {
+      "check": "live:payload:live-luna-r1/fixtures.json",
+      "passed": true
+    },
+    {
+      "check": "live:payload:live-luna-r1/prefix-comparisons.json",
+      "passed": true
+    },
+    {
+      "check": "live:payload:live-luna-r1/prompts.json",
+      "passed": true
+    },
+    {
+      "check": "live:payload:live-luna-r1/request-01.json",
+      "passed": true
+    },
+    {
+      "check": "live:payload:live-luna-r1/request-02.json",
+      "passed": true
+    },
+    {
+      "check": "live:payload:live-luna-r1/request-03.json",
+      "passed": true
+    },
+    {
+      "check": "live:payload:live-luna-r1/request-04.json",
+      "passed": true
+    },
+    {
+      "check": "live:payload:live-luna-r1/request-05.json",
+      "passed": true
+    },
+    {
+      "check": "live:payload:live-luna-r1/responses.json",
+      "passed": true
+    },
+    {
+      "check": "live:payload:live-luna-r1/source-hashes.json",
+      "passed": true
+    },
+    {
+      "check": "live:payload:live-luna-r1/task-first.json",
+      "passed": true
+    },
+    {
+      "check": "live:payload:live-luna-r1/task-next.json",
+      "passed": true
+    },
+    {
+      "check": "live:payload:live-luna-r1/workspace/first.txt",
+      "passed": true
+    },
+    {
+      "check": "live:payload:live-luna-r1/workspace/second.txt",
+      "passed": true
+    },
+    {
+      "check": "live:payload:live-luna-r1/workspace/third.txt",
+      "passed": true
+    },
+    {
+      "check": "live:payload:live-luna-r1.log",
+      "passed": true
+    },
+    {
+      "check": "live:payload:live-review.json",
+      "passed": true
+    },
+    {
+      "check": "live:payload:live-source-continuity.json",
+      "passed": true
+    },
+    {
+      "check": "live:payload:live_runner.py",
+      "passed": true
+    },
+    {
+      "check": "runtime:archive_sha256",
+      "passed": true
+    },
+    {
+      "check": "runtime:regular_relative_members",
+      "passed": true
+    },
+    {
+      "check": "runtime:unique_members",
+      "passed": true
+    },
+    {
+      "check": "runtime:member_names",
+      "passed": true
+    },
+    {
+      "check": "runtime:member_count",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:installed-r1/build.log",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:installed-r1/cli-version.log",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:installed-r1/dependencies.log",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:installed-r1/import-proof.json",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:installed-r1/install.log",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:installed-r1/pip-check.log",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:installed-r1/run.json",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:installed-r1/source-after.json",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:installed-r1/source-before.json",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:installed-r1/test-summary.json",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:installed-r1/tests.log",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:installed-r1/venv.log",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:service/baseline-regression.log",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:service/before-capacity.log",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:service/document-archive-fix-r1.log",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:service/document-review-observation.json",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:service/final-targeted-r1.log",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:service/final-targeted-r2.log",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:service/history-regression-r1.log",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:service/http-history-r1.log",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:service/schema2-old-reader-refusal.log",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:service/service-review.json",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:suite-r1/owned-process-check.json",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:suite-r1/run.json",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:suite-r1/source-after.json",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:suite-r1/source-before.json",
+      "passed": true
+    },
+    {
+      "check": "runtime:payload:suite-r1/suite-full.log",
+      "passed": true
+    },
+    {
+      "check": "runtime:independent_deterministic_rebuild",
+      "passed": true
+    },
+    {
+      "check": "companion:archive_sha256",
+      "passed": true
+    },
+    {
+      "check": "companion:regular_relative_members",
+      "passed": true
+    },
+    {
+      "check": "companion:unique_members",
+      "passed": true
+    },
+    {
+      "check": "companion:member_names",
+      "passed": true
+    },
+    {
+      "check": "companion:member_count",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion-full-r2/run.json",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion-full-r2/skipped.json",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion-full-r2/source-after.json",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion-full-r2/source-before.json",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion-full-r2/unittest.log",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion-ui-final-r2/npm-build.log",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion-ui-final-r2/npm-test.log",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion-ui-final-r2/run.json",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion-ui-final-r2/source-after.json",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion-ui-final-r2/source-before.json",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/TEST_RESULTS.json",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/TEST_RESULTS_WITH_UI.json",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/archive-and-continuation.log",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/archive-regression-2.log",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/archive-regression.log",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/baseline-archive-regression.log",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/baseline-final-regression.log",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/companion-final-targeted.log",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/cua-vite.log",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/final-targeted.log",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/full-suite.log",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/history-api-final.log",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/history-command-targeted.log",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/history-typescript.log",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/initial-regression.log",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/service-exception-probe.log",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/source-files-with-ui.json",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/source-files.json",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/ui-history-r1.log",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/ui-history-r1/artifacts/.last-run.json",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/companion/ui-history-r1/browser-tests.json",
+      "passed": true
+    },
+    {
+      "check": "companion:payload:raw/core/pet-history-order-review.json",
+      "passed": true
+    },
+    {
+      "check": "companion:independent_deterministic_rebuild",
+      "passed": true
+    },
+    {
+      "check": "runtime:artifact:ARCHIVE.json",
+      "passed": true
+    },
+    {
+      "check": "runtime:artifact:PAYLOAD_MANIFEST.json",
+      "passed": true
+    },
+    {
+      "check": "runtime:artifact:RESULTS.md",
+      "passed": true
+    },
+    {
+      "check": "runtime:artifact:SUMMARY.json",
+      "passed": true
+    },
+    {
+      "check": "runtime:artifact:evidence.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "runtime:manifest_coverage",
+      "passed": true
+    },
+    {
+      "check": "companion:artifact:ARCHIVE_INTEGRITY.json",
+      "passed": true
+    },
+    {
+      "check": "companion:artifact:CUA_FALLBACK.json",
+      "passed": true
+    },
+    {
+      "check": "companion:artifact:FRONTEND_RESULTS.json",
+      "passed": true
+    },
+    {
+      "check": "companion:artifact:FRONTEND_SOURCE_FILES.json",
+      "passed": true
+    },
+    {
+      "check": "companion:artifact:FULL_RESULTS.json",
+      "passed": true
+    },
+    {
+      "check": "companion:artifact:FULL_SOURCE_FILES.json",
+      "passed": true
+    },
+    {
+      "check": "companion:artifact:PAYLOAD_SHA256.json",
+      "passed": true
+    },
+    {
+      "check": "companion:artifact:PUBLICATION_TRANSFORMS.json",
+      "passed": true
+    },
+    {
+      "check": "companion:artifact:RESULTS.md",
+      "passed": true
+    },
+    {
+      "check": "companion:artifact:SOURCE_CONTINUITY.json",
+      "passed": true
+    },
+    {
+      "check": "companion:artifact:SUMMARY.json",
+      "passed": true
+    },
+    {
+      "check": "companion:artifact:TARGETED_RESULTS.json",
+      "passed": true
+    },
+    {
+      "check": "companion:artifact:TARGETED_SOURCE_FILES.json",
+      "passed": true
+    },
+    {
+      "check": "companion:artifact:UI_ORDER_FIX_REVIEW.json",
+      "passed": true
+    },
+    {
+      "check": "companion:artifact:companion-test-evidence.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "companion:manifest_coverage",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/TEST_RESULTS.json",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/TEST_RESULTS.json",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/TEST_RESULTS_WITH_UI.json",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/TEST_RESULTS_WITH_UI.json",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/archive-and-continuation.log",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/archive-and-continuation.log",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/archive-regression-2.log",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/archive-regression-2.log",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/archive-regression.log",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/archive-regression.log",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/baseline-archive-regression.log",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/baseline-archive-regression.log",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/baseline-final-regression.log",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/baseline-final-regression.log",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/companion-final-targeted.log",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/companion-final-targeted.log",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/final-targeted.log",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/final-targeted.log",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/full-suite.log",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/full-suite.log",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/history-api-final.log",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/history-api-final.log",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/history-command-targeted.log",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/history-command-targeted.log",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/history-typescript.log",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/history-typescript.log",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/initial-regression.log",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/initial-regression.log",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/service-exception-probe.log",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/service-exception-probe.log",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/cua-vite.log",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/cua-vite.log",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/source-files-with-ui.json",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/source-files-with-ui.json",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/source-files.json",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/source-files.json",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/ui-history-r1.log",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/ui-history-r1.log",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/ui-history-r1/browser-tests.json",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/ui-history-r1/browser-tests.json",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion/ui-history-r1/artifacts/.last-run.json",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion/ui-history-r1/artifacts/.last-run.json",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion-full-r2/run.json",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion-full-r2/run.json",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion-full-r2/skipped.json",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion-full-r2/skipped.json",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion-full-r2/source-before.json",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion-full-r2/source-before.json",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion-full-r2/source-after.json",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion-full-r2/source-after.json",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion-full-r2/unittest.log",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion-full-r2/unittest.log",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion-ui-final-r2/run.json",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion-ui-final-r2/run.json",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion-ui-final-r2/source-before.json",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion-ui-final-r2/source-before.json",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion-ui-final-r2/source-after.json",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion-ui-final-r2/source-after.json",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion-ui-final-r2/npm-test.log",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion-ui-final-r2/npm-test.log",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/companion-ui-final-r2/npm-build.log",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/companion-ui-final-r2/npm-build.log",
+      "passed": true
+    },
+    {
+      "check": "companion:published_transform:raw/core/pet-history-order-review.json",
+      "passed": true
+    },
+    {
+      "check": "companion:original_transform:raw/core/pet-history-order-review.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:RESULTS.md:../../../../development/PERSISTENT_CONTEXT_20261117.md",
+      "passed": true
+    },
+    {
+      "check": "relative_link:RESULTS.md:core/RESULTS.md",
+      "passed": true
+    },
+    {
+      "check": "relative_link:RESULTS.md:companion/RESULTS.md",
+      "passed": true
+    },
+    {
+      "check": "relative_link:RESULTS.md:runtime/RESULTS.md",
+      "passed": true
+    },
+    {
+      "check": "relative_link:RESULTS.md:runtime/RESULTS.md",
+      "passed": true
+    },
+    {
+      "check": "relative_link:RESULTS.md:companion/RESULTS.md",
+      "passed": true
+    },
+    {
+      "check": "relative_link:RESULTS.md:live/RESULTS.md",
+      "passed": true
+    },
+    {
+      "check": "relative_link:RESULTS.md:core/RESULTS.md",
+      "passed": true
+    },
+    {
+      "check": "relative_link:RESULTS.md:browser/RESULTS.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:RESULTS.md:../../../../../desktop/docs/evidence/audit-20261117-desktop/native-delivery-20261117/RESULTS.md",
+      "passed": true
+    },
+    {
+      "check": "relative_link:RESULTS.md:SOURCE.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:RESULTS.md:BUILD_CHECKS.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:companion/RESULTS.md:TARGETED_RESULTS.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:companion/RESULTS.md:TARGETED_SOURCE_FILES.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:companion/RESULTS.md:FULL_RESULTS.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:companion/RESULTS.md:FULL_SOURCE_FILES.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:companion/RESULTS.md:FRONTEND_RESULTS.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:companion/RESULTS.md:FRONTEND_SOURCE_FILES.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:companion/RESULTS.md:SOURCE_CONTINUITY.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:companion/RESULTS.md:UI_ORDER_FIX_REVIEW.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:companion/RESULTS.md:CUA_FALLBACK.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:companion/RESULTS.md:companion-test-evidence.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "relative_link:companion/RESULTS.md:PAYLOAD_SHA256.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:companion/RESULTS.md:PUBLICATION_TRANSFORMS.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:companion/RESULTS.md:SUMMARY.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:core/RESULTS.md:final-run.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:core/RESULTS.md:skips.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:core/RESULTS.md:window-5500.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:core/RESULTS.md:window-12000.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:core/RESULTS.md:evidence.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "relative_link:core/RESULTS.md:ARCHIVE.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:live/RESULTS.md:run.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:live/RESULTS.md:source-continuity.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:live/RESULTS.md:responses.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:live/RESULTS.md:prefix-comparisons.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:live/RESULTS.md:evidence.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "relative_link:live/RESULTS.md:ARCHIVE.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:runtime/RESULTS.md:../core/final-run.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:runtime/RESULTS.md:SUMMARY.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:runtime/RESULTS.md:evidence.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "relative_link:runtime/RESULTS.md:PAYLOAD_MANIFEST.json",
+      "passed": true
+    },
+    {
+      "check": "relative_link:runtime/RESULTS.md:ARCHIVE.json",
+      "passed": true
+    },
+    {
+      "check": "official_unittest_totals:core_final",
+      "passed": true,
+      "details": {
+        "archive": "core",
+        "payload": "core-full-r2/core-full.log",
+        "tests": 1674,
+        "passed": 1575,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 99,
+        "seconds": 185.185
+      }
+    },
+    {
+      "check": "official_unittest_totals:companion_targeted",
+      "passed": true,
+      "details": {
+        "archive": "companion",
+        "payload": "raw/companion/companion-final-targeted.log",
+        "tests": 101,
+        "passed": 101,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 4.039
+      }
+    },
+    {
+      "check": "official_unittest_totals:companion_final",
+      "passed": true,
+      "details": {
+        "archive": "companion",
+        "payload": "raw/companion-full-r2/unittest.log",
+        "tests": 744,
+        "passed": 711,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 33,
+        "seconds": 34.718
+      }
+    },
+    {
+      "check": "official_unittest_totals:companion_first_failure",
+      "passed": true,
+      "details": {
+        "archive": "companion",
+        "payload": "raw/companion/full-suite.log",
+        "tests": 736,
+        "passed": 663,
+        "failed": 9,
+        "errors": 31,
+        "skipped": 33,
+        "seconds": 37.374
+      }
+    },
+    {
+      "check": "official_unittest_totals:companion_baseline",
+      "passed": true,
+      "details": {
+        "archive": "companion",
+        "payload": "raw/companion/baseline-final-regression.log",
+        "tests": 10,
+        "passed": 4,
+        "failed": 6,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 0.574
+      }
+    },
+    {
+      "check": "official_unittest_totals:service_targeted",
+      "passed": true,
+      "details": {
+        "archive": "runtime",
+        "payload": "service/final-targeted-r2.log",
+        "tests": 96,
+        "passed": 96,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 5.069
+      }
+    },
+    {
+      "check": "official_unittest_totals:document_followup",
+      "passed": true,
+      "details": {
+        "archive": "runtime",
+        "payload": "service/document-archive-fix-r1.log",
+        "tests": 11,
+        "passed": 11,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 0.876
+      }
+    },
+    {
+      "check": "official_unittest_totals:installed_lifecycle",
+      "passed": true,
+      "details": {
+        "archive": "runtime",
+        "payload": "installed-r1/tests.log",
+        "tests": 12,
+        "passed": 12,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 5.711
+      }
+    },
+    {
+      "check": "official_unittest_totals:suite_final",
+      "passed": true,
+      "details": {
+        "archive": "runtime",
+        "payload": "suite-r1/suite-full.log",
+        "tests": 123,
+        "passed": 122,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 1,
+        "seconds": 52.728
+      }
+    },
+    {
+      "check": "root:core_counts",
+      "passed": true
+    },
+    {
+      "check": "root:companion_counts",
+      "passed": true
+    },
+    {
+      "check": "root:suite_counts",
+      "passed": true
+    },
+    {
+      "check": "root:installed_counts",
+      "passed": true
+    },
+    {
+      "check": "root:live_counts",
+      "passed": true
+    },
+    {
+      "check": "root:live_scope",
+      "passed": true
+    },
+    {
+      "check": "root:vitest_counts",
+      "passed": true
+    },
+    {
+      "check": "root:ui_not_run",
+      "passed": true
+    },
+    {
+      "check": "root:window:12000",
+      "passed": true
+    },
+    {
+      "check": "root:window:5500",
+      "passed": true
+    },
+    {
+      "check": "source_snapshot:core_final",
+      "passed": true
+    },
+    {
+      "check": "tested_source_implementation_continuity:core_final",
+      "passed": true,
+      "details": []
+    },
+    {
+      "check": "source_snapshot:companion_final",
+      "passed": true
+    },
+    {
+      "check": "tested_source_implementation_continuity:companion_final",
+      "passed": true,
+      "details": [
+        {
+          "file": "companion/README.md",
+          "tested_sha256": "41810ea417bcee5e08a9bc442e5732eb90fe1259d7f0a49ee9c6b2c25137f1db",
+          "current_sha256": "f43036489bd917bb59307861d657156f08e2d33c62f84ba43f6d8a7b09c721c2"
+        },
+        {
+          "file": "suite/README.md",
+          "tested_sha256": "dd1a0d49e45c0ec14713e92395dbbfa238fe76a5281d7c3d880b78a48f399298",
+          "current_sha256": "3333f56dc6a0748e071cb3c5723129b3a8f0da895b72cf959bde12314d18b8a6"
+        }
+      ]
+    },
+    {
+      "check": "source_snapshot:frontend_final",
+      "passed": true
+    },
+    {
+      "check": "tested_source_implementation_continuity:frontend_final",
+      "passed": true,
+      "details": []
+    },
+    {
+      "check": "source_snapshot:installed",
+      "passed": true
+    },
+    {
+      "check": "tested_source_implementation_continuity:installed",
+      "passed": true,
+      "details": []
+    },
+    {
+      "check": "source_snapshot:suite",
+      "passed": true
+    },
+    {
+      "check": "tested_source_implementation_continuity:suite",
+      "passed": true,
+      "details": []
+    },
+    {
+      "check": "companion:documented_post_run_changes",
+      "passed": true
+    },
+    {
+      "check": "published_source_tree_mapping",
+      "passed": true
+    },
+    {
+      "check": "evidence_files_stable_during_review",
+      "passed": true
+    }
+  ]
+}

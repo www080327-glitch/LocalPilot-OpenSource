@@ -1,5 +1,7 @@
 # Desktop / Companion 用户层审计 — 2026-11-17
 
+Current-source continuation: [RC15 / Core b32 / Companion b9 persistent context](PERSISTENT_CONTEXT_20261117.md). The original audit items and historical runs below keep their own source identities.
+
 本轮在 `b420b97` 之后审查 Desktop 的聊天提交、首次设置、产品设置、桌宠事件、素材、原生窗口和动画路径，以及 Companion Swift 推理卡片、通知和菜单栏展示。修改集中在用户实际会遇到的行为与这些路径的维护成本。未改个人角色图集、生成的产品美术、日常配置或旧验收证据。
 
 独立计数为 **8 个 bug、5 个维护项、4 个一步操作改进、3 个过度防御清理，共 20 项**。每项仅归一个类别。OpenAI 一键配置与长任务预算是跨组件功能，下文记录 Desktop 接线，但不在这 20 项之外重复计数整个功能。

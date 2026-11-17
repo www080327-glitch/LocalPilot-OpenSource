@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "archive": "companion-test-evidence.tar.gz",
+  "archive_sha256": "cf70f0b15e1ffc5fbdf49a5d744ebdd118be8d9c712d384cea6ee17a8024fc78",
+  "payload_count": 32,
+  "all_payload_bytes_and_hashes_verified": true,
+  "unexpected_archive_members": [],
+  "deterministic_rebuild_identical": true,
+  "tar_format": "PAX",
+  "tar_mtime": 0,
+  "tar_uid": 0,
+  "tar_gid": 0,
+  "tar_uname": "",
+  "tar_gname": "",
+  "file_mode": "0644",
+  "gzip_mtime": 0,
+  "gzip_original_filename": "",
+  "gzip_compresslevel": 9,
+  "exclusions": [
+    "private databases",
+    "environment dumps",
+    "credentials",
+    "node_modules",
+    "model data",
+    "unverified manual HTML fixtures",
+    "Playwright error-context Markdown (browser-test JSON/log retain all launch failures)",
+    "runner Python scripts (exact commands are in run JSON)"
+  ]
+}

@@ -1,0 +1,285 @@
+{
+  "source": {
+    "repository": "www080327-glitch/LocalPilot-OpenSource",
+    "branch": "codex/native-polish-final-20261116",
+    "parent": "e278f0677c8eed4c0d49b6b08a672e15fe56495d",
+    "local_commit": "2f1d678be4e24b787f443f123391f273a177c1ef",
+    "remote_commit": "06f59e913484cf14d92c9811f2137e4e777db163",
+    "tree": "d2ef57414647fb2f71ad53447790242ad2adf02b",
+    "files": 44
+  },
+  "versions": {
+    "desktop": "5.0.1-rc.15",
+    "core": "5.0.0b32",
+    "suite": "0.2.0b32",
+    "companion": "0.5.7b9",
+    "channels": "0.1.0a4"
+  },
+  "changed_source_files": [
+    {
+      "path": "MODULE_RELEASE.json",
+      "git_blob": "5f1ab3303817d3a78109dae8fffc06a410fd7776",
+      "bytes": 790,
+      "sha256": "c1572ac2ed7a37d82b3d60d547d5e5a248ac5d5a746996cf931f71543c7d45c9"
+    },
+    {
+      "path": "agent/backends.py",
+      "git_blob": "0e9f7871f309fcd4623f58f43bb2210b63e2c9f5",
+      "bytes": 3823,
+      "sha256": "7b9f83594ab498bdc2e5843cb48acbcc6e156ecd4d59e1781e45caeeb90a64bc"
+    },
+    {
+      "path": "agent/context_v5.py",
+      "git_blob": "194012db119292f359e562057bedc66bba45f0d9",
+      "bytes": 9100,
+      "sha256": "4e2c49bcef256d15d666da960a0d712feae6b0051d9f5eb65a0e8679b4fbde76"
+    },
+    {
+      "path": "agent/hybrid.py",
+      "git_blob": "5bded9df5950463aee97ddfc80f34dc075b1db35",
+      "bytes": 43465,
+      "sha256": "a5c07820fbf854c7690d6f2b71e0d0f7fa47efa6ab6234a3bb328c3504d33c45"
+    },
+    {
+      "path": "agent/loop.py",
+      "git_blob": "4da7e36c900f0075e053817980d1d87c43f82b59",
+      "bytes": 10373,
+      "sha256": "4e2f9e24abb1b8aa2b3b704810b37e72446a1cfb942944c9fce00a2f28e965eb"
+    },
+    {
+      "path": "agent/openai_responses.py",
+      "git_blob": "72d8458a59aa717d220b45d2a7788cb22edcc535",
+      "bytes": 11767,
+      "sha256": "b586dfa4ddd13bca70c7628c167b575ef4adc6ce4ec9ce0d91033aa362bda0a0"
+    },
+    {
+      "path": "agent/persistence.py",
+      "git_blob": "abe0da0ad5c19af7e60524836d16066caa55276b",
+      "bytes": 31709,
+      "sha256": "b37366404cd2389557f0120c454e5345bc67dfc053c32eba12d25753667d5178"
+    },
+    {
+      "path": "agent/session.py",
+      "git_blob": "210e85f2ad7563f18dccbc206526cdd006537f1d",
+      "bytes": 78697,
+      "sha256": "5a2f51e25edd8e60dbfb392d2f5bc57f0f22d4e32455536c0553da40f7cd1b07"
+    },
+    {
+      "path": "agent/session_models.py",
+      "git_blob": "b82d8e97ac63512f9ff43a8b1eec810ad05b3502",
+      "bytes": 31915,
+      "sha256": "7731f0846c6e6debc79ccc2fb9a1880278b36880be29a9ee90a9725ead3dad2b"
+    },
+    {
+      "path": "companion/MODULE_RELEASE.json",
+      "git_blob": "10b3eb34135784bb4c777567458be59f0e7f2b78",
+      "bytes": 678,
+      "sha256": "08d189184577935ee6d14927ad147dbfd69c7755753bdb96bf9ec42828dbf6bd"
+    },
+    {
+      "path": "companion/__init__.py",
+      "git_blob": "4d7894aec63006daf28d727204f35b7244545be1",
+      "bytes": 102,
+      "sha256": "d9edcaee2a733404bbcaa7095faed49625576acf8b25828f00aa511604811284"
+    },
+    {
+      "path": "companion/memory/store.py",
+      "git_blob": "fde0d5950eecdf50a1a2d9bdd47ef724df006cdd",
+      "bytes": 14650,
+      "sha256": "789bab85d9076bc8a16d8aadeab4d384501e87d80b931c55fdc3bec4472dd821"
+    },
+    {
+      "path": "companion/pyproject.toml",
+      "git_blob": "14ab1c7aac3612bc5b89d8d5835e521883922c78",
+      "bytes": 1220,
+      "sha256": "0075db335035d27cd397246aee3c2394c74806c8c25e2084e7833387cc468626"
+    },
+    {
+      "path": "companion/runtime/commands.py",
+      "git_blob": "95acde65e508bc62cdde652684ba671de35b7300",
+      "bytes": 25763,
+      "sha256": "c403c115f8a3fbd416526969384877f630113dd23138726bbd4d8d19faf11247"
+    },
+    {
+      "path": "companion/runtime/dialogue.py",
+      "git_blob": "dee0bab1cc38ab1a34e29db86e2114903272e269",
+      "bytes": 26316,
+      "sha256": "48046ccdec43f711f2dbd800b6d93b29f10c6f0156ab3e38ef64be8cc31b3ed4"
+    },
+    {
+      "path": "companion/runtime/pet.py",
+      "git_blob": "9a818f69d00a4939598214eb6eb82957fa19a32a",
+      "bytes": 4679,
+      "sha256": "ff3ff1f1f9f03c9ace72eb1739defd4f1712c605cb1d8c435a3041757614af9b"
+    },
+    {
+      "path": "companion/runtime/routing.py",
+      "git_blob": "0e9dadf43c356f905ff9d342a621235e5643e201",
+      "bytes": 3465,
+      "sha256": "9408e5d744c1022841fac3ee42bdff0c0dc548586b19994aebbe8fbab473524a"
+    },
+    {
+      "path": "companion/tests/test_chat_history_archive.py",
+      "git_blob": "e7b6fd8e2c2d26e3dff836d1001821cc5c2e3026",
+      "bytes": 9951,
+      "sha256": "17f17240a06964d165efb1b5ee738829603632d8c8db70e7b171ac7450ebb0a3"
+    },
+    {
+      "path": "companion/tests/test_pet_history.py",
+      "git_blob": "92cdc2f5c784e23a6f53c5ca5762f2ec9d34bf7a",
+      "bytes": 5838,
+      "sha256": "2a4d295f36973280dfd53c670a8fd0a3fec6f717a4e5371270be5462127c6a35"
+    },
+    {
+      "path": "desktop/package-lock.json",
+      "git_blob": "46fe2931a61cbbf98d4527149b96f1a33d2421d9",
+      "bytes": 137764,
+      "sha256": "0c39f037f2f21f5164607c94cb4318c0e4407fb2fe3bb18be6531498fd5e8684"
+    },
+    {
+      "path": "desktop/package.json",
+      "git_blob": "7f2c7bdcdf7df830b193dfcd95cd27e0b1fee9ea",
+      "bytes": 1045,
+      "sha256": "b3dee39638e3ee379b2e6fce758b80ddb5c9806751e48780696de560921358d0"
+    },
+    {
+      "path": "desktop/src-tauri/Cargo.lock",
+      "git_blob": "9b60dc771e62440dec0f309f349425aa598296bb",
+      "bytes": 133057,
+      "sha256": "b264d5565eb1732991863274f0efafa6758c413e7dc34f0e69cb382ca6901628"
+    },
+    {
+      "path": "desktop/src-tauri/Cargo.toml",
+      "git_blob": "7a97b9b8e9a5c23a07fb3dd1b61c1249408cb6b5",
+      "bytes": 1596,
+      "sha256": "21c6a4c70f9b06ea277154abb1b336433a50b5b16ba71d785635838e7cb16dfa"
+    },
+    {
+      "path": "desktop/src-tauri/src/pet_native.rs",
+      "git_blob": "30d243f8c785644179736ef3d98f4e41f0fc0a35",
+      "bytes": 41889,
+      "sha256": "9b354deaaf30be02f3d518eea2250017f6af47b4eec089eeb2c299a3ba6f8c93"
+    },
+    {
+      "path": "desktop/src-tauri/tauri.conf.json",
+      "git_blob": "b41d23fe2de2f089ce56d188760d7e11cba9d543",
+      "bytes": 1567,
+      "sha256": "98fb7168498ae61fbf40a29f2a32bbedca41d25ec89a27108938f6b6a26fed54"
+    },
+    {
+      "path": "desktop/src/Pet.tsx",
+      "git_blob": "253aae16173e81cb0050c0cde77f412c2eaa9b3d",
+      "bytes": 44968,
+      "sha256": "d300f4a2777f677a517fbedf1f29f1895124caa8dde7817e36fd1214868d95f7"
+    },
+    {
+      "path": "desktop/src/pet/pet.css",
+      "git_blob": "fffb754294f9268307f6952ce411ddc448e94731",
+      "bytes": 11404,
+      "sha256": "42abb3f1a11bff09f2cd224e47a0ea59febbfbb6a0a59b5e66a05cae66bc6eb7"
+    },
+    {
+      "path": "desktop/tests/ui/audit-bridge.ts",
+      "git_blob": "273e9d3450bad7b0fe666d0f7e84841fd518b5c0",
+      "bytes": 9728,
+      "sha256": "22634f4c558f17aa314d58da43d851e12713f17da773dd144b160749a6c28e64"
+    },
+    {
+      "path": "desktop/tests/ui/pet-history.spec.ts",
+      "git_blob": "c9ae13eb3e620e067306704d3ae95c92e96a1cd7",
+      "bytes": 11087,
+      "sha256": "21e141281e730d5bec3346ca729f19c868f15bdee8b76f610028fed214a03650"
+    },
+    {
+      "path": "localpilot_api/service.py",
+      "git_blob": "e033481f2d2a9768b931a07935ce591d1ece461b",
+      "bytes": 67192,
+      "sha256": "70346a654c85d81571371d3a22623f185c022d41dbe732caf7a9752d5b6415ad"
+    },
+    {
+      "path": "localpilot_service/__init__.py",
+      "git_blob": "48b06e9035ea1d13d10fee195ee02e29e826ae37",
+      "bytes": 87,
+      "sha256": "b107edb2e1275d0a6f096325eab49678e7c16f54bc8188b96f0f4eec549bb66c"
+    },
+    {
+      "path": "localpilot_service/desktop_sessions.py",
+      "git_blob": "ed767a811cd90964a74fa6b9c171bd16ecccf126",
+      "bytes": 21151,
+      "sha256": "9a245b19dd8255c6ecf780b1def977a5da98a03bd6f593b187122e6654ad6033"
+    },
+    {
+      "path": "localpilot_service/documents/api.py",
+      "git_blob": "33ca6a7053267debaf50030a32e33e7e2e4ae4f2",
+      "bytes": 6559,
+      "sha256": "f5d45c360f35a02b47ad9590ba661c5cb262a564fe312b093ad744bdea5b969c"
+    },
+    {
+      "path": "localpilot_service/resource_control.py",
+      "git_blob": "e4d4b9a8bc96513e8c0b540df550a2b595e13e36",
+      "bytes": 8041,
+      "sha256": "02d3d78465adda4a6af4abbadcd392cd47d8d155d3b7af2579f1f874108cc22d"
+    },
+    {
+      "path": "localpilot_service/server.py",
+      "git_blob": "06f1096d60291155700c6fbe4db597a192a4996c",
+      "bytes": 29566,
+      "sha256": "d2467bde3c410e448152af40c88671837e617ecd775d786a9b12c5f93d39ca68"
+    },
+    {
+      "path": "pyproject.toml",
+      "git_blob": "b81d5ba93ca4b626372f65fcc3a4e34f1656bff0",
+      "bytes": 2570,
+      "sha256": "6beb396537c70a281e47c6dad0832c46dac7d33fe01712c7043b6cc5971bcfb5"
+    },
+    {
+      "path": "tests/test_agent_service.py",
+      "git_blob": "9c2108616d3b5bf63328618aafa790d0c63c696a",
+      "bytes": 19878,
+      "sha256": "3b93cfad271356dee22101bde1d992b82efb6b39d5b2ee45c54a9d6def42d680"
+    },
+    {
+      "path": "tests/test_context_v5.py",
+      "git_blob": "309623b3315cbe762ebd95ba003392c9db381242",
+      "bytes": 9066,
+      "sha256": "ed02047cc64b396e8cba24c558a0cf35be45db7288eacfe90d2eb050a01fdf05"
+    },
+    {
+      "path": "tests/test_desktop_product.py",
+      "git_blob": "47b99f062ddffd69730d7c4d429f8b0e7daf6eac",
+      "bytes": 15477,
+      "sha256": "39b949bc5b1d8995f867c6d5b230094320fd30971aecc4a901455e65d9262dfb"
+    },
+    {
+      "path": "tests/test_document_http.py",
+      "git_blob": "75fcd4d9c44bd34065460ebc0725fd3f717b369d",
+      "bytes": 8098,
+      "sha256": "25fb82c4182fc7cfd522669c05cbc5610d012b778106d6221a375b5508b5ec06"
+    },
+    {
+      "path": "tests/test_openai_responses.py",
+      "git_blob": "6c93141856117b9de03db115f3a339b4bb884313",
+      "bytes": 17414,
+      "sha256": "671a450b49d152975ba7eba3407acc8ad9c13920931f5d5757c8f66707eaaabf"
+    },
+    {
+      "path": "tests/test_persistent_runtime.py",
+      "git_blob": "dcf66b1328597f598bdbfe7f7f299a19b15828de",
+      "bytes": 19156,
+      "sha256": "11c5e8a45113d9a816a1fdeb13a1413cfa30c9546b030ac8e247860f8d303657"
+    },
+    {
+      "path": "tests/test_request_history.py",
+      "git_blob": "a1fbd4e81b2967d57b084f88a7f6753b90fc4857",
+      "bytes": 12694,
+      "sha256": "240fdff1fa082c79c3784ac8ab3cd66bb6584a59bb54b2f1e33c36445381391a"
+    },
+    {
+      "path": "tests/test_service_history.py",
+      "git_blob": "bf39ddc77954f010f2872083c5f1bcf274a8f63f",
+      "bytes": 10626,
+      "sha256": "20f97b5a75f7360fd6fe3ee3d705be0616559642eca89aff53cc2cf2ead402b1"
+    }
+  ],
+  "note": "Local and remote source commits have identical trees but different commit metadata. Earlier run source_commit=e278f06 denotes its base plus recorded hashes, not a clean RC14 tree. This manifest covers all 44 newly committed production, version and test files; individual run manifests cover their wider inputs."
+}

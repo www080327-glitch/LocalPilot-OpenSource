@@ -1,0 +1,1605 @@
+{
+  "reviewed_at_utc": "2026-11-17T04:31:36.062797+00:00",
+  "reviewer": "/root/evidence_platform",
+  "status": "ISSUES_FOUND",
+  "scope": "Frozen engineering R7 public evidence and updated root summary; supplement to preserved r1 review.",
+  "method": "Read-only bytes and receipts. Only AST-extracted original orchestration/successful_shells/patch_paths/expected_test_count pure functions were evaluated. No runner main, model call, test, CLI or acceptance execution.",
+  "prior_review": {
+    "file": "final-evidence-review.json",
+    "sha256": "9088a784df1ee8c5e6ebaff1e87021e5c4bd7494767d1775eb2c209122a0c9ef",
+    "checks_passed": 315,
+    "checks_total": 315,
+    "preserved": true,
+    "changed_evidence_since_r1": [
+      "BUILD_CHECKS.json",
+      "RESULTS.md"
+    ]
+  },
+  "engineering_payload_count": 44,
+  "engineering_manifest_sha256": "a6bde1dc7b548aed746d99056d2f3abaceb037633edec54879a616efd2de9c69",
+  "engineering_json_payloads_parsed": 18,
+  "json_payloads": [
+    "EXECUTION_START.json",
+    "EXECUTION_END.json",
+    "PROTOCOL.json",
+    "RESULTS.json",
+    "POSTRUN_CHECKS.json",
+    "acceptance-manifest.json",
+    "engineering-progress.json",
+    "engineering-task.json.gz",
+    "external-cli.json",
+    "external-unittest.json",
+    "file-manifest.json",
+    "resolved-runtime-budgets.json",
+    "submission.json",
+    "acceptance-original/fixtures/basic.expected.json",
+    "acceptance-original/fixtures/precision.expected.json",
+    "final-project/fixtures/basic.expected.json",
+    "final-project/fixtures/precision.expected.json",
+    "final-project/result.json"
+  ],
+  "task_gzip": {
+    "file": "engineering-task.json.gz",
+    "original": "<validation_root>/engineering-luna-r7-b32/engineering-task.json",
+    "original_bytes": 325690,
+    "original_sha256": "2bbf81226a7ee4158f63a71cee5c31b6c25ca74a5975d64b2681053cdcf00514",
+    "published_bytes": 51605,
+    "published_sha256": "b2e18c1409f491fb0bcac4a5d3c29728e880afc1a98c3f6dbf1350875ec15105",
+    "published_content_sha256": "0f4929d09911282a5919b0e2df8582bff53702fd7c93befffa9c6955dd7e0c32",
+    "encoding": "gzip",
+    "content_transformed": true
+  },
+  "pure_orchestration_recomputation": {
+    "exact_match": true,
+    "passed": true,
+    "async_lifecycle_overlap_seconds": 91.58453583717346,
+    "children": [
+      {
+        "id": "1.1",
+        "model_calls": 7,
+        "receipts": 15,
+        "test_class": "ParserTests",
+        "required_tests": 9,
+        "changed_paths": [
+          "logstats/parser.py"
+        ],
+        "completed": true
+      },
+      {
+        "id": "1.2",
+        "model_calls": 5,
+        "receipts": 9,
+        "test_class": "AggregateTests",
+        "required_tests": 3,
+        "changed_paths": [
+          "logstats/aggregate.py"
+        ],
+        "completed": true
+      }
+    ]
+  },
+  "external_receipt_counts": {
+    "unittest": 17,
+    "unittest_ok_lines": 17,
+    "cli_cases": {
+      "basic": true,
+      "precision": true,
+      "empty": true,
+      "invalid": true
+    }
+  },
+  "product_result_preserved": {
+    "runtime_status": "completed",
+    "deliverable_status": "present",
+    "verification_status": "not_run",
+    "engineering_status": "unverified",
+    "task_outcome": "unverified",
+    "task_succeeded": false
+  },
+  "failed_receipts_preserved": [
+    {
+      "name": "list_directory",
+      "status": "failed",
+      "type": "FileNotFoundError",
+      "receipt_id": "worker:1.1/turn:1/call:call_KObZl4uYXOqEUbk6KKUHd0s7/entry:3",
+      "side_effect_status": "not_completed"
+    },
+    {
+      "name": "manage_goal",
+      "status": "failed",
+      "type": "KeyError",
+      "receipt_id": "turn:1/call:call_5RAUGJONLtBjS33Mgd2Qx06i/entry:51",
+      "side_effect_status": "not_completed"
+    }
+  ],
+  "aggregate_usage_recomputed": {
+    "model_calls": 27,
+    "input_tokens": 899356,
+    "output_tokens": 9969,
+    "cache_hit_tokens": 736922,
+    "cache_miss_tokens": 162434,
+    "tool_receipts": 53,
+    "failed_model_attempts": 0
+  },
+  "runtime_source_file_count": 110,
+  "runtime_source_manifest_sha256": "b6a4f2cb70ec2b44f9a15b269a3da1cb045cca107ef13971abe47f19e580139f",
+  "published_source_mapping": [
+    {
+      "commit": "2f1d678be4e24b787f443f123391f273a177c1ef",
+      "tree": "d2ef57414647fb2f71ad53447790242ad2adf02b"
+    },
+    {
+      "commit": "06f59e913484cf14d92c9811f2137e4e777db163",
+      "tree": "d2ef57414647fb2f71ad53447790242ad2adf02b"
+    }
+  ],
+  "relative_links": [
+    {
+      "file": "RESULTS.md",
+      "target": "../../../../development/PERSISTENT_CONTEXT_20261117.md",
+      "exists": true
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "core/RESULTS.md",
+      "exists": true
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "companion/RESULTS.md",
+      "exists": true
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "runtime/RESULTS.md",
+      "exists": true
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "runtime/RESULTS.md",
+      "exists": true
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "companion/RESULTS.md",
+      "exists": true
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "live/RESULTS.md",
+      "exists": true
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "engineering/RESULTS.md",
+      "exists": true
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "core/RESULTS.md",
+      "exists": true
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "browser/RESULTS.json",
+      "exists": true
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "../../../../../desktop/docs/evidence/audit-20261117-desktop/native-delivery-20261117/RESULTS.md",
+      "exists": true
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "SOURCE.json",
+      "exists": true
+    },
+    {
+      "file": "RESULTS.md",
+      "target": "BUILD_CHECKS.json",
+      "exists": true
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "TARGETED_RESULTS.json",
+      "exists": true
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "TARGETED_SOURCE_FILES.json",
+      "exists": true
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "FULL_RESULTS.json",
+      "exists": true
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "FULL_SOURCE_FILES.json",
+      "exists": true
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "FRONTEND_RESULTS.json",
+      "exists": true
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "FRONTEND_SOURCE_FILES.json",
+      "exists": true
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "SOURCE_CONTINUITY.json",
+      "exists": true
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "UI_ORDER_FIX_REVIEW.json",
+      "exists": true
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "CUA_FALLBACK.json",
+      "exists": true
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "companion-test-evidence.tar.gz",
+      "exists": true
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "PAYLOAD_SHA256.json",
+      "exists": true
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "PUBLICATION_TRANSFORMS.json",
+      "exists": true
+    },
+    {
+      "file": "companion/RESULTS.md",
+      "target": "SUMMARY.json",
+      "exists": true
+    },
+    {
+      "file": "core/RESULTS.md",
+      "target": "final-run.json",
+      "exists": true
+    },
+    {
+      "file": "core/RESULTS.md",
+      "target": "skips.json",
+      "exists": true
+    },
+    {
+      "file": "core/RESULTS.md",
+      "target": "window-5500.json",
+      "exists": true
+    },
+    {
+      "file": "core/RESULTS.md",
+      "target": "window-12000.json",
+      "exists": true
+    },
+    {
+      "file": "core/RESULTS.md",
+      "target": "evidence.tar.gz",
+      "exists": true
+    },
+    {
+      "file": "core/RESULTS.md",
+      "target": "ARCHIVE.json",
+      "exists": true
+    },
+    {
+      "file": "engineering/RESULTS.md",
+      "target": "../../engineering-luna-r6-b31-native/RESULTS.md",
+      "exists": true
+    },
+    {
+      "file": "engineering/RESULTS.md",
+      "target": "engineering-task.json.gz",
+      "exists": true
+    },
+    {
+      "file": "engineering/RESULTS.md",
+      "target": "POSTRUN_CHECKS.json",
+      "exists": true
+    },
+    {
+      "file": "engineering/RESULTS.md",
+      "target": "EXECUTION_START.json",
+      "exists": true
+    },
+    {
+      "file": "engineering/RESULTS.md",
+      "target": "EXECUTION_END.json",
+      "exists": true
+    },
+    {
+      "file": "engineering/RESULTS.md",
+      "target": "PROTOCOL.json",
+      "exists": true
+    },
+    {
+      "file": "engineering/RESULTS.md",
+      "target": "runner.py",
+      "exists": true
+    },
+    {
+      "file": "engineering/RESULTS.md",
+      "target": "core.log",
+      "exists": true
+    },
+    {
+      "file": "engineering/RESULTS.md",
+      "target": "external-unittest.json",
+      "exists": true
+    },
+    {
+      "file": "engineering/RESULTS.md",
+      "target": "external-cli.json",
+      "exists": true
+    },
+    {
+      "file": "engineering/RESULTS.md",
+      "target": "final-project/result.json",
+      "exists": true
+    },
+    {
+      "file": "engineering/RESULTS.md",
+      "target": "file-manifest.json",
+      "exists": true
+    },
+    {
+      "file": "engineering/RESULTS.md",
+      "target": "project.diff",
+      "exists": true
+    },
+    {
+      "file": "engineering/RESULTS.md",
+      "target": "final-project/logstats/parser.py",
+      "exists": true
+    },
+    {
+      "file": "engineering/RESULTS.md",
+      "target": "ARTIFACT_MANIFEST.json",
+      "exists": true
+    },
+    {
+      "file": "live/RESULTS.md",
+      "target": "run.json",
+      "exists": true
+    },
+    {
+      "file": "live/RESULTS.md",
+      "target": "source-continuity.json",
+      "exists": true
+    },
+    {
+      "file": "live/RESULTS.md",
+      "target": "responses.json",
+      "exists": true
+    },
+    {
+      "file": "live/RESULTS.md",
+      "target": "prefix-comparisons.json",
+      "exists": true
+    },
+    {
+      "file": "live/RESULTS.md",
+      "target": "evidence.tar.gz",
+      "exists": true
+    },
+    {
+      "file": "live/RESULTS.md",
+      "target": "ARCHIVE.json",
+      "exists": true
+    },
+    {
+      "file": "runtime/RESULTS.md",
+      "target": "../core/final-run.json",
+      "exists": true
+    },
+    {
+      "file": "runtime/RESULTS.md",
+      "target": "SUMMARY.json",
+      "exists": true
+    },
+    {
+      "file": "runtime/RESULTS.md",
+      "target": "evidence.tar.gz",
+      "exists": true
+    },
+    {
+      "file": "runtime/RESULTS.md",
+      "target": "PAYLOAD_MANIFEST.json",
+      "exists": true
+    },
+    {
+      "file": "runtime/RESULTS.md",
+      "target": "ARCHIVE.json",
+      "exists": true
+    }
+  ],
+  "checks_passed": 263,
+  "checks_total": 265,
+  "issues": [
+    {
+      "check": "prior_evidence_unchanged_except_root_summary",
+      "passed": false,
+      "detail": [
+        "BUILD_CHECKS.json",
+        "RESULTS.md"
+      ]
+    },
+    {
+      "check": "deterministic_gzip:engineering-task.json.gz",
+      "passed": false
+    }
+  ],
+  "scope_notes": [
+    "The four external PASS criteria do not overwrite the product result unverified/not_run/false.",
+    "Original 17 tests and 4 CLI receipts were inspected, not rerun.",
+    "The original postrun 16 checks are receipt/byte checks, not additional product tests.",
+    "This is one finite b32 engineering attempt, not an AA ranking or an hours-long qualification.",
+    "Final parent manifest/publication metadata added after this snapshot are outside this review."
+  ],
+  "file_hashes_at_review": {
+    "BUILD_CHECKS.json": "62afb6c6b339baeb3bd7320c311d06d404349160d4b60919d4e30acd9a16c1be",
+    "SOURCE.json": "02e803b77688cee1c8104061be6b7551ec86968b576bf5fd7423e6684af6858e",
+    "RESULTS.md": "355a17ce4bf6b73e10bac43e36a5239fcb4b6546438ce2434d0d1fae1ee7fa51",
+    "live/ARCHIVE.json": "9bd406c7cdb2ae21fa2d596227ecf1bd3af372a151ec0db5525980b77bb0197a",
+    "live/run.json": "111fdccdcd388ce55d927b345b722a30196b3a7622a9f3e7311dd963f430f3ce",
+    "live/prefix-comparisons.json": "39ba510456e33da012957e2b7af77eddc6caf1c9987d6f77d3002ed29f5a8be3",
+    "live/responses.json": "79fbbc01a1463908e0ea58410960d7f6af9c664f50462fbd0f02321403bcf543",
+    "live/evidence.tar.gz": "70cae2cf29d7d833c5c4ea1dde6825338b8d515c7e3ea857cd5f737b21bd820d",
+    "live/RESULTS.md": "367c4242e198a463523c12cfaaba18b34a5d53c5718e15d28381a4d5b04eb95a",
+    "live/source-continuity.json": "5775d07ce7f5b068faec0f28cfe20d5c4ea90d0c59a96444a838021ae97c3879",
+    "core/ARCHIVE.json": "737dbb3214c3ed70795a97004813616b9ac318cdbea9a74e504ad87324ee6470",
+    "core/skips.json": "9927581795c70abc75bca017cb91d7caef019037f4a757027f2c77f0fe8d018f",
+    "core/window-5500.json": "a6455d263c8df096493e07b415ec6cf8b9b5cbda62364ff7575099ff6ae21503",
+    "core/window-12000.json": "373950e616d7355bd7b70865ef50effb3840ff29447d6661adb1c6a162734f4f",
+    "core/final-run.json": "560dcadd9798810e64822796ad39bbfd69f7af6577e9b89aac7860515f40c515",
+    "core/evidence.tar.gz": "e1c47e1b5d3f255c6ee73d8c56171eef1bf57e33abd3aee7d704a39a00abfb88",
+    "core/RESULTS.md": "c8af10297b2b6ed4da68cdbd54be1d1df974b9ba3f6c0d25011bbb329096c613",
+    "engineering/runner.py": "108f948c1b32fa9de95e48a1a84ede4b4b78a3d3ecfabe1c9977e4b7e21cc0fb",
+    "engineering/project.diff": "92921834f5c85877feaeea24596879e715f216773ca35442b0910446ae3e133d",
+    "engineering/resolved-runtime-budgets.json": "603b4a44b1de4ac5bf6159d496350670ecdebffe64db9e461e10bf7130580dd8",
+    "engineering/file-manifest.json": "1a7a18163f8f995cff5ce816dcb8abdf1949f83b81b32288af6d3819a71c5dce",
+    "engineering/PROTOCOL.json": "e9e05fa89ad2a53ad08542b341ed580f037838001ed49980935ac9de97544fe8",
+    "engineering/engineering-task.json.gz": "b2e18c1409f491fb0bcac4a5d3c29728e880afc1a98c3f6dbf1350875ec15105",
+    "engineering/prompt.txt": "c16396dd5e873add6dc3eb27855771927dbce050964496d866d4b9356d3dafc3",
+    "engineering/ARTIFACT_MANIFEST.json": "a6bde1dc7b548aed746d99056d2f3abaceb037633edec54879a616efd2de9c69",
+    "engineering/external-unittest.json": "854f38e1f7ebb1975ad9d9f381e3822a8ab3a95d7c5a13cbebdf39f98a58d9f7",
+    "engineering/POSTRUN_CHECKS.json": "5057e44867a57208fda404289806b73b82fcfd95b10f5a8ae3fac38a348f7d02",
+    "engineering/EXECUTION_END.json": "c1b7e5acfec33ec6c5dc6c012869c8197bea7bb528f6c3716e20ee5ef44a478e",
+    "engineering/acceptance-manifest.json": "b22f47e53e46966a7d115b46974c07626217c3b03950735cf4f2b26cf80136fc",
+    "engineering/submission.json": "14ec70f6d247d89df23e8bd14c444ab14d2b1e91ead7548a6d803e9cf4060f96",
+    "engineering/RESULTS.json": "1daa756aa2403a2a1bd1af8909380a93a1fb4fed05ad8f377c350b3bbebb70cf",
+    "engineering/engineering-progress.json": "6ac70aca01c1f28f00921b329f048fb2be42dbd16fb268d3bd16c2b2ffde0b20",
+    "engineering/core.log": "435a7e9c17c16179a1f8e12cd01a255d6924c0b93bd7975ebdbe00100690d4c9",
+    "engineering/runner.log": "023e7ebfccfac40a2786586ad0a778c1cddd7b8e3ed4ad61cb184a0f7e0a4ccd",
+    "engineering/external-cli.json": "82cbddb20465b663b2cb457082bcb9ba3e2769afd093e25e58d00ca8d5210a46",
+    "engineering/EXECUTION_START.json": "093e007e22c511b0b4a9674deeccabf265f446c948f2c989a65f54ab70cb077e",
+    "engineering/RESULTS.md": "16d0a30b7a5edff5be9d5ba73da60fd2a10e4c992fefe7b8b82fd04a7af779e8",
+    "companion/FRONTEND_RESULTS.json": "94a4d953e6418ed9c72e35e6dcf1f4d62e2d31b14094dcec030c24046a9262ce",
+    "companion/SOURCE_CONTINUITY.json": "2105a7d76cfe341bc67b54fed7c24e9bb82a4c2f5c82468209ec4cd39e3c367a",
+    "companion/FRONTEND_SOURCE_FILES.json": "67453fece514c2008dbc671498c88ce24e0908e747609930b07593d477bf1484",
+    "companion/companion-test-evidence.tar.gz": "cf70f0b15e1ffc5fbdf49a5d744ebdd118be8d9c712d384cea6ee17a8024fc78",
+    "companion/SUMMARY.json": "c91852b83092e5975a5ec7eaa1e8ad530054811f3522dd36637ef14ac274f39f",
+    "companion/ARCHIVE_INTEGRITY.json": "aea83a7a5adfd41ef7336ee170f029ab71adbeb9c66d3fd2d021935726023f01",
+    "companion/CUA_FALLBACK.json": "737c2f38633173b8cc032b0b0e4aa5e944d63008f5f9f06773ed518d0cdb0c67",
+    "companion/TARGETED_RESULTS.json": "89746cf64647e8d61b49d2ccd5a4ea31896ba955b32bc15cd56b1499af798729",
+    "companion/ARTIFACT_MANIFEST.json": "d6ce370f86cee5fc31696c924d98c189e9f03ebd2d5f43f9a396643d9831a570",
+    "companion/FULL_RESULTS.json": "fd2fe1584cdc362d691b36eab70ebbf61ca4c8b923de655cd51113dbb3f2e030",
+    "companion/UI_ORDER_FIX_REVIEW.json": "6ecd5a149aeb7da7de3e198bd94fd614e68399745c36462f7f00b2d01512f4ce",
+    "companion/PUBLICATION_TRANSFORMS.json": "fd29001da15a9a364ecc3015d8a26e8b64f9ab3dc357d64ff24d3fd4d97f6b62",
+    "companion/TARGETED_SOURCE_FILES.json": "59566713e83dfa734eadfb334f55f603ee9344aedf752a2950cf14d7174ef69e",
+    "companion/PAYLOAD_SHA256.json": "ce71f7bf7a88cedb681d721a3ca11a2998fc620761188c26df04422c0eb5f209",
+    "companion/FULL_SOURCE_FILES.json": "ff1ba29dd382727dff40a4e3b77190d9623633157fc89430ec5f5e2be76d46cd",
+    "companion/RESULTS.md": "931da3afa8b79051d2f681dcf050eef1a1685f1842f5fb3e78423164e9dfb262",
+    "browser/RESULTS.json": "09d5bf655e280c7930799152196839da65efc75bc88dff94ad069e897a156f25",
+    "runtime/ARCHIVE.json": "4204374dcdfc5ecf4c8d207ebfb2681fe6612e4394b1da724472bc5a0d518fea",
+    "runtime/SUMMARY.json": "6c383fd5c00876676acfcfcead8d608d8b0d1055d6a89ea3e56852142d4a6fd4",
+    "runtime/PAYLOAD_MANIFEST.json": "b7308b2b2ef92443f769ca30fa77865773603186e7bbbb3915bc88b304377320",
+    "runtime/ARTIFACT_MANIFEST.json": "c2eec22f7d85c51c8286f559976e57f60923673396f3aaef60fd08f707063fbe",
+    "runtime/evidence.tar.gz": "f03e391333335ee32d2fb844e23e65bb5a75ef54e3ef46cc406e6a05c365428c",
+    "runtime/RESULTS.md": "78d8bb7529b105988e49d5ca8427e0d7fc17a28a3cf59026d3b52dda6e7bd7ec",
+    "engineering/final-project/SPEC.md": "3a581fcd5925e86dfcea0d87bbbcacfaf0065ed8139280c100769d8c6870c3e6",
+    "engineering/final-project/result.json": "a3211a34cf3e4419cf8c2c89c33d51009dbff3d2ee06b6597cde3912af3e5a69",
+    "engineering/acceptance-original/SPEC.md": "3a581fcd5925e86dfcea0d87bbbcacfaf0065ed8139280c100769d8c6870c3e6",
+    "engineering/final-project/logstats/__main__.py": "ef47230ee014fef108a406e51e9a6c086426db20e0b5d13232dff57d7afef803",
+    "engineering/final-project/logstats/__init__.py": "ae8f92d8e600d6dc9ad8d3ac5063b4ee18d5ef365e259d9323608625b76ef7de",
+    "engineering/final-project/logstats/aggregate.py": "afeeaa2c798cf31b0d2a4c6a30c86c0f97a7627aeb3fef17f0a5088906089842",
+    "engineering/final-project/logstats/parser.py": "150db081825ea7bb29f30745760d9227d5e826b205cb33d33ffa6340db8bf5d4",
+    "engineering/final-project/fixtures/precision.csv": "c70350dc5653955376297e2ccedff0e24cf1371f5f09101958d0cd9182b723d8",
+    "engineering/final-project/fixtures/basic.expected.json": "3d8d1af6ab844d19fc24b4029044458ef877dfc129232e3f9824e6bf5d54d34a",
+    "engineering/final-project/fixtures/empty.csv": "318a41c33c77ab0db8e5c651bd4b9918c26222daf02f90d8e2e01a8bb5be516a",
+    "engineering/final-project/fixtures/basic.csv": "6c0dcee9e8d138f61ed6da850c9bc77be3ccabe49a98fb99a693298a6b431d41",
+    "engineering/final-project/fixtures/invalid.csv": "74097f4b98ff64d3b01a6233836f5505ebe99bee92b9c8bc3537cb14a2f6dd34",
+    "engineering/final-project/fixtures/precision.expected.json": "ac5226181296f432e36f85e1bee5b5b6c1efb519bb1ae12755dd971e66850603",
+    "engineering/final-project/tests/test_acceptance.py": "e406b48f904550da19c4feff630962f393197f024bcc0c77683163fe26081837",
+    "engineering/acceptance-original/logstats/__main__.py": "f849849731b05ad7b37f1e6636741a8c7ecaf00a8d5e78712e5d132522546a5b",
+    "engineering/acceptance-original/logstats/__init__.py": "ae8f92d8e600d6dc9ad8d3ac5063b4ee18d5ef365e259d9323608625b76ef7de",
+    "engineering/acceptance-original/logstats/aggregate.py": "9d2e4a7aec763e41478efb936a03fccb545b72f775218aa8e11123e241535d0b",
+    "engineering/acceptance-original/logstats/parser.py": "16b2d904fab3ccfbfe24baa15473981957458ce4996f582b8c8c5238bc69cbda",
+    "engineering/acceptance-original/fixtures/precision.csv": "c70350dc5653955376297e2ccedff0e24cf1371f5f09101958d0cd9182b723d8",
+    "engineering/acceptance-original/fixtures/basic.expected.json": "3d8d1af6ab844d19fc24b4029044458ef877dfc129232e3f9824e6bf5d54d34a",
+    "engineering/acceptance-original/fixtures/empty.csv": "318a41c33c77ab0db8e5c651bd4b9918c26222daf02f90d8e2e01a8bb5be516a",
+    "engineering/acceptance-original/fixtures/basic.csv": "6c0dcee9e8d138f61ed6da850c9bc77be3ccabe49a98fb99a693298a6b431d41",
+    "engineering/acceptance-original/fixtures/invalid.csv": "74097f4b98ff64d3b01a6233836f5505ebe99bee92b9c8bc3537cb14a2f6dd34",
+    "engineering/acceptance-original/fixtures/precision.expected.json": "ac5226181296f432e36f85e1bee5b5b6c1efb519bb1ae12755dd971e66850603",
+    "engineering/acceptance-original/tests/test_acceptance.py": "e406b48f904550da19c4feff630962f393197f024bcc0c77683163fe26081837"
+  },
+  "checks": [
+    {
+      "check": "prior_review_preserved",
+      "passed": true
+    },
+    {
+      "check": "prior_evidence_unchanged_except_root_summary",
+      "passed": false,
+      "detail": [
+        "BUILD_CHECKS.json",
+        "RESULTS.md"
+      ]
+    },
+    {
+      "check": "engineering_manifest_identity",
+      "passed": true
+    },
+    {
+      "check": "engineering_payload_count",
+      "passed": true
+    },
+    {
+      "check": "engineering_manifest_complete",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:EXECUTION_START.json",
+      "passed": true
+    },
+    {
+      "check": "original_hash:EXECUTION_START.json",
+      "passed": true
+    },
+    {
+      "check": "published_hash:EXECUTION_START.json",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:EXECUTION_START.json",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:EXECUTION_START.json",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:EXECUTION_END.json",
+      "passed": true
+    },
+    {
+      "check": "original_hash:EXECUTION_END.json",
+      "passed": true
+    },
+    {
+      "check": "published_hash:EXECUTION_END.json",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:EXECUTION_END.json",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:EXECUTION_END.json",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:PROTOCOL.json",
+      "passed": true
+    },
+    {
+      "check": "original_hash:PROTOCOL.json",
+      "passed": true
+    },
+    {
+      "check": "published_hash:PROTOCOL.json",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:PROTOCOL.json",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:PROTOCOL.json",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:RESULTS.json",
+      "passed": true
+    },
+    {
+      "check": "original_hash:RESULTS.json",
+      "passed": true
+    },
+    {
+      "check": "published_hash:RESULTS.json",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:RESULTS.json",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:RESULTS.json",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:POSTRUN_CHECKS.json",
+      "passed": true
+    },
+    {
+      "check": "original_hash:POSTRUN_CHECKS.json",
+      "passed": true
+    },
+    {
+      "check": "published_hash:POSTRUN_CHECKS.json",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:POSTRUN_CHECKS.json",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:POSTRUN_CHECKS.json",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:acceptance-manifest.json",
+      "passed": true
+    },
+    {
+      "check": "original_hash:acceptance-manifest.json",
+      "passed": true
+    },
+    {
+      "check": "published_hash:acceptance-manifest.json",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:acceptance-manifest.json",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:acceptance-manifest.json",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:core.log",
+      "passed": true
+    },
+    {
+      "check": "original_hash:core.log",
+      "passed": true
+    },
+    {
+      "check": "published_hash:core.log",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:core.log",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:core.log",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:engineering-progress.json",
+      "passed": true
+    },
+    {
+      "check": "original_hash:engineering-progress.json",
+      "passed": true
+    },
+    {
+      "check": "published_hash:engineering-progress.json",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:engineering-progress.json",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:engineering-progress.json",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:engineering-task.json.gz",
+      "passed": true
+    },
+    {
+      "check": "original_hash:engineering-task.json.gz",
+      "passed": true
+    },
+    {
+      "check": "published_hash:engineering-task.json.gz",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:engineering-task.json.gz",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:engineering-task.json.gz",
+      "passed": true
+    },
+    {
+      "check": "deterministic_gzip:engineering-task.json.gz",
+      "passed": false
+    },
+    {
+      "check": "allowlisted_original:runner.log",
+      "passed": true
+    },
+    {
+      "check": "original_hash:runner.log",
+      "passed": true
+    },
+    {
+      "check": "published_hash:runner.log",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:runner.log",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:runner.log",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:external-cli.json",
+      "passed": true
+    },
+    {
+      "check": "original_hash:external-cli.json",
+      "passed": true
+    },
+    {
+      "check": "published_hash:external-cli.json",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:external-cli.json",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:external-cli.json",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:external-unittest.json",
+      "passed": true
+    },
+    {
+      "check": "original_hash:external-unittest.json",
+      "passed": true
+    },
+    {
+      "check": "published_hash:external-unittest.json",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:external-unittest.json",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:external-unittest.json",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:file-manifest.json",
+      "passed": true
+    },
+    {
+      "check": "original_hash:file-manifest.json",
+      "passed": true
+    },
+    {
+      "check": "published_hash:file-manifest.json",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:file-manifest.json",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:file-manifest.json",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:project.diff",
+      "passed": true
+    },
+    {
+      "check": "original_hash:project.diff",
+      "passed": true
+    },
+    {
+      "check": "published_hash:project.diff",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:project.diff",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:project.diff",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:prompt.txt",
+      "passed": true
+    },
+    {
+      "check": "original_hash:prompt.txt",
+      "passed": true
+    },
+    {
+      "check": "published_hash:prompt.txt",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:prompt.txt",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:prompt.txt",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:resolved-runtime-budgets.json",
+      "passed": true
+    },
+    {
+      "check": "original_hash:resolved-runtime-budgets.json",
+      "passed": true
+    },
+    {
+      "check": "published_hash:resolved-runtime-budgets.json",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:resolved-runtime-budgets.json",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:resolved-runtime-budgets.json",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:runner.py",
+      "passed": true
+    },
+    {
+      "check": "original_hash:runner.py",
+      "passed": true
+    },
+    {
+      "check": "published_hash:runner.py",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:runner.py",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:runner.py",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:submission.json",
+      "passed": true
+    },
+    {
+      "check": "original_hash:submission.json",
+      "passed": true
+    },
+    {
+      "check": "published_hash:submission.json",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:submission.json",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:submission.json",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:RESULTS.md",
+      "passed": true
+    },
+    {
+      "check": "original_hash:RESULTS.md",
+      "passed": true
+    },
+    {
+      "check": "published_hash:RESULTS.md",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:RESULTS.md",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:RESULTS.md",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:acceptance-original/SPEC.md",
+      "passed": true
+    },
+    {
+      "check": "original_hash:acceptance-original/SPEC.md",
+      "passed": true
+    },
+    {
+      "check": "published_hash:acceptance-original/SPEC.md",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:acceptance-original/SPEC.md",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:acceptance-original/SPEC.md",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:acceptance-original/fixtures/basic.csv",
+      "passed": true
+    },
+    {
+      "check": "original_hash:acceptance-original/fixtures/basic.csv",
+      "passed": true
+    },
+    {
+      "check": "published_hash:acceptance-original/fixtures/basic.csv",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:acceptance-original/fixtures/basic.csv",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:acceptance-original/fixtures/basic.csv",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:acceptance-original/fixtures/basic.expected.json",
+      "passed": true
+    },
+    {
+      "check": "original_hash:acceptance-original/fixtures/basic.expected.json",
+      "passed": true
+    },
+    {
+      "check": "published_hash:acceptance-original/fixtures/basic.expected.json",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:acceptance-original/fixtures/basic.expected.json",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:acceptance-original/fixtures/basic.expected.json",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:acceptance-original/fixtures/empty.csv",
+      "passed": true
+    },
+    {
+      "check": "original_hash:acceptance-original/fixtures/empty.csv",
+      "passed": true
+    },
+    {
+      "check": "published_hash:acceptance-original/fixtures/empty.csv",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:acceptance-original/fixtures/empty.csv",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:acceptance-original/fixtures/empty.csv",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:acceptance-original/fixtures/invalid.csv",
+      "passed": true
+    },
+    {
+      "check": "original_hash:acceptance-original/fixtures/invalid.csv",
+      "passed": true
+    },
+    {
+      "check": "published_hash:acceptance-original/fixtures/invalid.csv",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:acceptance-original/fixtures/invalid.csv",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:acceptance-original/fixtures/invalid.csv",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:acceptance-original/fixtures/precision.csv",
+      "passed": true
+    },
+    {
+      "check": "original_hash:acceptance-original/fixtures/precision.csv",
+      "passed": true
+    },
+    {
+      "check": "published_hash:acceptance-original/fixtures/precision.csv",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:acceptance-original/fixtures/precision.csv",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:acceptance-original/fixtures/precision.csv",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:acceptance-original/fixtures/precision.expected.json",
+      "passed": true
+    },
+    {
+      "check": "original_hash:acceptance-original/fixtures/precision.expected.json",
+      "passed": true
+    },
+    {
+      "check": "published_hash:acceptance-original/fixtures/precision.expected.json",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:acceptance-original/fixtures/precision.expected.json",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:acceptance-original/fixtures/precision.expected.json",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:acceptance-original/logstats/__init__.py",
+      "passed": true
+    },
+    {
+      "check": "original_hash:acceptance-original/logstats/__init__.py",
+      "passed": true
+    },
+    {
+      "check": "published_hash:acceptance-original/logstats/__init__.py",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:acceptance-original/logstats/__init__.py",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:acceptance-original/logstats/__init__.py",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:acceptance-original/logstats/__main__.py",
+      "passed": true
+    },
+    {
+      "check": "original_hash:acceptance-original/logstats/__main__.py",
+      "passed": true
+    },
+    {
+      "check": "published_hash:acceptance-original/logstats/__main__.py",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:acceptance-original/logstats/__main__.py",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:acceptance-original/logstats/__main__.py",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:acceptance-original/logstats/aggregate.py",
+      "passed": true
+    },
+    {
+      "check": "original_hash:acceptance-original/logstats/aggregate.py",
+      "passed": true
+    },
+    {
+      "check": "published_hash:acceptance-original/logstats/aggregate.py",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:acceptance-original/logstats/aggregate.py",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:acceptance-original/logstats/aggregate.py",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:acceptance-original/logstats/parser.py",
+      "passed": true
+    },
+    {
+      "check": "original_hash:acceptance-original/logstats/parser.py",
+      "passed": true
+    },
+    {
+      "check": "published_hash:acceptance-original/logstats/parser.py",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:acceptance-original/logstats/parser.py",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:acceptance-original/logstats/parser.py",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:acceptance-original/tests/test_acceptance.py",
+      "passed": true
+    },
+    {
+      "check": "original_hash:acceptance-original/tests/test_acceptance.py",
+      "passed": true
+    },
+    {
+      "check": "published_hash:acceptance-original/tests/test_acceptance.py",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:acceptance-original/tests/test_acceptance.py",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:acceptance-original/tests/test_acceptance.py",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:final-project/SPEC.md",
+      "passed": true
+    },
+    {
+      "check": "original_hash:final-project/SPEC.md",
+      "passed": true
+    },
+    {
+      "check": "published_hash:final-project/SPEC.md",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:final-project/SPEC.md",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:final-project/SPEC.md",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:final-project/fixtures/basic.csv",
+      "passed": true
+    },
+    {
+      "check": "original_hash:final-project/fixtures/basic.csv",
+      "passed": true
+    },
+    {
+      "check": "published_hash:final-project/fixtures/basic.csv",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:final-project/fixtures/basic.csv",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:final-project/fixtures/basic.csv",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:final-project/fixtures/basic.expected.json",
+      "passed": true
+    },
+    {
+      "check": "original_hash:final-project/fixtures/basic.expected.json",
+      "passed": true
+    },
+    {
+      "check": "published_hash:final-project/fixtures/basic.expected.json",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:final-project/fixtures/basic.expected.json",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:final-project/fixtures/basic.expected.json",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:final-project/fixtures/empty.csv",
+      "passed": true
+    },
+    {
+      "check": "original_hash:final-project/fixtures/empty.csv",
+      "passed": true
+    },
+    {
+      "check": "published_hash:final-project/fixtures/empty.csv",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:final-project/fixtures/empty.csv",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:final-project/fixtures/empty.csv",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:final-project/fixtures/invalid.csv",
+      "passed": true
+    },
+    {
+      "check": "original_hash:final-project/fixtures/invalid.csv",
+      "passed": true
+    },
+    {
+      "check": "published_hash:final-project/fixtures/invalid.csv",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:final-project/fixtures/invalid.csv",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:final-project/fixtures/invalid.csv",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:final-project/fixtures/precision.csv",
+      "passed": true
+    },
+    {
+      "check": "original_hash:final-project/fixtures/precision.csv",
+      "passed": true
+    },
+    {
+      "check": "published_hash:final-project/fixtures/precision.csv",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:final-project/fixtures/precision.csv",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:final-project/fixtures/precision.csv",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:final-project/fixtures/precision.expected.json",
+      "passed": true
+    },
+    {
+      "check": "original_hash:final-project/fixtures/precision.expected.json",
+      "passed": true
+    },
+    {
+      "check": "published_hash:final-project/fixtures/precision.expected.json",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:final-project/fixtures/precision.expected.json",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:final-project/fixtures/precision.expected.json",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:final-project/logstats/__init__.py",
+      "passed": true
+    },
+    {
+      "check": "original_hash:final-project/logstats/__init__.py",
+      "passed": true
+    },
+    {
+      "check": "published_hash:final-project/logstats/__init__.py",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:final-project/logstats/__init__.py",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:final-project/logstats/__init__.py",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:final-project/logstats/__main__.py",
+      "passed": true
+    },
+    {
+      "check": "original_hash:final-project/logstats/__main__.py",
+      "passed": true
+    },
+    {
+      "check": "published_hash:final-project/logstats/__main__.py",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:final-project/logstats/__main__.py",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:final-project/logstats/__main__.py",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:final-project/logstats/aggregate.py",
+      "passed": true
+    },
+    {
+      "check": "original_hash:final-project/logstats/aggregate.py",
+      "passed": true
+    },
+    {
+      "check": "published_hash:final-project/logstats/aggregate.py",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:final-project/logstats/aggregate.py",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:final-project/logstats/aggregate.py",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:final-project/logstats/parser.py",
+      "passed": true
+    },
+    {
+      "check": "original_hash:final-project/logstats/parser.py",
+      "passed": true
+    },
+    {
+      "check": "published_hash:final-project/logstats/parser.py",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:final-project/logstats/parser.py",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:final-project/logstats/parser.py",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:final-project/result.json",
+      "passed": true
+    },
+    {
+      "check": "original_hash:final-project/result.json",
+      "passed": true
+    },
+    {
+      "check": "published_hash:final-project/result.json",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:final-project/result.json",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:final-project/result.json",
+      "passed": true
+    },
+    {
+      "check": "allowlisted_original:final-project/tests/test_acceptance.py",
+      "passed": true
+    },
+    {
+      "check": "original_hash:final-project/tests/test_acceptance.py",
+      "passed": true
+    },
+    {
+      "check": "published_hash:final-project/tests/test_acceptance.py",
+      "passed": true
+    },
+    {
+      "check": "published_decoded_hash:final-project/tests/test_acceptance.py",
+      "passed": true
+    },
+    {
+      "check": "exact_fixed_prefix_transform:final-project/tests/test_acceptance.py",
+      "passed": true
+    },
+    {
+      "check": "protocol_except_source_equals_r6",
+      "passed": true
+    },
+    {
+      "check": "runner_equal_r6",
+      "passed": true
+    },
+    {
+      "check": "original_prompt_hash",
+      "passed": true
+    },
+    {
+      "check": "twelve_original_fixtures_match",
+      "passed": true
+    },
+    {
+      "check": "twelve_original_fixtures_equal_r6",
+      "passed": true
+    },
+    {
+      "check": "pure_function_selection",
+      "passed": true
+    },
+    {
+      "check": "original_orchestration_recomputes_exactly",
+      "passed": true
+    },
+    {
+      "check": "original_expected_counts",
+      "passed": true
+    },
+    {
+      "check": "external_seventeen_receipts",
+      "passed": true
+    },
+    {
+      "check": "four_cli_cases_present",
+      "passed": true
+    },
+    {
+      "check": "external_cli_receipt:basic",
+      "passed": true
+    },
+    {
+      "check": "external_cli_receipt:precision",
+      "passed": true
+    },
+    {
+      "check": "external_cli_receipt:empty",
+      "passed": true
+    },
+    {
+      "check": "external_cli_receipt:invalid",
+      "passed": true
+    },
+    {
+      "check": "parent_artifact_matches_cli",
+      "passed": true
+    },
+    {
+      "check": "final_project_hashes",
+      "passed": true
+    },
+    {
+      "check": "only_three_delivered_modules_changed",
+      "passed": true
+    },
+    {
+      "check": "four_delivered_module_hashes",
+      "passed": true
+    },
+    {
+      "check": "source_manifest_digest",
+      "passed": true
+    },
+    {
+      "check": "runtime_sources_match_current",
+      "passed": true
+    },
+    {
+      "check": "runtime_sources_match_executed_checkout",
+      "passed": true
+    },
+    {
+      "check": "source_clean_stable_recorded",
+      "passed": true
+    },
+    {
+      "check": "source_same_tree_from_git_objects",
+      "passed": true
+    },
+    {
+      "check": "owned_core_stopped_recorded",
+      "passed": true
+    },
+    {
+      "check": "product_unverified_preserved",
+      "passed": true
+    },
+    {
+      "check": "task_completed_quiescent",
+      "passed": true
+    },
+    {
+      "check": "completion_obligations_clear",
+      "passed": true
+    },
+    {
+      "check": "two_failures_preserved",
+      "passed": true
+    },
+    {
+      "check": "failed_receipts_match_postrun",
+      "passed": true
+    },
+    {
+      "check": "aggregate_usage_recomputed",
+      "passed": true
+    },
+    {
+      "check": "provider_diagnostics_recomputed",
+      "passed": true
+    },
+    {
+      "check": "unknown_effects_zero",
+      "passed": true
+    },
+    {
+      "check": "four_external_layers_pass_recorded",
+      "passed": true
+    },
+    {
+      "check": "postrun_not_new_tests",
+      "passed": true
+    },
+    {
+      "check": "all_current_relative_markdown_links",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "check": "root_R7_summary_matches_receipts",
+      "passed": true
+    },
+    {
+      "check": "R7_limits_and_failures_stated",
+      "passed": true
+    },
+    {
+      "check": "reviewed_evidence_stable",
+      "passed": true
+    },
+    {
+      "check": "prior_review_still_unmodified",
+      "passed": true
+    }
+  ]
+}

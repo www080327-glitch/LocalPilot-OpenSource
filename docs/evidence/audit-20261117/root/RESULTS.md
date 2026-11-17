@@ -1,12 +1,16 @@
 # Actual model integration results — 2026-11-17
 
+## RC15 persistent-context continuation
+
+The current source candidate is Desktop **5.0.1-rc.15**, Core **5.0.0b32**, Companion **0.5.7b9**, with Suite **0.2.0b32** and Channels **0.1.0a4**. [The independent b32 record](persistent-context-b32/RESULTS.md) adds the actual request-window repair, retained-history retrieval and UI hydration, durable task archives, schema-2 backup boundary, current regression, five live Luna continuation requests, and one b32 engineering R7 with two real asynchronous children, 17 external tests and four CLI cases. These changes do not add to the original forty-item audit or retroactively qualify a new native package. The original b31 source, scores, failed attempts and package evidence below retain their own identities.
+
 ## Status and scope
 
 The completed integration receipts demonstrate actual GPT-6 Luna Responses requests, function-result round trips, streamed text, Core tools and children, cancellation, restart lookup, ordinary Companion clients, and both directions of local/cloud delegation. Those small synthetic checks do not establish general task quality or an autonomous-work success rate. The completed public forty-case scores, finite engineering attempts and package checks are recorded separately below, with their own source identities and limits.
 
 The initial integration assessment was prepared independently from archived receipts and their hashes. Later status updates are appended by the root owner from the named run records; they do not change the original receipts or merge results from different sources.
 
-Current production source is Core `5.0.0b31` / Desktop `5.0.1-rc.14`: remote commit [`c5439659a579b2ee9e74fd53e6d3232fe12fb855`](https://github.com/www080327-glitch/LocalPilot-OpenSource/commit/c5439659a579b2ee9e74fd53e6d3232fe12fb855) and local `7fe7c57c531bd44b966717502b44901582418cc4` share tree `d0b0b33b036587ef0f0a802ca728419e9a444587`. R6 engineering passed all four layers; RC14 passed build, native short qualification and its one complete animation sample. R5 remains overall FAIL with semantic PASS, and RC13 retains its failed native version gate. The independent b28 two-hour soak also completed PASS, under its own source identity. The grader stays frozen at b29 commit `8e92deb8b6a0acbba1d139851b1d805246304c61`, SHA256 `4cd3f405f7a4d1c05edb6bf5d5530657c69de6b934bf59c2cdf01df7e2f20b76`; later product fixes do not change or repeat the scores.
+The earlier RC14 production source is Core `5.0.0b31` / Desktop `5.0.1-rc.14`: remote commit [`c5439659a579b2ee9e74fd53e6d3232fe12fb855`](https://github.com/www080327-glitch/LocalPilot-OpenSource/commit/c5439659a579b2ee9e74fd53e6d3232fe12fb855) and local `7fe7c57c531bd44b966717502b44901582418cc4` share tree `d0b0b33b036587ef0f0a802ca728419e9a444587`. R6 engineering passed all four layers; RC14 passed build, native short qualification and its one complete animation sample. R5 remains overall FAIL with semantic PASS, and RC13 retains its failed native version gate. The independent b28 two-hour soak also completed PASS, under its own source identity. The grader stays frozen at b29 commit `8e92deb8b6a0acbba1d139851b1d805246304c61`, SHA256 `4cd3f405f7a4d1c05edb6bf5d5530657c69de6b934bf59c2cdf01df7e2f20b76`; later product fixes do not change or repeat the scores.
 
 | Work item | Status at this report's preparation | Claim supported here |
 | --- | --- | --- |

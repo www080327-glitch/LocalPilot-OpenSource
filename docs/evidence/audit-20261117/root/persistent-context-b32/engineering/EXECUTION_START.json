@@ -1,0 +1,32 @@
+{
+  "started_at": "2026-11-17T04:18:16.132203+00:00",
+  "source_head": "2f1d678be4e24b787f443f123391f273a177c1ef",
+  "source_tree": "d2ef57414647fb2f71ad53447790242ad2adf02b",
+  "source_clean": true,
+  "core_package_version": "5.0.0b32",
+  "service_version": "5.0.0b32",
+  "runner_sha256": "108f948c1b32fa9de95e48a1a84ede4b4b78a3d3ecfabe1c9977e4b7e21cc0fb",
+  "interpreter": "<task_python_env>/bin/python",
+  "python_version": "3.12.14",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "source_root": "<source_root>",
+  "output": "<validation_root>/engineering-luna-r7-b32",
+  "command": [
+    "<task_python_env>/bin/python",
+    "-B",
+    "<source_root>/scripts/qualify_openai_engineering.py",
+    "--source-root",
+    "<source_root>",
+    "--output",
+    "<validation_root>/engineering-luna-r7-b32",
+    "--key-file",
+    "<private_key_file>"
+  ],
+  "task_timeout_seconds": 1200,
+  "entrypoint": "Existing execution tool; unmodified repository runner in a clean isolated worktree",
+  "environment_change": "Prepend only the fixed task Python directory to inherited PATH; all other inherited environment, network and TLS settings unchanged.",
+  "credential_source": "User-authorized private key file; contents never copied or logged.",
+  "attempt_reason": "One new frozen Core b32 version regression after request-window and persistence changes; older b31 R6 evidence remains attributed to b31.",
+  "single_attempt": true,
+  "runner_matches_r6_bytes": true
+}
