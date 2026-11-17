@@ -1,0 +1,2223 @@
+{
+  "review_version": 1,
+  "reviewed_at_utc": "2026-11-17T10:54:43.734215+00:00",
+  "status": "PASS_WITH_EXPLICIT_SCOPE_LIMITS",
+  "reviewer": "task_row_storage, separate from the public-pack publisher",
+  "review_kind": "Independent read-only verification of exported evidence, source identity and reporting claims; not independent repetition of every experiment.",
+  "reviewed_directory": "public-pack",
+  "reviewed_public_file_count": 44,
+  "reviewed_public_file_sha256": {
+    "ENGINEERING_COMPARISON.json": "88bead09600a07ff3e909e8f54a1e1aaa00232f06aeed40a6d1bd2d72040eea0",
+    "ENGINEERING_PUBLIC_EVIDENCE_ALLOWLIST.json": "72d24c92c43f1ebf63799f8387d2b132d9fede5cfffef3bce5a7e16a4f435bfc",
+    "ENGINEERING_R10.json": "f976ff5ca505f452a918ebd07b4ba0a05fc945939a8255397d85dc8600e707a9",
+    "ENGINEERING_R11.json": "d54a7022770275a6d5290d33b3d94c8047b05ba765ae7e1c005212f574d4c1aa",
+    "ENGINEERING_R11_INFERENCE.json": "0d190b678d9b632625d7eaf0294a48ee27f43b82ec270cf2d4cb409b56660938",
+    "ENGINEERING_R9.json": "951493507bdb62bb1a6133dc724aa0e709947434299a1d616c7a9b9d3ed7a51c",
+    "EXPORT_CONFIG.json": "255deabc173db886563bbf440459a2bf1cbd5ef33b4ac68f8db75ebff7d65192",
+    "MANIFEST.json": "c79e1030dda2d90875286b6324db3abb6f1f45beafc3e973157acbee5a4f9295",
+    "PACKAGING_FINAL.json": "8f46ed52bc2756669bfda2be7e8ca873d87939343bfa765a758b23d9a48fed47",
+    "PERF_COMPARISON.json": "dc4de156cd48cba0c7b3f985d73b55bc534c79fb5d1ed1c298f2e06e97f63234",
+    "R10_FAILURE_ANALYSIS.json": "eaeba2d0b93a308336d71dee1d485c0efc3d1611657a0e98dcb1224128bfc9e8",
+    "REGRESSION_SUMMARY.json": "71f18961e7010a8f63df414231117d195b49d7c8fa4b3878d2f55b450b8df280",
+    "RESULTS.md": "b69a406a6350fac3cc8771e19146482dc27454ce13033fafdc6af3538aaea352",
+    "SHA256SUMS": "db7712a1579117c2f8c9d8ea7407a42a03672d73f6a3a9587e3cd75ae5093322",
+    "SOURCE.json": "b3cab04443dff861e9bc6e4604f7a7f302bc8524330f6138a45c6650c7768a53",
+    "SUMMARY.md": "063389f47f287a1d4dd37207fec27f5bda068bbf24b822c501e7cee60d1a1677",
+    "engineering-r10.MANIFEST.json": "cf06f0909d028cf3268c857f3cdfc2c7ac197501d155ba795b8bb4d6e298dc71",
+    "engineering-r10.SUMMARY.md": "20663775a13973622015d7b764c1314947f2de7a28535bcf9320c5b45c831226",
+    "engineering-r10.tar.gz": "3ac31f0291e54bb7f51171be9ea4b030966fb6594c4264ad25e1fa6d4e8c3807",
+    "engineering-r11.MANIFEST.json": "caf95b97c2866155b8b64d855f1a839e16a3e7afe22128d96ffdf74f4dda14f4",
+    "engineering-r11.SUMMARY.md": "7d525b8654278a39fb58f2187262e499b9bca3d71e64aef7897509ba6e2fd73f",
+    "engineering-r11.tar.gz": "b828fff66c5e4f6e1a2710570fcecb74e3ac7e7af5bb6bddd4780d995f21abc8",
+    "engineering-r9.MANIFEST.json": "8c9adec1b80571b82532e8ff61d1a9e9311bdcb5517ce72d8eb8ee3d39fad5f1",
+    "engineering-r9.SUMMARY.md": "634035e088275debd32819636b1a9ccc752734ab398944bfa9c141d098f29027",
+    "engineering-r9.tar.gz": "5ef6f2ad4cffb5d7d6d3c2b7406f80fa9eb8bba43cd25d3d75db859f9f37bca6",
+    "packaging-final-core.MANIFEST.json": "dcaa41770fe4adf5926b867a51bc56cea1d64d4ffa9e0be5fd650a4d7a61ef96",
+    "packaging-final-core.SUMMARY.md": "45f0654f0a47effde337643fca22dc0fafd82dc3114d7c32a564fa878f25cc11",
+    "packaging-final-core.tar.gz": "7fe2f882ce3642d0ec48aa54e840b00e9c597f04da251e4d156cd6f422cd1c98",
+    "packaging-original.MANIFEST.json": "d3d59f057a68e8c009e707c6dd4c06958e165debc5010d17ebd923b97a44e60b",
+    "packaging-original.SUMMARY.md": "09e835eee4eaa9539a871a6f068efff46f6d581d384a0ae22904eb7b0a14a7d1",
+    "packaging-original.tar.gz": "a7bc6eb9c02084d02c1d25f7cd9bda35c656f4114f389b951e781971b9c00934",
+    "publish_evidence.py": "cd2acaf1eaf9539dd51414d93240d0d061ac32dab8fa9b741f503d7211fd1b61",
+    "regressions.MANIFEST.json": "6b042436fc610f15e47d81eadb0cf616f519a116ecb9144b15c353d809d30188",
+    "regressions.SUMMARY.md": "dd2069564c6fa1fe63ce33ccd5b9b2330256cc663d3f5da829dd9cec4e902bd4",
+    "regressions.tar.gz": "7a623b9a99f21ae573d99a1fe0b572626ac055615c0cebe287a6a3b7ce7a7515",
+    "scheduling.MANIFEST.json": "4b8248cf85db8ca837652d8b677208bfcd63614909a7119c4fbc55a84800240e",
+    "scheduling.SUMMARY.md": "131699069b5ad481c1d5fa232a63553501c4d7b52d60b876d50806ede8045bec",
+    "scheduling.tar.gz": "dea6ba278ebde2f3000ec9cb9bdbc2502c0836d5c16cf7d316d5e1efa93f1909",
+    "storage.MANIFEST.json": "80a94d0fa9e4fe1c20bef32c2ee0c38f5dae04704d2e0706211e5aab3522fd42",
+    "storage.SUMMARY.md": "f0c435309edb2707f096b126ad506a08c539ca0469619798e11c19f85c0f1370",
+    "storage.tar.gz": "852c82d127b5429c15159fa2c3b80a5461e66d16efd563defe0f4f86ea835e97",
+    "superagent.MANIFEST.json": "0311804a4d77f2320733358e81639f135fd07e875443c6a3d74773347e4e0cbc",
+    "superagent.SUMMARY.md": "f0585444a1df4d4227bd828e3901e07fe99bc66b8b76a4fa064d7dad74259cba",
+    "superagent.tar.gz": "6bdf9045e3d893a5258f0cd7c2ffdb4c6c7ee49d2ebe1f1ec7c93d04275736da"
+  },
+  "publication_state_at_review": "Git blobs were prepared by the parent but the final evidence commit and DELIVERY_MANIFEST were not part of this review. The 44-file repository staging copy matched the reviewed public-pack byte-for-byte.",
+  "unresolved_findings": [],
+  "resolved_review_comments": [
+    {
+      "id": "EVIDENCE-WORDING-01",
+      "classification": "precision clarification",
+      "state": "resolved",
+      "finding": "The 3444/3686 token values in the rotation diagnosis are host input estimates from a scripted-backend fixture, not provider-measured token usage.",
+      "correction": "RESULTS now explicitly says 第三轮输入的宿主估算. No raw input, archive or numerical result was altered.",
+      "previous_results_sha256": "37395cd6c70419b768ee862c0c7a8b2578a68959718d41d66b9e9e0d4635f01d",
+      "corrected_results_sha256": "b69a406a6350fac3cc8771e19146482dc27454ce13033fafdc6af3538aaea352"
+    }
+  ],
+  "archive_integrity": {
+    "archive_count": 9,
+    "raw_member_count": 281,
+    "unique_raw_paths": 281,
+    "all_manifest_config_and_checksum_entries_match": true,
+    "every_member_matches_original_input_bytes": true,
+    "all_members_regular_relative_files": true,
+    "member_order_sorted": true,
+    "fixed_mtime_uid_gid": 0,
+    "fixed_regular_file_mode": "0644",
+    "archived_json_documents_parsed": 137,
+    "archives": [
+      {
+        "group": "engineering-r10",
+        "archive": "engineering-r10.tar.gz",
+        "sha256": "3ac31f0291e54bb7f51171be9ea4b030966fb6594c4264ad25e1fa6d4e8c3807",
+        "members": 40,
+        "member_bytes_match_original": true,
+        "manifest_and_config_match": true
+      },
+      {
+        "group": "engineering-r11",
+        "archive": "engineering-r11.tar.gz",
+        "sha256": "b828fff66c5e4f6e1a2710570fcecb74e3ac7e7af5bb6bddd4780d995f21abc8",
+        "members": 41,
+        "member_bytes_match_original": true,
+        "manifest_and_config_match": true
+      },
+      {
+        "group": "engineering-r9",
+        "archive": "engineering-r9.tar.gz",
+        "sha256": "5ef6f2ad4cffb5d7d6d3c2b7406f80fa9eb8bba43cd25d3d75db859f9f37bca6",
+        "members": 40,
+        "member_bytes_match_original": true,
+        "manifest_and_config_match": true
+      },
+      {
+        "group": "packaging-final-core",
+        "archive": "packaging-final-core.tar.gz",
+        "sha256": "7fe2f882ce3642d0ec48aa54e840b00e9c597f04da251e4d156cd6f422cd1c98",
+        "members": 17,
+        "member_bytes_match_original": true,
+        "manifest_and_config_match": true
+      },
+      {
+        "group": "packaging-original",
+        "archive": "packaging-original.tar.gz",
+        "sha256": "a7bc6eb9c02084d02c1d25f7cd9bda35c656f4114f389b951e781971b9c00934",
+        "members": 23,
+        "member_bytes_match_original": true,
+        "manifest_and_config_match": true
+      },
+      {
+        "group": "regressions",
+        "archive": "regressions.tar.gz",
+        "sha256": "7a623b9a99f21ae573d99a1fe0b572626ac055615c0cebe287a6a3b7ce7a7515",
+        "members": 34,
+        "member_bytes_match_original": true,
+        "manifest_and_config_match": true
+      },
+      {
+        "group": "scheduling",
+        "archive": "scheduling.tar.gz",
+        "sha256": "dea6ba278ebde2f3000ec9cb9bdbc2502c0836d5c16cf7d316d5e1efa93f1909",
+        "members": 20,
+        "member_bytes_match_original": true,
+        "manifest_and_config_match": true
+      },
+      {
+        "group": "storage",
+        "archive": "storage.tar.gz",
+        "sha256": "852c82d127b5429c15159fa2c3b80a5461e66d16efd563defe0f4f86ea835e97",
+        "members": 20,
+        "member_bytes_match_original": true,
+        "manifest_and_config_match": true
+      },
+      {
+        "group": "superagent",
+        "archive": "superagent.tar.gz",
+        "sha256": "6bdf9045e3d893a5258f0cd7c2ffdb4c6c7ee49d2ebe1f1ec7c93d04275736da",
+        "members": 46,
+        "member_bytes_match_original": true,
+        "manifest_and_config_match": true
+      }
+    ],
+    "engineering_allowlist_members": 118,
+    "engineering_allowlist": [
+      {
+        "run": "engineering-baseline-luna-high-r9",
+        "members": 39,
+        "all_match": true
+      },
+      {
+        "run": "engineering-candidate-luna-high-r10",
+        "members": 39,
+        "all_match": true
+      },
+      {
+        "run": "engineering-candidate-sol-medium-r11",
+        "members": 40,
+        "all_match": true
+      }
+    ],
+    "verified_archive_members": {
+      "engineering-candidate-luna-high-r10.log": {
+        "sha256": "7ee1dbdb48998e1e7491305368b600c58c901c8e18ec2921c51228d2352e4749",
+        "bytes": 204,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/FAILURE_ANALYSIS.json": {
+        "sha256": "eaeba2d0b93a308336d71dee1d485c0efc3d1611657a0e98dcb1224128bfc9e8",
+        "bytes": 8904,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/POSTRUN_SUMMARY.json": {
+        "sha256": "f976ff5ca505f452a918ebd07b4ba0a05fc945939a8255397d85dc8600e707a9",
+        "bytes": 9996,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/PROTOCOL.json": {
+        "sha256": "9f5757ec5e25b3040a470894ac54a0f71f0faf95a924690c2e1460592ca59533",
+        "bytes": 14987,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/RESULTS.json": {
+        "sha256": "f61df664f7bfc237d7535da7f76d147ff7c143e988aa31da59f6ea1600903bab",
+        "bytes": 120011,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/RUN_EXECUTION.json": {
+        "sha256": "de55a69b75b48713a3d7dc6443712a0a1e1967dc8c23d89828062da50eca3450",
+        "bytes": 23542,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/acceptance-manifest.json": {
+        "sha256": "b22f47e53e46966a7d115b46974c07626217c3b03950735cf4f2b26cf80136fc",
+        "bytes": 1139,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/acceptance-original/SPEC.md": {
+        "sha256": "3a581fcd5925e86dfcea0d87bbbcacfaf0065ed8139280c100769d8c6870c3e6",
+        "bytes": 3304,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/acceptance-original/fixtures/basic.csv": {
+        "sha256": "6c0dcee9e8d138f61ed6da850c9bc77be3ccabe49a98fb99a693298a6b431d41",
+        "bytes": 168,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/acceptance-original/fixtures/basic.expected.json": {
+        "sha256": "3d8d1af6ab844d19fc24b4029044458ef877dfc129232e3f9824e6bf5d54d34a",
+        "bytes": 374,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/acceptance-original/fixtures/empty.csv": {
+        "sha256": "318a41c33c77ab0db8e5c651bd4b9918c26222daf02f90d8e2e01a8bb5be516a",
+        "bytes": 26,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/acceptance-original/fixtures/invalid.csv": {
+        "sha256": "74097f4b98ff64d3b01a6233836f5505ebe99bee92b9c8bc3537cb14a2f6dd34",
+        "bytes": 61,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/acceptance-original/fixtures/precision.csv": {
+        "sha256": "c70350dc5653955376297e2ccedff0e24cf1371f5f09101958d0cd9182b723d8",
+        "bytes": 208,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/acceptance-original/fixtures/precision.expected.json": {
+        "sha256": "ac5226181296f432e36f85e1bee5b5b6c1efb519bb1ae12755dd971e66850603",
+        "bytes": 528,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/acceptance-original/logstats/__init__.py": {
+        "sha256": "ae8f92d8e600d6dc9ad8d3ac5063b4ee18d5ef365e259d9323608625b76ef7de",
+        "bytes": 45,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/acceptance-original/logstats/__main__.py": {
+        "sha256": "f849849731b05ad7b37f1e6636741a8c7ecaf00a8d5e78712e5d132522546a5b",
+        "bytes": 137,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/acceptance-original/logstats/aggregate.py": {
+        "sha256": "9d2e4a7aec763e41478efb936a03fccb545b72f775218aa8e11123e241535d0b",
+        "bytes": 177,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/acceptance-original/logstats/parser.py": {
+        "sha256": "16b2d904fab3ccfbfe24baa15473981957458ce4996f582b8c8c5238bc69cbda",
+        "bytes": 311,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/acceptance-original/tests/test_acceptance.py": {
+        "sha256": "e406b48f904550da19c4feff630962f393197f024bcc0c77683163fe26081837",
+        "bytes": 6928,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/engineering-task.json": {
+        "sha256": "3a9702ec354aa54d8f73c4b5c6fee6332f31c50447fb1271c9ad73979bcb4618",
+        "bytes": 257405,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/external-cli.json": {
+        "sha256": "54c51ed4dbf6af5a6246a34c311afc7167b0f9929a776d34fe25091009c089c6",
+        "bytes": 6178,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/external-unittest.json": {
+        "sha256": "4a8a1fbe629dd430e6772d167ae1b76f288af8e589025e06726dc881487cfca8",
+        "bytes": 30230,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/file-manifest.json": {
+        "sha256": "6c3f9cad41e8c1c40d9443fc73f233a248584ab97e40305c610ab4a38577219c",
+        "bytes": 2562,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/final-project/SPEC.md": {
+        "sha256": "3a581fcd5925e86dfcea0d87bbbcacfaf0065ed8139280c100769d8c6870c3e6",
+        "bytes": 3304,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/final-project/fixtures/basic.csv": {
+        "sha256": "6c0dcee9e8d138f61ed6da850c9bc77be3ccabe49a98fb99a693298a6b431d41",
+        "bytes": 168,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/final-project/fixtures/basic.expected.json": {
+        "sha256": "3d8d1af6ab844d19fc24b4029044458ef877dfc129232e3f9824e6bf5d54d34a",
+        "bytes": 374,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/final-project/fixtures/empty.csv": {
+        "sha256": "318a41c33c77ab0db8e5c651bd4b9918c26222daf02f90d8e2e01a8bb5be516a",
+        "bytes": 26,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/final-project/fixtures/invalid.csv": {
+        "sha256": "74097f4b98ff64d3b01a6233836f5505ebe99bee92b9c8bc3537cb14a2f6dd34",
+        "bytes": 61,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/final-project/fixtures/precision.csv": {
+        "sha256": "c70350dc5653955376297e2ccedff0e24cf1371f5f09101958d0cd9182b723d8",
+        "bytes": 208,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/final-project/fixtures/precision.expected.json": {
+        "sha256": "ac5226181296f432e36f85e1bee5b5b6c1efb519bb1ae12755dd971e66850603",
+        "bytes": 528,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/final-project/logstats/__init__.py": {
+        "sha256": "ae8f92d8e600d6dc9ad8d3ac5063b4ee18d5ef365e259d9323608625b76ef7de",
+        "bytes": 45,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/final-project/logstats/__main__.py": {
+        "sha256": "d8e720747b4a9bc74ccf691e2626ecafd177912f23615a325f71535dcf685fa4",
+        "bytes": 921,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/final-project/logstats/aggregate.py": {
+        "sha256": "c96e94ca68d1e9ea800472559bbdc882dc4d38ca265057b718d11cf9b6234e3f",
+        "bytes": 2141,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/final-project/logstats/parser.py": {
+        "sha256": "16b2d904fab3ccfbfe24baa15473981957458ce4996f582b8c8c5238bc69cbda",
+        "bytes": 311,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/final-project/tests/test_acceptance.py": {
+        "sha256": "e406b48f904550da19c4feff630962f393197f024bcc0c77683163fe26081837",
+        "bytes": 6928,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/project.diff": {
+        "sha256": "6de1dc8ed188df996e4ebcd46d7f5ccb1c499caf8cb8995eb1b644394892d8b1",
+        "bytes": 3433,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/prompt.txt": {
+        "sha256": "cf4cc64fcd5eb2b0a97323d677562e3ac7c090b491b93025c92811ade7dcef0a",
+        "bytes": 2396,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/resolved-inference.json": {
+        "sha256": "4d03609ea2cd0dd9db86366015ddf08b10e16eab2a45df20f7a3d3bab37ee214",
+        "bytes": 422,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/resolved-runtime-budgets.json": {
+        "sha256": "603b4a44b1de4ac5bf6159d496350670ecdebffe64db9e461e10bf7130580dd8",
+        "bytes": 1238,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-luna-high-r10/runner.py": {
+        "sha256": "1878a177ed32600e9d53490ad518a93ece8d729643f2e2681c7b10d11d4724c4",
+        "bytes": 36204,
+        "archive": "engineering-r10.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11.log": {
+        "sha256": "023e7ebfccfac40a2786586ad0a778c1cddd7b8e3ed4ad61cb184a0f7e0a4ccd",
+        "bytes": 203,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/INFERENCE_AUDIT.json": {
+        "sha256": "0d190b678d9b632625d7eaf0294a48ee27f43b82ec270cf2d4cb409b56660938",
+        "bytes": 9795,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/POSTRUN_SUMMARY.json": {
+        "sha256": "d54a7022770275a6d5290d33b3d94c8047b05ba765ae7e1c005212f574d4c1aa",
+        "bytes": 8549,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/PROTOCOL.json": {
+        "sha256": "70940b4e4306147be7b95b92cdb57a64cbe93b28c8ee90c0d22f2d69c597bb4f",
+        "bytes": 14987,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/RESULTS.json": {
+        "sha256": "315c42c913bd5955de918f10b38a8ecf43fb468259025ff6a6e81dfa5a7d8d78",
+        "bytes": 181935,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/RUN_EXECUTION.json": {
+        "sha256": "aa5bf4785ba72c3b2a15af821a7902e940b30b8bca88a680c92d06eccfe997ec",
+        "bytes": 23545,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/acceptance-manifest.json": {
+        "sha256": "b22f47e53e46966a7d115b46974c07626217c3b03950735cf4f2b26cf80136fc",
+        "bytes": 1139,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/acceptance-original/SPEC.md": {
+        "sha256": "3a581fcd5925e86dfcea0d87bbbcacfaf0065ed8139280c100769d8c6870c3e6",
+        "bytes": 3304,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/acceptance-original/fixtures/basic.csv": {
+        "sha256": "6c0dcee9e8d138f61ed6da850c9bc77be3ccabe49a98fb99a693298a6b431d41",
+        "bytes": 168,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/acceptance-original/fixtures/basic.expected.json": {
+        "sha256": "3d8d1af6ab844d19fc24b4029044458ef877dfc129232e3f9824e6bf5d54d34a",
+        "bytes": 374,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/acceptance-original/fixtures/empty.csv": {
+        "sha256": "318a41c33c77ab0db8e5c651bd4b9918c26222daf02f90d8e2e01a8bb5be516a",
+        "bytes": 26,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/acceptance-original/fixtures/invalid.csv": {
+        "sha256": "74097f4b98ff64d3b01a6233836f5505ebe99bee92b9c8bc3537cb14a2f6dd34",
+        "bytes": 61,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/acceptance-original/fixtures/precision.csv": {
+        "sha256": "c70350dc5653955376297e2ccedff0e24cf1371f5f09101958d0cd9182b723d8",
+        "bytes": 208,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/acceptance-original/fixtures/precision.expected.json": {
+        "sha256": "ac5226181296f432e36f85e1bee5b5b6c1efb519bb1ae12755dd971e66850603",
+        "bytes": 528,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/acceptance-original/logstats/__init__.py": {
+        "sha256": "ae8f92d8e600d6dc9ad8d3ac5063b4ee18d5ef365e259d9323608625b76ef7de",
+        "bytes": 45,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/acceptance-original/logstats/__main__.py": {
+        "sha256": "f849849731b05ad7b37f1e6636741a8c7ecaf00a8d5e78712e5d132522546a5b",
+        "bytes": 137,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/acceptance-original/logstats/aggregate.py": {
+        "sha256": "9d2e4a7aec763e41478efb936a03fccb545b72f775218aa8e11123e241535d0b",
+        "bytes": 177,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/acceptance-original/logstats/parser.py": {
+        "sha256": "16b2d904fab3ccfbfe24baa15473981957458ce4996f582b8c8c5238bc69cbda",
+        "bytes": 311,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/acceptance-original/tests/test_acceptance.py": {
+        "sha256": "e406b48f904550da19c4feff630962f393197f024bcc0c77683163fe26081837",
+        "bytes": 6928,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/engineering-task.json": {
+        "sha256": "30f15cce468f6d277ba2d10ba6e97e191e91b4f0da7c0e371bf4685e5a5b6623",
+        "bytes": 361073,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/external-cli.json": {
+        "sha256": "c2e8d4228e7c8e5b255c2ee44cd3b7250ceaef5e63f779cdb17f3a0859fd428f",
+        "bytes": 4455,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/external-unittest.json": {
+        "sha256": "40127637b3db99be9922d95c9bd54a154bb158bc7ba83c77d35b9a20d47d2444",
+        "bytes": 2032,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/file-manifest.json": {
+        "sha256": "38dcadc8969d104ccc2b6e0fabe3e7f9d039ccc9344cc728b4ddfaa234e8fcc2",
+        "bytes": 2650,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/final-project/SPEC.md": {
+        "sha256": "3a581fcd5925e86dfcea0d87bbbcacfaf0065ed8139280c100769d8c6870c3e6",
+        "bytes": 3304,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/final-project/fixtures/basic.csv": {
+        "sha256": "6c0dcee9e8d138f61ed6da850c9bc77be3ccabe49a98fb99a693298a6b431d41",
+        "bytes": 168,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/final-project/fixtures/basic.expected.json": {
+        "sha256": "3d8d1af6ab844d19fc24b4029044458ef877dfc129232e3f9824e6bf5d54d34a",
+        "bytes": 374,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/final-project/fixtures/empty.csv": {
+        "sha256": "318a41c33c77ab0db8e5c651bd4b9918c26222daf02f90d8e2e01a8bb5be516a",
+        "bytes": 26,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/final-project/fixtures/invalid.csv": {
+        "sha256": "74097f4b98ff64d3b01a6233836f5505ebe99bee92b9c8bc3537cb14a2f6dd34",
+        "bytes": 61,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/final-project/fixtures/precision.csv": {
+        "sha256": "c70350dc5653955376297e2ccedff0e24cf1371f5f09101958d0cd9182b723d8",
+        "bytes": 208,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/final-project/fixtures/precision.expected.json": {
+        "sha256": "ac5226181296f432e36f85e1bee5b5b6c1efb519bb1ae12755dd971e66850603",
+        "bytes": 528,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/final-project/logstats/__init__.py": {
+        "sha256": "ae8f92d8e600d6dc9ad8d3ac5063b4ee18d5ef365e259d9323608625b76ef7de",
+        "bytes": 45,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/final-project/logstats/__main__.py": {
+        "sha256": "61e5e5e010ded05277f62c2c68773f7bd2a06f5a7b0dceda23514aa46d17c1e3",
+        "bytes": 1415,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/final-project/logstats/aggregate.py": {
+        "sha256": "65620ff1c2ccac8de8ec0af2958b57b4f95cfc9b8334cad190c6c7fce470888f",
+        "bytes": 1947,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/final-project/logstats/parser.py": {
+        "sha256": "d1f7a93fc612cec3b7af71176338ec5d729551ca833fddda000e9de6dd1b2042",
+        "bytes": 3388,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/final-project/result.json": {
+        "sha256": "a3211a34cf3e4419cf8c2c89c33d51009dbff3d2ee06b6597cde3912af3e5a69",
+        "bytes": 284,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/final-project/tests/test_acceptance.py": {
+        "sha256": "e406b48f904550da19c4feff630962f393197f024bcc0c77683163fe26081837",
+        "bytes": 6928,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/project.diff": {
+        "sha256": "1aa5a87095833b1730e34d73372624a5264c0bee276e35efb4d1f2ad675c5e63",
+        "bytes": 7350,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/prompt.txt": {
+        "sha256": "cf4cc64fcd5eb2b0a97323d677562e3ac7c090b491b93025c92811ade7dcef0a",
+        "bytes": 2396,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/resolved-inference.json": {
+        "sha256": "4d08b44fa5f7756faebbe7f34b4f3cb4614488032921332d103d5cfc707be29d",
+        "bytes": 434,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/resolved-runtime-budgets.json": {
+        "sha256": "603b4a44b1de4ac5bf6159d496350670ecdebffe64db9e461e10bf7130580dd8",
+        "bytes": 1238,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-candidate-sol-medium-r11/runner.py": {
+        "sha256": "1878a177ed32600e9d53490ad518a93ece8d729643f2e2681c7b10d11d4724c4",
+        "bytes": 36204,
+        "archive": "engineering-r11.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9.log": {
+        "sha256": "023e7ebfccfac40a2786586ad0a778c1cddd7b8e3ed4ad61cb184a0f7e0a4ccd",
+        "bytes": 203,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/POSTRUN_SUMMARY.json": {
+        "sha256": "951493507bdb62bb1a6133dc724aa0e709947434299a1d616c7a9b9d3ed7a51c",
+        "bytes": 10537,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/PROTOCOL.json": {
+        "sha256": "d90f61fe61e5e008c67c3d08bf31c1d61a1322f811f6b5094925bff615227362",
+        "bytes": 14996,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/RESULTS.json": {
+        "sha256": "d7ca9c1fbbf3d2772c5b945a83d9c5ff3cbb1870d63762b64903718d403b87f0",
+        "bytes": 169929,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/RUN_EXECUTION.json": {
+        "sha256": "6b8921103879757577afb7f8ad5c8cfa04a6a02c7ae46c5f2d36a0879b206a43",
+        "bytes": 23550,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/acceptance-manifest.json": {
+        "sha256": "b22f47e53e46966a7d115b46974c07626217c3b03950735cf4f2b26cf80136fc",
+        "bytes": 1139,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/acceptance-original/SPEC.md": {
+        "sha256": "3a581fcd5925e86dfcea0d87bbbcacfaf0065ed8139280c100769d8c6870c3e6",
+        "bytes": 3304,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/acceptance-original/fixtures/basic.csv": {
+        "sha256": "6c0dcee9e8d138f61ed6da850c9bc77be3ccabe49a98fb99a693298a6b431d41",
+        "bytes": 168,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/acceptance-original/fixtures/basic.expected.json": {
+        "sha256": "3d8d1af6ab844d19fc24b4029044458ef877dfc129232e3f9824e6bf5d54d34a",
+        "bytes": 374,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/acceptance-original/fixtures/empty.csv": {
+        "sha256": "318a41c33c77ab0db8e5c651bd4b9918c26222daf02f90d8e2e01a8bb5be516a",
+        "bytes": 26,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/acceptance-original/fixtures/invalid.csv": {
+        "sha256": "74097f4b98ff64d3b01a6233836f5505ebe99bee92b9c8bc3537cb14a2f6dd34",
+        "bytes": 61,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/acceptance-original/fixtures/precision.csv": {
+        "sha256": "c70350dc5653955376297e2ccedff0e24cf1371f5f09101958d0cd9182b723d8",
+        "bytes": 208,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/acceptance-original/fixtures/precision.expected.json": {
+        "sha256": "ac5226181296f432e36f85e1bee5b5b6c1efb519bb1ae12755dd971e66850603",
+        "bytes": 528,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/acceptance-original/logstats/__init__.py": {
+        "sha256": "ae8f92d8e600d6dc9ad8d3ac5063b4ee18d5ef365e259d9323608625b76ef7de",
+        "bytes": 45,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/acceptance-original/logstats/__main__.py": {
+        "sha256": "f849849731b05ad7b37f1e6636741a8c7ecaf00a8d5e78712e5d132522546a5b",
+        "bytes": 137,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/acceptance-original/logstats/aggregate.py": {
+        "sha256": "9d2e4a7aec763e41478efb936a03fccb545b72f775218aa8e11123e241535d0b",
+        "bytes": 177,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/acceptance-original/logstats/parser.py": {
+        "sha256": "16b2d904fab3ccfbfe24baa15473981957458ce4996f582b8c8c5238bc69cbda",
+        "bytes": 311,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/acceptance-original/tests/test_acceptance.py": {
+        "sha256": "e406b48f904550da19c4feff630962f393197f024bcc0c77683163fe26081837",
+        "bytes": 6928,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/engineering-task.json": {
+        "sha256": "2db1e08c841b3b89d5dc26689da80af25f2fcdc739cbab4f6e23974dcbe66b32",
+        "bytes": 393726,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/external-cli.json": {
+        "sha256": "26278fbee29754c1c23a1324434aea284dc1e140fa436e6d4ee01da94929d59b",
+        "bytes": 4454,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/external-unittest.json": {
+        "sha256": "1880017fad42483ff2c932a716adfa5e8e70176c50e695bc5bcd1c9b1771d6ee",
+        "bytes": 2033,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/file-manifest.json": {
+        "sha256": "e8227b2241bb02755dde0762cc3b61d5be058880feb78096d0434c9fa0d4ff76",
+        "bytes": 2650,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/final-project/SPEC.md": {
+        "sha256": "3a581fcd5925e86dfcea0d87bbbcacfaf0065ed8139280c100769d8c6870c3e6",
+        "bytes": 3304,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/final-project/fixtures/basic.csv": {
+        "sha256": "6c0dcee9e8d138f61ed6da850c9bc77be3ccabe49a98fb99a693298a6b431d41",
+        "bytes": 168,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/final-project/fixtures/basic.expected.json": {
+        "sha256": "3d8d1af6ab844d19fc24b4029044458ef877dfc129232e3f9824e6bf5d54d34a",
+        "bytes": 374,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/final-project/fixtures/empty.csv": {
+        "sha256": "318a41c33c77ab0db8e5c651bd4b9918c26222daf02f90d8e2e01a8bb5be516a",
+        "bytes": 26,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/final-project/fixtures/invalid.csv": {
+        "sha256": "74097f4b98ff64d3b01a6233836f5505ebe99bee92b9c8bc3537cb14a2f6dd34",
+        "bytes": 61,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/final-project/fixtures/precision.csv": {
+        "sha256": "c70350dc5653955376297e2ccedff0e24cf1371f5f09101958d0cd9182b723d8",
+        "bytes": 208,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/final-project/fixtures/precision.expected.json": {
+        "sha256": "ac5226181296f432e36f85e1bee5b5b6c1efb519bb1ae12755dd971e66850603",
+        "bytes": 528,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/final-project/logstats/__init__.py": {
+        "sha256": "ae8f92d8e600d6dc9ad8d3ac5063b4ee18d5ef365e259d9323608625b76ef7de",
+        "bytes": 45,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/final-project/logstats/__main__.py": {
+        "sha256": "d52a9c9aa402d88e7dfe623bfd7b661da5e05901a6f816dde0f6ccaee5e2efd7",
+        "bytes": 1160,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/final-project/logstats/aggregate.py": {
+        "sha256": "1858e4366a2e522a85c81104b1c697a5990acd2cc63285a8c26494d8c94fcb04",
+        "bytes": 3203,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/final-project/logstats/parser.py": {
+        "sha256": "56fe0fdbb1b9593e98b3df720ecfaf1d198d764c217ad3398003667f0c52fe78",
+        "bytes": 2984,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/final-project/result.json": {
+        "sha256": "a3211a34cf3e4419cf8c2c89c33d51009dbff3d2ee06b6597cde3912af3e5a69",
+        "bytes": 284,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/final-project/tests/test_acceptance.py": {
+        "sha256": "e406b48f904550da19c4feff630962f393197f024bcc0c77683163fe26081837",
+        "bytes": 6928,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/project.diff": {
+        "sha256": "3c664a2310c2aac8564c4e859810c9b543d009cc514cf72384631c2ac41bf5b6",
+        "bytes": 7967,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/prompt.txt": {
+        "sha256": "cf4cc64fcd5eb2b0a97323d677562e3ac7c090b491b93025c92811ade7dcef0a",
+        "bytes": 2396,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/resolved-inference.json": {
+        "sha256": "4d03609ea2cd0dd9db86366015ddf08b10e16eab2a45df20f7a3d3bab37ee214",
+        "bytes": 422,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/resolved-runtime-budgets.json": {
+        "sha256": "603b4a44b1de4ac5bf6159d496350670ecdebffe64db9e461e10bf7130580dd8",
+        "bytes": 1238,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "engineering-baseline-luna-high-r9/runner.py": {
+        "sha256": "1878a177ed32600e9d53490ad518a93ece8d729643f2e2681c7b10d11d4724c4",
+        "bytes": 36204,
+        "archive": "engineering-r9.tar.gz"
+      },
+      "packaging-final-core/ARTIFACTS.json": {
+        "sha256": "e56cb83501874f0228a4d0c148653fd67a7a2452cd37ea4512ad6a39a1ca6d63",
+        "bytes": 1946,
+        "archive": "packaging-final-core.tar.gz"
+      },
+      "packaging-final-core/RESULTS.json": {
+        "sha256": "8f46ed52bc2756669bfda2be7e8ca873d87939343bfa765a758b23d9a48fed47",
+        "bytes": 5759,
+        "archive": "packaging-final-core.tar.gz"
+      },
+      "packaging-final-core/SHA256SUMS": {
+        "sha256": "0d3d1eeb654f032ad9bc5a41296c714b4066acfb263a938fae9130da4b076c26",
+        "bytes": 541,
+        "archive": "packaging-final-core.tar.gz"
+      },
+      "packaging-final-core/installed_final_core.py": {
+        "sha256": "3b6bcf9e6476be8b9aa47a45c55c55b7ec5ffec1eb6fdce4aa1a65c2b6e865c7",
+        "bytes": 14278,
+        "archive": "packaging-final-core.tar.gz"
+      },
+      "packaging-final-core/r1/build.log": {
+        "sha256": "d325c48d428598ec775669a94cb466c71ca469fa4bf3df62e2a79e513259911c",
+        "bytes": 39682,
+        "archive": "packaging-final-core.tar.gz"
+      },
+      "packaging-final-core/r1/cli-version.log": {
+        "sha256": "2fc878b680561ddeb3127b017f7f8c843ac0b18c1c8a28a4d842ac73ce4c8f87",
+        "bytes": 289,
+        "archive": "packaging-final-core.tar.gz"
+      },
+      "packaging-final-core/r1/dependencies.log": {
+        "sha256": "a4d36eb4076d352747e8e179fd5068397632d38a3ec1318855382c2fca142e74",
+        "bytes": 1407,
+        "archive": "packaging-final-core.tar.gz"
+      },
+      "packaging-final-core/r1/import-proof.json": {
+        "sha256": "e49ff9de1b68b24a3409808855267281e1a29a43394b2add53380e052903f522",
+        "bytes": 4799,
+        "archive": "packaging-final-core.tar.gz"
+      },
+      "packaging-final-core/r1/install.log": {
+        "sha256": "6ffea079187375de0296d35ebe0defabba8f38023e2df03915a93bcd5042b24e",
+        "bytes": 1546,
+        "archive": "packaging-final-core.tar.gz"
+      },
+      "packaging-final-core/r1/pip-check.log": {
+        "sha256": "d6ed46b182b1635221c33772db7005b760ad847acd8a1690e8fcc7e888584128",
+        "bytes": 166,
+        "archive": "packaging-final-core.tar.gz"
+      },
+      "packaging-final-core/r1/run.json": {
+        "sha256": "cfa310e9c72c99ed80231ad4d1986fb03e96544af45cf1ce61565090269040f2",
+        "bytes": 39760,
+        "archive": "packaging-final-core.tar.gz"
+      },
+      "packaging-final-core/r1/runner.py": {
+        "sha256": "3b6bcf9e6476be8b9aa47a45c55c55b7ec5ffec1eb6fdce4aa1a65c2b6e865c7",
+        "bytes": 14278,
+        "archive": "packaging-final-core.tar.gz"
+      },
+      "packaging-final-core/r1/source-after.json": {
+        "sha256": "3f54c01947f932d9c0e0f1a9a5fc473a80cea21d19582f559646aa0e2e9e4e3c",
+        "bytes": 71950,
+        "archive": "packaging-final-core.tar.gz"
+      },
+      "packaging-final-core/r1/source-before.json": {
+        "sha256": "3f54c01947f932d9c0e0f1a9a5fc473a80cea21d19582f559646aa0e2e9e4e3c",
+        "bytes": 71950,
+        "archive": "packaging-final-core.tar.gz"
+      },
+      "packaging-final-core/r1/stage.log": {
+        "sha256": "ee950356d77ba4da078a7f58a7d7ea24b21d5bf152994bba7d0461d5f6ffe680",
+        "bytes": 24257,
+        "archive": "packaging-final-core.tar.gz"
+      },
+      "packaging-final-core/r1/tests.log": {
+        "sha256": "214d36ac1238fff415992d80e88110711601573e8d2999175dffc8ca1fe3fb6b",
+        "bytes": 6522,
+        "archive": "packaging-final-core.tar.gz"
+      },
+      "packaging-final-core/r1/venv.log": {
+        "sha256": "896515d1bc707967f30565629bb63a1cf7b707ca835547f506fb1d9dc4d090aa",
+        "bytes": 214,
+        "archive": "packaging-final-core.tar.gz"
+      },
+      "packaging/ARTIFACTS.json": {
+        "sha256": "5246378b2ef3c52ea07c7825e57cd935ef3094125c4c02811b2b36184a68372f",
+        "bytes": 932,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/RESULTS.json": {
+        "sha256": "9485878a72a53de7c59055a89610446b1bb644c83d6fd0c9cc5b526307a97388",
+        "bytes": 4579,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/SHA256SUMS": {
+        "sha256": "0f8b701d8040cbe584308a74ab3eaa6838ad61f0d1f366131008175346295667",
+        "bytes": 490,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/build-environment.json": {
+        "sha256": "af31509465630116cb4ffcbc6d394e9ea2069fa30e834f33f925a88900b02b52",
+        "bytes": 727,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/build-environment.log": {
+        "sha256": "327b73f27299e21d33cf5c62473d94952d45b5d7093897e5c100b5b010fdb46b",
+        "bytes": 1370,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/installed_gate.py": {
+        "sha256": "6e0089487fbee414498c22b0a227ea83a7a48904b8c473b2acdb3554c2d11f88",
+        "bytes": 14068,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/r1/PROGRESS.json": {
+        "sha256": "4f799bcb8587c6a2e24ec826a96d038de4aa93e7b775475ecd4ea577d9c76a76",
+        "bytes": 39981,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/r1/build.log": {
+        "sha256": "2f2719814ac1f09f7c040d9b36add7dec24ec14697f2ab89d70709ef75ea735d",
+        "bytes": 84063,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/r1/cli-version.log": {
+        "sha256": "60b3a354a756c6738008356efad62891e2028db0a64d59f180f1bf2005552456",
+        "bytes": 278,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/r1/dependencies.log": {
+        "sha256": "10d90085245231f3e01f6e0d2e3b5fbb409bed399ce94d254ab2b4fd6ea531a1",
+        "bytes": 1396,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/r1/import-proof.json": {
+        "sha256": "da7a8cace28d5b3a423becdfcd119d43c621019e89b30e92f51341b54dc798a1",
+        "bytes": 4689,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/r1/install.log": {
+        "sha256": "7af397b63d02df09b2e8f734014cf068d62b895bc210a2d10acd09626de72ad9",
+        "bytes": 1513,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/r1/pip-check.log": {
+        "sha256": "d7a4f7925d1e4c519b77971f3a453c6bb3c83b8900a73b5aaeb6315ee1940059",
+        "bytes": 155,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/r1/run.json": {
+        "sha256": "4d88f09ed02033ccd38e87e684d103e68a169572277462aeeb0400afc39c332a",
+        "bytes": 40718,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/r1/runner.py": {
+        "sha256": "6e0089487fbee414498c22b0a227ea83a7a48904b8c473b2acdb3554c2d11f88",
+        "bytes": 14068,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/r1/source-after.json": {
+        "sha256": "8aeff0cc2b2c13a482ec7cc90fd5310f001ae48d32d01a424f2f97621701bacd",
+        "bytes": 71950,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/r1/source-before.json": {
+        "sha256": "8aeff0cc2b2c13a482ec7cc90fd5310f001ae48d32d01a424f2f97621701bacd",
+        "bytes": 71950,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/r1/stage.log": {
+        "sha256": "46ffb44e7c4a5ceebd7734c89b5daa58f8e2e6c15e8704b1786ffa5644cf18ab",
+        "bytes": 24246,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/r1/tests.log": {
+        "sha256": "2c5a5fe2272a4dc8cd1170381a51e132d222d6856c606d3995417e6591cd8ff9",
+        "bytes": 12222,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/r1/venv.log": {
+        "sha256": "8e556fac08b8b537ba8825da5c2ddad2963d1eb7bd66fdc9e94bc67e9a9cf472",
+        "bytes": 203,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/recheck_installed.py": {
+        "sha256": "a913e815506dfe39dc9ff9132a27a4768803b777a7bdf0293544a808d249b021",
+        "bytes": 3873,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/verification-r2/run.json": {
+        "sha256": "85457fad2d77945ca2f1c8914665b43fed87069942fe9f9da26d974078b246af",
+        "bytes": 148261,
+        "archive": "packaging-original.tar.gz"
+      },
+      "packaging/verification-r2/tests.log": {
+        "sha256": "3eb8fd4e2fd7870ae336133c86d9daf3358d65d347121d3443677fb506c4196b",
+        "bytes": 1145,
+        "archive": "packaging-original.tar.gz"
+      },
+      "environment/final-pip-freeze.txt": {
+        "sha256": "98b7ed9a203c8a6b6f7cc5cac7282a4473b744278dbe932f76dcdd5dc611e96c",
+        "bytes": 1394,
+        "archive": "regressions.tar.gz"
+      },
+      "environment/install-test-extras.log": {
+        "sha256": "07aab9a2d2efce71b06a73144fb599e49128f803c6bd402156467602601541f2",
+        "bytes": 10445,
+        "archive": "regressions.tar.gz"
+      },
+      "environment/validation-dependencies.json": {
+        "sha256": "1da1f13e638eaf8f71603a477cf03894a81f2ebf9b48164f0f19312c1d453060",
+        "bytes": 552,
+        "archive": "regressions.tar.gz"
+      },
+      "full-companion-r1/run.json": {
+        "sha256": "50b8e0f50bad4746f100c857aac8f309fa945ad74e5130057fd78964735a1fb3",
+        "bytes": 615,
+        "archive": "regressions.tar.gz"
+      },
+      "full-companion-r1/runner.py": {
+        "sha256": "d85c470e95bebbb57d5d43939fc858d11c821453abf6aeba9e198961f0734fa2",
+        "bytes": 5025,
+        "archive": "regressions.tar.gz"
+      },
+      "full-companion-r1/source-after.json": {
+        "sha256": "7697717def213fe33e29730d11a2f03396a59b11088c1f3d68ba3d17b6a03078",
+        "bytes": 63813,
+        "archive": "regressions.tar.gz"
+      },
+      "full-companion-r1/source-before.json": {
+        "sha256": "7697717def213fe33e29730d11a2f03396a59b11088c1f3d68ba3d17b6a03078",
+        "bytes": 63813,
+        "archive": "regressions.tar.gz"
+      },
+      "full-companion-r1/tests.json": {
+        "sha256": "0d4e9805c1222e6a3bb880c71c098776255a7d863772f7bd5407e346b071b4b7",
+        "bytes": 115177,
+        "archive": "regressions.tar.gz"
+      },
+      "full-companion-r1/unittest.log": {
+        "sha256": "a8d0262ab86d52031a9271aa3d1e00ac6e9a06d7e94c60d22dc8051ffde94959",
+        "bytes": 130366,
+        "archive": "regressions.tar.gz"
+      },
+      "full-core-r1/console-final-chunk.json": {
+        "sha256": "835de5a042104f07025f38cefba7a9fbebc26b6bac81565b2c81baa97628add4",
+        "bytes": 5213,
+        "archive": "regressions.tar.gz"
+      },
+      "full-core-r1/run.json": {
+        "sha256": "3970b7146bbdf943ebd70483e462528ddbcadabccecd4fe68f4e09b160823e74",
+        "bytes": 604,
+        "archive": "regressions.tar.gz"
+      },
+      "full-core-r1/runner.py": {
+        "sha256": "d85c470e95bebbb57d5d43939fc858d11c821453abf6aeba9e198961f0734fa2",
+        "bytes": 5025,
+        "archive": "regressions.tar.gz"
+      },
+      "full-core-r1/source-after.json": {
+        "sha256": "7697717def213fe33e29730d11a2f03396a59b11088c1f3d68ba3d17b6a03078",
+        "bytes": 63813,
+        "archive": "regressions.tar.gz"
+      },
+      "full-core-r1/source-before.json": {
+        "sha256": "7697717def213fe33e29730d11a2f03396a59b11088c1f3d68ba3d17b6a03078",
+        "bytes": 63813,
+        "archive": "regressions.tar.gz"
+      },
+      "full-core-r1/tests.json": {
+        "sha256": "28219d42adfbe32f36f6c71ee9e0500cf36773795b8335f38145321b49c12d08",
+        "bytes": 267232,
+        "archive": "regressions.tar.gz"
+      },
+      "full-core-r1/unittest.log": {
+        "sha256": "49fce1b616ca0c8a43e788f43e1ca36b19b5f79f7888a0182f4439ec2175e34b",
+        "bytes": 310638,
+        "archive": "regressions.tar.gz"
+      },
+      "full-core-r2-summary.json": {
+        "sha256": "43ce4af45a8f7c4f71c61a45a7e2b2a84748b1838e636938ed545134f6586366",
+        "bytes": 35259,
+        "archive": "regressions.tar.gz"
+      },
+      "full-core-r2/run.json": {
+        "sha256": "a73552285b8fd6d5f2cf3af8293af4cbe1720c2d82921e491dae9ea142f60586",
+        "bytes": 612,
+        "archive": "regressions.tar.gz"
+      },
+      "full-core-r2/runner.py": {
+        "sha256": "5882fcc3f4965fa44f899aa0b7629e9473d0e4af7973ed7b3d8ac4f35896ec7a",
+        "bytes": 5440,
+        "archive": "regressions.tar.gz"
+      },
+      "full-core-r2/source-after.json": {
+        "sha256": "422379425da52893c1b4a81cd77881f3826b176e11f21a935d06b8e80adb2725",
+        "bytes": 63813,
+        "archive": "regressions.tar.gz"
+      },
+      "full-core-r2/source-before.json": {
+        "sha256": "422379425da52893c1b4a81cd77881f3826b176e11f21a935d06b8e80adb2725",
+        "bytes": 63813,
+        "archive": "regressions.tar.gz"
+      },
+      "full-core-r2/tests.json": {
+        "sha256": "246c6c6f3e603e6a2e04947b6d733c04b653bc29003b76806474236461dfa6f4",
+        "bytes": 255974,
+        "archive": "regressions.tar.gz"
+      },
+      "full-core-r2/unittest.log": {
+        "sha256": "3b467e5aa882c0ca86117011228954e1751e725121f71fa5564904c66b5be0c8",
+        "bytes": 294452,
+        "archive": "regressions.tar.gz"
+      },
+      "full-regression-r1-summary.json": {
+        "sha256": "3d047628d0e5f10b6fef2d5a9fddce9841470ffc174bb4f0c8a233e9696dfe71",
+        "bytes": 31484,
+        "archive": "regressions.tar.gz"
+      },
+      "full-suite-r1/run.json": {
+        "sha256": "d1714fe73060c43fdfce81d51c182a7f2f2a04c5f7b37a1b25511b52cd2a5e85",
+        "bytes": 610,
+        "archive": "regressions.tar.gz"
+      },
+      "full-suite-r1/runner.py": {
+        "sha256": "d85c470e95bebbb57d5d43939fc858d11c821453abf6aeba9e198961f0734fa2",
+        "bytes": 5025,
+        "archive": "regressions.tar.gz"
+      },
+      "full-suite-r1/source-after.json": {
+        "sha256": "7697717def213fe33e29730d11a2f03396a59b11088c1f3d68ba3d17b6a03078",
+        "bytes": 63813,
+        "archive": "regressions.tar.gz"
+      },
+      "full-suite-r1/source-before.json": {
+        "sha256": "7697717def213fe33e29730d11a2f03396a59b11088c1f3d68ba3d17b6a03078",
+        "bytes": 63813,
+        "archive": "regressions.tar.gz"
+      },
+      "full-suite-r1/tests.json": {
+        "sha256": "f010f6b3d28a600b0c09616787e55db092164d1e8bc7ecb1966efea99b5f4000",
+        "bytes": 19114,
+        "archive": "regressions.tar.gz"
+      },
+      "full-suite-r1/unittest.log": {
+        "sha256": "ec909ee3f24185207a14672d365ee2d2f2e4278d19cbc05f242db0d95bb35d8d",
+        "bytes": 22616,
+        "archive": "regressions.tar.gz"
+      },
+      "publish_evidence.config.json": {
+        "sha256": "255deabc173db886563bbf440459a2bf1cbd5ef33b4ac68f8db75ebff7d65192",
+        "bytes": 35587,
+        "archive": "regressions.tar.gz"
+      },
+      "publish_evidence.py": {
+        "sha256": "cd2acaf1eaf9539dd51414d93240d0d061ac32dab8fa9b741f503d7211fd1b61",
+        "bytes": 11498,
+        "archive": "regressions.tar.gz"
+      },
+      "run_tests.py": {
+        "sha256": "5882fcc3f4965fa44f899aa0b7629e9473d0e4af7973ed7b3d8ac4f35896ec7a",
+        "bytes": 5440,
+        "archive": "regressions.tar.gz"
+      },
+      "runner-main-guard.json": {
+        "sha256": "4430deb1c1e24f6febe655ab7b9546def9d8d66a7487a5467dc6fc6cba1ecc88",
+        "bytes": 546,
+        "archive": "regressions.tar.gz"
+      },
+      "scheduling/SCHEDULING_REPORT.json": {
+        "sha256": "e9ae4135c4397c3ad2ab4935f3b1a837125fee3d3e00ea6a7294ad4e61f4cab5",
+        "bytes": 3726,
+        "archive": "scheduling.tar.gz"
+      },
+      "scheduling/frontend-r1/RESULTS.json": {
+        "sha256": "8c5a636d63f57753c66e6a289c028636fc60ac9b28b7dac77026784ce2926a8f",
+        "bytes": 1021,
+        "archive": "scheduling.tar.gz"
+      },
+      "scheduling/frontend-r1/SOURCE_AFTER.json": {
+        "sha256": "cd6f6dfd33de4eee947f3bc46034871e3d746c0aa030e89a0b1e54a807910ce2",
+        "bytes": 16469,
+        "archive": "scheduling.tar.gz"
+      },
+      "scheduling/frontend-r1/SOURCE_BEFORE.json": {
+        "sha256": "cd6f6dfd33de4eee947f3bc46034871e3d746c0aa030e89a0b1e54a807910ce2",
+        "bytes": 16469,
+        "archive": "scheduling.tar.gz"
+      },
+      "scheduling/frontend-r1/build.log": {
+        "sha256": "af849d90e7053737da93f70ea402d14ab7b78621bdf3d6cb609b89e6bd3b96ff",
+        "bytes": 889,
+        "archive": "scheduling.tar.gz"
+      },
+      "scheduling/frontend-r1/ui.log": {
+        "sha256": "19787bcb7977e98d702f428cd0fcd7ef4026a4395c383d02bee92395f0163568",
+        "bytes": 11870,
+        "archive": "scheduling.tar.gz"
+      },
+      "scheduling/frontend-r1/ui/browser-tests.json": {
+        "sha256": "bcb47d6c6f27a28bebc4b33ed723ba58e8a39c201b8b6e90a687f4ed1ba54e1a",
+        "bytes": 36561,
+        "archive": "scheduling.tar.gz"
+      },
+      "scheduling/frontend-r1/ui/test-results/.last-run.json": {
+        "sha256": "edd64482c7e0a1e83e33b004914db45cd80b60943eae1124e916b12582e7bac7",
+        "bytes": 145,
+        "archive": "scheduling.tar.gz"
+      },
+      "scheduling/frontend-r1/ui/test-results/model-configuration-option-11377-ator-and-configured-efforts/error-context.md": {
+        "sha256": "6c4e32559cf4d6be629a08687c5718e00d02da3c87f7a22a7b900d419aab1570",
+        "bytes": 5092,
+        "archive": "scheduling.tar.gz"
+      },
+      "scheduling/frontend-r1/ui/test-results/model-configuration-removi-2e8dc--clears-both-optional-roles/error-context.md": {
+        "sha256": "72e2f4ba3ced9a5afa0955b15eae9d7ab22a769cbf3b27b9b9fbc4fcebc9c907",
+        "bytes": 5087,
+        "archive": "scheduling.tar.gz"
+      },
+      "scheduling/frontend-r1/unit.log": {
+        "sha256": "46ae575c9881a757d46e4ba229229ab58db85ea865a4f158f734b5f399ffe58d",
+        "bytes": 408,
+        "archive": "scheduling.tar.gz"
+      },
+      "scheduling/initial-frontend-tools.json": {
+        "sha256": "9afba9f642800b0cb3045bd0391ef0b21cb4804097e2de48b1ea0b47e3fcff9e",
+        "bytes": 777,
+        "archive": "scheduling.tar.gz"
+      },
+      "scheduling/npm-ci.json": {
+        "sha256": "4f646c6e5cb00edd357fceb42e4cb5ebf37518532ffcda2f05fd1d2e5dbb416f",
+        "bytes": 285,
+        "archive": "scheduling.tar.gz"
+      },
+      "scheduling/r1/RESULTS.json": {
+        "sha256": "14de2f5eb08f704cc6cb05c294347107a1477b4ee820d36eaedfa082e41a426d",
+        "bytes": 1086,
+        "archive": "scheduling.tar.gz"
+      },
+      "scheduling/r1/SOURCE_AFTER.json": {
+        "sha256": "8482ecb5de208b0ba219562151171140fcc0124907d2344cbe612c03d5ac5742",
+        "bytes": 18970,
+        "archive": "scheduling.tar.gz"
+      },
+      "scheduling/r1/SOURCE_BEFORE.json": {
+        "sha256": "8482ecb5de208b0ba219562151171140fcc0124907d2344cbe612c03d5ac5742",
+        "bytes": 18970,
+        "archive": "scheduling.tar.gz"
+      },
+      "scheduling/r1/core.log": {
+        "sha256": "cb5b6530ac711500c1475d213d5bae6ab13d6251e03ce96a851c9b402ff7e579",
+        "bytes": 1056,
+        "archive": "scheduling.tar.gz"
+      },
+      "scheduling/r1/suite.log": {
+        "sha256": "2f3bc7b134c37d8d43ebae0a43dd8870cd5eaeb6e15e432d0b7a26abf56ead5a",
+        "bytes": 2865,
+        "archive": "scheduling.tar.gz"
+      },
+      "scheduling/run_checks.py": {
+        "sha256": "c21a95edd707d099357a36304f6551e32e082f913ccfa502d8a573f1836cb7ca",
+        "bytes": 2796,
+        "archive": "scheduling.tar.gz"
+      },
+      "scheduling/run_frontend.py": {
+        "sha256": "20ce3562ecba37325e08041af670d6308510af069de15eb98b891cd2e5a0d18b",
+        "bytes": 2931,
+        "archive": "scheduling.tar.gz"
+      },
+      "companion/PERF_COMPARISON.json": {
+        "sha256": "dc4de156cd48cba0c7b3f985d73b55bc534c79fb5d1ed1c298f2e06e97f63234",
+        "bytes": 27431,
+        "archive": "storage.tar.gz"
+      },
+      "companion/PERF_FINAL_SOURCE_EQUIVALENCE.json": {
+        "sha256": "969ea3ad7284f333a3fd72b109a4d4b93a58e9962c4e08d646697397d033ac09",
+        "bytes": 981,
+        "archive": "storage.tar.gz"
+      },
+      "companion/measure_history.py": {
+        "sha256": "176c67804fcfa2445f926a644e6e060354f4cef6af9469ce4fea784b3b43f84f",
+        "bytes": 9669,
+        "archive": "storage.tar.gz"
+      },
+      "companion/migration-r1/RESULTS.json": {
+        "sha256": "547f737fbd852320b6e9ee4bc037bf613fb20943f239e3b5792ccf9cc5c4e4bc",
+        "bytes": 1415,
+        "archive": "storage.tar.gz"
+      },
+      "companion/migration-r2/RESULTS.json": {
+        "sha256": "ad9e72eeae8d579e620a1334b428cfe8e9ea50c9457affed247f129486515faa",
+        "bytes": 1415,
+        "archive": "storage.tar.gz"
+      },
+      "companion/migration-r2/execution.json": {
+        "sha256": "e940162b8762fba6a1b6040f528abdf5f29403d7a99db3a5a585c758a9ae88c6",
+        "bytes": 730,
+        "archive": "storage.tar.gz"
+      },
+      "companion/migration-r2/probe.log": {
+        "sha256": "615841cf808d9bf3c3b4e782a3c9d09bf4153b8390149666f89ff4e3e5fc0875",
+        "bytes": 1377,
+        "archive": "storage.tar.gz"
+      },
+      "companion/migration-r2/source-after.json": {
+        "sha256": "7697717def213fe33e29730d11a2f03396a59b11088c1f3d68ba3d17b6a03078",
+        "bytes": 63813,
+        "archive": "storage.tar.gz"
+      },
+      "companion/migration-r2/source-before.json": {
+        "sha256": "7697717def213fe33e29730d11a2f03396a59b11088c1f3d68ba3d17b6a03078",
+        "bytes": 63813,
+        "archive": "storage.tar.gz"
+      },
+      "companion/migration_probe.py": {
+        "sha256": "f95f8799661ffe0b9115e0a3d515fd02aa4b516c80bedd5d9920ba3ec6a12ffa",
+        "bytes": 5212,
+        "archive": "storage.tar.gz"
+      },
+      "companion/perf-baseline-r1.console.log": {
+        "sha256": "5bdab125c94b82ce1708f9b24d81b639b366ed79c6b7e1f0d92c06be5bb66cd4",
+        "bytes": 598,
+        "archive": "storage.tar.gz"
+      },
+      "companion/perf-baseline-r1/PROGRESS.json": {
+        "sha256": "6f497ea9b82d8d8f603de3eb070ac0057f7203374ed65adcbafc0bb43d5af0e5",
+        "bytes": 58456,
+        "archive": "storage.tar.gz"
+      },
+      "companion/perf-baseline-r1/RESULTS.json": {
+        "sha256": "a260ab11afd1172cbb1d9ec77dd89f2e5da7f0b062fc4b16e27b8600cb6cd053",
+        "bytes": 104360,
+        "archive": "storage.tar.gz"
+      },
+      "companion/perf-baseline-r1/execution.json": {
+        "sha256": "10497cabe5b78a0470041b8d1fb794a084a3ed0d109c58f0f75fdcb917e6dc15",
+        "bytes": 1035,
+        "archive": "storage.tar.gz"
+      },
+      "companion/perf-candidate-r1.console.log": {
+        "sha256": "5144e96b2506ae3e8d27372711ed009efbe3fc36dc06fc3195b4abfb244ea43b",
+        "bytes": 588,
+        "archive": "storage.tar.gz"
+      },
+      "companion/perf-candidate-r1/PROGRESS.json": {
+        "sha256": "0e2163df324e39229e1886cb04e113fe8ba674e284ba4119ee99be22fc384fb0",
+        "bytes": 59701,
+        "archive": "storage.tar.gz"
+      },
+      "companion/perf-candidate-r1/RESULTS.json": {
+        "sha256": "636df3552b05d3058199875093b1e3a560394a4c725a6b92e0f71691ca79fd9d",
+        "bytes": 106264,
+        "archive": "storage.tar.gz"
+      },
+      "companion/perf-candidate-r1/execution.json": {
+        "sha256": "51db2ce619aae8c18508f488cab2cebf71b04c1d59fefa12acb5671ec80dd4d0",
+        "bytes": 1001,
+        "archive": "storage.tar.gz"
+      },
+      "review-companion-source-read.json": {
+        "sha256": "e2eb4bd07b05f138cc829e6fe1703940f9f9f77c2e2bb9748bf34f7700d6ce6c",
+        "bytes": 1986,
+        "archive": "storage.tar.gz"
+      },
+      "review-companion.json": {
+        "sha256": "0cd575f3751915cb812e85606e6b771b753975a415f45f624c384695570e0891",
+        "bytes": 10733,
+        "archive": "storage.tar.gz"
+      },
+      "ENGINEERING_COMPARISON.json": {
+        "sha256": "88bead09600a07ff3e909e8f54a1e1aaa00232f06aeed40a6d1bd2d72040eea0",
+        "bytes": 10628,
+        "archive": "superagent.tar.gz"
+      },
+      "ENGINEERING_PUBLIC_EVIDENCE_ALLOWLIST.json": {
+        "sha256": "72d24c92c43f1ebf63799f8387d2b132d9fede5cfffef3bce5a7e16a4f435bfc",
+        "bytes": 23937,
+        "archive": "superagent.tar.gz"
+      },
+      "diagnose_rotation_budget.py": {
+        "sha256": "53b07033a93eba98477b03d40b636f1dc92be8e9bfc9f09ce30a68b774532509",
+        "bytes": 3271,
+        "archive": "superagent.tar.gz"
+      },
+      "extract_engineering_inference.py": {
+        "sha256": "8fd71ae43c1e94031a7803441bbff7ecac13d358304399a8b3dc1ad5861aeca1",
+        "bytes": 3652,
+        "archive": "superagent.tar.gz"
+      },
+      "review-core-final-delta.json": {
+        "sha256": "f8991faccd9e5dc1ba71988a83683a4adb02d825f8506dbb3a10fc3d33f59de0",
+        "bytes": 2789,
+        "archive": "superagent.tar.gz"
+      },
+      "review-core-fixed.json": {
+        "sha256": "1d54b36ea620f7abdd632033d37c231a4f1faae4fd4f3588868a4fb71791e25d",
+        "bytes": 4484,
+        "archive": "superagent.tar.gz"
+      },
+      "review-core-fixed.log": {
+        "sha256": "1723b35d3b30752ed34eda830f4847f615e11f153488498843f01c026608454b",
+        "bytes": 717,
+        "archive": "superagent.tar.gz"
+      },
+      "review-core-reproductions.json": {
+        "sha256": "af5d9c51c0de1b164e86dac2cc5c1d68ba42d38ed49ea9bb4884b6d8512c2b20",
+        "bytes": 3816,
+        "archive": "superagent.tar.gz"
+      },
+      "review-core.json": {
+        "sha256": "b269fa3b2da27482598da8c941208b614a7a66881d79a5773aa7f3f968d25498",
+        "bytes": 8603,
+        "archive": "superagent.tar.gz"
+      },
+      "rotation-budget/baseline.json": {
+        "sha256": "d24ed764f37bc0f0c7f5d7cb8f28fd2b7e32ad7c30f42a678e986087006ce356",
+        "bytes": 1812,
+        "archive": "superagent.tar.gz"
+      },
+      "rotation-budget/baseline.log": {
+        "sha256": "890136a73ea9efb35acc207e09367520d32f0a42db840a0e31734e06f1fbd979",
+        "bytes": 330,
+        "archive": "superagent.tar.gz"
+      },
+      "rotation-budget/candidate-without-contract.json": {
+        "sha256": "eadff0a74102603c260d85339400b0442275d385a56124372f76397bef5a5ab6",
+        "bytes": 1802,
+        "archive": "superagent.tar.gz"
+      },
+      "rotation-budget/candidate-without-contract.log": {
+        "sha256": "720dcf7c40250cc00986dc522dfecfe22560c497160dac3cc4d3fb407304ba84",
+        "bytes": 330,
+        "archive": "superagent.tar.gz"
+      },
+      "rotation-budget/candidate.json": {
+        "sha256": "d71fa666908b092bcf8d3ce44eb7dfc462907833dda69c7ff783ca72fc87f514",
+        "bytes": 2114,
+        "archive": "superagent.tar.gz"
+      },
+      "rotation-budget/candidate.log": {
+        "sha256": "99774f5bffed38eb637cd772e74f40897e52bef93f0498df18b67a56f63a5736",
+        "bytes": 1470,
+        "archive": "superagent.tar.gz"
+      },
+      "summarize_engineering_run.py": {
+        "sha256": "a46313471952afdd3577588dd9f8cdc9a0a17b03cc5a8766cd909e157adb1554",
+        "bytes": 10163,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/REPAIR_ANALYSIS.json": {
+        "sha256": "ed7ec9184be89a305e5a6e6a367ab32fb9a26be67736a2364484155ee4eae819",
+        "bytes": 3505,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/cross-version-r2/expected.json": {
+        "sha256": "c8be2a7d8a7ce1598fb84529ddbbb7d4201230ea3cbfba0e4f883c6e78038ab0",
+        "bytes": 6600,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/cross-version-r2/original-system.txt": {
+        "sha256": "882fc7bc3a3c877a308366b55eb9d82bb2714c4ef6a805e11c58fdfa65d88458",
+        "bytes": 2733,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/cross-version-r2/restore.json": {
+        "sha256": "308e2e7bb9556e30a58bf3c9cc53a9af34ca0e051ebcf64da1ea947e4656ad04",
+        "bytes": 249,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/cross-version-r2/write.json": {
+        "sha256": "5c554cee2b931e2503ffaa00160f53a3c59b2508910db81e561118acad50d34f",
+        "bytes": 162,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/cross-version/expected.json": {
+        "sha256": "cb104148910e07725d8d3b32d3e97e7959f96c51dbf8d50b849f791769eef1bd",
+        "bytes": 6603,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/cross-version/original-system.txt": {
+        "sha256": "882fc7bc3a3c877a308366b55eb9d82bb2714c4ef6a805e11c58fdfa65d88458",
+        "bytes": 2733,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/cross-version/restore.json": {
+        "sha256": "308e2e7bb9556e30a58bf3c9cc53a9af34ca0e051ebcf64da1ea947e4656ad04",
+        "bytes": 249,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/cross-version/write.json": {
+        "sha256": "5c554cee2b931e2503ffaa00160f53a3c59b2508910db81e561118acad50d34f",
+        "bytes": 162,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/cross_version_session.py": {
+        "sha256": "57f13513bf80954c93b1e52b967760bb5808a60d1fdc262bbe76c1c79341a588",
+        "bytes": 3762,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/review-negative-control-r2.log": {
+        "sha256": "11421d19a86d8d74626d0bd6342ec799888618a65715e28371ddd6d58f44efb1",
+        "bytes": 2263,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/review-negative-control.log": {
+        "sha256": "c529ebbffbcbeff106678b847b661179608c8dd7f369c16f0f95107a38bb3ddf",
+        "bytes": 4585,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/review-positive-control-r2.log": {
+        "sha256": "494c49fb246a8fe6686ab15ae6035d02bb308400f7c61294d46bce9daa22a3a2",
+        "bytes": 717,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/review-positive-control.log": {
+        "sha256": "331df1e2150e72fbe3e020e350e15ed68bf81357cc960d590bb7832b46f8eb03",
+        "bytes": 2910,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/rotation-fix-r1/RESULTS.json": {
+        "sha256": "3e431a46cd21d49be97d05812381646a2882a6fc486ecc369a00c656e9049a9d",
+        "bytes": 525,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/rotation-fix-r1/source-after.json": {
+        "sha256": "193db384d7ae1ed8311d65a929c9a0b4f851f694d266204447d4a89b2b365887",
+        "bytes": 11391,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/rotation-fix-r1/source-before.json": {
+        "sha256": "193db384d7ae1ed8311d65a929c9a0b4f851f694d266204447d4a89b2b365887",
+        "bytes": 11391,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/rotation-fix-r1/unittest.log": {
+        "sha256": "e1ce559382759371b51e3daf955516091d228ede2d1865db8f596c99f2ea621c",
+        "bytes": 5656,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/run_rotation_fix.py": {
+        "sha256": "a29de2fdcc47cd03c301e25da5d4d58b0bae340fb651da6d1485395f32b18462",
+        "bytes": 2321,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/run_targeted.py": {
+        "sha256": "8ae76e36332d8208649997dca1520cb2db9f669fee158d38185398f81e4e846e",
+        "bytes": 2487,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/run_targeted_r2.py": {
+        "sha256": "14c80fae0bbd46c13faa6b6f353767ac5dcf2fc7a1351c3ecd0d40b2b34cd164",
+        "bytes": 2562,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/targeted-r1/RESULTS.json": {
+        "sha256": "c932ff893d8f83ae7c675b49d5ad0a8e0b18f289b2e99dfa53b3a3ab2c2693e8",
+        "bytes": 694,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/targeted-r1/source-after.json": {
+        "sha256": "47b588d8724a735e5a46fe053b64ae86cbf48e5bbe27de5b81dd4a60da752071",
+        "bytes": 11904,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/targeted-r1/source-before.json": {
+        "sha256": "47b588d8724a735e5a46fe053b64ae86cbf48e5bbe27de5b81dd4a60da752071",
+        "bytes": 11904,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/targeted-r1/unittest.log": {
+        "sha256": "ab037c6cc85662265d99846fc8232b4a8f18a8e08a2aa9b378dac723123038c2",
+        "bytes": 20401,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/targeted-r2/RESULTS.json": {
+        "sha256": "f411a76386b415820de3b3f46e81a10be0f96ddf826d9d393c71ada48faf5c9e",
+        "bytes": 767,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/targeted-r2/source-after.json": {
+        "sha256": "8b53dfc363b0a876cd5273de1dc497511acc9491fb9e649bc3eecdd8a66efb25",
+        "bytes": 12114,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/targeted-r2/source-before.json": {
+        "sha256": "8b53dfc363b0a876cd5273de1dc497511acc9491fb9e649bc3eecdd8a66efb25",
+        "bytes": 12114,
+        "archive": "superagent.tar.gz"
+      },
+      "superagent/targeted-r2/unittest.log": {
+        "sha256": "18562233e96f68d50da52b7b1d07bfd601131c1640e7edc7fc8b15fa09453528",
+        "bytes": 26506,
+        "archive": "superagent.tar.gz"
+      },
+      "work-contract-tools-only.patch": {
+        "sha256": "b7b9c0f4438f580fe1db24f3797aac3afef19eef756eb018f108b1e9ab4cec98",
+        "bytes": 717,
+        "archive": "superagent.tar.gz"
+      }
+    }
+  },
+  "public_material_scan": {
+    "credential_pattern_hits": [],
+    "database_private_runtime_or_wheel_members_found": 0,
+    "scope": "Pattern-only scan of public files and selected archive bytes; no private credential file opened. Exporter known-credential exact-match result was read but not independently repeated.",
+    "result": "No API-key/private-key pattern hits in selected public bytes. No private credential was read or printed by this reviewer; this is not a universal proof about arbitrary unknown secret formats."
+  },
+  "source_identity": {
+    "status": "PASS",
+    "trees": {
+      "baseline": "c4ade41c6f50064d9c9ede0fc900fe2b5bb4ec4f",
+      "initial_candidate": "2272b6f3a975d26bcae1c020b94bb3e2ca4ef04f",
+      "final_candidate": "6923f502896ebc565be54532e49107fd1bbd21d9"
+    },
+    "changed_files_verified": 57,
+    "source_equivalence_checks": [
+      {
+        "input": "full-core-r2/source-before.json",
+        "files": 607,
+        "scope_prefix": "",
+        "match": true
+      },
+      {
+        "input": "full-companion-r1/source-before.json",
+        "files": 169,
+        "scope_prefix": "companion/",
+        "match": true
+      },
+      {
+        "input": "full-suite-r1/source-before.json",
+        "files": 43,
+        "scope_prefix": "suite/",
+        "match": true
+      },
+      {
+        "input": "scheduling/frontend-r1/SOURCE_BEFORE.json",
+        "files": 112,
+        "scope_prefix": "",
+        "match": true
+      },
+      {
+        "input": "companion/migration-r2/source-before.json",
+        "files": 169,
+        "scope_prefix": "companion/",
+        "match": true
+      }
+    ],
+    "versions": {
+      "desktop": "5.0.1-rc.17",
+      "core": "5.0.0b34",
+      "companion": "0.5.7b11",
+      "suite": "0.2.0b34",
+      "channels": "0.1.0a4"
+    },
+    "tracked_git_worktree_unchanged": true,
+    "git_status_during_review": "?? docs/evidence/audit-20261117/root/task-storage-dispatch-b34/",
+    "status_note": "Root copied the delivery directory into docs/evidence during review; only that new untracked evidence directory is present, tracked source remains identical to the final tested commit.",
+    "github_and_local_complete_trees_match": true,
+    "source_sha256": "b3cab04443dff861e9bc6e4604f7a7f302bc8524330f6138a45c6650c7768a53"
+  },
+  "engineering_results": {
+    "status": "PASS",
+    "engineering": [
+      {
+        "run": "R9",
+        "source_commit": "c411dd1f92ad09e3b6e095acc96bc65c12107d5e",
+        "model": "gpt-6-luna",
+        "effort": "high",
+        "external_engineering_status": "PASS",
+        "model_calls": 28,
+        "tool_receipts": 61,
+        "failed_receipts": 3,
+        "model_run_seconds": 281.0676609669972,
+        "input_tokens": 1134660,
+        "output_tokens": 17838,
+        "cached_input_tokens": 951911,
+        "external_unit_tests": 17,
+        "external_unit_passed": true,
+        "external_cli_passed": 4,
+        "product_task_succeeded": false,
+        "source_hashes_match_committed_runtime": true
+      },
+      {
+        "run": "R10",
+        "source_commit": "37570b9a7c6b64e0ac67ab2706c15eeebc714069",
+        "model": "gpt-6-luna",
+        "effort": "high",
+        "external_engineering_status": "FAIL",
+        "model_calls": 20,
+        "tool_receipts": 40,
+        "failed_receipts": 4,
+        "model_run_seconds": 184.08159663799597,
+        "input_tokens": 623129,
+        "output_tokens": 14162,
+        "cached_input_tokens": 500341,
+        "external_unit_tests": 17,
+        "external_unit_passed": false,
+        "external_cli_passed": 0,
+        "product_task_succeeded": false,
+        "source_hashes_match_committed_runtime": true
+      },
+      {
+        "run": "R11",
+        "source_commit": "3764fc054899d9fb3d13c545667e4ff0fc64d044",
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "external_engineering_status": "PASS",
+        "model_calls": 29,
+        "tool_receipts": 58,
+        "failed_receipts": 0,
+        "model_run_seconds": 212.88007739000022,
+        "input_tokens": 1055681,
+        "output_tokens": 5975,
+        "cached_input_tokens": 871073,
+        "external_unit_tests": 17,
+        "external_unit_passed": true,
+        "external_cli_passed": 4,
+        "product_task_succeeded": false,
+        "source_hashes_match_committed_runtime": true
+      }
+    ],
+    "protocols_identical_excluding_source_identity": true,
+    "r11_actual_host_event_counts": {
+      "parent": 15,
+      "1.1": 7,
+      "1.2": 7
+    },
+    "r11_child_receipts": [
+      {
+        "id": "1.1",
+        "changed_paths": [
+          "logstats/parser.py"
+        ],
+        "actual_shell_test_counts": [
+          9
+        ]
+      },
+      {
+        "id": "1.2",
+        "changed_paths": [
+          "logstats/aggregate.py"
+        ],
+        "actual_shell_test_counts": [
+          3
+        ]
+      }
+    ],
+    "r11_lifecycle_overlap_seconds": 78.76228857040405,
+    "r10_truncation_and_four_prior_read_receipts_confirmed": true,
+    "r10_parser_stub_preserved": true,
+    "inference_boundary": "Host event excerpt and provider-reported model records checked; provider does not independently echo effort. No private database opened by reviewer."
+  },
+  "regression_and_storage_results": {
+    "status": "PASS",
+    "regressions": [
+      {
+        "suite": "core_final",
+        "head": "3764fc054899d9fb3d13c545667e4ff0fc64d044",
+        "tests_run": 1709,
+        "passed": 1617,
+        "skipped": 92,
+        "failures": 0,
+        "errors": 0,
+        "skip_reasons": {
+          "Historical benchmark implementation/fixtures are absent from the public source tree; NOT_RUN": 12,
+          "native macOS system /tmp alias": 1,
+          "Requires installed Suite and explicit built optional wheel; POSIX lifecycle": 5,
+          "NOT_RUN: requires native macOS host Shell/Seatbelt": 3,
+          "Pinned Harbor evaluation environment required": 15,
+          "Real local model budget qualification is opt-in": 4,
+          "Pinned Harbor schema environment": 2,
+          "optional official SDK is not installed": 26,
+          "NOT_RUN: requires pinned public PR9 source": 2,
+          "Optional contract check requires the pinned Harbor checkout and schema dependencies": 1,
+          "needs an actual pinned pre-catalog checkout": 1,
+          "optional official OpenAI SDK is not installed": 16,
+          "Benchmark cost ledger is not published in the product tree": 2,
+          "TimedBackend is in the missing benchmark package": 1,
+          "needs the actual pinned checkout with the old worker default": 1
+        }
+      },
+      {
+        "suite": "companion",
+        "head": "37570b9a7c6b64e0ac67ab2706c15eeebc714069",
+        "tests_run": 756,
+        "passed": 723,
+        "skipped": 33,
+        "failures": 0,
+        "errors": 0,
+        "skip_reasons": {
+          "Isolated Linux Xvfb/D-Bus tools unavailable": 1,
+          "Explicit identified whisper.cpp/model/public sample required": 2,
+          "Optional pinned Linux Torch/Transformers/PEFT training environment is not installed": 5,
+          "macOS Swift fixture required": 16,
+          "native fixture requires macOS Swift": 9
+        }
+      },
+      {
+        "suite": "suite",
+        "head": "37570b9a7c6b64e0ac67ab2706c15eeebc714069",
+        "tests_run": 127,
+        "passed": 126,
+        "skipped": 1,
+        "failures": 0,
+        "errors": 0,
+        "skip_reasons": {
+          "macOS fixed system alias": 1
+        }
+      }
+    ],
+    "original_core_failure_preserved": {
+      "failures": 5,
+      "errors": 18
+    },
+    "performance": [
+      {
+        "tasks": 1,
+        "http_status_baseline_ms": 1.9155889967805706,
+        "http_status_candidate_ms": 1.9282479988760315,
+        "all_medians_and_sql_counts_match_raw": true
+      },
+      {
+        "tasks": 100,
+        "http_status_baseline_ms": 13.459573005093262,
+        "http_status_candidate_ms": 1.9325640023453161,
+        "all_medians_and_sql_counts_match_raw": true
+      },
+      {
+        "tasks": 1000,
+        "http_status_baseline_ms": 120.50188399734907,
+        "http_status_candidate_ms": 2.088174005621113,
+        "all_medians_and_sql_counts_match_raw": true
+      },
+      {
+        "tasks": 10000,
+        "http_status_baseline_ms": 1493.5864840008435,
+        "http_status_candidate_ms": 1.9704270016518421,
+        "all_medians_and_sql_counts_match_raw": true
+      }
+    ],
+    "performance_limitation_review": [
+      "one controlled synthetic-history experiment",
+      "Python allocation peak, not RSS",
+      "first host open includes migration plus backup and startup",
+      "payload byte count excludes physical SQLite/index/backup footprint",
+      "count(*) retained; same-session 10000 privacy walk not measured"
+    ],
+    "migration_downgrade_limit_retained": true,
+    "corrected_input_estimate_wording_verified": true,
+    "results_sha256": "b69a406a6350fac3cc8771e19146482dc27454ce13033fafdc6af3538aaea352"
+  },
+  "packaging_and_frontend": {
+    "status": "PASS",
+    "final_installed_source_files_by_wheel": {
+      "localpilot_channels-0.1.0a4-py3-none-any.whl": 7,
+      "localpilot_companion-0.5.7b11-py3-none-any.whl": 111,
+      "localpilot_suite-0.2.0b34-py3-none-any.whl": 21,
+      "localpilot_agent_service-5.0.0b34-py3-none-any.whl": 149
+    },
+    "final_installed_source_files_verified": 288,
+    "source_wheel_installed_bytes_identical": true,
+    "all_four_wheel_hashes_and_import_origin_hashes_verified": true,
+    "original_core_wheel_sha256": "c259b6c6fc2bcf38d8f66a4c5e88334a55b58363cbd5a0d493c8b2a81a31022d",
+    "final_core_wheel_sha256": "0914939f70dce9b4f88dc6c2a00f0e09d285b0bcdfee75c786ab8b3e9852c641",
+    "original_initial_tests": {
+      "passed": 31,
+      "failures": 5,
+      "status": "FAILED"
+    },
+    "same_wheel_retry": {
+      "passed": 5,
+      "status": "PASS"
+    },
+    "final_combination_tests": {
+      "passed": 36,
+      "status": "PASS"
+    },
+    "frontend_unit_tests": 75,
+    "frontend_build": "PASS",
+    "browser_launch_attempts_blocked": 2,
+    "browser_page_assertions_observed": 0,
+    "native_acceptance": "NOT_RUN",
+    "scope": "Read-only byte/provenance/log review; did not run business tests, native UI or model APIs."
+  },
+  "report_boundary_review": {
+    "r10_failure_retained": true,
+    "r9_failed_receipts_not_hidden_by_final_pass": true,
+    "r10_output_truncation_and_rotation_budget_issue_not_conflated": true,
+    "external_engineering_pass_not_promoted_to_product_verification": true,
+    "r9_r11_product_task_succeeded_false_preserved": true,
+    "single_run_results_not_presented_as_success_rate_or_aa_ranking": true,
+    "same_model_parent_children_not_presented_as_live_heterogeneous_role_benchmark": true,
+    "model_and_code_changes_not_claimed_as_model_only_controlled_experiment": true,
+    "core_r1_failures_and_packaging_initial_failures_retained": true,
+    "skips_remain_skips": true,
+    "chromium_launch_block_not_presented_as_page_assertion_pass": true,
+    "native_apple_silicon_intel_linux_and_visible_animation_not_passed": true,
+    "historical_rc14_and_prior_soak_not_relabelled_rc17": true,
+    "two_hundred_second_engineering_run_not_presented_as_hours_long_full_permission_soak": true,
+    "release_status_remains_NOT_RELEASE_READY": true,
+    "performance_payload_bytes_not_presented_as_total_disk": true,
+    "performance_count_and_same_session_limits_stated": true
+  },
+  "relative_links": {
+    "checked": 64,
+    "resolution_base": "docs/evidence/audit-20261117/root/task-storage-dispatch-b34",
+    "links": [
+      {
+        "file": "scheduling.SUMMARY.md",
+        "target": "scheduling.tar.gz",
+        "status": "PASS"
+      },
+      {
+        "file": "scheduling.SUMMARY.md",
+        "target": "scheduling.MANIFEST.json",
+        "status": "PASS"
+      },
+      {
+        "file": "engineering-r11.SUMMARY.md",
+        "target": "engineering-r11.tar.gz",
+        "status": "PASS"
+      },
+      {
+        "file": "engineering-r11.SUMMARY.md",
+        "target": "engineering-r11.MANIFEST.json",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "engineering-r10.SUMMARY.md",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "engineering-r10.tar.gz",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "engineering-r10.MANIFEST.json",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "engineering-r11.SUMMARY.md",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "engineering-r11.tar.gz",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "engineering-r11.MANIFEST.json",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "engineering-r9.SUMMARY.md",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "engineering-r9.tar.gz",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "engineering-r9.MANIFEST.json",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "packaging-final-core.SUMMARY.md",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "packaging-final-core.tar.gz",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "packaging-final-core.MANIFEST.json",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "packaging-original.SUMMARY.md",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "packaging-original.tar.gz",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "packaging-original.MANIFEST.json",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "regressions.SUMMARY.md",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "regressions.tar.gz",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "regressions.MANIFEST.json",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "scheduling.SUMMARY.md",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "scheduling.tar.gz",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "scheduling.MANIFEST.json",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "storage.SUMMARY.md",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "storage.tar.gz",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "storage.MANIFEST.json",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "superagent.SUMMARY.md",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "superagent.tar.gz",
+        "status": "PASS"
+      },
+      {
+        "file": "SUMMARY.md",
+        "target": "superagent.MANIFEST.json",
+        "status": "PASS"
+      },
+      {
+        "file": "storage.SUMMARY.md",
+        "target": "storage.tar.gz",
+        "status": "PASS"
+      },
+      {
+        "file": "storage.SUMMARY.md",
+        "target": "storage.MANIFEST.json",
+        "status": "PASS"
+      },
+      {
+        "file": "superagent.SUMMARY.md",
+        "target": "superagent.tar.gz",
+        "status": "PASS"
+      },
+      {
+        "file": "superagent.SUMMARY.md",
+        "target": "superagent.MANIFEST.json",
+        "status": "PASS"
+      },
+      {
+        "file": "packaging-original.SUMMARY.md",
+        "target": "packaging-original.tar.gz",
+        "status": "PASS"
+      },
+      {
+        "file": "packaging-original.SUMMARY.md",
+        "target": "packaging-original.MANIFEST.json",
+        "status": "PASS"
+      },
+      {
+        "file": "engineering-r9.SUMMARY.md",
+        "target": "engineering-r9.tar.gz",
+        "status": "PASS"
+      },
+      {
+        "file": "engineering-r9.SUMMARY.md",
+        "target": "engineering-r9.MANIFEST.json",
+        "status": "PASS"
+      },
+      {
+        "file": "regressions.SUMMARY.md",
+        "target": "regressions.tar.gz",
+        "status": "PASS"
+      },
+      {
+        "file": "regressions.SUMMARY.md",
+        "target": "regressions.MANIFEST.json",
+        "status": "PASS"
+      },
+      {
+        "file": "packaging-final-core.SUMMARY.md",
+        "target": "packaging-final-core.tar.gz",
+        "status": "PASS"
+      },
+      {
+        "file": "packaging-final-core.SUMMARY.md",
+        "target": "packaging-final-core.MANIFEST.json",
+        "status": "PASS"
+      },
+      {
+        "file": "engineering-r10.SUMMARY.md",
+        "target": "engineering-r10.tar.gz",
+        "status": "PASS"
+      },
+      {
+        "file": "engineering-r10.SUMMARY.md",
+        "target": "engineering-r10.MANIFEST.json",
+        "status": "PASS"
+      },
+      {
+        "file": "RESULTS.md",
+        "target": "SOURCE.json",
+        "status": "PASS"
+      },
+      {
+        "file": "RESULTS.md",
+        "target": "SUMMARY.md",
+        "status": "PASS"
+      },
+      {
+        "file": "RESULTS.md",
+        "target": "MANIFEST.json",
+        "status": "PASS"
+      },
+      {
+        "file": "RESULTS.md",
+        "target": "DELIVERY_MANIFEST.json",
+        "status": "PLANNED_FINAL_ARTIFACT"
+      },
+      {
+        "file": "RESULTS.md",
+        "target": "INDEPENDENT_REVIEW.json",
+        "status": "PLANNED_FINAL_ARTIFACT"
+      },
+      {
+        "file": "RESULTS.md",
+        "target": "../../../../development/TASK_STORAGE_SCHEDULING_20261117.md",
+        "status": "PASS"
+      },
+      {
+        "file": "RESULTS.md",
+        "target": "PERF_COMPARISON.json",
+        "status": "PASS"
+      },
+      {
+        "file": "RESULTS.md",
+        "target": "storage.SUMMARY.md",
+        "status": "PASS"
+      },
+      {
+        "file": "RESULTS.md",
+        "target": "scheduling.SUMMARY.md",
+        "status": "PASS"
+      },
+      {
+        "file": "RESULTS.md",
+        "target": "superagent.SUMMARY.md",
+        "status": "PASS"
+      },
+      {
+        "file": "RESULTS.md",
+        "target": "ENGINEERING_R9.json",
+        "status": "PASS"
+      },
+      {
+        "file": "RESULTS.md",
+        "target": "ENGINEERING_R10.json",
+        "status": "PASS"
+      },
+      {
+        "file": "RESULTS.md",
+        "target": "R10_FAILURE_ANALYSIS.json",
+        "status": "PASS"
+      },
+      {
+        "file": "RESULTS.md",
+        "target": "ENGINEERING_R11.json",
+        "status": "PASS"
+      },
+      {
+        "file": "RESULTS.md",
+        "target": "ENGINEERING_COMPARISON.json",
+        "status": "PASS"
+      },
+      {
+        "file": "RESULTS.md",
+        "target": "PACKAGING_FINAL.json",
+        "status": "PASS"
+      },
+      {
+        "file": "RESULTS.md",
+        "target": "packaging-original.SUMMARY.md",
+        "status": "PASS"
+      },
+      {
+        "file": "RESULTS.md",
+        "target": "packaging-final-core.SUMMARY.md",
+        "status": "PASS"
+      },
+      {
+        "file": "RESULTS.md",
+        "target": "regressions.SUMMARY.md",
+        "status": "PASS"
+      }
+    ],
+    "planned_final_artifacts": [
+      "DELIVERY_MANIFEST.json",
+      "INDEPENDENT_REVIEW.json"
+    ],
+    "note": "DELIVERY_MANIFEST and this review are intentional post-review additions. No hash or approval of the future delivery manifest is claimed."
+  },
+  "scope_limits": [
+    "This pass concerns evidence integrity and accurate reporting. It does not turn the overall release status into RELEASE_READY.",
+    "No business tests, benchmarks, native UI or external model/API calls were run during this evidence review. Existing raw results were recomputed and cross-checked read-only.",
+    "R11 effort was checked in the published actual host-event excerpt; provider usage independently reports the model but not the reasoning effort. Private SQLite was not opened by this reviewer.",
+    "Final Core wheel contents, installed files and tracked source were compared byte-for-byte. This is Python packaging evidence, not native installer/signature/macOS hardware acceptance.",
+    "PR merge state, tags/releases and the future final GitHub delivery were not independently queried in this review; the parent owns final publication and readback.",
+    "The authoring agent previously implemented storage and ran some raw tests; the independence here is from the evidence publisher and report aggregation, not a separate lab replication of every claim."
+  ],
+  "reviewer_mutations": "Only validation review artifacts written. No product source, public-pack input, archive, benchmark sample or original report was edited by the reviewer.",
+  "external_model_or_service_api_calls": 0,
+  "business_test_runs_during_review": 0
+}

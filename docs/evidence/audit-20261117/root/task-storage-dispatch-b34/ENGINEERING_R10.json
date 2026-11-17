@@ -1,0 +1,314 @@
+{
+  "summary_version": 2,
+  "model": "gpt-6-luna",
+  "reasoning": "high",
+  "kind": "SYNTHETIC_ENGINEERING_INTEGRATION",
+  "scope": "One public synthetic Python project; not a model-quality benchmark.",
+  "status": "FAIL",
+  "status_source": "RESULTS.json.engineering_status (external qualification verdict)",
+  "protocol_status": "FAIL",
+  "orchestration_status": "FAIL",
+  "semantic_status": "FAIL",
+  "source_git_head": "37570b9a7c6b64e0ac67ab2706c15eeebc714069",
+  "source_manifest_sha256": "31da015c89a54cb08b5e551d9872614f6a11b7e052f4445f580b6d9628be2361",
+  "runner_sha256": "1878a177ed32600e9d53490ad518a93ece8d729643f2e2681c7b10d11d4724c4",
+  "configured_inference": {
+    "default": {
+      "model": "gpt-6-luna",
+      "protocol": "responses",
+      "thinking": "high"
+    },
+    "companion-execution": {
+      "model": "gpt-6-luna",
+      "protocol": "responses",
+      "thinking": "high"
+    },
+    "companion-reasoning": {
+      "model": "gpt-6-luna",
+      "protocol": "responses",
+      "thinking": "high"
+    },
+    "worker": {
+      "model": "gpt-6-luna",
+      "protocol": "responses",
+      "thinking": "high"
+    }
+  },
+  "model_run_seconds": 184.08159663799597,
+  "outer_seconds": 184.65903651000554,
+  "model_calls": 20,
+  "model_call_scope": "Aggregate includes children; do not add child lists again.",
+  "parent_model_calls": 13,
+  "model_attempts": 20,
+  "failed_model_attempts": 0,
+  "incomplete_model_calls": [
+    {
+      "aggregate_index": 7,
+      "latency_seconds": 51.91395583400299,
+      "tool_call_count": 1,
+      "prompt_cache_hit_tokens": 3491,
+      "prompt_cache_miss_tokens": 6040,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 9531,
+      "output_tokens": 4096,
+      "finish_reason": "length",
+      "provider_diagnostics": {
+        "response_id": "resp_0ec69ea2e47e56f1016afc296601fc87d1980cb070089111f6",
+        "input_transformations": []
+      }
+    }
+  ],
+  "tool_receipts": 40,
+  "receipt_counts_by_worker": {
+    "parent": 29,
+    "1.1": 4,
+    "1.2": 7
+  },
+  "tool_proposals": 41,
+  "unreceipted_tool_proposals": 1,
+  "receipt_counts_by_status": {
+    "completed": 36,
+    "failed": 4
+  },
+  "failed_tool_receipt_count": 4,
+  "failed_tool_receipts": [
+    {
+      "receipt_index": 29,
+      "receipt_id": "turn:1/call:call_13DJZKG8RzmHCKsuMaB36MTm/entry:29",
+      "call_id": "call_13DJZKG8RzmHCKsuMaB36MTm",
+      "name": "delegate",
+      "worker_id": null,
+      "status": "failed",
+      "error_type": "denied",
+      "error_message": "Tool operation did not complete successfully.",
+      "result_status": "denied",
+      "result_reason": "Subagent depth/count budget exhausted.",
+      "side_effect_completed": false
+    },
+    {
+      "receipt_index": 34,
+      "receipt_id": "turn:1/call:call_jvOUeXfgw5dNOAmMuTdxz0OG/entry:34",
+      "call_id": "call_jvOUeXfgw5dNOAmMuTdxz0OG",
+      "name": "shell",
+      "worker_id": null,
+      "status": "failed",
+      "error_type": "nonzero_exit",
+      "error_message": "Tool operation did not complete successfully.",
+      "result_status": "nonzero_exit",
+      "result_exit_code": 1,
+      "action_sent": true,
+      "action_may_have_applied": false,
+      "side_effect_completed": false
+    },
+    {
+      "receipt_index": 35,
+      "receipt_id": "turn:1/call:call_hUFEjpavIfjgDNeLHqACFrvj/entry:35",
+      "call_id": "call_hUFEjpavIfjgDNeLHqACFrvj",
+      "name": "shell",
+      "worker_id": null,
+      "status": "failed",
+      "error_type": "nonzero_exit",
+      "error_message": "Tool operation did not complete successfully.",
+      "result_status": "nonzero_exit",
+      "result_exit_code": 1,
+      "action_sent": true,
+      "action_may_have_applied": false,
+      "side_effect_completed": false
+    },
+    {
+      "receipt_index": 39,
+      "receipt_id": "turn:1/call:call_16d043b07454405baf3cb3775a5f968a/entry:39",
+      "call_id": "call_16d043b07454405baf3cb3775a5f968a",
+      "name": "manage_goal",
+      "worker_id": null,
+      "status": "failed",
+      "error_type": "blocked",
+      "error_message": "Tool operation did not complete successfully.",
+      "result_status": "blocked",
+      "side_effect_completed": false
+    }
+  ],
+  "input_tokens": 623129,
+  "output_tokens": 14162,
+  "cached_input_tokens": 500341,
+  "uncached_input_tokens": 122788,
+  "usage_scope": "Provider-reported usage summed over aggregate model calls once; child calls are already included. Not a billing statement.",
+  "usage_reporting_counts": {
+    "input_tokens": 20,
+    "output_tokens": 20,
+    "prompt_cache_hit_tokens": 20,
+    "prompt_cache_miss_tokens": 20
+  },
+  "aggregate_model_latency_seconds": 318.8103906079996,
+  "latency_scope": "Sum over parent and child inference calls; concurrent intervals mean this is not wall-clock duration.",
+  "async_lifecycle_overlap_seconds": 0,
+  "overlap_scope": "Child start-to-completed lifecycles, including inference and tools; not proof of simultaneous CPU execution.",
+  "child_pair_overlaps": [
+    {
+      "children": [
+        "1.1",
+        "1.2"
+      ],
+      "seconds": null
+    }
+  ],
+  "children": [
+    {
+      "id": "1.1",
+      "status": "error",
+      "async": true,
+      "collected": true,
+      "configured_model": "gpt-6-luna",
+      "backend_id": "selected",
+      "tier": null,
+      "read_only": false,
+      "model_calls": 2,
+      "receipt_count": 4,
+      "parent_projected_receipt_count": 4,
+      "timeline": [
+        {
+          "event": "start",
+          "at": 1794910542.5528266
+        },
+        {
+          "event": "error",
+          "at": 1794910603.6147623
+        }
+      ],
+      "lifecycle_interval": null,
+      "single_assigned_module": false,
+      "changed_paths": [],
+      "test_class": null,
+      "tests_ran": false,
+      "completed": false,
+      "successful_shells": []
+    },
+    {
+      "id": "1.2",
+      "status": "completed",
+      "async": true,
+      "collected": true,
+      "configured_model": "gpt-6-luna",
+      "backend_id": "selected",
+      "tier": null,
+      "read_only": false,
+      "model_calls": 5,
+      "receipt_count": 7,
+      "parent_projected_receipt_count": 7,
+      "timeline": [
+        {
+          "event": "start",
+          "at": 1794910551.5573523
+        },
+        {
+          "event": "completed",
+          "at": 1794910632.0605547
+        }
+      ],
+      "lifecycle_interval": [
+        1794910551.5573523,
+        1794910632.0605547
+      ],
+      "single_assigned_module": true,
+      "changed_paths": [
+        "logstats/aggregate.py"
+      ],
+      "test_class": "AggregateTests",
+      "tests_ran": true,
+      "completed": true,
+      "successful_shells": [
+        {
+          "receipt_id": "turn:1/call:call_LsrJToNQdgKG0FMZWioPFcZ4/entry:5",
+          "command": "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-20261117/.venv/bin/python -S -m unittest discover -s tests -p test_acceptance.py -k AggregateTests",
+          "tests_run": 3
+        }
+      ]
+    }
+  ],
+  "parent_successful_shells": [],
+  "external_checks": {
+    "unit": {
+      "tests_run": 17,
+      "returncode": 1,
+      "passed": false
+    },
+    "cli_cases": {
+      "basic": {
+        "returncode": 1,
+        "passed": false
+      },
+      "precision": {
+        "returncode": 1,
+        "passed": false
+      },
+      "empty": {
+        "returncode": 1,
+        "passed": false
+      },
+      "invalid": {
+        "returncode": 1,
+        "passed": false
+      }
+    },
+    "cli_case_count": 4,
+    "cli_passed_count": 0,
+    "acceptance_passed": false,
+    "parent_cli_artifact_matches": false,
+    "original_acceptance_unchanged": true
+  },
+  "owned_core_stopped": true,
+  "source_unchanged": true,
+  "result_fields": {
+    "status": "incomplete",
+    "runtime_status": "incomplete",
+    "deliverable_status": "incomplete",
+    "verification_status": "not_run",
+    "engineering_status": "incomplete",
+    "task_outcome": "incomplete",
+    "task_succeeded": false,
+    "verification": null
+  },
+  "product_completion": {
+    "execution": "unknown_blocked",
+    "delivery": "incomplete",
+    "attempts": 0,
+    "receipt_count": 40,
+    "obligations": {
+      "pending_approval": false,
+      "queued_calls": 0,
+      "unfinished_goals": 1,
+      "unfinished_workers": 1,
+      "worker_obligations": true,
+      "computer_obligations": 0,
+      "unfinished_handoff": 0,
+      "unknown_receipts": 1,
+      "mutation_intent": false
+    }
+  },
+  "verification_boundary": "External synthetic engineering acceptance is separate from the product result. This summary preserves product verification/outcome fields and never upgrades not_run/unverified to verified.",
+  "consistency_checks": {
+    "aggregate_call_records_match": true,
+    "receipt_count_matches_product": true,
+    "tool_proposals_cover_receipts": true,
+    "child_projection_counts_match": true,
+    "unit_count_matches_qualification": true,
+    "cli_outcomes_match_qualification": true,
+    "source_execution_fingerprints_match": true,
+    "source_qualification_fingerprints_match": true
+  },
+  "provenance": {
+    "processor": "summarize_engineering_run.py",
+    "processor_sha256": "a46313471952afdd3577588dd9f8cdc9a0a17b03cc5a8766cd909e157adb1554",
+    "raw_inputs_sha256": {
+      "RESULTS.json": "f61df664f7bfc237d7535da7f76d147ff7c143e988aa31da59f6ea1600903bab",
+      "engineering-task.json": "3a9702ec354aa54d8f73c4b5c6fee6332f31c50447fb1271c9ad73979bcb4618",
+      "RUN_EXECUTION.json": "de55a69b75b48713a3d7dc6443712a0a1e1967dc8c23d89828062da50eca3450",
+      "external-unittest.json": "4a8a1fbe629dd430e6772d167ae1b76f288af8e589025e06726dc881487cfca8",
+      "external-cli.json": "54c51ed4dbf6af5a6246a34c311afc7167b0f9929a776d34fe25091009c089c6",
+      "PROTOCOL.json": "9f5757ec5e25b3040a470894ac54a0f71f0faf95a924690c2e1460592ca59533",
+      "resolved-inference.json": "4d03609ea2cd0dd9db86366015ddf08b10e16eab2a45df20f7a3d3bab37ee214"
+    },
+    "errors_extracted_from": "engineering-task.json.tools[*].payload.error",
+    "no_model_or_acceptance_execution": true
+  }
+}

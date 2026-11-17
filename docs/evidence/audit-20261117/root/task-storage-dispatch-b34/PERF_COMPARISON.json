@@ -1,0 +1,625 @@
+{
+  "status": "PASS_SAME_ENVIRONMENT_COMPARISON",
+  "created_at": "2026-11-17T10:25:14.023850+00:00",
+  "baseline_commit": "c411dd1f92ad09e3b6e095acc96bc65c12107d5e",
+  "candidate_commit": "37570b9a7c6b64e0ac67ab2706c15eeebc714069",
+  "environment": {
+    "python": "3.12.14",
+    "python_executable": "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-20261117/.venv/bin/python",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "probe_sha256": "176c67804fcfa2445f926a644e6e060354f4cef6af9469ce4fea784b3b43f84f"
+  },
+  "execution_order": [
+    "baseline",
+    "candidate"
+  ],
+  "executions": {
+    "baseline": {
+      "command": [
+        "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-20261117/.venv/bin/python",
+        "/workspace/scratch/c0f3ec78c621/validation/dispatch-20261117/companion/measure_history.py",
+        "--source-root",
+        "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-baseline-20261117",
+        "--output",
+        "/workspace/scratch/c0f3ec78c621/validation/dispatch-20261117/companion/perf-baseline-r1",
+        "--expected-storage",
+        "json"
+      ],
+      "cwd": "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-baseline-20261117",
+      "environment_overrides": {
+        "LOCALPILOT_SOURCE": "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-baseline-20261117",
+        "PYTHONPATH": "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-baseline-20261117"
+      },
+      "started_at": "2026-11-17T10:22:30.042287+00:00",
+      "ended_at": "2026-11-17T10:23:30.373581+00:00",
+      "elapsed_seconds": 60.33130245999928,
+      "exit_code": 0,
+      "console_log": "/workspace/scratch/c0f3ec78c621/validation/dispatch-20261117/companion/perf-baseline-r1.console.log"
+    },
+    "candidate": {
+      "command": [
+        "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-20261117/.venv/bin/python",
+        "/workspace/scratch/c0f3ec78c621/validation/dispatch-20261117/companion/measure_history.py",
+        "--source-root",
+        "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-20261117",
+        "--output",
+        "/workspace/scratch/c0f3ec78c621/validation/dispatch-20261117/companion/perf-candidate-r1",
+        "--expected-storage",
+        "rows"
+      ],
+      "cwd": "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-20261117",
+      "environment_overrides": {
+        "LOCALPILOT_SOURCE": "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-20261117",
+        "PYTHONPATH": "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-20261117"
+      },
+      "started_at": "2026-11-17T10:23:38.217696+00:00",
+      "ended_at": "2026-11-17T10:23:42.108249+00:00",
+      "elapsed_seconds": 3.890586433997669,
+      "exit_code": 0,
+      "console_log": "/workspace/scratch/c0f3ec78c621/validation/dispatch-20261117/companion/perf-candidate-r1.console.log"
+    }
+  },
+  "raw_result_files": {
+    "baseline": {
+      "path": "perf-baseline-r1/RESULTS.json",
+      "sha256": "a260ab11afd1172cbb1d9ec77dd89f2e5da7f0b062fc4b16e27b8600cb6cd053"
+    },
+    "candidate": {
+      "path": "perf-candidate-r1/RESULTS.json",
+      "sha256": "636df3552b05d3058199875093b1e3a560394a4c725a6b92e0f71691ca79fd9d"
+    }
+  },
+  "source_files_unchanged": {
+    "baseline": 433,
+    "candidate": 439
+  },
+  "comparisons": [
+    {
+      "stored_tasks": 1,
+      "old_task_identity_assertions_passed": true,
+      "actual_retained_task_not_on_first_page_when_count_above_30": false,
+      "first_host_open_separate_from_steady_state": {
+        "baseline_ms": 3.3196340009453706,
+        "candidate_ms_including_migration_and_backup": 4.27539499651175,
+        "candidate_migration_backup_bytes": 286720,
+        "candidate_migration_backup_sha256": "56a47ae7e9c3da66a3de71407342f162140f3dc671689bdcc1775f2e1713394b",
+        "note": "Single timing includes Companion host startup, SQLite row migration and creation of the old-database backup. It is not an isolated pure-migration timer."
+      },
+      "payload_bytes_only": {
+        "baseline": 3713,
+        "candidate": 3670,
+        "note": "Serialized task payload bytes only; not total database, indexes, journaling or backup disk usage."
+      },
+      "pagination_response_bytes": {
+        "baseline": 1193,
+        "candidate": 1193
+      },
+      "actions": {
+        "provider_exact_lookup": {
+          "baseline_median_ms": 0.02712099376367405,
+          "candidate_median_ms": 0.026879999495577067,
+          "baseline_over_candidate_median_ratio": 1.0089655607373296,
+          "baseline_peak_python_allocation_bytes_separate_sample": 19657,
+          "candidate_peak_python_allocation_bytes_separate_sample": 19495,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 1,
+            "full_task_map_writes": 0,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 1,
+            "task_row_writes": 0
+          }
+        },
+        "receive_terminal_update": {
+          "baseline_median_ms": 0.5510940027306788,
+          "candidate_median_ms": 0.749557999370154,
+          "baseline_over_candidate_median_ratio": 0.735225297033395,
+          "baseline_peak_python_allocation_bytes_separate_sample": 42200,
+          "candidate_peak_python_allocation_bytes_separate_sample": 40699,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 1,
+            "full_task_map_writes": 1,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 1,
+            "task_row_writes": 1
+          }
+        },
+        "task_status_real_http": {
+          "baseline_median_ms": 1.9155889967805706,
+          "candidate_median_ms": 1.9282479988760315,
+          "baseline_over_candidate_median_ratio": 0.9934349720042029,
+          "baseline_peak_python_allocation_bytes_separate_sample": 62996,
+          "candidate_peak_python_allocation_bytes_separate_sample": 62847,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 3,
+            "full_task_map_writes": 1,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 3,
+            "task_row_writes": 1
+          }
+        },
+        "escalation_status": {
+          "baseline_median_ms": 0.049583002692088485,
+          "candidate_median_ms": 0.05904799763811752,
+          "baseline_over_candidate_median_ratio": 0.8397067584910101,
+          "baseline_peak_python_allocation_bytes_separate_sample": 21417,
+          "candidate_peak_python_allocation_bytes_separate_sample": 19919,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 1,
+            "full_task_map_writes": 0,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 2,
+            "task_row_writes": 0
+          }
+        },
+        "result_context_current": {
+          "baseline_median_ms": 0.05697399319615215,
+          "candidate_median_ms": 0.06021899753250182,
+          "baseline_over_candidate_median_ratio": 0.9461132787107881,
+          "baseline_peak_python_allocation_bytes_separate_sample": 30223,
+          "candidate_peak_python_allocation_bytes_separate_sample": 30645,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 2,
+            "full_task_map_writes": 0,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 2,
+            "task_row_writes": 0
+          }
+        }
+      }
+    },
+    {
+      "stored_tasks": 100,
+      "old_task_identity_assertions_passed": true,
+      "actual_retained_task_not_on_first_page_when_count_above_30": true,
+      "first_host_open_separate_from_steady_state": {
+        "baseline_ms": 2.992018999066204,
+        "candidate_ms_including_migration_and_backup": 13.137305999407545,
+        "candidate_migration_backup_bytes": 626688,
+        "candidate_migration_backup_sha256": "57db2f99d57381fa814c61152ca79ea8a12ef52b3278ec03837c5d3e3c8f4d14",
+        "note": "Single timing includes Companion host startup, SQLite row migration and creation of the old-database backup. It is not an isolated pure-migration timer."
+      },
+      "payload_bytes_only": {
+        "baseline": 363381,
+        "candidate": 360367,
+        "note": "Serialized task payload bytes only; not total database, indexes, journaling or backup disk usage."
+      },
+      "pagination_response_bytes": {
+        "baseline": 30724,
+        "candidate": 30693
+      },
+      "actions": {
+        "provider_exact_lookup": {
+          "baseline_median_ms": 2.2229140013223514,
+          "candidate_median_ms": 0.03208699490642175,
+          "baseline_over_candidate_median_ratio": 69.27772475438225,
+          "baseline_peak_python_allocation_bytes_separate_sample": 1468204,
+          "candidate_peak_python_allocation_bytes_separate_sample": 19495,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 1,
+            "full_task_map_writes": 0,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 1,
+            "task_row_writes": 0
+          }
+        },
+        "receive_terminal_update": {
+          "baseline_median_ms": 6.963145999179687,
+          "candidate_median_ms": 0.6439410062739626,
+          "baseline_over_candidate_median_ratio": 10.81332906483244,
+          "baseline_peak_python_allocation_bytes_separate_sample": 2917570,
+          "candidate_peak_python_allocation_bytes_separate_sample": 40571,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 1,
+            "full_task_map_writes": 1,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 1,
+            "task_row_writes": 1
+          }
+        },
+        "task_status_real_http": {
+          "baseline_median_ms": 13.459573005093262,
+          "candidate_median_ms": 1.9325640023453161,
+          "baseline_over_candidate_median_ratio": 6.964619535890676,
+          "baseline_peak_python_allocation_bytes_separate_sample": 3695532,
+          "candidate_peak_python_allocation_bytes_separate_sample": 62938,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 3,
+            "full_task_map_writes": 1,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 3,
+            "task_row_writes": 1
+          }
+        },
+        "escalation_status": {
+          "baseline_median_ms": 2.9312800033949316,
+          "candidate_median_ms": 1.4827109989710152,
+          "baseline_over_candidate_median_ratio": 1.976973264128483,
+          "baseline_peak_python_allocation_bytes_separate_sample": 1470330,
+          "candidate_peak_python_allocation_bytes_separate_sample": 553471,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 1,
+            "full_task_map_writes": 0,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 2,
+            "task_row_writes": 0
+          }
+        },
+        "result_context_current": {
+          "baseline_median_ms": 4.770817002281547,
+          "candidate_median_ms": 0.05993800004944205,
+          "baseline_over_candidate_median_ratio": 79.5958657003264,
+          "baseline_peak_python_allocation_bytes_separate_sample": 1479744,
+          "candidate_peak_python_allocation_bytes_separate_sample": 30645,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 2,
+            "full_task_map_writes": 0,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 2,
+            "task_row_writes": 0
+          }
+        },
+        "escalation_older_page": {
+          "baseline_median_ms": 2.967754000565037,
+          "candidate_median_ms": 1.3777249987469986,
+          "baseline_over_candidate_median_ratio": 2.154097518201473,
+          "baseline_peak_python_allocation_bytes_separate_sample": 1468922,
+          "candidate_peak_python_allocation_bytes_separate_sample": 553471,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 1,
+            "full_task_map_writes": 0,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 2,
+            "task_row_writes": 0
+          }
+        }
+      }
+    },
+    {
+      "stored_tasks": 1000,
+      "old_task_identity_assertions_passed": true,
+      "actual_retained_task_not_on_first_page_when_count_above_30": true,
+      "first_host_open_separate_from_steady_state": {
+        "baseline_ms": 3.73542799934512,
+        "candidate_ms_including_migration_and_backup": 87.05901400389848,
+        "candidate_migration_backup_bytes": 3907584,
+        "candidate_migration_backup_sha256": "9649cecf5ff475c5825cfd290aab2032417176343baa76ec943d693b89475849",
+        "note": "Single timing includes Companion host startup, SQLite row migration and creation of the old-database backup. It is not an isolated pure-migration timer."
+      },
+      "payload_bytes_only": {
+        "baseline": 3633081,
+        "candidate": 3604067,
+        "note": "Serialized task payload bytes only; not total database, indexes, journaling or backup disk usage."
+      },
+      "pagination_response_bytes": {
+        "baseline": 30725,
+        "candidate": 30725
+      },
+      "actions": {
+        "provider_exact_lookup": {
+          "baseline_median_ms": 27.164006998646073,
+          "candidate_median_ms": 0.03360000118846074,
+          "baseline_over_candidate_median_ratio": 808.4525606497604,
+          "baseline_peak_python_allocation_bytes_separate_sample": 14821912,
+          "candidate_peak_python_allocation_bytes_separate_sample": 19497,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 1,
+            "full_task_map_writes": 0,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 1,
+            "task_row_writes": 0
+          }
+        },
+        "receive_terminal_update": {
+          "baseline_median_ms": 56.6083610028727,
+          "candidate_median_ms": 0.6413880037143826,
+          "baseline_over_candidate_median_ratio": 88.25915151989815,
+          "baseline_peak_python_allocation_bytes_separate_sample": 29197774,
+          "candidate_peak_python_allocation_bytes_separate_sample": 40571,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 1,
+            "full_task_map_writes": 1,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 1,
+            "task_row_writes": 1
+          }
+        },
+        "task_status_real_http": {
+          "baseline_median_ms": 120.50188399734907,
+          "candidate_median_ms": 2.088174005621113,
+          "baseline_over_candidate_median_ratio": 57.70682120980939,
+          "baseline_peak_python_allocation_bytes_separate_sample": 36853321,
+          "candidate_peak_python_allocation_bytes_separate_sample": 62687,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 3,
+            "full_task_map_writes": 1,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 3,
+            "task_row_writes": 1
+          }
+        },
+        "escalation_status": {
+          "baseline_median_ms": 29.608757999085356,
+          "candidate_median_ms": 1.428960997145623,
+          "baseline_over_candidate_median_ratio": 20.720480165819374,
+          "baseline_peak_python_allocation_bytes_separate_sample": 14824038,
+          "candidate_peak_python_allocation_bytes_separate_sample": 553533,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 1,
+            "full_task_map_writes": 0,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 2,
+            "task_row_writes": 0
+          }
+        },
+        "result_context_current": {
+          "baseline_median_ms": 62.969799000711646,
+          "candidate_median_ms": 0.05493099888553843,
+          "baseline_over_candidate_median_ratio": 1146.343599757287,
+          "baseline_peak_python_allocation_bytes_separate_sample": 14833452,
+          "candidate_peak_python_allocation_bytes_separate_sample": 30679,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 2,
+            "full_task_map_writes": 0,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 2,
+            "task_row_writes": 0
+          }
+        },
+        "escalation_older_page": {
+          "baseline_median_ms": 34.675271999731194,
+          "candidate_median_ms": 1.6335539985448122,
+          "baseline_over_candidate_median_ratio": 21.22689058985519,
+          "baseline_peak_python_allocation_bytes_separate_sample": 14822630,
+          "candidate_peak_python_allocation_bytes_separate_sample": 553533,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 1,
+            "full_task_map_writes": 0,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 2,
+            "task_row_writes": 0
+          }
+        }
+      }
+    },
+    {
+      "stored_tasks": 10000,
+      "old_task_identity_assertions_passed": true,
+      "actual_retained_task_not_on_first_page_when_count_above_30": true,
+      "first_host_open_separate_from_steady_state": {
+        "baseline_ms": 3.1686209986219183,
+        "candidate_ms_including_migration_and_backup": 1158.9711119959247,
+        "candidate_migration_backup_bytes": 36626432,
+        "candidate_migration_backup_sha256": "741e6544839a39c9ca4cf7856f54577b06dea0230b8fb2be9762f3998c6e6775",
+        "note": "Single timing includes Companion host startup, SQLite row migration and creation of the old-database backup. It is not an isolated pure-migration timer."
+      },
+      "payload_bytes_only": {
+        "baseline": 36320081,
+        "candidate": 36030067,
+        "note": "Serialized task payload bytes only; not total database, indexes, journaling or backup disk usage."
+      },
+      "pagination_response_bytes": {
+        "baseline": 30695,
+        "candidate": 30695
+      },
+      "actions": {
+        "provider_exact_lookup": {
+          "baseline_median_ms": 373.6295619964949,
+          "candidate_median_ms": 0.03372900391696021,
+          "baseline_over_candidate_median_ratio": 11077.396857504586,
+          "baseline_peak_python_allocation_bytes_separate_sample": 148248136,
+          "candidate_peak_python_allocation_bytes_separate_sample": 19495,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 1,
+            "full_task_map_writes": 0,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 1,
+            "task_row_writes": 0
+          }
+        },
+        "receive_terminal_update": {
+          "baseline_median_ms": 715.5286530032754,
+          "candidate_median_ms": 0.6107930021244101,
+          "baseline_over_candidate_median_ratio": 1171.474870397307,
+          "baseline_peak_python_allocation_bytes_separate_sample": 291894414,
+          "candidate_peak_python_allocation_bytes_separate_sample": 40355,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 1,
+            "full_task_map_writes": 1,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 1,
+            "task_row_writes": 1
+          }
+        },
+        "task_status_real_http": {
+          "baseline_median_ms": 1493.5864840008435,
+          "candidate_median_ms": 1.9704270016518421,
+          "baseline_over_candidate_median_ratio": 758.0014295118493,
+          "baseline_peak_python_allocation_bytes_separate_sample": 368284764,
+          "candidate_peak_python_allocation_bytes_separate_sample": 62906,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 3,
+            "full_task_map_writes": 1,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 3,
+            "task_row_writes": 1
+          }
+        },
+        "escalation_status": {
+          "baseline_median_ms": 467.15084499737713,
+          "candidate_median_ms": 1.5260440050042234,
+          "baseline_over_candidate_median_ratio": 306.1188559867802,
+          "baseline_peak_python_allocation_bytes_separate_sample": 148250264,
+          "candidate_peak_python_allocation_bytes_separate_sample": 553471,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 1,
+            "full_task_map_writes": 0,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 2,
+            "task_row_writes": 0
+          }
+        },
+        "result_context_current": {
+          "baseline_median_ms": 711.6144409956178,
+          "candidate_median_ms": 0.06612799916183576,
+          "baseline_over_candidate_median_ratio": 10761.16697942238,
+          "baseline_peak_python_allocation_bytes_separate_sample": 148259734,
+          "candidate_peak_python_allocation_bytes_separate_sample": 30677,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 2,
+            "full_task_map_writes": 0,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 2,
+            "task_row_writes": 0
+          }
+        },
+        "escalation_older_page": {
+          "baseline_median_ms": 481.1711930015008,
+          "candidate_median_ms": 1.243937003891915,
+          "baseline_over_candidate_median_ratio": 386.81315170788946,
+          "baseline_peak_python_allocation_bytes_separate_sample": 148248856,
+          "candidate_peak_python_allocation_bytes_separate_sample": 553471,
+          "baseline_sql_trace_counts": {
+            "full_task_map_selects": 1,
+            "full_task_map_writes": 0,
+            "task_row_selects": 0,
+            "task_row_writes": 0
+          },
+          "candidate_sql_trace_counts": {
+            "full_task_map_selects": 0,
+            "full_task_map_writes": 0,
+            "task_row_selects": 2,
+            "task_row_writes": 0
+          }
+        }
+      }
+    }
+  ],
+  "method": [
+    "Both frozen checkouts ran sequentially with the same active venv Python, same host and identical unmodified probe. LOCALPILOT_SOURCE and PYTHONPATH were set explicitly to the checkout under test.",
+    "For each size, authenticated local HTTP creates one actual scripted task. Its timestamp is moved behind synthetic history so exact lookup/status exercise an old real task, not a first-page record.",
+    "Each action has one warm-up and five measured steady-state samples. SQL tracing and Python tracemalloc each use a separate additional sample and do not contaminate the timing samples.",
+    "Every reported median was recomputed from the five original samples and checked for equality. Candidate traced hot paths have zero whole-task-map reads and writes.",
+    "The existing probe asserts exact task_id and session_id equality and the old-task page position; it records assertion results, not the generated UUID strings. No new instrumentation was added."
+  ],
+  "limits": [
+    "Results are one local controlled comparison, not a universal latency guarantee or model-capability benchmark. The one-record candidate is not uniformly faster than baseline.",
+    "Only one actual task per size uses the scripted backend; additional retained history records are synthetic. No external model API is called.",
+    "Tracemalloc measures Python allocations in a separate sample, not process RSS or total machine memory.",
+    "Keyset pagination still performs count(*) for total. Do not claim that all historical operations are O(1). The measured older page is the second page.",
+    "Context validation still checks all records of the relevant session. Synthetic records in this probe have different session IDs, so this is not a same-session 10000-record privacy-walk benchmark.",
+    "First-open duration includes migration, backup and host startup once, while action samples measure steady state after that open.",
+    "Payload byte counts exclude indexes, the rest of the database, journal/WAL and backup files; migration backup file size is recorded separately.",
+    "Parent coordinated the benchmark window to avoid other project-heavy jobs; this probe did not independently profile every host process."
+  ],
+  "external_model_calls": 0
+}

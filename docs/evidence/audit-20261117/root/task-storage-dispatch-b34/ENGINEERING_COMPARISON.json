@@ -1,0 +1,312 @@
+{
+  "version": 1,
+  "scope": "Three distinct one-attempt runs of the same public synthetic Python engineering protocol; not a model ranking, reliability rate or broad product verification.",
+  "frozen_protocol_identical_excluding_source_identity": true,
+  "prompt_sha256": "cf4cc64fcd5eb2b0a97323d677562e3ac7c090b491b93025c92811ade7dcef0a",
+  "runner_sha256_identical": true,
+  "runner_sha256": "1878a177ed32600e9d53490ad518a93ece8d729643f2e2681c7b10d11d4724c4",
+  "runs": [
+    {
+      "directory": "engineering-baseline-luna-high-r9",
+      "source_git_head": "c411dd1f92ad09e3b6e095acc96bc65c12107d5e",
+      "model": "gpt-6-luna",
+      "reasoning": "high",
+      "status": "PASS",
+      "protocol_status": "PASS",
+      "orchestration_status": "PASS",
+      "semantic_status": "PASS",
+      "model_run_seconds": 281.0676609669972,
+      "outer_seconds": 281.7144321830019,
+      "model_calls": 28,
+      "parent_model_calls": 17,
+      "tool_proposals": 61,
+      "tool_receipts": 61,
+      "receipt_counts_by_worker": {
+        "parent": 39,
+        "1.1": 15,
+        "1.2": 7
+      },
+      "failed_tool_receipt_count": 3,
+      "failed_model_attempts": 0,
+      "input_tokens": 1134660,
+      "output_tokens": 17838,
+      "cached_input_tokens": 951911,
+      "uncached_input_tokens": 182749,
+      "async_lifecycle_overlap_seconds": 94.86868214607239,
+      "source_unchanged": true,
+      "owned_core_stopped": true,
+      "result_fields": {
+        "status": "completed",
+        "runtime_status": "completed",
+        "deliverable_status": "present",
+        "verification_status": "not_run",
+        "engineering_status": "unverified",
+        "task_outcome": "unverified",
+        "task_succeeded": false,
+        "verification": null
+      },
+      "children": [
+        {
+          "id": "1.1",
+          "status": "completed",
+          "collected": true,
+          "model_calls": 6,
+          "changed_paths": [
+            "logstats/parser.py"
+          ],
+          "owned_tests": [
+            9
+          ]
+        },
+        {
+          "id": "1.2",
+          "status": "completed",
+          "collected": true,
+          "model_calls": 5,
+          "changed_paths": [
+            "logstats/aggregate.py"
+          ],
+          "owned_tests": [
+            3
+          ]
+        }
+      ],
+      "external_checks": {
+        "unit": {
+          "tests_run": 17,
+          "returncode": 0,
+          "passed": true
+        },
+        "cli_cases": {
+          "basic": {
+            "returncode": 0,
+            "passed": true
+          },
+          "precision": {
+            "returncode": 0,
+            "passed": true
+          },
+          "empty": {
+            "returncode": 0,
+            "passed": true
+          },
+          "invalid": {
+            "returncode": 2,
+            "passed": true
+          }
+        },
+        "cli_case_count": 4,
+        "cli_passed_count": 4,
+        "acceptance_passed": true,
+        "parent_cli_artifact_matches": true,
+        "original_acceptance_unchanged": true
+      }
+    },
+    {
+      "directory": "engineering-candidate-luna-high-r10",
+      "source_git_head": "37570b9a7c6b64e0ac67ab2706c15eeebc714069",
+      "model": "gpt-6-luna",
+      "reasoning": "high",
+      "status": "FAIL",
+      "protocol_status": "FAIL",
+      "orchestration_status": "FAIL",
+      "semantic_status": "FAIL",
+      "model_run_seconds": 184.08159663799597,
+      "outer_seconds": 184.65903651000554,
+      "model_calls": 20,
+      "parent_model_calls": 13,
+      "tool_proposals": 41,
+      "tool_receipts": 40,
+      "receipt_counts_by_worker": {
+        "parent": 29,
+        "1.1": 4,
+        "1.2": 7
+      },
+      "failed_tool_receipt_count": 4,
+      "failed_model_attempts": 0,
+      "input_tokens": 623129,
+      "output_tokens": 14162,
+      "cached_input_tokens": 500341,
+      "uncached_input_tokens": 122788,
+      "async_lifecycle_overlap_seconds": 0,
+      "source_unchanged": true,
+      "owned_core_stopped": true,
+      "result_fields": {
+        "status": "incomplete",
+        "runtime_status": "incomplete",
+        "deliverable_status": "incomplete",
+        "verification_status": "not_run",
+        "engineering_status": "incomplete",
+        "task_outcome": "incomplete",
+        "task_succeeded": false,
+        "verification": null
+      },
+      "children": [
+        {
+          "id": "1.1",
+          "status": "error",
+          "collected": true,
+          "model_calls": 2,
+          "changed_paths": [],
+          "owned_tests": []
+        },
+        {
+          "id": "1.2",
+          "status": "completed",
+          "collected": true,
+          "model_calls": 5,
+          "changed_paths": [
+            "logstats/aggregate.py"
+          ],
+          "owned_tests": [
+            3
+          ]
+        }
+      ],
+      "external_checks": {
+        "unit": {
+          "tests_run": 17,
+          "returncode": 1,
+          "passed": false
+        },
+        "cli_cases": {
+          "basic": {
+            "returncode": 1,
+            "passed": false
+          },
+          "precision": {
+            "returncode": 1,
+            "passed": false
+          },
+          "empty": {
+            "returncode": 1,
+            "passed": false
+          },
+          "invalid": {
+            "returncode": 1,
+            "passed": false
+          }
+        },
+        "cli_case_count": 4,
+        "cli_passed_count": 0,
+        "acceptance_passed": false,
+        "parent_cli_artifact_matches": false,
+        "original_acceptance_unchanged": true
+      }
+    },
+    {
+      "directory": "engineering-candidate-sol-medium-r11",
+      "source_git_head": "3764fc054899d9fb3d13c545667e4ff0fc64d044",
+      "model": "gpt-6.1-sol",
+      "reasoning": "medium",
+      "status": "PASS",
+      "protocol_status": "PASS",
+      "orchestration_status": "PASS",
+      "semantic_status": "PASS",
+      "model_run_seconds": 212.88007739000022,
+      "outer_seconds": 213.67840282300313,
+      "model_calls": 29,
+      "parent_model_calls": 15,
+      "tool_proposals": 58,
+      "tool_receipts": 58,
+      "receipt_counts_by_worker": {
+        "parent": 27,
+        "1.1": 16,
+        "1.2": 15
+      },
+      "failed_tool_receipt_count": 0,
+      "failed_model_attempts": 0,
+      "input_tokens": 1055681,
+      "output_tokens": 5975,
+      "cached_input_tokens": 871073,
+      "uncached_input_tokens": 184608,
+      "async_lifecycle_overlap_seconds": 78.76228857040405,
+      "source_unchanged": true,
+      "owned_core_stopped": true,
+      "result_fields": {
+        "status": "completed",
+        "runtime_status": "completed",
+        "deliverable_status": "present",
+        "verification_status": "not_run",
+        "engineering_status": "unverified",
+        "task_outcome": "unverified",
+        "task_succeeded": false,
+        "verification": null
+      },
+      "children": [
+        {
+          "id": "1.1",
+          "status": "completed",
+          "collected": true,
+          "model_calls": 7,
+          "changed_paths": [
+            "logstats/parser.py"
+          ],
+          "owned_tests": [
+            9
+          ]
+        },
+        {
+          "id": "1.2",
+          "status": "completed",
+          "collected": true,
+          "model_calls": 7,
+          "changed_paths": [
+            "logstats/aggregate.py"
+          ],
+          "owned_tests": [
+            3
+          ]
+        }
+      ],
+      "external_checks": {
+        "unit": {
+          "tests_run": 17,
+          "returncode": 0,
+          "passed": true
+        },
+        "cli_cases": {
+          "basic": {
+            "returncode": 0,
+            "passed": true
+          },
+          "precision": {
+            "returncode": 0,
+            "passed": true
+          },
+          "empty": {
+            "returncode": 0,
+            "passed": true
+          },
+          "invalid": {
+            "returncode": 2,
+            "passed": true
+          }
+        },
+        "cli_case_count": 4,
+        "cli_passed_count": 4,
+        "acceptance_passed": true,
+        "parent_cli_artifact_matches": true,
+        "original_acceptance_unchanged": true
+      }
+    }
+  ],
+  "findings": [
+    "R9: original c411 production code passed with Luna high. It recovered from two advertised-but-unregistered STRONG tier errors and one manage_goal schema error. This pass cannot be attributed to later code repairs.",
+    "R10: the first candidate failed with Luna high when the Parser worker hit the unchanged 4096 output-token limit. The incomplete proposal was not executed, and the unchanged two-child cap rejected a replacement. Its FAIL and raw evidence remain intact.",
+    "R11: the final candidate passed with GPT-6.1 Sol medium. Both children completed and were collected, edited only their assigned modules, and ran 9 ParserTests / 3 AggregateTests. The parent integrated the CLI and the independent 17 tests plus 4 CLI cases passed.",
+    "The only production-code change between R10 and R11 was excluding irrelevant work_contract guidance from requests with no actual tools; its regression test and development note were also updated. Model/effort changed too, so these runs are not a pure model-only controlled comparison.",
+    "R11 provides one successful final-candidate engineering result, with zero failed tool receipts or incomplete model completions. One pass does not establish statistical superiority, repeatability, or an automatic model-upgrade policy.",
+    "Each live engineering run uses the same configured model on parent and children. Heterogeneous read-only search/review role routing has separate deterministic HTTP integration evidence; these three runs are not a live heterogeneous-role benchmark.",
+    "The product results for passing R9 and R11 remain unverified/not_run with task_succeeded=false. Independent post-run acceptance does not rewrite the earlier product verification state."
+  ],
+  "usage_boundary": "Provider-reported aggregate token counts include children once and are not billing statements or a cost comparison.",
+  "concurrency_boundary": "Reported overlap is between child start-to-completed lifecycles, including inference and tools; it is not simultaneous CPU-execution proof.",
+  "r11_inference_evidence": "engineering-candidate-sol-medium-r11/INFERENCE_AUDIT.json: 29 actual host ModelRequestStarted events, parent 15 and children 7+7, all GPT-6.1 Sol / medium; all provider response model fields agree.",
+  "original_sources_unchanged": true,
+  "r10_to_r11_changed_paths": [
+    "agent/context_v5.py",
+    "tests/test_hybrid_history_rotation.py",
+    "docs/development/TASK_STORAGE_SCHEDULING_20261117.md"
+  ]
+}

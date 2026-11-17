@@ -1,0 +1,345 @@
+{
+  "version": 1,
+  "source_kind": "Host ModelRequestStarted events in final durable checkpoint",
+  "source_database_sha256": "bf0ccc8b83278b4ff9c6f1d5250cb21ba62dbf1ae813a4faf5e8b8d74a26f692",
+  "source_checkpoint_payload_sha256": "a4c1b713e1de59d1ddd87eb4fca131ed42064aad7fe26d8e2330a195d224ae59",
+  "source_repository_commit": "3764fc054899d9fb3d13c545667e4ff0fc64d044",
+  "source_query": "SELECT payload,sha256 FROM checkpoints WHERE session_id=?",
+  "database_read_only": true,
+  "database_exported": false,
+  "model_request_events": 29,
+  "expected_model": "gpt-6.1-sol",
+  "expected_thinking": "medium",
+  "every_request_matches": true,
+  "provider_reported_models": [
+    "gpt-6.1-sol"
+  ],
+  "provider_model_calls": 29,
+  "event_count_matches_calls": true,
+  "workers": {
+    "parent": {
+      "model_request_events": 15,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "thinking_efforts": [
+        "medium"
+      ],
+      "events": [
+        {
+          "sequence": 5,
+          "timestamp": "2026-11-17T10:25:42.583724+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "parent",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 47,
+          "timestamp": "2026-11-17T10:25:56.450557+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "parent",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 82,
+          "timestamp": "2026-11-17T10:26:06.123584+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "parent",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 134,
+          "timestamp": "2026-11-17T10:26:13.391450+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "parent",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 259,
+          "timestamp": "2026-11-17T10:26:29.500475+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "parent",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 349,
+          "timestamp": "2026-11-17T10:26:56.430808+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "parent",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 399,
+          "timestamp": "2026-11-17T10:27:14.179483+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "parent",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 925,
+          "timestamp": "2026-11-17T10:27:43.720801+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "parent",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 944,
+          "timestamp": "2026-11-17T10:27:52.171489+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "parent",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 1009,
+          "timestamp": "2026-11-17T10:28:07.676074+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "parent",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 1023,
+          "timestamp": "2026-11-17T10:28:17.694358+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "parent",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 1037,
+          "timestamp": "2026-11-17T10:28:26.332459+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "parent",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 1056,
+          "timestamp": "2026-11-17T10:28:39.133421+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "parent",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 1080,
+          "timestamp": "2026-11-17T10:28:50.331886+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "parent",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 1094,
+          "timestamp": "2026-11-17T10:29:00.957915+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "parent",
+          "primary": "cloud"
+        }
+      ]
+    },
+    "1.1": {
+      "model_request_events": 7,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "thinking_efforts": [
+        "medium"
+      ],
+      "events": [
+        {
+          "sequence": 4,
+          "timestamp": "2026-11-17T10:25:56.479439+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "worker",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 17,
+          "timestamp": "2026-11-17T10:26:04.326064+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "worker",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 50,
+          "timestamp": "2026-11-17T10:26:13.165445+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "worker",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 93,
+          "timestamp": "2026-11-17T10:26:21.787173+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "worker",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 106,
+          "timestamp": "2026-11-17T10:26:55.333665+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "worker",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 119,
+          "timestamp": "2026-11-17T10:27:04.422957+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "worker",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 132,
+          "timestamp": "2026-11-17T10:27:12.686592+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "worker",
+          "primary": "cloud"
+        }
+      ]
+    },
+    "1.2": {
+      "model_request_events": 7,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "thinking_efforts": [
+        "medium"
+      ],
+      "events": [
+        {
+          "sequence": 4,
+          "timestamp": "2026-11-17T10:26:06.173637+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "worker",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 17,
+          "timestamp": "2026-11-17T10:26:20.978016+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "worker",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 50,
+          "timestamp": "2026-11-17T10:26:28.926221+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "worker",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 88,
+          "timestamp": "2026-11-17T10:26:47.669178+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "worker",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 101,
+          "timestamp": "2026-11-17T10:27:09.175709+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "worker",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 114,
+          "timestamp": "2026-11-17T10:27:24.231151+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "worker",
+          "primary": "cloud"
+        },
+        {
+          "sequence": 127,
+          "timestamp": "2026-11-17T10:27:32.370071+00:00",
+          "turn_id": 1,
+          "model": "gpt-6.1-sol",
+          "thinking": "medium",
+          "phase": "exploring",
+          "role": "worker",
+          "primary": "cloud"
+        }
+      ]
+    }
+  },
+  "scope": "These are actual host request events and provider-reported response models; reasoning effort is recorded by the host, not independently echoed by provider usage."
+}

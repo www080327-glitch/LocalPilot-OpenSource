@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "qualification_status": "FAIL",
+  "source_git_head": "37570b9a7c6b64e0ac67ab2706c15eeebc714069",
+  "model": "gpt-6-luna",
+  "reasoning": "high",
+  "scope": "One public synthetic Python project; not a model-quality benchmark.",
+  "primary_finding": {
+    "classification": "Model output exceeded the frozen per-worker response allowance; existing runtime rejected the incomplete tool response without dispatch.",
+    "worker_id": "1.1",
+    "worker_task": "parser.py implementation and ParserTests",
+    "aggregate_call_index": 7,
+    "finish_reason": "length",
+    "provider_reported_input_tokens": 9531,
+    "provider_reported_output_tokens": 4096,
+    "host_max_worker_output_tokens": 4096,
+    "response_id": "resp_0ec69ea2e47e56f1016afc296601fc87d1980cb070089111f6",
+    "successful_earlier_receipts": [
+      {
+        "receipt_id": "turn:1/call:call_MpdbMoBzJurJ7ndumh7F9iaS/entry:0",
+        "name": "read_file"
+      },
+      {
+        "receipt_id": "turn:1/call:call_qgvDj0XRhammUzT4RHTtlVCd/entry:1",
+        "name": "read_file"
+      },
+      {
+        "receipt_id": "turn:1/call:call_V3lgu4rpYWRS7gIcSeMp3pRQ/entry:2",
+        "name": "read_file"
+      },
+      {
+        "receipt_id": "turn:1/call:call_WSmtXHcUMfWRK2tOPKMjTVGf/entry:3",
+        "name": "list_directory"
+      }
+    ],
+    "incomplete_response_tool_proposals": 1,
+    "incomplete_response_tool_dispatches": 0,
+    "parser_content_unchanged_from_stub": true,
+    "model_run_seconds": 184.08159663799597,
+    "failed_transport_attempts": 0
+  },
+  "subsequent_sequence": [
+    {
+      "event": "Aggregate child completed",
+      "worker_id": "1.2",
+      "successful_owned_tests": 3
+    },
+    {
+      "event": "Parent proposed a replacement parser child",
+      "receipt_index": 29,
+      "outcome": "denied",
+      "reason": "Subagent depth/count budget exhausted.",
+      "unchanged_max_children": 2
+    },
+    {
+      "event": "Parent ran full acceptance and CLI against unchanged parser stub",
+      "receipt_indices": [
+        34,
+        35
+      ],
+      "exit_codes": [
+        1,
+        1
+      ]
+    },
+    {
+      "event": "Parent marked its goal blocked and reported partial delivery",
+      "receipt_index": 39,
+      "product_task_outcome": "incomplete"
+    },
+    {
+      "event": "Independent runner evaluated original acceptance files",
+      "unit_tests_run": 17,
+      "unit_passed": false,
+      "cli_cases": 4,
+      "cli_passed": 0,
+      "parent_result_json_present": false
+    }
+  ],
+  "diagnostic_wording_boundary": {
+    "original_child_text": "\nModel response incomplete: finish_reason=length; no tools executed.",
+    "literal_scope": "No tools executed refers to the one incomplete model response rejected by agent/session.py before canonical assistant/tool-group admission.",
+    "whole_child_scope": "The child had already completed four read-only tool calls: read SPEC.md, parser.py, tests/test_acceptance.py, and list fixtures.",
+    "parent_misinterpretation": "The final parent answer says the assigned child failed before executing any tools. The four earlier completed receipts contradict that broader statement.",
+    "raw_text_preserved": true
+  },
+  "product_and_environment_assessment": {
+    "output_guard": "Rejecting a truncated tool call before dispatch is existing behavior; this run does not establish a new tool execution defect.",
+    "recovery_limit": "The existing runtime stops this child after a length-truncated tool response instead of asking the same child to split its next patch within remaining budget. A third child was disallowed by the frozen protocol. This is an observed recovery limitation, not an environmental failure.",
+    "context_capacity": "The failed provider call reported 9531 input tokens against the configured 1050000-token context. No ContextTooSmall or network failure is recorded for this incident.",
+    "interpreter": "The sibling ran AggregateTests successfully with the supplied absolute interpreter; the parent also executed the prescribed tests and CLI. Missing Python/dependencies are not evidenced as the failure cause.",
+    "model_vs_code_causality": "One Luna-high baseline pass and one Luna-high candidate failure do not isolate stochastic model variation from changed tool descriptions/host-state guidance. The observed proximate cause is the frozen 4096-output-token ceiling, not input compaction.",
+    "no_protocol_relaxation": "Prompt, fixtures, interpreter command, parent/child budgets and acceptance gates are retained; no budget increase, extra child allowance or rerun of R10 has occurred."
+  },
+  "separate_rotation_regression": {
+    "test": "tests.test_hybrid_history_rotation.HybridHistoryRotationTests.test_zero_dispatch_turn_keeps_attempt_identity_after_rotation_commit_and_restart",
+    "window": 4000,
+    "output_and_margin_reserve": 336,
+    "input_budget": 3664,
+    "baseline_third_turn_input_estimate": 3444,
+    "candidate_third_turn_input_estimate": 3686,
+    "extra_estimate_from_historical_and_current_work_contract": 242,
+    "over_budget": 22,
+    "candidate_compacted_input_estimate": 1577,
+    "candidate_omitted_messages": 4,
+    "counterfactual_without_work_contract_estimate": 3444,
+    "conclusion": "The new tool-work guidance was unnecessarily inserted into a text-only session. The extra bytes correctly triggered compaction at the fixture boundary; the original complete-prefix assertion consequently failed. No rotation identity corruption was demonstrated.",
+    "subsequent_minimal_change": "Emit work_contract only when actual tools are present; retain the original 4000 window and all old assertions, and assert the first actual no-tool provider request has no work_contract.",
+    "subsequent_validation": "33/33 relevant tests PASS, 0 skips, 115 source/test fingerprints unchanged during the run.",
+    "evidence": "../rotation-budget/{baseline,candidate,candidate-without-contract}.json; ../superagent/rotation-fix-r1/RESULTS.json",
+    "independence_from_r10": "The tiny-window test issue and R10 worker output truncation have distinct direct causes. Fixing the former does not turn R10 into a pass."
+  },
+  "raw_inputs_sha256": {
+    "RESULTS.json": "f61df664f7bfc237d7535da7f76d147ff7c143e988aa31da59f6ea1600903bab",
+    "engineering-task.json": "3a9702ec354aa54d8f73c4b5c6fee6332f31c50447fb1271c9ad73979bcb4618",
+    "RUN_EXECUTION.json": "de55a69b75b48713a3d7dc6443712a0a1e1967dc8c23d89828062da50eca3450",
+    "external-unittest.json": "4a8a1fbe629dd430e6772d167ae1b76f288af8e589025e06726dc881487cfca8",
+    "external-cli.json": "54c51ed4dbf6af5a6246a34c311afc7167b0f9929a776d34fe25091009c089c6",
+    "PROTOCOL.json": "9f5757ec5e25b3040a470894ac54a0f71f0faf95a924690c2e1460592ca59533",
+    "resolved-inference.json": "4d03609ea2cd0dd9db86366015ddf08b10e16eab2a45df20f7a3d3bab37ee214"
+  },
+  "product_result_preserved": {
+    "status": "incomplete",
+    "runtime_status": "incomplete",
+    "deliverable_status": "incomplete",
+    "verification_status": "not_run",
+    "engineering_status": "incomplete",
+    "task_outcome": "incomplete",
+    "task_succeeded": false,
+    "verification": null
+  },
+  "external_acceptance_preserved": {
+    "unit": {
+      "tests_run": 17,
+      "returncode": 1,
+      "passed": false
+    },
+    "cli_cases": {
+      "basic": {
+        "returncode": 1,
+        "passed": false
+      },
+      "precision": {
+        "returncode": 1,
+        "passed": false
+      },
+      "empty": {
+        "returncode": 1,
+        "passed": false
+      },
+      "invalid": {
+        "returncode": 1,
+        "passed": false
+      }
+    },
+    "cli_case_count": 4,
+    "cli_passed_count": 0,
+    "acceptance_passed": false,
+    "parent_cli_artifact_matches": false,
+    "original_acceptance_unchanged": true
+  },
+  "no_automatic_verification_promotion": true,
+  "concurrency_boundary": {
+    "observed_terminal_intervals": [
+      {
+        "worker_id": "1.1",
+        "start": 1794910542.5528266,
+        "terminal": 1794910603.6147623,
+        "terminal_event": "error"
+      },
+      {
+        "worker_id": "1.2",
+        "start": 1794910551.5573523,
+        "terminal": 1794910632.0605547,
+        "terminal_event": "completed"
+      }
+    ],
+    "observed_lifetime_overlap_seconds": 52.05741000175476,
+    "frozen_completed_children_overlap_seconds": 0,
+    "interpretation": "Both children did run with overlapping lifetimes, but the parser ended in error. The frozen qualification counts completed-child overlap only and remains failed; diagnostic terminal overlap is not substituted for that gate."
+  },
+  "failed_receipt_classification": {
+    "replacement_delegate_budget_denial": 1,
+    "parent_process_nonzero_exit_after_missing_parser": 2,
+    "intentional_goal_blocked_state_reported_as_failed_receipt": 1,
+    "independent_root_causes": "Do not count these four failed-status receipts as four separate implementation bugs."
+  }
+}

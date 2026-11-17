@@ -1,0 +1,140 @@
+{
+  "archive": "storage.tar.gz",
+  "archive_bytes": 210228,
+  "archive_sha256": "852c82d127b5429c15159fa2c3b80a5461e66d16efd563defe0f4f86ea835e97",
+  "audited_expected_hashes": 0,
+  "description": "任务逐条存储迁移和原始性能记录；不含数据库、恢复副本或运行状态。",
+  "exclusion_rules": [
+    "Only explicitly listed files are eligible; engineering snapshot members come from the final audited allowlist.",
+    "Private runtime/state, workspace caches, credentials/environment files and all SQLite/database sidecars are excluded.",
+    "Wheel binaries, archives, model files and unlisted file types are excluded; packaging uses hashes and import proofs.",
+    "Required files are never silently omitted. Undeclared files and directories are not traversed.",
+    "Inputs are not redacted or reformatted. Known API keys are read only from private files and matched exactly; any match aborts export."
+  ],
+  "id": "storage",
+  "manifest": "storage.MANIFEST.json",
+  "member_count": 20,
+  "members": [
+    {
+      "bytes": 27431,
+      "original_sha256": "dc4de156cd48cba0c7b3f985d73b55bc534c79fb5d1ed1c298f2e06e97f63234",
+      "path": "companion/PERF_COMPARISON.json",
+      "public_sha256": "dc4de156cd48cba0c7b3f985d73b55bc534c79fb5d1ed1c298f2e06e97f63234"
+    },
+    {
+      "bytes": 981,
+      "original_sha256": "969ea3ad7284f333a3fd72b109a4d4b93a58e9962c4e08d646697397d033ac09",
+      "path": "companion/PERF_FINAL_SOURCE_EQUIVALENCE.json",
+      "public_sha256": "969ea3ad7284f333a3fd72b109a4d4b93a58e9962c4e08d646697397d033ac09"
+    },
+    {
+      "bytes": 9669,
+      "original_sha256": "176c67804fcfa2445f926a644e6e060354f4cef6af9469ce4fea784b3b43f84f",
+      "path": "companion/measure_history.py",
+      "public_sha256": "176c67804fcfa2445f926a644e6e060354f4cef6af9469ce4fea784b3b43f84f"
+    },
+    {
+      "bytes": 1415,
+      "original_sha256": "547f737fbd852320b6e9ee4bc037bf613fb20943f239e3b5792ccf9cc5c4e4bc",
+      "path": "companion/migration-r1/RESULTS.json",
+      "public_sha256": "547f737fbd852320b6e9ee4bc037bf613fb20943f239e3b5792ccf9cc5c4e4bc"
+    },
+    {
+      "bytes": 1415,
+      "original_sha256": "ad9e72eeae8d579e620a1334b428cfe8e9ea50c9457affed247f129486515faa",
+      "path": "companion/migration-r2/RESULTS.json",
+      "public_sha256": "ad9e72eeae8d579e620a1334b428cfe8e9ea50c9457affed247f129486515faa"
+    },
+    {
+      "bytes": 730,
+      "original_sha256": "e940162b8762fba6a1b6040f528abdf5f29403d7a99db3a5a585c758a9ae88c6",
+      "path": "companion/migration-r2/execution.json",
+      "public_sha256": "e940162b8762fba6a1b6040f528abdf5f29403d7a99db3a5a585c758a9ae88c6"
+    },
+    {
+      "bytes": 1377,
+      "original_sha256": "615841cf808d9bf3c3b4e782a3c9d09bf4153b8390149666f89ff4e3e5fc0875",
+      "path": "companion/migration-r2/probe.log",
+      "public_sha256": "615841cf808d9bf3c3b4e782a3c9d09bf4153b8390149666f89ff4e3e5fc0875"
+    },
+    {
+      "bytes": 63813,
+      "original_sha256": "7697717def213fe33e29730d11a2f03396a59b11088c1f3d68ba3d17b6a03078",
+      "path": "companion/migration-r2/source-after.json",
+      "public_sha256": "7697717def213fe33e29730d11a2f03396a59b11088c1f3d68ba3d17b6a03078"
+    },
+    {
+      "bytes": 63813,
+      "original_sha256": "7697717def213fe33e29730d11a2f03396a59b11088c1f3d68ba3d17b6a03078",
+      "path": "companion/migration-r2/source-before.json",
+      "public_sha256": "7697717def213fe33e29730d11a2f03396a59b11088c1f3d68ba3d17b6a03078"
+    },
+    {
+      "bytes": 5212,
+      "original_sha256": "f95f8799661ffe0b9115e0a3d515fd02aa4b516c80bedd5d9920ba3ec6a12ffa",
+      "path": "companion/migration_probe.py",
+      "public_sha256": "f95f8799661ffe0b9115e0a3d515fd02aa4b516c80bedd5d9920ba3ec6a12ffa"
+    },
+    {
+      "bytes": 598,
+      "original_sha256": "5bdab125c94b82ce1708f9b24d81b639b366ed79c6b7e1f0d92c06be5bb66cd4",
+      "path": "companion/perf-baseline-r1.console.log",
+      "public_sha256": "5bdab125c94b82ce1708f9b24d81b639b366ed79c6b7e1f0d92c06be5bb66cd4"
+    },
+    {
+      "bytes": 58456,
+      "original_sha256": "6f497ea9b82d8d8f603de3eb070ac0057f7203374ed65adcbafc0bb43d5af0e5",
+      "path": "companion/perf-baseline-r1/PROGRESS.json",
+      "public_sha256": "6f497ea9b82d8d8f603de3eb070ac0057f7203374ed65adcbafc0bb43d5af0e5"
+    },
+    {
+      "bytes": 104360,
+      "original_sha256": "a260ab11afd1172cbb1d9ec77dd89f2e5da7f0b062fc4b16e27b8600cb6cd053",
+      "path": "companion/perf-baseline-r1/RESULTS.json",
+      "public_sha256": "a260ab11afd1172cbb1d9ec77dd89f2e5da7f0b062fc4b16e27b8600cb6cd053"
+    },
+    {
+      "bytes": 1035,
+      "original_sha256": "10497cabe5b78a0470041b8d1fb794a084a3ed0d109c58f0f75fdcb917e6dc15",
+      "path": "companion/perf-baseline-r1/execution.json",
+      "public_sha256": "10497cabe5b78a0470041b8d1fb794a084a3ed0d109c58f0f75fdcb917e6dc15"
+    },
+    {
+      "bytes": 588,
+      "original_sha256": "5144e96b2506ae3e8d27372711ed009efbe3fc36dc06fc3195b4abfb244ea43b",
+      "path": "companion/perf-candidate-r1.console.log",
+      "public_sha256": "5144e96b2506ae3e8d27372711ed009efbe3fc36dc06fc3195b4abfb244ea43b"
+    },
+    {
+      "bytes": 59701,
+      "original_sha256": "0e2163df324e39229e1886cb04e113fe8ba674e284ba4119ee99be22fc384fb0",
+      "path": "companion/perf-candidate-r1/PROGRESS.json",
+      "public_sha256": "0e2163df324e39229e1886cb04e113fe8ba674e284ba4119ee99be22fc384fb0"
+    },
+    {
+      "bytes": 106264,
+      "original_sha256": "636df3552b05d3058199875093b1e3a560394a4c725a6b92e0f71691ca79fd9d",
+      "path": "companion/perf-candidate-r1/RESULTS.json",
+      "public_sha256": "636df3552b05d3058199875093b1e3a560394a4c725a6b92e0f71691ca79fd9d"
+    },
+    {
+      "bytes": 1001,
+      "original_sha256": "51db2ce619aae8c18508f488cab2cebf71b04c1d59fefa12acb5671ec80dd4d0",
+      "path": "companion/perf-candidate-r1/execution.json",
+      "public_sha256": "51db2ce619aae8c18508f488cab2cebf71b04c1d59fefa12acb5671ec80dd4d0"
+    },
+    {
+      "bytes": 1986,
+      "original_sha256": "e2eb4bd07b05f138cc829e6fe1703940f9f9f77c2e2bb9748bf34f7700d6ce6c",
+      "path": "review-companion-source-read.json",
+      "public_sha256": "e2eb4bd07b05f138cc829e6fe1703940f9f9f77c2e2bb9748bf34f7700d6ce6c"
+    },
+    {
+      "bytes": 10733,
+      "original_sha256": "0cd575f3751915cb812e85606e6b771b753975a415f45f624c384695570e0891",
+      "path": "review-companion.json",
+      "public_sha256": "0cd575f3751915cb812e85606e6b771b753975a415f45f624c384695570e0891"
+    }
+  ],
+  "summary": "storage.SUMMARY.md"
+}
