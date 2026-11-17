@@ -396,8 +396,8 @@ def recovery_class(runtime):
 
 class SQLiteRuntimeStore:
     """Single live TaskService owner; one transaction per session tree boundary."""
-    # Earlier readers cannot see archived idempotency keys and must not replay them.
-    VERSION = 2
+    # Earlier readers cannot restore a rotated active transcript as full history.
+    VERSION = 3
 
     def __init__(self, path, *, fault_hook=None):
         self.path = Path(path).expanduser().absolute()
@@ -420,12 +420,12 @@ class SQLiteRuntimeStore:
             db = self.connection
             version = db.execute("PRAGMA user_version").fetchone()[0]
             tables = db.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
-            if version not in {0, 1, self.VERSION} or (version == 0 and tables):
+            if version not in {0, 1, 2, self.VERSION} or (version == 0 and tables):
                 raise PersistenceError("Unsupported persistent runtime schema; explicit migration required")
             if db.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
                 raise PersistenceError("Runtime database integrity check failed")
-            if version == 1:
-                self._backup_v1()
+            if version in {1, 2}:
+                self._backup_schema(version)
             if db.execute("PRAGMA journal_mode=WAL").fetchone()[0] != "wal":
                 raise PersistenceError("WAL unavailable")
             db.execute("PRAGMA synchronous=FULL")
@@ -443,19 +443,22 @@ class SQLiteRuntimeStore:
                 CREATE INDEX IF NOT EXISTS archived_tasks_owner ON archived_tasks(owner_subject);
                 CREATE TABLE IF NOT EXISTS archived_sessions(session_id TEXT PRIMARY KEY REFERENCES checkpoints(session_id),
                     desktop_key TEXT UNIQUE, payload TEXT NOT NULL, sha256 TEXT NOT NULL);
-                PRAGMA user_version=2; COMMIT;""")
+                CREATE TABLE IF NOT EXISTS runtime_segments(session_id TEXT NOT NULL REFERENCES checkpoints(session_id),
+                    generation INTEGER NOT NULL, payload TEXT NOT NULL, sha256 TEXT NOT NULL,
+                    PRIMARY KEY(session_id, generation));
+                PRAGMA user_version=3; COMMIT;""")
         except Exception as exc:
             self.close()
             raise PersistenceError("Cannot open runtime store: " + type(exc).__name__) from exc
 
-    def _backup_v1(self):
+    def _backup_schema(self, version):
         import tempfile
-        fd, filename = tempfile.mkstemp(prefix=self.path.name + '.schema1-backup-', suffix='.sqlite3', dir=self.path.parent)
+        fd, filename = tempfile.mkstemp(prefix=self.path.name + f'.schema{version}-backup-', suffix='.sqlite3', dir=self.path.parent)
         os.close(fd)
         backup = sqlite3.connect(filename)
         try:
             self.connection.backup(backup)
-            if backup.execute('PRAGMA integrity_check').fetchone()[0] != 'ok' or backup.execute('PRAGMA user_version').fetchone()[0] != 1:
+            if backup.execute('PRAGMA integrity_check').fetchone()[0] != 'ok' or backup.execute('PRAGMA user_version').fetchone()[0] != version:
                 raise PersistenceError('Pre-migration backup verification failed')
         finally:
             backup.close()
@@ -465,7 +468,7 @@ class SQLiteRuntimeStore:
         if self.failed or self.connection is None:
             raise PersistenceError("Persistent runtime fenced after storage failure/close")
 
-    def save(self, session_id, payload, point, *, archived_tasks=(), archived_session=None):
+    def save(self, session_id, payload, point, *, archived_tasks=(), archived_session=None, archived_runtime=None):
         with self.lock:
             self.ensure_available()
             try:
@@ -486,6 +489,10 @@ class SQLiteRuntimeStore:
                     archived_raw = dumps({'session': payload['session'], 'view': archived_session})
                     db.execute("INSERT INTO archived_sessions VALUES(?,?,?,?)",
                                (session_id, payload['session'].get('desktop_key'), archived_raw, digest(archived_raw)))
+                if archived_runtime is not None:
+                    archived_raw = dumps(archived_runtime)
+                    db.execute("INSERT INTO runtime_segments VALUES(?,?,?,?)",
+                               (session_id, archived_runtime['generation'], archived_raw, digest(archived_raw)))
                 if self.fault_hook:
                     self.fault_hook("before_commit", point)
                 db.execute("COMMIT")
@@ -505,8 +512,11 @@ class SQLiteRuntimeStore:
                 rows = self.connection.execute("SELECT session_id,revision,payload,sha256 FROM checkpoints WHERE session_id NOT IN (SELECT session_id FROM archived_sessions)").fetchall()
                 result = []
                 for session_id, revision, raw, checksum in rows:
-                    events = self.connection.execute("SELECT revision,sha256 FROM journal WHERE session_id=? ORDER BY revision", (session_id,)).fetchall()
-                    if digest(raw) != checksum or not events or events[-1] != (revision, checksum) or [e[0] for e in events] != list(range(1, revision + 1)):
+                    span = self.connection.execute("SELECT count(*),min(revision),max(revision),sum(typeof(revision)!='integer') FROM journal WHERE session_id=?", (session_id,)).fetchone()
+                    latest = self.connection.execute("SELECT sha256 FROM journal WHERE session_id=? AND revision=?", (session_id, revision)).fetchone()
+                    # The primary key makes this equivalent to checking every
+                    # revision, without allocating the lifetime journal at boot.
+                    if digest(raw) != checksum or span != (revision, 1, revision, 0) or latest != (checksum,):
                         raise PersistenceError("Checkpoint/journal integrity mismatch")
                     payload = json.loads(raw)
                     if payload["session"]["id"] != session_id:
@@ -552,6 +562,16 @@ class SQLiteRuntimeStore:
 
     def archived_session_for_key(self, desktop_key):
         return self._archived('archived_sessions', 'desktop_key', desktop_key)
+
+    def runtime_segment(self, session_id, generation):
+        rows = self._archive_rows("SELECT payload,sha256 FROM runtime_segments WHERE session_id=? AND generation=?",
+                                  (session_id, generation))
+        return rows[0] if rows else None
+
+    def runtime_segments(self, session_id, *, limit=20, before=None):
+        condition = "session_id=?" + (" AND generation<?" if before is not None else "")
+        parameters = (session_id, before, limit) if before is not None else (session_id, limit)
+        return self._archive_rows(f"SELECT payload,sha256 FROM runtime_segments WHERE {condition} ORDER BY generation DESC LIMIT ?", parameters)
 
     def close(self):
         with self.lock:

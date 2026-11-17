@@ -76,7 +76,8 @@ class TaskController:
         conversations = service.store.get("localpilot_conversations", {})
         conversations[intent.get("conversation_id", "local-user")] = {
             "session_id":session_id, "last_task_id":task_id, "endpoint":intent["endpoint"],
-            "subject":intent.get("transport", {}).get("subject", service.config.localpilot_client_subject)}
+            "subject":intent.get("transport", {}).get("subject", service.config.localpilot_client_subject),
+            "provider_kind":intent.get("transport", {}).get("provider_kind", "local")}
         service.store.set("localpilot_conversations", conversations)
         service.store.set("pending_localpilot_submission", None)
         service.store.set("pending_escalation", None)
@@ -172,6 +173,46 @@ class TaskController:
         record=service.store.get("localpilot_tasks",{}).get(task_id,{})
         return service.cloud_localpilot if record.get("transport",{}).get("provider_kind")=="cloud" else service.localpilot
 
+    def task_history(self, limit=30, before=None):
+        tasks = self.service.store.get("localpilot_tasks", {})
+        records = sorted(tasks.items(), key=lambda item:(item[1].get("timestamp", 0), item[0]), reverse=True)
+        if before is not None:
+            records = [item for item in records if (item[1].get("timestamp", 0), item[0]) < (before["timestamp"], before["id"])]
+        page = records[:limit]
+        cursor = {"timestamp":page[-1][1].get("timestamp", 0), "id":page[-1][0]} if len(records) > limit else None
+        return {"tasks":{task_id:self.task_preview(task_id, record) for task_id, record in page},
+                "total":len(tasks), "next_before":cursor}
+
+    @staticmethod
+    def task_preview(task_id, record):
+        current = record.get("last_status") or record.get("result", {})
+        keys = ("status", "phase", "task_id", "session_id", "quiescent", "task_execution", "submission_id",
+                "goal_verified", "unknown_mutation", "verification_status", "engineering_status", "last_event_id",
+                "cancel_requested", "required_action")
+        summary = {key:current[key] for key in keys if key in current}
+        for key in ("progress_text", "agent_response"):
+            if key in current:
+                summary[key] = bounded_text(current[key], 1200)
+        if "cache_usage" in current:
+            summary["cache_usage"] = {key:current["cache_usage"][key] for key in
+                ("status", "cache_hit_ratio", "cache_miss_tokens", "output_tokens") if key in current["cache_usage"]}
+        transport = record.get("transport", {})
+        preview = {"task_id":task_id, "timestamp":record.get("timestamp", 0), "last_status":summary,
+                   "transport":{key:transport[key] for key in ("provider_kind", "mode") if key in transport}}
+        for key in ("phase", "submission_id", "endpoint"):
+            if key in record:
+                preview[key] = record[key]
+        if "user_request" in record:
+            preview["user_request"] = bounded_text(record["user_request"], 600)
+        if "feedback" in record:
+            preview["feedback"] = {"text":bounded_text(record["feedback"].get("text", ""), 1200)}
+        if "connection_error" in record:
+            error = record["connection_error"]
+            preview["connection_error"] = {key:error[key] for key in ("status", "error") if key in error}
+            if "reason" in error:
+                preview["connection_error"]["reason"] = bounded_text(error["reason"], 600)
+        return preview
+
     def task_command(self, cmd, data):
         service = self.service
         task_id = data.get("task_id", "")
@@ -195,16 +236,14 @@ class TaskController:
             result = {"status":"ok", "events":frames, "last_event_id":frames[-1].get("last_event_id", data.get("after", 0)) if frames else data.get("after", 0)}
         else:
             result = provider.status(task_id, cloud_approved=cloud)
-            service.store_task_result(result)
             if not result.get("quiescent") and result.get("status") not in {"unavailable", "approval_required"}:
                 service.monitor_task(task_id, result.get("last_event_id", 0), cloud)
         if cmd == "task_events":
             tasks = service.store.get("localpilot_tasks", {})
             tasks[task_id]["last_event_cursor"] = result["last_event_id"]
+            service.store.set("localpilot_tasks", tasks)
         else:
             service.receive_task_update(task_id, result)
-            tasks = service.store.get("localpilot_tasks", {})
-        service.store.set("localpilot_tasks", tasks)
         return result
 
     def store_task_result(self, result):

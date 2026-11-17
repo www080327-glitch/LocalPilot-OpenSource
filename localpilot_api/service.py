@@ -77,6 +77,8 @@ class SessionRecord:
     desktop_fingerprint: str | None = None
     extensions: dict | None = None  # Host extensions committed with their configuration identity.
     child_route_contexts: dict | None = None
+    history_generation: int = 0
+    context_start: int | None = None
     archive: dict | None = None
 
 
@@ -132,10 +134,11 @@ class TaskService:
     """
     def __init__(self, routes, *, max_sessions=64, max_tasks=512, max_events=4096,
                  max_timeout=MAX_TASK_TIMEOUT, persistence=None, auto_resume=False, async_policy=None,
-                 session_initializer=None, resource_finalizer=None, configuration_migration=None):
+                 session_initializer=None, resource_finalizer=None, configuration_migration=None,
+                 history_rotation_bytes=2 * 1024 * 1024):
         if not routes or not all(isinstance(k, str) and callable(v) for k, v in routes.items()):
             raise ValueError("routes must map logical model IDs to AgentSession factories")
-        if any(type(v) is not int or v <= 0 for v in (max_sessions, max_tasks, max_events, max_timeout)):
+        if any(type(v) is not int or v <= 0 for v in (max_sessions, max_tasks, max_events, max_timeout, history_rotation_bytes)):
             raise ValueError("Service limits must be positive integers")
         if max_timeout > MAX_TASK_TIMEOUT:
             raise ValueError(f'Maximum task timeout is {MAX_TASK_TIMEOUT} seconds')
@@ -145,6 +148,7 @@ class TaskService:
         self.configuration_migration = configuration_migration
         self.max_sessions, self.max_tasks = max_sessions, max_tasks
         self.max_events, self.max_timeout = max_events, max_timeout
+        self.history_rotation_bytes = history_rotation_bytes
         self.sessions, self.tasks = {}, {}
         self.condition = threading.Condition(threading.RLock())
         if async_policy is not None and not isinstance(async_policy, AsyncPolicy):
@@ -174,7 +178,7 @@ class TaskService:
         if self.store:
             self.store.ensure_available()
 
-    def _checkpoint(self, session_id, point, *, archived_tasks=(), archived_session=None):
+    def _checkpoint(self, session_id, point, *, archived_tasks=(), archived_session=None, archived_runtime=None):
         if not self.store:
             return
         with self.condition:
@@ -186,7 +190,7 @@ class TaskService:
                           for t in self.tasks.values() if t.session_id == session_id]}
             self.store.save(session_id, payload, point,
                             archived_tasks=[self._task_payload(t) for t in archived_tasks],
-                            archived_session=archived_session)
+                            archived_session=archived_session, archived_runtime=archived_runtime)
 
     @staticmethod
     def _task_payload(task):
@@ -428,6 +432,73 @@ class TaskService:
         for task in tasks:
             del self.tasks[task.id]
 
+    def _rotate_history(self, session):
+        rotation = self._history_rotation(session)
+        if rotation is None:
+            return
+        snapshot, retained, context_start = rotation
+        runtime = session.runtime
+        archived = {'version': 1, 'generation': session.history_generation, 'last_turn': runtime.turn_id,
+                    'configuration': runtime._persistence_config, 'runtime': snapshot,
+                    'child_route_contexts': deepcopy(session.child_route_contexts)}
+        tasks = [task for task in self.tasks.values() if task.session_id == session.id
+                 and task.id != session.last_task and task.status in TERMINAL
+                 and not task.executing and not task.control_pending]
+        retired_ids = {task.id for task in tasks}
+        previous = {name: getattr(runtime, name) for name in retained}
+        previous_tasks = self.tasks
+        previous_routes, previous_start = session.child_route_contexts, session.context_start
+        previous_hybrid = runtime.hybrid.state if runtime.hybrid else None
+        for name, value in retained.items():
+            setattr(runtime, name, value)
+        if runtime.hybrid:
+            runtime.hybrid.state = runtime.hybrid.retained_history_state()
+        self.tasks = {key: task for key, task in self.tasks.items() if key not in retired_ids}
+        if session.child_route_contexts:
+            session.child_route_contexts = {key: value for key, value in session.child_route_contexts.items()
+                                           if key in runtime._children}
+        session.context_start = context_start
+        session.history_generation += 1
+        try:
+            self._checkpoint(session.id, 'history_rotated', archived_tasks=tasks, archived_runtime=archived)
+        except BaseException:
+            for name, value in previous.items():
+                setattr(runtime, name, value)
+            self.tasks = previous_tasks
+            session.child_route_contexts, session.context_start = previous_routes, previous_start
+            if runtime.hybrid:
+                runtime.hybrid.state = previous_hybrid
+            session.history_generation -= 1
+            raise
+
+    def _history_rotation(self, session):
+        from agent.session_history import retained_turn
+        from agent.session_types import SessionState
+
+        runtime = session.runtime
+        if (not self.store or not runtime.engine_policy or runtime.computer or runtime.adaptive
+                or runtime.hybrid and runtime.hybrid.state['grants']
+                or not session.last_task or runtime.state != SessionState.TURN_FINISHED):
+            return None
+        latest = self._task(session.last_task)
+        if latest.status not in TERMINAL or latest.executing or latest.control_pending:
+            return None
+        tree = list(nodes(runtime))
+        if (recovery_class(runtime) != 'SAFE_TO_RESUME'
+                or any(node._queue or node._durable_intent for node in tree)
+                or any(node.state != SessionState.SESSION_FINISHED for node in tree[1:])
+                or self.scheduler and any(self.scheduler.owns_worker(node, worker_id)
+                                          for node in tree for worker_id in node._children)):
+            return None
+        start = session.context_start if session.context_start is not None else latest.history_start
+        retained = retained_turn(runtime, start)
+        if retained is None:
+            return None
+        snapshot = snapshot_runtime(runtime)
+        if len(dumps(snapshot).encode()) < self.history_rotation_bytes:
+            return None
+        return snapshot, *retained
+
     def create_session(self, model="localpilot", *, owner_subject=None, thinking_override=None, desktop_options=None, desktop_key=None, desktop_fingerprint=None):
         with self.condition:
             self._available()
@@ -547,6 +618,7 @@ class TaskService:
                     session.runtime.close()
                     del self.sessions[session.id]
                 raise APIError("max_output_tokens exceeds the host budget")
+            self._rotate_history(session)
             task = TaskRecord(identifier("resp"), session.id, request.model, request.input, request.previous_task_id)
             task.service_metadata = deepcopy(service_metadata)
             task.request_key_digest, task.request_fingerprint = key_digest, fingerprint
@@ -561,6 +633,7 @@ class TaskService:
                     "task_id": task.id, "task_generation": task.generation}
             self.tasks[task.id] = task
             session.active_task = session.last_task = task.id
+            session.context_start = len(session.runtime.messages)
             if session.runtime.engine_policy:
                 # Caller guidance belongs to this turn's data, not the frozen
                 # host instruction prefix or permission authority.

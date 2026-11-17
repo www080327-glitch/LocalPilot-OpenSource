@@ -6,6 +6,8 @@ core=tomllib.loads((root/'pyproject.toml').read_text())['project']['version']
 assert runpy.run_path(str(root/'localpilot_service/__init__.py'))['VERSION']==core,'localpilot_service.VERSION differs from pyproject.toml'
 suite=tomllib.loads((root/'suite/pyproject.toml').read_text())['project']['version']
 companion=tomllib.loads((root/'companion/pyproject.toml').read_text())['project']['version']
+assert runpy.run_path(str(root/'suite/localpilot_suite/__init__.py'))['VERSION']==suite,'localpilot_suite.VERSION differs from suite/pyproject.toml'
+assert runpy.run_path(str(root/'companion/__init__.py'))['__version__']==companion,'companion.__version__ differs from companion/pyproject.toml'
 desktop=json.loads((root/'desktop/package.json').read_text())['version']
 assert json.loads((root/'desktop/package-lock.json').read_text())['version']==desktop
 assert json.loads((root/'desktop/src-tauri/tauri.conf.json').read_text())['version']==desktop

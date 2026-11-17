@@ -368,6 +368,39 @@ class ServiceContractTests(unittest.TestCase):
         self.assertIsNone(app.store.get("pending_localpilot_submission"))
         self.assertEqual(self.provider.network_calls, calls)
 
+    def test_recovered_cloud_submission_keeps_provider_and_allows_next_question(self):
+        self.server.catalog["localpilot"].update(adapter="deepseek", cloud_egress="REQUIRES_APPROVAL",
+                                                 reasoning_only=True, prompt_profile="minimal_0")
+        self.access.principals["companion"] = replace(self.access.principals["companion"],
+            routes={"localpilot":"localpilot", "companion-cloud-reasoning":"localpilot"})
+        app = self.host()
+        app.config.localpilot_analysis_route = "localpilot"
+        prepared = app.prepare_escalation(request("first public question"), mode="reasoning")
+        first = app.command({"command":"submit_escalation", "approved":True, "provider_kind":"cloud",
+                             "cloud_approved":True, "expected_digest":prepared["review_digest"]})
+        self.service.wait(first["task_id"])
+        intent = app.store.get("localpilot_tasks")[first["task_id"]]
+        # Restore the durable cut point after accepted IDs, before either projection.
+        app.store.set("pending_localpilot_submission", intent)
+        app.store.set("localpilot_tasks", {})
+        app.store.set("localpilot_conversations", {})
+        app.channel.stop(); app.store.close(); app.lock.close(); self._cleanups = self._cleanups[:-3]
+        app = self.host()
+        binding = app.store.get("localpilot_conversations")["local-user.reasoning.cloud"]
+        self.assertEqual(binding.get("provider_kind"), "cloud")
+        self.assertEqual(binding["session_id"], first["session_id"])
+        self.assertEqual(app.store.get("localpilot_tasks")[first["task_id"]]["submission_id"], intent["submission_id"])
+        self.assertIsNone(app.store.get("pending_localpilot_submission"))
+        self.assertEqual(len(self.backend.requests), 1, "Recovery must not replay the accepted task")
+        prepared = app.prepare_escalation(request("second public question"), mode="reasoning")
+        second = app.command({"command":"submit_escalation", "approved":True, "provider_kind":"cloud",
+                              "cloud_approved":True, "expected_digest":prepared["review_digest"]})
+        self.assertTrue(second.get("task_id"), second)
+        self.assertNotEqual(first["session_id"], second["session_id"])
+        self.service.wait(second["task_id"])
+        self.assertEqual(len(self.service.tasks), 2)
+        self.assertEqual(len(self.backend.requests), 2)
+
     def test_second_conversation_cannot_reuse_first_session(self):
         app = self.host()
         first = self.done(self.submit())

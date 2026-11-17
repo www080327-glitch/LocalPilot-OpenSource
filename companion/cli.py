@@ -107,6 +107,9 @@ def main():
         action = sub.add_parser(name)
         if name == "ui":
             action.add_argument("--show", action="store_true")
+        if name == "escalation-status":
+            action.add_argument("--limit", type=int, default=30)
+            action.add_argument("--before", type=json.loads, help="Use next_before from the previous task history page")
     for name in ("ask", "retrieve", "escalate"):
         sub.add_parser(name).add_argument("text")
     activity = sub.add_parser("activity")
@@ -302,7 +305,7 @@ def main():
             elif args.action == "localpilot-health":
                 command = {"command":"localpilot_health", "cloud_approved":args.allow_cloud}
             elif args.action == "escalation-status":
-                command = {"command":"escalation_status"}
+                command = {"command":"escalation_status", "limit":args.limit, "before":args.before}
             elif args.action in {"task-status", "task-cancel", "task-events"}:
                 command = {"command":args.action.replace("-", "_"), "task_id":args.task_id, "cloud_approved":args.allow_cloud}
                 if args.action == "task-cancel":

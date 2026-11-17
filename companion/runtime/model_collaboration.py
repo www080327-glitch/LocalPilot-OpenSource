@@ -26,15 +26,15 @@ class ModelCollaboration:
         return self.app.controls.prepare("cloud","reasoning",force_cloud_confirmation=force_confirmation,fallback=fallback)
 
     def consider(self, task_id, result):
+        current=self.app.controls.current
+        if (not current or current.get("task_id")!=task_id or current.get("phase")!="finished"
+                or self.app.controls.stop_event.is_set()):return None
+        if result.get("quiescent") is not True or result.get("status") in {"cancelled","requires_approval","requires_human"}:return None
         tasks=self.app.store.get("localpilot_tasks",{});record=tasks.get(task_id)
         if not record or record.get("cloud_fallback"):return None
         transport=record.get("transport",{})
         if transport.get("provider_kind","local")!="local" or transport.get("mode")!="reasoning":return None
-        current=self.app.controls.current
-        if (not current or current.get("task_id")!=task_id or current.get("phase")!="finished"
-                or self.app.controls.stop_event.is_set()):return None
         if record.get("endpoint")!=self.app.config.localpilot_endpoint or transport.get("scope")!=self.app.privacy.consent_id():return None
-        if result.get("quiescent") is not True or result.get("status") in {"cancelled","requires_approval","requires_human"}:return None
         resource=result.get("model_resource") or {}
         if resource.get("managed") is True and resource.get("model_process_alive") is not False:return None
         task=result.get("task") or {}

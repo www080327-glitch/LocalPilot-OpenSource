@@ -459,16 +459,18 @@ class Companion:
     def maintain_native(self, now=None):
         return self.observations.maintain_native(now)
 
-    def status(self):
+    def status(self, *, task_history=None):
         import psutil
         p = psutil.Process()
         cpu = p.cpu_times()
+        history = self.agent_tasks.task_history() if task_history is None else task_history
         with self.native_metrics_lock:
             native_metrics = dict(self.native_metrics)
         from companion import __version__
         return {"status":"running", "package_version":__version__, "version":"Companion "+__version__, "low_power":self.power.snapshot(), "system_resources":self.resources.latest,"inference_options":self.controls.options(),"inference_control":self.controls.public(), "service_connection":self.localpilot.connection_state(), "mode":self.config.mode, "uptime_seconds":time.time()-self.started, "service_rss_bytes":p.memory_info().rss, "service_cpu_seconds":cpu.user+cpu.system, "loop_wakeups":self.loop_wakeups, "observer":type(self.observer.observer).__name__, "observed_events":self.observed_events, "pending_files":len(self.pending), "memory_count":self.store.db.execute("SELECT count(*) FROM memories").fetchone()[0], "indexing_paused":self.store.get("indexing_paused",False), "dnd":self.store.get("dnd", self.config.dnd), "quiet_now":self.policy.quiet(), "agent":"native_service_only", "model":self.model.stats(), "model_routing":self.inference.stats(), "proactive":self.policy.summary(), "last_error":self.last_error,
                 "privacy":self.privacy.status(), "native_observer":self.native.status(), "observations":self.observation_memory.status(),
-                "localpilot":self.localpilot.connection_state()["status"], "escalation_tasks":self.store.get("localpilot_tasks", {}),
+                "localpilot":self.localpilot.connection_state()["status"], "escalation_tasks":history["tasks"],
+                "escalation_task_count":history["total"], "escalation_next_before":history["next_before"],
                 "recent_errors":self.store.get("recent_errors", []), "last_recovery":self.store.get("last_recovery"),
                 "totals":self.store.get("runtime_totals", {}),
                 "native_metrics":native_metrics,

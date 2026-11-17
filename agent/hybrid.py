@@ -399,7 +399,7 @@ class HybridController:
                     'denied_local_only' if self.policy.egress.mode == 'LOCAL_ONLY' or r.hard_data_policy.local_only else
                     'denied_size' if summary['bytes'] > self.policy.egress.max_request_bytes else
                     'allowed' if self.policy.egress.mode == 'CLOUD_ALLOWED' or summary['request_sha256'] in self.state['grants'] else 'approval_required')
-        self.state['egress'].append({**summary, 'decision': decision, 'at': time.time()})
+        self.state['egress'].append({**summary, 'decision': decision, 'at': time.time(), 'turn_id': r.turn_id})
         r._emit('CloudEgressDecision', **summary, decision=decision)
         if decision == 'approval_required':
             raise CloudEgressApprovalNeeded(summary)
@@ -463,7 +463,8 @@ class HybridController:
                 raise CloudEgressDenied('Cloud request budget exhausted')
         if r.adaptive and not self.backend.is_local:
             r.adaptive.reserve_cloud(request_units, r._request_output_tokens or r.budgets.max_output_tokens)
-        attempt = {'id': len(self.state['attempts']), 'backend_id': self.state['backend_id'],
+        attempt = {'id': self.state['attempts'][-1]['id'] + 1 if self.state['attempts'] else 0,
+            'backend_id': self.state['backend_id'],
             'kind': self.kind(self.state['backend_id']), 'configured_model': r.current_primary_model,
             'provider': getattr(self.backend, 'provider', 'local_http' if self.backend.is_local else 'unknown'),
             'task_identity': deepcopy(self.state['task']), 'turn_id': r.turn_id, 'worker_id': r._worker_id,
@@ -599,6 +600,17 @@ class HybridController:
             result.append({'backend_id': alias, 'kind': self.kind(alias), 'eligible': reason is None,
                            'reason': reason, 'source': 'deterministic_shadow_not_recommender_authority'})
         return result
+
+    def retained_history_state(self):
+        turn = self.runtime.turn_id
+        attempts = [record for record in self.state['attempts'] if record['turn_id'] == turn]
+        # A turn can finish before dispatch; keep the last identity in that case.
+        attempts = attempts or self.state['attempts'][-1:]
+        requests = {record['egress_sha256'] for record in attempts}
+        return {**self.state, 'attempts': attempts,
+                'handoffs': [record for record in self.state['handoffs'] if record['turn_id'] == turn],
+                'egress': [record for record in self.state['egress'] if record.get('turn_id') == turn
+                           or 'turn_id' not in record and record['request_sha256'] in requests]}
 
     def restore(self, data):
         if data.get('configuration') != sha(self.configuration()):

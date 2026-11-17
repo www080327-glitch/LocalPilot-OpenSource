@@ -1,6 +1,6 @@
-# LocalPilot Companion 0.5.7b9
+# LocalPilot Companion 0.5.7b10
 
-本次 **0.5.7b9** 修复仍保留的旧话检索、有限“继续”衔接、委派时传递同一历史，以及桌宠重开后的保存聊天恢复与分页。默认仍保留最多 10,000 条记录；遗忘和来源访问限制继续生效。实现、验证及原生界面边界见[常驻对话续作](../docs/development/PERSISTENT_CONTEXT_20261117.md)。
+本次 **0.5.7b10** 修复云端任务接受后的中断恢复，并把长期委派任务列表改成默认 30 条、最多 50 条的可翻页预览，保留旧 ID 精确查询。原始记录继续保存，状态/取消查询减少重复读写。实现与验收范围见[长期会话分段](../docs/development/PERSISTENT_SESSION_SEGMENTS_20261117.md)。上一版的旧话检索、有限“继续”衔接、委派历史和桌宠聊天分页见[常驻对话续作](../docs/development/PERSISTENT_CONTEXT_20261117.md)；默认仍保留最多 10,000 条对话记忆，遗忘和来源访问限制继续生效。
 
 [公开桌面版本与候选记录](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases) · [安装与当前平台边界](../README.md#简易快速安装)。本页为独立 Companion 服务，不改变其版本和授权边界；历史版本记录不代表当前候选已通过原生验收。
 
@@ -26,7 +26,7 @@ companion --config /path/to/companion.json ui --show
 
 Help confirmation permits submitting a task. Tool approval stays with the Core Permission Gateway and a separate trusted operator. Cloud consultation needs its own explicit consent and a new question-only Session. Closing a card, declining help, and stopping a task are distinct actions. UNKNOWN never authorizes replay.
 
-API and client contract: 1.0. Current source integration: Core 5.0.0b32 (API 1.0). Historical 4.9.2 RC consumer evidence remains historical. Initial migration from old Companion 0.5.4 requires upgrading Companion first. Keep data outside the installation directory.
+API and client contract: 1.0. Current source integration: Core 5.0.0b33 (API 1.0). Historical 4.9.2 RC consumer evidence remains historical. Initial migration from old Companion 0.5.4 requires upgrading Companion first. Keep data outside the installation directory.
 
 This is a scoped release candidate. A real ordinary arithmetic prompt produced an incorrect 0.8B answer; factual accuracy is not guaranteed by the routing or host verifier. See the joint release report and failure ledger. The portable Linux service has regression coverage; Intel hardware, native macOS lifecycle and all-day stability still require device validation.
 

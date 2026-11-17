@@ -4,7 +4,7 @@ import sqlite3
 import tempfile
 import unittest
 
-from agent.persistence import PersistenceError
+from agent.persistence import PersistenceError, SQLiteRuntimeStore
 from agent.registry import create_default_registry
 from agent.retry import RetryPolicy
 from agent.session import AgentSession
@@ -161,6 +161,7 @@ class ServiceHistoryTests(unittest.TestCase):
         with sqlite3.connect(self.path) as db:
             db.execute('DROP TABLE archived_tasks')
             db.execute('DROP TABLE archived_sessions')
+            db.execute('DROP TABLE runtime_segments')
             db.execute('PRAGMA user_version=1')
             prior = db.execute('SELECT * FROM checkpoints').fetchall()
         service = self.service(max_tasks=1)
@@ -171,7 +172,7 @@ class ServiceHistoryTests(unittest.TestCase):
             self.assertEqual(db.execute('PRAGMA integrity_check').fetchone()[0], 'ok')
             self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 1)
             self.assertEqual(db.execute('SELECT * FROM checkpoints').fetchall(), prior)
-        self.assertEqual(service.store.connection.execute('PRAGMA user_version').fetchone()[0], 2)
+        self.assertEqual(service.store.connection.execute('PRAGMA user_version').fetchone()[0], SQLiteRuntimeStore.VERSION)
         self.assertEqual(service.create_task(TaskRequest('first', idempotency_key='first')), first)
         self.assertEqual((self.workspace / 'migration.txt').read_text(), 'preserved')
         service.suspend()
