@@ -1,0 +1,94 @@
+{
+  "source_commit": "b69542583954c49672a636ba43f1ef310238883c",
+  "source_tree": "cded45c5c68089c0654bc25a90a541a189e7d73e",
+  "kind": "BYTE_PRESERVING_PUBLIC_EVIDENCE",
+  "groups": [
+    {
+      "name": "regressions",
+      "description": "Core、Companion、Suite 全量原始结果与源码前后清单",
+      "archive": "regressions.tar.gz",
+      "sha256": "120d0efb1cf6c095926f25fadfbcc6209e31b34a0ce63b951ff02879fa686f7c",
+      "bytes": 318720,
+      "manifest": "regressions.MANIFEST.json",
+      "files_count": 17
+    },
+    {
+      "name": "truncation-recovery",
+      "description": "截断恢复 97 项定向回归和独立代码审阅",
+      "archive": "truncation-recovery.tar.gz",
+      "sha256": "3e787cd33c39e4fb4da7513bc81b5001f15cd51188357992fdcb402a59cbe2e4",
+      "bytes": 4180,
+      "manifest": "truncation-recovery.MANIFEST.json",
+      "files_count": 3
+    },
+    {
+      "name": "session-context",
+      "description": "来源投影、迁移、旧 writer、1k/10k 性能和初次失败",
+      "archive": "session-context.tar.gz",
+      "sha256": "56e32c970757711f05f219d120a0d95e9ab487a5e01046dda3a17dbcfbbfc5a6",
+      "bytes": 9063,
+      "manifest": "session-context.MANIFEST.json",
+      "files_count": 9
+    },
+    {
+      "name": "installed-packages",
+      "description": "四组件安装、66 项测试、346 文件来源一致性",
+      "archive": "installed-packages.tar.gz",
+      "sha256": "40564951f6511bad4484c1bd1fa99e9a87f61fd0b932de77bc9946bd4366a268",
+      "bytes": 143523,
+      "manifest": "installed-packages.MANIFEST.json",
+      "files_count": 27
+    },
+    {
+      "name": "browser-native",
+      "description": "两个页面用例的启动阻断与原生环境交接",
+      "archive": "browser-native.tar.gz",
+      "sha256": "62dd0662db4defef338c1dfff6e58f4617599f56ae907bd38d0769c35a0c4662",
+      "bytes": 22233,
+      "manifest": "browser-native.MANIFEST.json",
+      "files_count": 10
+    },
+    {
+      "name": "worker-roles-local",
+      "description": "最终 3 项本地 TLS 边界测试及原 harness 记录",
+      "archive": "worker-roles-local.tar.gz",
+      "sha256": "73d98b4b5d59657a8c81374b537cfffae5223df1a5f2a0bdc3897121a5cc8162",
+      "bytes": 68577,
+      "manifest": "worker-roles-local.MANIFEST.json",
+      "files_count": 16
+    },
+    {
+      "name": "worker-roles-live",
+      "description": "受工作区约束的只读角色真实模型集成及独立审计",
+      "archive": "worker-roles-live.tar.gz",
+      "sha256": "efc97b9fdc4637287aab416aca2116210688216bd3e496f063778551908809a4",
+      "bytes": 35105,
+      "manifest": "worker-roles-live.MANIFEST.json",
+      "files_count": 13
+    },
+    {
+      "name": "engineering-r12-blocked",
+      "description": "原 Full 工程自动审批阻断；协议与合成夹具不改",
+      "archive": "engineering-r12-blocked.tar.gz",
+      "sha256": "ea466e866f7eafc7c97d8bff56ed1fc3d73954543d900ba5576df2c2a6df8254",
+      "bytes": 24093,
+      "manifest": "engineering-r12-blocked.MANIFEST.json",
+      "files_count": 24
+    },
+    {
+      "name": "delivery-review",
+      "description": "旧交付审计、源码映射与本轮归档生成输入",
+      "archive": "delivery-review.tar.gz",
+      "sha256": "e5e10db0cd2ba53fd8b1e8c6e6d32b6b53ac11366d75134188534ec41603b762",
+      "bytes": 6121,
+      "manifest": "delivery-review.MANIFEST.json",
+      "files_count": 4
+    }
+  ],
+  "groups_count": 9,
+  "files_count": 123,
+  "known_credential_matches": 0,
+  "private_runtime_and_wheels_excluded": true,
+  "packager_sha256": "0fe3f75adc66af6c7b2a4a532fd67e39522732b92619d864b058dcb125e3d1b6",
+  "plan_sha256": "17def2839ea8b25b6f4d3ebce41ac7693ecfc4c7f41124682964fd03cc306b73"
+}

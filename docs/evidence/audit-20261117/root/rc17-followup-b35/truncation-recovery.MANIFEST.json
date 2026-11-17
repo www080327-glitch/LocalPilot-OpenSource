@@ -1,0 +1,29 @@
+{
+  "name": "truncation-recovery",
+  "description": "截断恢复 97 项定向回归和独立代码审阅",
+  "archive": "truncation-recovery.tar.gz",
+  "sha256": "3e787cd33c39e4fb4da7513bc81b5001f15cd51188357992fdcb402a59cbe2e4",
+  "bytes": 4180,
+  "manifest": "truncation-recovery.MANIFEST.json",
+  "files_count": 3,
+  "files": [
+    {
+      "path": "INDEPENDENT_IMPLEMENTATION_REVIEW.json",
+      "bytes": 1704,
+      "original_sha256": "9d06264bf7b7785b36f3d5410813a6ab82ea18c26bfa9686cb806f5717be4a2a",
+      "public_sha256": "9d06264bf7b7785b36f3d5410813a6ab82ea18c26bfa9686cb806f5717be4a2a"
+    },
+    {
+      "path": "truncation-recovery/RESULTS.json",
+      "bytes": 990,
+      "original_sha256": "ead4469aecc249347bfcc1f78348b9c064a06b94550715eba2b1a60d9b115b1f",
+      "public_sha256": "ead4469aecc249347bfcc1f78348b9c064a06b94550715eba2b1a60d9b115b1f"
+    },
+    {
+      "path": "truncation-recovery/directed.log",
+      "bytes": 17818,
+      "original_sha256": "2569fb114bcc7ea1b1ebe7c00e0e18f7dc290b9e75c88fbe9f2f6cafb1f7a645",
+      "public_sha256": "2569fb114bcc7ea1b1ebe7c00e0e18f7dc290b9e75c88fbe9f2f6cafb1f7a645"
+    }
+  ]
+}

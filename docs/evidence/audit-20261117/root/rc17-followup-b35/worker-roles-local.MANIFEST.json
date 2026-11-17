@@ -1,0 +1,107 @@
+{
+  "name": "worker-roles-local",
+  "description": "最终 3 项本地 TLS 边界测试及原 harness 记录",
+  "archive": "worker-roles-local.tar.gz",
+  "sha256": "73d98b4b5d59657a8c81374b537cfffae5223df1a5f2a0bdc3897121a5cc8162",
+  "bytes": 68577,
+  "manifest": "worker-roles-local.MANIFEST.json",
+  "files_count": 16,
+  "files": [
+    {
+      "path": "qualification-sources/qualify_openai_worker_roles.py",
+      "bytes": 18440,
+      "original_sha256": "5204ebb437bcaf7aca926dd6f5deeb433cc5bf9a9e4c97b465ab000841c0ea7e",
+      "public_sha256": "5204ebb437bcaf7aca926dd6f5deeb433cc5bf9a9e4c97b465ab000841c0ea7e"
+    },
+    {
+      "path": "qualification-sources/test_worker_role_qualification.py",
+      "bytes": 9968,
+      "original_sha256": "d351a9faca241861bd7743444a3376a159e173b35bdc04095a4c92dd97a35cc4",
+      "public_sha256": "d351a9faca241861bd7743444a3376a159e173b35bdc04095a4c92dd97a35cc4"
+    },
+    {
+      "path": "worker-role-qualification/RESULTS.json",
+      "bytes": 713,
+      "original_sha256": "3085f5afe911751246e6bc1659e804b0fa543353cd3f87b4596c5cffd8f4aacd",
+      "public_sha256": "3085f5afe911751246e6bc1659e804b0fa543353cd3f87b4596c5cffd8f4aacd"
+    },
+    {
+      "path": "worker-role-qualification/runner-tests.log",
+      "bytes": 505,
+      "original_sha256": "3f2b8592818822e664c2026d5165b280240d39045d5f29c573a11fda4f11d40b",
+      "public_sha256": "3f2b8592818822e664c2026d5165b280240d39045d5f29c573a11fda4f11d40b"
+    },
+    {
+      "path": "worker-role-service-boundary/INITIAL_ATTEMPTS.json",
+      "bytes": 1567,
+      "original_sha256": "2e3cb41e8650372c7df97b3c69ee6ed28f106dd14cbbff787f7d90ff46981f8d",
+      "public_sha256": "2e3cb41e8650372c7df97b3c69ee6ed28f106dd14cbbff787f7d90ff46981f8d"
+    },
+    {
+      "path": "worker-role-service-boundary/ISOLATED_NEGATIVE_PROBE.json",
+      "bytes": 648,
+      "original_sha256": "e6c16259c00e7a3cd6497996b2f12019c98615185122be860e3cd3bfbe8ba707",
+      "public_sha256": "e6c16259c00e7a3cd6497996b2f12019c98615185122be860e3cd3bfbe8ba707"
+    },
+    {
+      "path": "worker-role-service-boundary/RESULTS.json",
+      "bytes": 9018,
+      "original_sha256": "19cb77e5697763b4906f4df237ea2de9a828b79c9787bc786f64fa5f8ae25da0",
+      "public_sha256": "19cb77e5697763b4906f4df237ea2de9a828b79c9787bc786f64fa5f8ae25da0"
+    },
+    {
+      "path": "worker-role-service-boundary/SOURCE_BEFORE.json",
+      "bytes": 228,
+      "original_sha256": "7d0191744a74e606c19cb3d46f462e21b4759929df1ccdb6f11fef018d2247bd",
+      "public_sha256": "7d0191744a74e606c19cb3d46f462e21b4759929df1ccdb6f11fef018d2247bd"
+    },
+    {
+      "path": "worker-role-service-boundary/outside-negative-evidence.json",
+      "bytes": 102031,
+      "original_sha256": "78edb8015a8702ab7ffe3c9f0a9f39c420cf3a2b0bc2f1550099829a21ba309d",
+      "public_sha256": "78edb8015a8702ab7ffe3c9f0a9f39c420cf3a2b0bc2f1550099829a21ba309d"
+    },
+    {
+      "path": "worker-role-service-boundary/outside-negative-requests.json",
+      "bytes": 286043,
+      "original_sha256": "0017c71d6e65a7ecc9afe6cbb102a5dfc234d85fc8564927ac5ac665128017ba",
+      "public_sha256": "0017c71d6e65a7ecc9afe6cbb102a5dfc234d85fc8564927ac5ac665128017ba"
+    },
+    {
+      "path": "worker-role-service-boundary/preflight-final/PROTOCOL.json",
+      "bytes": 1493,
+      "original_sha256": "47e5dc6be6b65e0b1355f4b2579b8cf87c4453a10ec2012db5903ea064bc2114",
+      "public_sha256": "47e5dc6be6b65e0b1355f4b2579b8cf87c4453a10ec2012db5903ea064bc2114"
+    },
+    {
+      "path": "worker-role-service-boundary/preflight-final/RESULTS.json",
+      "bytes": 24244,
+      "original_sha256": "318570f7115be6bb269cd021335ec02485f474ce63c36759aa9f3fee4cd0a298",
+      "public_sha256": "318570f7115be6bb269cd021335ec02485f474ce63c36759aa9f3fee4cd0a298"
+    },
+    {
+      "path": "worker-role-service-boundary/preflight-final/prompt.txt",
+      "bytes": 1164,
+      "original_sha256": "97b1744334886a5bae493f07c474b92675976eddcea513cfd0ac8f2406e5f72a",
+      "public_sha256": "97b1744334886a5bae493f07c474b92675976eddcea513cfd0ac8f2406e5f72a"
+    },
+    {
+      "path": "worker-role-service-boundary/role-positive-evidence.json",
+      "bytes": 77943,
+      "original_sha256": "bb68411ec67bfb44f27f778fcd25ce453b19fa8acc434d311e5ec799a974e35b",
+      "public_sha256": "bb68411ec67bfb44f27f778fcd25ce453b19fa8acc434d311e5ec799a974e35b"
+    },
+    {
+      "path": "worker-role-service-boundary/role-positive-requests.json",
+      "bytes": 161155,
+      "original_sha256": "094c767930488bed3ec7ee34a5e8107927ebc7c36cfefe0ab8c17a7ad4078870",
+      "public_sha256": "094c767930488bed3ec7ee34a5e8107927ebc7c36cfefe0ab8c17a7ad4078870"
+    },
+    {
+      "path": "worker-role-service-boundary/runner-tests.log",
+      "bytes": 715,
+      "original_sha256": "d2821813daaa088ca124c0391cf830040b04232d68bc06f4dc627fc5c852c26c",
+      "public_sha256": "d2821813daaa088ca124c0391cf830040b04232d68bc06f4dc627fc5c852c26c"
+    }
+  ]
+}

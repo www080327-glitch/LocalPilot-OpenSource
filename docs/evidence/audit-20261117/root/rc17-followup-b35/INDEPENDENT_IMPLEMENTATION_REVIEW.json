@@ -1,0 +1,36 @@
+{
+  "truncation_review": {
+    "status": "PASS_READ_ONLY_REVIEW",
+    "reviewer_task": "browser_gates",
+    "files": [
+      "agent/session.py",
+      "tests/test_worker_output_recovery.py"
+    ],
+    "findings": [],
+    "scope": "Order of usage accounting, discarded proposals, original budgets, approvals, cancellation, checkpoint and finalization.",
+    "file_sha256": {
+      "agent/session.py": "666c8c2c5ce858720ff4d110af69c9ee0e53c854e95ab5b4d8d1f5426309b7c8",
+      "tests/test_worker_output_recovery.py": "1f8e3c924bd0c76161ddc3bebfa5cf5148d6755804fb2c7fc734510fd32256b3"
+    }
+  },
+  "session_projection_review": {
+    "status": "PASS_READ_ONLY_REVIEW",
+    "reviewer_task": "browser_gates",
+    "files": [
+      "companion/memory/task_store.py",
+      "companion/runtime/tasks.py",
+      "companion/tests/test_task_store.py",
+      "companion/tests/test_pa_context_lineage.py",
+      "companion/tests/test_task_history.py"
+    ],
+    "findings": [],
+    "scope": "Original context-current semantics, inclusive before filter, old INSERT/UPSERT invalidation, put_if_absent, and transactional migration.",
+    "file_sha256": {
+      "companion/memory/task_store.py": "acc4762875c7f6bd870cb1ebf985ec3b351928ce3a1315cf0f08ca45f2f975b2",
+      "companion/runtime/tasks.py": "298a035c817323960e67a8b75fbd34e08b1cec4e6a1b43e589201da210957621",
+      "companion/tests/test_task_store.py": "3e8aaed29aee8e91eb3143bde2ac49e83378f09d896003e8cec009a7a58e25bd",
+      "companion/tests/test_pa_context_lineage.py": "633154570c74168426ad4337fa903fc209de2b5bf98292875e9509e5e79d8b4c",
+      "companion/tests/test_task_history.py": "5a8821f486146105686fe78316b24fdc6e764c74232daf7eac0980f0163705ce"
+    }
+  }
+}
