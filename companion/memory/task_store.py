@@ -10,10 +10,10 @@ import tempfile
 
 TERMINAL = {"completed", "incomplete", "failed", "cancelled", "timed_out"}
 INSERT = """INSERT INTO localpilot_tasks
-    (task_id,timestamp,endpoint,session_id,scope,active,payload) VALUES(?,?,?,?,?,?,?)"""
+    (task_id,timestamp,endpoint,session_id,scope,active,payload,context_request) VALUES(?,?,?,?,?,?,?,?)"""
 UPDATE = """ ON CONFLICT(task_id) DO UPDATE SET timestamp=excluded.timestamp,
     endpoint=excluded.endpoint,session_id=excluded.session_id,scope=excluded.scope,
-    active=excluded.active,payload=excluded.payload"""
+    active=excluded.active,payload=excluded.payload,context_request=excluded.context_request"""
 
 
 class TaskStore:
@@ -31,10 +31,21 @@ class TaskStore:
             self.db.execute("BEGIN")
             self.db.execute("""CREATE TABLE IF NOT EXISTS localpilot_tasks (
                 task_id TEXT PRIMARY KEY,timestamp REAL NOT NULL,endpoint TEXT,
-                session_id TEXT,scope TEXT,active INTEGER NOT NULL,payload TEXT NOT NULL)""")
+                session_id TEXT,scope TEXT,active INTEGER NOT NULL,payload TEXT NOT NULL,
+                context_request TEXT)""")
+            if 'context_request' not in {row[1] for row in self.db.execute('PRAGMA table_info(localpilot_tasks)')}:
+                self.db.execute('ALTER TABLE localpilot_tasks ADD COLUMN context_request TEXT')
+            # Older row-store versions omit this column when inserting tasks.
+            self.db.execute('CREATE INDEX IF NOT EXISTS task_context_pending ON localpilot_tasks(task_id) WHERE context_request IS NULL')
+            self.db.execute('''CREATE TRIGGER IF NOT EXISTS task_context_invalidate
+                AFTER UPDATE OF payload ON localpilot_tasks
+                WHEN NEW.payload IS NOT OLD.payload AND NEW.context_request IS OLD.context_request
+                BEGIN UPDATE localpilot_tasks SET context_request=NULL WHERE task_id=NEW.task_id; END''')
+            self._refresh_contexts()
             self.db.execute("CREATE INDEX IF NOT EXISTS task_history_time ON localpilot_tasks(timestamp DESC,task_id DESC)")
             self.db.execute("CREATE INDEX IF NOT EXISTS task_history_session ON localpilot_tasks(session_id,endpoint,timestamp,task_id)")
             self.db.execute("CREATE INDEX IF NOT EXISTS task_history_active ON localpilot_tasks(endpoint,scope,active,timestamp DESC,task_id DESC)")
+            self.db.execute("CREATE INDEX IF NOT EXISTS task_context_session ON localpilot_tasks(session_id,endpoint,timestamp,context_request)")
             self.db.executemany(INSERT, (self._row(task_id, record) for task_id, record in records.items()))
             self.db.execute("DELETE FROM state WHERE key='localpilot_tasks'")
 
@@ -43,8 +54,11 @@ class TaskStore:
         return json.loads(row[0]) if row else default
 
     def put(self, task_id, record):
+        row = self._row(task_id, record)
         with self.db:
-            self.db.execute(INSERT + UPDATE, self._row(task_id, record))
+            self.db.execute(INSERT + UPDATE, row)
+            self.db.execute('UPDATE localpilot_tasks SET context_request=? WHERE task_id=? AND context_request IS NULL',
+                            (row[-1], task_id))
 
     def put_if_absent(self, task_id, record):
         with self.db:
@@ -72,6 +86,21 @@ class TaskStore:
                                (session_id, endpoint, *values))
         return (json.loads(row[0]) for row in rows)
 
+    def session_contexts(self, endpoint, session_id, before=None):
+        with self.db:
+            self._refresh_contexts()
+        where, values = "", ()
+        if before is not None:
+            where, values = " AND timestamp<=?", (before,)
+        rows = self.db.execute("SELECT DISTINCT context_request FROM localpilot_tasks WHERE session_id=? AND endpoint=?" + where,
+                               (session_id, endpoint, *values))
+        return (json.loads(row[0]) if row[0] is not None else None for row in rows)
+
+    def _refresh_contexts(self):
+        for row in self.db.execute('SELECT task_id,payload FROM localpilot_tasks WHERE context_request IS NULL'):
+            self.db.execute('UPDATE localpilot_tasks SET context_request=? WHERE task_id=?',
+                            (self._context_request(json.loads(row['payload'])), row['task_id']))
+
     def has_session(self, session_id):
         return self.db.execute("SELECT 1 FROM localpilot_tasks WHERE session_id=? LIMIT 1", (session_id,)).fetchone() is not None
 
@@ -92,7 +121,27 @@ class TaskStore:
         session = (record.get('result') or record.get('last_status') or {}).get('session_id')
         active = int(record.get('last_status', {}).get('status') not in TERMINAL)
         return (task_id, record.get('timestamp', 0), record.get('endpoint'), session,
-                transport.get('scope'), active, json.dumps(record, ensure_ascii=False))
+                transport.get('scope'), active, json.dumps(record, ensure_ascii=False),
+                TaskStore._context_request(record))
+
+    @staticmethod
+    def _context_request(record):
+        if 'request' not in record:
+            return 'null'
+        request = record['request']
+        # Only dependency identity is stable; access and source freshness must
+        # still be checked on every read, including after revocation.
+        context = {
+            'relevant_memories': [{'id': row.get('id')} for row in request.get('relevant_memories', [])],
+            'relevant_files': request.get('relevant_files', []),
+            'recent_events': [({'observation_id': row['observation_id']} if row.get('observation_id')
+                               else {'source_reference': row.get('source_reference', '')})
+                              for row in request.get('recent_events', [])],
+        }
+        for key, values in context.items():
+            encoded = {json.dumps(value, ensure_ascii=False, sort_keys=True): value for value in values}
+            context[key] = [encoded[item] for item in sorted(encoded)]
+        return json.dumps(context, ensure_ascii=False, sort_keys=True, separators=(',', ':'))
 
     @staticmethod
     def _legacy_records(value):

@@ -1,4 +1,5 @@
 """Real Agent Service HTTP/SQLite with synthetic texts and a scripted model."""
+from copy import deepcopy
 import json
 import time
 import unittest
@@ -100,6 +101,38 @@ class SourceLineageTests(unittest.TestCase):
         self.assertEqual(len(self.fixture.backend.requests), 1)
         second = self.submit(question='A fresh unrelated synthetic question.')
         self.assertNotEqual(first['session_id'], second['session_id'])
+
+    def test_deduplicated_session_context_still_rechecks_live_source_revocation(self):
+        source_id, row, _ = self.source()
+        first = self.submit([row])
+        original = self.app.store.tasks.get(first['task_id'])
+        for i in range(100):
+            record = deepcopy(original)
+            record['timestamp'] -= i + 1
+            record['request']['user_request'] = f'Prior synthetic question {i}'
+            self.app.store.tasks.put(f'prior-{i}', record)
+        self.assertEqual(len(list(self.app.store.tasks.session_contexts(
+            self.app.config.localpilot_endpoint, first['session_id']))), 1)
+        self.assertTrue(self.app.agent_tasks.result_context_current(first['task_id']))
+        self.app.command({'command':'source_set_enabled', 'source_id':source_id, 'enabled':False})
+        self.assertFalse(self.app.agent_tasks.result_context_current(first['task_id']))
+        self.assertEqual(self.app.observation_memory.records(kind='task_result'), [])
+        self.assertEqual(self.app.store.tasks.get(first['task_id']), original)
+
+    def test_missing_history_request_and_missing_memory_identity_remain_unavailable(self):
+        first = self.submit()
+        record = self.app.store.tasks.get(first['task_id'])
+        old = deepcopy(record)
+        old['timestamp'] -= 1
+        del old['request']
+        self.app.store.tasks.put('older-incomplete', old)
+        self.assertFalse(self.app.agent_tasks.result_context_current(first['task_id']))
+        old['request'] = {'relevant_memories':[{}]}
+        self.app.store.tasks.put('older-incomplete', old)
+        self.assertFalse(self.app.agent_tasks.result_context_current(first['task_id']))
+        old['request'] = {}
+        self.app.store.tasks.put('older-incomplete', old)
+        self.assertTrue(self.app.agent_tasks.result_context_current(first['task_id']))
 
 
 if __name__ == '__main__':

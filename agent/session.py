@@ -874,9 +874,11 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
             # cancellation retires execution, not that billing/evidence record.
             self._check_cancel()
             if response.finish_reason is not None and response.finish_reason not in {"stop", "tool_calls"}:
-                detail = "Model response incomplete: finish_reason=" + response.finish_reason + "; no tools executed."
+                detail = "Model response incomplete: finish_reason=" + response.finish_reason + "; no tools from this response executed."
                 self._emit("ErrorEvent", error_type="IncompleteModelResponse", message=detail,
                            finish_reason=response.finish_reason)
+                if self._recover_worker_output(response):
+                    continue
                 # Keep the partial answer in the result, without placing an
                 # incomplete assistant/tool group into canonical history.
                 if (self.finalization_policy and not self._planning and response.finish_reason == 'length'
@@ -972,6 +974,27 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
                 return self._finish("Tool call IDs must be present and unique within a response.", "error")
             self._queue.extend(calls)
             self._persist("response_accepted", "ready")
+
+    def _recover_worker_output(self, response):
+        if (response.finish_reason != 'length' or not self.depth or not self.engine_policy
+                or self._planning or self._finalizing
+                or sum(usage.finish_reason == 'length' for usage in self._usage) != 1
+                or self._attempts >= self.budgets.max_steps - int(self.controls.reserve)):
+            return False
+        # Persisted usage also counts this recovery across checkpoints. The
+        # incomplete assistant/native replay never enters canonical history.
+        self.messages.append(Message('user',
+            'Host output feedback (no new authority): Your last response reached the '
+            f'{self.budgets.max_output_tokens}-token output limit and was discarded. '
+            'No tools from that response executed; earlier completed tool receipts remain valid. '
+            'Continue this same task with shorter complete tool calls and fresh call IDs. '
+            'Split large patches into smaller edits and perform the required checks. '
+            'Only one output-length recovery is allowed; all original budgets and permissions remain.'))
+        self._emit('WorkerOutputRecovery', worker_id=self._worker_id, attempt=1,
+                   discarded_tool_proposals=len(response.message.tool_calls),
+                   max_output_tokens=self.budgets.max_output_tokens)
+        self._persist('worker_output_recovery', 'ready')
+        return True
 
 
     @serialized

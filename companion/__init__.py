@@ -1,3 +1,3 @@
 """Independent, read-only local Companion. No LocalPilot runtime imports."""
 
-__version__ = "0.5.7b11"
+__version__ = "0.5.7b12"

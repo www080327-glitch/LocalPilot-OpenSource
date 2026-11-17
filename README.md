@@ -10,7 +10,9 @@ LocalPilot 采用 Apache 2.0 开源协议，致力于让强大、易用且低成
 
 ## 当前源码组件版本
 
-本源码树包含 Desktop **5.0.1-rc.17**、Core **5.0.0b34**、Suite **0.2.0b34**、Companion **0.5.7b11** 和独立 Channels **0.1.0a4**。源码版本不代表已经发布或通过全部原生安装验收；可用发行资产以 GitHub Releases 为准。
+本源码树包含 Desktop **5.0.1-rc.17**、Core **5.0.0b35**、Suite **0.2.0b34**、Companion **0.5.7b12** 和独立 Channels **0.1.0a4**。源码版本不代表已经发布或通过全部原生安装验收；可用发行资产以 GitHub Releases 为准。
+
+RC17 续作补齐子任务输出截断后的原预算恢复，并把同会话来源检查改为索引化的依赖投影，完整历史记录继续保留。Super Agent 仍负责统筹，探索和审阅角色使用各自配置的模型与思考强度。实现、真实模型结果及本机续验入口见[本轮续作](docs/development/RC17_FOLLOWUP_20261117.md)。
 
 RC16 继续处理长期开启同一对话时的记录增长：在任务之间把原始执行段和旧任务结果原子归档，保留同一会话、当前执行账本和已发送的模型窗口；同时修复 Companion 云端委派恢复。实现范围和 schema 3 升级/降级边界见[长期会话分段](docs/development/PERSISTENT_SESSION_SEGMENTS_20261117.md)。RC15 的模型窗口、旧话检索及历史恢复记录保留在[常驻对话续作](docs/development/PERSISTENT_CONTEXT_20261117.md)。
 

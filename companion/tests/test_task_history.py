@@ -95,13 +95,16 @@ class TaskHistoryTests(unittest.TestCase):
 
     def test_status_and_cancel_persist_each_observation_once(self):
         view = self.completed_task()
+        self.app.store.db.executescript('''
+            CREATE TEMP TABLE observed_task_writes(task_id TEXT);
+            CREATE TEMP TRIGGER observe_task_payload AFTER UPDATE OF payload ON main.localpilot_tasks
+            BEGIN INSERT INTO observed_task_writes VALUES(NEW.task_id); END;
+        ''')
         for command in ('task_status', 'task_cancel'):
-            statements = []
-            self.app.store.db.set_trace_callback(statements.append)
+            self.app.store.db.execute('DELETE FROM observed_task_writes')
             result = self.app.command({'command':command, 'task_id':view['task_id'], 'approved':True})
-            self.app.store.db.set_trace_callback(None)
-            writes = [sql for sql in statements if sql.startswith("INSERT INTO localpilot_tasks")]
-            self.assertEqual(len(writes), 1, command)
+            writes = self.app.store.db.execute('SELECT task_id FROM observed_task_writes').fetchall()
+            self.assertEqual([row[0] for row in writes], [view['task_id']], command)
             self.assertEqual(result['task_id'], view['task_id'])
             self.assertEqual(self.app.store.tasks.get(view['task_id'])['last_status']['status'], result['status'])
         self.assertEqual(len(self.fixture.backend.requests), 1)

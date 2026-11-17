@@ -44,11 +44,11 @@ class TaskController:
         return True
 
     def session_context_current(self, session_id, before=None):
-        records = self.service.store.tasks.session_records(self.service.config.localpilot_endpoint, session_id, before)
+        requests = self.service.store.tasks.session_contexts(self.service.config.localpilot_endpoint, session_id, before)
         found = False
-        for record in records:
+        for request in requests:
             found = True
-            if 'request' not in record or not self.context_current(record['request']):
+            if request is None or not self.context_current(request):
                 return False
         return found
 
