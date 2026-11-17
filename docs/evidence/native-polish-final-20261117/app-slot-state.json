@@ -1,0 +1,12 @@
+{
+  "target": "~/Applications/LocalPilot Test.app",
+  "bundle_id": "io.localpilot.desktop.test",
+  "installed_version": "5.0.1-rc.7",
+  "installed_executable_sha256": "3f84a466306f0565294d54bd2033c5ffdacfe10db55dd887489d26da834788dc",
+  "code_signature": "ad-hoc, arm64; codesign metadata inspected",
+  "running": true,
+  "current_process_id": 48937,
+  "test_root_environment": "LP_INSTALL_TEST_ROOT is set to a separate acceptance's private root; exact path withheld from public evidence",
+  "action": "NOT_STOPPED_OR_REPLACED",
+  "reason": "The fixed Test install slot is actively used by an unrelated acceptance task. Its process and data root were identified and left untouched; the repository installer targets this same fixed slot."
+}

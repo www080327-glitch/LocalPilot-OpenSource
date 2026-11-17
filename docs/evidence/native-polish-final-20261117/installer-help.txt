@@ -1,0 +1,11 @@
+Command: python3 scripts/install-local-app.py --help (from desktop/)
+usage: install-local-app.py [-h] --source SOURCE [--test-app] [--execute]
+                            [--plan PLAN] [--receipt RECEIPT]
+options:
+  -h, --help         show this help message and exit
+  --source SOURCE
+  --test-app         Use only io.localpilot.desktop.test at
+                     ~/Applications/LocalPilot Test.app
+  --execute
+  --plan PLAN        Bind execution to a saved, reviewed dry-run receipt
+  --receipt RECEIPT
