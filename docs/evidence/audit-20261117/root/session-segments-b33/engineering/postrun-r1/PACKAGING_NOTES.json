@@ -1,0 +1,14 @@
+{
+  "attempt": 1,
+  "status": "POSTRUN_CHECK_STOPPED",
+  "cause": "The reviewer compared changed_paths as an ordered list, although the original runner emits its fixture insertion order. The three changed paths were correct.",
+  "failed_check": "only_expected_original_modules_changed",
+  "actual_changed_paths": [
+    "logstats/parser.py",
+    "logstats/aggregate.py",
+    "logstats/__main__.py"
+  ],
+  "correction": "Sort the saved changed_paths before comparing to the expected three paths. No qualification artifacts, protocol or original statuses are changed.",
+  "new_model_requests": 0,
+  "new_tests_run": 0
+}

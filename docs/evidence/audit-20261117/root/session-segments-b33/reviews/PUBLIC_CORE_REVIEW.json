@@ -1,0 +1,883 @@
+{
+  "reviewer": "history_design",
+  "started_utc": "2026-11-17T07:11:28.478890+00:00",
+  "scope": "All 8 tar archives plus Core, installed runtime, Suite, storage, SOURCE and RESULTS; no models or writes to source/raw artifacts.",
+  "final_source": "89d1958cc42baedb6e7221f3c5c293901f7de21f",
+  "checks": [
+    {
+      "name": "source_head",
+      "passed": true
+    },
+    {
+      "name": "production_and_tests_unchanged_in_worktree",
+      "passed": true,
+      "note": "Parent may stage documentation and evidence while source is reviewed against final Git blobs."
+    },
+    {
+      "name": "final_commit_changes_only_release_test_fixture",
+      "passed": true,
+      "changed": [
+        "tests/test_release_observability.py"
+      ]
+    },
+    {
+      "name": "browser.archive_hash_and_size",
+      "passed": true
+    },
+    {
+      "name": "browser.gzip_timestamp_zero",
+      "passed": true
+    },
+    {
+      "name": "browser.tar_members_regular_safe_unique",
+      "passed": true
+    },
+    {
+      "name": "browser.tar_metadata",
+      "passed": true
+    },
+    {
+      "name": "browser.manifest_exact_member_set",
+      "passed": true
+    },
+    {
+      "name": "browser.published_verification",
+      "passed": true,
+      "members": 20,
+      "failures": []
+    },
+    {
+      "name": "browser.raw_verification",
+      "passed": true,
+      "members": 20,
+      "failures": []
+    },
+    {
+      "name": "browser.transform_verification",
+      "passed": true,
+      "members": 20,
+      "failures": []
+    },
+    {
+      "name": "browser.secret_verification",
+      "passed": true,
+      "members": 20,
+      "failures": []
+    },
+    {
+      "name": "companion.archive_hash_and_size",
+      "passed": true
+    },
+    {
+      "name": "companion.gzip_timestamp_zero",
+      "passed": true
+    },
+    {
+      "name": "companion.tar_members_regular_safe_unique",
+      "passed": true
+    },
+    {
+      "name": "companion.tar_metadata",
+      "passed": true
+    },
+    {
+      "name": "companion.manifest_exact_member_set",
+      "passed": true
+    },
+    {
+      "name": "companion.published_verification",
+      "passed": true,
+      "members": 23,
+      "failures": []
+    },
+    {
+      "name": "companion.raw_verification",
+      "passed": true,
+      "members": 23,
+      "failures": []
+    },
+    {
+      "name": "companion.transform_verification",
+      "passed": true,
+      "members": 23,
+      "failures": []
+    },
+    {
+      "name": "companion.secret_verification",
+      "passed": true,
+      "members": 23,
+      "failures": []
+    },
+    {
+      "name": "core.archive_hash_and_size",
+      "passed": true
+    },
+    {
+      "name": "core.gzip_timestamp_zero",
+      "passed": true
+    },
+    {
+      "name": "core.tar_members_regular_safe_unique",
+      "passed": true
+    },
+    {
+      "name": "core.tar_metadata",
+      "passed": true
+    },
+    {
+      "name": "core.manifest_exact_member_set",
+      "passed": true
+    },
+    {
+      "name": "core.published_verification",
+      "passed": true,
+      "members": 16,
+      "failures": []
+    },
+    {
+      "name": "core.raw_verification",
+      "passed": true,
+      "members": 16,
+      "failures": []
+    },
+    {
+      "name": "core.transform_verification",
+      "passed": true,
+      "members": 16,
+      "failures": []
+    },
+    {
+      "name": "core.secret_verification",
+      "passed": true,
+      "members": 16,
+      "failures": []
+    },
+    {
+      "name": "frontend.archive_hash_and_size",
+      "passed": true
+    },
+    {
+      "name": "frontend.gzip_timestamp_zero",
+      "passed": true
+    },
+    {
+      "name": "frontend.tar_members_regular_safe_unique",
+      "passed": true
+    },
+    {
+      "name": "frontend.tar_metadata",
+      "passed": true
+    },
+    {
+      "name": "frontend.manifest_exact_member_set",
+      "passed": true
+    },
+    {
+      "name": "frontend.published_verification",
+      "passed": true,
+      "members": 14,
+      "failures": []
+    },
+    {
+      "name": "frontend.raw_verification",
+      "passed": true,
+      "members": 14,
+      "failures": []
+    },
+    {
+      "name": "frontend.transform_verification",
+      "passed": true,
+      "members": 14,
+      "failures": []
+    },
+    {
+      "name": "frontend.secret_verification",
+      "passed": true,
+      "members": 14,
+      "failures": []
+    },
+    {
+      "name": "live.archive_hash_and_size",
+      "passed": true
+    },
+    {
+      "name": "live.gzip_timestamp_zero",
+      "passed": true
+    },
+    {
+      "name": "live.tar_members_regular_safe_unique",
+      "passed": true
+    },
+    {
+      "name": "live.tar_metadata",
+      "passed": true
+    },
+    {
+      "name": "live.manifest_exact_member_set",
+      "passed": true
+    },
+    {
+      "name": "live.published_verification",
+      "passed": true,
+      "members": 33,
+      "failures": []
+    },
+    {
+      "name": "live.raw_verification",
+      "passed": true,
+      "members": 33,
+      "failures": []
+    },
+    {
+      "name": "live.transform_verification",
+      "passed": true,
+      "members": 33,
+      "failures": []
+    },
+    {
+      "name": "live.secret_verification",
+      "passed": true,
+      "members": 33,
+      "failures": []
+    },
+    {
+      "name": "reviews.archive_hash_and_size",
+      "passed": true
+    },
+    {
+      "name": "reviews.gzip_timestamp_zero",
+      "passed": true
+    },
+    {
+      "name": "reviews.tar_members_regular_safe_unique",
+      "passed": true
+    },
+    {
+      "name": "reviews.tar_metadata",
+      "passed": true
+    },
+    {
+      "name": "reviews.manifest_exact_member_set",
+      "passed": true
+    },
+    {
+      "name": "reviews.published_verification",
+      "passed": true,
+      "members": 15,
+      "failures": []
+    },
+    {
+      "name": "reviews.raw_verification",
+      "passed": true,
+      "members": 15,
+      "failures": []
+    },
+    {
+      "name": "reviews.transform_verification",
+      "passed": true,
+      "members": 15,
+      "failures": []
+    },
+    {
+      "name": "reviews.secret_verification",
+      "passed": true,
+      "members": 15,
+      "failures": []
+    },
+    {
+      "name": "runtime.archive_hash_and_size",
+      "passed": true
+    },
+    {
+      "name": "runtime.gzip_timestamp_zero",
+      "passed": true
+    },
+    {
+      "name": "runtime.tar_members_regular_safe_unique",
+      "passed": true
+    },
+    {
+      "name": "runtime.tar_metadata",
+      "passed": true
+    },
+    {
+      "name": "runtime.manifest_exact_member_set",
+      "passed": true
+    },
+    {
+      "name": "runtime.published_verification",
+      "passed": true,
+      "members": 20,
+      "failures": []
+    },
+    {
+      "name": "runtime.raw_verification",
+      "passed": true,
+      "members": 20,
+      "failures": []
+    },
+    {
+      "name": "runtime.transform_verification",
+      "passed": true,
+      "members": 20,
+      "failures": []
+    },
+    {
+      "name": "runtime.secret_verification",
+      "passed": true,
+      "members": 20,
+      "failures": []
+    },
+    {
+      "name": "storage.archive_hash_and_size",
+      "passed": true
+    },
+    {
+      "name": "storage.gzip_timestamp_zero",
+      "passed": true
+    },
+    {
+      "name": "storage.tar_members_regular_safe_unique",
+      "passed": true
+    },
+    {
+      "name": "storage.tar_metadata",
+      "passed": true
+    },
+    {
+      "name": "storage.manifest_exact_member_set",
+      "passed": true
+    },
+    {
+      "name": "storage.published_verification",
+      "passed": true,
+      "members": 8,
+      "failures": []
+    },
+    {
+      "name": "storage.raw_verification",
+      "passed": true,
+      "members": 8,
+      "failures": []
+    },
+    {
+      "name": "storage.transform_verification",
+      "passed": true,
+      "members": 8,
+      "failures": []
+    },
+    {
+      "name": "storage.secret_verification",
+      "passed": true,
+      "members": 8,
+      "failures": []
+    },
+    {
+      "name": "all_tar_archives_reviewed",
+      "passed": true
+    },
+    {
+      "name": "nonarchive_public_files_exact_secret_scan",
+      "passed": true,
+      "matches": []
+    },
+    {
+      "name": "all_source_inventory_paths_in_final_git",
+      "passed": true,
+      "files": 938
+    },
+    {
+      "name": "source_continuity.core_final",
+      "passed": true,
+      "suite": "core_final",
+      "files": 279,
+      "differences": []
+    },
+    {
+      "name": "source_continuity.companion_full",
+      "passed": true,
+      "suite": "companion_full",
+      "files": 508,
+      "differences": [
+        {
+          "path": "tests/test_release_observability.py",
+          "tested_sha256": "0810e40b65efcdbbae34f42e49b527e018746c5da0a81b0877e2d3d53c8dbae1",
+          "final_sha256": "b334c17b6f401467e732f2a9c06eb096b2aa6fcddb1e00a4ac539cd338cc1e0c"
+        }
+      ]
+    },
+    {
+      "name": "source_continuity.installed",
+      "passed": true,
+      "suite": "installed",
+      "files": 675,
+      "differences": [
+        {
+          "path": "tests/test_release_observability.py",
+          "tested_sha256": "0810e40b65efcdbbae34f42e49b527e018746c5da0a81b0877e2d3d53c8dbae1",
+          "final_sha256": "b334c17b6f401467e732f2a9c06eb096b2aa6fcddb1e00a4ac539cd338cc1e0c"
+        }
+      ]
+    },
+    {
+      "name": "source_continuity.suite",
+      "passed": true,
+      "suite": "suite",
+      "files": 675,
+      "differences": [
+        {
+          "path": "tests/test_release_observability.py",
+          "tested_sha256": "0810e40b65efcdbbae34f42e49b527e018746c5da0a81b0877e2d3d53c8dbae1",
+          "final_sha256": "b334c17b6f401467e732f2a9c06eb096b2aa6fcddb1e00a4ac539cd338cc1e0c"
+        }
+      ]
+    },
+    {
+      "name": "source_continuity.frontend_final",
+      "passed": true,
+      "suite": "frontend_final",
+      "files": 260,
+      "differences": []
+    },
+    {
+      "name": "source_continuity.live_luna_final",
+      "passed": true,
+      "suite": "live_luna_final",
+      "files": 113,
+      "differences": []
+    },
+    {
+      "name": "source_continuity.engineering_luna_final",
+      "passed": true,
+      "suite": "engineering_luna_final",
+      "files": 111,
+      "differences": []
+    },
+    {
+      "name": "source_continuity.storage_final",
+      "passed": true,
+      "suite": "storage_final",
+      "files": 113,
+      "differences": []
+    },
+    {
+      "name": "core_exact_279_final_files",
+      "passed": true
+    },
+    {
+      "name": "source_mapping_tree.b6f95da",
+      "passed": true
+    },
+    {
+      "name": "source_mapping_tree.89d1958",
+      "passed": true
+    },
+    {
+      "name": "source_before_after.core_final",
+      "passed": true
+    },
+    {
+      "name": "source_before_after.companion_full",
+      "passed": true
+    },
+    {
+      "name": "source_before_after.installed",
+      "passed": true
+    },
+    {
+      "name": "source_before_after.suite",
+      "passed": true
+    },
+    {
+      "name": "core_totals",
+      "passed": true,
+      "counts": {
+        "SKIP": 99,
+        "PASS": 1594,
+        "SUBTEST_PASS": 438
+      }
+    },
+    {
+      "name": "core_declared_skip_records",
+      "passed": true
+    },
+    {
+      "name": "core_runner_source_hashes_match_final",
+      "passed": true,
+      "files": 253
+    },
+    {
+      "name": "core_summary_identical_published_run",
+      "passed": true
+    },
+    {
+      "name": "core_failed_and_interrupted_attempts_preserved",
+      "passed": true
+    },
+    {
+      "name": "runtime_summary_exact.installed",
+      "passed": true
+    },
+    {
+      "name": "runtime_summary_exact.suite",
+      "passed": true
+    },
+    {
+      "name": "runtime_summary_exact.suite_postcheck",
+      "passed": true
+    },
+    {
+      "name": "wheel_hash.localpilot_agent_service-5.0.0b33-py3-none-any.whl",
+      "passed": true
+    },
+    {
+      "name": "wheel_hash.localpilot_channels-0.1.0a4-py3-none-any.whl",
+      "passed": true
+    },
+    {
+      "name": "wheel_hash.localpilot_companion-0.5.7b10-py3-none-any.whl",
+      "passed": true
+    },
+    {
+      "name": "wheel_hash.localpilot_suite-0.2.0b33-py3-none-any.whl",
+      "passed": true
+    },
+    {
+      "name": "all_287_installed_sources_match_final",
+      "passed": true,
+      "counts": {
+        "localpilot_agent_service-5.0.0b33-py3-none-any.whl": 149,
+        "localpilot_channels-0.1.0a4-py3-none-any.whl": 7,
+        "localpilot_companion-0.5.7b10-py3-none-any.whl": 110,
+        "localpilot_suite-0.2.0b33-py3-none-any.whl": 21
+      }
+    },
+    {
+      "name": "installed_gate_12_real_tests",
+      "passed": true
+    },
+    {
+      "name": "suite_121_plus_standalone_is_122",
+      "passed": true
+    },
+    {
+      "name": "suite_skip_and_two_warnings_preserved",
+      "passed": true
+    },
+    {
+      "name": "storage_summary_identical_raw_comparison",
+      "passed": true
+    },
+    {
+      "name": "storage_same_180_turns",
+      "passed": true
+    },
+    {
+      "name": "storage_rotations_exact",
+      "passed": true
+    },
+    {
+      "name": "storage_peak_values",
+      "passed": true
+    },
+    {
+      "name": "production_threshold_is_2MiB_and_probe_uses_default",
+      "passed": true
+    },
+    {
+      "name": "storage_final_vs_development_source_flags",
+      "passed": true
+    },
+    {
+      "name": "storage_protocol_and_no_replay_results",
+      "passed": true
+    },
+    {
+      "name": "full_database_sizes_exact",
+      "passed": true
+    },
+    {
+      "name": "storage_database_integrity",
+      "passed": true
+    },
+    {
+      "name": "storage_segment_hash.0",
+      "passed": true
+    },
+    {
+      "name": "storage_segment_identity.0",
+      "passed": true
+    },
+    {
+      "name": "storage_segment_hash.1",
+      "passed": true
+    },
+    {
+      "name": "storage_segment_identity.1",
+      "passed": true
+    },
+    {
+      "name": "storage_segment_hash.2",
+      "passed": true
+    },
+    {
+      "name": "storage_segment_identity.2",
+      "passed": true
+    },
+    {
+      "name": "storage_one_active_checkpoint",
+      "passed": true
+    },
+    {
+      "name": "storage_checkpoint_hash",
+      "passed": true
+    },
+    {
+      "name": "storage_generation_three",
+      "passed": true
+    },
+    {
+      "name": "all_360_original_inputs_in_archives_and_current",
+      "passed": true,
+      "matched": 360
+    },
+    {
+      "name": "all_360_read_receipt_turns_in_archives_and_current",
+      "passed": true,
+      "distinct_turns": 360
+    },
+    {
+      "name": "unfinished_goal_records_exact_across_segments",
+      "passed": true
+    },
+    {
+      "name": "all_archived_task_hashes",
+      "passed": true,
+      "tasks": 307
+    },
+    {
+      "name": "storage_task_counts_307_plus_53",
+      "passed": true
+    },
+    {
+      "name": "all_360_task_inputs_and_idempotency_keys",
+      "passed": true
+    },
+    {
+      "name": "private_database_unchanged_by_readonly_review",
+      "passed": true
+    },
+    {
+      "name": "r8_failure_preserved_in_overview",
+      "passed": true
+    },
+    {
+      "name": "overview_discloses_storage_limits",
+      "passed": true
+    },
+    {
+      "name": "overview_has_no_new_benchmark_or_speed_claim",
+      "passed": true
+    },
+    {
+      "name": "overview_suite_pass_correction_disclosed",
+      "passed": true
+    },
+    {
+      "name": "release_not_ready_and_native_limits_disclosed",
+      "passed": true
+    },
+    {
+      "name": "public_evidence_unchanged_during_review",
+      "passed": true,
+      "files": 72
+    },
+    {
+      "name": "production_and_tests_unchanged_after_review",
+      "passed": true,
+      "observed_head": "89d1958cc42baedb6e7221f3c5c293901f7de21f"
+    }
+  ],
+  "root_manifest": "Deferred; parent creates root manifest after these independent reviews.",
+  "archives": {
+    "browser": {
+      "members": 20,
+      "archive_bytes": 14918,
+      "archive_sha256": "6576154e77b947bb744b3a8b5482d6b9d2bb79780843d88043c4fac725775c9c",
+      "errors": {
+        "published": [],
+        "raw": [],
+        "transform": [],
+        "secret": []
+      }
+    },
+    "companion": {
+      "members": 23,
+      "archive_bytes": 96125,
+      "archive_sha256": "b4926a886667a8e2913f00121b3d34c2f75354161710a2df43af4f95f0931900",
+      "errors": {
+        "published": [],
+        "raw": [],
+        "transform": [],
+        "secret": []
+      }
+    },
+    "core": {
+      "members": 16,
+      "archive_bytes": 129851,
+      "archive_sha256": "e62f4873eb1badf45c89378a9e21f0d90a7fe1d577d97ae12e310bb1f8187e21",
+      "errors": {
+        "published": [],
+        "raw": [],
+        "transform": [],
+        "secret": []
+      }
+    },
+    "frontend": {
+      "members": 14,
+      "archive_bytes": 35617,
+      "archive_sha256": "02a77b7e2777503139a938b1d952cb5e18ed0f1c00926ab62d35a30b9aa96f60",
+      "errors": {
+        "published": [],
+        "raw": [],
+        "transform": [],
+        "secret": []
+      }
+    },
+    "live": {
+      "members": 33,
+      "archive_bytes": 36707,
+      "archive_sha256": "1f42e9a5e394e23f27db0b2cbecdcd6999e7da419364964394648ba15f5817cb",
+      "errors": {
+        "published": [],
+        "raw": [],
+        "transform": [],
+        "secret": []
+      }
+    },
+    "reviews": {
+      "members": 15,
+      "archive_bytes": 19281,
+      "archive_sha256": "b7355d163426768ace88ed3cd9e84c06e9bb9d871f1aa7d09325f1b58378a0b9",
+      "errors": {
+        "published": [],
+        "raw": [],
+        "transform": [],
+        "secret": []
+      }
+    },
+    "runtime": {
+      "members": 20,
+      "archive_bytes": 156006,
+      "archive_sha256": "a4d17167d95360c51a9f4a388a41dfb13df1f92290c38c3dbf814ebbdba15347",
+      "errors": {
+        "published": [],
+        "raw": [],
+        "transform": [],
+        "secret": []
+      }
+    },
+    "storage": {
+      "members": 8,
+      "archive_bytes": 43301,
+      "archive_sha256": "65529b829ae4e03a41629f4712ebe2f5489c6e5fe6c6d6adb724d884e0cbce73",
+      "errors": {
+        "published": [],
+        "raw": [],
+        "transform": [],
+        "secret": []
+      }
+    }
+  },
+  "source_continuity": [
+    {
+      "suite": "core_final",
+      "files": 279,
+      "differences": []
+    },
+    {
+      "suite": "companion_full",
+      "files": 508,
+      "differences": [
+        {
+          "path": "tests/test_release_observability.py",
+          "tested_sha256": "0810e40b65efcdbbae34f42e49b527e018746c5da0a81b0877e2d3d53c8dbae1",
+          "final_sha256": "b334c17b6f401467e732f2a9c06eb096b2aa6fcddb1e00a4ac539cd338cc1e0c"
+        }
+      ]
+    },
+    {
+      "suite": "installed",
+      "files": 675,
+      "differences": [
+        {
+          "path": "tests/test_release_observability.py",
+          "tested_sha256": "0810e40b65efcdbbae34f42e49b527e018746c5da0a81b0877e2d3d53c8dbae1",
+          "final_sha256": "b334c17b6f401467e732f2a9c06eb096b2aa6fcddb1e00a4ac539cd338cc1e0c"
+        }
+      ]
+    },
+    {
+      "suite": "suite",
+      "files": 675,
+      "differences": [
+        {
+          "path": "tests/test_release_observability.py",
+          "tested_sha256": "0810e40b65efcdbbae34f42e49b527e018746c5da0a81b0877e2d3d53c8dbae1",
+          "final_sha256": "b334c17b6f401467e732f2a9c06eb096b2aa6fcddb1e00a4ac539cd338cc1e0c"
+        }
+      ]
+    },
+    {
+      "suite": "frontend_final",
+      "files": 260,
+      "differences": []
+    },
+    {
+      "suite": "live_luna_final",
+      "files": 113,
+      "differences": []
+    },
+    {
+      "suite": "engineering_luna_final",
+      "files": 111,
+      "differences": []
+    },
+    {
+      "suite": "storage_final",
+      "files": 113,
+      "differences": []
+    }
+  ],
+  "storage_readonly_recalculation": {
+    "archives": 3,
+    "archive_generations": [
+      0,
+      1,
+      2
+    ],
+    "archive_last_turns": [
+      107,
+      209,
+      308
+    ],
+    "active_tasks": 53,
+    "archived_tasks": 307,
+    "original_inputs": 360,
+    "read_receipt_turns": 360,
+    "database_bytes": 22589440,
+    "runtime_threshold_bytes": 2097152,
+    "active_runtime_peak_bytes": 2120083,
+    "active_checkpoint_peak_bytes": 6169063
+  },
+  "finished_utc": "2026-11-17T07:11:29.858829+00:00",
+  "failed_checks": [],
+  "checks_run": 141,
+  "passed_checks": 141,
+  "status": "PASS_WITH_DECLARED_LIMITS",
+  "limitations": [
+    "Root MANIFEST not reviewed because parent creates it after reviews.",
+    "Remote Git commit-to-tree mapping relies on parent publication verification; this review independently reads exact local final Git blobs.",
+    "No independent model inference, benchmark ranking, native GUI, physical animation, or timing speedup claim."
+  ]
+}

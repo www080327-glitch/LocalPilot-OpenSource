@@ -1,0 +1,166 @@
+{
+  "scope": "Reviewed publication copies; RAW_MANIFEST files describe private originals.",
+  "transform": "Only explicit absolute path prefixes and temporary directory aliases. No outcomes or fixture values changed.",
+  "archive": {
+    "file": "evidence.tar.gz",
+    "bytes": 129851,
+    "sha256": "e62f4873eb1badf45c89378a9e21f0d90a7fe1d577d97ae12e310bb1f8187e21"
+  },
+  "files": [
+    {
+      "path": "core-full-r1/INTERRUPTED.json",
+      "raw_bytes": 302,
+      "raw_sha256": "7fa2fae85a838db14f1d2f417efa62679fc4c5c727756a7e5bfd4c9f4167f2e5",
+      "published_bytes": 302,
+      "published_sha256": "7fa2fae85a838db14f1d2f417efa62679fc4c5c727756a7e5bfd4c9f4167f2e5",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "core-full-r1/source-before.json",
+      "raw_bytes": 28444,
+      "raw_sha256": "306fb1c4a1c42f761d01f1d16663d8f5591c03a80aca57285ac81fbf81ed6eb0",
+      "published_bytes": 28444,
+      "published_sha256": "306fb1c4a1c42f761d01f1d16663d8f5591c03a80aca57285ac81fbf81ed6eb0",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "core-full-r1/unittest.log",
+      "raw_bytes": 696,
+      "raw_sha256": "d8dc6f352c376b4bd9d79622d684f4c6c10c4924eafcb3cc7c8f6a1d301c55b2",
+      "published_bytes": 696,
+      "published_sha256": "d8dc6f352c376b4bd9d79622d684f4c6c10c4924eafcb3cc7c8f6a1d301c55b2",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "core-full-r2/run.json",
+      "raw_bytes": 730,
+      "raw_sha256": "486c3e21d0879a2149c343b2a44e1e2329063f452bc2726b1be819418130db19",
+      "published_bytes": 659,
+      "published_sha256": "a37ccd3c54e7819a141d92f94bb8866e4068d9dafc1e394c82d57a0675d0d7fb",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 1,
+        "<PINNED_TEST_ENVIRONMENT>": 1
+      }
+    },
+    {
+      "path": "core-full-r2/source-after.json",
+      "raw_bytes": 28444,
+      "raw_sha256": "116c1c3370d148a716be01192d4b5e34e8c51d7f55a0c385b5d36ef175a99d8c",
+      "published_bytes": 28444,
+      "published_sha256": "116c1c3370d148a716be01192d4b5e34e8c51d7f55a0c385b5d36ef175a99d8c",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "core-full-r2/source-before.json",
+      "raw_bytes": 28444,
+      "raw_sha256": "116c1c3370d148a716be01192d4b5e34e8c51d7f55a0c385b5d36ef175a99d8c",
+      "published_bytes": 28444,
+      "published_sha256": "116c1c3370d148a716be01192d4b5e34e8c51d7f55a0c385b5d36ef175a99d8c",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "core-full-r2/tests.json",
+      "raw_bytes": 398358,
+      "raw_sha256": "a5bf554e3dc2d2a4ae9720b5336dc804b1bd8d9fb0e57dde877d6d3c364bef89",
+      "published_bytes": 398246,
+      "published_sha256": "44de42c285721224619e4049955ab4f34697f3d14641d2f98aa57a075ea07615",
+      "path_prefix_replacements": {
+        "<PINNED_TEST_ENVIRONMENT>": 4,
+        "<TEMP_DIRECTORY>": 3
+      }
+    },
+    {
+      "path": "core-full-r2/unittest.log",
+      "raw_bytes": 5599,
+      "raw_sha256": "3422440cf512d0197f7a2a707a63aa7a64bbff20a6dc3526c1281360d7b5bb7e",
+      "published_bytes": 5552,
+      "published_sha256": "2a17ae3f659fd47b848d4e315b22fca77f86de36a8bfb7675664ecc25351b86f",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 1,
+        "<TEMP_DIRECTORY>": 2
+      }
+    },
+    {
+      "path": "core-full-r3/run.json",
+      "raw_bytes": 749,
+      "raw_sha256": "0417d32c5dcad00b26ae5db2aca17b8616015e9b8ac38c7350ad7d1e6394045b",
+      "published_bytes": 678,
+      "published_sha256": "8568b0bc9527c30c6ef5e77290918df5bedc2bf2d1fc38e30ffb613800f676ec",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 1,
+        "<PINNED_TEST_ENVIRONMENT>": 1
+      }
+    },
+    {
+      "path": "core-full-r3/source-after.json",
+      "raw_bytes": 28444,
+      "raw_sha256": "0916a49667cb1909bc0c626b8075303f451db35eea558035afb14729e0e74b05",
+      "published_bytes": 28444,
+      "published_sha256": "0916a49667cb1909bc0c626b8075303f451db35eea558035afb14729e0e74b05",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "core-full-r3/source-before.json",
+      "raw_bytes": 28444,
+      "raw_sha256": "0916a49667cb1909bc0c626b8075303f451db35eea558035afb14729e0e74b05",
+      "published_bytes": 28444,
+      "published_sha256": "0916a49667cb1909bc0c626b8075303f451db35eea558035afb14729e0e74b05",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "core-full-r3/tests.json",
+      "raw_bytes": 398075,
+      "raw_sha256": "3ecf7aba13c6f8862a4d74555b453f5cd6f37a8a0f4b540f1b29236cae5ffa17",
+      "published_bytes": 397963,
+      "published_sha256": "c695f9c96915e6d91ed69cb3d44f0aa9393f9a5177525ae19417606f9d803396",
+      "path_prefix_replacements": {
+        "<PINNED_TEST_ENVIRONMENT>": 4,
+        "<TEMP_DIRECTORY>": 1
+      }
+    },
+    {
+      "path": "core-full-r3/unittest.log",
+      "raw_bytes": 4424,
+      "raw_sha256": "f42ef2d524a833751022516452039b9f164b2c026d35d72647877af8928b69ad",
+      "published_bytes": 4424,
+      "published_sha256": "f42ef2d524a833751022516452039b9f164b2c026d35d72647877af8928b69ad",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "run_core.py",
+      "raw_bytes": 2316,
+      "raw_sha256": "af00ff1681794b16d16f31ebfde9f3ee484deebd4525cd3a7614a6f78a073f47",
+      "published_bytes": 2198,
+      "published_sha256": "fc2a98e4b83fcf0f70023bea8734e9fbbef46ad80802da75fb183b265b28b466",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 1,
+        "<VALIDATION_ROOT>": 1,
+        "<PINNED_TEST_ENVIRONMENT>": 1
+      }
+    },
+    {
+      "path": "run_core_r2.py",
+      "raw_bytes": 2316,
+      "raw_sha256": "a5f7735d051577d83f7f001e4ea48a0c97ef936f78b8b89891447e0d1e71bb04",
+      "published_bytes": 2198,
+      "published_sha256": "6084236e954a0a0fd46ebffbbd5fa506b9ad3ac3355d22df526acada7c2d1ff0",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 1,
+        "<VALIDATION_ROOT>": 1,
+        "<PINNED_TEST_ENVIRONMENT>": 1
+      }
+    },
+    {
+      "path": "run_core_r3.py",
+      "raw_bytes": 2323,
+      "raw_sha256": "3ddf28bd62d9a3fe4cc493a5b76d6e887515b95c4a254ee81e92362edbc1f722",
+      "published_bytes": 2215,
+      "published_sha256": "c6652ccdc854ac277acbed756b6fdcef67a9fc19c24b67ed82e0bc94ab377412",
+      "path_prefix_replacements": {
+        "<FINAL_REGRESSION_SOURCE_ROOT>": 1,
+        "<VALIDATION_ROOT>": 1,
+        "<PINNED_TEST_ENVIRONMENT>": 1
+      }
+    }
+  ]
+}

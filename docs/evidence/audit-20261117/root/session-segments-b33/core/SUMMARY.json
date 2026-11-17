@@ -1,0 +1,26 @@
+{
+  "command": [
+    "<PINNED_TEST_ENVIRONMENT>/.venv/bin/python",
+    "-B",
+    "scripts/aic_test.py",
+    "--output",
+    "<VALIDATION_ROOT>/core-full-r3/tests.json"
+  ],
+  "source_commit": "b6f95da47f706581a780d6874382be53d99b33c4",
+  "source_dirty": true,
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "started_utc": "2026-11-17T06:46:19.992411+00:00",
+  "live_model_calls": false,
+  "exit_code": 0,
+  "elapsed_seconds": 191.75771298600012,
+  "source_unchanged": true,
+  "source_files": 279,
+  "source_changes": [],
+  "tests_run": 1693,
+  "failures": 0,
+  "errors": 0,
+  "skips": 99,
+  "successful": true,
+  "passes": 1594,
+  "status": "PASS_WITH_DECLARED_SKIPS"
+}

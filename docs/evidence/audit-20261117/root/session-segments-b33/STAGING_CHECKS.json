@@ -1,0 +1,26 @@
+{
+  "full_index_exit_code": 2,
+  "full_index_output": "docs/evidence/audit-20261117/root/session-segments-b33/engineering/acceptance-original/fixtures/basic.csv:6: trailing whitespace.\n+  \ndocs/evidence/audit-20261117/root/session-segments-b33/engineering/acceptance-original/fixtures/basic.csv:6: new blank line at EOF.\ndocs/evidence/audit-20261117/root/session-segments-b33/engineering/acceptance-original/fixtures/empty.csv:2: new blank line at EOF.\ndocs/evidence/audit-20261117/root/session-segments-b33/engineering/final-project/fixtures/basic.csv:6: trailing whitespace.\n+  \ndocs/evidence/audit-20261117/root/session-segments-b33/engineering/final-project/fixtures/basic.csv:6: new blank line at EOF.\ndocs/evidence/audit-20261117/root/session-segments-b33/engineering/final-project/fixtures/empty.csv:2: new blank line at EOF.\ndocs/evidence/audit-20261117/root/session-segments-b33/engineering/project.diff:11: trailing whitespace.\n+ \ndocs/evidence/audit-20261117/root/session-segments-b33/engineering/project.diff:12: trailing whitespace.\n+ \ndocs/evidence/audit-20261117/root/session-segments-b33/engineering/project.diff:16: trailing whitespace.\n+ \ndocs/evidence/audit-20261117/root/session-segments-b33/engineering/project.diff:17: trailing whitespace.\n+ \ndocs/evidence/audit-20261117/root/session-segments-b33/engineering/project.diff:96: trailing whitespace.\n+ \ndocs/evidence/audit-20261117/root/session-segments-b33/engineering/project.diff:97: trailing whitespace.\n+ \ndocs/evidence/audit-20261117/root/session-segments-b33/engineering/project.diff:196: trailing whitespace.\n+ \ndocs/evidence/audit-20261117/root/session-segments-b33/engineering/project.diff:197: trailing whitespace.\n+ \n",
+  "intentional_fixture_or_generated_diff_paths": [
+    "docs/evidence/audit-20261117/root/session-segments-b33/engineering/acceptance-original/fixtures/basic.csv",
+    "docs/evidence/audit-20261117/root/session-segments-b33/engineering/acceptance-original/fixtures/empty.csv",
+    "docs/evidence/audit-20261117/root/session-segments-b33/engineering/final-project/fixtures/basic.csv",
+    "docs/evidence/audit-20261117/root/session-segments-b33/engineering/final-project/fixtures/empty.csv",
+    "docs/evidence/audit-20261117/root/session-segments-b33/engineering/project.diff"
+  ],
+  "reason": "Original frozen fixture whitespace and generated project diff must remain byte-identical. No checker configuration or file content normalized.",
+  "source_and_authored_docs_check_exit_code": 0,
+  "scoped_command": [
+    "git",
+    "diff",
+    "--cached",
+    "--check",
+    "--",
+    ".",
+    ":(exclude)docs/evidence/audit-20261117/root/session-segments-b33/engineering/acceptance-original/fixtures/basic.csv",
+    ":(exclude)docs/evidence/audit-20261117/root/session-segments-b33/engineering/acceptance-original/fixtures/empty.csv",
+    ":(exclude)docs/evidence/audit-20261117/root/session-segments-b33/engineering/final-project/fixtures/basic.csv",
+    ":(exclude)docs/evidence/audit-20261117/root/session-segments-b33/engineering/final-project/fixtures/empty.csv",
+    ":(exclude)docs/evidence/audit-20261117/root/session-segments-b33/engineering/project.diff"
+  ]
+}

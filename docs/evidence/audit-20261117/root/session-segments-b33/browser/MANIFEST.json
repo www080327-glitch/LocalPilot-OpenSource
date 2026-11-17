@@ -1,0 +1,182 @@
+{
+  "scope": "Reviewed publication copies; RAW_MANIFEST files describe private originals.",
+  "transform": "Only explicit absolute path prefixes and temporary directory aliases. No outcomes or fixture values changed.",
+  "archive": {
+    "file": "evidence.tar.gz",
+    "bytes": 14918,
+    "sha256": "6576154e77b947bb744b3a8b5482d6b9d2bb79780843d88043c4fac725775c9c"
+  },
+  "files": [
+    {
+      "path": "native-ui/RAW_MANIFEST.json",
+      "raw_bytes": 3568,
+      "raw_sha256": "eea3d4b5a2bbc6ad9d24d2fa106028d32f77af76cafa00eef7829e14ba1f0d52",
+      "published_bytes": 3568,
+      "published_sha256": "eea3d4b5a2bbc6ad9d24d2fa106028d32f77af76cafa00eef7829e14ba1f0d52",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "native-ui/RESULTS.md",
+      "raw_bytes": 4045,
+      "raw_sha256": "678ff4d286088f8ec5b5ccba3fc36d676b2cb561a56bb0a0816aff8a59613445",
+      "published_bytes": 4045,
+      "published_sha256": "678ff4d286088f8ec5b5ccba3fc36d676b2cb561a56bb0a0816aff8a59613445",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "native-ui/SOURCE.json",
+      "raw_bytes": 1196,
+      "raw_sha256": "0618a504a9346f390cead3f851fa9845a12372582fd1bcd69d072a3973919612",
+      "published_bytes": 1196,
+      "published_sha256": "0618a504a9346f390cead3f851fa9845a12372582fd1bcd69d072a3973919612",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "native-ui/browser-observations.json",
+      "raw_bytes": 895,
+      "raw_sha256": "b5c5e9c9818905687de26097a759ef3623ce03db49a60753a3ae5754d345d1d4",
+      "published_bytes": 895,
+      "published_sha256": "b5c5e9c9818905687de26097a759ef3623ce03db49a60753a3ae5754d345d1d4",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "native-ui/environment.json",
+      "raw_bytes": 1244,
+      "raw_sha256": "3163421f92e080bb42b0fd0eff6ed8902c00008f05d4fffffec1b79827753a8c",
+      "published_bytes": 1160,
+      "published_sha256": "b868666cf50dc234dd1e573f780297d8cc123a7e70eaaa71557456e2eda251c7",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 1,
+        "<BASELINE_SOURCE_ROOT>": 1
+      }
+    },
+    {
+      "path": "native-ui/playwright-output/.last-run.json",
+      "raw_bytes": 439,
+      "raw_sha256": "0f774c4bb93ad32b214991bd597f382f3ed079dc34e5be271fde0735d3e6319f",
+      "published_bytes": 439,
+      "published_sha256": "0f774c4bb93ad32b214991bd597f382f3ed079dc34e5be271fde0735d3e6319f",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "native-ui/playwright-output/pet-history-clearing-memor-3d574-from-restoring-deleted-chat/error-context.md",
+      "raw_bytes": 5071,
+      "raw_sha256": "f137e172d1cb67d88ab0b43bbd14785da32ff8eda383603896a87e688b60da59",
+      "published_bytes": 5071,
+      "published_sha256": "f137e172d1cb67d88ab0b43bbd14785da32ff8eda383603896a87e688b60da59",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "native-ui/playwright-output/pet-history-delayed-saved--4e35b-nsent-draft-and-input-focus/error-context.md",
+      "raw_bytes": 5063,
+      "raw_sha256": "530dd5d3d5484fe5a48da03120f8733ca4dc0abdd3c42a421067f387ff5b4cac",
+      "published_bytes": 5063,
+      "published_sha256": "530dd5d3d5484fe5a48da03120f8733ca4dc0abdd3c42a421067f387ff5b4cac",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "native-ui/playwright-output/pet-history-history-failur-917d0--leaves-the-draft-untouched/error-context.md",
+      "raw_bytes": 5068,
+      "raw_sha256": "0f697f7e4010ff1e3c5edc762a79968da8e58d2098ea585f233a7218188465bd",
+      "published_bytes": 5068,
+      "published_sha256": "0f697f7e4010ff1e3c5edc762a79968da8e58d2098ea585f233a7218188465bd",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "native-ui/playwright-output/pet-history-late-hydration-9f6ef-ng-or-repeating-a-new-reply/error-context.md",
+      "raw_bytes": 5072,
+      "raw_sha256": "957570d98de54face559eb47aa199cb20de97ee2a94cfc3e0253673d0098a941",
+      "published_bytes": 5072,
+      "published_sha256": "957570d98de54face559eb47aa199cb20de97ee2a94cfc3e0253673d0098a941",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "native-ui/playwright-output/pet-history-older-page-pre-ba032--keeps-the-reading-position/error-context.md",
+      "raw_bytes": 5073,
+      "raw_sha256": "53a1d658b4c8467aaaf1d704bce200dd188024d5959770c0c7a5559081e13957",
+      "published_bytes": 5073,
+      "published_sha256": "53a1d658b4c8467aaaf1d704bce200dd188024d5959770c0c7a5559081e13957",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "native-ui/playwright-output/pet-history-pet-restores-s-5f2aa-out-sending-a-model-request/error-context.md",
+      "raw_bytes": 5075,
+      "raw_sha256": "c5609d62d9a24b16a670e51b08e2904819691a7e639f01b4c4704d0470a67e5c",
+      "published_bytes": 5075,
+      "published_sha256": "c5609d62d9a24b16a670e51b08e2904819691a7e639f01b4c4704d0470a67e5c",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "native-ui/playwright-output/pet-history-reenabling-mem-d16a5-ssages-and-the-older-cursor/error-context.md",
+      "raw_bytes": 5082,
+      "raw_sha256": "eac0fa05decf566911f74599cc6e3ad55831bab3181e15c72356ad2eafba7030",
+      "published_bytes": 5082,
+      "published_sha256": "eac0fa05decf566911f74599cc6e3ad55831bab3181e15c72356ad2eafba7030",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "native-ui/playwright-output/pet-history-saved-history--51407-nt-reply-is-still-streaming/error-context.md",
+      "raw_bytes": 5068,
+      "raw_sha256": "5df32f62300d563657968209ea38f49e051777eb58313a556e95941ab9799648",
+      "published_bytes": 5068,
+      "published_sha256": "5df32f62300d563657968209ea38f49e051777eb58313a556e95941ab9799648",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "native-ui/playwright-run.json",
+      "raw_bytes": 448,
+      "raw_sha256": "d79523dc89a3a4b04f614b16591ec93e9074d5cbfbac1a805daa96eebf5a4e2b",
+      "published_bytes": 358,
+      "published_sha256": "8c8b59c874c68f60fa30ff1908d646af8f02ff5ce4d9008e9792b8f97bca46f9",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 1,
+        "<VALIDATION_ROOT>": 1
+      }
+    },
+    {
+      "path": "native-ui/playwright.log",
+      "raw_bytes": 44625,
+      "raw_sha256": "2f0c2eaedc931c566485ae0ea97d9d8c0069570f5a80a7f320ea42b106e86f68",
+      "published_bytes": 44582,
+      "published_sha256": "39220fd5304485e66f3651a219a2e612b27b18220faf144c05ac575e9ad5356b",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 1
+      }
+    },
+    {
+      "path": "native-ui/playwright/browser-tests.json",
+      "raw_bytes": 135594,
+      "raw_sha256": "042791c998ba6c74f2235dddc9163618ab3ebadb9bb423fd8a0c8dd52a52cc8c",
+      "published_bytes": 134796,
+      "published_sha256": "230793e4686cc859d49cb09e1102a30fc5f6ec29931b7e369096c0568b11e10a",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 6,
+        "<VALIDATION_ROOT>": 12
+      }
+    },
+    {
+      "path": "native-ui/separate-exec-readiness.json",
+      "raw_bytes": 124,
+      "raw_sha256": "9fd95ccb6f52319203f59e3076854d2af86bd19eb6b8b03fbfb0c799b4a478a5",
+      "published_bytes": 124,
+      "published_sha256": "9fd95ccb6f52319203f59e3076854d2af86bd19eb6b8b03fbfb0c799b4a478a5",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "native-ui/vite-readiness.json",
+      "raw_bytes": 324,
+      "raw_sha256": "5073cba008ddf52b7a33c5425d112f690b4f69708f98d419a1f5f0bbb33dbcdb",
+      "published_bytes": 324,
+      "published_sha256": "5073cba008ddf52b7a33c5425d112f690b4f69708f98d419a1f5f0bbb33dbcdb",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "native-ui/vite.log",
+      "raw_bytes": 259,
+      "raw_sha256": "107892e5e42b2591e3feef8fbfed40526efd173a054fffa83851589e8cb4c313",
+      "published_bytes": 259,
+      "published_sha256": "107892e5e42b2591e3feef8fbfed40526efd173a054fffa83851589e8cb4c313",
+      "path_prefix_replacements": {}
+    }
+  ]
+}

@@ -57,3 +57,5 @@ schema 1 或 2 升级前，Store 使用 SQLite backup API 创建同目录、唯�
 本轮源码测试、存储对照、真实模型调用和界面环境复查分别记录，不能相互替代。当前工作环境是 Linux x86_64。浏览器页面测试仍受到 AF_UNIX 套接字限制及跨执行环境 loopback 不通的阻碍，Linux 原生构建缺 GTK/WebKit 开发依赖；Apple Silicon 和 Intel Mac 的当前候选原生交互验收仍需要对应环境。
 
 RC14 的 Linux 动画样本、Ubuntu arm64 安装/升级/回滚，以及 b32 的 Super Agent 工程测试继续属于各自版本。RC16 仍为 `NOT_RELEASE_READY`，本次不以源码或脚本测试宣称当前候选已达到所有平台的 24 Hz 可见动画门禁。
+
+完整结果见 [RC16 续验记录](../evidence/audit-20261117/root/session-segments-b33/RESULTS.md)：最终 Core 1,594 项通过、99 项跳过；默认阈值 360 轮存储对照完成三次归档；真实 Luna 四任务续聊通过。Super Agent R8 的外部 17 项测试及 4 个 CLI 通过，但 Parser 子任务缺自己的成功测试收据，因此整体工程验收仍为 FAIL。原始失败、开发轮次及各项范围均保留。

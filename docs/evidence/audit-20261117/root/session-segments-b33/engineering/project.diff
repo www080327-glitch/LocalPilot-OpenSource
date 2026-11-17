@@ -1,0 +1,198 @@
+--- before/logstats/parser.py
++++ after/logstats/parser.py
+@@ -1,6 +1,9 @@
++import csv
++import re
+ from dataclasses import dataclass
+-from datetime import datetime
++from datetime import datetime, timezone
+ from decimal import Decimal
++from io import StringIO
+ 
+ 
+ @dataclass(frozen=True)
+@@ -10,5 +13,72 @@
+     value: Decimal
+ 
+ 
++_TIMESTAMP_RE = re.compile(
++    r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}"
++    r"(?:Z|[+-][0-9]{2}:[0-9]{2})\Z"
++)
++_VALUE_RE = re.compile(r"[+-]?[0-9]+(?:\.[0-9]{1,2})?\Z")
++
++
+ def parse_records(text: str) -> list[Record]:
+-    raise NotImplementedError("Implement the public parser contract")
++    """Parse the public CSV event-log format into immutable records."""
++    reader = csv.reader(StringIO(text, newline=""), strict=True)
++    records: list[Record] = []
++    header_seen = False
++
++    while True:
++        try:
++            row = next(reader)
++        except StopIteration:
++            break
++        except csv.Error as exc:
++            line = max(reader.line_num, 1)
++            raise ValueError(f"row {line}: invalid CSV: {exc}") from exc
++
++        line = max(reader.line_num, 1)
++        # csv.reader represents physically empty lines as []; a whitespace-only
++        # line is a one-field row and is ignored as well.
++        if not row or (len(row) == 1 and not row[0].strip()):
++            continue
++
++        fields = [field.strip() for field in row]
++        if not header_seen:
++            if fields != ["timestamp", "category", "value"]:
++                raise ValueError(
++                    f"row {line}: expected header timestamp,category,value"
++                )
++            header_seen = True
++            continue
++
++        if len(fields) != 3:
++            raise ValueError(f"row {line}: expected exactly three fields")
++
++        timestamp_text, category, value_text = fields
++        if not _TIMESTAMP_RE.fullmatch(timestamp_text):
++            raise ValueError(f"row {line}: invalid timestamp {timestamp_text!r}")
++        try:
++            timestamp = datetime.fromisoformat(
++                timestamp_text[:-1] + "+00:00"
++                if timestamp_text.endswith("Z")
++                else timestamp_text
++            )
++            timestamp = timestamp.astimezone(timezone.utc)
++        except (ValueError, OverflowError) as exc:
++            raise ValueError(f"row {line}: invalid timestamp {timestamp_text!r}") from exc
++
++        if not category:
++            raise ValueError(f"row {line}: category must not be empty")
++        if not _VALUE_RE.fullmatch(value_text):
++            raise ValueError(f"row {line}: invalid value {value_text!r}")
++        try:
++            value = Decimal(value_text)
++        except Exception as exc:
++            # The regular expression already excludes Decimal's special values;
++            # retain a row-numbered error if Decimal ever rejects a matched form.
++            raise ValueError(f"row {line}: invalid value {value_text!r}") from exc
++
++        records.append(Record(timestamp, category, value))
++
++    if not header_seen:
++        raise ValueError("row 1: missing CSV header")
++    return records
+--- before/logstats/aggregate.py
++++ after/logstats/aggregate.py
+@@ -1,6 +1,68 @@
+ from collections.abc import Sequence
++from datetime import timezone
++from decimal import Decimal
++
+ from .parser import Record
+ 
+ 
++def _utc_string(timestamp):
++    timestamp = timestamp.astimezone(timezone.utc)
++    return (
++        f"{timestamp.year:04d}-{timestamp.month:02d}-{timestamp.day:02d}T"
++        f"{timestamp.hour:02d}:{timestamp.minute:02d}:{timestamp.second:02d}Z"
++    )
++
++
+ def summarize(records: Sequence[Record]) -> dict:
+-    raise NotImplementedError("Implement exact aggregation")
++    """Summarize records by category without changing the input sequence."""
++    grouped = {}
++    record_count = 0
++
++    for record in records:
++        record_count += 1
++        value_tuple = record.value.as_tuple()
++        coefficient = int("".join(map(str, value_tuple.digits)) or "0")
++        if value_tuple.sign:
++            coefficient = -coefficient
++        exponent = value_tuple.exponent
++
++        # Store each sum as an integer at a shared decimal scale. This avoids
++        # Decimal context precision limits when summing large values.
++        group = grouped.get(record.category)
++        if group is None:
++            scale = min(-2, exponent)
++            total = coefficient * 10 ** (exponent - scale)
++            timestamp = record.timestamp.astimezone(timezone.utc)
++            grouped[record.category] = [1, total, scale, timestamp, timestamp]
++            continue
++
++        count, total, scale, first, last = group
++        if exponent < scale:
++            total *= 10 ** (scale - exponent)
++            scale = exponent
++        total += coefficient * 10 ** (exponent - scale)
++
++        timestamp = record.timestamp.astimezone(timezone.utc)
++        if timestamp < first:
++            first = timestamp
++        if timestamp > last:
++            last = timestamp
++        grouped[record.category] = [count + 1, total, scale, first, last]
++
++    result_groups = []
++    for category in sorted(grouped):
++        count, total, scale, first, last = grouped[category]
++        sign = int(total < 0)
++        digits = tuple(int(digit) for digit in str(abs(total)))
++        exact_total = Decimal((sign, digits, scale))
++        result_groups.append(
++            {
++                "category": category,
++                "count": count,
++                "total": format(exact_total, ".2f"),
++                "first": _utc_string(first),
++                "last": _utc_string(last),
++            }
++        )
++
++    return {"record_count": record_count, "groups": result_groups}
+--- before/logstats/__main__.py
++++ after/logstats/__main__.py
+@@ -1,5 +1,34 @@
+-def main():
+-    raise NotImplementedError("Implement the public CLI contract")
++"""Command-line entry point for the logstats package."""
++
++import argparse
++import json
++from pathlib import Path
++import sys
++
++from .aggregate import summarize
++from .parser import parse_records
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(prog="python -m logstats")
++    parser.add_argument("input", help="UTF-8 CSV event log to summarize")
++    parser.add_argument("--output", help="write JSON output to this path instead of stdout")
++    args = parser.parse_args(argv)
++
++    try:
++        text = Path(args.input).read_text(encoding="utf-8")
++        records = parse_records(text)
++        result = json.dumps(summarize(records), ensure_ascii=False) + "\n"
++        if args.output is None:
++            sys.stdout.write(result)
++        else:
++            Path(args.output).write_text(result, encoding="utf-8")
++    except (OSError, UnicodeError, ValueError) as exc:
++        message = str(exc).replace("\n", " ").strip()
++        print(f"error: {message}", file=sys.stderr)
++        return 2
++
++    return 0
+ 
+ 
+ if __name__ == "__main__":

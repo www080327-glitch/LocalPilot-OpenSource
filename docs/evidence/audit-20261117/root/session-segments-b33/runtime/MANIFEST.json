@@ -1,0 +1,210 @@
+{
+  "scope": "Reviewed publication copies; RAW_MANIFEST files describe private originals.",
+  "transform": "Only explicit absolute path prefixes and temporary directory aliases. No outcomes or fixture values changed.",
+  "archive": {
+    "file": "evidence.tar.gz",
+    "bytes": 156006,
+    "sha256": "a4d17167d95360c51a9f4a388a41dfb13df1f92290c38c3dbf814ebbdba15347"
+  },
+  "files": [
+    {
+      "path": "installed-r1/build.log",
+      "raw_bytes": 83744,
+      "raw_sha256": "5b6fca7f9e101621278ba916bc2c98fb51d41ef15cc3c9a01b53a085291e6a3f",
+      "published_bytes": 83288,
+      "published_sha256": "9bbe69b50b498037f88c376ca7c912db4253bc4f2e736ec223930a9a090c9b9c",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 8,
+        "<PINNED_TEST_ENVIRONMENT>": 4
+      }
+    },
+    {
+      "path": "installed-r1/cli-version.log",
+      "raw_bytes": 278,
+      "raw_sha256": "b2f4ccb20da0e4bcdac52d91be5c2f043faaf536b994c18be293d05ef50904fe",
+      "published_bytes": 235,
+      "published_sha256": "2504c645c6a67a73d40a2ae929895498c542959c1d53df6fa8fd546a422c398b",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 1
+      }
+    },
+    {
+      "path": "installed-r1/dependencies.log",
+      "raw_bytes": 1396,
+      "raw_sha256": "063b8bac3fed8c85eb893122a1aaf1b3eb8d469a3aa500a488542d053264f642",
+      "published_bytes": 1353,
+      "published_sha256": "86c49578ab53239de450ef6985fc012455ca93e4a2b4b8fe02681d43a03f328e",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 1
+      }
+    },
+    {
+      "path": "installed-r1/import-proof.json",
+      "raw_bytes": 1812,
+      "raw_sha256": "e194e174b89c21ed51bdca4be014ec240c6c83b830c9cd701b50af8af13c950d",
+      "published_bytes": 1468,
+      "published_sha256": "ed1710ab7b0c0fd20f9edb18b04b4f061af749f1396d0e09bc2a8e54532b8423",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 8
+      }
+    },
+    {
+      "path": "installed-r1/install.log",
+      "raw_bytes": 1513,
+      "raw_sha256": "7447fd5a0c42d5983b4ee0f9b5e2e41ec2f18a477fc4f0f1c204be44f346fae4",
+      "published_bytes": 1126,
+      "published_sha256": "4c6a2ad9262800a448ec64dc17ddca30284206d471d557f74adff0d8ec570b42",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 9
+      }
+    },
+    {
+      "path": "installed-r1/pip-check.log",
+      "raw_bytes": 155,
+      "raw_sha256": "81c9f9435dded703c1afa6526a8c88175bed64eef3c33e98a6bdb11a9a50b21b",
+      "published_bytes": 112,
+      "published_sha256": "99750d4b5923e3c0ccd339289409438409531ff3d5fab5e3ef44e97eda762d30",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 1
+      }
+    },
+    {
+      "path": "installed-r1/run.json",
+      "raw_bytes": 7735,
+      "raw_sha256": "bc327b2c76792bcb753bde238b96fe941ba9c0224fd49bb32dfbd343694f9065",
+      "published_bytes": 6535,
+      "published_sha256": "91bb2f55e5ae9046ba92b2504ae1617036edcdf8e00f3708ac1ce87247208fbf",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 7,
+        "<VALIDATION_ROOT>": 17,
+        "<PINNED_TEST_ENVIRONMENT>": 5
+      }
+    },
+    {
+      "path": "installed-r1/runner.py",
+      "raw_bytes": 10716,
+      "raw_sha256": "d7a78ebc9d7981986257106ff76933ab2618d45a37aa0631cd6daa46f0a0c9f8",
+      "published_bytes": 10590,
+      "published_sha256": "bc38615c94c4a5cd027af63e33af7804b621bc74aaf814b040318e936fdd7983",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 1,
+        "<VALIDATION_ROOT>": 1,
+        "<PRIVATE_KEY_FILE>": 1
+      }
+    },
+    {
+      "path": "installed-r1/source-after.json",
+      "raw_bytes": 70978,
+      "raw_sha256": "0d2e0fb56b6633776a0deca48dd3ec7c58541b7f46543411568acf49d919204d",
+      "published_bytes": 70978,
+      "published_sha256": "0d2e0fb56b6633776a0deca48dd3ec7c58541b7f46543411568acf49d919204d",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "installed-r1/source-before.json",
+      "raw_bytes": 70978,
+      "raw_sha256": "0d2e0fb56b6633776a0deca48dd3ec7c58541b7f46543411568acf49d919204d",
+      "published_bytes": 70978,
+      "published_sha256": "0d2e0fb56b6633776a0deca48dd3ec7c58541b7f46543411568acf49d919204d",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "installed-r1/tests.log",
+      "raw_bytes": 2757,
+      "raw_sha256": "8ac3500f2b3a750295c8732a8c3c26d4382cd47ff10c2e80771095160f9d7dc1",
+      "published_bytes": 2714,
+      "published_sha256": "ea15967b0a41b9b8698870316102309afd8924521e9fcdfa2c761f77689829fc",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 1
+      }
+    },
+    {
+      "path": "installed-r1/venv.log",
+      "raw_bytes": 174,
+      "raw_sha256": "9d4a62fa560949d1f1a38d186b99d53be31af3b1d639f06724e591cc970e03cb",
+      "published_bytes": 103,
+      "published_sha256": "5cb5aa2b90bf132637a407b8ee60c2d3cf3118981409b4ade678252d9431bbf2",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 1,
+        "<PINNED_TEST_ENVIRONMENT>": 1
+      }
+    },
+    {
+      "path": "installed_gate.py",
+      "raw_bytes": 10716,
+      "raw_sha256": "d7a78ebc9d7981986257106ff76933ab2618d45a37aa0631cd6daa46f0a0c9f8",
+      "published_bytes": 10590,
+      "published_sha256": "bc38615c94c4a5cd027af63e33af7804b621bc74aaf814b040318e936fdd7983",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 1,
+        "<VALIDATION_ROOT>": 1,
+        "<PRIVATE_KEY_FILE>": 1
+      }
+    },
+    {
+      "path": "suite-r1/postcheck.json",
+      "raw_bytes": 1647,
+      "raw_sha256": "1e5e41da884a9f70c4aec64106c286eebf6996c057bbe9b0825270dc37c2045f",
+      "published_bytes": 1647,
+      "published_sha256": "1e5e41da884a9f70c4aec64106c286eebf6996c057bbe9b0825270dc37c2045f",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "suite-r1/run.json",
+      "raw_bytes": 2744,
+      "raw_sha256": "74e1f7004e2e2b6c3f68797c5b759f0d45e0e6158553bf6786b98eafcc7c8b18",
+      "published_bytes": 2419,
+      "published_sha256": "193dd4a46a0f1ff61e71cc7401d672afca8025be2d547364c35678b2ae1e7a0d",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 6,
+        "<VALIDATION_ROOT>": 1
+      }
+    },
+    {
+      "path": "suite-r1/runner.py",
+      "raw_bytes": 4402,
+      "raw_sha256": "a7a119ff3f20df8770f92bf0da600df143dc3a9880704b4b9a3850fd0a8be475",
+      "published_bytes": 4312,
+      "published_sha256": "94a09e9f849e8773938466805f3484c439cd9d9bd286d8b4447b635848bf6613",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 1,
+        "<VALIDATION_ROOT>": 1
+      }
+    },
+    {
+      "path": "suite-r1/source-after.json",
+      "raw_bytes": 70978,
+      "raw_sha256": "0d2e0fb56b6633776a0deca48dd3ec7c58541b7f46543411568acf49d919204d",
+      "published_bytes": 70978,
+      "published_sha256": "0d2e0fb56b6633776a0deca48dd3ec7c58541b7f46543411568acf49d919204d",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "suite-r1/source-before.json",
+      "raw_bytes": 70978,
+      "raw_sha256": "0d2e0fb56b6633776a0deca48dd3ec7c58541b7f46543411568acf49d919204d",
+      "published_bytes": 70978,
+      "published_sha256": "0d2e0fb56b6633776a0deca48dd3ec7c58541b7f46543411568acf49d919204d",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "suite-r1/suite-full.log",
+      "raw_bytes": 22404,
+      "raw_sha256": "3d2d46b2f7bf76cee9f79de06039edcb605c2744ada109874cf823e6ba0173f6",
+      "published_bytes": 22404,
+      "published_sha256": "3d2d46b2f7bf76cee9f79de06039edcb605c2744ada109874cf823e6ba0173f6",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "suite_gate.py",
+      "raw_bytes": 4402,
+      "raw_sha256": "a7a119ff3f20df8770f92bf0da600df143dc3a9880704b4b9a3850fd0a8be475",
+      "published_bytes": 4312,
+      "published_sha256": "94a09e9f849e8773938466805f3484c439cd9d9bd286d8b4447b635848bf6613",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 1,
+        "<VALIDATION_ROOT>": 1
+      }
+    }
+  ]
+}

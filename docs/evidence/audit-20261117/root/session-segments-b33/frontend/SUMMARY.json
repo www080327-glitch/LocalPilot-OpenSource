@@ -1,0 +1,54 @@
+{
+  "status": "PASS",
+  "source_commit": "b6f95da47f706581a780d6874382be53d99b33c4",
+  "source_tree": "36d464811bbfd9538274d88bd2c13fbcf80374be",
+  "source_inputs": 260,
+  "source_unchanged": true,
+  "git_clean_before": true,
+  "git_clean_after": true,
+  "vitest": {
+    "test_files_passed": 13,
+    "tests_passed": 74,
+    "command_exit": 0,
+    "ui_tests_excluded_by_existing_script": true
+  },
+  "typescript_vite_build_exit": 0,
+  "rustfmt": {
+    "version": "rustfmt 1.11.0-stable (0ef1bc3860 2026-11-09)",
+    "format_check_exit": 0,
+    "native_compile": "NOT_RUN"
+  },
+  "version_gate": {
+    "versions": {
+      "consistent": true,
+      "desktop": "5.0.1-rc.16",
+      "core": "5.0.0b33",
+      "suite": "0.2.0b33",
+      "companion": "0.5.7b10"
+    },
+    "positive_exit": 0,
+    "negative_controls": [
+      {
+        "name": "companion-runtime-mismatch",
+        "copy_baseline_exit": 0,
+        "negative_exit": 1,
+        "only_changed_input": "companion/__init__.py",
+        "expected_diagnostic": "companion.__version__ differs from companion/pyproject.toml"
+      },
+      {
+        "name": "suite-runtime-mismatch",
+        "copy_baseline_exit": 0,
+        "negative_exit": 1,
+        "only_changed_input": "suite/localpilot_suite/__init__.py",
+        "expected_diagnostic": "localpilot_suite.VERSION differs from suite/pyproject.toml"
+      }
+    ]
+  },
+  "dependency_graph_unchanged": true,
+  "limits": [
+    "No native Rust/Tauri build, Swift/macOS runtime or browser UI assertion was executed.",
+    "npm uses the existing ignored node_modules symlink; lockfile comparison confirms only desktop version metadata changes from RC15.",
+    "Ignored dist output remains local and is not part of the published evidence.",
+    "Existing npm unknown http-proxy config warning is retained in logs; no package/environment configuration was changed."
+  ]
+}
