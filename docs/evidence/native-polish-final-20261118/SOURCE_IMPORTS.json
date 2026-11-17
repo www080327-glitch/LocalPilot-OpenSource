@@ -1,0 +1,29 @@
+{
+  "test_root_sha256": "73ae10a01c60b89c614b4425456be594856593663d82d133e1117b9fd144b11e",
+  "harness_scripts": [
+    "qualify_openai_agent.py",
+    "qualify_linux_model.py"
+  ],
+  "product_source_root_present_in_harness": false,
+  "interpreter_relative_to_test_root": "client/modules/bundle-700d64a665f74410627a/runtime/bin/python3.14",
+  "core_child_pythonpath": "<test-root>/installed-soak-harness",
+  "product_source_root_on_core_sys_path": false,
+  "modules": {
+    "agent.session": {
+      "relative_to_runtime": "lib/python3.14/site-packages/agent/session.py",
+      "under_site_packages": true
+    },
+    "localpilot_service.cli": {
+      "relative_to_runtime": "lib/python3.14/site-packages/localpilot_service/cli.py",
+      "under_site_packages": true
+    },
+    "companion": {
+      "relative_to_runtime": "lib/python3.14/site-packages/companion/__init__.py",
+      "under_site_packages": true
+    },
+    "localpilot_suite": {
+      "relative_to_runtime": "lib/python3.14/site-packages/localpilot_suite/__init__.py",
+      "under_site_packages": true
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "status": "FAILED_BEFORE_MODEL_INFERENCE",
+  "model": "gpt-6-luna",
+  "reasoning": "high",
+  "runner_sha256": "1878a177ed32600e9d53490ad518a93ece8d729643f2e2681c7b10d11d4724c4",
+  "runner_statuses": {
+    "protocol_status": "FAIL",
+    "orchestration_status": "FAIL",
+    "semantic_status": "FAIL",
+    "engineering_status": "FAIL",
+    "passed": false
+  },
+  "task_status": "failed",
+  "quiescent": true,
+  "error": "Local model server returned HTTP 401",
+  "model_calls": 0,
+  "subtasks": 0,
+  "provider_usage": "UNKNOWN",
+  "duration_seconds": 2.9057667499873787,
+  "original_fixture_manifest_sha256": "b22f47e53e46966a7d115b46974c07626217c3b03950735cf4f2b26cf80136fc",
+  "matches_original_fixture_manifest": true,
+  "owned_core_stopped": true,
+  "source_unchanged": true,
+  "automatic_review": "No rejection on this retry; API authentication returned HTTP 401 before inference. Sol was not attempted.",
+  "raw_results_sha256": "cca39d15483f5be884dff98980ee91f9d42c36eb0fbf2766468695b4d971a448",
+  "raw_task_sha256": "09c6ea8b0e0fde5a3f20bb84f26d3779abc09e3cc0b6a4cad6d223b1d7c36698"
+}

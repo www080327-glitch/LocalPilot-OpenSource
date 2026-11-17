@@ -1,0 +1,29 @@
+{
+  "repository": "www080327-glitch/LocalPilot-OpenSource",
+  "pr_number": 15,
+  "branch": "codex/native-polish-final-20261116",
+  "delivered_product_source_commit": "97dae142a2deccfb1ed0add0c2cd49b4b02a8fad",
+  "delivered_product_source_tree": "4becdaf178d79ef3253841e10f9bf4fd3a9f8b2b",
+  "local_evidence_commit_parent": "97dae142a2deccfb1ed0add0c2cd49b4b02a8fad",
+  "product_source_changed_in_this_run": false,
+  "platform": {
+    "os": "macOS 27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "node": "v24.20.0",
+    "npm": "11.19.0",
+    "playwright": "1.64.1"
+  },
+  "component_versions": {
+    "desktop": "5.0.1-rc.17",
+    "core": "5.0.0b35",
+    "companion": "0.5.7b12",
+    "suite": "0.2.0b34",
+    "channels": "0.1.0a4"
+  },
+  "candidate_tree_sha256": "197cfb69b3836ee50e82a0ba3eea34a84591152c43c95a3ac54ec9df5a84c446",
+  "candidate_executable_sha256": "b713d15ac5e2dfd0a4f27c8df0572ba301c3f819a3c02449f2978e00c6e15d75",
+  "playwright_test_source_sha256": "5ce4cb34bf08aa90a3b8d5235a639f940e39e037ac03810d2be127385ecae8cc",
+  "package_lock_sha256": "4f5ba378472b1ed574788382fa58bdc775be442f06534dda9bbfeeafae7be0ee",
+  "notes": "All new deliverables in this run are acceptance evidence. Raw logs, traces, installation receipts and local paths are excluded from the public tree under .private/."
+}

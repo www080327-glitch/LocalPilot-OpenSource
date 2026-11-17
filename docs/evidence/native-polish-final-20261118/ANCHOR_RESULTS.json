@@ -1,0 +1,126 @@
+{
+  "native_window_placement": "PASS",
+  "six_anchor_positions": [
+    {
+      "anchor": "TOP_LEFT",
+      "native_mode": "IDLE_POT",
+      "window_points": {
+        "height": 264.0,
+        "width": 288.0,
+        "x": 0.0,
+        "y": 685.0
+      },
+      "physical_placement": {
+        "anchor_state": "TOP_LEFT",
+        "event": "initial native frame",
+        "physical_x": 0,
+        "physical_y": 66,
+        "width": 576,
+        "height": 528
+      },
+      "scale_factor": 2.0,
+      "display_count": 1
+    },
+    {
+      "anchor": "TOP_RIGHT",
+      "native_mode": "IDLE_EDGE",
+      "window_points": {
+        "height": 264.0,
+        "width": 288.0,
+        "x": 1224.0,
+        "y": 685.0
+      },
+      "physical_placement": {
+        "anchor_state": "TOP_RIGHT",
+        "event": "native_window_moved",
+        "height": 528,
+        "physical_x": 2448,
+        "physical_y": 66,
+        "width": 576
+      },
+      "scale_factor": 2.0,
+      "display_count": 1
+    },
+    {
+      "anchor": "LEFT_EDGE",
+      "native_mode": "IDLE_EDGE",
+      "window_points": {
+        "height": 264.0,
+        "width": 288.0,
+        "x": 0.0,
+        "y": 379.0
+      },
+      "physical_placement": {
+        "anchor_state": "LEFT_EDGE",
+        "event": "native_window_moved",
+        "height": 528,
+        "physical_x": 0,
+        "physical_y": 678,
+        "width": 576
+      },
+      "scale_factor": 2.0,
+      "display_count": 1
+    },
+    {
+      "anchor": "RIGHT_EDGE",
+      "native_mode": "IDLE_EDGE",
+      "window_points": {
+        "height": 264.0,
+        "width": 288.0,
+        "x": 1224.0,
+        "y": 379.0
+      },
+      "physical_placement": {
+        "anchor_state": "RIGHT_EDGE",
+        "event": "native_window_moved",
+        "height": 528,
+        "physical_x": 2448,
+        "physical_y": 678,
+        "width": 576
+      },
+      "scale_factor": 2.0,
+      "display_count": 1
+    },
+    {
+      "anchor": "BOTTOM_LEFT",
+      "native_mode": "IDLE_EDGE",
+      "window_points": {
+        "height": 264.0,
+        "width": 288.0,
+        "x": 0.0,
+        "y": 73.0
+      },
+      "physical_placement": {
+        "anchor_state": "BOTTOM_LEFT",
+        "event": "native_window_moved",
+        "height": 528,
+        "physical_x": 0,
+        "physical_y": 1290,
+        "width": 576
+      },
+      "scale_factor": 2.0,
+      "display_count": 1
+    },
+    {
+      "anchor": "BOTTOM_RIGHT",
+      "native_mode": "IDLE_EDGE",
+      "window_points": {
+        "height": 264.0,
+        "width": 288.0,
+        "x": 1224.0,
+        "y": 73.0
+      },
+      "physical_placement": {
+        "anchor_state": "BOTTOM_RIGHT",
+        "event": "native_window_moved",
+        "height": 528,
+        "physical_x": 2448,
+        "physical_y": 1290,
+        "width": 576
+      },
+      "scale_factor": 2.0,
+      "display_count": 1
+    }
+  ],
+  "physical_drag": "NOT_RUN: edge renderer had no visible pose and passed pointer events through"
+}

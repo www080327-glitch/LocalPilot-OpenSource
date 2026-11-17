@@ -1,0 +1,44 @@
+{
+  "source_commit": "97dae142a2deccfb1ed0add0c2cd49b4b02a8fad",
+  "platform": "macOS 27.0.1 arm64",
+  "browser": "Playwright Chromium 1.64.1 bundled browser",
+  "test_file": "desktop/tests/ui/model-configuration.spec.ts",
+  "source_sha256": "5ce4cb34bf08aa90a3b8d5235a639f940e39e037ac03810d2be127385ecae8cc",
+  "runs": [
+    {
+      "kind": "original command",
+      "passed": 2,
+      "skipped": 0,
+      "failed": 0,
+      "exit_code": 0,
+      "duration_ms": 6645,
+      "reporter": ".private/browser/browser-tests.json",
+      "trace": "not enabled"
+    },
+    {
+      "kind": "same tests with trace capture",
+      "passed": 2,
+      "skipped": 0,
+      "failed": 0,
+      "exit_code": 0,
+      "duration_ms": 4100,
+      "reporter": ".private/browser-with-traces/browser-tests.json",
+      "trace_archives": 2,
+      "screenshot_frames": 40,
+      "trace_zip_sha256": [
+        "03aeb61e5e729708e87bfc3a8e08e889235b827bc8d1fd32b63196c44a8decc4",
+        "ffec95ffa03aa37b050d073ba3b3f91c8baddb0bea7da86fc8ddab8eb14b8540"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "title": "optional worker roles preserve the chosen coordinator and configured efforts",
+      "status": "passed"
+    },
+    {
+      "title": "removing a partner or choosing it as primary clears both optional roles",
+      "status": "passed"
+    }
+  ]
+}

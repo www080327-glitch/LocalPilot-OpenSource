@@ -1,0 +1,21 @@
+{
+  "status": "FAILED_BEFORE_INFERENCE",
+  "case": "soak",
+  "model": "gpt-6-luna",
+  "reasoning": "high",
+  "requested_seconds": 7200,
+  "elapsed_seconds": 2.073744416993577,
+  "task_status": "failed",
+  "error": "Local model server returned HTTP 401",
+  "heartbeat_count": 0,
+  "completion_receipt_present": false,
+  "read_file_receipt_present": false,
+  "subtasks": 0,
+  "model_calls": 0,
+  "provider_usage": "UNKNOWN",
+  "owned_core_stopped": true,
+  "extended_budget_requested": true,
+  "runner_sha256": "a860afd95c17ec86bdd1b738ae7a4223fd3985eadd262c84259e4f396acf3238",
+  "core_helper_sha256": "ed5c8dedf4de8d083f555da81df5185f1a2cbf7b56a17773800bba4bed16b839",
+  "raw_results_sha256": "4d610470dd1640fb8659931be5fd6b0afbb68fb4f7780c464e022ed147ae87a8"
+}
