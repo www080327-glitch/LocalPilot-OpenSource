@@ -13,6 +13,7 @@ export function ModelConfiguration({
   const [models, setModels] = useState<Json[]>([]);
   const [primary, setPrimary] = useState("");
   const [partners, setPartners] = useState<string[]>([]);
+  const [workerRoles, setWorkerRoles] = useState<Record<string, string>>({});
   const [mode, setMode] = useState("local-first");
   const [asyncEnabled, setAsyncEnabled] = useState(true);
   const [name, setName] = useState("personal-agent");
@@ -44,7 +45,16 @@ export function ModelConfiguration({
       setBusy(false);
     }
   }
+  function removePartner(id: string) {
+    setPartners((old) => old.filter((value) => value !== id));
+    setWorkerRoles((old) =>
+      Object.fromEntries(
+        Object.entries(old).filter(([, value]) => value !== id),
+      ),
+    );
+  }
   const eligible = models.filter((model) => model.cooperation_supported);
+  const roleModels = eligible.filter((model) => partners.includes(model.id));
   return (
     <section className="model-configuration">
       <h3>添加本机模型与协作 Agent</h3>
@@ -69,9 +79,7 @@ export function ModelConfiguration({
             value={primary}
             onChange={(event) => {
               setPrimary(event.target.value);
-              setPartners((old) =>
-                old.filter((id) => id !== event.target.value),
-              );
+              removePartner(event.target.value);
             }}
           >
             <option value="">选择主模型</option>
@@ -90,17 +98,52 @@ export function ModelConfiguration({
               <input
                 type="checkbox"
                 checked={partners.includes(model.id)}
-                onChange={(event) =>
-                  setPartners((old) =>
-                    event.target.checked
-                      ? [...old, model.id]
-                      : old.filter((id) => id !== model.id),
-                  )
-                }
+                onChange={(event) => {
+                  if (event.target.checked) {
+                    setPartners((old) => [...old, model.id]);
+                  } else {
+                    removePartner(model.id);
+                  }
+                }}
               />
               {model.id} · {model.model} · {model.adapter}
             </label>
           ))}
+        {[
+          { role: "search", label: "探索模型（只读）" },
+          { role: "review", label: "审阅模型（只读）" },
+        ].map(({ role, label }) => (
+          <label key={role}>
+            {label}
+            <select
+              aria-label={label}
+              value={workerRoles[role] || ""}
+              disabled={!roleModels.length}
+              onChange={(event) => {
+                const model = event.target.value;
+                setWorkerRoles((old) => {
+                  const roles = { ...old };
+                  if (model) roles[role] = model;
+                  else delete roles[role];
+                  return roles;
+                });
+              }}
+            >
+              <option value="">不指定</option>
+              {roleModels.map((model) => (
+                <option key={model.id} value={model.id}>
+                  {model.id} · {model.model}
+                  {model.thinking ? ` · 思考 ${model.thinking}` : ""}
+                </option>
+              ))}
+            </select>
+          </label>
+        ))}
+        <p className="muted">
+          Super Agent 负责统筹，按需派发探索与审阅，收集结果后继续完成任务。
+          两种职责均只读，可使用同一伙伴模型；测试由执行 Agent 负责。
+          来源策略仍决定允许使用的本地或云端模型。
+        </p>
         <label>
           五档来源策略
           <select
@@ -139,6 +182,9 @@ export function ModelConfiguration({
               partners,
               mode,
               async_enabled: asyncEnabled,
+              ...(Object.keys(workerRoles).length
+                ? { roles: workerRoles }
+                : {}),
             })
           }
         >

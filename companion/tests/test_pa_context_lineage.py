@@ -74,7 +74,7 @@ class SourceLineageTests(unittest.TestCase):
         self.assertNotIn('SYNTHETIC_MEETING_EVIDENCE', current_input)
         self.assertNotIn('First synthetic answer', current_input)
         self.assertEqual(self.app.localpilot.status(first['task_id'])['status'], 'completed')
-        self.assertIn(first['task_id'], self.app.store.get('localpilot_tasks'))
+        self.assertIsNotNone(self.app.store.tasks.get(first['task_id']))
         self.assertTrue(self.app.store.db.execute("SELECT 1 FROM observation_events WHERE kind='task_result' AND task_id=?", (first['task_id'],)).fetchone())
         self.assertFalse(any(row['task_id'] == first['task_id'] for row in self.app.observation_memory.records()))
 

@@ -1,8 +1,10 @@
-# LocalPilot Suite 0.2.0b33
+# LocalPilot Suite 0.2.0b34
 
-2026-11-17 source candidate: Desktop 5.0.1-rc.16; Core 5.0.0b33; Suite 0.2.0b33; Companion 0.5.7b10; Channels 0.1.0a4. Linux adds platform capabilities and official pinned Node archives for x86_64/aarch64; x86_64 installation and execution were tested. Intel native qualification remains open. This is not a new Release. See [Linux implementation and evidence](../docs/development/LINUX_COMPLETION_20261116.md).
+2026-11-17 source candidate: Desktop 5.0.1-rc.17; Core 5.0.0b34; Suite 0.2.0b34; Companion 0.5.7b11; Channels 0.1.0a4. Linux adds platform capabilities and official pinned Node archives for x86_64/aarch64; x86_64 installation and execution were tested. Intel native qualification remains open. This is not a new Release. See [Linux implementation and evidence](../docs/development/LINUX_COMPLETION_20261116.md).
 
 [公开 GitHub 桌面历史版本与可用下载](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases) · [安装与边界](../README.md#简易快速安装)。本页为独立 Suite CLI，模块版本不随 Desktop 版本号变化。
+
+当前协作模型配置可为伙伴指定只读探索和只读审阅职责，主 Super Agent 继续统筹；无职责配置保留原行为。见[配置与兼容性说明](../docs/development/TASK_STORAGE_SCHEDULING_20261117.md)。
 
 Thin CLI and installation coordination for independently installed Core and Companion packages. This distribution contains no Agent Runtime or copied module source. It exposes `localpilot`; Core also works through `localpilot-core`, and Companion through `companion`.
 

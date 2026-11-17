@@ -74,7 +74,7 @@ def build(config_path):
         if type(backend_spec.get("include_stream_usage", False)) is not bool:
             raise ValueError("include_stream_usage must be a boolean host option")
         cloud = kind in CLOUD_KINDS
-        workers, cooperative_policy, cooperative_profiles = cooperation_routes(name, spec, config['routes'], workspace)
+        workers, cooperative_policy, cooperative_profiles, worker_roles = cooperation_routes(name, spec, config['routes'], workspace)
         partner = bool(workers)
         partner_is_local = any(w['backend']['kind'] not in CLOUD_KINDS for w in workers.values())
         has_cloud = cloud or any(w['backend']['kind'] in CLOUD_KINDS for w in workers.values())
@@ -167,7 +167,7 @@ def build(config_path):
                     verification=verification, verifier=verifier, cache_stable_prefix=cache_stable_prefix,
                     prompt_profile=prompt_profile, tool_profile=tool_profile, reasoning_only=reasoning_only, model_host=model_host, engine=engine, workers=workers,
                     strict_task=strict_task, plugins=plugins, computer_config=computer_config,
-                    cooperative_policy=cooperative_policy, cooperative_profiles=cooperative_profiles,
+                    cooperative_policy=cooperative_policy, cooperative_profiles=cooperative_profiles, worker_roles=worker_roles,
                     route_async_policy=route_async_policy, modern_cooperation='routes' in spec.get('cooperation', {})):
             backend = build_backend(b, dp, manager=model_host, cache_stable_prefix=cache_stable_prefix)
             if model_host and hasattr(backend,"service_contract"):
@@ -208,7 +208,7 @@ def build(config_path):
                 computer_runtime=computer,
                 hybrid_policy=HybridPolicy(CloudEgressPolicy(ep, paths), automatic_failover=bool(cooperative_policy and cooperative_policy.mode not in {'local-only','cloud-only'})) if computer is None else None,
                 hybrid_backends=backend_catalog if computer is None else None, hybrid_primary=primary if computer is None else None,
-                cooperative_policy=cooperative_policy, cooperative_profiles=cooperative_profiles,
+                cooperative_policy=cooperative_policy, cooperative_profiles=cooperative_profiles, worker_roles=worker_roles,
                 engine_policy=EngineV5Policy() if engine == 'v5' else None,
                 strict_task=strict_task, completion_check=execution_check,
                 async_policy=route_async_policy,
@@ -237,6 +237,8 @@ def build(config_path):
             catalog[name]["orchestration"] = {"mode": "async_children", "limits": policy_snapshot(route_async_policy)}
         if workers:
             catalog[name]["worker_routes"] = list(workers)
+        if worker_roles:
+            catalog[name]['worker_roles'] = dict(worker_roles)
         if kind in {'vllm','remote-vllm'}:
             catalog[name]['capabilities']=[key for key,enabled in {
                 'streaming':bc.get('streaming',True),'tool_calling':bc.get('tool_calling',False),

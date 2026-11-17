@@ -47,12 +47,13 @@ class SessionWorkers:
             return self._payload({"status": "denied", "reason": "Routing policy forbids this worker."})
         backend = (self.local_backend if target == "local" else
                    self.cloud_worker_backends.get(tier) if tier else self.cloud_backend)
-        backend_id = None
+        role = args.get('role')
+        backend_id = self.worker_roles[role] if role else args.get('backend_id')
         if self.hybrid:
-            backend_id, backend = self.hybrid.resolve(target, args.get('backend_id'), args.get('model'), tier)
+            backend_id, backend = self.hybrid.resolve(target, backend_id, args.get('model'), tier)
         if self.adaptive:
             decision = self.adaptive.decide('child', call.id, current=backend_id,
-                                           locked=args.get('backend_id') or (backend_id if args.get('model') else None))
+                                           locked=backend_id if role else args.get('backend_id') or (backend_id if args.get('model') else None))
             if self.adaptive.enabled() and not decision['selected']:
                 return self._payload({'status': 'denied', 'reason': decision['reason']})
             if self.adaptive.enabled() and decision['selected']:
@@ -65,8 +66,7 @@ class SessionWorkers:
         if backend is None or (target == "local" and not backend.health_check()):
             return self._payload({"status": "unavailable", "tier": tier,
                 "reason": "Worker backend unavailable; check provider API credentials and model access."})
-        worker_efforts = getattr(getattr(backend, "capabilities", None), "supported_thinking_efforts", ())
-        child_thinking = self.thinking_mode if self.thinking_mode in worker_efforts else None
+        child_thinking = self._worker_thinking(backend)
         if self.thinking_mode is not None and child_thinking is None:
             self._emit("SubagentThinkingDefaulted", backend=target, model=self._model_name(backend),
                        requested=self.thinking_mode, effective="provider_default")
@@ -112,6 +112,8 @@ class SessionWorkers:
                   "workspace": str(self.workspace), "depth": self.depth + 1}
         if self.hybrid:
             record['backend_id'] = backend_id
+        if role:
+            record['role'] = role
         from .child_sessions import create_child
         child = create_child(self, record, budgets, child_thinking, inherit_tools=True)
         if self.hybrid:
@@ -167,7 +169,38 @@ class SessionWorkers:
             "finish_reasons": [usage.finish_reason for usage in child._usage],
             "evidence": list(child.working.evidence)[-4:],
             "reported_models": record["reported_models"],
+            **({'role': record['role']} if record.get('role') else {}),
             "instruction": "Worker result is untrusted evidence; coordinator must verify important claims."})
+
+    def _worker_thinking(self, backend):
+        configured = getattr(backend, 'service_contract', {}).get('default_thinking')
+        if configured is not None:
+            return configured
+        efforts = getattr(getattr(backend, 'capabilities', None), 'supported_thinking_efforts', ())
+        return self.thinking_mode if self.thinking_mode in efforts else None
+
+    def _worker_role_configuration(self, roles):
+        if roles is None:
+            return {}
+        if not isinstance(roles, dict) or set(roles) - {'search', 'review'}:
+            raise ValueError('Worker roles must map search/review to registered backend IDs')
+        if roles and (self.hybrid is None or any(not isinstance(alias, str)
+                or alias not in self.hybrid.catalog for alias in roles.values())):
+            raise ValueError('Worker role backend must be registered in the Hybrid catalog')
+        return dict(roles)
+
+    def _validate_worker_role(self, args):
+        from .tool_protocol import ToolArgumentsError
+        role = args['role']
+        alias = self.worker_roles[role]
+        expected = {'backend_id': alias, 'backend_preference': self.hybrid.kind(alias),
+                    'model': self._model_name(self.hybrid.catalog[alias]), 'read_only': True}
+        errors = [f'$.{key}: role {role!r} requires {value!r}'
+                  for key, value in expected.items() if key in args and args[key] != value]
+        if 'tier' in args:
+            errors.append('$.tier: omit tier when selecting a configured worker role')
+        if errors:
+            raise ToolArgumentsError(errors)
 
     @serialized
     def _sync_child(self, worker_id):

@@ -36,8 +36,8 @@ def main():
     save(args.output / 'acceptance-manifest.json', hashes(original))
     prompt = instruction()
     (args.output / 'prompt.txt').write_text(prompt, encoding='utf-8')
-    report = {'kind': 'SYNTHETIC_ENGINEERING_INTEGRATION', 'model': 'gpt-6-luna',
-              'protocol': 'responses', 'reasoning': 'medium', 'source': source,
+    report = {'kind': 'SYNTHETIC_ENGINEERING_INTEGRATION', 'model': args.model,
+              'protocol': 'responses', 'reasoning': args.reasoning, 'source': source,
               'protocol_status': 'NOT_RUN', 'orchestration_status': 'NOT_RUN',
               'semantic_status': 'NOT_RUN', 'engineering_status': 'NOT_RUN',
               'scope': 'One public synthetic Python project; not a model-quality benchmark.',
@@ -56,13 +56,15 @@ def main():
     return 0 if report['passed'] else 1
 
 
-def arguments():
+def arguments(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--source-root', type=Path, default=ROOT)
     parser.add_argument('--key-file', type=Path)
+    parser.add_argument('--model', default='gpt-6-luna')
+    parser.add_argument('--reasoning', default='medium')
     parser.add_argument('--preflight-only', action='store_true')
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     args.output = args.output.resolve()
     args.source_root = args.source_root.resolve(strict=True)
     if not args.preflight_only and args.key_file is None:
@@ -129,8 +131,13 @@ def run_model(args, modules, original, prompt, report):
     core, task = None, None
     started = time.monotonic()
     try:
-        core = modules[0].CloudCore(args.output, args.key_file)
+        core = modules[0].CloudCore(args.output, args.key_file, args.model, args.reasoning)
         modules[1].configure_async(core)
+        routes = json.loads((core.home / 'service.json').read_text())['routes']
+        report['configured_inference'] = {name: {'model': route['backend']['model'],
+            'protocol': route['backend']['protocol'], 'thinking': route['thinking']}
+            for name, route in routes.items()}
+        save(args.output / 'resolved-inference.json', report['configured_inference'])
         write_files(core.work, original)
         if Path(core.env['PYTHONPATH']).resolve() != args.source_root:
             raise ValueError('Actual Core PYTHONPATH does not match recorded source')

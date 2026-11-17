@@ -206,10 +206,8 @@ class Companion:
             self.retention()
             self.scan()
             self.sources.poll()
-            for task_id, record in reversed(list(self.store.get("localpilot_tasks", {}).items())):
-                last = record.get("last_status", {})
-                if record.get("endpoint") == self.config.localpilot_endpoint and record.get("transport", {}).get("scope") == self.privacy.consent_id() and last.get("status") not in {"completed", "incomplete", "failed", "cancelled", "timed_out"}:
-                    self.monitor_task(task_id, record.get("last_event_cursor", 0), record.get("cloud_approved") is True)
+            for task_id, record in self.store.tasks.resumable(self.config.localpilot_endpoint, self.privacy.consent_id()):
+                self.monitor_task(task_id, record.get("last_event_cursor", 0), record.get("cloud_approved") is True)
             if not self.stopping:
                 hour = datetime.now().hour
                 self.greet("morning" if 5 <= hour < 12 else "evening" if 18 <= hour < 24 else "startup")

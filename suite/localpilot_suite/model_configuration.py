@@ -45,6 +45,7 @@ def command(home, operation, args):
         return {'models': [{'id': alias, 'model': config['routes'][name]['backend'].get('model'),
                             'workspace': config['routes'][name]['workspace'],
                             'adapter': config['routes'][name]['backend']['kind'],
+                            'thinking': config['routes'][name].get('thinking'),
                             'cooperation_supported': _supports(config['routes'][name])}
                            for alias, name in mapping.items()], 'configured': True,
                 'restart_required': bool(pending['modules']), 'restart_modules': pending['modules']}
@@ -58,9 +59,12 @@ def command(home, operation, args):
     resource_credential = None
     if operation == 'configure_cooperation':
         from localpilot_service.protocol import manifest
-        if 'route_orchestration_v1' not in manifest()['capabilities']:
+        capabilities = manifest()['capabilities']
+        if 'route_orchestration_v1' not in capabilities:
             raise ValueError('先升级 Core：当前已安装版本未声明 route_orchestration_v1 能力')
         members, route = _cooperation(config, mapping, args)
+        if route['cooperation'].get('roles') and 'worker_roles_v1' not in capabilities:
+            raise ValueError('先升级 Core：当前已安装版本未声明 worker_roles_v1 探索/审阅分工能力')
     elif operation == 'configure_local_endpoint':
         members, route, companion = _local_endpoint(home, config, mapping, args)
     else:
@@ -161,7 +165,8 @@ def _supports(route):
 
 
 def _cooperation(config, mapping, args):
-    if set(args) != {'name', 'primary', 'partners', 'mode', 'async_enabled'}:
+    required = {'name', 'primary', 'partners', 'mode', 'async_enabled'}
+    if not required <= set(args) or set(args) - required - {'roles'}:
         raise ValueError('Exact primary, partners, five-mode preference and async setting required')
     primary, partners, mode = args['primary'], args['partners'], args['mode']
     if (not isinstance(primary, str) or primary not in mapping or not isinstance(partners, list)
@@ -172,6 +177,10 @@ def _cooperation(config, mapping, args):
     names = [mapping[primary], *(mapping[value] for value in partners)]
     if len(set(names)) != len(names):
         raise ValueError('Aliases of the same registered route cannot be selected twice')
+    roles = args.get('roles', {})
+    if (not isinstance(roles, dict) or set(roles) - {'search', 'review'}
+            or any(not isinstance(alias, str) or alias not in partners for alias in roles.values())):
+        raise ValueError('探索/审阅职责只能选择已勾选的子 Agent 模型')
     routes = [config['routes'][value] for value in names]
     if any(not _supports(value) for value in routes):
         raise ValueError('Cooperation requires tool-capable unmanaged inference routes without Computer Use')
@@ -187,6 +196,8 @@ def _cooperation(config, mapping, args):
                  prompt_profile='standard', tool_profile='full', budgets=dict(BUDGETS),
                  orchestration_mode='async' if args['async_enabled'] else 'sync',
                  cloud_egress='LOCAL_ONLY' if mode == 'local-only' or 'cloud' not in locations else 'REQUIRES_APPROVAL')
+    if roles:
+        route['cooperation']['roles'] = {role: mapping[alias] for role, alias in roles.items()}
     if args['async_enabled'] and 'async_policy' not in config:
         # Existing persisted Sessions keep their synchronous runtime fingerprint.
         for old in config['routes'].values():

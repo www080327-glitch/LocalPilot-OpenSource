@@ -3,6 +3,7 @@ import sqlite3
 import time
 import uuid
 from .reliability import explicit_claims, scalar
+from .task_store import TaskStore
 
 TYPES = {"user_fact", "preference", "conversation", "computer_event", "document", "project", "topic", "summary", "reflection"}
 
@@ -62,6 +63,11 @@ class MemoryStore:
                 meta.update(version_id=vid, extraction_timestamp=row["timestamp"])
                 self.db.execute("UPDATE memories SET metadata=? WHERE id=?", (json.dumps(meta,ensure_ascii=False),row["id"]))
         self.db.commit()
+        try:
+            self.tasks = TaskStore(self.db)
+        except BaseException:
+            self.db.close()
+            raise
 
     @staticmethod
     def _search_text(text):
@@ -220,12 +226,13 @@ class MemoryStore:
         if set(extra_tables) - allowed:
             raise ValueError("Unknown memory tables")
         with self.db:
-            for table in (*extra_tables, "memories", "files", "notices", "state", "source_versions", "claims", "conflicts", "memory_fts"):
+            for table in (*extra_tables, "memories", "files", "notices", "state", "source_versions", "claims", "conflicts", "memory_fts", "localpilot_tasks"):
                 self.db.execute(f"DELETE FROM {table}")
             for key, value in (state or {}).items():
                 self.db.execute("INSERT INTO state VALUES(?,?)", (key, json.dumps(value)))
         self.db.execute("PRAGMA wal_checkpoint(TRUNCATE)")
         self.db.execute("VACUUM")
+        self.tasks.forget_backups()
 
     def close(self):
         self.db.execute("PRAGMA wal_checkpoint(TRUNCATE)")

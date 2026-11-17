@@ -255,7 +255,7 @@ class HybridController:
                         pass  # Exact authorized path/hash proposals; no file bodies.
                     elif call.name not in {'read_file', 'file_info', 'list_files', 'list_directory','list_entries','inspect_file'}:
                         public = {
-                            'delegate': {'backend_preference', 'backend_id', 'model', 'tier', 'read_only', 'mode', 'budget'},
+                            'delegate': {'backend_preference', 'backend_id', 'model', 'tier', 'role', 'read_only', 'mode', 'budget'},
                             'request_model_switch': {'target', 'backend_id', 'model', 'task_complexity', 'scope'},
                             'child_status': set(), 'wait_children': set(), 'cancel_child': {'worker_id'},
                             'manage_goal': {'action', 'id', 'status'}, 'get_env': set(),

@@ -152,6 +152,7 @@ class HybridRuntimeTests(unittest.TestCase):
             local = Local(answer('ready'))
             runtime = AgentSession(create_default_registry(self.workspace), local_backend=local,
                 cloud_backend=self.cloud, policy=policy, streaming=False,
+                cloud_worker_backends={'LIGHT': self.cloud},
                 hybrid_policy=self.policy, hybrid_primary='local',
                 hybrid_backends={'local': local, 'cloud': self.cloud})
             self.runtimes.append(runtime)

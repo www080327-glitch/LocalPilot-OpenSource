@@ -43,4 +43,14 @@ describe("local CPU endpoint configuration", () => {
     expect(html).toContain("保存协作 Agent 配置");
     expect(html).toContain("保存本机模型配置");
   });
+
+  it("offers optional read-only roles while Super Agent keeps coordination", () => {
+    const html = renderToStaticMarkup(<ModelConfiguration />);
+    expect(html).toContain('aria-label="探索模型（只读）" disabled=""');
+    expect(html).toContain('aria-label="审阅模型（只读）" disabled=""');
+    expect(html).toContain("Super Agent 负责统筹");
+    expect(html).toContain("可使用同一伙伴模型");
+    expect(html).toContain("测试由执行 Agent 负责");
+    expect(html).toContain("来源策略仍决定允许使用的本地或云端模型");
+  });
 });

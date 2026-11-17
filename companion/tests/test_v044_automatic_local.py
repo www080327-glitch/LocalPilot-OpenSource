@@ -38,7 +38,7 @@ class AutomaticLocalTests(unittest.TestCase):
 
     def test_explicit_chat_automatically_delegates_to_local_service_without_prompt(self):
         result=self.start_question("Explain a short public synthetic topic")
-        record=self.app.store.get("localpilot_tasks")[result["task_id"]]
+        record=self.app.store.tasks.get(result["task_id"])
         self.assertTrue(record["transport"]["automatic_local"])
         self.assertTrue(result["task_id"])
         self.assertEqual(self.app.model.inferences,0)

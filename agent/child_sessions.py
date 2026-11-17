@@ -1,6 +1,7 @@
 """Construct live and restored workers with the same inherited host contract."""
 from copy import deepcopy
 from contextlib import contextmanager
+from dataclasses import replace
 import json
 
 from .policy import DataPolicy
@@ -25,6 +26,14 @@ def create_child(owner, record, budgets, thinking, *, source=None, inherit_tools
     capabilities = CapabilityPolicy(read=ceiling.read, write=ceiling.write and not read_only,
         execute=ceiling.execute and not read_only, read_only=ceiling.read_only or read_only)
     registry = _child_registry(parent, capabilities, data_policy, inherit_profile=inherit_profile)
+    catalog = parent.hybrid.catalog if parent.hybrid else None
+    profiles = parent.adaptive.profiles if parent.adaptive else None
+    adaptive_policy = parent.adaptive.policy if parent.adaptive else None
+    if record.get('role'):
+        catalog = {record['backend_id']: backend}
+        if profiles is not None:
+            profiles = {**profiles, 'models': {key: value for key, value in profiles['models'].items() if key in catalog}}
+            adaptive_policy = replace(adaptive_policy, model_lock=record['backend_id'])
     child = AgentSession(registry, backend=backend,
         local_backend=parent.local_backend if parent.hybrid else None,
         cloud_backend=parent.cloud_backend if parent.hybrid else None,
@@ -37,10 +46,10 @@ def create_child(owner, record, budgets, thinking, *, source=None, inherit_tools
         computer_runtime=parent.computer if parent.child_registry_factory is None else None, computer_owner=False,
         event_callback=lambda event: owner._emit('SubagentEvent', id=record['id'], event=event.to_dict()),
         hybrid_policy=parent.hybrid.policy if parent.hybrid else None,
-        hybrid_backends=parent.hybrid.catalog if parent.hybrid else None,
+        hybrid_backends=catalog,
         hybrid_primary=record.get('backend_id'), harness_policy=parent.harness_policy,
-        adaptive_policy=parent.adaptive.policy if parent.adaptive else None,
-        capability_profiles=parent.adaptive.profiles if parent.adaptive else None,
+        adaptive_policy=adaptive_policy,
+        capability_profiles=profiles,
         task_traits=parent._child_traits() if parent.adaptive else None,
         child_registry_factory=parent.child_registry_factory,
         child_registry_contract=parent.child_registry_contract)

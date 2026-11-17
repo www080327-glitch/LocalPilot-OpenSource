@@ -40,7 +40,7 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
                  budgets=None, eligibility=None, data_policy=None, event_callback=None, trace=None,
                  prompt_profile="standard", system_prompt=None, streaming=True,
                  runtime_tools=True, legacy=False, retry_policy=None, depth=0,
-                 cloud_worker_backends=None, worker_availability=None, verification_callback=None,
+                 cloud_worker_backends=None, worker_availability=None, worker_roles=None, verification_callback=None,
                  stabilization=None, computer_runtime=None, computer_owner=True,
                  finalization_policy=None, completion_check=None, async_policy=None,
                  harness_policy=None, task_contract=None,
@@ -218,6 +218,7 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
             catalog = hybrid_backends or {k: b for k, b in {'local': self.local_backend, 'cloud': self.cloud_backend}.items()
                 if getattr(getattr(b, 'model_info', None), 'effective_context', None)}
             self.hybrid = HybridController(self, hybrid_policy, catalog, hybrid_primary or self.primary)
+        self.worker_roles = self._worker_role_configuration(worker_roles)
         if adaptive_policy is not None:
             from .adaptive import AdaptiveController
             self.adaptive = AdaptiveController(self, adaptive_policy, capability_profiles, task_traits)
@@ -386,8 +387,20 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
                     schema['function']['parameters']['properties'].update({
                         'backend_id': {'type': 'string', 'enum': eligible},
                         'model': {'type': 'string', 'description': 'Exact registered configured model assertion; not an arbitrary provider model.'}})
-                    if schema['function']['name'] == 'delegate' and not any(self.hybrid.kind(k) == 'cloud' for k in eligible):
-                        schema['function']['parameters']['properties'].pop('tier', None)
+                    if schema['function']['name'] == 'delegate':
+                        properties = schema['function']['parameters']['properties']
+                        tiers = [tier for tier, backend in self.cloud_worker_backends.items()
+                                 if backend is not None and any(self.hybrid.catalog[k] is backend
+                                     and self.hybrid.kind(k) == 'cloud' for k in eligible)]
+                        if tiers:
+                            properties['tier']['enum'] = sorted(tiers)
+                        else:
+                            properties.pop('tier', None)
+                        roles = [role for role, alias in self.worker_roles.items() if alias in eligible]
+                        if roles:
+                            properties['role'] = {'type': 'string', 'enum': sorted(roles),
+                                'description': 'Configured read-only worker role. The host selects its model; '
+                                    'omit tier. backend_id and model may only assert this role\'s registered model.'}
                     if self.harness_policy or self.engine_policy:
                         key='target' if schema['function']['name']=='request_model_switch' else 'backend_preference'
                         schema['function']['parameters']['properties'][key]['enum']=sorted({self.hybrid.kind(k) for k in eligible})
@@ -404,7 +417,7 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
             executable = caps.execute and not caps.read_only and not self._planning and not self.registry.gateway.plan_read_only and not self._finalizing and self.hybrid is None
             workspace_schemas = [s for s in workspace_schemas
                 if not (s['function']['name'] in {'execute', 'run_command'} and not executable)
-                and not (s['function']['name'] in {'apply_patch','make_directory','move_file','copy_file'} and not writable)
+                and not (s['function']['name'] in {'apply_patch','make_directory','move_file','copy_file','shell'} and not writable)
                 and not (s['function']['name'] in {'read_file', 'list_directory', 'search_text', 'file_info', 'list_entries','inspect_file'} and not caps.read)]
         result = workspace_schemas + schemas
         if self._cache_enabled() or self.engine_policy:

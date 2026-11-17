@@ -93,8 +93,8 @@ class AuthorizationV04Tests(unittest.TestCase):
                                  "expected_digest":digest, **kwargs})
 
     def attach(self):
-        self.app.store.set("localpilot_tasks", {"resp_fixture":{"endpoint":self.config.localpilot_endpoint,
-            "request":asdict(escalation()), "result":view()}})
+        self.app.store.tasks.put("resp_fixture", {"endpoint":self.config.localpilot_endpoint,
+            "request":asdict(escalation()), "result":view()})
 
     def test_stale_preview_cannot_authorize_replacement_task(self):
         digest_a = self.prepare(escalation("Task A"))
@@ -244,7 +244,7 @@ class AuthorizationV04Tests(unittest.TestCase):
             returned=self.approve(digest)
         self.assertEqual(returned["status"],"requires_approval")
         self.assertIn("task",returned)
-        record=self.app.store.get("localpilot_tasks")["resp_fixture"]
+        record=self.app.store.tasks.get("resp_fixture")
         self.assertNotIn("task",record["result"])
         self.assertEqual(record["result"]["required_action"]["id"],"approval_fixture")
 
@@ -302,7 +302,7 @@ class AuthorizationV04Tests(unittest.TestCase):
         self.app.receive_task_update(item[1],item[2])
         self.assertTrue(all(c[0] in {"stream","status"} for c in self.provider.calls))
         self.assertEqual(self.app.observation_memory.status()["records"],0)
-        self.assertEqual(self.app.store.get("localpilot_tasks")["resp_fixture"]["last_status"]["status"],"requires_approval")
+        self.assertEqual(self.app.store.tasks.get("resp_fixture")["last_status"]["status"],"requires_approval")
 
     def test_clear_discards_queued_late_result_and_keeps_observation_paused(self):
         self.attach(); self.app.monitor_task("resp_fixture")
@@ -315,7 +315,7 @@ class AuthorizationV04Tests(unittest.TestCase):
         self.assertEqual(self.app.store.records(),[])
         self.assertTrue(self.app.privacy.paused())
         self.assertTrue(self.app.store.get("indexing_paused"))
-        self.assertFalse(self.app.store.get("localpilot_tasks"))
+        self.assertEqual(self.app.store.tasks.count(), 0)
 
     def test_clear_while_monitor_is_reading_prevents_late_delivery(self):
         self.provider.block_stream=True; self.attach(); self.app.monitor_task("resp_fixture")

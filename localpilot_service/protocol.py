@@ -13,7 +13,7 @@ OPTIONAL_CAPABILITIES = (
     'task_outcome_v1', 'routing_preferences_v1', 'model_manager_read_v1', 'model_health_read_v1',
     'session_thinking_v1', 'model_resource_v1', 'pause_v1', 'lifecycle_suspend_v1',
     'desktop_session_v1', 'desktop_session_idempotency_v1', 'desktop_profile_switch_v1', 'desktop_execution_budget_v1',
-    'desktop_model_switch_v1', 'desktop_child_history_v1', 'route_orchestration_v1',
+    'desktop_model_switch_v1', 'desktop_child_history_v1', 'route_orchestration_v1', 'worker_roles_v1',
     'model_source_mix_v1', 'attachments_v1', 'attachments_v2', 'workspace_grants_v1',
     'bounded_file_operations_v1',
 )

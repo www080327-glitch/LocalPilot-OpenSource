@@ -26,7 +26,7 @@ class TaskHistoryTests(unittest.TestCase):
     def test_large_saved_history_does_not_break_snapshot_or_old_task_lookup(self):
         first = self.completed_task()
         task_id = first['task_id']
-        seed = self.app.store.get('localpilot_tasks')[task_id]
+        seed = self.app.store.tasks.get(task_id)
         seed['timestamp'] = 1
         records = {task_id:seed}
         for index in range(1000):
@@ -34,9 +34,10 @@ class TaskHistoryTests(unittest.TestCase):
             item['timestamp'] = index + 2
             item['request']['user_request'] = '历史问题详细背景。' * 350
             records[f'historical-{index:05}'] = item
-        self.app.store.set('localpilot_tasks', records)
-        original = self.app.store.db.execute("SELECT value FROM state WHERE key='localpilot_tasks'").fetchone()[0]
-        self.assertGreater(len(original.encode()), 2_097_152)
+        for saved_id, record in records.items():
+            self.app.store.tasks.put(saved_id, record)
+        original = self.app.store.db.execute("SELECT task_id,payload FROM localpilot_tasks ORDER BY task_id").fetchall()
+        self.assertGreater(sum(len(row['payload'].encode()) for row in original), 2_097_152)
         snapshot = self.app.command({'command':'ui_snapshot'})
         self.assertLess(len(json.dumps(snapshot, ensure_ascii=False).encode()), 2_097_152,
                         'CompanionClient rejects responses larger than 2 MiB')
@@ -48,12 +49,12 @@ class TaskHistoryTests(unittest.TestCase):
         self.assertEqual(snapshot['runtime']['escalation_task_count'], page['total'])
         self.assertNotIn(task_id, page['tasks'])
         self.assertTrue(all('request' not in row for row in page['tasks'].values()))
-        self.assertEqual(original, self.app.store.db.execute("SELECT value FROM state WHERE key='localpilot_tasks'").fetchone()[0])
+        self.assertEqual(original, self.app.store.db.execute("SELECT task_id,payload FROM localpilot_tasks ORDER BY task_id").fetchall())
         oldest = self.app.command({'command':'task_status', 'task_id':task_id})
         self.assertEqual(oldest['task_id'], task_id)
         self.assertEqual(oldest['session_id'], first['session_id'])
         self.assertEqual(oldest['status'], 'completed')
-        self.assertEqual(len(self.app.store.get('localpilot_tasks')), 1001)
+        self.assertEqual(self.app.store.tasks.count(), 1001)
         self.assertEqual(len(self.fixture.backend.requests), 1)
 
     def test_cursor_pages_preserve_tied_timestamps_and_all_saved_ids(self):
@@ -61,7 +62,8 @@ class TaskHistoryTests(unittest.TestCase):
             'transport':{'provider_kind':'cloud', 'mode':'reasoning'},
             'result':{'task_id':f'task-{index:03}', 'session_id':f'session-{index:03}', 'status':'completed'}}
             for index in range(73)}
-        self.app.store.set('localpilot_tasks', records)
+        for task_id, record in records.items():
+            self.app.store.tasks.put(task_id, record)
         seen, cursor = [], None
         while True:
             page = self.app.command({'command':'escalation_status', 'limit':17, 'before':cursor})
@@ -80,7 +82,7 @@ class TaskHistoryTests(unittest.TestCase):
                 break
         self.assertEqual(seen, sorted(records, reverse=True))
         self.assertEqual(len(seen), len(set(seen)))
-        self.assertEqual(self.app.store.get('localpilot_tasks'), records)
+        self.assertEqual({task_id:self.app.store.tasks.get(task_id) for task_id in records}, records)
 
     def test_history_arguments_are_validated_at_command_entry(self):
         for limit in (0, 51, True, '30'):
@@ -98,10 +100,10 @@ class TaskHistoryTests(unittest.TestCase):
             self.app.store.db.set_trace_callback(statements.append)
             result = self.app.command({'command':command, 'task_id':view['task_id'], 'approved':True})
             self.app.store.db.set_trace_callback(None)
-            writes = [sql for sql in statements if sql.startswith("INSERT OR REPLACE INTO state VALUES('localpilot_tasks',")]
+            writes = [sql for sql in statements if sql.startswith("INSERT INTO localpilot_tasks")]
             self.assertEqual(len(writes), 1, command)
             self.assertEqual(result['task_id'], view['task_id'])
-            self.assertEqual(self.app.store.get('localpilot_tasks')[view['task_id']]['last_status']['status'], result['status'])
+            self.assertEqual(self.app.store.tasks.get(view['task_id'])['last_status']['status'], result['status'])
         self.assertEqual(len(self.fixture.backend.requests), 1)
 
 

@@ -229,17 +229,17 @@ class ServiceContractTests(unittest.TestCase):
         mapping = app.store.get("localpilot_conversations")["local-user"]
         self.assertEqual(mapping["session_id"], view["session_id"])
         self.assertEqual(mapping["last_task_id"], view["task_id"])
-        self.assertIn(view["task_id"], app.store.get("localpilot_tasks"))
+        self.assertIsNotNone(app.store.tasks.get(view["task_id"]))
         restored = app.command({"command":"task_status", "task_id":view["task_id"]})
         self.assertEqual(restored["task_id"], view["task_id"])
         self.assertEqual(len(self.backend.requests), 1)
 
     def test_disconnect_retains_running_snapshot(self):
         app = self.host()
-        app.store.set("localpilot_tasks", {"resp_saved":{"endpoint":self.config.localpilot_endpoint,
-            "last_status":{"status":"running", "task_id":"resp_saved", "quiescent":False}}})
+        app.store.tasks.put("resp_saved", {"endpoint":self.config.localpilot_endpoint,
+            "last_status":{"status":"running", "task_id":"resp_saved", "quiescent":False}})
         app.receive_task_update("resp_saved", {"status":"unavailable", "task_id":"resp_saved", "error":{"code":"connection_unavailable"}})
-        saved = app.store.get("localpilot_tasks")["resp_saved"]
+        saved = app.store.tasks.get("resp_saved")
         self.assertEqual(saved["last_status"]["status"], "running")
         self.assertIn("connection_error", saved)
 
@@ -275,7 +275,7 @@ class ServiceContractTests(unittest.TestCase):
 
         provider = RetentionGapProvider(self.config)
         app = Companion(self.config)
-        app.store.set("localpilot_tasks", {task_id:{"endpoint":self.config.localpilot_endpoint}})
+        app.store.tasks.put(task_id, {"endpoint":self.config.localpilot_endpoint})
         try:
             app.monitor_task(task_id, provider=provider)
             _, received_id, snapshot = app.queue.get(timeout=2)
@@ -292,7 +292,7 @@ class ServiceContractTests(unittest.TestCase):
                     progress.append(update["progress_text"])
                 if update.get("status") == "completed" and update.get("quiescent"):
                     break
-            saved = app.store.get("localpilot_tasks")[task_id]["last_status"]
+            saved = app.store.tasks.get(task_id)["last_status"]
             self.assertEqual(saved["status"], "completed")
             self.assertEqual(saved["agent_response"], "hello 世界")
             self.assertTrue(all(text in {"hello ", "hello 世界"} for text in progress), progress)
@@ -363,7 +363,7 @@ class ServiceContractTests(unittest.TestCase):
             "result":app.task_summary(view), "transport":{"subject":"companion"}, "conversation_id":"repair"})
         calls = self.provider.network_calls
         app.recover_submission_journal()
-        self.assertIn(view["task_id"], app.store.get("localpilot_tasks"))
+        self.assertIsNotNone(app.store.tasks.get(view["task_id"]))
         self.assertEqual(app.store.get("localpilot_conversations")["repair"]["session_id"], view["session_id"])
         self.assertIsNone(app.store.get("pending_localpilot_submission"))
         self.assertEqual(self.provider.network_calls, calls)
@@ -379,17 +379,18 @@ class ServiceContractTests(unittest.TestCase):
         first = app.command({"command":"submit_escalation", "approved":True, "provider_kind":"cloud",
                              "cloud_approved":True, "expected_digest":prepared["review_digest"]})
         self.service.wait(first["task_id"])
-        intent = app.store.get("localpilot_tasks")[first["task_id"]]
+        intent = app.store.tasks.get(first["task_id"])
         # Restore the durable cut point after accepted IDs, before either projection.
         app.store.set("pending_localpilot_submission", intent)
-        app.store.set("localpilot_tasks", {})
+        with app.store.db:
+            app.store.db.execute("DELETE FROM localpilot_tasks")
         app.store.set("localpilot_conversations", {})
         app.channel.stop(); app.store.close(); app.lock.close(); self._cleanups = self._cleanups[:-3]
         app = self.host()
         binding = app.store.get("localpilot_conversations")["local-user.reasoning.cloud"]
         self.assertEqual(binding.get("provider_kind"), "cloud")
         self.assertEqual(binding["session_id"], first["session_id"])
-        self.assertEqual(app.store.get("localpilot_tasks")[first["task_id"]]["submission_id"], intent["submission_id"])
+        self.assertEqual(app.store.tasks.get(first["task_id"])["submission_id"], intent["submission_id"])
         self.assertIsNone(app.store.get("pending_localpilot_submission"))
         self.assertEqual(len(self.backend.requests), 1, "Recovery must not replay the accepted task")
         prepared = app.prepare_escalation(request("second public question"), mode="reasoning")

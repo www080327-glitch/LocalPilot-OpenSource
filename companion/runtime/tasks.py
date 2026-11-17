@@ -44,14 +44,16 @@ class TaskController:
         return True
 
     def session_context_current(self, session_id, before=None):
-        records = [record for record in self.service.store.get('localpilot_tasks', {}).values()
-                   if record.get('endpoint') == self.service.config.localpilot_endpoint
-                   and (record.get('result') or record.get('last_status') or {}).get('session_id') == session_id
-                   and (before is None or record.get('timestamp', 0) <= before)]
-        return bool(records) and all('request' in record and self.context_current(record['request']) for record in records)
+        records = self.service.store.tasks.session_records(self.service.config.localpilot_endpoint, session_id, before)
+        found = False
+        for record in records:
+            found = True
+            if 'request' not in record or not self.context_current(record['request']):
+                return False
+        return found
 
     def result_context_current(self, task_id):
-        record = self.service.store.get('localpilot_tasks', {}).get(task_id)
+        record = self.service.store.tasks.get(task_id)
         if not record or 'request' not in record:
             # Preserve the receipt in task history, but do not retrieve text
             # whose source permissions can no longer be reconstructed.
@@ -70,9 +72,7 @@ class TaskController:
         task_id, session_id = result.get("task_id"), result.get("session_id")
         if not task_id or not session_id:
             return  # Lost response: retain the original key; explicit retry only.
-        tasks = service.store.get("localpilot_tasks", {})
-        tasks.setdefault(task_id, intent | {"last_status":result})
-        service.store.set("localpilot_tasks", tasks)
+        service.store.tasks.put_if_absent(task_id, intent | {"last_status":result})
         conversations = service.store.get("localpilot_conversations", {})
         conversations[intent.get("conversation_id", "local-user")] = {
             "session_id":session_id, "last_task_id":task_id, "endpoint":intent["endpoint"],
@@ -170,18 +170,13 @@ class TaskController:
 
     def provider_for_task(self, task_id):
         service = self.service
-        record=service.store.get("localpilot_tasks",{}).get(task_id,{})
+        record=service.store.tasks.get(task_id,{})
         return service.cloud_localpilot if record.get("transport",{}).get("provider_kind")=="cloud" else service.localpilot
 
     def task_history(self, limit=30, before=None):
-        tasks = self.service.store.get("localpilot_tasks", {})
-        records = sorted(tasks.items(), key=lambda item:(item[1].get("timestamp", 0), item[0]), reverse=True)
-        if before is not None:
-            records = [item for item in records if (item[1].get("timestamp", 0), item[0]) < (before["timestamp"], before["id"])]
-        page = records[:limit]
-        cursor = {"timestamp":page[-1][1].get("timestamp", 0), "id":page[-1][0]} if len(records) > limit else None
-        return {"tasks":{task_id:self.task_preview(task_id, record) for task_id, record in page},
-                "total":len(tasks), "next_before":cursor}
+        page = self.service.store.tasks.page(limit, before)
+        page['tasks'] = {task_id:self.task_preview(task_id, record) for task_id, record in page['tasks'].items()}
+        return page
 
     @staticmethod
     def task_preview(task_id, record):
@@ -216,8 +211,7 @@ class TaskController:
     def task_command(self, cmd, data):
         service = self.service
         task_id = data.get("task_id", "")
-        tasks = service.store.get("localpilot_tasks", {})
-        record = tasks.get(task_id)
+        record = service.store.tasks.get(task_id)
         if not record or record.get("endpoint") != service.config.localpilot_endpoint:
             raise ValueError("Only tasks submitted by this Companion at its current endpoint are accessible")
         provider=service.provider_for_task(task_id)
@@ -239,9 +233,9 @@ class TaskController:
             if not result.get("quiescent") and result.get("status") not in {"unavailable", "approval_required"}:
                 service.monitor_task(task_id, result.get("last_event_id", 0), cloud)
         if cmd == "task_events":
-            tasks = service.store.get("localpilot_tasks", {})
-            tasks[task_id]["last_event_cursor"] = result["last_event_id"]
-            service.store.set("localpilot_tasks", tasks)
+            record = service.store.tasks.get(task_id)
+            record["last_event_cursor"] = result["last_event_id"]
+            service.store.tasks.put(task_id, record)
         else:
             service.receive_task_update(task_id, result)
         return result
@@ -263,24 +257,23 @@ class TaskController:
 
     def receive_task_update(self, task_id, result):
         service = self.service
-        tasks = service.store.get("localpilot_tasks", {})
-        record = tasks.get(task_id)
+        record = service.store.tasks.get(task_id)
         if not record or record.get("endpoint") != service.config.localpilot_endpoint:
             return
         service.store_task_result(result)
         summary = service.task_summary(result)
         if summary.get("status") in {"unavailable", "approval_required", "submission_unknown"}:
             # A failed observation cannot replace the last service-owned state.
-            tasks[task_id]["connection_error"] = summary
+            record["connection_error"] = summary
         else:
-            previous = tasks[task_id].get("last_status", tasks[task_id].get("result", {}))
-            tasks[task_id]["last_status"] = previous | summary
-            tasks[task_id].pop("connection_error", None)
+            previous = record.get("last_status", record.get("result", {}))
+            record["last_status"] = previous | summary
+            record.pop("connection_error", None)
         if type(result.get("last_event_id")) is int:
-            tasks[task_id]["last_event_cursor"] = result["last_event_id"]
-        service.task_feedback(task_id, tasks[task_id], result)
-        tasks[task_id]["last_checked_at"] = time.time()
-        service.store.set("localpilot_tasks", tasks)
+            record["last_event_cursor"] = result["last_event_id"]
+        service.task_feedback(task_id, record, result)
+        record["last_checked_at"] = time.time()
+        service.store.tasks.put(task_id, record)
         service.controls.task_update(task_id,result)
         control=service.controls.current
         action=result.get("required_action") or {}
@@ -472,8 +465,7 @@ class TaskController:
                 binding=None
             session_id = (pending_intent.get("transport",{}).get("session_id") if provider_kind=="cloud" and pending_intent else
                           data.get("session_id") or (binding or {}).get("session_id"))
-            known_session = any((record.get('result') or record.get('last_status') or {}).get('session_id') == session_id
-                                for record in service.store.get('localpilot_tasks', {}).values()) if session_id else False
+            known_session = service.store.tasks.has_session(session_id) if session_id else False
             if session_id and not pending_intent and (known_session or binding and binding.get('session_id') == session_id):
                 if not self.session_context_current(session_id):
                     if data.get('session_id'):
@@ -528,10 +520,8 @@ class TaskController:
                 sessions[conversation] = {"session_id":result["session_id"], "endpoint":service.config.localpilot_endpoint,
                                           "subject":service.config.localpilot_client_subject, "provider_kind":provider_kind, "last_task_id":result["task_id"]}
                 service.store.set("localpilot_conversations", sessions)
-                tasks = service.store.get("localpilot_tasks", {})
                 intent["last_status"] = service.task_summary(result)
-                tasks[result["task_id"]] = intent
-                service.store.set("localpilot_tasks", tasks)
+                service.store.tasks.put(result["task_id"], intent)
                 service.store.set("pending_escalation", None)
                 service.store.set("pending_localpilot_submission", None)
                 if data.get("defer_monitor") is not True:

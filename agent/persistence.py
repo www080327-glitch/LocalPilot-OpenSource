@@ -151,6 +151,8 @@ def configuration(runtime):
         config['delivery_instruction'] = runtime.delivery_instruction
     if runtime.child_registry_contract is not None:
         config['child_registry_contract'] = deepcopy(runtime.child_registry_contract)
+    if runtime.worker_roles:
+        config['worker_roles'] = dict(runtime.worker_roles)
     if runtime.engine_policy:
         config['engine_v5'] = asdict(runtime.engine_policy)
     if runtime.adaptive:

@@ -30,7 +30,7 @@ class ModelCollaboration:
         if (not current or current.get("task_id")!=task_id or current.get("phase")!="finished"
                 or self.app.controls.stop_event.is_set()):return None
         if result.get("quiescent") is not True or result.get("status") in {"cancelled","requires_approval","requires_human"}:return None
-        tasks=self.app.store.get("localpilot_tasks",{});record=tasks.get(task_id)
+        record=self.app.store.tasks.get(task_id)
         if not record or record.get("cloud_fallback"):return None
         transport=record.get("transport",{})
         if transport.get("provider_kind","local")!="local" or transport.get("mode")!="reasoning":return None
@@ -51,10 +51,10 @@ class ModelCollaboration:
         # Persist before notification/network preflight so duplicate terminal SSE
         # events cannot open repeated cloud requests or prompts.
         record["cloud_fallback"]={"status":"offered","at":time.time(),**fallback}
-        self.app.store.set("localpilot_tasks",tasks)
+        self.app.store.tasks.put(task_id,record)
         prepared=self.prepare_question(record.get("request"),fallback=fallback,
             force_confirmation=capability_hint)
-        tasks=self.app.store.get("localpilot_tasks",{})
-        tasks[task_id]["cloud_fallback"].update(status=prepared.get("status"),control_id=(prepared.get("control") or {}).get("id"))
-        self.app.store.set("localpilot_tasks",tasks)
+        record=self.app.store.tasks.get(task_id)
+        record["cloud_fallback"].update(status=prepared.get("status"),control_id=(prepared.get("control") or {}).get("id"))
+        self.app.store.tasks.put(task_id,record)
         return prepared

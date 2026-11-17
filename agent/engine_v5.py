@@ -40,6 +40,12 @@ def prompt(runtime):
         text += prompt_for(runtime.registry)
     if runtime.computer:
         text += '\n' + runtime.computer.agent_prompt
+    if runtime.worker_roles:
+        text += ('\nSuper Agent remains the coordinator. Use direct search tools for small lookups; '
+                 'use configured search workers for broad independent discovery and review workers '
+                 'for difficult decisions, failure analysis or final diff review when useful. '
+                 'These roles are read-only; implementation and executable checks need an authorized '
+                 'ordinary worker or the parent. Their reports do not certify completion.')
     if runtime.async_policy and runtime.runtime_tools:
         text += ('\nAcknowledge a substantial request promptly, then delegate bounded independent work '
                  'with mode=async. Continue parent-owned work while children run. Use child_status '

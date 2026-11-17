@@ -58,6 +58,8 @@ class SessionToolCalls:
                 raise ToolArgumentsError(['$: expected object'])
             from .tool_protocol import validate_arguments
             validate_arguments(call.name, args, self._schemas())
+            if call.name == 'delegate' and args.get('role'):
+                self._validate_worker_role(args)
             if (self.harness_policy and self.task_contract and self.task_contract.child_output_groups
                     and self._worker_id is None and call.name == 'apply_patch'):
                 # Declared disjoint ownership is a host contract, not merely a
@@ -73,7 +75,9 @@ class SessionToolCalls:
             if self.harness_policy and self.hybrid and call.name in {'delegate','request_model_switch'}:
                 from .tool_protocol import ToolArgumentsError
                 try:
-                    self.hybrid.resolve(args.get('backend_preference',args.get('target')),args.get('backend_id'),args.get('model'),args.get('tier'))
+                    self.hybrid.resolve(args.get('backend_preference',args.get('target')),
+                        self.worker_roles.get(args.get('role'), args.get('backend_id')),
+                        args.get('model'),args.get('tier'))
                 except ValueError as error:
                     raise ToolArgumentsError(['$.backend_id/model: '+str(error)]) from error
             if call.name not in RUNTIME_TOOL_NAMES | ASYNC_TOOL_NAMES:

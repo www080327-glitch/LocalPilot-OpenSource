@@ -1,6 +1,8 @@
-# LocalPilot Companion 0.5.7b10
+# LocalPilot Companion 0.5.7b11
 
-本次 **0.5.7b10** 修复云端任务接受后的中断恢复，并把长期委派任务列表改成默认 30 条、最多 50 条的可翻页预览，保留旧 ID 精确查询。原始记录继续保存，状态/取消查询减少重复读写。实现与验收范围见[长期会话分段](../docs/development/PERSISTENT_SESSION_SEGMENTS_20261117.md)。上一版的旧话检索、有限“继续”衔接、委派历史和桌宠聊天分页见[常驻对话续作](../docs/development/PERSISTENT_CONTEXT_20261117.md)；默认仍保留最多 10,000 条对话记忆，遗忘和来源访问限制继续生效。
+本次 **0.5.7b11** 将委派任务迁移为 SQLite 逐条存储，按任务 ID 读取和更新，并通过索引分页与查找会话记录。旧 JSON 任务映射在事务内一次性迁移，保留全部任务 ID 和归属；升级前保存数据库备份，降级应恢复该备份。实现与验证边界见[逐条任务存储与分工](../docs/development/TASK_STORAGE_SCHEDULING_20261117.md)。
+
+上一版 **0.5.7b10** 修复云端任务接受后的中断恢复，并把长期委派任务列表改成默认 30 条、最多 50 条的可翻页预览，保留旧 ID 精确查询。原始记录继续保存，状态/取消查询减少重复读写。实现与验收范围见[长期会话分段](../docs/development/PERSISTENT_SESSION_SEGMENTS_20261117.md)。上一版的旧话检索、有限“继续”衔接、委派历史和桌宠聊天分页见[常驻对话续作](../docs/development/PERSISTENT_CONTEXT_20261117.md)；默认仍保留最多 10,000 条对话记忆，遗忘和来源访问限制继续生效。
 
 [公开桌面版本与候选记录](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases) · [安装与当前平台边界](../README.md#简易快速安装)。本页为独立 Companion 服务，不改变其版本和授权边界；历史版本记录不代表当前候选已通过原生验收。
 

@@ -73,7 +73,7 @@ class HelpCollaborationTests(unittest.TestCase):
         self.assertEqual(len(self.fixture.service.tasks),0)
         result=self.app.controls.start(ticket,True)
         self.fixture.service.wait(result['task_id'])
-        record=self.app.store.get('localpilot_tasks')[result['task_id']]
+        record=self.app.store.tasks.get(result['task_id'])
         self.assertEqual(record['transport']['mode'],'execution')
         self.assertTrue(record['transport']['user_help_approved'])
         self.assertEqual(self.cloud.requests,[])
@@ -127,7 +127,7 @@ class HelpCollaborationTests(unittest.TestCase):
         result=self.app.controls.start(ticket,True);self.finish_cloud(result)
         self.assertEqual(len(self.cloud.requests),1)
         self.assertEqual(len(self.fixture.backend.requests),1)
-        self.assertNotEqual(result['session_id'],self.app.store.get('localpilot_tasks')[task]['result']['session_id'])
+        self.assertNotEqual(result['session_id'],self.app.store.tasks.get(task)['result']['session_id'])
 
     def test_capability_hint_only_suggests_cloud_and_never_sends_local_answer(self):
         self.app.store.set('inference_options',{'allow_automatic_cloud':True})

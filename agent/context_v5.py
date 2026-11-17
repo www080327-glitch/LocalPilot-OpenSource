@@ -9,6 +9,12 @@ from .context import ContextTooSmall, context_units
 from .context_budget import context_tokens, request_budget
 
 
+WORK_CONTRACT = ('Preserve supplied interpreter paths and check commands. If a check cannot start, '
+    'inspect the actual environment and replan within existing permissions; report checks that did not run. '
+    'Give children explicit ownership, outputs and required checks. Collect their receipts and unresolved '
+    'checks before claiming the requested work is complete.')
+
+
 @dataclass
 class RequestHistory:
     """The last admitted model window, separate from the complete session ledger."""
@@ -58,7 +64,18 @@ def host_state(runtime, state, tools):
                  primary_model=runtime.current_primary_model,
                  plan_mode=runtime._planning, active_plan=deepcopy(runtime.active_plan),
                  permission_mode=runtime.permission_mode,
-                 goals=runtime._goal_records(), projection='localpilot_v5_v1')
+                 goals=runtime._goal_records(), projection='localpilot_v5_v1', work_contract=WORK_CONTRACT)
+    if runtime.worker_roles:
+        roles = next((tool['function']['parameters']['properties'].get('role', {}).get('enum', [])
+                      for tool in tools if tool['function']['name'] == 'delegate'), [])
+        state['worker_roles'] = {}
+        for role in roles:
+            alias = runtime.worker_roles[role]
+            backend = runtime.hybrid.catalog[alias]
+            thinking = runtime._worker_thinking(backend)
+            state['worker_roles'][role] = {'backend_id': alias, 'backend': runtime.hybrid.kind(alias),
+                'model': runtime._model_name(backend), 'read_only': True,
+                'thinking': thinking if thinking is not None else backend.capabilities.default_thinking_effort}
     if runtime._finalizing and runtime._delivery_view:
         # Hybrid handoff previously overwrote delivery feedback with a contract.
         # Preserve the trusted delivery projection in every final request.
