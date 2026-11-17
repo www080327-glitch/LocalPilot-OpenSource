@@ -110,6 +110,23 @@ class DesktopProductTests(unittest.TestCase):
         self.assertEqual(self.session('safe')['id'],first['id'])
         self.assertEqual(len(self.service.sessions),1)
 
+    def test_archived_desktop_authorization_keeps_its_original_closed_session(self):
+        self.service.max_sessions = 1
+        first = self.session('safe')
+        self.codex.request('/localpilot/v1/sessions/' + first['id'], method='DELETE')
+        second = self.session('full')
+        self.assertNotEqual(first['id'], second['id'])
+        self.assertNotIn(first['id'], self.service.sessions)
+        replay = self.session('safe')
+        self.assertEqual(replay['id'], first['id'])
+        self.assertEqual(replay['state'], 'closed')
+        self.denied(409, lambda: self.operator.request('/localpilot/v1/desktop-sessions', {
+            'client_subject': 'codex', 'model': 'localpilot', 'source': 'changed',
+            'options': {'permission_mode': 'safe', 'agent_profile': 'standard'}}, key='desktop-safe-standard'))
+        self.stop(); self.service.suspend(); self.start()
+        self.assertEqual(self.session('safe')['id'], first['id'])
+        self.assertEqual(len(self.service.sessions), 1)
+
     def test_profile_checkpoint_failure_restores_named_runtime_state(self):
         from copy import deepcopy
         from unittest.mock import patch

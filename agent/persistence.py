@@ -223,6 +223,7 @@ def snapshot_runtime(runtime):
     if runtime._host_pause_requested:snapshot['host_pause_requested']=True
     if runtime.engine_policy:
         snapshot['engine_v5'] = asdict(runtime.engine_policy)
+        snapshot['request_history'] = runtime._request_history.snapshot()
     return snapshot
 
 
@@ -259,6 +260,12 @@ def restore_runtime(runtime, data, *, conservative_interrupts=False, child_paren
     runtime._queue = deque(runtime._queue)
     runtime._usage = [ModelCallUsage(**v) for v in runtime._usage]
     runtime.messages = [Message.from_dict(v) for v in data["messages"]]
+    from .context_v5 import RequestHistory
+    try:
+        runtime._request_history = (RequestHistory.restore(data['request_history'], len(runtime.messages))
+                                    if 'request_history' in data else RequestHistory())
+    except (KeyError, TypeError, ValueError) as error:
+        raise PersistenceError('Invalid V5 request history checkpoint') from error
     runtime.tool_history = deepcopy(data["history"])
     runtime.completed_tool_calls = unpack(data["completed"])
     runtime.budgets = SessionBudgets(**data["budgets"])
@@ -389,7 +396,8 @@ def recovery_class(runtime):
 
 class SQLiteRuntimeStore:
     """Single live TaskService owner; one transaction per session tree boundary."""
-    VERSION = 1
+    # Earlier readers cannot see archived idempotency keys and must not replay them.
+    VERSION = 2
 
     def __init__(self, path, *, fault_hook=None):
         self.path = Path(path).expanduser().absolute()
@@ -398,6 +406,7 @@ class SQLiteRuntimeStore:
         self.failed = False
         self.connection = None
         self.owner = None
+        self.migration_backup = None
         try:
             self.path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
             for p in (self.path, Path(str(self.path) + ".owner")):
@@ -411,10 +420,12 @@ class SQLiteRuntimeStore:
             db = self.connection
             version = db.execute("PRAGMA user_version").fetchone()[0]
             tables = db.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
-            if version not in {0, self.VERSION} or (version == 0 and tables):
+            if version not in {0, 1, self.VERSION} or (version == 0 and tables):
                 raise PersistenceError("Unsupported persistent runtime schema; explicit migration required")
             if db.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
                 raise PersistenceError("Runtime database integrity check failed")
+            if version == 1:
+                self._backup_v1()
             if db.execute("PRAGMA journal_mode=WAL").fetchone()[0] != "wal":
                 raise PersistenceError("WAL unavailable")
             db.execute("PRAGMA synchronous=FULL")
@@ -426,16 +437,35 @@ class SQLiteRuntimeStore:
                 CREATE TABLE IF NOT EXISTS journal(session_id TEXT NOT NULL, revision INTEGER NOT NULL,
                     point TEXT NOT NULL, sha256 TEXT NOT NULL, at REAL NOT NULL,
                     PRIMARY KEY(session_id, revision));
-                PRAGMA user_version=1; COMMIT;""")
+                CREATE TABLE IF NOT EXISTS archived_tasks(task_id TEXT PRIMARY KEY,
+                    session_id TEXT NOT NULL REFERENCES checkpoints(session_id),
+                    request_key TEXT UNIQUE, owner_subject TEXT, payload TEXT NOT NULL, sha256 TEXT NOT NULL);
+                CREATE INDEX IF NOT EXISTS archived_tasks_owner ON archived_tasks(owner_subject);
+                CREATE TABLE IF NOT EXISTS archived_sessions(session_id TEXT PRIMARY KEY REFERENCES checkpoints(session_id),
+                    desktop_key TEXT UNIQUE, payload TEXT NOT NULL, sha256 TEXT NOT NULL);
+                PRAGMA user_version=2; COMMIT;""")
         except Exception as exc:
             self.close()
             raise PersistenceError("Cannot open runtime store: " + type(exc).__name__) from exc
+
+    def _backup_v1(self):
+        import tempfile
+        fd, filename = tempfile.mkstemp(prefix=self.path.name + '.schema1-backup-', suffix='.sqlite3', dir=self.path.parent)
+        os.close(fd)
+        backup = sqlite3.connect(filename)
+        try:
+            self.connection.backup(backup)
+            if backup.execute('PRAGMA integrity_check').fetchone()[0] != 'ok' or backup.execute('PRAGMA user_version').fetchone()[0] != 1:
+                raise PersistenceError('Pre-migration backup verification failed')
+        finally:
+            backup.close()
+        self.migration_backup = Path(filename)
 
     def ensure_available(self):
         if self.failed or self.connection is None:
             raise PersistenceError("Persistent runtime fenced after storage failure/close")
 
-    def save(self, session_id, payload, point):
+    def save(self, session_id, payload, point, *, archived_tasks=(), archived_session=None):
         with self.lock:
             self.ensure_available()
             try:
@@ -447,6 +477,15 @@ class SQLiteRuntimeStore:
                 revision = (row[0] if row else 0) + 1
                 db.execute("INSERT OR REPLACE INTO checkpoints VALUES(?,?,?,?)", (session_id, revision, raw, checksum))
                 db.execute("INSERT INTO journal VALUES(?,?,?,?,?)", (session_id, revision, point, checksum, time.time()))
+                for task in archived_tasks:
+                    value = unpack(task)
+                    archived_raw = dumps(task)
+                    db.execute("INSERT INTO archived_tasks VALUES(?,?,?,?,?,?)",
+                               (value['id'], session_id, value['request_key_digest'], payload['session'].get('owner_subject'), archived_raw, digest(archived_raw)))
+                if archived_session is not None:
+                    archived_raw = dumps({'session': payload['session'], 'view': archived_session})
+                    db.execute("INSERT INTO archived_sessions VALUES(?,?,?,?)",
+                               (session_id, payload['session'].get('desktop_key'), archived_raw, digest(archived_raw)))
                 if self.fault_hook:
                     self.fault_hook("before_commit", point)
                 db.execute("COMMIT")
@@ -463,7 +502,7 @@ class SQLiteRuntimeStore:
         with self.lock:
             self.ensure_available()
             try:
-                rows = self.connection.execute("SELECT session_id,revision,payload,sha256 FROM checkpoints").fetchall()
+                rows = self.connection.execute("SELECT session_id,revision,payload,sha256 FROM checkpoints WHERE session_id NOT IN (SELECT session_id FROM archived_sessions)").fetchall()
                 result = []
                 for session_id, revision, raw, checksum in rows:
                     events = self.connection.execute("SELECT revision,sha256 FROM journal WHERE session_id=? ORDER BY revision", (session_id,)).fetchall()
@@ -473,12 +512,46 @@ class SQLiteRuntimeStore:
                     if payload["session"]["id"] != session_id:
                         raise PersistenceError("Session identity mismatch")
                     result.append(payload)
-                if self.connection.execute("SELECT count(DISTINCT session_id) FROM journal").fetchone()[0] != len(rows):
+                if self.connection.execute("SELECT count(DISTINCT session_id) FROM journal").fetchone()[0] != self.connection.execute("SELECT count(*) FROM checkpoints").fetchone()[0]:
                     raise PersistenceError("Orphan runtime journal")
                 return result
             except Exception as exc:
                 self.failed = True
                 raise PersistenceError("Cannot load runtime checkpoints: " + type(exc).__name__) from exc
+
+    def _archived(self, table, column, value):
+        rows = self._archive_rows(f"SELECT payload,sha256 FROM {table} WHERE {column}=?", (value,))
+        return rows[0] if rows else None
+
+    def _archive_rows(self, query, parameters):
+        with self.lock:
+            self.ensure_available()
+            try:
+                result = []
+                for raw, checksum in self.connection.execute(query, parameters):
+                    if digest(raw) != checksum:
+                        raise PersistenceError('Archived history integrity mismatch')
+                    result.append(json.loads(raw))
+                return result
+            except Exception as exc:
+                self.failed = True
+                raise PersistenceError('Cannot read archived history: ' + type(exc).__name__) from exc
+
+    def archived_task(self, task_id):
+        return self._archived('archived_tasks', 'task_id', task_id)
+
+    def archived_task_for_key(self, request_key):
+        return self._archived('archived_tasks', 'request_key', request_key)
+
+    def archived_tasks_for_owners(self, subjects, limit):
+        placeholders = ','.join('?' for _ in subjects)
+        return self._archive_rows(f"SELECT payload,sha256 FROM archived_tasks WHERE owner_subject IN ({placeholders}) ORDER BY rowid DESC LIMIT ?", (*subjects, limit))
+
+    def archived_session(self, session_id):
+        return self._archived('archived_sessions', 'session_id', session_id)
+
+    def archived_session_for_key(self, desktop_key):
+        return self._archived('archived_sessions', 'desktop_key', desktop_key)
 
     def close(self):
         with self.lock:

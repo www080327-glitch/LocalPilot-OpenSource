@@ -476,6 +476,8 @@ class HybridController:
 
     def end_attempt(self, attempt, response=None, error=None):
         usage = (response.usage or {}) if response else {}
+        if response and response.diagnostics is not None:
+            attempt['provider_diagnostics'] = deepcopy(response.diagnostics)
         attempt.update(status='response' if response else 'failed',
             latency_seconds=time.time() - attempt['started_at'],
             reported_model=response.model if response else None,

@@ -65,7 +65,7 @@ class ResourceControl:
 
     def manager(self, task):
         session=self.server.service._session(task.session_id)
-        current=getattr(session.runtime.current_backend,"manager",None)
+        current=getattr(session.runtime.current_backend,"manager",None) if session.runtime else None
         return current or getattr(self.server,"model_hosts",{}).get(task.model)
 
     def stop(self, scoped, task_id=None, *, drain=False, submission_id=None):
@@ -81,8 +81,12 @@ class ResourceControl:
                     if not isinstance(submission_id,str) or not re.fullmatch(r"[!-~]{1,128}",submission_id):raise APIError("Invalid submission key")
                     namespace=hashlib.sha256((scoped.principal.subject+"\0"+submission_id).encode()).hexdigest()
                     digest=hashlib.sha256(namespace.encode()).hexdigest()
-                tasks=[t for t in service.tasks.values() if service._session(t.session_id).owner_subject==scoped.principal.subject
-                       and (t.request_key_digest==digest if digest else t.status not in TERMINAL)]
+                if digest:
+                    prior=service.task_for_key(digest)
+                    tasks=[prior] if prior and service._session(prior.session_id).owner_subject==scoped.principal.subject else []
+                else:
+                    tasks=[t for t in service.tasks.values() if service._session(t.session_id).owner_subject==scoped.principal.subject
+                           and t.status not in TERMINAL]
                 self.state["epochs"][scoped.principal.subject]=self.epoch(scoped.principal)+1
                 self.save()
             managers={self.manager(t) for t in tasks}
@@ -122,7 +126,7 @@ class ResourceControl:
             raise APIError("Bound resource operator required", "resource_control_forbidden",403)
         task=self.server.service._task(task_id)
         runtime=self.server.service._session(task.session_id).runtime
-        if not runtime.pending_approval or runtime.pending_approval.get("kind")!="cloud_egress":
+        if runtime is None or not runtime.pending_approval or runtime.pending_approval.get("kind")!="cloud_egress":
             raise APIError("Resource operator cannot approve a tool", "resource_scope_mismatch",403)
         if getattr(runtime.current_backend,"service_reasoning_only",False) is not True:
             raise APIError("Automatic cloud grant requires reasoning-only route", "resource_scope_mismatch",403)

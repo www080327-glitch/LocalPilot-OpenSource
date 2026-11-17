@@ -150,6 +150,46 @@ class OpenAIResponsesTransportTests(OpenAICloudFixture):
         message.native_replay['model'] = 'different-model'
         self.assertNotIn('encrypted_content', json.dumps(backend._payload([message])))
 
+    def test_reasoning_removal_diagnostics_are_distinct_from_cache_usage(self):
+        payload = response_payload(text='DONE')
+        payload['input_transformations'] = [{'id': 'rs_previous', 'type': 'reasoning',
+            'action': 'removed', 'reason': 'prefix_mismatch'}]
+        payload['prompt_cache_diagnostics'] = {'type': 'cache_miss', 'reason': 'input_changed',
+            'cache_missed_tokens': 12, 'comparison_reusable_tokens': 16}
+        self.model.add(payload)
+        backend = self.backend()
+        response = backend.request([Message('user', 'Continue')])
+        self.assertEqual(response.usage['prompt_cache_hit_tokens'], 4)
+        self.assertEqual(response.diagnostics, {'response_id': 'resp_fixture',
+            'input_transformations': payload['input_transformations'],
+            'prompt_cache_diagnostics': payload['prompt_cache_diagnostics']})
+        self.assertNotIn('input_transformations', json.dumps(backend._payload([response.message])))
+
+    def test_stream_preserves_reported_empty_diagnostics_without_inventing_missing_fields(self):
+        payload = response_payload(text='DONE')
+        payload['input_transformations'] = []
+        payload['usage'] = None
+        self.model.add(sse({'type': 'response.completed', 'response': payload}),
+                       content_type='text/event-stream')
+        backend = self.backend()
+        response = list(backend.stream([Message('user', 'Continue')]))[-1].response
+        self.assertIsNone(response.usage)
+        self.assertEqual(response.diagnostics, {'response_id': 'resp_fixture', 'input_transformations': []})
+        self.model.add(response_payload(text='NEXT'))
+        next_response = backend.request([Message('user', 'Next')])
+        self.assertNotIn('input_transformations', next_response.diagnostics)
+        self.assertNotIn('prompt_cache_diagnostics', next_response.diagnostics)
+
+    def test_malformed_provider_diagnostics_are_rejected_at_transport_boundary(self):
+        for field, value in (('id', []), ('input_transformations', {}),
+                             ('prompt_cache_diagnostics', [])):
+            with self.subTest(field=field):
+                payload = response_payload(text='DONE')
+                payload[field] = value
+                self.model.add(payload)
+                with self.assertRaisesRegex(LocalBackendError, 'Malformed OpenAI Responses result'):
+                    self.backend().request([Message('user', 'Continue')])
+
     def test_stream_has_terminal_usage_and_incomplete_calls_are_not_success(self):
         self.model.add(sse({'type': 'response.created', 'response': {'id': 'resp_fixture'}},
             {'type': 'response.output_text.delta', 'delta': 'DONE'},
@@ -176,8 +216,16 @@ class OpenAIResponsesTransportTests(OpenAICloudFixture):
         self.assertEqual(failed.exception.response.finish_reason, 'stream_interrupted')
 
     def test_core_task_reads_real_file_and_restores_without_replaying(self):
+        self._core_file_restore('legacy')
+
+    def test_v5_core_request_prefix_and_diagnostics_survive_real_file_task_and_restore(self):
+        self._core_file_restore('v5')
+
+    def _core_file_restore(self, engine):
         self.model.add(response_payload(call=True))
-        self.model.add(response_payload(text='PUBLIC-FIXTURE-FACT'))
+        final_payload = response_payload(text='PUBLIC-FIXTURE-FACT')
+        final_payload['input_transformations'] = []
+        self.model.add(final_payload)
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             workspace = root / 'workspace'
@@ -185,7 +233,7 @@ class OpenAIResponsesTransportTests(OpenAICloudFixture):
             (workspace / 'fact.txt').write_text('PUBLIC-FIXTURE-FACT')
             config = {'schema_version': 1, 'port': 0, 'data_dir': str(root / 'data'),
                 'clients': [{'subject': 'fixture', 'token_env': 'LP_OPENAI_CLIENT'}],
-                'routes': {'localpilot': {'workspace': str(workspace), 'permissions': 'approve-mutations',
+                'routes': {'localpilot': {'workspace': str(workspace), 'permissions': 'approve-mutations', 'engine': engine,
                     'capabilities': {'read': True, 'write': False, 'execute': False, 'read_only': True},
                     'backend': {'kind': 'openai', 'protocol': 'responses', 'model': 'mock-local',
                                 'base_url': self.model.base_url, 'capabilities': {'streaming': False}},
@@ -208,12 +256,22 @@ class OpenAIResponsesTransportTests(OpenAICloudFixture):
                         final = client.status(task_id)
                         self.assertEqual(final['status'], 'completed', final.get('error'))
                         self.assertEqual(final['tools'][0]['payload']['result'], 'PUBLIC-FIXTURE-FACT')
+                        calls = final['result']['model_calls']
+                        self.assertEqual(calls[0]['provider_diagnostics'], {'response_id': 'resp_fixture'})
+                        self.assertEqual(calls[-1]['provider_diagnostics'],
+                                         {'response_id': 'resp_fixture', 'input_transformations': []})
+                        if engine == 'v5':
+                            first_request, second_request = self.model.requests
+                            self.assertEqual(second_request['input'][:len(first_request['input'])],
+                                             first_request['input'])
+                            self.assertEqual(first_request['tools'], second_request['tools'])
                         server.service.suspend()
                         server.shutdown()
                         thread.join(2)
                     else:
                         self.assertEqual(task['id'], task_id)
                         self.assertEqual(len(self.model.requests), 2)
+                        self.assertEqual(client.status(task_id)['result']['model_calls'], calls)
             finally:
                 for server, thread in reversed(servers):
                     if thread.is_alive():

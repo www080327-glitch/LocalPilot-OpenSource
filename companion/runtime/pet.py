@@ -1,5 +1,6 @@
 """Pet presentation policy over the existing Companion; no executor or credentials."""
 import re
+import math
 from contextlib import contextmanager
 
 
@@ -62,6 +63,23 @@ def command(service, data):
                 raise ValueError("Memory switch must be boolean")
             service.store.set("pet_memory_enabled", data["enabled"])
         return {"status":"ok", "enabled":service.store.get("pet_memory_enabled", True)}
+    if cmd == "pet_history":
+        limit, before = data.get("limit", 30), data.get("before")
+        if type(limit) is not int or not 1 <= limit <= 50:
+            raise ValueError("History limit must contain 1..50 records")
+        if before is not None and (not isinstance(before, dict) or set(before) != {"timestamp", "id"}
+                or type(before["timestamp"]) not in (int, float) or not math.isfinite(before["timestamp"])
+                or not isinstance(before["id"], str) or not re.fullmatch(r"[a-f0-9]{32}", before["id"])):
+            raise ValueError("Invalid history cursor")
+        if not service.store.get("pet_memory_enabled", True):
+            return {"status":"ok", "messages":[], "next_before":None}
+        rows = service.store.conversation_page(limit+1, before)
+        page = rows[:limit]
+        cursor = {key:page[-1][key] for key in ("timestamp", "id")} if len(rows)>limit else None
+        messages = [{"id":row["id"], "role":row["metadata"]["role"], "text":row["summary"],
+                     "timestamp":row["timestamp"], "answer_id":row["id"] if row["metadata"]["role"] == "assistant" else None}
+                    for row in reversed(page) if service.conversation_accessible(row)]
+        return {"status":"ok", "messages":messages, "next_before":cursor}
     if cmd == "pet_export":
         return {"version":1, "memories":service.store.records(10000),
                 "reminders":service.store.get("explicit_reminders", []),

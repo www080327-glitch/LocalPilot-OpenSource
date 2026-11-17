@@ -123,7 +123,8 @@ class OpenAIResponsesBackend(LocalHTTPBackend):
                 else 'content_filter')
             message.native_replay = {'kind': 'openai_responses_v1', 'model': self.model,
                                      'base_url': self.base_url, 'sha256': _message_hash(message), 'items': items}
-            return BackendResponse(message, _usage(data.get('usage')), data.get('model'), reason)
+            return BackendResponse(message, _usage(data.get('usage')), data.get('model'), reason,
+                                   _diagnostics(data))
         except (KeyError, TypeError, ValueError, AttributeError) as error:
             raise LocalBackendError('Malformed OpenAI Responses result', retryable=False) from error
 
@@ -193,6 +194,19 @@ def _usage(raw):
     if raw.get('output_tokens_details') is not None:
         normalized['completion_tokens_details'] = raw['output_tokens_details']
     return LocalHTTPBackend._usage({'usage': normalized})
+
+
+def _diagnostics(data):
+    result = {}
+    for field, expected in (('id', str), ('input_transformations', list),
+                            ('prompt_cache_diagnostics', dict)):
+        if field in data:
+            value = data[field]
+            if value is not None and not isinstance(value, expected):
+                raise ValueError('invalid response diagnostics: ' + field)
+            result['response_id' if field == 'id' else field] = deepcopy(value)
+    # An absent transformations field does not certify that reasoning was reused.
+    return result or None
 
 
 def _partial(text, summaries):

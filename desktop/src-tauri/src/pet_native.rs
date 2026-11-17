@@ -933,6 +933,7 @@ pub async fn pet_service(
         "ui_snapshot",
         "pet_memory",
         "pet_export",
+        "pet_history",
         "clear",
         "pause_observation",
         "set_reminder",

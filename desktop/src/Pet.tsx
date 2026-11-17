@@ -22,12 +22,30 @@ import type { PetAsset } from "./pet/types";
 import { textOf, terminal, settled, label } from "./domain";
 import { TrainingReview } from "./components/TrainingSamples";
 type Message = {
+  id?: string;
   role: "user" | "assistant";
   text: string;
   profile?: string;
   question?: string;
   answerId?: string;
 };
+type HistoryCursor = { timestamp: number; id: string };
+type HistoryPage = {
+  messages: {
+    id: string;
+    role: "user" | "assistant";
+    text: string;
+    answer_id: string | null;
+  }[];
+  next_before: HistoryCursor | null;
+};
+function uniqueMessages(messages: Message[]) {
+  return [
+    ...new Map(
+      messages.map((message) => [message.id || message, message]),
+    ).values(),
+  ];
+}
 const act = (action: string, value?: unknown) =>
   call<any>("pet_action", { action, value: value ?? null });
 const service = (command: string, values: Record<string, unknown> = {}) =>
@@ -73,6 +91,16 @@ export default function Pet() {
     [reminder, setReminder] = useState(""),
     [reminderBusy, setReminderBusy] = useState(false),
     [due, setDue] = useState("");
+  const [historyBefore, setHistoryBefore] = useState<HistoryCursor | null>(
+      null,
+    ),
+    [historyBusy, setHistoryBusy] = useState(false),
+    [historyError, setHistoryError] = useState("");
+  const historyLoaded = useRef(false),
+    historyLoading = useRef(false),
+    historyGeneration = useRef(0),
+    historyAnchor = useRef<{ height: number; top: number } | null>(null),
+    conversation = useRef<HTMLDivElement>(null);
   const taskId = useRef(""),
     taskStatus = useRef("");
   const current = useRef(""),
@@ -95,9 +123,44 @@ export default function Pet() {
       setSnapshot(s);
       setMemory(m.enabled);
       setServiceConnected(true);
+      if (m.enabled && !historyLoaded.current) await loadHistory();
     } catch (error) {
       setServiceConnected(false);
       throw error;
+    }
+  }
+  async function loadHistory(before?: HistoryCursor) {
+    if (historyLoading.current) return;
+    historyLoading.current = true;
+    setHistoryBusy(true);
+    setHistoryError("");
+    const generation = historyGeneration.current;
+    try {
+      const page = (await service("pet_history", {
+        limit: 30,
+        ...(before ? { before } : {}),
+      })) as HistoryPage;
+      if (generation !== historyGeneration.current) return;
+      const restored = page.messages.map((message) => ({
+        id: message.id,
+        role: message.role,
+        text: message.text,
+        answerId: message.answer_id || undefined,
+      }));
+      if (before && conversation.current)
+        historyAnchor.current = {
+          height: conversation.current.scrollHeight,
+          top: conversation.current.scrollTop,
+        };
+      setMessages((current) => uniqueMessages([...restored, ...current]));
+      setHistoryBefore(page.next_before);
+      historyLoaded.current = true;
+    } catch {
+      if (generation === historyGeneration.current)
+        setHistoryError("聊天记录暂未载入。");
+    } finally {
+      historyLoading.current = false;
+      setHistoryBusy(false);
     }
   }
   async function recoverService() {
@@ -276,6 +339,13 @@ export default function Pet() {
     return () => cancelAnimationFrame(frame);
   }, [bubble, view, focusRequest]);
   useEffect(() => {
+    if (historyAnchor.current && conversation.current) {
+      const anchor = historyAnchor.current;
+      conversation.current.scrollTop =
+        anchor.top + conversation.current.scrollHeight - anchor.height;
+      historyAnchor.current = null;
+      return;
+    }
     bottom.current?.scrollIntoView({ block: "nearest" });
   }, [messages, draft, busy]);
   // One bounded, non-overlapping refresh per minute, only for opted-in reminders.
@@ -454,23 +524,31 @@ export default function Pet() {
     setAcknowledgement("");
     setBusy(true);
     setView("chat");
-    setMessages((m) => [...m, { role: "user", text: q }]);
-    activity("thinking");
     const id = crypto.randomUUID();
+    const userId = `pending:${id}`;
+    setMessages((m) => [...m, { id: userId, role: "user", text: q }]);
+    activity("thinking");
     current.current = id;
     try {
       const r = await call<any>("pet_chat", { text: q, requestId: id });
       setDraft("");
-      setMessages((m) => [
-        ...m,
-        {
-          role: "assistant",
-          text: r.text || r.reason || r.error || "暂时无法回答，请稍后重试。",
-          profile: r.agent_profile,
-          question: q,
-          answerId: r.answer_id || undefined,
-        },
-      ]);
+      setMessages((m) =>
+        uniqueMessages([
+          ...m.map((message) =>
+            message.id === userId && r.question_id
+              ? { ...message, id: r.question_id }
+              : message,
+          ),
+          {
+            id: r.answer_id || `reply:${id}`,
+            role: "assistant",
+            text: r.text || r.reason || r.error || "暂时无法回答，请稍后重试。",
+            profile: r.agent_profile,
+            question: q,
+            answerId: r.answer_id || undefined,
+          },
+        ]),
+      );
       activity(
         r.status === "delegation_required"
           ? "waiting"
@@ -579,7 +657,11 @@ export default function Pet() {
       </header>
       {view === "chat" ? (
         <>
-          <div className="pet-conversation" aria-live="polite">
+          <div
+            className="pet-conversation"
+            aria-live="polite"
+            ref={conversation}
+          >
             {serviceConnected === false && (
               <div className="pet-error" role="status">
                 轻聊服务未连接。
@@ -591,14 +673,38 @@ export default function Pet() {
                 </button>
               </div>
             )}
-            {!messages.length && (
+            {memory &&
+              (historyBefore ||
+                historyBusy ||
+                historyError ||
+                (serviceConnected && !historyLoaded.current)) && (
+                <div className="pet-history" role="status">
+                  {historyError && <span>{historyError}</span>}
+                  <button
+                    disabled={historyBusy}
+                    onClick={() => void loadHistory(historyBefore || undefined)}
+                  >
+                    {historyBusy
+                      ? "正在读取聊天记录…"
+                      : historyError
+                        ? "重试聊天记录"
+                        : historyLoaded.current
+                          ? "查看更早聊天"
+                          : "加载聊天记录"}
+                  </button>
+                </div>
+              )}
+            {!messages.length && !historyBusy && (
               <div className="pet-welcome">
                 <span>哦鲸鲸…你来啦。</span>
                 <p>本鲸在呢。今天想聊点什么？</p>
               </div>
             )}
             {messages.map((m, i) => (
-              <article className={`pet-message ${m.role}`} key={i}>
+              <article
+                className={`pet-message ${m.role}`}
+                key={m.id || `live:${i}`}
+              >
                 <Markdown
                   remarkPlugins={[remarkGfm]}
                   components={{ a: ({ children }) => <span>{children}</span> }}
@@ -906,8 +1012,13 @@ export default function Pet() {
                   type="checkbox"
                   checked={memory}
                   onChange={(e) => {
+                    historyGeneration.current += 1;
                     void service("pet_memory", { enabled: e.target.checked })
-                      .then((r) => setMemory(r.enabled))
+                      .then((r) => {
+                        setMemory(r.enabled);
+                        if (r.enabled && !historyLoaded.current)
+                          void loadHistory();
+                      })
                       .catch(handleError);
                   }}
                 />
@@ -1162,11 +1273,14 @@ export default function Pet() {
                       setDeletePending(true);
                       return;
                     }
+                    historyGeneration.current += 1;
                     void service("clear", {
                       confirmation: "DELETE_COMPANION_MEMORY",
                     })
                       .then(() => {
                         setMessages([]);
+                        setHistoryBefore(null);
+                        historyLoaded.current = false;
                         setDeletePending(false);
                         return refresh();
                       })

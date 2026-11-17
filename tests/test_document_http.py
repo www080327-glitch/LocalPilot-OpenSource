@@ -70,6 +70,33 @@ class DocumentHTTPTests(unittest.TestCase):
         self.denied(403,lambda:self.op('revoke',sid,client=self.codex,attachment_id=aid))
         self.assertFalse(self.op('list',sid,client=self.codex)['files'][0]['cloud_uploaded'])
 
+    def test_archived_session_rejects_import_but_retains_document_reads_and_revocation(self):
+        from urllib.error import HTTPError
+        self.service.max_sessions = 1
+        sid = self.codex.request('/localpilot/v1/sessions', {'model': 'localpilot'})['id']
+        original = self.root / 'retained.txt'
+        original.write_text('Retain this original attachment.')
+        aid = self.op('import', sid, paths=[str(original)])['files'][0]['id']
+        self.op('process', sid, attachment_id=aid)
+        rejected = self.root / 'rejected.txt'
+        rejected.write_text('Do not attach to a closed session.')
+        self.codex.request('/localpilot/v1/sessions/' + sid, method='DELETE')
+        for archived in (False, True):
+            with self.subTest(archived=archived):
+                if archived:
+                    self.codex.request('/localpilot/v1/sessions', {'model': 'localpilot'})
+                    self.assertNotIn(sid, self.service.sessions)
+                with self.assertRaises(HTTPError) as caught:
+                    self.op('import', sid, paths=[str(rejected)])
+                with caught.exception as error:
+                    self.assertEqual(error.code, 409)
+                    self.assertEqual(json.load(error)['error']['code'], 'session_closed')
+                self.assertEqual([row['id'] for row in self.op('list', sid)['files']], [aid])
+                self.assertIn('Retain this original attachment.', json.dumps(self.op('read', sid, attachment_id=aid)))
+        self.op('revoke', sid, attachment_id=aid)
+        self.denied(403, lambda: self.op('read', sid, attachment_id=aid))
+        self.assertEqual(len(self.backend.requests), 0)
+
     def test_crash_between_document_commit_and_core_checkpoint_restores_prior_schema(self):
         from agent.persistence import configuration,digest,dumps
         sid=self.codex.request('/localpilot/v1/sessions',{'model':'localpilot'})['id']

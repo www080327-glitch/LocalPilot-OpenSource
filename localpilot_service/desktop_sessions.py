@@ -146,12 +146,12 @@ def create(server, principal, body, key):
     identity=hashlib.sha256((principal.subject+'\0'+subject+'\0'+key).encode()).hexdigest()
     fingerprint=hashlib.sha256(json.dumps(body,sort_keys=True).encode()).hexdigest()
     def prior():
-        for session in server.service.sessions.values():
-            if session.desktop_key==identity:
-                if session.desktop_fingerprint!=fingerprint:raise APIError('Desktop authorization key conflict','idempotency_conflict',409)
-                result=server.service.session_snapshot(session.id)
-                result['model']=next(k for k,v in client.routes.items() if v==session.model)
-                return result
+        session=server.service.session_for_key(identity)
+        if session:
+            if session.desktop_fingerprint!=fingerprint:raise APIError('Desktop authorization key conflict','idempotency_conflict',409)
+            result=server.service.session_snapshot(session.id)
+            result['model']=next(k for k,v in client.routes.items() if v==session.model)
+            return result
     with server.service.condition:
         replay=prior()
         if replay:return replay

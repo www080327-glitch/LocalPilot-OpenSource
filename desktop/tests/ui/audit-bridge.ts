@@ -3,9 +3,19 @@ import { defaults } from "../../src/pet/policy";
 
 // Only native transport is substituted; the application and controls remain the
 // production implementation. Native rendering is qualified separately on Linux.
-export async function auditBridge(page: Page, offline = false) {
+export async function auditBridge(
+  page: Page,
+  offline = false,
+  options: {
+    historyPages?: unknown[];
+    delayHistory?: boolean;
+    historyFails?: boolean;
+    delayChat?: boolean;
+    chatResult?: Record<string, unknown>;
+  } = {},
+) {
   await page.addInitScript(
-    ({ defaults, offline }) => {
+    ({ defaults, offline, options }) => {
       const host = window as any;
       const callbacks = new Map<number, (event: unknown) => void>();
       const events = new Map<number, { name: string; callback: number }>();
@@ -16,6 +26,11 @@ export async function auditBridge(page: Page, offline = false) {
       host.fixtureCloudStatus = "configured";
       host.fixtureTask = null;
       host.fixtureSession = null;
+      host.fixtureHistoryFails = options.historyFails || false;
+      host.fixtureHistoryPages = options.historyPages || [
+        { messages: [], next_before: null },
+      ];
+      host.fixtureMemoryEnabled = true;
       host.emitFixture = (name: string, payload: unknown) => {
         for (const [id, event] of events)
           if (event.name === name)
@@ -126,14 +141,41 @@ export async function auditBridge(page: Page, offline = false) {
           }
           if (command === "pet_chat") {
             if (host.fixtureChatFails) throw Error("Fixture chat unavailable");
-            return { status: "ok", text: "测试回复" };
+            const result = options.chatResult || {
+              status: "ok",
+              text: "测试回复",
+            };
+            if (options.delayChat)
+              return new Promise((resolve) => {
+                host.releaseChat = () => resolve(result);
+              });
+            return result;
           }
           if (command === "pet_service") {
             if (host.fixtureOffline)
               throw Error("Fixture service disconnected");
-            if (args.payload.command === "pet_memory") return { enabled: true };
+            if (args.payload.command === "pet_memory") {
+              if (args.payload.enabled !== undefined)
+                host.fixtureMemoryEnabled = args.payload.enabled;
+              return { enabled: host.fixtureMemoryEnabled };
+            }
+            if (args.payload.command === "clear") {
+              host.fixtureHistoryPages = [{ messages: [], next_before: null }];
+              return { status: "ok" };
+            }
             if (args.payload.command === "pet_export")
               return { cancelled: true };
+            if (args.payload.command === "pet_history") {
+              if (host.fixtureHistoryFails)
+                throw Error("Fixture history unavailable");
+              const result =
+                host.fixtureHistoryPages[args.payload.before ? 1 : 0];
+              if (options.delayHistory && !host.releaseHistory)
+                return new Promise((resolve) => {
+                  host.releaseHistory = () => resolve(result);
+                });
+              return result;
+            }
             return { notices: [], reminders: [], memories: [], runtime: {} };
           }
           if (command === "global_preferences")
@@ -221,6 +263,6 @@ export async function auditBridge(page: Page, offline = false) {
         },
       };
     },
-    { defaults, offline },
+    { defaults, offline, options },
   );
 }

@@ -119,7 +119,7 @@ class PersistentRuntimeTests(unittest.TestCase):
                 with self.assertRaises(PersistenceError): self.service()
 
     def test_unknown_and_unversioned_database_are_refused(self):
-        for version in (0, 99):
+        for version in (0, SQLiteRuntimeStore.VERSION + 1):
             self.db = self.root/(str(version)+'.db')
             db = sqlite3.connect(self.db); db.execute('CREATE TABLE alien(x)')
             db.execute('PRAGMA user_version='+str(version)); db.close()

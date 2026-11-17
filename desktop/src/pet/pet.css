@@ -184,6 +184,23 @@ html[data-pet-part="character"] {
 .pet-welcome {
   margin: 4px 4px 8px;
 }
+.pet-history {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 10px;
+  color: var(--pet-muted);
+  font-size: 11px;
+}
+.pet-history button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 4px 8px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 .pet-welcome > span {
   font-size: 16px;
   font-weight: 650;
@@ -543,7 +560,9 @@ html[data-pet-part="character"] {
   }
   .edge-viewport[data-mini-glass="true"] .edge-thought-label {
     color: #243967;
-    text-shadow: 0 1px 1px #ffffffeb, 0 0 3px #ffffffa8;
+    text-shadow:
+      0 1px 1px #ffffffeb,
+      0 0 3px #ffffffa8;
   }
   .edge-viewport[data-mini-glass="true"] .edge-thought ellipse,
   .edge-viewport[data-mini-glass="true"] .edge-thought circle {

@@ -178,6 +178,8 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
             self.computer.event_callback = self._computer_event
         self.goals = GoalStore()
         self.messages = []
+        from .context_v5 import RequestHistory
+        self._request_history = RequestHistory()
         self.tool_history = []
         self.completed_tool_calls = {}
         self.subagents = []
@@ -851,7 +853,8 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
                 prompt_cache_hit_tokens=usage.get("prompt_cache_hit_tokens"),
                 prompt_cache_miss_tokens=usage.get("prompt_cache_miss_tokens"),
                 reported_model=response.model, input_tokens=usage.get("prompt_tokens"),
-                output_tokens=usage.get("completion_tokens"), finish_reason=response.finish_reason))
+                output_tokens=usage.get("completion_tokens"), finish_reason=response.finish_reason,
+                provider_diagnostics=deepcopy(response.diagnostics)))
             if self._drain_current_model and self._stop_requested.is_set():
                 self._turn_text=message.content or ""
             # A complete response already incurred known provider usage. Host

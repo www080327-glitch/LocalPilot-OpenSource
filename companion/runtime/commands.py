@@ -41,6 +41,7 @@ class CommandRouter:
             'pause_observation': self.pause_observation,
             'pet_ask': self.pet,
             'pet_export': self.pet,
+            'pet_history': self.pet,
             'pet_memory': self.pet,
             'prepare_cloud': self.prepare_cloud,
             'privacy': self.privacy,

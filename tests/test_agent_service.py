@@ -89,6 +89,49 @@ class AgentServiceTests(unittest.TestCase):
         self.assertEqual(len(self.backend.requests), 1)
         self.denied(409, lambda: self.codex.submit("changed", idempotency_key="restart"))
 
+    def test_archived_history_retains_http_ownership_namespace_and_route(self):
+        self.service.max_sessions = self.service.max_tasks = 1
+        self.backend = Backend(answer('first'), answer('second'), answer('other client'))
+        first = self.done(self.codex.submit('first', idempotency_key='shared-key'))
+        self.codex.request('/localpilot/v1/sessions/' + first['session_id'], method='DELETE')
+        second = self.done(self.codex.submit('second', idempotency_key='second'))
+        self.assertNotIn(first['id'], self.service.tasks)
+        self.assertNotIn(first['session_id'], self.service.sessions)
+        self.assertEqual(self.codex.status(first['id'])['output'], first['output'])
+        old_session = self.codex.request('/localpilot/v1/sessions/' + first['session_id'])
+        self.assertEqual(old_session['state'], 'closed')
+        self.assertEqual(old_session['effective_scope']['workspace'], str(self.workspace))
+        self.denied(404, lambda: self.dsh.status(first['id']))
+        self.denied(409, lambda: self.codex.submit('changed', idempotency_key='shared-key'))
+        self.server.catalog['localpilot'] = {'deployment_status': 'unavailable'}
+        replay = self.codex.submit('first', idempotency_key='shared-key')
+        self.assertEqual(replay['id'], first['id'])
+        self.assertEqual(replay['service']['request_id'], first['service']['request_id'])
+        self.assertEqual(len(self.backend.requests), 2)
+        self.server.catalog.clear()
+        self.codex.request('/localpilot/v1/sessions/' + second['session_id'], method='DELETE')
+        other = self.dsh.submit('other client', idempotency_key='shared-key')
+        self.service.wait(other['id'])
+        self.assertNotEqual(other['id'], first['id'])
+        self.stop(); self.service.suspend(); self.start()
+        self.assertEqual(self.codex.submit('first', idempotency_key='shared-key')['id'], first['id'])
+        self.assertEqual(self.dsh.submit('other client', idempotency_key='shared-key')['id'], other['id'])
+        self.denied(404, lambda: self.dsh.status(first['id']))
+        self.assertEqual(len(self.backend.requests), 3)
+
+    def test_recent_task_listing_includes_scoped_archives_within_host_bound(self):
+        self.service.max_sessions = 1
+        first = self.done(self.codex.submit('first', idempotency_key='first'))
+        self.codex.request('/localpilot/v1/sessions/' + first['session_id'], method='DELETE')
+        second = self.done(self.codex.submit('second', idempotency_key='second'))
+        self.assertNotIn(first['id'], self.service.tasks)
+        listed = self.codex.request('/localpilot/v1/tasks')['tasks']
+        self.assertEqual({t['id'] for t in listed}, {first['id'], second['id']})
+        self.assertEqual(self.dsh.request('/localpilot/v1/tasks')['tasks'], [])
+        self.service.max_tasks = 1
+        self.assertEqual([t['id'] for t in self.codex.request('/localpilot/v1/tasks')['tasks']], [second['id']])
+        self.assertEqual(self.codex.status(first['id'])['id'], first['id'])
+
     def test_multi_turn_sse_and_openai_protocol(self):
         first = self.codex.request("/v1/responses", {"input": "remember pear"}, key="first")
         second = self.codex.request("/v1/chat/completions", {"messages": [{"role": "user", "content": "again"}],
