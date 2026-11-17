@@ -1,0 +1,394 @@
+{
+  "kind": "INDEPENDENT_INCREMENTAL_PUBLICATION_MAPPING_REVIEW",
+  "created_utc": "2026-11-17T13:04:38.091409+00:00",
+  "reviewer_task": "evidence_review",
+  "status": "PASS",
+  "based_on_prior_audit": {
+    "path": "/workspace/scratch/b0df9966d470/validation/final-evidence-review.json",
+    "sha256": "94b706b68f9b7a58cbaf041d31cd43b1f7f3aefb02735e6c1344c0a9827d3b5a",
+    "unchanged": true
+  },
+  "scope": {
+    "source_tree_and_parent_mapping_only": true,
+    "remote_evidence": "Provided GitHub Git Commit API readback; independent reviewer did not repeat network requests.",
+    "new_model_calls": 0,
+    "new_test_runs": 0,
+    "archive_members_rechecked": 0,
+    "full_git_blob_audit_repeated": false,
+    "final_branch_publication_verified": false
+  },
+  "mappings": [
+    {
+      "scope": "tested_product",
+      "local_commit": "8e27340e3d0cabbb37ace7a652de9b1f2f0d0eee",
+      "public_commit": "cc7707a8c62dd568dd39053180e3c520eee00269",
+      "identical_tree": "42461b0b85f4aaf07290854277a5d54fe531dd70",
+      "local_parent": "6c923a95c749d1db2c6d2548e2109cd79b02d938",
+      "public_parent": "6c923a95c749d1db2c6d2548e2109cd79b02d938",
+      "url": "https://github.com/www080327-glitch/LocalPilot-OpenSource/commit/cc7707a8c62dd568dd39053180e3c520eee00269"
+    },
+    {
+      "scope": "final_role_harness",
+      "local_commit": "b69542583954c49672a636ba43f1ef310238883c",
+      "public_commit": "3627604f56f841bc199fbdc4c7ff38418fefbd36",
+      "identical_tree": "cded45c5c68089c0654bc25a90a541a189e7d73e",
+      "local_parent": "8e27340e3d0cabbb37ace7a652de9b1f2f0d0eee",
+      "public_parent": "cc7707a8c62dd568dd39053180e3c520eee00269",
+      "url": "https://github.com/www080327-glitch/LocalPilot-OpenSource/commit/3627604f56f841bc199fbdc4c7ff38418fefbd36"
+    },
+    {
+      "scope": "pre_publication_evidence_snapshot",
+      "local_commit": "0f52884588d015550269133db3884b2b3d4c5d74",
+      "public_commit": "995bce3bc6f83372d6c202dfe095da6d14e3dba0",
+      "identical_tree": "4767f97c18424e22c9eca9fd67be4d75b4aa1e87",
+      "local_parent": "b69542583954c49672a636ba43f1ef310238883c",
+      "public_parent": "3627604f56f841bc199fbdc4c7ff38418fefbd36",
+      "url": "https://github.com/www080327-glitch/LocalPilot-OpenSource/commit/995bce3bc6f83372d6c202dfe095da6d14e3dba0"
+    }
+  ],
+  "unchanged_prior_reviewed_files": [
+    {
+      "path": "agent/hybrid.py",
+      "bytes": 44282,
+      "sha256": "64880fe7cd7b86d5bf8a0934f39198a923800729fdecdf23bb1dbe5d3cd632c2"
+    },
+    {
+      "path": "agent/session.py",
+      "bytes": 81229,
+      "sha256": "666c8c2c5ce858720ff4d110af69c9ee0e53c854e95ab5b4d8d1f5426309b7c8"
+    },
+    {
+      "path": "companion/memory/task_store.py",
+      "bytes": 9503,
+      "sha256": "acc4762875c7f6bd870cb1ebf985ec3b351928ce3a1315cf0f08ca45f2f975b2"
+    },
+    {
+      "path": "companion/runtime/tasks.py",
+      "bytes": 38215,
+      "sha256": "298a035c817323960e67a8b75fbd34e08b1cec4e6a1b43e589201da210957621"
+    },
+    {
+      "path": "companion/tests/test_pa_context_lineage.py",
+      "bytes": 7955,
+      "sha256": "633154570c74168426ad4337fa903fc209de2b5bf98292875e9509e5e79d8b4c"
+    },
+    {
+      "path": "companion/tests/test_task_history.py",
+      "bytes": 6382,
+      "sha256": "5a8821f486146105686fe78316b24fdc6e764c74232daf7eac0980f0163705ce"
+    },
+    {
+      "path": "companion/tests/test_task_store.py",
+      "bytes": 19299,
+      "sha256": "3e8aaed29aee8e91eb3143bde2ac49e83378f09d896003e8cec009a7a58e25bd"
+    },
+    {
+      "path": "docs/development/RC17_FOLLOWUP_20261117.md",
+      "bytes": 4126,
+      "sha256": "e601dd2b0a694d3be0c2674edf02d5f23ba3cc3a7f6114c3ab8d967bfc04426b"
+    },
+    {
+      "path": "docs/development/TASK_STORAGE_SCHEDULING_20261117.md",
+      "bytes": 9078,
+      "sha256": "174b7e2a9d4aca74147804337a92f1b01273660b8d676e3b03a1cc2c1ffd7a7c"
+    },
+    {
+      "path": "docs/development/WORK_CONTINUE_20261117_B35.md",
+      "bytes": 10376,
+      "sha256": "5f7311459faa1eef3351ecd9e01a994c010c621149a78ac9c5b47d719025fcaa"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/BASELINE_EVIDENCE_REVIEW.json",
+      "bytes": 1947,
+      "sha256": "754df732e6be036cf35ca3d7edcc21d08c2f371aa295cb40582736df53d7ffdd"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/BROWSER_SUMMARY.json",
+      "bytes": 28460,
+      "sha256": "f865e63f8dcb076bbdcad945018803073d111f28daa38935e8a243b7f23a38a7"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/DELIVERY_CHECKS.json",
+      "bytes": 971,
+      "sha256": "e71ebd6f20bf97c39527abe5689c130a87348fd4b3b83b8af1b29a210398538c"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/ENGINEERING_R12_BLOCKED.json",
+      "bytes": 937,
+      "sha256": "018a33acf7600414286187194618071698515c24d2e88a86cd0954719dfff6c6"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/INDEPENDENT_IMPLEMENTATION_REVIEW.json",
+      "bytes": 1704,
+      "sha256": "9d06264bf7b7785b36f3d5410813a6ab82ea18c26bfa9686cb806f5717be4a2a"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/MANIFEST.json",
+      "bytes": 3718,
+      "sha256": "c573694276f15591e2c1712bf4d5c5e56bfab1a366e0a3c759230488d0a3e038"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/PACKAGING_SUMMARY.json",
+      "bytes": 4394,
+      "sha256": "e13fa880b5b36486035f2ea8ba9b944c851213bd63c3e1d63daff8b5e92d8781"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/PERF_COMPARISON.json",
+      "bytes": 5523,
+      "sha256": "09cc9e715c36e7cd8b0c9423bc4e9d26fdff8d4aff0deccde6666b35fb33c908"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/REGRESSION_SUMMARY.json",
+      "bytes": 1026,
+      "sha256": "001184390a8872a4f9df4aac3a949669d32de3853707608b3d79acebb9191dab"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/REPOSITORY_VISIBILITY.json",
+      "bytes": 272,
+      "sha256": "0595e9186213184ec6a09e9a7b3c77c218ac9401217161884bb7d4ad3abad5cc"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/SHA256SUMS",
+      "bytes": 816,
+      "sha256": "da2397cffbe9cb695453bb0c912e97f9f0e49b53f4fbc7459f7c4cbde4529a28"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/SOURCE.json",
+      "bytes": 2663,
+      "sha256": "d33d24750925e38aa68f035893d21690c2a2c60c7fd9cbc34931be505e9293a1"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "bytes": 2155,
+      "sha256": "ace78556f9b5d4fdf2b4c7be4028521aea21b7374f9a5e2ae04988cb712ed7fa"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/WORKER_ROLE_INDEPENDENT_REVIEW.json",
+      "bytes": 1321,
+      "sha256": "31f56a65e38cb8487c167ff1b68c3effa9c475167dfdf1e0494774b782d20e64"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/WORKER_ROLE_SUMMARY.json",
+      "bytes": 4469,
+      "sha256": "364382a07b91a7c2b0d4da067b269ebedabface3ff1898b72dfeb8a42e872fb9"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/browser-native.MANIFEST.json",
+      "bytes": 3282,
+      "sha256": "5f586422582abaee0c2e7cea889728142ab47746da5a3b6a7159c98af6c92c11"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/browser-native.tar.gz",
+      "bytes": 22233,
+      "sha256": "62dd0662db4defef338c1dfff6e58f4617599f56ae907bd38d0769c35a0c4662"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/delivery-review.MANIFEST.json",
+      "bytes": 1354,
+      "sha256": "1cf738cee9a84b8a36bc930fae1c8ef2daad5711cc854baa4fa4294d075024a5"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/delivery-review.tar.gz",
+      "bytes": 6121,
+      "sha256": "e5e10db0cd2ba53fd8b1e8c6e6d32b6b53ac11366d75134188534ec41603b762"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/engineering-r12-blocked.MANIFEST.json",
+      "bytes": 7303,
+      "sha256": "28dda07f9bb080a9709974bc92f61be5c8bfff8d09bd7ccfb130c6ca222dc4a2"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/engineering-r12-blocked.tar.gz",
+      "bytes": 24093,
+      "sha256": "ea466e866f7eafc7c97d8bff56ed1fc3d73954543d900ba5576df2c2a6df8254"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/installed-packages.MANIFEST.json",
+      "bytes": 7714,
+      "sha256": "917e8f23f4902df1c8115478c28972bcd449ee96a9a17f9c7dd221a60fb982a0"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/installed-packages.tar.gz",
+      "bytes": 143523,
+      "sha256": "40564951f6511bad4484c1bd1fa99e9a87f61fd0b932de77bc9946bd4366a268"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/regressions.MANIFEST.json",
+      "bytes": 4900,
+      "sha256": "04ab7b28261e8c0ed7deed66fb8fbca0859ac0fe6b6ff3b9eca5583ba5391852"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/regressions.tar.gz",
+      "bytes": 318720,
+      "sha256": "120d0efb1cf6c095926f25fadfbcc6209e31b34a0ce63b951ff02879fa686f7c"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/session-context.MANIFEST.json",
+      "bytes": 2853,
+      "sha256": "b6961d9a6f162b5f3246a32f9be5658156fd36ad8acfee8dbafc34a38e0ab39a"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/session-context.tar.gz",
+      "bytes": 9063,
+      "sha256": "56e32c970757711f05f219d120a0d95e9ab487a5e01046dda3a17dbcfbbfc5a6"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/truncation-recovery.MANIFEST.json",
+      "bytes": 1144,
+      "sha256": "ef2bf8d9d620e0557d34bf3da1b4517ad99bf58443f8c0f24d65270d09096d73"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/truncation-recovery.tar.gz",
+      "bytes": 4180,
+      "sha256": "3e787cd33c39e4fb4da7513bc81b5001f15cd51188357992fdcb402a59cbe2e4"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/worker-roles-live.MANIFEST.json",
+      "bytes": 4066,
+      "sha256": "46722c5a6be67977f3003fc49e5083555a4b63322812fa2f52ee89772c820759"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/worker-roles-live.tar.gz",
+      "bytes": 35105,
+      "sha256": "efc97b9fdc4637287aab416aca2116210688216bd3e496f063778551908809a4"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/worker-roles-local.MANIFEST.json",
+      "bytes": 4931,
+      "sha256": "e19ac52f32254adcd02afd57ee3ce2cb03369d83f03b116c941e3664bb26a449"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/worker-roles-local.tar.gz",
+      "bytes": 68577,
+      "sha256": "73d98b4b5d59657a8c81374b537cfffae5223df1a5f2a0bdc3897121a5cc8162"
+    },
+    {
+      "path": "scripts/qualify_openai_worker_roles.py",
+      "bytes": 18440,
+      "sha256": "5204ebb437bcaf7aca926dd6f5deeb433cc5bf9a9e4c97b465ab000841c0ea7e"
+    },
+    {
+      "path": "tests/test_worker_output_recovery.py",
+      "bytes": 12399,
+      "sha256": "1f8e3c924bd0c76161ddc3bebfa5cf5148d6755804fb2c7fc734510fd32256b3"
+    },
+    {
+      "path": "tests/test_worker_role_qualification.py",
+      "bytes": 9968,
+      "sha256": "d351a9faca241861bd7743444a3376a159e173b35bdc04095a4c92dd97a35cc4"
+    }
+  ],
+  "unchanged_prior_reviewed_file_count": 46,
+  "archives_unchanged": 9,
+  "product_source_unchanged": true,
+  "post_harness_commit_changed_paths": [
+    "docs/development/RC17_FOLLOWUP_20261117.md",
+    "docs/development/WORK_CONTINUE_20261117_B35.md",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/BASELINE_EVIDENCE_REVIEW.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/BROWSER_SUMMARY.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/DELIVERY_CHECKS.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/DELIVERY_MANIFEST.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/ENGINEERING_R12_BLOCKED.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/FINAL_EVIDENCE_REVIEW.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/INDEPENDENT_IMPLEMENTATION_REVIEW.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/MANIFEST.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/PACKAGING_SUMMARY.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/PERF_COMPARISON.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/REGRESSION_SUMMARY.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/REPOSITORY_VISIBILITY.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/RESULTS.md",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/SHA256SUMS",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/SOURCE.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/WORKER_ROLE_INDEPENDENT_REVIEW.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/WORKER_ROLE_SUMMARY.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/browser-native.MANIFEST.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/browser-native.tar.gz",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/delivery-review.MANIFEST.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/delivery-review.tar.gz",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/engineering-r12-blocked.MANIFEST.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/engineering-r12-blocked.tar.gz",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/installed-packages.MANIFEST.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/installed-packages.tar.gz",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/regressions.MANIFEST.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/regressions.tar.gz",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/session-context.MANIFEST.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/session-context.tar.gz",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/truncation-recovery.MANIFEST.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/truncation-recovery.tar.gz",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/worker-roles-live.MANIFEST.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/worker-roles-live.tar.gz",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/worker-roles-local.MANIFEST.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/worker-roles-local.tar.gz"
+  ],
+  "working_tree_changes": [
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/RESULTS.md"
+  ],
+  "new_publication_files": [
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/PUBLIC_COMMIT_READBACK.json",
+    "docs/evidence/audit-20261117/root/rc17-followup-b35/PUBLIC_SOURCE_MAP.json"
+  ],
+  "results_change": {
+    "only_one_inserted_paragraph": true,
+    "inserted_paragraph": "上表保留实际运行测试的本地提交 SHA。终端 push 缺少 HTTPS 凭据，本轮由已连接的 GitHub 集成公开相同文件树，提交元数据使公开 SHA 不同：产品为 `cc7707a8c62dd568dd39053180e3c520eee00269`，最终角色 harness 为 `3627604f56f841bc199fbdc4c7ff38418fefbd36`。对应 tree 与本地逐一相等，详见 [PUBLIC_SOURCE_MAP.json](PUBLIC_SOURCE_MAP.json)；原始测试记录没有改写。",
+    "source_evidence_and_claims_otherwise_identical": true,
+    "relative_links_resolved": [
+      "SOURCE.json",
+      "PUBLIC_SOURCE_MAP.json",
+      "PERF_COMPARISON.json",
+      "../task-storage-dispatch-b34/RESULTS.md",
+      "PACKAGING_SUMMARY.json",
+      "WORKER_ROLE_SUMMARY.json",
+      "ENGINEERING_R12_BLOCKED.json",
+      "SUMMARY.md",
+      "MANIFEST.json",
+      "SHA256SUMS",
+      "../../../../development/WORK_CONTINUE_20261117_B35.md"
+    ]
+  },
+  "pr_source_links": {
+    "tested_product": "https://github.com/www080327-glitch/LocalPilot-OpenSource/commit/cc7707a8c62dd568dd39053180e3c520eee00269",
+    "final_role_harness": "https://github.com/www080327-glitch/LocalPilot-OpenSource/commit/3627604f56f841bc199fbdc4c7ff38418fefbd36"
+  },
+  "pending_final_publication": {
+    "branch_ref_update_not_in_commit_readback": true,
+    "draft_final_evidence_links_count": 6,
+    "draft_final_evidence_links": [
+      "https://github.com/www080327-glitch/LocalPilot-OpenSource/blob/FOLLOWUP_DELIVERY_SHA/docs/evidence/audit-20261117/root/rc17-followup-b35/PERF_COMPARISON.json",
+      "https://github.com/www080327-glitch/LocalPilot-OpenSource/blob/FOLLOWUP_DELIVERY_SHA/docs/evidence/audit-20261117/root/rc17-followup-b35/PUBLIC_SOURCE_MAP.json",
+      "https://github.com/www080327-glitch/LocalPilot-OpenSource/blob/FOLLOWUP_DELIVERY_SHA/docs/evidence/audit-20261117/root/rc17-followup-b35/RESULTS.md",
+      "https://github.com/www080327-glitch/LocalPilot-OpenSource/blob/FOLLOWUP_DELIVERY_SHA/docs/evidence/audit-20261117/root/rc17-followup-b35/SOURCE.json",
+      "https://github.com/www080327-glitch/LocalPilot-OpenSource/blob/FOLLOWUP_DELIVERY_SHA/docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "https://github.com/www080327-glitch/LocalPilot-OpenSource/blob/FOLLOWUP_DELIVERY_SHA/docs/development/WORK_CONTINUE_20261117_B35.md"
+    ],
+    "required_before_final_delivery": "Replace FOLLOWUP_DELIVERY_SHA with the actual final public commit, update PR, and read back final branch/head and links."
+  },
+  "reviewed_files": [
+    {
+      "path": "/workspace/scratch/b0df9966d470/LocalPilot/docs/evidence/audit-20261117/root/rc17-followup-b35/RESULTS.md",
+      "bytes": 13059,
+      "sha256": "4d4860330829b6883d5522109d3b3c72f697480107b677cad6e95b7054c788c4"
+    },
+    {
+      "path": "/workspace/scratch/b0df9966d470/LocalPilot/docs/evidence/audit-20261117/root/rc17-followup-b35/PUBLIC_SOURCE_MAP.json",
+      "bytes": 2069,
+      "sha256": "5081a3fdca9fda5c86862407a7cef39206ea323ee3dbe112c29a89f9a70c5bbf"
+    },
+    {
+      "path": "/workspace/scratch/b0df9966d470/LocalPilot/docs/evidence/audit-20261117/root/rc17-followup-b35/PUBLIC_COMMIT_READBACK.json",
+      "bytes": 2615,
+      "sha256": "a25e26785ef21c714847313dda72d47bbae15f4a28d9898a6648e6beb4351611"
+    },
+    {
+      "path": "/workspace/scratch/b0df9966d470/LocalPilot/docs/evidence/audit-20261117/root/rc17-followup-b35/FINAL_EVIDENCE_REVIEW.json",
+      "bytes": 66163,
+      "sha256": "94b706b68f9b7a58cbaf041d31cd43b1f7f3aefb02735e6c1344c0a9827d3b5a"
+    },
+    {
+      "path": "/workspace/scratch/b0df9966d470/validation/PR_BODY_FOLLOWUP.md",
+      "bytes": 10413,
+      "sha256": "69e3317234863dfe4660ca36a24ee04179d0947fe1b496f066fc91cde80e851b"
+    }
+  ],
+  "errors": []
+}

@@ -15,6 +15,8 @@ PR：<https://github.com/www080327-glitch/LocalPilot-OpenSource/pull/15>。本�
 
 完整来源、文件散列与例外见 [SOURCE.json](SOURCE.json)。版本为 Core **5.0.0b35**、Companion **0.5.7b12**、Desktop **5.0.1-rc.17**、Suite **0.2.0b34**、Channels **0.1.0a4**。只有前两个组件本轮改变。
 
+上表保留实际运行测试的本地提交 SHA。终端 push 缺少 HTTPS 凭据，本轮由已连接的 GitHub 集成公开相同文件树，提交元数据使公开 SHA 不同：产品为 `cc7707a8c62dd568dd39053180e3c520eee00269`，最终角色 harness 为 `3627604f56f841bc199fbdc4c7ff38418fefbd36`。对应 tree 与本地逐一相等，详见 [PUBLIC_SOURCE_MAP.json](PUBLIC_SOURCE_MAP.json)；原始测试记录没有改写。
+
 ## 2. 已完成的产品修复
 
 ### V5 子任务第一次输出截断后，在原预算内继续

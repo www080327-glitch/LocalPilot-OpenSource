@@ -2,7 +2,8 @@
   "kind": "RC17_FOLLOWUP_DELIVERY",
   "product_commit": "8e27340e3d0cabbb37ace7a652de9b1f2f0d0eee",
   "role_harness_commit": "b69542583954c49672a636ba43f1ef310238883c",
-  "files_count": 35,
+  "public_source_map": "PUBLIC_SOURCE_MAP.json",
+  "files_count": 38,
   "excludes_self": true,
   "files": [
     {
@@ -51,6 +52,21 @@
       "sha256": "09cc9e715c36e7cd8b0c9423bc4e9d26fdff8d4aff0deccde6666b35fb33c908"
     },
     {
+      "path": "PUBLICATION_REVIEW.json",
+      "bytes": 18977,
+      "sha256": "9ecdb3712a29aae3c1bbde50346b94238bc5a0809b6de971c35e7b857c48a09b"
+    },
+    {
+      "path": "PUBLIC_COMMIT_READBACK.json",
+      "bytes": 2615,
+      "sha256": "a25e26785ef21c714847313dda72d47bbae15f4a28d9898a6648e6beb4351611"
+    },
+    {
+      "path": "PUBLIC_SOURCE_MAP.json",
+      "bytes": 2069,
+      "sha256": "5081a3fdca9fda5c86862407a7cef39206ea323ee3dbe112c29a89f9a70c5bbf"
+    },
+    {
       "path": "REGRESSION_SUMMARY.json",
       "bytes": 1026,
       "sha256": "001184390a8872a4f9df4aac3a949669d32de3853707608b3d79acebb9191dab"
@@ -62,8 +78,8 @@
     },
     {
       "path": "RESULTS.md",
-      "bytes": 12622,
-      "sha256": "8081ec2b450ea00f45d1fdc0c2e37c2b5730be2d3a9c23e688c010d85354c78a"
+      "bytes": 13059,
+      "sha256": "4d4860330829b6883d5522109d3b3c72f697480107b677cad6e95b7054c788c4"
     },
     {
       "path": "SHA256SUMS",
@@ -184,5 +200,6 @@
   "archive_groups": 9,
   "raw_archive_members": 123,
   "known_credential_matches": 0,
-  "independent_review": "FINAL_EVIDENCE_REVIEW.json"
+  "independent_review": "FINAL_EVIDENCE_REVIEW.json",
+  "publication_review": "PUBLICATION_REVIEW.json"
 }

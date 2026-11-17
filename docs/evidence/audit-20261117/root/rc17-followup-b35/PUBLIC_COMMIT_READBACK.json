@@ -1,0 +1,44 @@
+{
+  "kind": "GITHUB_GIT_COMMIT_API_READBACK",
+  "records": [
+    {
+      "sha": "cc7707a8c62dd568dd39053180e3c520eee00269",
+      "tree": "42461b0b85f4aaf07290854277a5d54fe531dd70",
+      "parents": [
+        "6c923a95c749d1db2c6d2548e2109cd79b02d938"
+      ],
+      "url": "https://github.com/www080327-glitch/LocalPilot-OpenSource/commit/cc7707a8c62dd568dd39053180e3c520eee00269",
+      "readback_url": "https://api.github.com/repos/www080327-glitch/LocalPilot-OpenSource/git/commits/cc7707a8c62dd568dd39053180e3c520eee00269",
+      "message": "fix: recover truncated workers and index session source dependencies\n\nValidated local commit: 8e27340e3d0cabbb37ace7a652de9b1f2f0d0eee\nIdentical source tree: 42461b0b85f4aaf07290854277a5d54fe531dd70",
+      "local_validation_commit": "8e27340e3d0cabbb37ace7a652de9b1f2f0d0eee",
+      "tree_matches": true
+    },
+    {
+      "sha": "3627604f56f841bc199fbdc4c7ff38418fefbd36",
+      "tree": "cded45c5c68089c0654bc25a90a541a189e7d73e",
+      "parents": [
+        "cc7707a8c62dd568dd39053180e3c520eee00269"
+      ],
+      "url": "https://github.com/www080327-glitch/LocalPilot-OpenSource/commit/3627604f56f841bc199fbdc4c7ff38418fefbd36",
+      "readback_url": "https://api.github.com/repos/www080327-glitch/LocalPilot-OpenSource/git/commits/3627604f56f841bc199fbdc4c7ff38418fefbd36",
+      "message": "test: confine role qualification to synthetic read-only workspace\n\nValidated local commit: b69542583954c49672a636ba43f1ef310238883c\nIdentical source tree: cded45c5c68089c0654bc25a90a541a189e7d73e",
+      "local_validation_commit": "b69542583954c49672a636ba43f1ef310238883c",
+      "tree_matches": true
+    },
+    {
+      "sha": "995bce3bc6f83372d6c202dfe095da6d14e3dba0",
+      "tree": "4767f97c18424e22c9eca9fd67be4d75b4aa1e87",
+      "parents": [
+        "3627604f56f841bc199fbdc4c7ff38418fefbd36"
+      ],
+      "url": "https://github.com/www080327-glitch/LocalPilot-OpenSource/commit/995bce3bc6f83372d6c202dfe095da6d14e3dba0",
+      "readback_url": "https://api.github.com/repos/www080327-glitch/LocalPilot-OpenSource/git/commits/995bce3bc6f83372d6c202dfe095da6d14e3dba0",
+      "message": "docs: publish b35 follow-up evidence and Work handoff\n\nValidated local commit: 0f52884588d015550269133db3884b2b3d4c5d74\nIdentical source tree: 4767f97c18424e22c9eca9fd67be4d75b4aa1e87",
+      "local_validation_commit": "0f52884588d015550269133db3884b2b3d4c5d74",
+      "tree_matches": true
+    }
+  ],
+  "all_match": true,
+  "branch_ref_updated": false,
+  "note": "Commit objects were read back before final branch update; later final head is verified separately."
+}
