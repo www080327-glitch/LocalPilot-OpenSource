@@ -27,6 +27,10 @@ from scripts.qualify_openai_superagent import configure_async
 MODELS = {'parent': {'model': 'gpt-6.1-sol', 'thinking': 'medium'},
           'search': {'model': 'gpt-6-luna', 'thinking': 'high'},
           'review': {'model': 'gpt-6.1-sol', 'thinking': 'medium'}}
+BOUNDARY = 'WORKSPACE_SCOPED_SERVICE_READ_ONLY'
+CAPABILITIES = {'read': True, 'write': False, 'execute': False, 'read_only': True}
+FORBIDDEN_TOOLS = {'shell', 'http_get', 'execute', 'run_command', 'apply_patch',
+                   'make_directory', 'move_file', 'copy_file'}
 MARKER = 'LP-ROLE-OBSERVED-742901'
 FIXTURES = {'role-marker.txt': MARKER + '\n',
     'role-fixture.py': 'def clamp(value, lower=0, upper=10):\n    return max(lower, min(value, upper))\n'}
@@ -41,8 +45,10 @@ on BOTH files, then report the marker verbatim and the function's name, defaults
 and behavior. The reviewer should check the function's boundary behavior.
 Children must not edit files or execute code. Do not read or perform their work
 in the parent. Use wait_children to collect the real receipts and outcomes.
-Then give a short final summary naming both roles, the exact observed marker
-and function name, and any failed or incomplete work. Do not create replacement
+Then give a short final summary naming both roles, both read receipt paths,
+and any failed or incomplete work. Child prose may be withheld by the service's
+cloud projection; use the actual receipt metadata and do not guess hidden text.
+Do not create replacement
 children, switch models, access other files, credentials or the network, or
 claim that this small fixture proves general model quality.
 '''
@@ -53,13 +59,19 @@ def main():
     args.output.mkdir(parents=True, mode=0o700, exist_ok=False)
     before = identity()
     (args.output / 'prompt.txt').write_text(PROMPT)
-    save(args.output / 'PROTOCOL.json', {'version': 1, 'models': MODELS,
+    save(args.output / 'PROTOCOL.json', {'version': 2, 'models': MODELS,
+        'session_boundary': args.session_boundary, 'permission_mode': 'approve-mutations',
+        'capabilities': CAPABILITIES, 'cloud_body_allowlist': list(FIXTURES),
+        'session_endpoint': '/localpilot/v1/sessions', 'desktop_options': None,
+        'acceptance_scope': 'Configured models/host effort, observed reads, metadata receipt collection and restart idempotency; not Desktop Full content collaboration or engineering acceptance.',
+        'delegate_approval_scope': 'At most two configured cloud worker delegates through the existing operator API; no other action approved.',
         'max_children': 2, 'output_tokens': 4096, 'child_steps': 8, 'child_tools': 8,
         'task_timeout_seconds': TIMEOUT, 'fixture_sha256': fixture_hashes(),
         'prompt_sha256': digest(PROMPT), 'provider_effort_echo': False,
         'usage_scope': 'The parent aggregate already includes children; sum it once.'})
     report = {'kind': 'SYNTHETIC_HETEROGENEOUS_WORKER_ROLE_INTEGRATION',
         'source': before, 'models': MODELS, 'preflight_only': args.preflight_only,
+        'session_boundary': args.session_boundary,
         'inference_status': 'NOT_RUN', 'ranking_claim': False}
     if args.preflight_only:
         compile(FIXTURES['role-fixture.py'], 'role-fixture.py', 'exec')
@@ -96,6 +108,7 @@ def arguments(argv=None):
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--key-file', type=Path)
     parser.add_argument('--preflight-only', action='store_true')
+    parser.add_argument('--session-boundary', choices=(BOUNDARY,), default=BOUNDARY)
     args = parser.parse_args(argv)
     args.output = args.output.resolve()
     if args.output.exists():
@@ -127,6 +140,10 @@ def configure_roles(core):
     configure_async(core)
     path = core.home / 'service.json'
     config = json.loads(path.read_text())
+    for route in config['routes'].values():
+        route.update(permissions='approve-mutations', cloud_egress_paths=list(FIXTURES))
+        if not route.get('reasoning_only'):
+            route['capabilities'] = dict(CAPABILITIES)
     primary = config['routes']['default']
     primary['budgets'].update(max_steps=40, max_tool_calls=48, max_token_units=4 * 1024 * 1024,
         max_output_tokens=4096, max_subagents_per_turn=2, max_worker_steps=8,
@@ -147,11 +164,12 @@ def configure_roles(core):
 def run_case(core):
     for path, text in FIXTURES.items():
         (core.work / path).write_text(text)
+    inventory_before = workspace_inventory(core.work)
     started = time.monotonic()
     core.start()
-    session = core.session('worker-roles-session')
-    task = core.finish('worker-roles', core.submit('worker-roles-task', PROMPT,
-        session=session, timeout=TIMEOUT), timeout=TIMEOUT + 30)
+    session = core.client.request('/localpilot/v1/sessions', {'model': 'localpilot'})['id']
+    task, approvals = finish_roles(core, core.submit('worker-roles-task', PROMPT,
+        session=session, timeout=TIMEOUT))
     core.stop()
     before = restored_evidence(core, task['session_id'])
     save(core.out / 'ROLE_EVIDENCE_BEFORE_RESTART.json', before)
@@ -163,8 +181,12 @@ def run_case(core):
     save(core.out / 'ROLE_EVIDENCE_AFTER_RESTART.json', after)
     files = {path: digest((core.work / path).read_text()) if (core.work / path).is_file() else None
         for path in FIXTURES}
+    inventory_after = workspace_inventory(core.work)
     checks = acceptance(task, before, files)
-    checks.update(same_task_after_restart=restored['id'] == task['id'],
+    checks.update(workspace_unchanged=inventory_before == inventory_after,
+        synthetic_workspace_only=set(inventory_after['sha256']) == {*FIXTURES, 'fact.txt'}
+            and not inventory_after['symlinks'] and not inventory_after['directories'],
+        same_task_after_restart=restored['id'] == task['id'],
         same_session_after_restart=restored['session_id'] == session,
         same_receipts_after_restart=restored.get('tools') == task.get('tools'),
         same_children_after_restart=restored.get('subagents') == task.get('subagents'),
@@ -179,7 +201,34 @@ def run_case(core):
             ('verification_status', 'engineering_status', 'task_outcome', 'task_succeeded')},
         'provider_usage_scope': 'Parent aggregate only; it already includes both children. This is not a billing statement.',
         'effort_scope': 'ModelRequestStarted records actual host request model/effort. Provider responses echo model, not effort.',
-        'fixture_sha256_after': files, 'database_exported': False}
+        'host_delegate_approvals': approvals,
+        'fixture_sha256_after': files, 'workspace_before': inventory_before,
+        'workspace_after': inventory_after, 'database_exported': False}
+
+
+def workspace_inventory(workspace):
+    entries = sorted(workspace.rglob('*'))
+    return {'sha256': {str(path.relative_to(workspace)): hashlib.sha256(path.read_bytes()).hexdigest()
+            for path in entries if path.is_file() and not path.is_symlink()},
+        'symlinks': [str(path.relative_to(workspace)) for path in entries if path.is_symlink()],
+        'directories': [str(path.relative_to(workspace)) for path in entries if path.is_dir() and not path.is_symlink()]}
+
+
+def finish_roles(core, task):
+    approvals = []
+    for _ in range(3):
+        task = core.finish('worker-roles', task, timeout=TIMEOUT + 30)
+        if task['status'] != 'requires_approval':
+            break
+        action = task['required_action']
+        requests = action['requests']
+        if len(approvals) == 2 or len(requests) != 1 or requests[0].get('kind') != 'delegate' \
+                or requests[0].get('configured_model') not in {MODELS[role]['model'] for role in ('search', 'review')}:
+            break
+        approvals.append({'task_id': task['id'], 'action_id': action['id'], 'requests': requests})
+        save(core.out / 'HOST_DELEGATE_APPROVALS.json', approvals)
+        task = core.operator.continue_task(task['id'], action['id'], action='approve')
+    return task, approvals
 
 
 def restored_evidence(core, session_id):
@@ -192,7 +241,8 @@ def restored_evidence(core, session_id):
     try:
         os.environ.update({name: core.env[name] for name in names})
         server = build(core.home / 'service.json')
-        runtime = server.service.sessions[session_id].runtime
+        session = server.service.sessions[session_id]
+        runtime = session.runtime
         children = {record['id']: record for record in runtime.subagents}
         aggregate = [asdict(call) for call in runtime._usage]
         child_calls = Counter(json.dumps(asdict(call), sort_keys=True)
@@ -210,12 +260,17 @@ def restored_evidence(core, session_id):
             nodes[worker_id] = {'role': record.get('role', 'parent'),
                 'backend_id': node.hybrid.state['backend_id'], 'model': node.current_primary_model,
                 'thinking': node._effective_thinking(), 'capabilities': asdict(node.registry.gateway.capabilities),
+                'permission_mode': node.permission_mode,
+                'scope_policy': getattr(node.registry, 'scope_policy', None),
+                'desktop_cloud_context': getattr(node, '_desktop_cloud_context', False),
+                'cloud_body_allowlist': list(node.hybrid.policy.egress.allowed_paths),
                 'advertised_tools': [tool['function']['name'] for tool in node._schemas()],
                 'receipt_sha256': digest(json.dumps(node.tool_history, sort_keys=True)),
                 'request_events': [{'sequence': event.sequence, 'timestamp': event.timestamp, **event.data}
                     for event in node.events.events if event.type == 'ModelRequestStarted'],
                 'provider_calls': parent_calls if worker_id == 'parent' else [asdict(call) for call in node._usage]}
         return {'session_id': session_id, 'configuration_sha256': runtime._persistence_config,
+            'desktop_options': session.desktop_options,
             'worker_roles': runtime.worker_roles, 'aggregate_model_calls': aggregate, 'nodes': nodes}
     finally:
         if server is not None:
@@ -235,15 +290,20 @@ def acceptance(task, evidence, files):
     checks = {'completed_and_quiescent': task.get('status') == 'completed' and task.get('quiescent') is True,
         'two_named_children': len(children) == 2 and {child.get('role') for child in children} == {'search', 'review'},
         'three_runtime_nodes': len(nodes) == 3,
+        'ordinary_service_session': 'desktop_options' in evidence and evidence['desktop_options'] is None,
         'fixtures_unchanged': files == fixture_hashes(),
-        'parent_collected_summary': MARKER in (task.get('result') or {}).get('text', '')
-            and 'clamp' in (task.get('result') or {}).get('text', ''),
-        'parent_did_not_read_or_mutate': all(row['name'] in {'delegate', 'wait_children', 'child_status', 'list_goals', 'update_goals'}
+        'parent_collected_summary': all(value in (task.get('result') or {}).get('text', '')
+            for value in ('search', 'review', *FIXTURES)),
+        'parent_did_not_read_or_mutate': all(row['name'] in {'delegate', 'wait_children', 'child_status', 'manage_goal'}
             for row in task.get('tools', []) if not row.get('worker_id'))}
     for worker_id, node in nodes.items():
         role = node['role']
         expected = MODELS.get(role, {})
         events, calls = node['request_events'], node['provider_calls']
+        checks[worker_id + '_read_only_workspace_boundary'] = node['capabilities'] == CAPABILITIES \
+            and node['permission_mode'] == 'approve-mutations' and node['scope_policy'] is None \
+            and not node['desktop_cloud_context'] and node['cloud_body_allowlist'] == list(FIXTURES) \
+            and not FORBIDDEN_TOOLS & set(node['advertised_tools'])
         checks[worker_id + '_inference'] = bool(events) and len(events) == len(calls) and bool(expected) \
             and all(event['model'] == expected['model'] and event['thinking'] == expected['thinking'] for event in events) \
             and all(call['reported_model'] == expected['model'] for call in calls)
@@ -257,6 +317,7 @@ def acceptance(task, evidence, files):
             row.get('read_receipt', {}).get('version', {}).get('sha256') for row in receipts
             if row['name'] == 'read_file' and row.get('status') == 'completed'}
         checks[child['id'] + '_read_receipts'] = reads == fixture_hashes() and all(row['name'] == 'read_file' for row in receipts)
+        checks[child['id'] + '_observed_fixture_summary'] = MARKER in child.get('text', '') and 'clamp' in child.get('text', '')
         checks[child['id'] + '_completed_collected'] = child.get('status') == 'completed' \
             and child.get('async') is True and child.get('collected') is True and child.get('read_only') is True
     checks['aggregate_count_once'] = bool(nodes) and len(evidence.get('aggregate_model_calls', [])) == sum(

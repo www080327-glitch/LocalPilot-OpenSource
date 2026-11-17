@@ -25,7 +25,7 @@
 
 ## 二、先补浏览器实际页面验收
 
-云端两次续验都在 Chromium 进程单例 socket 创建阶段遇到 `Operation not permitted`，0 页面断言。请在这台可正常启动浏览器的电脑运行仓库原 Playwright 用例：
+本轮两项浏览器用例都在 Chromium 进程单例 socket 创建阶段遇到 `Operation not permitted`，0 页面断言。请在这台可正常启动浏览器的电脑运行仓库原 Playwright 用例：
 
 ```sh
 cd desktop
@@ -61,13 +61,17 @@ Linux 使用匹配发行版、架构和系统 Python 的 Rust/GTK/WebKitGTK 开�
 
 使用本轮安装态服务验证：一万条历史下查询旧任务、翻页和更新；同一会话来源依赖去重；撤销来源或更改文件后仍按当前状态阻止旧内容；迁移前后 task ID/完整 payload 不变；旧 b11 写入或更新后，新版查询会刷新依赖投影。完整 JSON 旧版本降级仍须按文档恢复迁移前备份。
 
-模型遵循现有授权配置，不自作主张更换为昂贵型号。工程门禁先用 Luna high；如果存在实际能力瓶颈，再用 6.1 Sol medium，保存两次结果。对应现有命令为：
+本轮 Full 工程复验 R12 的续跑被自动审批拒绝，理由是可能将私有仓库内容发给 OpenAI；虽然仓库元数据确认为 public、夹具全部为合成内容，Full 工具仍具有工作区外访问能力。因此 R12 保留审批阻断，没有得到新的工程 PASS/FAIL。后续受工作区约束的只读角色 smoke 也不能替代这个工程门禁。
+
+若当前授权仍被自动审批拦截，先完成无关的本机验收，再向用户明确请求：是否允许将 LocalPilot 开源仓库中验收所需的系统提示、工具定义、合成工程文件和执行收据发送给 OpenAI 的 gpt-6-luna / gpt-6.1-sol，以运行该 Full 工程测试；其他私人项目、凭据和用户资料不在该授权中。不要换进程、代理或入口绕过拒绝。
+
+模型遵循已确认的授权配置。工程门禁先用 Luna high；存在实际能力瓶颈时再用 6.1 Sol medium，保存两次结果。对应原有命令为：
 
 ```sh
 python scripts/qualify_openai_engineering.py --source-root "$LP_SOURCE" --key-file "$LP_KEY_FILE" --model gpt-6-luna --reasoning high --output "$LP_RUN/engineering-luna-high"
 ```
 
-只有确需复验时才重新调用；当前源码已有结果可核对引用。保留原 fixture、prompt、最多两个子任务和子任务 4096 单次输出上限。确认真实调用中的模型/effort，两个子任务各自实现并自测，外部 17 项 unittest 与 4 个 CLI 场景通过。若发生 length，检查同一 child 的 `WorkerOutputRecovery` 和预算计数；不因模型自述完成就改写验证等级。角色真实模型的小型续验使用 `scripts/qualify_openai_worker_roles.py --help` 指定本机已授权密钥文件和新目录。
+只有确需复验时才重新调用；当前源码已有结果可核对引用。保留原 fixture、prompt、最多两个子任务和子任务 4096 单次输出上限。确认真实调用中的模型/effort，两个子任务各自实现并自测，外部 17 项 unittest 与 4 个 CLI 场景通过。若发生 length，检查同一 child 的 `WorkerOutputRecovery` 和预算计数；不因模型自述完成就改写验证等级。角色真实模型的小型续验使用 `scripts/qualify_openai_worker_roles.py --help`，明确传入 `--session-boundary WORKSPACE_SCOPED_SERVICE_READ_ONLY`、本机已授权密钥文件和新目录。该验收使用普通 Core 工作区受限只读会话，父只汇总可见收据元数据；它不代表 Desktop Full 的内容协作验收。
 
 长时测试需要在新安装组合上检查 Full 一次授权及显式 extended 预算。注意 `qualify_openai_agent.py` 默认把脚本所在仓库加入 Python 路径，直接在源码树运行只证明源码服务。做安装态验收时，将它和 `qualify_linux_model.py` 原样复制到一个只含这两个脚本的独立 `harness/scripts/`，该目录不含 `agent`、`localpilot_service` 等产品源码；从新安装环境的 Python 执行，检查父进程和实际 Core 子进程均从安装目录加载模块，并记录脚本散列、模块来源及版本。然后在该 harness 下使用现有入口和实际私有 key 路径：
 
