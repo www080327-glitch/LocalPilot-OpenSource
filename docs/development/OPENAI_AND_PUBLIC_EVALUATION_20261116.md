@@ -1,5 +1,15 @@
 # OpenAI 云端接入与公开对照状态（2026-11-16）
 
+## 2026-11-17 当前入口
+
+本页后文保留 2026-11-16 的实现快照和当时的交接文字，供追溯使用；其中“没有 OpenAI 向导”“未运行真实 API”及账户核查步骤不再作为当前任务状态或操作要求。当前 RC14 / Core b31 的配置步骤见[根 README](../../README.md#模型和任务设置)，完整结果见[本轮审计](AUDIT_20261117.md)。本轮没有查询账户余额。
+
+首次设置和设置页现共用“连接云端模型”表单，可选择 OpenAI，默认模型为 `gpt-6-luna`；点击“保存并连接”后，在模型选择器选择目标模型。Suite 的既有 `cloud-configure --provider openai --key-file <私有密钥文件>` 入口也会生成显式 `protocol: responses` 路由。配置保存不发送推理任务，API 可用性以实际任务回执为准；下文未声明协议的 JSON 是旧 Chat 接入示例，不是当前 Luna 的推荐配置。
+
+[最终 R6 工程验收](../evidence/audit-20261117/root/engineering-luna-r6-b31-native/RESULTS.md)和[独立两小时任务](../evidence/audit-20261117/root/cloud-soak-2h-r4-b28-native/RESULTS.md)已完成；公开 ITBench-AA 的[原始评分](../evidence/audit-20261117/root/itbench-aa-r2-original-score/RESULTS.md)与[传输接续评分](../evidence/audit-20261117/root/itbench-aa-r2-transport-completed/RESULTS.md)分别保留自己的固定源码、分母和失败。它们不等于官方榜单成绩，也不补足尚未完成的 macOS 实机及系统安装验收。
+
+## 以下为 2026-11-16 历史记录
+
 ## 已完成与实际未运行
 
 Core 新增显式 `openai` 后端，Harbor 的 LocalPilot 适配器也可选择该后端。它继续使用产品 `AgentSession`、工具收据、持久会话、五档来源策略和云端数据出口策略。现有 `remote-openai`、DeepSeek 和本地配置的请求参数及持久身份不变；不会因为余额不足而在一次任务或冻结研究中暗换 provider。

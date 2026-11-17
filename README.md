@@ -95,16 +95,16 @@ localpilot agent --allow-local-on-battery '读取工作文件夹里的项目说�
 
 ### Linux 桌面候选
 
-Linux 桌面采用发行版原生 DEB，内含四组件 wheel 与隔离环境，依赖构建时匹配的系统 Python minor、GTK/WebKit；不含模型。本轮构建的是 **Debian 13 x86_64 独立 Test 候选**，包信息和 SHA-256 见 [续作验收记录](docs/evidence/native-continuation-20261116/RESULTS.md)，构建命令见 [Linux 桌面说明](desktop/docs/development/LINUX_20261116.md)。取得**与自己发行版和架构匹配、已核对 SHA-256 的候选包**后安装：
+Linux 桌面采用发行版原生 DEB，内含四组件 wheel 与隔离环境，依赖构建时匹配的系统 Python minor、GTK/WebKit；不含模型。当前源码为 **RC.14，Debian 13 x86_64 独立 Test 候选**；已完成的构建、包信息、SHA-256 和原生短验记录见 [RC14 验收记录](desktop/docs/evidence/audit-20261117-desktop/final-package-rc14/RESULTS.md)，构建命令见 [Linux 桌面说明](desktop/docs/development/LINUX_20261116.md)。当前没有公开 RC14 DEB 下载；重新构建的包须使用该次输出的 `SHA256SUMS`，不能沿用历史制品哈希。取得**与自己发行版和架构匹配、已核对 SHA-256 的候选包**后安装：
 
 ```sh
-sudo apt install ./LocalPilot-Test-5.0.1-rc.9-linux-x86_64.deb
+sudo apt install ./LocalPilot-Test-5.0.1-rc.14-linux-x86_64.deb
 ```
 
 Test 候选要求显式的独立测试目录。首次创建一个尚不存在的目录并写入私有身份标记：
 
 ```sh
-export LP_INSTALL_TEST_ROOT="$HOME/LocalPilot-Test-rc9"
+export LP_INSTALL_TEST_ROOT="$HOME/LocalPilot-Test-rc14"
 (umask 077; mkdir "$LP_INSTALL_TEST_ROOT" && \
   printf '%s\n' '{"purpose":"LocalPilot installation E2E"}' \
     > "$LP_INSTALL_TEST_ROOT/test-owner.json")
@@ -114,7 +114,7 @@ localpilot-desktop-test
 再次打开时复用同一个目录，无需重建或改写标记：
 
 ```sh
-LP_INSTALL_TEST_ROOT="$HOME/LocalPilot-Test-rc9" localpilot-desktop-test
+LP_INSTALL_TEST_ROOT="$HOME/LocalPilot-Test-rc14" localpilot-desktop-test
 ```
 
 这是独立候选包的安装形式，当前没有新的公开 Linux Release 下载；DEB 提取、自检与模块运行已有验证。实际 X11/WebKit 的首次设置、A/B 隔离和重开已验证，系统首装/升级/回滚仍待验收。Test 包使用自己的身份和明确的数据目录；普通正式身份不要求这个测试变量。较新 Debian 构建不能据此承诺兼容所有旧 Ubuntu；AppImage/Flatpak 尚未交付。Companion 可选桌面观察、systemd 和本地音轨的配置见 [Linux Companion](docs/development/LINUX_COMPANION_20261116.md)。
@@ -150,7 +150,7 @@ Intel 原生构建入口和依赖来源见 [Intel 桌面构建说明](desktop/do
 | --- | --- |
 | 文件任务 | 让 Agent 读取 CSV、统计数据、写报告、创建或修改 Markdown 文件。结果保存在你选的工作目录。 |
 | 模型管理 | 导入已有模型、查看下载进度、选择模型并自动加载。支持思考开关的本地模型显示关闭／开启两档。 |
-| 本地与云端 | 按任务选择本地模型或 DeepSeek，也可以选择本地优先等来源策略。切换模型时分别保存各自的思考设置。 |
+| 本地与云端 | 按任务选择本地模型、DeepSeek 或 OpenAI，也可以选择本地优先等来源策略。切换模型时分别保存各自的思考设置。 |
 | 连续对话 | 一段会话保留提问、回答和执行记录。切换权限或 Agent 模式不会清空对话。 |
 | 手机入口 | 微信扫码连接后可从手机提交任务，查看进度和实际回答；完成后自动回传，长结果分段发送。 |
 | 桌面宠物 | Companion 提供独立的轻聊和桌面入口，可在设置中开关。 |
@@ -175,7 +175,9 @@ Intel 原生构建入口和依赖来源见 [Intel 桌面构建说明](desktop/do
 
 ## 模型和任务设置
 
-Apple Silicon 可通过 oMLX 连接 MLX 模型；Intel 与 Linux 可连接已有本地 OpenAI 兼容服务。是否适合当前任务还取决于模型的工具调用能力、可用内存和实际上下文长度。DeepSeek 通过 API 接入；OpenAI 可通过新的显式 `openai` 路由接入主 Agent、子 Agent 和五档来源策略，配置方法见 [OpenAI 与公开评估说明](docs/development/OPENAI_AND_PUBLIC_EVALUATION_20261116.md)。密钥只使用本机私有凭据机制，不写进路由 JSON。当前没有 OpenAI 专用密钥向导，实际 API 可用性、usage 和费用必须分别核实。
+Apple Silicon 可通过 oMLX 连接 MLX 模型；Intel 与 Linux 可连接已有本地 OpenAI 兼容服务。是否适合当前任务还取决于模型的工具调用能力、可用内存和实际上下文长度。DeepSeek 与 OpenAI 均可在首次设置或设置页的“连接云端模型”中配置：选择提供商、填写模型和 API 密钥，再点“保存并连接”。OpenAI 默认模型为 `gpt-6-luna`，可按实际需求修改；该入口创建显式 Responses 路由，供主 Agent、子 Agent 和五档来源策略使用。
+
+密钥只保存到本机私有目录，路由配置保留凭据文件路径。保存配置不会发送模型任务，也不会自动切换已有 Session；配置完成后在模型选择器选择目标模型，API 可用性以实际任务结果为准。当前实现与真实 Luna 验证见 [本轮完整审计](docs/development/AUDIT_20261117.md)；[2026-11-16 接入记录](docs/development/OPENAI_AND_PUBLIC_EVALUATION_20261116.md)保留此前手动路由阶段的历史，不作为当前 GUI 操作指南。
 
 来源选项包括完全本地、本地优先、平衡、云端优先和完全云端。完全本地不会调用云端模型；使用云端模型时，允许读取的任务上下文会交给所选服务处理。
 

@@ -1,0 +1,43 @@
+{
+  "source_commit": "89c46468995c46f90a73d9c41ea0044d564cd175",
+  "production_source_commit": "c5439659a579b2ee9e74fd53e6d3232fe12fb855",
+  "command": [
+    "<installed_runtime>/bin/python",
+    "-B",
+    "-m",
+    "unittest",
+    "tests.test_channel_suite_diagnostics",
+    "tests.test_channel_suite_integration",
+    "-v"
+  ],
+  "start_utc": "2026-11-17T01:10:38.890913+00:00",
+  "installed_wheels": [
+    {
+      "file": "localpilot_agent_service-5.0.0b31-py3-none-any.whl",
+      "bytes": 581518,
+      "sha256": "e6ee66824b0d751db808854da22375d2ed02e07fbd1e516ce5f47d74c1073e6f"
+    },
+    {
+      "file": "localpilot_channels-0.1.0a4-py3-none-any.whl",
+      "bytes": 45932,
+      "sha256": "575a3cce3138cddf8e0fef2953c9e612d48f5975312102aff1e727b57d6cb50c"
+    },
+    {
+      "file": "localpilot_companion-0.5.7b8-py3-none-any.whl",
+      "bytes": 354839,
+      "sha256": "26c64a8e1a84b447432de69652222d7397c8a97671d572c15cf8644eb6d3146e"
+    },
+    {
+      "file": "localpilot_suite-0.2.0b32-py3-none-any.whl",
+      "bytes": 108572,
+      "sha256": "7098f88fd9d98bbd9bea7a68dcd530d5e0ad1f4d9f82ef8fdee887809b7845df"
+    }
+  ],
+  "harness_kind": "Existing tests copied without source packages; product imports verified under runtime prefix with -I",
+  "system_install": false,
+  "real_platform_accounts": false,
+  "real_model_calls": false,
+  "exit_code": 0,
+  "elapsed_seconds": 5.773278180000034,
+  "end_utc": "2026-11-17T01:10:44.668180+00:00"
+}

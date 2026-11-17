@@ -4,19 +4,19 @@
 
 ## 快速安装
 
-在 [公开 Release](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases) 选择实际存在、匹配系统及架构的资产。当前 Linux 候选需要按 [Linux 构建与验收指南](docs/development/LINUX_20261116.md) 从源码构建；不要把下面的文件名当成已经发布的下载链接。
+在 [公开 Release](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases) 选择实际存在、匹配系统及架构的资产。当前 Linux RC14 候选需要按 [Linux 构建与验收指南](docs/development/LINUX_20261116.md) 从源码构建；不要把下面的文件名当成已经发布的下载链接。[RC14 构建与原生短验记录](docs/evidence/audit-20261117-desktop/final-package-rc14/RESULTS.md)保留原制品的身份和结果；重新构建后应核对该次输出的 `SHA256SUMS`，不能套用历史制品哈希。
 
 Linux 构建成功后，在含有 `SHA256SUMS` 和 DEB 的输出目录执行：
 
 ```sh
 sha256sum -c SHA256SUMS
-sudo apt install ./LocalPilot-5.0.1-rc.9-linux-x86_64.deb
+sudo apt install ./LocalPilot-5.0.1-rc.14-linux-x86_64.deb
 localpilot-desktop
 ```
 
-首次设置可选择现有的本机 OpenAI 兼容模型端点，也可配置云端提供方。安装包不含模型权重；CPU / CUDA 推理由用户选择的本机服务提供。不要在 Linux 安装 macOS APP、使用 MLX 文件夹入口，或把 x86_64 DEB 安装到 ARM 设备。
+首次设置可选择现有的本机 OpenAI 兼容模型端点，也可在“连接云端模型”中选择 DeepSeek 或 OpenAI、填写模型和密钥，再点“保存并连接”。设置页也提供同一入口；OpenAI 默认 `gpt-6-luna`，保存配置不会发送模型任务。安装包不含模型权重；CPU / CUDA 推理由用户选择的本机服务提供。不要在 Linux 安装 macOS APP、使用 MLX 文件夹入口，或把 x86_64 DEB 安装到 ARM 设备。
 
-独立测试构建使用 `LocalPilot-Test-5.0.1-rc.9-linux-x86_64.deb`、命令 `localpilot-desktop-test` 和身份 `io.localpilot.desktop.test`。启动前须按[根 README 的测试安装步骤](../README.md#linux-桌面候选)创建私有测试根目录和 `test-owner.json`，并显式传入 `LP_INSTALL_TEST_ROOT`；仅使用相同 Bundle ID 下的新后台目录不能证明旧版本的 WebView 隔离。RC.9 的存储隔离与认证恢复实现见 [恢复说明](docs/development/SESSION_WEBVIEW_RECOVERY_20261116.md)。Linux 桌面升级/降级由系统包管理器处理；设置中的组件事务仍独立管理 Core、Companion 和 Suite。该 DEB 依赖构建时的系统 Python **同一小版本**；本轮产物不承诺兼容 Debian 12、Ubuntu 或未实测的 ARM Linux。
+独立测试构建使用 `LocalPilot-Test-5.0.1-rc.14-linux-x86_64.deb`、命令 `localpilot-desktop-test` 和身份 `io.localpilot.desktop.test`。启动前须按[根 README 的测试安装步骤](../README.md#linux-桌面候选)创建私有测试根目录和 `test-owner.json`，并显式传入 `LP_INSTALL_TEST_ROOT`；仅使用相同 Bundle ID 下的新后台目录不能证明旧版本的 WebView 隔离。RC.9 的存储隔离与认证恢复实现见 [恢复说明](docs/development/SESSION_WEBVIEW_RECOVERY_20261116.md)。Linux 桌面升级/降级由系统包管理器处理；设置中的组件事务仍独立管理 Core、Companion 和 Suite。该 DEB 依赖构建时的系统 Python **同一小版本**；本轮产物不承诺兼容 Debian 12、Ubuntu 或未实测的 ARM Linux。RC14 已完成提取运行的原生短验，系统首装、升级和回滚仍未验收。
 
 macOS 安装与隔离测试继续使用 [现有安装与回滚流程](../docs/development/MAC_PORTABILITY_20261114.md)；Intel 构建见 [Intel Mac 指南](docs/development/INTEL_MAC_20261116.md)。尚未核验的下载资产、安装、回滚或模型能力不作为通过项。
 

@@ -1,0 +1,21 @@
+{
+  "installed_imports": {
+    "agent": "<installed_runtime>/lib/python3.12/site-packages/agent/__init__.py",
+    "localpilot_service": "<installed_runtime>/lib/python3.12/site-packages/localpilot_service/__init__.py",
+    "localpilot_suite": "<installed_runtime>/lib/python3.12/site-packages/localpilot_suite/__init__.py",
+    "localpilot_channels": "<installed_runtime>/lib/python3.12/site-packages/localpilot_channels/__init__.py",
+    "companion": "<installed_runtime>/lib/python3.12/site-packages/companion/__init__.py"
+  },
+  "service_version": "5.0.0b31",
+  "distributions": {
+    "localpilot-agent-service": "5.0.0b31",
+    "localpilot-suite": "0.2.0b32",
+    "localpilot-companion": "0.5.7b8",
+    "localpilot-channels": "0.1.0a4",
+    "watchdog": "6.0.0",
+    "psutil": "7.2.2",
+    "pypdf": "6.21.4",
+    "Pillow": "12.3.0",
+    "defusedxml": "0.7.1"
+  }
+}

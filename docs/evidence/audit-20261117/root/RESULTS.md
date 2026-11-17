@@ -10,6 +10,7 @@ Current production source is Core `5.0.0b31` / Desktop `5.0.1-rc.14`: remote com
 
 | Work item | Status at this report's preparation | Claim supported here |
 | --- | --- | --- |
+| [b31 restored-source continuation](continuation-b31/RESULTS.md) | **Core 1,545 PASS / 99 SKIP; installed components 12/12 PASS** | Full Core discovery on the final b31 source; separately rebuilt and installed current wheels for actual channel HTTP/process lifecycle. No production changes, live model calls, system installation, or new benchmark result. Seven existing archives / 743 payloads rechecked without changing their historical results. |
 | Luna HTTP, function round trip, and streaming | PASS | The actual configured provider path returned usable responses and tool results. |
 | Core smoke checks | 3/3 PASS | Shell/read, a genuine child read, and restart lookup of the same completed task. |
 | Parallel child Shells | PASS | Two completed child processes overlapped for 4.663 seconds. |

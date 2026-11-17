@@ -137,6 +137,8 @@ has not been measured here. Addressing it requires a separate context-history
 change. This is an **unresolved limitation**, not a fixed defect or an additional
 completed audit item; the running benchmark snapshot is unchanged.
 
+The [b31 continuation review](../evidence/audit-20261117/root/continuation-b31/RESULTS.md#请求前缀限制复核) reproduces the same structure with the real request functions and no network calls, preserving its probe and clearly labeled tool-output transcript. The next payload still contains encrypted reasoning and the paired function call/result; no tool-protocol failure is established by that probe. Archived actual-model receipts lack provider `input_transformations`, so actual reasoning removal and its impact remain unmeasured. The same continuation adds a full b31 Core regression and a separate installed-wheel lifecycle check without changing this implementation.
+
 ## Follow-up: corrected Shell proposals and Full child projection
 
 The current Core b28 source is published at `03535fe943f64f49e9e3d79e7949aca6c9ec9b87`. Two additional concrete defects were reproduced and fixed without changing the main forty-item counts: a fresh successful host Shell call can now settle the identical never-dispatched proposal when only timeout changed; child repair references gain the same worker prefix as their projected receipts. `_finish`, tool schemas, prompts and budgets are unchanged.
