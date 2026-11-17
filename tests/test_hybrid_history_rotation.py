@@ -1,5 +1,6 @@
 """Hybrid request identities survive real pre-dispatch failures and rotation."""
 from copy import deepcopy
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -55,6 +56,7 @@ class HybridHistoryRotationTests(unittest.TestCase):
         first = service.wait(service.create_task(first_request)['id'])
         self.assertEqual(first['status'], 'completed')
         first_window = deepcopy(self.backend.requests[-1]['messages'])
+        self.assertNotIn('work_contract', json.loads(first_window[-1].content.partition('\n')[2]))
         sid = first['session_id']
         oversized_input = 'Z' * 4000
         second = service.wait(service.create_task(TaskRequest(oversized_input, session_id=sid))['id'])

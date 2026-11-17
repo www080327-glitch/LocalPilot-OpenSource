@@ -64,7 +64,9 @@ def host_state(runtime, state, tools):
                  primary_model=runtime.current_primary_model,
                  plan_mode=runtime._planning, active_plan=deepcopy(runtime.active_plan),
                  permission_mode=runtime.permission_mode,
-                 goals=runtime._goal_records(), projection='localpilot_v5_v1', work_contract=WORK_CONTRACT)
+                 goals=runtime._goal_records(), projection='localpilot_v5_v1')
+    if tools:
+        state['work_contract'] = WORK_CONTRACT
     if runtime.worker_roles:
         roles = next((tool['function']['parameters']['properties'].get('role', {}).get('enum', [])
                       for tool in tools if tool['function']['name'] == 'delegate'), [])
