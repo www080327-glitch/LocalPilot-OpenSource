@@ -95,7 +95,7 @@ localpilot agent --allow-local-on-battery '读取工作文件夹里的项目说�
 
 ### Linux 桌面候选
 
-Linux 桌面采用发行版原生 DEB，内含四组件 wheel 与隔离环境，依赖构建时匹配的系统 Python minor、GTK/WebKit；不含模型。当前源码为 **RC.14，Debian 13 x86_64 独立 Test 候选**；已完成的构建、包信息、SHA-256 和原生短验记录见 [RC14 验收记录](desktop/docs/evidence/audit-20261117-desktop/final-package-rc14/RESULTS.md)，构建命令见 [Linux 桌面说明](desktop/docs/development/LINUX_20261116.md)。当前没有公开 RC14 DEB 下载；重新构建的包须使用该次输出的 `SHA256SUMS`，不能沿用历史制品哈希。取得**与自己发行版和架构匹配、已核对 SHA-256 的候选包**后安装：
+Linux 桌面采用发行版原生 DEB，内含四组件 wheel 与隔离环境，依赖构建时匹配的系统 Python minor、GTK/WebKit；不含模型。RC14 的 Debian 13 x86_64 原生短验见 [RC14 验收记录](desktop/docs/evidence/audit-20261117-desktop/final-package-rc14/RESULTS.md)；Ubuntu 24.04 arm64 的新 Test DEB 已另行通过系统首装、apt 升级和回滚，详见[续验](desktop/docs/evidence/audit-20261117-desktop/native-delivery-20261117/RESULTS.md)。两种架构的产物和哈希互不通用。当前没有公开 RC14 DEB 下载；重新构建必须使用该次输出的 `SHA256SUMS`，不能沿用历史制品哈希。取得**与自己发行版和架构匹配、已核对 SHA-256 的候选包**后安装：
 
 ```sh
 sudo apt install ./LocalPilot-Test-5.0.1-rc.14-linux-x86_64.deb
@@ -117,7 +117,7 @@ localpilot-desktop-test
 LP_INSTALL_TEST_ROOT="$HOME/LocalPilot-Test-rc14" localpilot-desktop-test
 ```
 
-这是独立候选包的安装形式，当前没有新的公开 Linux Release 下载；DEB 提取、自检与模块运行已有验证。实际 X11/WebKit 的首次设置、A/B 隔离和重开已验证，系统首装/升级/回滚仍待验收。Test 包使用自己的身份和明确的数据目录；普通正式身份不要求这个测试变量。较新 Debian 构建不能据此承诺兼容所有旧 Ubuntu；AppImage/Flatpak 尚未交付。Companion 可选桌面观察、systemd 和本地音轨的配置见 [Linux Companion](docs/development/LINUX_COMPANION_20261116.md)。
+这是独立候选包的安装形式，当前没有新的公开 Linux Release 下载。RC14 Debian x86_64 的 DEB 提取、自检与 WebKit GUI 首次设置已有记录；Ubuntu arm64 Test DEB 的系统 apt 循环也已通过，但没有该 VM 的桌面 GUI 验收。Test 包使用自己的身份和明确的数据目录；普通正式身份不要求这个测试变量。较新 Debian 构建不能据此承诺兼容所有旧 Ubuntu；AppImage/Flatpak 尚未交付。Companion 可选桌面观察、systemd 和本地音轨的配置见 [Linux Companion](docs/development/LINUX_COMPANION_20261116.md)。
 
 ### Apple Silicon：已有桌面安装包
 

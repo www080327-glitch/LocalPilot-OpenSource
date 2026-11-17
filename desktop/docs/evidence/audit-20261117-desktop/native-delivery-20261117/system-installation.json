@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "host": {
+    "distribution": "Ubuntu 24.04.4 LTS",
+    "architecture": "arm64",
+    "kernel": "Linux 6.8.0-149-generic",
+    "glibc": "2.39",
+    "python": "3.12.3",
+    "normal_system_install_permission": true,
+    "gui_session": false
+  },
+  "identity": {
+    "package": "local-pilot-test",
+    "bundle_id": "io.localpilot.desktop.test",
+    "test_root_marker_sha256": "8487dfdcf54cf360951d6dd600563a58bba5a1cec4a97841b8a5fda1e7d6afb4"
+  },
+  "transactions": [
+    {
+      "operation": "first_install",
+      "from": null,
+      "to": "5.0.1-rc.13",
+      "package_sha256": "b32c9570c8e2dbd04ee400880a0ca52d66642a7d1d29a3bac646609a43f3db1f",
+      "self_check": "PASS",
+      "modules": {
+        "core": "5.0.0b30",
+        "suite": "0.2.0b32",
+        "companion": "0.5.7b8",
+        "channels": "0.1.0a4"
+      }
+    },
+    {
+      "operation": "apt_upgrade",
+      "from": "5.0.1-rc.13",
+      "to": "5.0.1-rc.14",
+      "package_sha256": "10a0130f62bbffbdb499c46ab0553441f889a9c750920a0c6c40fcf4abd6a659",
+      "self_check": "PASS",
+      "modules": {
+        "core": "5.0.0b31",
+        "suite": "0.2.0b32",
+        "companion": "0.5.7b8",
+        "channels": "0.1.0a4"
+      }
+    },
+    {
+      "operation": "apt_rollback_downgrade",
+      "from": "5.0.1-rc.14",
+      "to": "5.0.1-rc.13",
+      "package_sha256": "b32c9570c8e2dbd04ee400880a0ca52d66642a7d1d29a3bac646609a43f3db1f",
+      "self_check": "PASS",
+      "modules": {
+        "core": "5.0.0b30",
+        "suite": "0.2.0b32",
+        "companion": "0.5.7b8",
+        "channels": "0.1.0a4"
+      }
+    },
+    {
+      "operation": "restore_candidate_after_rollback",
+      "from": "5.0.1-rc.13",
+      "to": "5.0.1-rc.14",
+      "package_sha256": "10a0130f62bbffbdb499c46ab0553441f889a9c750920a0c6c40fcf4abd6a659",
+      "self_check": "PASS",
+      "modules": {
+        "core": "5.0.0b31",
+        "suite": "0.2.0b32",
+        "companion": "0.5.7b8",
+        "channels": "0.1.0a4"
+      }
+    }
+  ],
+  "invariants": {
+    "marker_sha256_unchanged": true,
+    "localpilot_services_started": false,
+    "gui_interaction_performed": false,
+    "model_request_performed": false
+  }
+}
