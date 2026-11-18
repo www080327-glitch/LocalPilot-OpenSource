@@ -41,7 +41,7 @@
 - 系统“减少动态效果”：开启时本机诊断 `edge.motion=false`，关闭后恢复 `true`；应用设置也已切换并恢复。系统偏好已恢复测试前状态。
 - 六个锚点的原生窗口定位：PASS，单显示器、scale factor 2.0；位置和诊断明细见 `ANCHOR_RESULTS.json`。这不等于物理拖动测试。
 - 物理拖动、多屏：NOT_RUN。只有一个内建显示器；当前角色没有可见边缘姿态，渲染透传指针事件。
-- 可见动画 ≥24 Hz：FAIL。原始 6009 ms `measure_animation` 采样中，RETRACTING 与 PEEKING 可见变化均为 0，观测 0 Hz；角色资源仍为 pending / opacity 0。未用 rAF 回调率冒充可见动画帧率，也没有可录制的可见动画视频。公开截图仅包含通用主界面；包含本机自定义角色素材的边缘状态原图留在 `.private/screenshots/`，未随 PR 发布。
+- 可见动画 ≥24 Hz：FAIL。原始 6009 ms `measure_animation` 采样中，RETRACTING 与 PEEKING 可见变化均为 0，观测 0 Hz；角色资源仍为 pending / opacity 0。未用 rAF 回调率冒充可见动画帧率，也没有可录制的可见动画视频。主界面与边缘 pending 状态截图均已按用户授权纳入公开证据 `screenshots/`。
 
 ## Full R12 与安装态 Full + extended soak
 
