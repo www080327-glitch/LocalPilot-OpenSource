@@ -1,0 +1,25 @@
+{
+  "check": "authenticated model metadata GET; no inference",
+  "performed_after_reboot": true,
+  "provider_host": "api.openai.com",
+  "tls_verified": true,
+  "route": "active tunnel interface",
+  "credential_source": "existing local 0600 key file; path and contents withheld",
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/v1/models/gpt-6-luna",
+      "http_status": 401,
+      "provider_error": "Incorrect API key provided"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/models/gpt-6.2-sol",
+      "http_status": 401,
+      "provider_error": "Incorrect API key provided"
+    }
+  ],
+  "model_inference_requests": 0,
+  "billable_model_tokens": 0,
+  "conclusion": "API host was reached over the active tunnel, but the supplied credential was rejected before inference."
+}

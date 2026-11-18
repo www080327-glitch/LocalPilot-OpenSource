@@ -49,6 +49,10 @@
 
 随后在真实 rc.17 安装环境，用只含两份验收 runner 副本的独立 harness 启动 Full + extended 7200 秒 soak。父进程与实际 Core 子进程的产品模块均从已安装 runtime 的 `site-packages` 导入；源码目录不在 harness 或产品模块路径中。请求在约 2.07 秒因同一 HTTP 401 失败，0 心跳、无完成收据、无后续 `read_file` 收据、0 子任务/模型调用，usage UNKNOWN；owned Core 已停止。**两小时门禁未通过**。没有使用 Sol；认证错误不构成能力瓶颈。见 `SOURCE_IMPORTS.json`、`INSTALLED_SOAK_SUMMARY.json` 和 `.private/installed-soak-*`。
 
+重启后补做了不计费的认证/连通性诊断：API hostname 的 TLS 请求经活动隧道路由到达 OpenAI；对 `GET /v1/models/gpt-6-luna` 和 `GET /v1/models/gpt-6.2-sol`，服务端均明确返回 `401 Incorrect API key provided`。没有生成请求或模型 token。由此确认当前阻断是凭据被 API 拒绝；之前仅记录通用 401 的 R12/soak 结果不应归因于 VPN 断开。结构化结果见 `AUTH_NETWORK_CHECK.json`。
+
+下一次授权模型验收按用户最新偏好使用 `gpt-6-luna` / medium；仅在 Luna 出现实际能力瓶颈时改用 `gpt-6.2-sol` / medium。保持原夹具、工具 schema 和稳定提示前缀不变；从 Responses API usage 中记录 `input_tokens_details.cached_tokens`，只有实际读数才算缓存命中。若 R12 重试未报告缓存读数，不启动两小时 soak，先保留计费数据并查明原因。
+
 ## 仍未完成 / 硬件缺项
 
 - 真实 Intel Mac 原生构建和安装验收：**NOT_RUN**，本机是 arm64。

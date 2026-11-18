@@ -49,3 +49,13 @@ python scripts/qualify_openai_engineering.py --source-root "$LP_SOURCE" --key-fi
 ```
 
 R12 与安装态 soak 均在模型推理前 HTTP 401；分别为 0 次模型调用/0 子任务和 0 次模型调用/0 心跳。runner 散列、结果散列、进程停止和模块来源见对应 JSON；原始私有日志只留本地。
+
+## 重启后认证与路由检查（无模型推理）
+
+```text
+GET https://api.openai.com/v1/models/gpt-6-luna
+GET https://api.openai.com/v1/models/gpt-6.2-sol
+Authorization: Bearer <read from the existing local 0600 key file; value not logged>
+```
+
+两次均从活动隧道路由收到 `401 Incorrect API key provided`；没有调用 Responses API、生成内容或产生模型 token。结构化结果见 `AUTH_NETWORK_CHECK.json`。
