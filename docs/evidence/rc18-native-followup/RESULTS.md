@@ -16,7 +16,7 @@ RC17 在 Apple Silicon 已通过独立 Test APP 升级、回滚和恢复，两�
 
 ## 桌面回归
 
-| 项目 | 冻结源码上的结果 |
+| 项目 | 验证结果 |
 |---|---|
 | Vitest | 13 个测试文件，75 项通过，0 跳过 |
 | 生产前端构建 | TypeScript 与 Vite 通过，转换 1,896 个模块，输出 9 个文件 |
@@ -24,7 +24,7 @@ RC17 在 Apple Silicon 已通过独立 Test APP 升级、回滚和恢复，两�
 | 版本与桌面文档检查 | 通过。118 份受测输入前后散列一致 |
 | 新增 Playwright 页面用例 | 滑块、标题栏 X、姿态恢复共 3 项，均阻断于 Chromium 启动，页面断言执行数为 0 |
 
-Chromium 的进程单例 socket 遭环境拒绝（`EPERM`）。允许其在受限环境外运行的请求被自动审批拒绝，本环境禁用沙箱权限升级。共享桌面只报告一个虚拟输出。页面测试使用仓库现有的 Tauri 桥，即使在其他机器通过，真实窗口的尺寸、收起与物理拖动仍须分别观察。[桌面回归](audit/desktop-regressions.json) · [页面测试记录](audit/ui-controls.json) · [原始日志索引](audit/EVIDENCE_MANIFEST.json)
+页面启动尝试发生在冻结前。冻结版的前端全量与生产构建已单独执行。Chromium 的进程单例 socket 遭环境拒绝（`EPERM`）。允许其在受限环境外运行的请求被自动审批拒绝，本环境禁用沙箱权限升级。共享桌面只报告一个虚拟输出。页面测试使用仓库现有的 Tauri 桥，即使在其他机器通过，真实窗口的尺寸、收起与物理拖动仍须分别观察。[桌面回归](audit/desktop-regressions.json) · [页面测试记录](audit/ui-controls.json) · [原始日志索引](audit/EVIDENCE_MANIFEST.json)
 
 ## Debian 13 x86_64 构建与实际运行
 
