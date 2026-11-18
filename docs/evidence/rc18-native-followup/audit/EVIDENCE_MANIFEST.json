@@ -1,0 +1,195 @@
+{
+  "kind": "RC18_DESKTOP_UI_EVIDENCE_INVENTORY",
+  "frozen_desktop_source": "2071edb96b6a286c0336bea9adfe99710d0439e4",
+  "frozen_desktop_tree": "819741f0607c758521684acc19292770a961c93a",
+  "baseline_rc17_native_receipts": "bef2c90ac7c155c74a55dd33cb1244ad7f90b44f",
+  "scope": {
+    "desktop_final": "Frozen rc.18 npm/Vitest, production build, version/doc checks and desktop Python regression logs. Compiled assets identified by manifest.",
+    "pet_frontend_build": "Earlier candidate development build; final production result is identified by desktop-regressions.json.",
+    "ui_and_pet_browsers": "Two controls cases and a separate pose-recovery case stopped at Chromium launch; the three cases executed zero page assertions. Browser installation attempt is retained. The earlier Apple Silicon model configuration cases were separate.",
+    "native": "Native Mac/RC17 historical readback, static asset/import and control reviews. Native rc.18 release decisions and Linux evidence are reported separately."
+  },
+  "readable_files": [
+    {
+      "path": "audit/desktop-regressions.json",
+      "source": "desktop-final/RESULTS.json",
+      "bytes": 3455,
+      "sha256": "6733c19073a10d20849f698da264cc289f587286e0c6d958c086846abd4333f0"
+    },
+    {
+      "path": "audit/frontend-build-files.json",
+      "source": "desktop-final/dist-manifest.json",
+      "bytes": 1337,
+      "sha256": "1cfc71d3f22a621a3a625e80697baa67d84e40a4f8a60ed25e5aa3ae4d7f69fa"
+    },
+    {
+      "path": "audit/ui-controls.json",
+      "source": "ui/RESULTS.json",
+      "bytes": 7783,
+      "sha256": "27677fe759dab238dd5b84973bb5f93c74cda213ea18f3bf39ed0f479f94bb4c"
+    },
+    {
+      "path": "audit/ui-environment.json",
+      "source": "ui/UI_ENVIRONMENT.json",
+      "bytes": 1450,
+      "sha256": "002c752baf16f491586b18b7bd36c7caec455033288f48d38cdee1550679ac9a"
+    },
+    {
+      "path": "audit/pet-control-review.json",
+      "source": "ui/PET_CONTROL_REVIEW.json",
+      "bytes": 2670,
+      "sha256": "832ff3748306b9ee78021d6c1ee48c2e5059feed353ced5d313e9c0117ebb848"
+    },
+    {
+      "path": "audit/pose-import-review.json",
+      "source": "ui/RUST_IMPORT_REVIEW.json",
+      "bytes": 3321,
+      "sha256": "76f5226a812e8612ea23d0d33416379c7da9eee01f7daaa3afcc1f1c9aeb395a"
+    },
+    {
+      "path": "audit/asset-audit.json",
+      "source": "pet/ASSET_AUDIT.json",
+      "bytes": 3356,
+      "sha256": "6d0cebf8397ab1e3cb6d1ffc2a56ab432a7ff8b4f640601c88a3a04d874b38ac"
+    },
+    {
+      "path": "mac-record-readback.json",
+      "source": "mac-record-readback.json",
+      "bytes": 523,
+      "sha256": "fc112d8544fc353849657f23a47af7c8b491d8d6b091448b368f066e645f37d0"
+    }
+  ],
+  "archives": [
+    {
+      "path": "archives/desktop-ui-raw.tar.gz",
+      "bytes": 25515,
+      "sha256": "4617c6a1470e647299dd276380027fa19b83ef30576c46f8fa923fd7bf31d47e",
+      "files_count": 22,
+      "members": [
+        {
+          "path": "desktop-final/candidate-versions.log",
+          "bytes": 113,
+          "sha256": "e35901728ebdfba55e12cf805a1954b22cd55267e0ddede0bc84e37962fff25f"
+        },
+        {
+          "path": "desktop-final/desktop-docs.log",
+          "bytes": 68,
+          "sha256": "28eaa8ee490703878abfee56de33fe9080d733851c655518c6498c033f5fa87c"
+        },
+        {
+          "path": "desktop-final/desktop-python.log",
+          "bytes": 2014,
+          "sha256": "c0cb612ccab6f90b99de3198fb7fad1889fc099f73f6e61e40d5b78b0e7dee5d"
+        },
+        {
+          "path": "desktop-final/npm-build.log",
+          "bytes": 1426,
+          "sha256": "522131c14f342d52669f38d58e0c90db978d1e574f49f13ff5cdc38af7d93017"
+        },
+        {
+          "path": "desktop-final/npm-test.log",
+          "bytes": 611,
+          "sha256": "12d9281678054ccfc8adaf5d2618540847ee22a7a4ab68a64261de54f2774041"
+        },
+        {
+          "path": "desktop-final/source-after.json",
+          "bytes": 12703,
+          "sha256": "94d264ddd50c8d80f7a84cfc16f177af99a6551ce14e8ad531c252511cb6fbd9"
+        },
+        {
+          "path": "desktop-final/source-before.json",
+          "bytes": 12703,
+          "sha256": "94d264ddd50c8d80f7a84cfc16f177af99a6551ce14e8ad531c252511cb6fbd9"
+        },
+        {
+          "path": "pet/browser/attempt1/.last-run.json",
+          "bytes": 96,
+          "sha256": "c77bd2df524f24aeb4ed5bbb91ad31e1c51c79838b754c154f60422dba682d38"
+        },
+        {
+          "path": "pet/browser/attempt1/pet-window-pet-settings-of-9b33c-cal-character-is-identified/error-context.md",
+          "bytes": 5053,
+          "sha256": "69c0aadef3f2cb30ff5cc8febfe53a3b43ba4ce7f527074d34968ab9a50cc124"
+        },
+        {
+          "path": "pet/browser/browser-tests.json",
+          "bytes": 19757,
+          "sha256": "a221f844864fd545540e1336e0664d444ee97fb1a4bec18722fa3ec3e5d434ab"
+        },
+        {
+          "path": "pet/frontend-build.log",
+          "bytes": 1139,
+          "sha256": "808370e62b96ec3ccb25a02d039901f0a2fd3dbdd67cf627b417622561a8c5eb"
+        },
+        {
+          "path": "pet/playwright-install-headless-shell.log",
+          "bytes": 6590,
+          "sha256": "6041177e3a4a945f6876d579240e07e4692b85a401a935f29a554e1f148dc542"
+        },
+        {
+          "path": "pet/playwright-r1.log",
+          "bytes": 6734,
+          "sha256": "40f1beef8ceeb4b7b49c6c5dcb62072d0fbc3158fdd4d79aa0b4dff8790de3e3"
+        },
+        {
+          "path": "ui/UI_ENVIRONMENT.json",
+          "bytes": 1450,
+          "sha256": "002c752baf16f491586b18b7bd36c7caec455033288f48d38cdee1550679ac9a"
+        },
+        {
+          "path": "ui/list.log",
+          "bytes": 491,
+          "sha256": "bbe96e01c00b6e44e7883b95b574d8e8344934cb1c1a8114c95aa8d08c02dbdf"
+        },
+        {
+          "path": "ui/playwright.log",
+          "bytes": 13417,
+          "sha256": "398faf25434f138ceaee9d4ef2768acda507abfad063755ab3c3d5464c22f13c"
+        },
+        {
+          "path": "ui/playwright/browser-tests.json",
+          "bytes": 36955,
+          "sha256": "888284c79674173992772c666f7b924662ff4759d6db4e299ffb57f526b8f7f4"
+        },
+        {
+          "path": "ui/playwright/test-results/pet-controls-the-pet-size--e212f-ow-and-restores-the-default/error-context.md",
+          "bytes": 5064,
+          "sha256": "7db52c91f4f1a929c0168ea4221eb8553b89187ff4713b270eeaafab6faf437a"
+        },
+        {
+          "path": "ui/playwright/test-results/pet-controls-the-pet-size--e212f-ow-and-restores-the-default/trace.zip",
+          "bytes": 4214,
+          "sha256": "a03809972dceb30f424eec305d9d4148892de6d639df79aec7cbdd6c63e0ca4d"
+        },
+        {
+          "path": "ui/playwright/test-results/pet-controls-the-title-bar-d302b-ng-retains-the-unsent-draft/error-context.md",
+          "bytes": 5093,
+          "sha256": "ce94c7d4dc46cf618e07c53a5bf1874140e13ec52a4597ac632fefa96a250746"
+        },
+        {
+          "path": "ui/playwright/test-results/pet-controls-the-title-bar-d302b-ng-retains-the-unsent-draft/trace.zip",
+          "bytes": 4231,
+          "sha256": "af670e9b7e15c4384389e22c25cfb085f525be48aaeb95dce5da762fe42ce728"
+        },
+        {
+          "path": "ui/typecheck.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  ],
+  "verified_against_original_validation_bytes": true,
+  "credential_pattern_matches": 0,
+  "nested_playwright_trace_payloads_scanned": true,
+  "counts": {
+    "readable_copies": 8,
+    "archives": 1,
+    "archive_members": 22,
+    "unique_original_inputs": 29,
+    "delivered_files_in_this_inventory": 10,
+    "inventory_counts_itself_once": true
+  },
+  "inventory_file": "audit/EVIDENCE_MANIFEST.json",
+  "self_digest": "Covered by release-level SHA256SUMS."
+}

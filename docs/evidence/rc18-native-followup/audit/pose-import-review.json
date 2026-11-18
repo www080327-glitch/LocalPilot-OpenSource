@@ -1,0 +1,31 @@
+{
+  "kind": "INDEPENDENT_READ_ONLY_RUST_POSE_IMPORT_REVIEW",
+  "status": "PASS_SOURCE_REVIEW",
+  "source_sha256": {
+    "desktop/src-tauri/src/pet_assets.rs": "f5717a8fb1a9e16ec73e699b5a6baca74eb9ddbae73ca8ebc59c4cb89a6f0446",
+    "desktop/src-tauri/src/pet_edge.rs": "5c41d3b0fc8d724be2064e8a1c95e5546b67234a1dd714a420c1c5a51faf0725",
+    "desktop/src/Pet.tsx": "3177c57ea469dbf90ad53120b81d55e443af74a792ad6cd5fa7bc2b41dd54afd",
+    "desktop/src/pet/EdgeCharacter.tsx": "165fc4d422ba40dc0251a46f2c362b9b3742130e916e86c5ecefd03faa8f4369",
+    "desktop/src/pet/policy.ts": "c74a05c1399cc460e0836e4ac00f9d0174fb9bfce1435d1507eab74135a4553e",
+    "desktop/src/pet/types.ts": "5e52569ea886510921a74e2e3571db991eb19c0d66506c16264002724525e177",
+    "desktop/tests/ui/pet-window.spec.ts": "d335b65fd52e2e6fa69d1fb341f1ba1c5aec8f612107a8314e527fa553c0bd2d"
+  },
+  "initial_source_sha256": "4ff40ca61634462f53af767195ce4828822e8028af1adee6551363743905ce95",
+  "resolved_findings": [
+    {
+      "condition": "Syntactically valid PNG with no hittable pixels in the full sheet or in a required pose crop previously passed validation and could overwrite the current valid pack.",
+      "resolution": "All nine mandatory pose rectangles and declared supplemental rectangles must contain a pixel above the actual native pointer alpha cutoff, shared constant HIT_ALPHA=24. The check runs in the candidate directory before replacement. Regression uses a real PNG and points LEFT_EDGE at a transparent row, reopens the originally installed pack after the rejection."
+    },
+    {
+      "condition": "Installed manifest identity and version were unchecked when the selected character was loaded.",
+      "resolution": "Reader now requires both matching id and schema version 1. The regression reads a valid installed pack under the wrong requested identity and expects rejection."
+    }
+  ],
+  "examined_behavior": {
+    "file_installation": "Temporary private candidate is decoded and verified; only named candidate files are backed up and replaced. Invalid source input exits before touching accepted pack files. Unrelated files, including license text, remain in place after rejected inputs and valid replacement. Source directory remains unchanged.",
+    "real_test_io": "Rust writes an 18x2 RGBA image through image::ImageFormat::Png into bytes and a real temporary directory, imports it, and uses fs::read/read_edge_pack to check the full disk state. Negative cases cover missing declared tail, broken image bytes, wrong hash, invisible LEFT_EDGE crop. A valid replacement and wrong on-disk identity are covered.",
+    "runtime_state": "Anonymous/missing edge identity clears the previous native pack and produces pending; unreadable/invalid installed pack clears it and produces invalid. A valid pack alone replaces it with Some. Native hit/render consumes this same Option. A successful base sprite selection emits pet-asset and React updates pack from the new asset.edge. Failed new import does not overwrite active native pack or broadcast a new ready asset.",
+    "coverage_limit": "This is an independent code/test review. It does not execute Rust tests, prove native application behavior, characterize crash recovery, or replace observed visible output on physical hardware."
+  },
+  "open_findings_in_requested_scope": []
+}

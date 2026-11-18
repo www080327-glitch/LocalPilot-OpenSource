@@ -1,0 +1,23 @@
+{
+  "scope": "Records of tool responses for this run.",
+  "initial_playwright_command": "LP_UI_CHROMIUM_EXECUTABLE=/usr/bin/chromium LP_UI_EVIDENCE_DIR=<run>/playwright npm run test:ui -- tests/ui/pet-controls.spec.ts --trace on --output=<run>/playwright/test-results",
+  "initial_playwright_chromium_launch": "FATAL:chrome/browser/process_singleton_posix.cc:297: socket() failed: Operation not permitted (1)",
+  "standard_shell_escalation": "Rejected before execution: approval policy is Granular; sandbox_approval=false and request_permissions=false. No second run.",
+  "shared_chrome_development_url": "http://127.0.0.1:1420/?pet=bubble",
+  "shared_chrome_development_result": "Browser returned net::ERR_CONNECTION_REFUSED. Vite had printed ready in its originating shell.",
+  "shared_chrome_local_fixture": "URL security policy declined file: and lists only http: and https: as allowed. No further browser routes attempted.",
+  "new_CUA_page_assertions": 0,
+  "shared_desktop": {
+    "source": "Shared Linux desktop application inventory and XFCE Display accessibility tree, read on this run.",
+    "LocalPilot_Test_launcher_listed": false,
+    "initial_open_window_count": 0,
+    "display_application": "xfce-display-settings.desktop",
+    "display_outputs": [
+      "DUMMY0"
+    ],
+    "resolution": "1364x1024",
+    "refresh_rate_hz": 60.01,
+    "display_settings_changes": 0,
+    "final_open_windows_after_closing_display_inventory": 0
+  }
+}

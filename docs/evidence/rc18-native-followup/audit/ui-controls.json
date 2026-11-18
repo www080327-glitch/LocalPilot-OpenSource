@@ -1,0 +1,156 @@
+{
+  "baseline_head": "bef2c90ac7c155c74a55dd33cb1244ad7f90b44f",
+  "scope": "New source-level tests for two actual React controls, normal existing Playwright runner, ordinary shared desktop inventory. Build and real native interaction require their own evidence.",
+  "source_files_sha256": {
+    "desktop/tests/ui/pet-controls.spec.ts": "7dea7706c888e61686fdb0459e5babc4f2d7139fc9793e22aedda274160fd218",
+    "desktop/tests/ui/audit-bridge.ts": "22634f4c558f17aa314d58da43d851e12713f17da773dd144b160749a6c28e64",
+    "desktop/src/Pet.tsx": "075c28e499ba4c7db8c0d8f75fa475fb6f8cc550be88aa066b17cc1aa1c7af7e",
+    "desktop/src/bridge.ts": "e4649774a259ee558bdb894b1121b3718b1bb754f2a81455d3253a00f7afd7ba",
+    "desktop/src/pet/policy.ts": "d376f7b6e09fdae4464378336f5d53c7c4532334e7bfda8edd52375bcb9fa84e",
+    "desktop/src/pet/EdgeCharacter.tsx": "ee58de66fbaf256e004acf06417d2d7dc9d28747490d906b8643884028c1cc9c",
+    "desktop/src-tauri/src/pet_native.rs": "9b354deaaf30be02f3d518eea2250017f6af47b4eec089eeb2c299a3ba6f8c93",
+    "desktop/src-tauri/src/pet_macos.rs": "53fabb7e222894e071f57ad8d18890191fd6acf80c8127b0b3311d93ced51b2b"
+  },
+  "product_changes_by_ui_author": [],
+  "new_tests": [
+    "the pet size slider sends its selected size to the window and restores the default",
+    "the title bar X requests bubble collapse and an explicit reopening retains the unsent draft"
+  ],
+  "test_transport": "Existing auditBridge captures outbound Tauri commands and synthetic reopen event. Even a future passing browser result covers the React controls and transport contract only. Native hide, native dimensions and OS drag require installed Test APP.",
+  "candidate_static_checks": {
+    "typescript": "PASS",
+    "tsc_command": "./node_modules/.bin/tsc --noEmit --skipLibCheck --target ES2022 --module ESNext --moduleResolution bundler tests/ui/pet-controls.spec.ts",
+    "playwright_collection": "PASS",
+    "collected": 2,
+    "collection_command": "npm run test:ui -- tests/ui/pet-controls.spec.ts --list --reporter=list",
+    "note": "The blocked launch preceded formatting of the new spec. The final formatted file was type-checked and collected. Source hashes identify that final file. Package version metadata advanced to rc.18 during shared development; neither candidate received page/native PASS here."
+  },
+  "candidate_browser": {
+    "status": "BLOCKED_AT_LAUNCH",
+    "test_commands_started": 1,
+    "cases": 2,
+    "unexpected": 2,
+    "skipped": 0,
+    "page_assertions": 0,
+    "tests": [
+      {
+        "title": "the pet size slider sends its selected size to the window and restores the default",
+        "reported_status": "unexpected"
+      },
+      {
+        "title": "the title bar X requests bubble collapse and an explicit reopening retains the unsent draft",
+        "reported_status": "unexpected"
+      }
+    ],
+    "chromium_reason": "FATAL:chrome/browser/process_singleton_posix.cc:297: socket() failed: Operation not permitted (1)",
+    "escalation": "Rejected before execution: approval policy is Granular; sandbox_approval=false and request_permissions=false. No second run.",
+    "shared_chrome": {
+      "localhost": "ERR_CONNECTION_REFUSED",
+      "shared_html_file": "URL policy denied file:",
+      "page_assertions": 0
+    }
+  },
+  "candidate_native_controls": {
+    "status": "NOT_RUN",
+    "reason": "No LocalPilot/Test launcher or open Test APP in the shared Linux GUI; only a single virtual display output. No matching new native candidate or second monitor for physical drag/multipanel acceptance.",
+    "shared_desktop": {
+      "source": "Shared Linux desktop application inventory and XFCE Display accessibility tree, read on this run.",
+      "LocalPilot_Test_launcher_listed": false,
+      "initial_open_window_count": 0,
+      "display_application": "xfce-display-settings.desktop",
+      "display_outputs": [
+        "DUMMY0"
+      ],
+      "resolution": "1364x1024",
+      "refresh_rate_hz": 60.01,
+      "display_settings_changes": 0,
+      "final_open_windows_after_closing_display_inventory": 0
+    },
+    "bubble_x_button": "NOT_RUN",
+    "size_slider_native_window": "NOT_RUN",
+    "physical_pointer_drag": "NOT_RUN",
+    "physical_multi_monitor": "NOT_RUN"
+  },
+  "previous_evidence": {
+    "source_commit": "97dae142a2deccfb1ed0add0c2cd49b4b02a8fad",
+    "desktop": "5.0.1-rc.17",
+    "machine": "Apple Silicon/macOS, one real built-in display",
+    "directory": "docs/evidence/native-polish-final-20261118",
+    "summary_sha256_matched_manifest": {
+      "PET_UI_RESULTS.json": "374b2d28cc8ec4d741a9c327d90799906ed79e6ec21b19c166a3435a94727fe0",
+      "ANCHOR_RESULTS.json": "76a5845f081135f229163cbb131026952515e34e3a66f592468ef1dc14b177fe",
+      "SOURCE.json": "a6585efcbca863a4e13d7992a4a2c9999f1fe6b4f95c82224ee97d01edb5dc82",
+      "BROWSER_RESULTS.json": "7df27ea33a523b38b5c8b11f1189d53ec86bf74f0fa4d097736d07f59b3b59a1",
+      "animation-sample.json": "a93b61a7027c7796ddfe3aee6f0ce23fc5d28ec9ddb94f94218237f7c6a4cb6c"
+    },
+    "bubble_input_focus": "PASS: a synthetic test character appeared in the native bubble input and was cleared; no task was submitted.",
+    "bubble_exit": "PASS via the existing pet hide/show control; X button was not separately verified.",
+    "native_window_points": {
+      "default_factor": 1.0,
+      "native_window_points_default": [
+        240.0,
+        220.0
+      ],
+      "test_factor": 1.2,
+      "native_window_points_test": [
+        288.0,
+        264.0
+      ],
+      "restored_factor": 1.0,
+      "UI_slider": "NOT_RUN; isolated test settings fixture was used."
+    },
+    "six_anchor_placements": 6,
+    "physical_drag": "NOT_RUN: edge renderer had no visible pose and passed pointer events through",
+    "multi_display": "NOT_RUN",
+    "model_configuration_browser_tests": 2,
+    "distinction": "The two earlier browser cases cover model configuration. The six prior native moves were requested anchor placements. The historical size path edited isolated settings; the real slider and title-bar X were unverified."
+  },
+  "no_model_calls": true,
+  "public_raw_files": [
+    {
+      "path": "playwright.log",
+      "bytes": 13417,
+      "sha256": "398faf25434f138ceaee9d4ef2768acda507abfad063755ab3c3d5464c22f13c"
+    },
+    {
+      "path": "playwright/browser-tests.json",
+      "bytes": 36955,
+      "sha256": "888284c79674173992772c666f7b924662ff4759d6db4e299ffb57f526b8f7f4"
+    },
+    {
+      "path": "list.log",
+      "bytes": 491,
+      "sha256": "bbe96e01c00b6e44e7883b95b574d8e8344934cb1c1a8114c95aa8d08c02dbdf"
+    },
+    {
+      "path": "typecheck.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "UI_ENVIRONMENT.json",
+      "bytes": 1450,
+      "sha256": "002c752baf16f491586b18b7bd36c7caec455033288f48d38cdee1550679ac9a"
+    },
+    {
+      "path": "playwright/test-results/pet-controls-the-pet-size--e212f-ow-and-restores-the-default/error-context.md",
+      "bytes": 5064,
+      "sha256": "7db52c91f4f1a929c0168ea4221eb8553b89187ff4713b270eeaafab6faf437a"
+    },
+    {
+      "path": "playwright/test-results/pet-controls-the-title-bar-d302b-ng-retains-the-unsent-draft/error-context.md",
+      "bytes": 5093,
+      "sha256": "ce94c7d4dc46cf618e07c53a5bf1874140e13ec52a4597ac632fefa96a250746"
+    },
+    {
+      "path": "playwright/test-results/pet-controls-the-pet-size--e212f-ow-and-restores-the-default/trace.zip",
+      "bytes": 4214,
+      "sha256": "a03809972dceb30f424eec305d9d4148892de6d639df79aec7cbdd6c63e0ca4d"
+    },
+    {
+      "path": "playwright/test-results/pet-controls-the-title-bar-d302b-ng-retains-the-unsent-draft/trace.zip",
+      "bytes": 4231,
+      "sha256": "af670e9b7e15c4384389e22c25cfb085f525be48aaeb95dce5da762fe42ce728"
+    }
+  ]
+}

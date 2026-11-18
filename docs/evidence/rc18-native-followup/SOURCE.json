@@ -1,0 +1,36 @@
+{
+  "prior_pr_head": "bef2c90ac7c155c74a55dd33cb1244ad7f90b44f",
+  "tested_product_commit": "2071edb96b6a286c0336bea9adfe99710d0439e4",
+  "public_product_commit": "fdc732e5056c386b89fbe8958a26c21ead3334a4",
+  "tree_of_both_commits": "819741f0607c758521684acc19292770a961c93a",
+  "changed_tracked_files": {
+    "MODULE_RELEASE.json": "39d65dd8600077c60093aadb766fa27e15f9882c",
+    "README.md": "73429ff50bbdcccec175aa81727fb673756a071a",
+    "desktop/README.md": "6cf7b59ea5be310f53ce6b365643e24aab0134fc",
+    "desktop/package-lock.json": "527c3af845c9b41e341471567cd0a5655cbf2ac0",
+    "desktop/package.json": "14e8d5c8681d960a87fba0363c4bb7aed7286c4c",
+    "desktop/scripts/pet-control.py": "25902b70e10a8e3df9500b83c0776860c5c007aa",
+    "desktop/src-tauri/Cargo.lock": "984772c8cdb40087fe7988b5be39943b1d801aa3",
+    "desktop/src-tauri/Cargo.toml": "68de3d741d5d84d9a9c76e38cbcf9b07fc8c8534",
+    "desktop/src-tauri/src/pet_assets.rs": "6ed889e241a24968e9383821827ad9609d91ee23",
+    "desktop/src-tauri/src/pet_edge.rs": "70deb99f0810153ae79fb9559c4acdbfb0c54336",
+    "desktop/src-tauri/tauri.conf.json": "4e52aff9133940c5b600e48f61a0aacb55c1fff7",
+    "desktop/src/Pet.tsx": "ea4cf42db05e351202225b16f3ad419279ca8b2e",
+    "desktop/src/pet/EdgeCharacter.tsx": "a7d8b4f343c2633a0ff6b006a499ed0d5b136872",
+    "desktop/src/pet/policy.ts": "45507d71fc999cad3dfc8ae28f27e70cee3304b7",
+    "desktop/src/pet/types.ts": "eb9b3b67ce9bc26d95995bc8c4ac9e18d7545c36",
+    "desktop/tests/test_pet_control.py": "871907c41b38df9beaa2da46541f99595428bc9f",
+    "desktop/tests/ui/pet-controls.spec.ts": "00be34a9bdfe62e97f257b0c00bdfd92dd68992a",
+    "desktop/tests/ui/pet-window.spec.ts": "d70fd3e7ed2f2df39f7dfe12aaa7eab653a6e2ee",
+    "docs/development/WORK_RC18_NATIVE.md": "26efe4c5db403760b8accee0af931392d3c3d3b8",
+    "suite/README.md": "51d0d5a1f1d170f354e9224472b7b1a6dff130b3"
+  },
+  "packages": {
+    "Desktop": "5.0.1-rc.18",
+    "Core": "5.0.0b35",
+    "Companion": "0.5.7b12",
+    "Suite": "0.2.0b34",
+    "Channels": "0.1.0a4"
+  },
+  "publication": "Identical Git tree. GitHub created the public commit with different commit metadata. The subsequent evidence commit only changes documentation and test evidence."
+}
