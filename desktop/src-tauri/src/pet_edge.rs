@@ -478,7 +478,7 @@ fn sprite_hit(v: &Render, s: &pet_assets::Sprite, x: f64, y: f64) -> bool {
     }
     let px = (r[0] as f64 + (x - b[0]) / b[2] * r[2] as f64) as u32;
     let py = (r[1] as f64 + (y - b[1]) / b[3] * r[3] as f64) as u32;
-    px < s.width && py < s.height && s.alpha[(py * s.width + px) as usize] > 24
+    px < s.width && py < s.height && s.alpha[(py * s.width + px) as usize] > pet_assets::HIT_ALPHA
 }
 fn place(app: &tauri::AppHandle) -> Result<(), String> {
     let w = app.get_webview_window("pet").ok_or("宠物未开启")?;

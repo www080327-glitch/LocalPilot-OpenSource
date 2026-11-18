@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { call } from "../bridge";
-import type { PetSettings } from "./policy";
+import { edgeImportHint, type PetSettings } from "./policy";
 import { petEvents } from "./events";
 import { measurePetAnimation } from "./animationProbe";
 import type { EdgePack, EdgePresentation, PetAsset, RenderPart } from "./types";
@@ -184,7 +184,9 @@ export default function EdgeCharacter({
         </span>
       </button>
       {(!pack?.url || r?.source === "pending" || error) && (
-        <span className="edge-pending">{error || "新版角色姿态待导入"}</span>
+        <span className="edge-pending">
+          {error || edgeImportHint(asset, pack?.status)}
+        </span>
       )}
     </div>
   );

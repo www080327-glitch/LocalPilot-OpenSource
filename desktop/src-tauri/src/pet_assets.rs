@@ -4,6 +4,8 @@ use base64::Engine;
 use sha2::{Digest, Sha256};
 use std::io::Write;
 
+pub(super) const HIT_ALPHA: u8 = 24;
+
 pub struct Sprite {
     pub width: u32,
     pub height: u32,
@@ -52,7 +54,7 @@ fn decode(bytes: &[u8]) -> Result<Atlas, String> {
     for (y, scanline) in alpha.chunks_exact(w as usize).enumerate() {
         let bounds = &mut rows[y / fh as usize];
         for (x, a) in scanline.iter().enumerate() {
-            if *a > 24 {
+            if *a > HIT_ALPHA {
                 let (x, y) = (x as u32 % fw, y as u32 % fh);
                 bounds[0] = bounds[0].min(x);
                 bounds[1] = bounds[1].min(y);
@@ -117,56 +119,13 @@ pub async fn pet_asset(
         let Some(folder) = folder else {
             return Ok(json!({"cancelled":true}));
         };
-        let metadata: Value = serde_json::from_slice(
-            &fs::read(folder.path().join("pack.json")).map_err(|_| "缺少姿态配置")?,
-        )
-        .map_err(|_| "姿态配置无效")?;
-        if metadata["id"] != identity || metadata["version"] != 1 {
-            return Err("姿态包不属于当前角色".into());
-        }
-        let source = folder.path().join("poses.png");
-        let info = fs::symlink_metadata(&source).map_err(|_| "姿态图片不可读")?;
-        if !info.is_file() || info.len() > 16 * 1024 * 1024 {
-            return Err("姿态必须是小于 16 MB 的普通 PNG 文件".into());
-        }
-        let bytes = fs::read(source).map_err(|_| "姿态不可读")?;
-        let root = data(&app)?.join("edge-packs").join(identity);
-        fs::create_dir_all(&root).map_err(|e| e.to_string())?;
-        fs::set_permissions(&root, fs::Permissions::from_mode(0o700)).map_err(|e| e.to_string())?;
-        let target = root.join("poses.png");
-        let mut f = fs::OpenOptions::new()
-            .write(true)
-            .create(true)
-            .truncate(true)
-            .mode(0o600)
-            .custom_flags(libc::O_NOFOLLOW)
-            .open(target)
-            .map_err(|e| e.to_string())?;
-        f.write_all(&bytes).map_err(|e| e.to_string())?;
-        for name in ["comic", "tail"] {
-            if metadata["extras"][name].is_object() {
-                let source = folder.path().join(format!("{name}.png"));
-                let inf = fs::symlink_metadata(&source).map_err(|_| "补充姿态缺失")?;
-                if !inf.is_file() || inf.len() > 16 * 1024 * 1024 {
-                    return Err("补充姿态文件无效".into());
-                }
-                let bytes = fs::read(source).map_err(|_| "补充姿态不可读")?;
-                let target = root.join(format!("{name}.png"));
-                let mut f = fs::OpenOptions::new()
-                    .write(true)
-                    .create(true)
-                    .truncate(true)
-                    .mode(0o600)
-                    .custom_flags(libc::O_NOFOLLOW)
-                    .open(target)
-                    .map_err(|e| e.to_string())?;
-                f.write_all(&bytes).map_err(|e| e.to_string())?;
-            }
-        }
-        let mut metadata = metadata;
-        metadata["sha256"] = json!(format!("{:x}", Sha256::digest(&bytes)));
-        save(&root.join("pack.json"), &metadata)?;
-        let edge = edge_pack(&app, identity)?;
+        let packs = data(&app)?.join("edge-packs");
+        let (pack, edge) = import_edge_pack(folder.path(), &packs, identity)?;
+        app.state::<pet_native::PetState>()
+            .edge
+            .lock()
+            .unwrap()
+            .pack = Some(pack);
         app.emit("pet-edge-asset", &edge)
             .map_err(|e| e.to_string())?;
         return Ok(edge);
@@ -284,22 +243,228 @@ mod tests {
         assert_eq!(atlas.frame_rect(7, 2), [29, 8, 3, 3]);
         assert_eq!(atlas.frame_rect(0, 0), [0, 0, 4, 4]);
     }
+
+    #[test]
+    fn rejected_edge_import_preserves_the_installed_pack_and_accepts_a_valid_replacement() {
+        let root = std::env::temp_dir().join(format!("lp-pet-import-{}", uuid::Uuid::new_v4()));
+        let source = root.join("source");
+        let packs = root.join("installed");
+        fs::create_dir_all(&source).unwrap();
+        let id = "fixture";
+        let installed = packs.join(id);
+        let mut poses = serde_json::Map::new();
+        for (i, name) in [
+            "TOP_LEFT",
+            "TOP_RIGHT",
+            "LEFT_EDGE",
+            "RIGHT_EDGE",
+            "BOTTOM_LEFT",
+            "BOTTOM_RIGHT",
+            "RETRACTED",
+            "WORKING",
+            "IDLE_POT",
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            poses.insert(name.into(), json!([i * 2, 0, 2, 2]));
+        }
+        let mut metadata = json!({"id":id, "version":1, "poses":poses});
+        save(&source.join("pack.json"), &metadata).unwrap();
+        let sprite = |color: u8| {
+            let mut image = image::RgbaImage::new(18, 2);
+            for x in (0..18).step_by(2) {
+                image.put_pixel(x, 0, image::Rgba([color, 30, 50, 255]));
+            }
+            let mut bytes = std::io::Cursor::new(Vec::new());
+            image.write_to(&mut bytes, image::ImageFormat::Png).unwrap();
+            bytes.into_inner()
+        };
+        let first = sprite(10);
+        fs::write(source.join("poses.png"), &first).unwrap();
+        let (_, original) = import_edge_pack(&source, &packs, id).unwrap();
+        let manifest = fs::read(installed.join("pack.json")).unwrap();
+        fs::write(installed.join("author-license.txt"), b"personal-use only").unwrap();
+        let check_original = || {
+            assert_eq!(
+                fs::read(installed.join("author-license.txt")).unwrap(),
+                b"personal-use only"
+            );
+            assert_eq!(fs::read(installed.join("poses.png")).unwrap(), first);
+            assert_eq!(fs::read(installed.join("pack.json")).unwrap(), manifest);
+            assert_eq!(read_edge_pack(&installed, id).unwrap().1, original);
+        };
+        let second = sprite(100);
+        fs::write(source.join("poses.png"), &second).unwrap();
+        metadata["extras"] = json!({"tail":{"rect":[0,0,2,2]}});
+        save(&source.join("pack.json"), &metadata).unwrap();
+        assert!(import_edge_pack(&source, &packs, id)
+            .err()
+            .unwrap()
+            .contains("tail.png"));
+        check_original();
+        metadata.as_object_mut().unwrap().remove("extras");
+        save(&source.join("pack.json"), &metadata).unwrap();
+        fs::write(source.join("poses.png"), b"broken PNG").unwrap();
+        assert!(import_edge_pack(&source, &packs, id)
+            .err()
+            .unwrap()
+            .contains("PNG"));
+        check_original();
+        fs::write(source.join("poses.png"), &second).unwrap();
+        metadata["sha256"] = json!("incorrect-source-checksum");
+        save(&source.join("pack.json"), &metadata).unwrap();
+        assert!(import_edge_pack(&source, &packs, id)
+            .err()
+            .unwrap()
+            .contains("身份已变化"));
+        check_original();
+        metadata.as_object_mut().unwrap().remove("sha256");
+        save(&source.join("pack.json"), &metadata).unwrap();
+        metadata["poses"]["LEFT_EDGE"] = json!([0, 1, 2, 1]);
+        save(&source.join("pack.json"), &metadata).unwrap();
+        assert!(import_edge_pack(&source, &packs, id)
+            .err()
+            .unwrap()
+            .contains("LEFT_EDGE 姿态区域没有可见像素"));
+        check_original();
+        metadata["poses"]["LEFT_EDGE"] = json!([4, 0, 2, 2]);
+        save(&source.join("pack.json"), &metadata).unwrap();
+        let (_, replacement) = import_edge_pack(&source, &packs, id).unwrap();
+        assert_ne!(replacement, original);
+        assert_eq!(
+            fs::read(installed.join("author-license.txt")).unwrap(),
+            b"personal-use only"
+        );
+        assert_eq!(read_edge_pack(&installed, id).unwrap().1, replacement);
+        assert_eq!(fs::read(source.join("poses.png")).unwrap(), second);
+        assert_eq!(fs::read_dir(&packs).unwrap().count(), 1);
+        assert!(read_edge_pack(&installed, "different-fixture")
+            .err()
+            .unwrap()
+            .contains("不属于当前角色"));
+        fs::remove_dir_all(root).unwrap();
+    }
 }
 
 fn edge_pack(app: &tauri::AppHandle, id: &str) -> Result<Value, String> {
-    if !id_ok(id) {
-        return Ok(json!({"status":"pending"}));
-    }
     let root = data(app)?.join("edge-packs").join(id);
-    if !root.join("pack.json").exists() {
-        app.state::<pet_native::PetState>()
-            .edge
-            .lock()
-            .unwrap()
-            .pack = None;
+    let state = app.state::<pet_native::PetState>();
+    if !id_ok(id) || !root.join("pack.json").exists() {
+        state.edge.lock().unwrap().pack = None;
         return Ok(json!({"status":"pending"}));
     }
+    match read_edge_pack(&root, id) {
+        Ok((pack, payload)) => {
+            state.edge.lock().unwrap().pack = Some(pack);
+            Ok(payload)
+        }
+        Err(error) => {
+            state.edge.lock().unwrap().pack = None;
+            Ok(json!({"status":"invalid","error":error}))
+        }
+    }
+}
+
+fn import_edge_pack(
+    source: &Path,
+    packs: &Path,
+    id: &str,
+) -> Result<(pet_edge::Pack, Value), String> {
+    use std::os::unix::fs::DirBuilderExt;
+    let mut metadata: Value =
+        serde_json::from_slice(&fs::read(source.join("pack.json")).map_err(|_| "缺少姿态配置")?)
+            .map_err(|_| "姿态配置无效")?;
+    let work = packs.join(format!(".import-{}", uuid::Uuid::new_v4()));
+    let candidate = work.join("candidate");
+    fs::DirBuilder::new()
+        .recursive(true)
+        .mode(0o700)
+        .create(&candidate)
+        .map_err(|e| e.to_string())?;
+    let target = packs.join(id);
+    let mut preserve_backup = false;
+    let result = (|| {
+        for name in ["poses", "comic", "tail"] {
+            if name != "poses" && !metadata["extras"][name].is_object() {
+                continue;
+            }
+            let filename = format!("{name}.png");
+            let origin = source.join(&filename);
+            let info =
+                fs::symlink_metadata(&origin).map_err(|_| format!("姿态文件缺失：{filename}"))?;
+            if !info.is_file() || info.len() > 16 * 1024 * 1024 {
+                return Err(format!("姿态必须是小于 16 MB 的普通文件：{filename}"));
+            }
+            let bytes = fs::read(origin).map_err(|e| e.to_string())?;
+            let mut file = fs::OpenOptions::new()
+                .write(true)
+                .create_new(true)
+                .mode(0o600)
+                .open(candidate.join(filename))
+                .map_err(|e| e.to_string())?;
+            file.write_all(&bytes).map_err(|e| e.to_string())?;
+            if name == "poses" && metadata.get("sha256").is_none() {
+                metadata["sha256"] = json!(format!("{:x}", Sha256::digest(&bytes)));
+            }
+        }
+        save(&candidate.join("pack.json"), &metadata)?;
+        let ready = read_edge_pack(&candidate, id)?;
+        fs::DirBuilder::new()
+            .recursive(true)
+            .mode(0o700)
+            .create(&target)
+            .map_err(|e| e.to_string())?;
+        fs::set_permissions(&target, fs::Permissions::from_mode(0o700))
+            .map_err(|e| e.to_string())?;
+        let files: Vec<_> = ["poses.png", "comic.png", "tail.png", "pack.json"]
+            .into_iter()
+            .filter(|name| candidate.join(name).exists())
+            .collect();
+        // Replace only managed files. Keep source art, license notes and other user files in place.
+        for name in &files {
+            match fs::hard_link(target.join(name), work.join(name)) {
+                Ok(()) => (),
+                Err(e) if e.kind() == std::io::ErrorKind::NotFound => (),
+                Err(e) => return Err(e.to_string()),
+            }
+        }
+        for (index, name) in files.iter().enumerate() {
+            if let Err(error) = fs::rename(candidate.join(name), target.join(name)) {
+                for old in files[..index].iter().rev() {
+                    let backup = work.join(old);
+                    let restore = if backup.symlink_metadata().is_ok() {
+                        fs::rename(backup, target.join(old))
+                    } else {
+                        fs::remove_file(target.join(old))
+                    };
+                    if restore.is_err() {
+                        preserve_backup = true;
+                    }
+                }
+                return Err(if preserve_backup {
+                    format!(
+                        "导入失败（{error}），未能完全恢复，原文件保存在 {}",
+                        work.display()
+                    )
+                } else {
+                    error.to_string()
+                });
+            }
+        }
+        Ok(ready)
+    })();
+    if !preserve_backup {
+        let _ = fs::remove_dir_all(work);
+    }
+    result
+}
+
+fn read_edge_pack(root: &Path, id: &str) -> Result<(pet_edge::Pack, Value), String> {
     let metadata = private_json(&root.join("pack.json"))?;
+    if metadata["id"] != id || metadata["version"] != 1 {
+        return Err("姿态包不属于当前角色，或版本不受支持".into());
+    }
     let file = root.join("poses.png");
     let info = fs::symlink_metadata(&file).map_err(|_| "姿态文件缺失")?;
     if !info.is_file()
@@ -337,16 +502,7 @@ fn edge_pack(app: &tauri::AppHandle, id: &str) -> Result<Value, String> {
     ];
     let mut rects = vec![];
     for name in names {
-        let r: &Value = &metadata["poses"][name];
-        let r: [u32; 4] = serde_json::from_value(r.clone()).map_err(|_| "姿态边界无效")?;
-        if r[2] == 0
-            || r[3] == 0
-            || r[0].checked_add(r[2]).is_none_or(|x| x > w)
-            || r[1].checked_add(r[3]).is_none_or(|y| y > h)
-        {
-            return Err("姿态越界".into());
-        }
-        rects.push(r);
+        rects.push(visible_rect(&metadata["poses"][name], w, h, &alpha, name)?);
     }
     let mut extras = HashMap::new();
     let mut extra_payload = serde_json::Map::new();
@@ -379,15 +535,7 @@ fn edge_pack(app: &tauri::AppHandle, id: &str) -> Result<Value, String> {
             if !alpha.contains(&0) {
                 return Err("补充姿态缺少真实透明区域".into());
             }
-            let rect: [u32; 4] = serde_json::from_value(metadata["extras"][name]["rect"].clone())
-                .map_err(|_| "补充姿态边界无效")?;
-            if rect[2] == 0
-                || rect[3] == 0
-                || rect[0].checked_add(rect[2]).is_none_or(|x| x > ew)
-                || rect[1].checked_add(rect[3]).is_none_or(|y| y > eh)
-            {
-                return Err("补充姿态越界".into());
-            }
+            let rect = visible_rect(&metadata["extras"][name]["rect"], ew, eh, &alpha, name)?;
             extras.insert(
                 name.into(),
                 pet_edge::Extra {
@@ -412,11 +560,7 @@ fn edge_pack(app: &tauri::AppHandle, id: &str) -> Result<Value, String> {
             .unwrap_or(0.955)
             .clamp(0.8, 1.0),
     ];
-    app.state::<pet_native::PetState>()
-        .edge
-        .lock()
-        .unwrap()
-        .pack = Some(pet_edge::Pack {
+    let pack = pet_edge::Pack {
         sprite: Sprite {
             width: w,
             height: h,
@@ -426,8 +570,37 @@ fn edge_pack(app: &tauri::AppHandle, id: &str) -> Result<Value, String> {
         identity: id.into(),
         contact,
         extras,
-    });
-    Ok(
+    };
+    Ok((
+        pack,
         json!({"status":"ready","width":w,"height":h,"url":format!("data:image/png;base64,{}",base64::engine::general_purpose::STANDARD.encode(bytes)),"extras":extra_payload,"presentation":metadata["presentation"]}),
-    )
+    ))
+}
+
+fn visible_rect(
+    value: &Value,
+    width: u32,
+    height: u32,
+    alpha: &[u8],
+    name: &str,
+) -> Result<[u32; 4], String> {
+    let rect: [u32; 4] =
+        serde_json::from_value(value.clone()).map_err(|_| format!("{name} 姿态边界无效"))?;
+    let [x, y, w, h] = rect;
+    if w == 0
+        || h == 0
+        || x.checked_add(w).is_none_or(|right| right > width)
+        || y.checked_add(h).is_none_or(|bottom| bottom > height)
+    {
+        return Err(format!("{name} 姿态越界"));
+    }
+    if !(y..y + h).any(|row| {
+        let start = (row * width + x) as usize;
+        alpha[start..start + w as usize]
+            .iter()
+            .any(|pixel| *pixel > HIT_ALPHA)
+    }) {
+        return Err(format!("{name} 姿态区域没有可见像素"));
+    }
+    Ok(rect)
 }

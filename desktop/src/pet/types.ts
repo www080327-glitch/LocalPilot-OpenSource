@@ -6,6 +6,7 @@ export interface SpriteImage {
 }
 export interface EdgePack extends Partial<SpriteImage> {
   status: string;
+  error?: string;
   extras?: Record<string, SpriteImage>;
 }
 export interface PetAsset extends Partial<SpriteImage> {

@@ -12,7 +12,12 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { call } from "./bridge";
-import { defaults, eligible, type PetSettings } from "./pet/policy";
+import {
+  defaults,
+  edgeImportHint,
+  eligible,
+  type PetSettings,
+} from "./pet/policy";
 import "./pet/pet.css";
 import EdgeCharacter from "./pet/EdgeCharacter";
 import { idleLines } from "./pet/personality";
@@ -948,17 +953,6 @@ export default function Pet() {
                   </button>
                 ))}
               </div>
-              <button
-                className="pet-row-button"
-                onClick={() => {
-                  void call<any>("pet_asset", { action: "import_edge" })
-                    .then(() => call<any>("pet_asset", { action: "load" }))
-                    .then(setAsset)
-                    .catch(handleError);
-                }}
-              >
-                导入当前角色探头姿态包
-              </button>
               <h4>换个形象</h4>
               <div className="pet-character-list">
                 {characters.map((c) => (
@@ -978,11 +972,35 @@ export default function Pet() {
                   </button>
                 ))}
               </div>
-              {!characters.length && (
+              {!characters.length && !asset?.id && (
                 <p className="pet-explanation">
-                  可以导入你本机已有的透明角色图集。
+                  未找到已登记的本机角色。恢复个人角色库 ~/.codex/pets
+                  中的角色包后，重启桌宠。
                 </p>
               )}
+              <button
+                className="pet-row-button"
+                disabled={!asset?.id}
+                onClick={() => {
+                  void call<any>("pet_asset", { action: "import_edge" })
+                    .then(() => call<any>("pet_asset", { action: "load" }))
+                    .then(setAsset)
+                    .catch(handleError);
+                }}
+              >
+                导入当前角色探头姿态包
+              </button>
+              {(asset?.id || characters.length > 0) &&
+                asset?.edge?.status !== "ready" && (
+                  <p className="pet-explanation">
+                    {asset?.edge?.error ? `${asset.edge.error}。` : ""}
+                    {asset?.id
+                      ? "选择与当前角色对应的姿态包文件夹，内含 pack.json 和 poses.png。"
+                      : characters.length > 0
+                        ? edgeImportHint(asset)
+                        : ""}
+                  </p>
+                )}
               {toggle("banter", "偶尔碎碎念 · 哦鲸鲸")}
               {toggle("topmost", "总在上方")}
               {toggle("animation", "轻柔动画")}
