@@ -49,7 +49,18 @@ LP_OUTPUT="$PWD/docs/evidence/native-polish-final-20261118/.private/r12-luna-med
 LP_OUTPUT="$PWD/docs/evidence/native-polish-final-20261118/.private/r12-luna-medium-direct-tunnel"; setopt pipefail; NO_PROXY=api.openai.com python3 -u scripts/qualify_openai_engineering.py --source-root "$LP_SOURCE" --key-file "$LP_KEY_FILE" --model gpt-6-luna --reasoning medium --output "$LP_OUTPUT" 2>&1 | tee "$LP_RUN/r12-luna-medium-direct-tunnel-console.log"
 ```
 
-实际第一次执行前预建了输出目录，原 runner 按要求拒绝；该纯本地错误退出码 2，0 API 调用。两条系统代理命令退出 1；指定域名 `NO_PROXY` 的命令退出 0。runner SHA 为 `1878a177ed32600e9d53490ad518a93ece8d729643f2e2681c7b10d11d4724c4`，所有 fixture manifests 与前次一致，源码 SHA 未变。安装态 soak 尚未在修复密钥后重跑。
+实际第一次执行前预建了输出目录，原 runner 按要求拒绝；该纯本地错误退出码 2，0 API 调用。两条系统代理命令退出 1；指定域名 `NO_PROXY` 的命令退出 0。runner SHA 为 `1878a177ed32600e9d53490ad518a93ece8d729643f2e2681c7b10d11d4724c4`，所有 fixture manifests 与前次一致，源码 SHA 未变。
+
+## installed-runtime Full + extended soak
+
+在只含两个 runner 副本的 `.private/installed-soak-harness/` 中，从 Test APP 下的 Python runtime 执行。实际命令：
+
+```sh
+cd "$LP_HARNESS"
+NO_PROXY=api.openai.com PYTHONNOUSERSITE=1 "$LP_RUNTIME" scripts/qualify_openai_agent.py --case soak --soak-seconds 7200 --model gpt-6-luna --reasoning medium --key-file "$LP_KEY_FILE" --output "$LP_OUTPUT"
+```
+
+`LP_RUNTIME` 指向 `client/modules/bundle-700d64a665f74410627a/runtime/bin/python3.14`；`LP_OUTPUT` 是新的 `.private/installed-soak-luna-medium-direct-tunnel/`。命令退出码 **0**，requested 7200 秒 / elapsed 7219.684 秒，240 心跳，`shell` + `read_file` 收据，marker 为 `LOCALPILOT_SOAK_COMPLETE`，approval interventions 0。runner SHA `a860afd95c17ec86bdd1b738ae7a4223fd3985eadd262c84259e4f396acf3238`；完整结果和散列见 `INSTALLED_SOAK_SUMMARY.json`、`MANIFEST.json` 与 `.private/` 私有 manifest。
 
 ## 重启后认证与路由检查（无模型推理）
 

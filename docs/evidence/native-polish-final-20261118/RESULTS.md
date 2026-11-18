@@ -1,6 +1,6 @@
 # LocalPilot PR #15 原生验收续作（2026-11-18）
 
-**状态：NOT_RELEASE_READY。** 本轮补齐 Apple Silicon 上当前 `LocalPilot Test` 安装/升级/回滚/恢复，在可启动 Chromium 的环境完成原有两项 Playwright 页面用例，并以 Luna medium 通过原 R12 Full 工程门禁。安装态 Full + extended 两小时 soak 与真实 Intel Mac/Linux 原生门禁仍未完成；桌宠可见动画未通过。失败和缺设备项均保留。
+**状态：NOT_RELEASE_READY。** 本轮补齐 Apple Silicon 上当前 `LocalPilot Test` 安装/升级/回滚/恢复，在可启动 Chromium 的环境完成原有两项 Playwright 页面用例，并以 Luna medium 通过原 R12 Full 工程门禁和安装态 Full + extended 两小时 soak。真实 Intel Mac/Linux 原生门禁仍未完成；桌宠可见动画未通过。失败和缺设备项均保留。
 
 ## 来源与环境
 
@@ -47,7 +47,9 @@
 
 最初 Luna high 的 R12 和安装态 soak 请求都在推理前收到 HTTP 401。重启后核对发现本机密钥文件少了 1 个字符；按用户最新提供的值修复后设为 0600。活动隧道路由上的不计费 `GET /v1/models/...` 对 Luna 和 6.2 Sol 均返回 200。原先的 401 是本地文件截短造成，不能归因于 VPN，也不代表该密钥本身无效。诊断见 `AUTH_NETWORK_CHECK.json`。
 
-随后在真实 rc.17 安装环境，用只含两份验收 runner 副本的独立 harness 启动 Full + extended 7200 秒 soak。父进程与实际 Core 子进程的产品模块均从已安装 runtime 的 `site-packages` 导入；源码目录不在 harness 或产品模块路径中。请求在约 2.07 秒因同一 HTTP 401 失败，0 心跳、无完成收据、无后续 `read_file` 收据、0 子任务/模型调用，usage UNKNOWN；owned Core 已停止。**两小时门禁未通过**。没有使用 Sol；认证错误不构成能力瓶颈。见 `SOURCE_IMPORTS.json`、`INSTALLED_SOAK_SUMMARY.json` 和 `.private/installed-soak-*`。
+密钥文件修正前的第一次安装态 soak 在约 2.07 秒收到 HTTP 401，0 心跳、无完成/read_file 收据、0 模型调用；失败原样保留。修正后，在真实 rc.17 Test APP runtime 下用只含两份 runner 副本的独立 harness 重跑 Full + extended 7200 秒 soak。父进程与实际 Core 子进程均从安装 runtime 启动；产品模块来自安装目录 `site-packages`，源码目录没有进入产品模块搜索路径。运行 **7219.684 秒、240 条心跳**，task `completed`，approval interventions 为 0；`shell` 与 `read_file` 收据均存在，read_file 取得 `LOCALPILOT_SOAK_COMPLETE`，Core 正常停止，soak 门禁 **PASS**。
+
+安装态 soak 使用 Luna medium，共 3 次模型调用、11,143 输入 token、214 输出 token，其中 3,684 输入 token 缓存命中（33.1%），实际账单金额未知。完整 usage、task 收据、心跳和 marker 散列见 `INSTALLED_SOAK_SUMMARY.json`；安装态导入证据见 `SOURCE_IMPORTS.json` 及本机私有 process receipt。没有使用 Sol。
 
 修复密钥文件后按用户最新偏好以 `gpt-6-luna` / medium、原 runner 和原 fixture 重跑 R12。三次运行的 fixture manifest 与之前完全一致，源码未改，最多 2 个子任务、每个子任务 4096 output token 上限保持不变。保留两次 TLS EOF 失败；第三次为**PASS**：只对 `api.openai.com` 设置进程级 `NO_PROXY`，绕过不稳定的本机代理，仍经活动 VPN 隧道路由 `utun1024`。无源码或提示改动。
 
@@ -65,7 +67,7 @@
 - 适用 Linux 原生构建和安装验收：**NOT_RUN**，本轮没有受支持 Linux 主机、系统包 helper 和 GTK/WebKitGTK/Rust 原生构建环境。
 - 桌宠物理拖动、UI 滑块、多显示器、可见动画：未通过或 NOT_RUN，见上节。
 - R12 Full 工程：**PASS，gpt-6-luna / medium**，保持原 fixture、两 child 上限和 4096 child 输出 token 上限。
-- Full + extended 两小时安装态任务：**尚未在修复密钥后启动**；0/240 心跳门禁仍未执行，完成收据缺失。
+- Full + extended 两小时安装态任务：**PASS**；当前候选 Test APP 的 installed runtime 中完成 7200 秒、240 心跳、完成 marker 与后续 read_file 收据。
 - 安装矩阵在 Apple Silicon 主机通过，不代表 Intel 或 Linux 平台通过。
 
 保留状态 `NOT_RELEASE_READY`。本轮没有合并 PR、创建 Tag 或 Release。证据提交已推送到目标分支，并从 GitHub 读回确认 PR head；PR 仍为 open。
