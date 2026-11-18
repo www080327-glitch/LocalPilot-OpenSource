@@ -1,6 +1,6 @@
 # LocalPilot PR #15 原生验收续作（2026-11-18）
 
-**状态：NOT_RELEASE_READY。** 本轮补齐 Apple Silicon 上当前 `LocalPilot Test` 安装/升级/回滚/恢复，并在可启动 Chromium 的环境完成原有两项 Playwright 页面用例。仍有原生动画、真实 Intel Mac、Linux、R12 模型调用和安装态两小时 soak 门禁未通过或未执行；失败和缺设备项均保留。
+**状态：NOT_RELEASE_READY。** 本轮补齐 Apple Silicon 上当前 `LocalPilot Test` 安装/升级/回滚/恢复，在可启动 Chromium 的环境完成原有两项 Playwright 页面用例，并以 Luna medium 通过原 R12 Full 工程门禁。安装态 Full + extended 两小时 soak 与真实 Intel Mac/Linux 原生门禁仍未完成；桌宠可见动画未通过。失败和缺设备项均保留。
 
 ## 来源与环境
 
@@ -49,21 +49,23 @@
 
 随后在真实 rc.17 安装环境，用只含两份验收 runner 副本的独立 harness 启动 Full + extended 7200 秒 soak。父进程与实际 Core 子进程的产品模块均从已安装 runtime 的 `site-packages` 导入；源码目录不在 harness 或产品模块路径中。请求在约 2.07 秒因同一 HTTP 401 失败，0 心跳、无完成收据、无后续 `read_file` 收据、0 子任务/模型调用，usage UNKNOWN；owned Core 已停止。**两小时门禁未通过**。没有使用 Sol；认证错误不构成能力瓶颈。见 `SOURCE_IMPORTS.json`、`INSTALLED_SOAK_SUMMARY.json` 和 `.private/installed-soak-*`。
 
-修复密钥文件后按用户最新偏好以 `gpt-6-luna` / medium、原 runner 和原 fixture 重跑 R12。两次运行的 fixture manifest 与之前完全一致，源码未改，最多 2 个子任务、每个子任务 4096 output token 上限保持不变。
+修复密钥文件后按用户最新偏好以 `gpt-6-luna` / medium、原 runner 和原 fixture 重跑 R12。三次运行的 fixture manifest 与之前完全一致，源码未改，最多 2 个子任务、每个子任务 4096 output token 上限保持不变。保留两次 TLS EOF 失败；第三次为**PASS**：只对 `api.openai.com` 设置进程级 `NO_PROXY`，绕过不稳定的本机代理，仍经活动 VPN 隧道路由 `utun1024`。无源码或提示改动。
 
-- 第一次运行 297.8 秒、22 次模型调用。语义验收 PASS，父级 17 项 unittest 和 4 个 CLI 场景均 PASS；子任务 A 完成，子任务 B 因 TLS `UNEXPECTED_EOF_WHILE_READING` 连接失败。父级补做聚合，但 child obligation 未完成，最终 `task_status=incomplete`、`finalization_reason=stagnation`，协议/编排门禁 FAIL。47 条收据，0 unknown effects。
-- 紧接着一次 Luna medium 重试在 32.28 秒以同类 TLS EOF 失败；6 次模型调用，两个 child 均取消，验收未完成。两次均没有改提示、fixture 或工具定义。
-- 缓存读取被 API usage 实际报告：第一次命中 704,396 / 866,450 输入 token（19/22 次调用有命中，81.3%）；重试命中 20,667 / 40,327（6/6 次，51.2%）。合计 725,063 / 906,777 输入 token 命中（约 80.0%）。实际账单金额未知。
+| 尝试 | 结果 | 关键数据 |
+|---|---|---|
+| Luna medium / 系统代理 | FAIL | 297.8 秒、22 次调用；语义、17 项 unittest、4 CLI PASS；child B 遇 TLS `UNEXPECTED_EOF_WHILE_READING`，总体 incomplete/stagnation；缓存 704,396 / 866,450（81.3%） |
+| Luna medium / 系统代理重试 | FAIL | 32.28 秒、6 次调用；相同 TLS EOF，两个 child 取消；缓存 20,667 / 40,327（51.2%） |
+| Luna medium / 指定域名直连隧道 | PASS | 174.31 秒、27 次调用；协议、编排、语义、工程 PASS；两个 child 均完成；17 项 unittest、4 CLI PASS；54 条收据，0 unknown effects；缓存 749,161 / 914,539（81.9%，27/27 次调用有命中） |
 
-这两次失败原因是 TLS 传输 EOF，不是模型能力不足，所以没有改用更贵的 `gpt-6.2-sol` medium。此时不重试第三次，也不启动 Full + extended 两小时 soak；保留原始请求/收据在 `.private/r12-luna-medium-*`，等待传输稳定后再续验。结构化汇总见 `R12_LUNA_MEDIUM_SUMMARY.json`。
+三次合计 55 次模型调用、1,821,316 输入 token、23,710 输出 token，1,474,224 输入 token 由缓存命中（80.94%）。实际账单金额未知。因 TLS EOF 是传输问题且 Luna medium 已通过，没有尝试更贵的 `gpt-6.2-sol` medium。原始请求、日志与收据保留在 `.private/r12-luna-medium-*`；结构化汇总见 `R12_LUNA_MEDIUM_SUMMARY.json`。
 
 ## 仍未完成 / 硬件缺项
 
 - 真实 Intel Mac 原生构建和安装验收：**NOT_RUN**，本机是 arm64。
 - 适用 Linux 原生构建和安装验收：**NOT_RUN**，本轮没有受支持 Linux 主机、系统包 helper 和 GTK/WebKitGTK/Rust 原生构建环境。
 - 桌宠物理拖动、UI 滑块、多显示器、可见动画：未通过或 NOT_RUN，见上节。
-- R12 Luna medium：两次真实模型执行均 FAIL，失败原因是 TLS EOF；不归为模型能力失败或通过。
-- Full + extended 两小时安装态任务：仍未在修复密钥后启动；本轮 R12 未通过，因此 0/240 心跳门禁未执行，完成收据缺失。
+- R12 Full 工程：**PASS，gpt-6-luna / medium**，保持原 fixture、两 child 上限和 4096 child 输出 token 上限。
+- Full + extended 两小时安装态任务：**尚未在修复密钥后启动**；0/240 心跳门禁仍未执行，完成收据缺失。
 - 安装矩阵在 Apple Silicon 主机通过，不代表 Intel 或 Linux 平台通过。
 
 保留状态 `NOT_RELEASE_READY`。本轮没有合并 PR、创建 Tag 或 Release。证据提交已推送到目标分支，并从 GitHub 读回确认 PR head；PR 仍为 open。
