@@ -4,22 +4,46 @@
   "provider_host": "api.openai.com",
   "tls_verified": true,
   "route": "active tunnel interface",
-  "credential_source": "existing local 0600 key file; path and contents withheld",
-  "requests": [
+  "credential_source": "user-provided value stored locally with mode 0600; path and contents withheld",
+  "initial_file_check": {
+    "stored_character_count": 163,
+    "user_provided_character_count": 164,
+    "mismatch": "stored file omitted one character",
+    "initial_requests": [
+      {
+        "method": "GET",
+        "path": "/v1/models/gpt-6-luna",
+        "http_status": 401,
+        "provider_error": "Incorrect API key provided"
+      },
+      {
+        "method": "GET",
+        "path": "/v1/models/gpt-6.2-sol",
+        "http_status": 401,
+        "provider_error": "Incorrect API key provided"
+      }
+    ]
+  },
+  "after_exact_value_restored": {
+    "stored_character_count": 164,
+    "exact_match_to_latest_user_value": true,
+    "file_mode": "0600",
+    "requests": [
     {
       "method": "GET",
       "path": "/v1/models/gpt-6-luna",
-      "http_status": 401,
-      "provider_error": "Incorrect API key provided"
+      "http_status": 200,
+      "model_id_matches": true
     },
     {
       "method": "GET",
       "path": "/v1/models/gpt-6.2-sol",
-      "http_status": 401,
-      "provider_error": "Incorrect API key provided"
+      "http_status": 200,
+      "model_id_matches": true
     }
-  ],
+    ]
+  },
   "model_inference_requests": 0,
   "billable_model_tokens": 0,
-  "conclusion": "API host was reached over the active tunnel, but the supplied credential was rejected before inference."
+  "conclusion": "The earlier local copy was truncated by one character. After restoring the exact user-provided value, both OpenAI model metadata requests succeeded over the active tunnel."
 }

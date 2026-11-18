@@ -45,21 +45,25 @@
 
 ## Full R12 与安装态 Full + extended soak
 
-在收到限定范围授权后，以原 Luna high 路径、原夹具、原 runner 重试 R12。未发生自动审批拒绝；调用在模型推理前收到 HTTP 401，耗时约 2.91 秒，0 模型调用、0 子任务、provider usage UNKNOWN；Core 已停止。原夹具 manifest SHA 与之前记录一致。没有因认证失败转用 Sol。结论为**失败于认证、工程结果未验证**，不将其说成模型能力失败或通过。见 `R12_RESULT_SUMMARY.json` 与 `.private/r12-luna-high/`。
+最初 Luna high 的 R12 和安装态 soak 请求都在推理前收到 HTTP 401。重启后核对发现本机密钥文件少了 1 个字符；按用户最新提供的值修复后设为 0600。活动隧道路由上的不计费 `GET /v1/models/...` 对 Luna 和 6.2 Sol 均返回 200。原先的 401 是本地文件截短造成，不能归因于 VPN，也不代表该密钥本身无效。诊断见 `AUTH_NETWORK_CHECK.json`。
 
 随后在真实 rc.17 安装环境，用只含两份验收 runner 副本的独立 harness 启动 Full + extended 7200 秒 soak。父进程与实际 Core 子进程的产品模块均从已安装 runtime 的 `site-packages` 导入；源码目录不在 harness 或产品模块路径中。请求在约 2.07 秒因同一 HTTP 401 失败，0 心跳、无完成收据、无后续 `read_file` 收据、0 子任务/模型调用，usage UNKNOWN；owned Core 已停止。**两小时门禁未通过**。没有使用 Sol；认证错误不构成能力瓶颈。见 `SOURCE_IMPORTS.json`、`INSTALLED_SOAK_SUMMARY.json` 和 `.private/installed-soak-*`。
 
-重启后补做了不计费的认证/连通性诊断：API hostname 的 TLS 请求经活动隧道路由到达 OpenAI；对 `GET /v1/models/gpt-6-luna` 和 `GET /v1/models/gpt-6.2-sol`，服务端均明确返回 `401 Incorrect API key provided`。没有生成请求或模型 token。由此确认当前阻断是凭据被 API 拒绝；之前仅记录通用 401 的 R12/soak 结果不应归因于 VPN 断开。结构化结果见 `AUTH_NETWORK_CHECK.json`。
+修复密钥文件后按用户最新偏好以 `gpt-6-luna` / medium、原 runner 和原 fixture 重跑 R12。两次运行的 fixture manifest 与之前完全一致，源码未改，最多 2 个子任务、每个子任务 4096 output token 上限保持不变。
 
-下一次授权模型验收按用户最新偏好使用 `gpt-6-luna` / medium；仅在 Luna 出现实际能力瓶颈时改用 `gpt-6.2-sol` / medium。保持原夹具、工具 schema 和稳定提示前缀不变；从 Responses API usage 中记录 `input_tokens_details.cached_tokens`，只有实际读数才算缓存命中。若 R12 重试未报告缓存读数，不启动两小时 soak，先保留计费数据并查明原因。
+- 第一次运行 297.8 秒、22 次模型调用。语义验收 PASS，父级 17 项 unittest 和 4 个 CLI 场景均 PASS；子任务 A 完成，子任务 B 因 TLS `UNEXPECTED_EOF_WHILE_READING` 连接失败。父级补做聚合，但 child obligation 未完成，最终 `task_status=incomplete`、`finalization_reason=stagnation`，协议/编排门禁 FAIL。47 条收据，0 unknown effects。
+- 紧接着一次 Luna medium 重试在 32.28 秒以同类 TLS EOF 失败；6 次模型调用，两个 child 均取消，验收未完成。两次均没有改提示、fixture 或工具定义。
+- 缓存读取被 API usage 实际报告：第一次命中 704,396 / 866,450 输入 token（19/22 次调用有命中，81.3%）；重试命中 20,667 / 40,327（6/6 次，51.2%）。合计 725,063 / 906,777 输入 token 命中（约 80.0%）。实际账单金额未知。
+
+这两次失败原因是 TLS 传输 EOF，不是模型能力不足，所以没有改用更贵的 `gpt-6.2-sol` medium。此时不重试第三次，也不启动 Full + extended 两小时 soak；保留原始请求/收据在 `.private/r12-luna-medium-*`，等待传输稳定后再续验。结构化汇总见 `R12_LUNA_MEDIUM_SUMMARY.json`。
 
 ## 仍未完成 / 硬件缺项
 
 - 真实 Intel Mac 原生构建和安装验收：**NOT_RUN**，本机是 arm64。
 - 适用 Linux 原生构建和安装验收：**NOT_RUN**，本轮没有受支持 Linux 主机、系统包 helper 和 GTK/WebKitGTK/Rust 原生构建环境。
 - 桌宠物理拖动、UI 滑块、多显示器、可见动画：未通过或 NOT_RUN，见上节。
-- R12 真正模型执行：HTTP 401，工程结果未验证；等待用户提供新的、有效且权限受限的本地密钥文件路径后才能重跑。
-- Full + extended 两小时安装态任务：HTTP 401 前置失败，0/240 心跳；完成收据缺失。
+- R12 Luna medium：两次真实模型执行均 FAIL，失败原因是 TLS EOF；不归为模型能力失败或通过。
+- Full + extended 两小时安装态任务：仍未在修复密钥后启动；本轮 R12 未通过，因此 0/240 心跳门禁未执行，完成收据缺失。
 - 安装矩阵在 Apple Silicon 主机通过，不代表 Intel 或 Linux 平台通过。
 
 保留状态 `NOT_RELEASE_READY`。本轮没有合并 PR、创建 Tag 或 Release。证据提交已推送到目标分支，并从 GitHub 读回确认 PR head；PR 仍为 open。

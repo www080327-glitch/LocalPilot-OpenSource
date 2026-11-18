@@ -41,14 +41,14 @@ python desktop/scripts/install-local-app.py --source "$RC17_APP" --test-app --ex
 
 ## Full R12 / 安装态 soak
 
-以下是仓库原 Work 指定入口和实际预算/模型配置；密钥只通过本机私有文件路径传入，不记录其内容：
+以下是仓库原 runner 和本轮用户更新的配置；最初的 `gpt-6-luna/high` 尝试因本机密钥文件少一个字符而在推理前 HTTP 401，密钥文件修正后改为 Luna medium。密钥只通过本机私有文件路径传入，不记录其内容。
 
 ```sh
-python scripts/qualify_openai_engineering.py --source-root "$LP_SOURCE" --key-file "$LP_KEY_FILE" --model gpt-6-luna --reasoning high --output "$LP_RUN/r12-luna-high"
-<installed-python> harness/scripts/qualify_openai_agent.py --case soak --soak-seconds 7200 --model gpt-6-luna --reasoning high --key-file "$LP_KEY_FILE" --output "$LP_RUN/full-extended-soak"
+LP_SOURCE="$PWD" LP_RUN="$PWD/docs/evidence/native-polish-final-20261118/.private" LP_KEY_FILE="$HOME/.local/share/localpilot-pr15-native-20261117/private/openai-api-key" LP_OUTPUT="$PWD/docs/evidence/native-polish-final-20261118/.private/r12-luna-medium-attempt2"; setopt pipefail; python3 -u scripts/qualify_openai_engineering.py --source-root "$LP_SOURCE" --key-file "$LP_KEY_FILE" --model gpt-6-luna --reasoning medium --output "$LP_OUTPUT" 2>&1 | tee "$LP_RUN/r12-luna-medium-attempt2-console.log"
+LP_OUTPUT="$PWD/docs/evidence/native-polish-final-20261118/.private/r12-luna-medium-retry1"; setopt pipefail; python3 -u scripts/qualify_openai_engineering.py --source-root "$LP_SOURCE" --key-file "$LP_KEY_FILE" --model gpt-6-luna --reasoning medium --output "$LP_OUTPUT" 2>&1 | tee "$LP_RUN/r12-luna-medium-retry1-console.log"
 ```
 
-R12 与安装态 soak 均在模型推理前 HTTP 401；分别为 0 次模型调用/0 子任务和 0 次模型调用/0 心跳。runner 散列、结果散列、进程停止和模块来源见对应 JSON；原始私有日志只留本地。
+实际第一次执行前预建了输出目录，原 runner 按要求拒绝；该纯本地错误退出码 2，0 API 调用。上面两条 fresh-directory 命令分别退出 1。完整 raw logs、receipts 与结果在对应 `.private/` 子目录。runner SHA 为 `1878a177ed32600e9d53490ad518a93ece8d729643f2e2681c7b10d11d4724c4`，fixture manifest 与前次一致。密钥修复前的 install soak 为 HTTP 401；密钥修复后未重启两小时 soak。
 
 ## 重启后认证与路由检查（无模型推理）
 
@@ -58,4 +58,4 @@ GET https://api.openai.com/v1/models/gpt-6.2-sol
 Authorization: Bearer <read from the existing local 0600 key file; value not logged>
 ```
 
-两次均从活动隧道路由收到 `401 Incorrect API key provided`；没有调用 Responses API、生成内容或产生模型 token。结构化结果见 `AUTH_NETWORK_CHECK.json`。
+修复本机文件漏掉的一个字符后，从活动隧道路由对两种模型的 GET 均收到 HTTP 200；这是模型目录查询，没有调用 Responses API、生成内容或产生模型 token。结构化结果见 `AUTH_NETWORK_CHECK.json`。
