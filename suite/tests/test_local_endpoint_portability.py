@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import platform
+import sqlite3
 import subprocess
 import sys
 import tempfile
@@ -156,6 +157,27 @@ class PortableSetupProcessTests(unittest.TestCase):
         self.assertEqual(reopened['status'], 'ready')
         self.assertIn('cpu-agent', private_json(self.home / 'service.json')['routes'])
         self.assertEqual(client.request('/localpilot/v1/sessions/' + old_session['id'])['id'], old_session['id'])
+
+    def test_normal_stop_materializes_current_storage_before_external_package_switch(self):
+        self.cli('desktop-init', '--workspace', str(self.workspace))
+        self.control('configure_local_endpoint', {'name':'cpu-storage', 'model':'storage-fixture',
+            'base_url':'http://127.0.0.1:1234/v1', 'context_budget':8192, 'companion':False})
+        self.control('activate_model_configuration', {'confirmed':True})
+        from localpilot_service.cli import connection
+        client = connection(self.home)
+        session = client.request('/localpilot/v1/sessions', {'model':'cpu-storage'}, key='normal-stop-storage')
+        database = Path(private_json(self.home / 'service.json')['data_dir']) / 'runtime.sqlite3'
+        with sqlite3.connect(database) as storage:
+            self.assertEqual(storage.execute('PRAGMA user_version').fetchone()[0], 4)
+        stopped = self.control('service_control', {'module':'core', 'action':'stop', 'confirmed':True})
+        self.assertEqual(stopped['status'], 'stopped')
+        with sqlite3.connect(database) as storage:
+            self.assertEqual(storage.execute('PRAGMA user_version').fetchone()[0], 3)
+            payload = json.loads(storage.execute('SELECT payload FROM checkpoints WHERE session_id=?', (session['id'],)).fetchone()[0])
+            self.assertNotIn('_block_checkpoint', payload)
+            self.assertEqual(payload['session']['id'], session['id'])
+        self.assertEqual(self.control('service_control', {'module':'core', 'action':'recover', 'confirmed':True})['status'], 'ready')
+        self.assertEqual(client.request('/localpilot/v1/sessions/' + session['id'])['id'], session['id'])
 
     def test_cloud_provider_setup_preserves_local_routes_and_existing_sessions(self):
         self.cli('desktop-init', '--workspace', str(self.workspace))

@@ -1,6 +1,6 @@
-# LocalPilot Suite 0.2.0b35
+# LocalPilot Suite 0.2.0b36
 
-2026-11-19 source candidate: Desktop 5.0.1-rc.19; Core 5.0.0b36; Suite 0.2.0b35; Companion 0.5.7b12; Channels 0.1.0a4. Linux adds platform capabilities and official pinned Node archives for x86_64/aarch64; x86_64 installation and execution were tested. Intel native qualification remains open. This is not a new Release. See [Linux implementation and evidence](../docs/development/LINUX_COMPLETION_20261116.md).
+2026-11-19 source candidate: Desktop 5.0.1-rc.20; Core 5.0.0b37; Suite 0.2.0b36; Companion 0.5.7b12; Channels 0.1.0a4. Linux adds platform capabilities and official pinned Node archives for x86_64/aarch64; x86_64 installation and execution were tested. Intel native qualification remains open. This is not a new Release. See [Linux implementation and evidence](../docs/development/LINUX_COMPLETION_20261116.md).
 
 [公开 GitHub 桌面历史版本与可用下载](https://github.com/www080327-glitch/LocalPilot-OpenSource/releases) · [安装与边界](../README.md#简易快速安装)。本页为独立 Suite CLI，模块版本不随 Desktop 版本号变化。
 

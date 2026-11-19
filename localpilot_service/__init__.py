@@ -1,2 +1,2 @@
 """Authenticated packaging of the existing LocalPilot runtime."""
-VERSION = "5.0.0b36"
+VERSION = "5.0.0b37"

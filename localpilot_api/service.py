@@ -12,7 +12,7 @@ from agent.computer_ledger import computer_obligations
 from agent.backends import Message
 from agent.session import AgentSession
 from agent.persistence import (PersistenceError, SQLiteRuntimeStore, configuration, digest, dumps,
-    snapshot_runtime, restore_runtime, recovery_class, nodes, pack, unpack)
+    snapshot_runtime, restore_runtime, recovery_class, nodes, pack, unpack, CheckpointBatch)
 from computer.schemas import WRITE_NAMES
 
 
@@ -183,18 +183,28 @@ class TaskService:
             return
         with self.condition:
             session = self._session(session_id)
+            blocks = CheckpointBatch(self.store, session_id)
             payload = {"version": 1, "configuration": session.runtime._persistence_config,
                 "session": {f.name: getattr(session, f.name) for f in fields(SessionRecord) if f.name not in {"runtime", "archive"} and not (f.name in {'extensions', 'child_route_contexts'} and not getattr(session, f.name))},
-                "runtime": snapshot_runtime(session.runtime),
-                "tasks": [self._task_payload(t)
+                "runtime": snapshot_runtime(session.runtime, blocks=blocks),
+                "tasks": [self._task_payload(t, blocks=blocks)
                           for t in self.tasks.values() if t.session_id == session_id]}
             self.store.save(session_id, payload, point,
                             archived_tasks=[self._task_payload(t) for t in archived_tasks],
-                            archived_session=archived_session, archived_runtime=archived_runtime)
+                            archived_session=archived_session, archived_runtime=archived_runtime, blocks=blocks)
 
     @staticmethod
-    def _task_payload(task):
-        return pack({f.name: getattr(task, f.name) for f in fields(TaskRecord) if f.name != "timer"})
+    def _task_payload(task, *, blocks=None):
+        values = {f.name: getattr(task, f.name) for f in fields(TaskRecord) if f.name != "timer"}
+        if blocks:
+            path = ['task', task.id]
+            for name in ('events', 'output', 'tools', 'subagents'):
+                values[name] = blocks.sequence(task, name, pack, [*path, name])
+            values['model_calls_by_turn'] = blocks.mapping(task, 'model_calls_by_turn', [*path, 'model_calls_by_turn'])
+            if task.result and 'model_calls' in task.result:
+                values['result'] = dict(task.result)
+                values['result']['model_calls'] = blocks.sequence(task.result, 'model_calls', pack, [*path, 'result', 'model_calls'])
+        return pack(values)
 
     def _attach_persistence(self, session):
         if session.runtime.async_policy is not None and session.runtime.async_policy != self.async_policy:
@@ -1158,6 +1168,7 @@ class TaskService:
             if self.resource_finalizer:
                 self.resource_finalizer()
             if self.store:
+                self.store.materialize_legacy()
                 self.store.close()
             for session in self.sessions.values():
                 if session.runtime.computer:
@@ -1191,5 +1202,7 @@ class TaskService:
         if self.resource_finalizer:
             self.resource_finalizer()
         if self.store:
+            if not self.store.failed:
+                self.store.materialize_legacy()
             self.store.close()
         return {"status": "ok", "quiescent": True}

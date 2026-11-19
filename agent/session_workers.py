@@ -234,7 +234,8 @@ class SessionWorkers:
         if len(child.tool_history) != accounted.get("receipts", 0):
             self.working.cache.invalidate()
         accounted["receipts"] = len(child.tool_history)
-        record["receipts"] = child.tool_history if record.get("async") else deepcopy(child.tool_history)
+        # Internal canonical entries are stable; public task snapshots copy them.
+        record["receipts"] = child.tool_history
         record["approval"] = deepcopy(child._approval_view()) if child.pending_approval else None
         record["pending_calls"] = [c.to_dict() for c in child._queue]
         record["usage"] = {name[1:]: accounted[name] for name in counters}
