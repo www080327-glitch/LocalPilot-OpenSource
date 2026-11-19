@@ -29,6 +29,7 @@ class HistoryRecallTests(unittest.TestCase):
         self.path = self.root / 'runtime.sqlite3'
         self.grants = WorkspaceGrants(self.root / 'workspace-grants.json')
         self.hybrid = False
+        self.output_tokens = 512
         self.backend = Backend(*(answer('completed') for _ in range(20)))
         self.services = []
         self.addCleanup(self.close_services)
@@ -48,7 +49,7 @@ class HistoryRecallTests(unittest.TestCase):
             runtime = AgentSession(create_default_registry(self.workspace, permission_mode='full-permission'),
                 backend=self.backend, policy='cloud-only', event_callback=callback, streaming=False,
                 engine_policy=EngineV5Policy(), budgets=SessionBudgets(max_steps=12, max_tool_calls=20,
-                    max_token_units=1000000, max_output_tokens=512), **options)
+                    max_token_units=1000000, max_output_tokens=self.output_tokens), **options)
             runtime._workspace_grants = self.grants
             return runtime
         service = TaskService({'localpilot': factory}, persistence=self.path, history_rotation_bytes=1)
@@ -195,6 +196,33 @@ class HistoryRecallTests(unittest.TestCase):
             self.task(service, f'Followup {index}', sid)
         result = service.sessions[sid].runtime.registry.call('recall_history', {'query': 'NEEDLE'})
         self.assertEqual([item['text'] for item in result['matches']], ['Original USER NEEDLE'])
+
+    def test_unicode_search_and_exact_chunks_preserve_references_within_gateway_byte_budget(self):
+        self.output_tokens = 8192
+        original = '🦊' * 5000
+        self.backend.steps[0] = answer(original)
+        service = self.service()
+        sid = None
+        for index in range(10):
+            sid = self.task(service, str(index) + '😀' * 1000, sid)['session_id']
+        registry = service.sessions[sid].runtime.registry
+        matches = registry.call('recall_history', {'query': '😀'})
+        self.assertNotIn('truncated', matches)
+        self.assertLessEqual(len(json.dumps(matches, ensure_ascii=False).encode()), registry.gateway.max_output_bytes)
+        self.assertEqual(len(matches['matches']), 10)
+        reference = registry.call('recall_history', {'query': '🦊'})['matches'][0]['reference']
+        fragments, offset = [], 0
+        while offset is not None:
+            result = registry.call('recall_history', {'reference': reference, 'offset': offset})
+            self.assertNotIn('truncated', result)
+            self.assertLessEqual(len(json.dumps(result, ensure_ascii=False).encode()), registry.gateway.max_output_bytes)
+            self.assertEqual(result['offset'], sum(map(len, fragments)))
+            fragments.append(result['text'])
+            offset = result['next_offset']
+            if offset is not None:
+                self.assertEqual(offset, sum(map(len, fragments)))
+        self.assertGreater(len(fragments), 1)
+        self.assertEqual(''.join(fragments), original)
 
     def test_invalid_requests_and_corrupt_index_never_return_text(self):
         service, sid, _ = self.archived()

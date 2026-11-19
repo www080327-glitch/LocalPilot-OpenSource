@@ -617,7 +617,9 @@ class APITests(unittest.TestCase):
         self.backend = StreamBackend()
         task = self.responses("slow", background=True, localpilot={"timeout_seconds": 0.05})
         self.assertTrue(self.backend.first.wait(2))
-        time.sleep(0.08)
+        with self.service.condition:
+            self.assertTrue(self.service.condition.wait_for(
+                lambda: self.service.task_snapshot(task["id"])["status"] == "cancelling", 2))
         self.assertEqual(self.service.task_snapshot(task["id"])["status"], "cancelling")
         self.backend.release.set()
         self.assertEqual(self.task(task)["status"], "timed_out")

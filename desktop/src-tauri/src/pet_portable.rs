@@ -4,6 +4,11 @@ use gtk::{gdk, glib, prelude::*};
 use std::sync::atomic::Ordering;
 
 #[cfg(target_os = "linux")]
+pub fn global_positions_supported() -> bool {
+    gdk::Display::default().is_some_and(|display| display.backend().is_x11())
+}
+
+#[cfg(target_os = "linux")]
 pub fn begin_drag(app: &tauri::AppHandle) -> Result<(), String> {
     let window = app.get_webview_window("pet").ok_or("宠物未开启")?;
     let native = window.gtk_window().map_err(|e| e.to_string())?;
@@ -24,7 +29,11 @@ pub fn begin_drag(app: &tauri::AppHandle) -> Result<(), String> {
     if state.dragging.swap(true, Ordering::Relaxed) {
         return Ok(());
     }
-    let mut previous = window.outer_position().ok();
+    // Tao can return cached zero coordinates on Wayland without an error.
+    let positions_available = global_positions_supported();
+    let mut previous = positions_available
+        .then(|| window.outer_position().ok())
+        .flatten();
     if let Err(error) = window.start_dragging() {
         state.dragging.store(false, Ordering::Relaxed);
         return Err(error.to_string());
@@ -44,7 +53,9 @@ pub fn begin_drag(app: &tauri::AppHandle) -> Result<(), String> {
             pet_edge::end_drag(&app);
             return glib::ControlFlow::Break;
         }
-        let current = window.outer_position().ok();
+        let current = positions_available
+            .then(|| window.outer_position().ok())
+            .flatten();
         if let Some((dx, dy)) = physical_drag_delta(previous, current) {
             pet_edge::drag(&app, dx, dy);
         }
@@ -58,7 +69,9 @@ pub fn begin_drag(app: &tauri::AppHandle) -> Result<(), String> {
         } else {
             state.dragging.store(false, Ordering::Relaxed);
             pet_edge::end_drag(&app);
-            let _ = pet_native::follow(&app);
+            if positions_available {
+                let _ = pet_native::follow(&app);
+            }
             glib::ControlFlow::Break
         }
     });
@@ -85,13 +98,17 @@ pub fn thought_glass(_app: &tauri::AppHandle) -> Result<(), String> {
 }
 
 pub fn diagnostics(app: &tauri::AppHandle) -> Result<Value, String> {
+    #[cfg(target_os = "linux")]
+    let positions_available = global_positions_supported();
+    #[cfg(not(target_os = "linux"))]
+    let positions_available = true;
     let windows = ["pet", "pet-bubble"]
         .into_iter()
         .filter_map(|label| {
             app.get_webview_window(label).map(|window| {
                 json!({
                     "label":label, "visible":window.is_visible().ok(),
-                    "position":window.outer_position().ok(), "size":window.outer_size().ok()
+                    "position":positions_available.then(||window.outer_position().ok()).flatten(), "size":window.outer_size().ok()
                 })
             })
         })
@@ -110,7 +127,7 @@ pub fn diagnostics(app: &tauri::AppHandle) -> Result<Value, String> {
         "character":appearance["character"],"appearance_mode":appearance["appearance_mode"],
         "edge":pet_edge::snapshot(app),"pointer_input":"webview",
         "drag_active":app.state::<pet_native::PetState>().dragging.load(Ordering::Relaxed),
-        "global_position_available":app.get_webview_window("pet").is_some_and(|w|w.outer_position().is_ok()),
+        "global_position_available":positions_available && app.get_webview_window("pet").is_some_and(|w|w.outer_position().is_ok()),
         "native_glass":"UNSUPPORTED","alpha_hit_testing":"UNSUPPORTED"}),
     )
 }

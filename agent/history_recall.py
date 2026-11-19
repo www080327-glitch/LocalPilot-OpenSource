@@ -104,9 +104,9 @@ class HistoryRecall:
                 return {'status': 'withheld', 'reason': 'Prior assistant text is not authorized by the current cloud projection'}
             text = visible['text'][offset:offset + 4000]
             end = offset + len(text)
-            return {'status': 'ok', 'reference': reference, 'role': visible['role'],
+            return self._bounded({'status': 'ok', 'reference': reference, 'role': visible['role'],
                     'text': text, 'offset': offset, 'next_offset': end if end < len(visible['text']) else None,
-                    'historical': True}
+                    'historical': True})
         matches, seen = [], set()
         for position, message in reversed(list(enumerate(runtime.messages))):
             visible = visible_message(message.to_dict())
@@ -119,7 +119,21 @@ class HistoryRecall:
                 self._match(matches, seen, old_generation, position, visible, query)
                 if len(matches) == 10:
                     break
-        return {'status': 'ok', 'matches': matches, 'limit': 10, 'historical': True}
+        return self._bounded({'status': 'ok', 'matches': matches, 'limit': 10, 'historical': True})
+
+    def _bounded(self, result):
+        excerpts = result.get('matches', [result])
+        ceiling = self.session.runtime.registry.gateway.max_output_bytes
+        # Generic Registry truncation would discard references and next_offset.
+        while (any(len(item['text']) > 1 for item in excerpts)
+                and len(json.dumps(result, ensure_ascii=False).encode()) > ceiling):
+            for item in excerpts:
+                if len(item['text']) > 1:
+                    item['text'] = item['text'][:len(item['text']) // 2]
+                    if 'next_offset' in item:
+                        item['next_offset'] = item['offset'] + len(item['text'])
+            result['output_limited'] = True
+        return result
 
     @staticmethod
     def _match(matches, seen, generation, position, visible, query):

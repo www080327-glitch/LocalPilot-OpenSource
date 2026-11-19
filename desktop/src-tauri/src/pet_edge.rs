@@ -597,6 +597,12 @@ pub fn end_drag(app: &tauri::AppHandle) {
     let mut e = state.edge.lock().unwrap();
     e.since = Instant::now();
     e.touched = Instant::now();
+    #[cfg(target_os = "linux")]
+    if !super::pet_macos::global_positions_supported() {
+        drop(e);
+        let _ = persist(app);
+        return;
+    }
     if let Some(w) = app.get_webview_window("pet") {
         if let (Ok(p), Ok(z), Ok(Some(m))) =
             (w.outer_position(), w.outer_size(), w.current_monitor())
