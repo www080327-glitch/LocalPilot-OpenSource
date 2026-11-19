@@ -8,6 +8,7 @@ import tempfile
 import threading
 import time
 import unittest
+from unittest.mock import patch
 
 from agent.registry import create_default_registry
 from agent.session import AgentSession, SessionState
@@ -27,14 +28,11 @@ class PluginTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.shared = tempfile.TemporaryDirectory()
+        cls.addClassCleanup(cls.shared.cleanup)
         manager = PluginManager(Path(cls.shared.name).resolve() / "plugins")
+        cls.addClassCleanup(manager.close)
         manager.add(cls.config())
         cls.catalog = manager.discover("fixture", source_reviewed=True, license_id="MIT-test-fixture")["catalog"]
-        manager.close()
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.shared.cleanup()
 
     @staticmethod
     def config(mode="full", **extra):
@@ -412,6 +410,17 @@ class PluginTests(unittest.TestCase):
         finally:
             release.set()
             runtime.close()
+
+
+class PluginStartupTests(unittest.TestCase):
+    def test_denied_process_enumeration_fails_before_worker_launch(self):
+        client = MCPClient(PluginTests.config())
+        self.addCleanup(client.close)
+        with patch("psutil.pids", side_effect=PermissionError(1, "Operation not permitted")):
+            with self.assertRaisesRegex(TransportFailure, "^process_inspection_unavailable$"):
+                client.connect()
+        self.assertIsNone(client.process)
+        self.assertIsNone(client.directory)
 
 
 class SkillTests(unittest.TestCase):
