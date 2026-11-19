@@ -172,7 +172,8 @@ class ServiceHistoryTests(unittest.TestCase):
             self.assertEqual(db.execute('PRAGMA integrity_check').fetchone()[0], 'ok')
             self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 1)
             self.assertEqual(db.execute('SELECT * FROM checkpoints').fetchall(), prior)
-        self.assertEqual(service.store.connection.execute('PRAGMA user_version').fetchone()[0], SQLiteRuntimeStore.VERSION)
+        # Full legacy checkpoints remain schema 3 until an incremental write.
+        self.assertEqual(service.store.connection.execute('PRAGMA user_version').fetchone()[0], 3)
         self.assertEqual(service.create_task(TaskRequest('first', idempotency_key='first')), first)
         self.assertEqual((self.workspace / 'migration.txt').read_text(), 'preserved')
         service.suspend()
