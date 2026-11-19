@@ -1,0 +1,89 @@
+{
+  "status": "PASS",
+  "source_commit": "8eb042cf57508de59179b4aa2fdd5ae41e9a9eec",
+  "source_tree": "853f2dece1506f00e462be8b033ec12fcc892dab",
+  "tracked_files_unchanged": 3931,
+  "artifact": {
+    "artifact": "LocalPilot-Test-5.0.1-rc.20-linux-x86_64.deb",
+    "local_artifact": "/workspace/scratch/b0df9966d470/nov19-validation/rc20-install/linux/final-source/desktop/release/linux-test-v5.0.1-rc.20/20261119-111359-22/LocalPilot-Test-5.0.1-rc.20-linux-x86_64.deb",
+    "sha256": "94d4ea4aea4f5db5b852d0b928bad055ffa5b4ae645ceba5364d5c2cc503efe0",
+    "bytes": 114679282
+  },
+  "package": {
+    "Package": "local-pilot-test",
+    "Version": "5.0.1-rc.20",
+    "Architecture": "amd64",
+    "Depends": "python3, xdg-utils, zenity, bubblewrap, python3.13, libayatana-appindicator3-1, libwebkit2gtk-4.1-0, libgtk-3-0"
+  },
+  "bundle_id": "io.localpilot.desktop.test",
+  "module_versions": {
+    "suite": "0.2.0b36",
+    "localpilot-agent-service": "5.0.0b37",
+    "localpilot-companion": "0.5.7b12",
+    "localpilot-channels": "0.1.0a4"
+  },
+  "wheel_count": 40,
+  "verified_product_code": {
+    "localpilot-agent-service": {
+      "source_files": 151,
+      "sha256": "98f7278cd86a2d6aac4c823a280cb927ed625651516d3276c75b567338ba1e53"
+    },
+    "localpilot-channels": {
+      "source_files": 7,
+      "sha256": "daad54598b7822efdf6805b7ce6ed47f4701fde8f1682abf1eef4b80d5c8a394"
+    },
+    "localpilot-companion": {
+      "source_files": 111,
+      "sha256": "418bd428b8a5aba4a322aa652904ec1f05b61e9ef2b511971ba134e106c31ee6"
+    },
+    "localpilot-suite": {
+      "source_files": 21,
+      "sha256": "00c5ef1ebbdbc06fe2cf7c83fdfded2e71520b9e38d5179e4281c56b1730f8bb"
+    }
+  },
+  "source_files_verified": 290,
+  "pip_check": "No broken requirements found.",
+  "node": {
+    "status": "PASS",
+    "version": "v22.23.4",
+    "sha256": "b8492284c76a54baf58d61668dd0e41ee0fc98adabf9503d30f05d08f55b4406"
+  },
+  "packaged_python": {
+    "python": "3.13.5 (main, Aug 10 2026, 12:06:59) [GCC 14.2.0]",
+    "isolated": true,
+    "run": 27,
+    "passed": 27,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "product_modules_loaded_from_extracted_runtime": 128,
+  "native_checks": {
+    "rust-default": {
+      "passed": 63,
+      "failed": 0,
+      "ignored": 3,
+      "measured": 0,
+      "filtered": 0
+    },
+    "rust-core-recovery": {
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 65
+    },
+    "rust-offline-release": {
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 65
+    }
+  },
+  "packaged_rollback": "PACKAGED_ROLLBACK.json",
+  "system_installed": false,
+  "physical_native_gui": "NOT_RUN_RC20",
+  "prior_gui_blocker_receipt": "../../install/linux/NATIVE_GUI_LAUNCH.json",
+  "test_only_commit_equivalence": "../PACKAGE_SOURCE_EQUIVALENCE.json"
+}

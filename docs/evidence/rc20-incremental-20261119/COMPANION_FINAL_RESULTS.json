@@ -1,0 +1,151 @@
+{
+  "suite": "companion",
+  "source_commit": "8eb042cf57508de59179b4aa2fdd5ae41e9a9eec",
+  "source_tree": "853f2dece1506f00e462be8b033ec12fcc892dab",
+  "python": "3.12.14",
+  "python_executable": "/workspace/scratch/b0df9966d470/nov19-validation/runtime/venv/bin/python",
+  "run": 763,
+  "passed": 730,
+  "failures": [],
+  "errors": [],
+  "skips": [
+    {
+      "test": "test_owned_gtk_readonly_observation_and_pause (test_linux_native.LinuxNativeProcessTests.test_owned_gtk_readonly_observation_and_pause)",
+      "reason": "Isolated Linux Xvfb/D-Bus tools unavailable"
+    },
+    {
+      "test": "test_real_cpu_transcription_from_memory_descriptor (test_linux_whisper.RealWhisperTests.test_real_cpu_transcription_from_memory_descriptor)",
+      "reason": "Explicit identified whisper.cpp/model/public sample required"
+    },
+    {
+      "test": "test_real_whisper_process_is_stopped_without_late_text (test_linux_whisper.RealWhisperTests.test_real_whisper_process_is_stopped_without_late_text)",
+      "reason": "Explicit identified whisper.cpp/model/public sample required"
+    },
+    {
+      "test": "test_full_training_rejects_partial_layers_and_unavailable_accelerator_is_explicit (test_portable_training.PortableTrainingTests.test_full_training_rejects_partial_layers_and_unavailable_accelerator_is_explicit)",
+      "reason": "Optional pinned Linux Torch/Transformers/PEFT training environment is not installed"
+    },
+    {
+      "test": "test_only_answer_tokens_contribute_and_long_examples_are_not_truncated (test_portable_training.PortableTrainingTests.test_only_answer_tokens_contribute_and_long_examples_are_not_truncated)",
+      "reason": "Optional pinned Linux Torch/Transformers/PEFT training environment is not installed"
+    },
+    {
+      "test": "test_real_cpu_lora_updates_adapter_and_loads_again (test_portable_training.PortableTrainingTests.test_real_cpu_lora_updates_adapter_and_loads_again)",
+      "reason": "Optional pinned Linux Torch/Transformers/PEFT training environment is not installed"
+    },
+    {
+      "test": "test_real_cpu_lora_updates_only_last_selected_transformer_layer (test_portable_training.PortableTrainingTests.test_real_cpu_lora_updates_only_last_selected_transformer_layer)",
+      "reason": "Optional pinned Linux Torch/Transformers/PEFT training environment is not installed"
+    },
+    {
+      "test": "test_real_full_training_updates_embedding_and_head (test_portable_training.PortableTrainingTests.test_real_full_training_updates_embedding_and_head)",
+      "reason": "Optional pinned Linux Torch/Transformers/PEFT training environment is not installed"
+    },
+    {
+      "test": "test_compiled_capabilities_and_actual_unknown_actions_rejected (test_v041_observer.CompiledObserverV041Tests.test_compiled_capabilities_and_actual_unknown_actions_rejected)",
+      "reason": "macOS Swift fixture required"
+    },
+    {
+      "test": "test_compiled_child_failure_partial_and_empty_success_are_distinct (test_v041_observer.CompiledObserverV041Tests.test_compiled_child_failure_partial_and_empty_success_are_distinct)",
+      "reason": "macOS Swift fixture required"
+    },
+    {
+      "test": "test_compiled_metadata_reads_no_content_except_authorized_exclusion_comparison (test_v041_observer.CompiledObserverV041Tests.test_compiled_metadata_reads_no_content_except_authorized_exclusion_comparison)",
+      "reason": "macOS Swift fixture required"
+    },
+    {
+      "test": "test_compiled_nested_secure_subrole_and_input_prune_preacquisition (test_v041_observer.CompiledObserverV041Tests.test_compiled_nested_secure_subrole_and_input_prune_preacquisition)",
+      "reason": "macOS Swift fixture required"
+    },
+    {
+      "test": "test_compiled_role_only_secure_prunes_before_sensitive_getters (test_v041_observer.CompiledObserverV041Tests.test_compiled_role_only_secure_prunes_before_sensitive_getters)",
+      "reason": "macOS Swift fixture required"
+    },
+    {
+      "test": "test_compiled_root_failure_is_failed_not_success_empty (test_v041_observer.CompiledObserverV041Tests.test_compiled_root_failure_is_failed_not_success_empty)",
+      "reason": "macOS Swift fixture required"
+    },
+    {
+      "test": "test_compiled_target_changes_stop_getters_and_discard_partial_content (test_v041_observer.CompiledObserverV041Tests.test_compiled_target_changes_stop_getters_and_discard_partial_content)",
+      "reason": "macOS Swift fixture required"
+    },
+    {
+      "test": "test_compiled_target_identity_rejects_closed_switched_reused_pid (test_v041_observer.CompiledObserverV041Tests.test_compiled_target_identity_rejects_closed_switched_reused_pid)",
+      "reason": "macOS Swift fixture required"
+    },
+    {
+      "test": "test_compiled_unauthorized_app_is_not_read (test_v041_observer.CompiledObserverV041Tests.test_compiled_unauthorized_app_is_not_read)",
+      "reason": "macOS Swift fixture required"
+    },
+    {
+      "test": "test_compiled_unknown_malformed_and_failed_identity_prune_preacquisition (test_v041_observer.CompiledObserverV041Tests.test_compiled_unknown_malformed_and_failed_identity_prune_preacquisition)",
+      "reason": "macOS Swift fixture required"
+    },
+    {
+      "test": "test_pinned_manifest_and_old_helper_requires_rebuild (test_v041_observer.CompiledObserverV041Tests.test_pinned_manifest_and_old_helper_requires_rebuild)",
+      "reason": "macOS Swift fixture required"
+    },
+    {
+      "test": "test_all_profile_mappings_apply_to_actual_compiled_wrapper (test_v043_observer.CompiledProfileTests.test_all_profile_mappings_apply_to_actual_compiled_wrapper)",
+      "reason": "macOS Swift fixture required"
+    },
+    {
+      "test": "test_ide_sensitive_subtrees_stop_after_identity_getters (test_v043_observer.CompiledProfileTests.test_ide_sensitive_subtrees_stop_after_identity_getters)",
+      "reason": "macOS Swift fixture required"
+    },
+    {
+      "test": "test_observer_still_rejects_actions_and_new_inspector_requires_explicit_scope (test_v043_observer.CompiledProfileTests.test_observer_still_rejects_actions_and_new_inspector_requires_explicit_scope)",
+      "reason": "macOS Swift fixture required"
+    },
+    {
+      "test": "test_sensitive_window_preflight_never_reads_children_or_values (test_v043_observer.CompiledProfileTests.test_sensitive_window_preflight_never_reads_children_or_values)",
+      "reason": "macOS Swift fixture required"
+    },
+    {
+      "test": "test_title_allowlist_preflight_rejects_different_window_without_content_read (test_v043_observer.CompiledProfileTests.test_title_allowlist_preflight_rejects_different_window_without_content_read)",
+      "reason": "macOS Swift fixture required"
+    },
+    {
+      "test": "test_arbitrary_helper_and_symlink_are_refused (test_v04_native.CompiledNativeFixtureTests.test_arbitrary_helper_and_symlink_are_refused)",
+      "reason": "native fixture requires macOS Swift"
+    },
+    {
+      "test": "test_compiled_appkit_fixture_has_no_displayed_window (test_v04_native.CompiledNativeFixtureTests.test_compiled_appkit_fixture_has_no_displayed_window)",
+      "reason": "native fixture requires macOS Swift"
+    },
+    {
+      "test": "test_compiled_default_metadata_only_and_allowlist (test_v04_native.CompiledNativeFixtureTests.test_compiled_default_metadata_only_and_allowlist)",
+      "reason": "native fixture requires macOS Swift"
+    },
+    {
+      "test": "test_compiled_json_fixture_does_not_emit_input_values (test_v04_native.CompiledNativeFixtureTests.test_compiled_json_fixture_does_not_emit_input_values)",
+      "reason": "native fixture requires macOS Swift"
+    },
+    {
+      "test": "test_compiled_known_credentials_are_rejected (test_v04_native.CompiledNativeFixtureTests.test_compiled_known_credentials_are_rejected)",
+      "reason": "native fixture requires macOS Swift"
+    },
+    {
+      "test": "test_compiled_node_and_depth_budgets (test_v04_native.CompiledNativeFixtureTests.test_compiled_node_and_depth_budgets)",
+      "reason": "native fixture requires macOS Swift"
+    },
+    {
+      "test": "test_kernel_parent_exit_monitor_only_uses_new_synthetic_processes (test_v04_native.CompiledNativeFixtureTests.test_kernel_parent_exit_monitor_only_uses_new_synthetic_processes)",
+      "reason": "native fixture requires macOS Swift"
+    },
+    {
+      "test": "test_session_wake_cannot_clear_inactive_session (test_v04_native.CompiledNativeFixtureTests.test_session_wake_cannot_clear_inactive_session)",
+      "reason": "native fixture requires macOS Swift"
+    },
+    {
+      "test": "test_trust_rejects_changed_binary_and_wrong_manifest (test_v04_native.CompiledNativeFixtureTests.test_trust_rejects_changed_binary_and_wrong_manifest)",
+      "reason": "native fixture requires macOS Swift"
+    }
+  ],
+  "expected_failures": 0,
+  "unexpected_successes": 0,
+  "elapsed_seconds": 124.04135595099979,
+  "source_files": 830,
+  "source_unchanged": true,
+  "successful": true
+}

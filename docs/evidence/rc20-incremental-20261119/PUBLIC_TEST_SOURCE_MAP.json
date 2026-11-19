@@ -1,0 +1,12 @@
+{
+  "local_commit": "5a2dafd0780646171e4453d2cebff27749484391",
+  "public_commit": "4560d2cbbcf53de68b8a2e3ce5c9ac27b9c76d24",
+  "tree": "018da9957f993911346826db239cfdaa7764481e",
+  "base_product_local": "8eb042cf57508de59179b4aa2fdd5ae41e9a9eec",
+  "base_product_public": "655aed8809eac20f0e89465056e20a1d0bd5f30c",
+  "changed_paths": [
+    "tests/test_service_history.py"
+  ],
+  "change": "Assert legacy migration remains schema 3 until incremental blocks are written; product source unchanged.",
+  "remote_tree_read_back": true
+}

@@ -1,0 +1,42 @@
+{
+  "status": "PASS",
+  "source_commit": "8eb042cf57508de59179b4aa2fdd5ae41e9a9eec",
+  "source_tree": "853f2dece1506f00e462be8b033ec12fcc892dab",
+  "legacy_commit": "fe9765c69ce8a39e8a3682d61ceb67c86894c3b4",
+  "original_fixture_sha256": "f57ebbb1787ec3fd37afe72d01dd79c29e64795c407c8530453c0d91bb35e0bd",
+  "adapted_fixture_sha256": "ab13537ceab8844fda895125c925e3e1464b0f2f6249d76867f271c7eb2d6f67",
+  "wheel_hashes": {
+    "localpilot_agent_service-5.0.0b37-py3-none-any.whl": "c697b929f7aff8911cb704d35fa2be2c9e785a81d4de2e23189e8596c41c5964",
+    "localpilot_agent_service-5.0.0b35-py3-none-any.whl": "0460b05485731ea5b30ec781441970b8ba84fabd0735f752838a3fd6e7f440ca"
+  },
+  "active_schema": 4,
+  "conversion": {
+    "status": "compatible",
+    "schema_before": 4,
+    "schema_after": 3,
+    "sessions": 1,
+    "materialized": true,
+    "log": "/tmp/lp-rc20-packaged-rollback-a8tmy8z_/home/upgrades/upgrade_240e21238a9749b1ae9058528a23ffad/runtime-install-compatibility.log"
+  },
+  "final_stop_schema": 3,
+  "original_journal_rows_preserved": 28,
+  "task_counts": [
+    4,
+    7,
+    8
+  ],
+  "legacy_segments_after_reupgrade": 6,
+  "task_snapshots_and_segments_preserved": true,
+  "installed_product_paths": [
+    "/tmp/lp-rc20-packaged-rollback-a8tmy8z_/runtime/lib/python3.13/site-packages/agent/persistence.py",
+    "/tmp/lp-rc20-packaged-rollback-a8tmy8z_/runtime/lib/python3.13/site-packages/agent/persistence.py",
+    "/tmp/lp-rc20-packaged-rollback-a8tmy8z_/runtime/lib/python3.13/site-packages/agent/persistence.py"
+  ],
+  "prior_attempt": {
+    "receipt": "roundtrip-downgrade-plan.json",
+    "status": "STATE_PARENT_WRITABLE",
+    "reason": "Cloud /workspace mode 0777 is rejected by Suite private state validation."
+  },
+  "system_installation": false,
+  "data": "Independent extracted runtime copy and synthetic scripted-provider fixture"
+}

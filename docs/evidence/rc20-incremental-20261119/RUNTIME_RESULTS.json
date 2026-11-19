@@ -1,0 +1,139 @@
+{
+  "status": "CORE_TARGETED_PASS_AWAIT_FINAL_INTEGRATED_FULL",
+  "base_commit": "02838a5db0b342647fc0f7904738bee87f167cf0",
+  "source_sha256": {
+    "agent/checkpoint_blocks.py": "0571d35ea4fa3fbb328dc29fcb315121e31d6b50cf1306430778286fe487971b",
+    "agent/persistence.py": "03fd127119c52b528dc8b7080a1ea51aa90b6e050f528b774be30c8de4d0446d",
+    "agent/session_workers.py": "09230fc56d03b3443ea52c510d53d5a19598427e2dd17381ce4f21efb98c840c",
+    "localpilot_api/service.py": "cc24cfebc4b68840652a06c9aa5a0917671cd3d59f5b864285ce8fdc12719c9d",
+    "tests/test_incremental_checkpoints.py": "4f8b29287eb7b9e3077d65c641d251afde581c7041fe2a9b8d9ea172cdea11bf"
+  },
+  "targeted": {
+    "log": "incremental-r3.log",
+    "run": 121,
+    "passed": 121,
+    "skipped": 0,
+    "failed": 0,
+    "seconds": 20.082
+  },
+  "benchmark": {
+    "fixture": "Original96readTaskService/Registry/SQLite workload; unchanged model settings, files, token/step/output budgets. Candidate adds measurement only.",
+    "provider": "scripted-only",
+    "baseline": "../runtime/long-turn-case-r2/measurements.json",
+    "candidate": "long-turn-case-r2/measurements.json",
+    "interpretation": "Single observed runs; timings are not a statistical guarantee. SQL payload bytes count encoded JSON supplied to SQLite; not physical disk I/O or RSS.",
+    "task_seconds_before": 28.957937872000002,
+    "task_seconds_after": 13.148778954999216,
+    "comparisons": [
+      {
+        "receipts": 1,
+        "baseline_checkpoint_bytes": 41074,
+        "candidate_sql_payload_bytes": 28264,
+        "candidate_manifest_bytes": 9777,
+        "new_block_rows": 7,
+        "baseline_ms": 3.1067809995874995,
+        "candidate_ms": 1.9380009998712922
+      },
+      {
+        "receipts": 32,
+        "baseline_checkpoint_bytes": 1112622,
+        "candidate_sql_payload_bytes": 71622,
+        "candidate_manifest_bytes": 53111,
+        "new_block_rows": 7,
+        "baseline_ms": 18.057365999993635,
+        "candidate_ms": 3.1383069999719737
+      },
+      {
+        "receipts": 64,
+        "baseline_checkpoint_bytes": 1899820,
+        "candidate_sql_payload_bytes": 73817,
+        "candidate_manifest_bytes": 55306,
+        "new_block_rows": 7,
+        "baseline_ms": 39.132541999606474,
+        "candidate_ms": 3.2022710001911037
+      },
+      {
+        "receipts": 96,
+        "baseline_checkpoint_bytes": 2684179,
+        "candidate_sql_payload_bytes": 73817,
+        "candidate_manifest_bytes": 55306,
+        "new_block_rows": 7,
+        "baseline_ms": 83.99372699932428,
+        "candidate_ms": 6.390786999872944
+      }
+    ],
+    "normal_stop_seconds": 0.169918571999915,
+    "legacy_export": {
+      "status": "ok",
+      "schema_before": 4,
+      "schema_after": 3,
+      "sessions": 1,
+      "converted_sessions": 1,
+      "materialized": true,
+      "seconds": 0.16287657099928765
+    },
+    "final_capture": {
+      "receipts": 96,
+      "point": "task.status",
+      "seconds": 0.03642101900004491,
+      "checkpoint_bytes": 64654,
+      "canonical_messages": 195,
+      "model_window_messages": 71,
+      "sql_write": {
+        "checkpoint_bytes": 64654,
+        "block_rows": 388,
+        "serialized_bytes": 2258993
+      }
+    }
+  },
+  "rollback": {
+    "status": "PASS",
+    "old_source": "fe9765c69ce8a39e8a3682d61ceb67c86894c3b4",
+    "phases": [
+      "rollback-case/candidate-create.json",
+      "rollback-case/rc18-write.json",
+      "rollback-case/candidate-reopen.json"
+    ],
+    "tasks": 8,
+    "segments": 6,
+    "normal_stop_schema": 3,
+    "active_schema": 4,
+    "original_snapshots_and_segments_preserved": true
+  },
+  "unknown_crash": {
+    "status": "PASS",
+    "receipts": [
+      "crash-case/unreceipted-write.json",
+      "crash-case/old-refuses.json",
+      "crash-materialize.log",
+      "crash-case/old-unknown.json"
+    ],
+    "actual_mutation_before_failed_receipt": true,
+    "unmodified_old_rejects_schema4": true,
+    "legacy_after_export_class": "UNKNOWN_BLOCKED",
+    "legacy_provider_calls": 0,
+    "original_journal_and_effect_mtime_preserved": true
+  },
+  "retained_failures": [
+    {
+      "log": "incremental-r1.log",
+      "run": 56,
+      "failed": 1,
+      "reason": "Journal container subclass changed otherwise-equivalent pack JSON wrapper; fixed internal json_value transparency, exact task payload comparison now passes."
+    },
+    {
+      "log": "crash-old-unknown-r1.log",
+      "reason": "Evidence harness expected nonexistent error code unknown_state; actual required refusal code unknown_blocked was correct. Corrected assertion passes r2; no production change."
+    }
+  ],
+  "boundaries": [
+    "Hot checkpoints incrementally encode stable sequences; mutable metadata remains current.",
+    "New format schema4 is rejected by old runtime until normal quiescent stop or explicit compatibility export.",
+    "Export streams one head at a time, only converts block heads, appends legacy_materialized journal revision without rewriting prior journal entries.",
+    "Full task capture, archives, restored canonical runtime and legacy export have record-size-dependent one-time costs.",
+    "Canonical runtime memory is not hard-bounded; exact cloud grants and current model-window construction retain existing behavior."
+  ],
+  "paid_provider_calls": 0,
+  "core_commit": "afac10dea10544abe03a63669f7dd9a3d55cbc7f",
+  "independent_review": "pet_animation: bounded source and dataflow review clean; no concrete blocker after7 new tests,121 targeted and actualRC18 normal/crash receipts."
+}

@@ -1,0 +1,630 @@
+{
+  "scope": "Framework summaries extracted from the raw logs. The runs have separate source receipts and scopes.",
+  "limits": "An absent footer provides no test result. Some logs are interrupted attempts; consult the run receipts. A footer alone cannot establish the tested source, process exit code or installed environment.",
+  "logs": [
+    {
+      "path": "rc20-install/linux/deb-extract.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/extracted-runtime-check.log",
+      "bytes": 6938,
+      "sha256": "a77376b8f1aefa4adbc8a53f937075d775f6af06e17eb489a79cdf6bb9418115",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/legacy-core-wheel.log",
+      "bytes": 39412,
+      "sha256": "10fed01bafa2755fe3b0909b59cab2d4fee8f34f8127cd5d030a381712252ebf",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/legacy-worktree.log",
+      "bytes": 118,
+      "sha256": "4ea4151a16e904e41fe8b078a9cf978b9c8bfdc0f6085ad542a8ccd605219ef1",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/native-build.log",
+      "bytes": 17971,
+      "sha256": "3a5060550e183921d302dbcb63ee8359017736e90160f0c467688671ddbe5eec",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/npm-ci.log",
+      "bytes": 202,
+      "sha256": "21a35f515fdfb861c0afb4d7947a393adb2a1d9634ce12ca157b5f45f3b73b66",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/packaged-rollback-conversion.log",
+      "bytes": 318,
+      "sha256": "cae18c5e5932d51c539a7dfc2fe4511b9e99bfb37e5a23b9997010c572be6259",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/packaged-runtime-tests.log",
+      "bytes": 5585,
+      "sha256": "98fc721a9f2137382d6ee46e177cdcc2adfad44b493809b163ada5aaed22cf7e",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 27,
+          "passed": 27,
+          "result": "OK",
+          "seconds": 1.717,
+          "footer": "Ran 27 tests in 1.717s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/prepare.log",
+      "bytes": 11936,
+      "sha256": "98828cc7a6e3c9cc75f4a0d57869808b748710f313544b8f152890576b4f58bf",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/roundtrip-candidate-create.log",
+      "bytes": 831,
+      "sha256": "3cebc257b1f2a72c77a21502973d27d381ecf6ed73dd660fd2acb843eac4abb6",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/roundtrip-downgrade-plan.log",
+      "bytes": 35,
+      "sha256": "b275c4cf8e92600c593244cab64e2fdd06efe50ec641cf25a99a80f29b9de786",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/roundtrip-r2-candidate-create.log",
+      "bytes": 785,
+      "sha256": "76280d7108e4890803d6e8a0f7aaa69508409e0478a9bce388b47a24f3e4b553",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/roundtrip-r2-candidate-reopen.log",
+      "bytes": 1329,
+      "sha256": "08396df0b2d851c8b22fa81ef1ad3fb0580f605a8ebcccdff98470c0f8fe9d6d",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/roundtrip-r2-downgrade-execute.log",
+      "bytes": 818,
+      "sha256": "e0c558291b239e7e366194ef92fb32d9f6b2458f8a11a2b32d25bb4082d9bf8c",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/roundtrip-r2-downgrade-plan.log",
+      "bytes": 3971,
+      "sha256": "45442ae5d243a0835f5be597d2c92f7adcf073b0718d4a4fd7672c2cef0670db",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/roundtrip-r2-rc18-write.log",
+      "bytes": 1187,
+      "sha256": "411facf1212ca580c387b38b89815d9523f4c291812b447bb814b92f5cce07e1",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/roundtrip-r2-reupgrade-execute.log",
+      "bytes": 730,
+      "sha256": "6858cb8a3b9b82812a2a365fdb9663d724b3bcf2f868349e4ba4fcd64592ce35",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/roundtrip-r2-reupgrade-plan.log",
+      "bytes": 3961,
+      "sha256": "10b54b7afca890b821d650a0a79b573b4f5710cc2d6caab1a55b2fc19aa1f579",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/rust-core-recovery.log",
+      "bytes": 666,
+      "sha256": "533c21b23b2be5ed4009d1aeb5a35b576c80a8d85a3b5f3b7b45c1e95b1ef0f3",
+      "footers": [
+        {
+          "framework": "rust",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "footer": "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 65 filtered out; finished in 1.33s"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/rust-default.log",
+      "bytes": 5812,
+      "sha256": "e19d42db4ac7cef301245e5e666936960756599e34777eb85a9fe340c8872b5f",
+      "footers": [
+        {
+          "framework": "rust",
+          "result": "ok",
+          "passed": 63,
+          "failed": 0,
+          "ignored": 3,
+          "footer": "test result: ok. 63 passed; 0 failed; 3 ignored; 0 measured; 0 filtered out; finished in 0.07s"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/rust-offline-release.log",
+      "bytes": 439,
+      "sha256": "dff101a381f1673077b71bed121d4ece4111faf3cba93866cad7f646041fb8d0",
+      "footers": [
+        {
+          "framework": "rust",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "footer": "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 65 filtered out; finished in 0.01s"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/wheel-channels.log",
+      "bytes": 7459,
+      "sha256": "cfd09fbe75c10fb11b7363193bc8b2f8d4e6f36f116de5e2e66df0c307c0ac96",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/wheel-companion.log",
+      "bytes": 28049,
+      "sha256": "a4f46eee7275f54f33df2036957b406a3ca909c12b1c5192e044b0e5ee7d8c96",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/wheel-core.log",
+      "bytes": 39750,
+      "sha256": "3c3d800d108b840a10c8ec88bde2e61d3128473d8bf69bfb17ce547ee1f6de19",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/linux/wheel-suite.log",
+      "bytes": 8117,
+      "sha256": "8f9a54ced4b52783620d99adc9e365434426def4291db8d1cb9be1b98c4233bb",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/suite-full-final-r2.log",
+      "bytes": 31287,
+      "sha256": "14cd7126b9933c2224a4c0f3e35ab043b4fe286f3f3eb5653ddbd1a336948bd1",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 135,
+          "passed": 125,
+          "failures": 2,
+          "errors": 7,
+          "skipped": 1,
+          "result": "FAILED",
+          "seconds": 232.595,
+          "footer": "Ran 135 tests in 232.595s\n\nFAILED (failures=2, errors=7, skipped=1)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-install/suite-full-final-r3.log",
+      "bytes": 25358,
+      "sha256": "1f2fde6b9a2f35c1e15f7d45bd82b5ca4bf42b13f61b939208c96ab22833be6a",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 135,
+          "passed": 134,
+          "skipped": 1,
+          "result": "OK",
+          "seconds": 140.473,
+          "footer": "Ran 135 tests in 140.473s\n\nOK (skipped=1)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-install/suite-full-final.log",
+      "bytes": 16263,
+      "sha256": "351c783b393927d466fce48de48c4bd8d046a7fbbbb55a163b517dbe2e0e98dd",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-install/suite-full-r1.log",
+      "bytes": 25166,
+      "sha256": "1d73bdcbc772ee585765c9914ba2c38ecc5e606b73599b980189847cabfdb917",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 134,
+          "passed": 133,
+          "skipped": 1,
+          "result": "OK",
+          "seconds": 108.408,
+          "footer": "Ran 134 tests in 108.408s\n\nOK (skipped=1)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-install/suite-normal-stop-r1.log",
+      "bytes": 318,
+      "sha256": "b7cea7b74ef7722275df86202cee3f23692a9d9af84d6690cfdbc050b09aab86",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 1,
+          "passed": 1,
+          "result": "OK",
+          "seconds": 4.618,
+          "footer": "Ran 1 test in 4.618s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-install/suite-reviewed-stop-r1.log",
+      "bytes": 289,
+      "sha256": "6147cc64ab8574c01bc8dc273de8ac04d0cc3e55e7ab7639e753229f06245d3c",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 1,
+          "passed": 1,
+          "result": "OK",
+          "seconds": 6.251,
+          "footer": "Ran 1 test in 6.251s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-install/suite-upgrade-r3.log",
+      "bytes": 3526,
+      "sha256": "ccedbf52bafc081722d20fed1614e4e2d67c288edf3cef2e8853eff3bc4b6405",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 17,
+          "passed": 17,
+          "result": "OK",
+          "seconds": 46.196,
+          "footer": "Ran 17 tests in 46.196s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/blocks-tests-r1.log",
+      "bytes": 1396,
+      "sha256": "a5df66baa01f10584bc2695a2f78dc8a9de9f1ee4bda6b55b2accdcf796d9a7b",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 6,
+          "passed": 6,
+          "result": "OK",
+          "seconds": 5.116,
+          "footer": "Ran 6 tests in 5.116s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/check_http_cleanup_setup_failure.log",
+      "bytes": 247,
+      "sha256": "88619dcfec81b6398d8790308b72f9dcb62d4a5750151e823f727f5f1c6de77f",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/companion-full-final-r2/tests.log",
+      "bytes": 119653,
+      "sha256": "2af83c3985342862c6516970a307b8a1d9720420b56a837ef285d21bceaa4dd5",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 763,
+          "passed": 730,
+          "skipped": 33,
+          "result": "OK",
+          "seconds": 123.948,
+          "footer": "Ran 763 tests in 123.948s\n\nOK (skipped=33)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/core-full-final-r2-focused.log",
+      "bytes": 1472,
+      "sha256": "d42b9bde14d236a28f67afe28fadea85e1c864959868a921a23e12d94024925c",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 4,
+          "passed": 3,
+          "failures": 1,
+          "result": "FAILED",
+          "seconds": 1.607,
+          "footer": "Ran 4 tests in 1.607s\n\nFAILED (failures=1)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/core-full-final-r2.launch.log",
+      "bytes": 10035,
+      "sha256": "dba6ce6d18eacb21ee74e477e6ce25506a88a663f73e5f88303e440401bdc3d2",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/core-full-final-r2/tests.log",
+      "bytes": 293852,
+      "sha256": "57e131f440cb1ffdc17377ee30e54cdf546eb4313128d2b1c6b0fd26615b2e1f",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 1742,
+          "passed": 1639,
+          "failures": 3,
+          "errors": 1,
+          "skipped": 99,
+          "result": "FAILED",
+          "seconds": 398.349,
+          "footer": "Ran 1742 tests in 398.349s\n\nFAILED (failures=3, errors=1, skipped=99)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/core-full-final-r3-focused.log",
+      "bytes": 409,
+      "sha256": "545e55f8c537423e47ba88c95b7c852741bc2635727c249c2a705139a8064397",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 2,
+          "passed": 2,
+          "result": "OK",
+          "seconds": 11.336,
+          "footer": "Ran 2 tests in 11.336s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/core-full-final-r3.launch.log",
+      "bytes": 4590,
+      "sha256": "d02b3d765c63c03cf7e9366c5911b183e7018518c3c73c48cb3c38cc8efcac66",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/core-full-final-r3/tests.log",
+      "bytes": 291541,
+      "sha256": "494ef7e21db6adb0ffcb11c5431062b035bcc9faefdc9aff5a03b2c70b5c9071",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 1742,
+          "passed": 1641,
+          "errors": 2,
+          "skipped": 99,
+          "result": "FAILED",
+          "seconds": 284.735,
+          "footer": "Ran 1742 tests in 284.735s\n\nFAILED (errors=2, skipped=99)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/core-full-final-r4.launch.log",
+      "bytes": 4582,
+      "sha256": "fb9b5200d9baaf5c97d7ed721829f4403ae6dd7826faadce223e349e9ef8c0c6",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/core-full-final-r4/tests.log",
+      "bytes": 291364,
+      "sha256": "0988704effd39068ed7683bfed9ed1de8ee891edc93a619ac1e9b1682f5f6eac",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 1742,
+          "passed": 1641,
+          "errors": 2,
+          "skipped": 99,
+          "result": "FAILED",
+          "seconds": 292.591,
+          "footer": "Ran 1742 tests in 292.591s\n\nFAILED (errors=2, skipped=99)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/core-full-final.log",
+      "bytes": 56721,
+      "sha256": "c58680c3162766b175e42b06ae48e90263ec2dfeb88f909cd715db00b6b1158b",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/crash-materialize.log",
+      "bytes": 318,
+      "sha256": "2923c486df6a6341965f149a4f41245196185dd9fb450dd1e88cd584c4fc057f",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/crash-old-refusal.log",
+      "bytes": 171,
+      "sha256": "8cadb471bcfc30b30af4020cec953702ded13e4c0f66735fbdaac047dcc39d78",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/crash-old-unknown-r1.log",
+      "bytes": 907,
+      "sha256": "74e4423b6459ea3117e251d0f0eb5e5f561c959e1bac35d9f7ca150cb74aac91",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/crash-old-unknown-r2.log",
+      "bytes": 760,
+      "sha256": "290c202e10016574f58e849481bd4c9a83f46218aa53d5f20c24e25fd7268b82",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/crash-write.log",
+      "bytes": 265,
+      "sha256": "6248169aab58327a1227c8211e97bd3e933defddf257e94058fdbc34eac5fdcc",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/http-cleanup-module.log",
+      "bytes": 665,
+      "sha256": "1968f1b885fac2c5ac7c7fca32d228a8a68a4a61317bb29dd9295abbf17e9d2d",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 4,
+          "passed": 4,
+          "result": "OK",
+          "seconds": 14.553,
+          "footer": "Ran 4 tests in 14.553s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/incremental-r1.log",
+      "bytes": 11481,
+      "sha256": "c82897749163e395772d366335b300677d85ffaa5fd0a8b07b3de8f365bb7a04",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 56,
+          "passed": 55,
+          "failures": 1,
+          "result": "FAILED",
+          "seconds": 6.458,
+          "footer": "Ran 56 tests in 6.458s\n\nFAILED (failures=1)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/incremental-r2.log",
+      "bytes": 10536,
+      "sha256": "2a82325c608f9feab3f20e3245fcc9a6df0f1aa2b027d69a7de24f4cf69bcde2",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 56,
+          "passed": 56,
+          "result": "OK",
+          "seconds": 5.664,
+          "footer": "Ran 56 tests in 5.664s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/incremental-r3.log",
+      "bytes": 22603,
+      "sha256": "726a285cf052b1c2b95d9bc50ea104bacd02165362b11bb90cc304035e1441a3",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 121,
+          "passed": 121,
+          "result": "OK",
+          "seconds": 20.082,
+          "footer": "Ran 121 tests in 20.082s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/long-turn-r1.log",
+      "bytes": 9225,
+      "sha256": "b9f5493aec2954223ebe530c0ff60bf205ea0625e8fb30b6a3acde0a448dcfd8",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/long-turn-r2.log",
+      "bytes": 9442,
+      "sha256": "114ef7ea703fc18e22ae08fa083a6ea24aa1b69a8994c1ec479a2db32490fef3",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/reproduce_timer_after_clean_suspend-r2.log",
+      "bytes": 2241,
+      "sha256": "4d3334676b02547d21962e290633f3f515ffc0d75ce532e0807f8cc79a67b762",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/reproduce_timer_after_clean_suspend.log",
+      "bytes": 435,
+      "sha256": "49fb824cb37c4c7bfa81f08977886e7afa43472356df311c2b13479ae53c9510",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/rollback-candidate-create.log",
+      "bytes": 753,
+      "sha256": "4aefa69336e3212717c8fae9ba82ae7ae773fc4c2a0e755e0abc8bbf52ba93ce",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/rollback-candidate-reopen.log",
+      "bytes": 1297,
+      "sha256": "a82ba017a417b927a2c058ca9d7e399a7af65e61ce22b3c3bb081e8bb3e93435",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc20-runtime/rollback-rc18-write.log",
+      "bytes": 1179,
+      "sha256": "1ee6e07be1dfd42f5e4f6f3786ada321a5ee30b4d8529e34c31c45ae7f80e15e",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    }
+  ]
+}

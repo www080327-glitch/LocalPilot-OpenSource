@@ -1,0 +1,12 @@
+{
+  "local_commit": "2e7d2e61eba5efc7e3bc1fc3cec85c55323323d9",
+  "public_commit": "6b0edc7aab8240421200a79f549392bd0e0fa095",
+  "tree": "97d4fb04af3bd3d424c9cb1c2a3f296e0fbe7182",
+  "base_test_local": "5a2dafd0780646171e4453d2cebff27749484391",
+  "base_test_public": "4560d2cbbcf53de68b8a2e3ce5c9ac27b9c76d24",
+  "changed_paths": [
+    "tests/test_plugin_http.py"
+  ],
+  "change": "Register HTTP fixture cleanup immediately after resource creation. Budgets and assertions unchanged. Four module tests and actual initialization failure cleanup passed. No subsequent RC20 full regression.",
+  "remote_tree_read_back": true
+}
