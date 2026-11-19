@@ -1,0 +1,20 @@
+{
+  "dataset_revision": "76df38a82288f75ba9e41dc8c515033332497473",
+  "label_sha256": "6073f64edc4e011fbf4d4677ca04f5b4ff84d2041d1786c0f54b3e3e7392a745",
+  "judge_model": "gpt-5.5",
+  "judge_reasoning": "medium",
+  "judge_max_output_tokens": 16384,
+  "judge_timeout_seconds": 180,
+  "grader_sha256": "4cd3f405f7a4d1c05edb6bf5d5530657c69de6b934bf59c2cdf01df7e2f20b76",
+  "normalization_prompt_sha256": "af89adad6b99b77d99c866498cce8820956c51ca8f9a68480b6bf7dccee568d6",
+  "methodology": "https://artificialanalysis.ai/methodology/intelligence-benchmarking",
+  "comparison": "Not an official AA leaderboard result: public 40 of 59 scenarios, one candidate attempt instead of three repeats, LocalPilot tools, prompt and budgets instead of Stirrup; independently implemented grading.",
+  "candidate_stopped_check": "All 40 stop receipts and no Core config under this output",
+  "label_storage": "Memory only; no raw references or judge requests written",
+  "normalization_attempts_per_case": 1,
+  "unmatched_rule": "Each unmatched prediction is a false positive",
+  "duplicate_rule": "Matched predictions in one alias group count once",
+  "judge_error_rule": "Retained as zero; reported as incomplete grading",
+  "candidate": "LocalPilot Core V5 + gpt-6-luna",
+  "candidate_study_sha256": "d8753f7068e54933899538f5e75430d16031392aaa8e7995217e195d7a5dc419"
+}

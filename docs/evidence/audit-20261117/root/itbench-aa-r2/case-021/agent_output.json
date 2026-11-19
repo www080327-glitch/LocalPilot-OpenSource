@@ -1,0 +1,9 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Deployment/ad",
+      "reasoning": "The sole ad replica repeatedly ran out of memory and became unavailable. Because frontend requests call AdService/GetAds, loss of that dependency explains the downstream frontend and frontend-proxy request failures as well as the CrashLoopBackOff; those workloads are symptoms, not independent causes.",
+      "evidence": "k8s_objects_raw.tsv shows the ad container configured with a 450Mi memory limit; at 2025-12-15 17:57:24 the only ad pod had 4 restarts, was not Ready, and its current and last terminated containers had exit code 137 / reason OOMKilled (finished 17:57:11 and 17:56:09). The ad Deployment had 1 replica but Available=False / MinimumReplicasUnavailable, and Endpoints/ad had only a notReadyAddresses entry. metrics/pod_ad-554b849958-l9ft5_raw.tsv shows the container memory series resetting from 372,006,912 bytes at 17:52:57 to 2,686,976 bytes at 17:53:03 and again to 2,297,856 bytes at 17:54:23, consistent with restarts. The alert snapshot alerts/alerts_in_alerting_state_2025-12-15T175842.883144Z.json has CrashLoopBackOffPodsDetected for otel-demo and RequestErrorRate firing for frontend (2.6222) and frontend-proxy (1.3444). In metrics/service_frontend_raw.tsv, the ERROR counter for grpc.oteldemo.AdService/GetAds rose from 367 at 17:52:02 to 626 by 17:58:02; service_frontend-proxy_raw.tsv shows its frontend egress ERROR counter rising from 477 to 740 over the same interval. otel_logs_raw.tsv also records frontend-proxy HTTP 500 responses for /api/data at 17:53, consistent with the propagated failure."
+    }
+  ]
+}

@@ -16,6 +16,7 @@ from .events import RuntimeEvent
 from .goals import Goal
 from .loop import ModelCallUsage
 from .async_runtime import policy_snapshot
+from .checkpoint_blocks import BlockReference, CheckpointBatch, materialize
 
 
 class PersistenceError(RuntimeError):
@@ -33,14 +34,16 @@ def digest(value):
 def json_value(value):
     if value is None or type(value) in {str, int, float, bool}:
         return True
-    if type(value) is list:
+    if isinstance(value, list):
         return all(json_value(v) for v in value)
-    if type(value) is dict:
+    if isinstance(value, dict):
         return all(type(k) is str and json_value(v) for k, v in value.items())
     return False
 
 
 def pack(value):
+    if isinstance(value, BlockReference):
+        return value
     if isinstance(value, ToolCall):
         return {"$call": asdict(value)}
     if isinstance(value, tuple):
@@ -118,9 +121,12 @@ def backend_identity(backend):
 
 def configuration(runtime):
     gateway = runtime.registry.gateway
+    schemas = runtime.registry.schemas()
+    if getattr(runtime.registry, 'canonical_history_reader', None) is not None:
+        schemas = [schema for schema in schemas if schema['function']['name'] != 'recall_history']
     config = {"workspace": str(runtime.workspace), "policy": runtime.routing_policy.value,
         "permission": runtime.permission_mode, "capabilities": asdict(gateway.capabilities),
-        "data_policy": asdict(runtime.hard_data_policy), "schemas": runtime.registry.schemas(),
+        "data_policy": asdict(runtime.hard_data_policy), "schemas": schemas,
         "cloud": backend_identity(runtime.cloud_backend), "local": backend_identity(runtime.local_backend),
         "workers": {k: backend_identity(v) for k, v in runtime.cloud_worker_backends.items()},
         "budgets": asdict(runtime.budgets), "controls": asdict(runtime.controls),
@@ -151,6 +157,8 @@ def configuration(runtime):
         config['delivery_instruction'] = runtime.delivery_instruction
     if runtime.child_registry_contract is not None:
         config['child_registry_contract'] = deepcopy(runtime.child_registry_contract)
+    if runtime.worker_roles:
+        config['worker_roles'] = dict(runtime.worker_roles)
     if runtime.engine_policy:
         config['engine_v5'] = asdict(runtime.engine_policy)
     if runtime.adaptive:
@@ -166,10 +174,11 @@ def configuration(runtime):
     return config
 
 
-def snapshot_runtime(runtime):
+def snapshot_runtime(runtime, *, blocks=None, path=('runtime',)):
     from .session import SessionState
     fields = {k: getattr(runtime, k) for k in FIELDS}
-    fields["_usage"] = [asdict(v) for v in runtime._usage]
+    fields["_usage"] = (blocks.sequence(runtime, '_usage', lambda value: pack(asdict(value)), [*path, 'usage'])
+                        if blocks else [asdict(v) for v in runtime._usage])
     fields["_computer_resume_state"] = runtime._computer_resume_state.value if runtime._computer_resume_state else None
     pending = fields["pending_approval"]
     if pending:
@@ -181,26 +190,39 @@ def snapshot_runtime(runtime):
             and fields["_queue"][0].id == runtime.tool_history[-1]["id"]
             and fields["_queue"][0].arguments == runtime.tool_history[-1]["arguments"]):
         fields["_queue"] = fields["_queue"][1:]
+    sequence = lambda owner, name, encode: blocks.sequence(owner, name, encode, [*path, name])
+    subagents = []
+    for record in runtime.subagents:
+        if blocks:
+            current = dict(record)
+            for key in ('receipts', 'handoff_receipts'):
+                if key in record:
+                    current[key] = blocks.sequence(record, key, lambda value: value, [*path, 'worker', record['id'], key])
+            subagents.append(current)
+        else:
+            subagents.append(deepcopy(record))
     snapshot = {"version": 1, "state": runtime.state.value, "fields": pack(fields),
-        "messages": [m.to_dict(include_reasoning=True) for m in runtime.messages],
-        "history": deepcopy(runtime.tool_history), "completed": pack(runtime.completed_tool_calls),
-        "goals": [asdict(g) for g in runtime.goals.list()], "subagents": deepcopy(runtime.subagents),
+        "messages": sequence(runtime, 'messages', lambda m: m.to_dict(include_reasoning=True)) if blocks else [m.to_dict(include_reasoning=True) for m in runtime.messages],
+        "history": sequence(runtime, 'tool_history', lambda value: value) if blocks else deepcopy(runtime.tool_history),
+        "completed": blocks.mapping(runtime, 'completed_tool_calls', [*path, 'completed']) if blocks else pack(runtime.completed_tool_calls),
+        "goals": [asdict(g) for g in runtime.goals.list()], "subagents": subagents,
         "working": pack({k: getattr(runtime.working, k) for k in WORKING}),
-        "budgets": asdict(runtime.budgets), "gateway_audit": deepcopy(runtime.registry.gateway.audit),
+        "budgets": asdict(runtime.budgets), "gateway_audit": sequence(runtime.registry.gateway, 'audit', lambda value: value) if blocks else deepcopy(runtime.registry.gateway.audit),
         "judge_calls": getattr(runtime.registry.gateway.judge, "calls", 0),
         "stop": runtime._stop_reason if runtime._stop_requested.is_set() else None,
-        "events": [e.to_dict() for e in runtime.events.events], "sequence": runtime.events.sequence,
+        "events": sequence(runtime.events, 'events', lambda e: e.to_dict()) if blocks else [e.to_dict() for e in runtime.events.events], "sequence": runtime.events.sequence,
         "computer": None if not runtime.computer else {"revision": runtime.computer.revision,
             "resync_generation": runtime.computer.resync_generation},
-        "children": {k: snapshot_runtime(v) for k, v in runtime._children.items()}}
+        "children": {k: snapshot_runtime(v, blocks=blocks, path=(*path, 'children', k)) for k, v in runtime._children.items()}}
     if runtime.strict_task:
         snapshot['strict_task'] = True
     if hasattr(runtime.verification_callback, 'identity'):
         snapshot['host_acceptance'] = runtime.verification_callback.identity
     if getattr(runtime.registry, 'plugin_manager', None):
         snapshot['plugin_namespace'] = runtime._plugin_namespace
-    if getattr(runtime, '_child_tool_contract_revision', None) == 1:
-        snapshot['child_tool_contract'] = {'revision': 1, 'schemas_sha256': digest(dumps(runtime.registry.schemas()))}
+    revision = getattr(runtime, '_child_tool_contract_revision', None)
+    if revision in (1, 2):
+        snapshot['child_tool_contract'] = {'revision': revision, 'schemas_sha256': digest(dumps(runtime.registry.schemas()))}
     if runtime.async_policy:
         snapshot['async'] = {'policy': policy_snapshot(runtime.async_policy)}
     if runtime.finalization_policy:
@@ -222,6 +244,10 @@ def snapshot_runtime(runtime):
     if runtime._host_pause_requested:snapshot['host_pause_requested']=True
     if runtime.engine_policy:
         snapshot['engine_v5'] = asdict(runtime.engine_policy)
+        history = runtime._request_history
+        snapshot['request_history'] = ({'version': 1, 'scope': history.scope, 'source_count': history.source_count,
+            'messages': blocks.sequence(history, 'messages', lambda m: m.to_dict(include_reasoning=True), [*path, 'request_history'])}
+            if blocks else history.snapshot())
     return snapshot
 
 
@@ -258,6 +284,12 @@ def restore_runtime(runtime, data, *, conservative_interrupts=False, child_paren
     runtime._queue = deque(runtime._queue)
     runtime._usage = [ModelCallUsage(**v) for v in runtime._usage]
     runtime.messages = [Message.from_dict(v) for v in data["messages"]]
+    from .context_v5 import RequestHistory
+    try:
+        runtime._request_history = (RequestHistory.restore(data['request_history'], len(runtime.messages))
+                                    if 'request_history' in data else RequestHistory())
+    except (KeyError, TypeError, ValueError) as error:
+        raise PersistenceError('Invalid V5 request history checkpoint') from error
     runtime.tool_history = deepcopy(data["history"])
     runtime.completed_tool_calls = unpack(data["completed"])
     runtime.budgets = SessionBudgets(**data["budgets"])
@@ -348,10 +380,14 @@ def restore_runtime(runtime, data, *, conservative_interrupts=False, child_paren
         record = next(r for r in runtime.subagents if r["id"] == worker_id)
         from .child_sessions import create_child
         contract = child_data.get('child_tool_contract')
+        revision = contract['revision'] if contract else None
+        if revision not in (None, 1, 2):
+            raise PersistenceError('Unsupported child tool contract')
         child = create_child(runtime, record, SessionBudgets(**child_data['budgets']),
             unpack(child_data['fields'])['thinking_mode'],
-            source=(child_parents or {}).get(worker_id), inherit_tools=contract is not None)
-        if contract is not None and contract != {'revision': 1, 'schemas_sha256': digest(dumps(child.registry.schemas()))}:
+            source=(child_parents or {}).get(worker_id), inherit_tools=contract is not None,
+            inherit_profile=revision == 2)
+        if contract is not None and contract != {'revision': revision, 'schemas_sha256': digest(dumps(child.registry.schemas()))}:
             child.close()
             raise PersistenceError('Child tool contract changed')
         restore_runtime(child, child_data, conservative_interrupts=bool(runtime.finalization_policy or runtime.async_policy or conservative_interrupts))
@@ -384,7 +420,8 @@ def recovery_class(runtime):
 
 class SQLiteRuntimeStore:
     """Single live TaskService owner; one transaction per session tree boundary."""
-    VERSION = 1
+    # Earlier readers cannot restore a rotated active transcript as full history.
+    VERSION = 4
 
     def __init__(self, path, *, fault_hook=None):
         self.path = Path(path).expanduser().absolute()
@@ -393,6 +430,8 @@ class SQLiteRuntimeStore:
         self.failed = False
         self.connection = None
         self.owner = None
+        self.migration_backup = None
+        self._block_cache = {}
         try:
             self.path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
             for p in (self.path, Path(str(self.path) + ".owner")):
@@ -406,10 +445,12 @@ class SQLiteRuntimeStore:
             db = self.connection
             version = db.execute("PRAGMA user_version").fetchone()[0]
             tables = db.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
-            if version not in {0, self.VERSION} or (version == 0 and tables):
+            if version not in {0, 1, 2, 3, self.VERSION} or (version == 0 and tables):
                 raise PersistenceError("Unsupported persistent runtime schema; explicit migration required")
             if db.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
                 raise PersistenceError("Runtime database integrity check failed")
+            if version in {1, 2}:
+                self._backup_schema(version)
             if db.execute("PRAGMA journal_mode=WAL").fetchone()[0] != "wal":
                 raise PersistenceError("WAL unavailable")
             db.execute("PRAGMA synchronous=FULL")
@@ -421,20 +462,55 @@ class SQLiteRuntimeStore:
                 CREATE TABLE IF NOT EXISTS journal(session_id TEXT NOT NULL, revision INTEGER NOT NULL,
                     point TEXT NOT NULL, sha256 TEXT NOT NULL, at REAL NOT NULL,
                     PRIMARY KEY(session_id, revision));
-                PRAGMA user_version=1; COMMIT;""")
+                CREATE TABLE IF NOT EXISTS archived_tasks(task_id TEXT PRIMARY KEY,
+                    session_id TEXT NOT NULL REFERENCES checkpoints(session_id),
+                    request_key TEXT UNIQUE, owner_subject TEXT, payload TEXT NOT NULL, sha256 TEXT NOT NULL);
+                CREATE INDEX IF NOT EXISTS archived_tasks_owner ON archived_tasks(owner_subject);
+                CREATE TABLE IF NOT EXISTS archived_sessions(session_id TEXT PRIMARY KEY REFERENCES checkpoints(session_id),
+                    desktop_key TEXT UNIQUE, payload TEXT NOT NULL, sha256 TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS runtime_segments(session_id TEXT NOT NULL REFERENCES checkpoints(session_id),
+                    generation INTEGER NOT NULL, payload TEXT NOT NULL, sha256 TEXT NOT NULL,
+                    PRIMARY KEY(session_id, generation));
+                CREATE TABLE IF NOT EXISTS runtime_history_sources(session_id TEXT NOT NULL,
+                    generation INTEGER NOT NULL, configuration TEXT NOT NULL, sha256 TEXT NOT NULL,
+                    PRIMARY KEY(session_id,generation),
+                    FOREIGN KEY(session_id,generation) REFERENCES runtime_segments(session_id,generation));
+                CREATE TABLE IF NOT EXISTS runtime_history_text(session_id TEXT NOT NULL,
+                    generation INTEGER NOT NULL, position INTEGER NOT NULL, role TEXT NOT NULL,
+                    body TEXT NOT NULL, sha256 TEXT NOT NULL,
+                    PRIMARY KEY(session_id,generation,position),
+                    FOREIGN KEY(session_id,generation) REFERENCES runtime_segments(session_id,generation));
+                CREATE TABLE IF NOT EXISTS checkpoint_blocks(session_id TEXT NOT NULL REFERENCES checkpoints(session_id),
+                    stream TEXT NOT NULL, position INTEGER NOT NULL, payload TEXT NOT NULL,
+                    sha256 TEXT NOT NULL, chain TEXT NOT NULL, bytes INTEGER NOT NULL,
+                    PRIMARY KEY(session_id,stream,position));
+                """ + ('PRAGMA user_version=4;' if version == 4 else 'PRAGMA user_version=3;') + 'COMMIT;')
         except Exception as exc:
             self.close()
             raise PersistenceError("Cannot open runtime store: " + type(exc).__name__) from exc
+
+    def _backup_schema(self, version):
+        import tempfile
+        fd, filename = tempfile.mkstemp(prefix=self.path.name + f'.schema{version}-backup-', suffix='.sqlite3', dir=self.path.parent)
+        os.close(fd)
+        backup = sqlite3.connect(filename)
+        try:
+            self.connection.backup(backup)
+            if backup.execute('PRAGMA integrity_check').fetchone()[0] != 'ok' or backup.execute('PRAGMA user_version').fetchone()[0] != version:
+                raise PersistenceError('Pre-migration backup verification failed')
+        finally:
+            backup.close()
+        self.migration_backup = Path(filename)
 
     def ensure_available(self):
         if self.failed or self.connection is None:
             raise PersistenceError("Persistent runtime fenced after storage failure/close")
 
-    def save(self, session_id, payload, point):
+    def save(self, session_id, payload, point, *, archived_tasks=(), archived_session=None, archived_runtime=None, blocks=None):
         with self.lock:
             self.ensure_available()
             try:
-                raw = dumps(payload)
+                raw = dumps(blocks.envelope(payload) if blocks else payload)
                 checksum = digest(raw)
                 db = self.connection
                 db.execute("BEGIN IMMEDIATE")
@@ -442,9 +518,34 @@ class SQLiteRuntimeStore:
                 revision = (row[0] if row else 0) + 1
                 db.execute("INSERT OR REPLACE INTO checkpoints VALUES(?,?,?,?)", (session_id, revision, raw, checksum))
                 db.execute("INSERT INTO journal VALUES(?,?,?,?,?)", (session_id, revision, point, checksum, time.time()))
+                if blocks:
+                    blocks.write()
+                for task in archived_tasks:
+                    value = unpack(task)
+                    archived_raw = dumps(task)
+                    db.execute("INSERT INTO archived_tasks VALUES(?,?,?,?,?,?)",
+                               (value['id'], session_id, value['request_key_digest'], payload['session'].get('owner_subject'), archived_raw, digest(archived_raw)))
+                if archived_session is not None:
+                    archived_raw = dumps({'session': payload['session'], 'view': archived_session})
+                    db.execute("INSERT INTO archived_sessions VALUES(?,?,?,?)",
+                               (session_id, payload['session'].get('desktop_key'), archived_raw, digest(archived_raw)))
+                if archived_runtime is not None:
+                    archived_raw = dumps(archived_runtime)
+                    db.execute("INSERT INTO runtime_segments VALUES(?,?,?,?)",
+                               (session_id, archived_runtime['generation'], archived_raw, digest(archived_raw)))
+                    from .history_recall import index_segment
+                    index_segment(db, session_id, archived_runtime, digest(archived_raw))
                 if self.fault_hook:
                     self.fault_hook("before_commit", point)
                 db.execute("COMMIT")
+                if blocks:
+                    blocks.committed()
+                if archived_session is not None:
+                    self._block_cache.pop(session_id, None)
+                self.last_checkpoint_write = {
+                    'checkpoint_bytes': len(raw.encode()),
+                    'block_rows': sum(len(data['rows']) for data in blocks.pending.values()) if blocks else 0,
+                    'serialized_bytes': len(raw.encode()) + (sum(len(row[3].encode()) for data in blocks.pending.values() for row in data['rows']) if blocks else 0)}
                 if self.fault_hook:
                     self.fault_hook("after_commit", point)
                 return revision
@@ -454,32 +555,136 @@ class SQLiteRuntimeStore:
                     self.connection.execute("ROLLBACK")
                 raise PersistenceError("Checkpoint failed; service fenced: " + type(exc).__name__) from exc
 
-    def load(self):
+    def load(self, *, include_archived=False):
         with self.lock:
             self.ensure_available()
             try:
-                rows = self.connection.execute("SELECT session_id,revision,payload,sha256 FROM checkpoints").fetchall()
-                result = []
-                for session_id, revision, raw, checksum in rows:
-                    events = self.connection.execute("SELECT revision,sha256 FROM journal WHERE session_id=? ORDER BY revision", (session_id,)).fetchall()
-                    if digest(raw) != checksum or not events or events[-1] != (revision, checksum) or [e[0] for e in events] != list(range(1, revision + 1)):
-                        raise PersistenceError("Checkpoint/journal integrity mismatch")
-                    payload = json.loads(raw)
-                    if payload["session"]["id"] != session_id:
-                        raise PersistenceError("Session identity mismatch")
-                    result.append(payload)
-                if self.connection.execute("SELECT count(DISTINCT session_id) FROM journal").fetchone()[0] != len(rows):
-                    raise PersistenceError("Orphan runtime journal")
-                return result
+                return [materialize(self.connection, payload['session']['id'], payload)
+                        for payload in self._verified_payloads(include_archived)]
             except Exception as exc:
                 self.failed = True
                 raise PersistenceError("Cannot load runtime checkpoints: " + type(exc).__name__) from exc
 
+    def _verified_payloads(self, include_archived):
+        where = '' if include_archived else ' WHERE session_id NOT IN (SELECT session_id FROM archived_sessions)'
+        rows = self.connection.execute('SELECT session_id,revision,payload,sha256 FROM checkpoints' + where + ' ORDER BY session_id')
+        for session_id, revision, raw, checksum in rows:
+            span = self.connection.execute("SELECT count(*),min(revision),max(revision),sum(typeof(revision)!='integer') FROM journal WHERE session_id=?", (session_id,)).fetchone()
+            latest = self.connection.execute('SELECT sha256 FROM journal WHERE session_id=? AND revision=?', (session_id, revision)).fetchone()
+            # Primary-key uniqueness and this span preserve the existing journal contract.
+            if digest(raw) != checksum or span != (revision, 1, revision, 0) or latest != (checksum,):
+                raise PersistenceError('Checkpoint/journal integrity mismatch')
+            payload = json.loads(raw)
+            if payload['session']['id'] != session_id:
+                raise PersistenceError('Session identity mismatch')
+            yield payload
+        if self.connection.execute('SELECT count(DISTINCT session_id) FROM journal').fetchone()[0] != self.connection.execute('SELECT count(*) FROM checkpoints').fetchone()[0]:
+            raise PersistenceError('Orphan runtime journal')
+
+    def materialize_legacy(self):
+        """One lossless export under the owner lock, after runtime workers have stopped."""
+        with self.lock:
+            self.ensure_available()
+            db = self.connection
+            before = db.execute('PRAGMA user_version').fetchone()[0]
+            sessions = db.execute('SELECT count(*) FROM checkpoints').fetchone()[0]
+            if before == 3:
+                return {'status': 'ok', 'schema_before': before, 'schema_after': 3,
+                        'sessions': sessions, 'materialized': False}
+            try:
+                db.execute('BEGIN IMMEDIATE')
+                converted = 0
+                for payload in self._verified_payloads(True):
+                    if '_block_checkpoint' not in payload:
+                        continue
+                    session_id = payload['session']['id']
+                    payload = materialize(db, session_id, payload)
+                    raw = dumps(payload); checksum = digest(raw)
+                    revision = db.execute('SELECT revision FROM checkpoints WHERE session_id=?', (session_id,)).fetchone()[0] + 1
+                    db.execute('UPDATE checkpoints SET revision=?,payload=?,sha256=? WHERE session_id=?', (revision, raw, checksum, session_id))
+                    db.execute('INSERT INTO journal VALUES(?,?,?,?,?)',
+                               (session_id, revision, 'legacy_materialized', checksum, time.time()))
+                    converted += 1
+                db.execute('DELETE FROM checkpoint_blocks')
+                db.execute('PRAGMA user_version=3')
+                if self.fault_hook:
+                    self.fault_hook('before_commit', 'materialize_legacy')
+                db.execute('COMMIT')
+                self._block_cache.clear()
+                if self.fault_hook:
+                    self.fault_hook('after_commit', 'materialize_legacy')
+                return {'status': 'ok', 'schema_before': before, 'schema_after': 3,
+                        'sessions': sessions, 'converted_sessions': converted, 'materialized': True}
+            except Exception as exc:
+                self.failed = True
+                if db.in_transaction:
+                    db.execute('ROLLBACK')
+                raise PersistenceError('Legacy checkpoint export failed; store fenced') from exc
+
+    def _archived(self, table, column, value):
+        rows = self._archive_rows(f"SELECT payload,sha256 FROM {table} WHERE {column}=?", (value,))
+        return rows[0] if rows else None
+
+    def _archive_rows(self, query, parameters):
+        with self.lock:
+            self.ensure_available()
+            try:
+                result = []
+                for raw, checksum in self.connection.execute(query, parameters):
+                    if digest(raw) != checksum:
+                        raise PersistenceError('Archived history integrity mismatch')
+                    result.append(json.loads(raw))
+                return result
+            except Exception as exc:
+                self.failed = True
+                raise PersistenceError('Cannot read archived history: ' + type(exc).__name__) from exc
+
+    def archived_task(self, task_id):
+        return self._archived('archived_tasks', 'task_id', task_id)
+
+    def archived_task_for_key(self, request_key):
+        return self._archived('archived_tasks', 'request_key', request_key)
+
+    def archived_tasks_for_owners(self, subjects, limit):
+        placeholders = ','.join('?' for _ in subjects)
+        return self._archive_rows(f"SELECT payload,sha256 FROM archived_tasks WHERE owner_subject IN ({placeholders}) ORDER BY rowid DESC LIMIT ?", (*subjects, limit))
+
+    def archived_session(self, session_id):
+        return self._archived('archived_sessions', 'session_id', session_id)
+
+    def archived_session_for_key(self, desktop_key):
+        return self._archived('archived_sessions', 'desktop_key', desktop_key)
+
+    def runtime_segment(self, session_id, generation):
+        rows = self._archive_rows("SELECT payload,sha256 FROM runtime_segments WHERE session_id=? AND generation=?",
+                                  (session_id, generation))
+        return rows[0] if rows else None
+
+    def runtime_segments(self, session_id, *, limit=20, before=None):
+        condition = "session_id=?" + (" AND generation<?" if before is not None else "")
+        parameters = (session_id, before, limit) if before is not None else (session_id, limit)
+        return self._archive_rows(f"SELECT payload,sha256 FROM runtime_segments WHERE {condition} ORDER BY generation DESC LIMIT ?", parameters)
+
     def close(self):
         with self.lock:
+            self._block_cache.clear()
             if self.connection:
                 self.connection.close()
                 self.connection = None
             if self.owner:
                 self.owner.close()
                 self.owner = None
+
+
+if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser(description='Materialize current runtime data for a stopped legacy Core.')
+    parser.add_argument('--materialize-legacy', type=Path, required=True)
+    path = parser.parse_args().materialize_legacy
+    if not path.is_file():
+        raise PersistenceError('Existing runtime database required')
+    store = SQLiteRuntimeStore(path)
+    try:
+        print(json.dumps(store.materialize_legacy(), sort_keys=True))
+    finally:
+        store.close()

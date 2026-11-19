@@ -58,6 +58,8 @@ class SessionToolCalls:
                 raise ToolArgumentsError(['$: expected object'])
             from .tool_protocol import validate_arguments
             validate_arguments(call.name, args, self._schemas())
+            if call.name == 'delegate' and args.get('role'):
+                self._validate_worker_role(args)
             if (self.harness_policy and self.task_contract and self.task_contract.child_output_groups
                     and self._worker_id is None and call.name == 'apply_patch'):
                 # Declared disjoint ownership is a host contract, not merely a
@@ -73,7 +75,9 @@ class SessionToolCalls:
             if self.harness_policy and self.hybrid and call.name in {'delegate','request_model_switch'}:
                 from .tool_protocol import ToolArgumentsError
                 try:
-                    self.hybrid.resolve(args.get('backend_preference',args.get('target')),args.get('backend_id'),args.get('model'),args.get('tier'))
+                    self.hybrid.resolve(args.get('backend_preference',args.get('target')),
+                        self.worker_roles.get(args.get('role'), args.get('backend_id')),
+                        args.get('model'),args.get('tier'))
                 except ValueError as error:
                     raise ToolArgumentsError(['$.backend_id/model: '+str(error)]) from error
             if call.name not in RUNTIME_TOOL_NAMES | ASYNC_TOOL_NAMES:
@@ -168,9 +172,9 @@ class SessionToolCalls:
                     self.registry.plugin_request_id = f'{self._plugin_namespace}/turn:{self.turn_id}/call:{call.id}'
                 if self._async_enabled:
                     with external(self._state_condition):
-                        result = self.registry.call(call.name, args, approved=approved, receipt_id=call.id, scope_approval=scope_approval)
+                        result = self.registry._call_prevalidated(call.name, args, approved=approved, receipt_id=call.id, scope_approval=scope_approval)
                 else:
-                    result = self.registry.call(call.name, args, approved=approved, receipt_id=call.id, scope_approval=scope_approval)
+                    result = self.registry._call_prevalidated(call.name, args, approved=approved, receipt_id=call.id, scope_approval=scope_approval)
             payload = self._payload(result)
             from .host_tools import qualified_shell
             completed_shell_failure = (qualified_shell(self.registry,call.name) and isinstance(result,dict)
@@ -279,7 +283,8 @@ class SessionToolCalls:
         partial_effect = isinstance(result, dict) and (bool(result.get("applied")) or result.get("action_sent") is True) and not payload.get("ok")
         unknown_effect = isinstance(result, dict) and result.get("action_may_have_applied") is True
         from .host_tools import qualified_shell
-        completed_shell_failure = (qualified_shell(self.registry,call.name) and isinstance(result,dict)
+        host_shell = qualified_shell(self.registry, call.name)
+        completed_shell_failure = (host_shell and isinstance(result,dict)
             and result.get('status')=='nonzero_exit' and result.get('process_completed') is True)
         record = {"signature": self._signature(call), "arguments": call.arguments,
                   "payload": deepcopy(payload), "read_receipt": deepcopy(read_receipt),
@@ -289,10 +294,11 @@ class SessionToolCalls:
                   "side_effect_status": "unknown" if unknown_effect else "failed_process" if completed_shell_failure else "partial" if partial_effect else "completed" if payload.get("ok") else "not_completed"}
         context = self._call_context.pop(self._call_key(call), {})
         record["receipt_reused"] = context.pop("receipt_reused", False)
-        from .tool_protocol import resolves_patch_rejection
+        from .tool_protocol import resolves_patch_rejection, resolves_shell_rejection
         current = {'name': call.name, **record}
         repaired_proposals = [r['receipt_id'] for r in self.tool_history
-            if r['turn_id'] == self.turn_id and resolves_patch_rejection(r, current)]
+            if r['turn_id'] == self.turn_id and (resolves_patch_rejection(r, current)
+                or host_shell and resolves_shell_rejection(r, current))]
         if repaired_proposals:
             record['repaired_proposals'] = repaired_proposals
         if self.computer:

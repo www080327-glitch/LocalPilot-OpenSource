@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "kind": "INDEPENDENT_POST_TERMINAL_READ_ONLY_SOAK_REVIEW",
+  "reviewed_at_utc": "2026-11-16T22:06:32.522932+00:00",
+  "qualification": "PASS",
+  "checks": {
+    "runner_passed": true,
+    "outer_exit_zero": true,
+    "requested_7200": true,
+    "task_elapsed_at_least_7200": true,
+    "heartbeat_240": true,
+    "heartbeat_monotonic": true,
+    "script_matches_frozen_runner": true,
+    "shell_completed": true,
+    "shell_timeout_7320": true,
+    "shell_fresh": true,
+    "marker_exact": true,
+    "fresh_full_readback": true,
+    "model_final_exact": true,
+    "completed_quiescent": true,
+    "no_pending_approval": true,
+    "no_unknown_effects": true,
+    "owned_core_stopped": true,
+    "source_110_match": true,
+    "manifest_digest_matches": true,
+    "full_extended_recorded": true
+  },
+  "source": {
+    "commit": "03535fe943f64f49e9e3d79e7949aca6c9ec9b87",
+    "tree": "1792d58af7858208db5018a747d78a1c75848edf",
+    "runtime_manifest_sha256": "9fe18b9f97a527b9357af2406d4a8530eef244eaf2a2d00d0f2db53108d0b35d",
+    "runtime_file_count": 110,
+    "actual_files_mismatching": [],
+    "git_blobs_mismatching": [],
+    "head": "03535fe943f64f49e9e3d79e7949aca6c9ec9b87",
+    "git_status": "",
+    "runner_sha256": "a860afd95c17ec86bdd1b738ae7a4223fd3985eadd262c84259e4f396acf3238",
+    "heartbeat_script_sha256": "4e9f4268aac5734a99a5f5e641c40c78929d6675a954b281a19d48e4cd61da0e"
+  },
+  "timing": {
+    "requested_seconds": 7200,
+    "task_elapsed_seconds": 7207.3844064939985,
+    "outer_elapsed_seconds": 7208.490151643753,
+    "outer_started_utc": "2026-11-16T20:04:16.350356+00:00",
+    "outer_finished_utc": "2026-11-16T22:04:24.840508+00:00",
+    "shell_duration_receipt_field": null,
+    "shell_at_least_7200_seconds_basis": "Exact frozen-runner heartbeat script exits its monotonic 7200-second loop before writing the marker; the actual foreground Shell ran this unchanged script, returned exit 0, and the following real read_file retrieved the marker. No separate exact Shell-duration field is present; task elapsed is not relabelled as Shell duration.",
+    "task_timeout_seconds": 7800,
+    "shell_requested_timeout_seconds": 7320
+  },
+  "heartbeat": {
+    "count": 240,
+    "first_elapsed_seconds": 7.033699512248859e-05,
+    "last_elapsed_seconds": 7170.148518402995,
+    "strictly_increasing": true,
+    "minimum_gap_seconds": 30.00015426400205,
+    "maximum_gap_seconds": 30.009652994995122,
+    "sampling_note": "Samples occur before each 30-second wait; the final sampled row precedes the 7200-second termination and marker write."
+  },
+  "receipts": {
+    "shell_id": "turn:1/call:call_3jxwfcjmbLY7SfdZLC0SgbDc/entry:0",
+    "shell_command": "/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python heartbeat.py",
+    "shell_status": "completed",
+    "shell_result": {
+      "status": "ok",
+      "exit_code": 0,
+      "stdout": "LOCALPILOT_SOAK_COMPLETE\n",
+      "stderr": "",
+      "truncated": false,
+      "action_sent": true,
+      "process_completed": true,
+      "partial_effects_possible": false,
+      "action_may_have_applied": false,
+      "replay_allowed": false,
+      "verification": "NOT_RUN",
+      "network": "available",
+      "sandbox_mode": "full"
+    },
+    "shell_reused": false,
+    "read_id": "turn:1/call:call_vbTf7bJwLS0VVgPSnwUCObTF/entry:1",
+    "read_path": "soak-finished.txt",
+    "read_receipt": {
+      "evidence_id": "read-aef6b8562f8f4ad2",
+      "source_call_id": "call_vbTf7bJwLS0VVgPSnwUCObTF",
+      "version": {
+        "path": "soak-finished.txt",
+        "sha256": "4a780a56e5db021c969dc0e2f379d9b61c062ff436247ac92e920507a8a29a24",
+        "size_bytes": 24
+      },
+      "coverage": {
+        "kind": "full_file",
+        "truncated": false,
+        "excerpt_complete": true,
+        "scope": "whole_file",
+        "excerpt_bytes": 24
+      },
+      "excerpt": {
+        "text": "LOCALPILOT_SOAK_COMPLETE",
+        "omitted_bytes": 0
+      },
+      "reused": false,
+      "new_coverage": true
+    },
+    "marker_sha256": "4a780a56e5db021c969dc0e2f379d9b61c062ff436247ac92e920507a8a29a24",
+    "marker_bytes": 24,
+    "model_final_exact": true,
+    "receipt_count": 2
+  },
+  "task": {
+    "id": "resp_ffaf1479524f4244844cebec4be75661",
+    "status": "completed",
+    "quiescent": true,
+    "error": null,
+    "required_action": null,
+    "completion": {
+      "execution": "settled",
+      "delivery": "delivered",
+      "attempts": 1,
+      "history": [
+        {
+          "attempt": 1,
+          "kind": "delivered",
+          "text_sha256": "7585864aa0656fb11aa5e0d678698b87834184a0242f240f68487d00f6b4a001",
+          "ledger_sha256": "d480adf8b936bd2b9b77e56f874f25b5e674f6caa48ede573abdc89743d9db55"
+        }
+      ],
+      "readiness": null,
+      "ledger_sha256": "d480adf8b936bd2b9b77e56f874f25b5e674f6caa48ede573abdc89743d9db55",
+      "receipt_count": 2,
+      "obligations": {
+        "pending_approval": false,
+        "queued_calls": 0,
+        "unfinished_goals": 0,
+        "unfinished_workers": 0,
+        "worker_obligations": false,
+        "computer_obligations": 0,
+        "unfinished_handoff": 0,
+        "unknown_receipts": 0,
+        "mutation_intent": false
+      }
+    },
+    "verification_summary": {
+      "runtime_status": "completed",
+      "deliverable_status": "present",
+      "verification_status": "not_run",
+      "engineering_status": "unverified",
+      "task_outcome": "unverified"
+    },
+    "runner_recorded_approval_interventions": 0,
+    "desktop_options": {
+      "permission_mode": "full",
+      "agent_profile": "standard",
+      "execution_budget": "extended",
+      "prompt_revision": 2,
+      "scope_revision": 3
+    }
+  },
+  "model": {
+    "configured": "gpt-6-luna",
+    "protocol": "responses",
+    "reasoning": "medium",
+    "calls": 3,
+    "input_tokens": 8276,
+    "output_tokens": 243,
+    "failed_attempts": 0,
+    "actual_monetary_cost": "UNKNOWN"
+  },
+  "owned_shutdown": {
+    "recorded_owned_core_stopped": true,
+    "outer_returncode": 0,
+    "basis": "Frozen CloudCore/Core.stop invokes termination and waits for the owned process; the runner saved the stopped flag and then the outer supervisor saved exit 0. This review did not signal a process or claim an independent systemwide process inventory."
+  },
+  "last_periodic_progress": {
+    "elapsed_seconds": 7193.291635784,
+    "task_id": "resp_ffaf1479524f4244844cebec4be75661",
+    "status": "running",
+    "quiescent": false,
+    "tools": []
+  },
+  "review_actions": {
+    "model_api_calls": 0,
+    "tests_rerun": 0,
+    "candidate_or_soak_reruns": 0,
+    "process_control": false,
+    "private_core_read": false,
+    "credential_file_read": false,
+    "original_files_modified": false
+  },
+  "limits": [
+    "The empirical two-hour result is source-loaded b28, not b31 or RC14 packaged execution.",
+    "Internal verification_status remains not_run and task_outcome unverified; external soak PASS does not rewrite them.",
+    "One long foreground Shell with sparse model calls is not two hours of continuous model inference, a 24-hour task, or general autonomous reliability.",
+    "Earlier interrupted R1/R3 durations are not added; their outcomes remain unchanged."
+  ]
+}

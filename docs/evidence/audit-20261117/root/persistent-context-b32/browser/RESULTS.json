@@ -1,0 +1,27 @@
+{
+  "status": "NOT_RUN_BROWSER_ENVIRONMENT",
+  "functional_assertions_executed": 0,
+  "attempts": [
+    {
+      "environment": "repository Playwright /usr/bin/chromium",
+      "result": "launch failure before page: process_singleton_posix socket() failed: Operation not permitted",
+      "tests_not_run": 7
+    },
+    {
+      "environment": "Browser extension",
+      "result": "requires originating browser context; unavailable"
+    },
+    {
+      "environment": "Vite --host 0.0.0.0",
+      "result": "Node uv_interface_addresses returned Unknown system error 1"
+    },
+    {
+      "environment": "normal npm run dev at 127.0.0.1:1420",
+      "result": "Vite reported ready; cloud browser returned net::ERR_CONNECTION_REFUSED, independent curl exit7; no UI assertions; owned server stopped with exit130"
+    }
+  ],
+  "native_transport": "synthetic audit-bridge; real product Pet components intended but page never reached",
+  "fixture_files": "unverified temporary attempt; kept outside final source",
+  "model_requests": 0,
+  "permissions_bypassed": false
+}

@@ -4,13 +4,14 @@ import os
 from pathlib import Path
 
 from agent.backends import LocalBackend
+from agent.cloud_credentials import CloudCredentialError, resolve_openai_key
 from agent.cooperative import CooperativePolicy
 from .backend_contract import (ManagedLocalBackend, ServiceDeepSeekBackend,
     ServiceDeepSeekNativeBackend, ServiceDeepSeekOptimizedBackend, ServiceOMLXBackend,
-    ServiceOpenAIBackend, ServiceVLLMBackend)
+    ServiceOpenAIBackend, ServiceOpenAICloudBackend, ServiceOpenAIResponsesBackend, ServiceVLLMBackend)
 
 
-CLOUD_KINDS = {'deepseek', 'deepseek-native', 'remote-openai', 'remote-vllm'}
+CLOUD_KINDS = {'deepseek', 'deepseek-native', 'remote-openai', 'remote-vllm', 'openai'}
 LOCAL_KINDS = {'omlx', 'vllm', 'local-openai'}
 
 
@@ -30,18 +31,29 @@ def build_backend(spec, data_policy, *, manager=None, worker_thinking=None, cach
             data_policy=data_policy, generation_parameters=spec.get('generation_parameters'))
     else:
         capabilities = spec.get('capabilities', {})
-        key = os.environ.get(spec['api_key_env']) if spec.get('api_key_env') else None
-        if cloud and (not key or not spec['base_url'].startswith('https://')):
+        key_env = spec.get('api_key_env')
+        key = os.environ.get(key_env) if key_env else None
+        if kind == 'openai':
+            if 'api_key_env' in spec and not key:
+                raise CloudCredentialError('missing_credentials')
+            key = resolve_openai_key(key, key_file=spec.get('key_file'))
+        base_url = spec.get('base_url', 'https://api.openai.com/v1') if kind == 'openai' else spec['base_url']
+        if cloud and kind != 'openai' and (not key or not base_url.startswith('https://')):
             raise ValueError('Remote inference requires HTTPS and an explicit API token')
+        protocol = spec.get('protocol', 'chat_completions')
+        if kind == 'openai' and protocol not in {'chat_completions', 'responses'}:
+            raise ValueError('Unknown OpenAI protocol')
         adapter = (ManagedLocalBackend if manager else ServiceVLLMBackend if kind in {'vllm','remote-vllm'} else
-                   ServiceOMLXBackend if kind == 'omlx' else ServiceOpenAIBackend)
+                   ServiceOMLXBackend if kind == 'omlx' else
+                   ServiceOpenAIResponsesBackend if kind == 'openai' and protocol == 'responses' else
+                   ServiceOpenAICloudBackend if kind == 'openai' else ServiceOpenAIBackend)
         backend = adapter(**({'manager':manager} if manager else {'api_key':key}),
-            base_url=spec['base_url'], model=spec['model'],
+            base_url=base_url, model=spec['model'],
             effective_context=spec.get('context_budget', 131072), timeout=spec.get('timeout', 30), allow_remote=cloud,
             supports_tool_calling=capabilities.get('tool_calling', kind not in {'vllm','remote-vllm'}),
             supports_streaming=capabilities.get('streaming', True), supports_vision=capabilities.get('vision', False),
             supports_reasoning=capabilities.get('reasoning'), reasoning_efforts=spec.get('reasoning_efforts', ()),
-            include_stream_usage=spec.get('include_stream_usage', kind in {'omlx','vllm','remote-vllm'}),
+            include_stream_usage=spec.get('include_stream_usage', kind in {'omlx','vllm','remote-vllm','openai'}),
             chat_template_kwargs=spec.get('chat_template_kwargs'),
             generation_parameters=spec.get('generation_parameters'))
         backend.is_local = not cloud
@@ -61,9 +73,9 @@ def build_backend(spec, data_policy, *, manager=None, worker_thinking=None, cach
 def cooperation_routes(route_name, spec, routes, workspace):
     cooperation = spec.get('cooperation')
     if cooperation is None:
-        return {}, None, None
+        return {}, None, None, None
     if (not isinstance(cooperation, dict)
-            or set(cooperation) - {'cloud_route', 'local_route', 'routes', 'optimizer', 'profiles'}
+            or set(cooperation) - {'cloud_route', 'local_route', 'routes', 'optimizer', 'profiles', 'roles'}
             or sum(key in cooperation for key in ('cloud_route', 'local_route', 'routes')) != 1
             or spec.get('managed_local_model') or spec.get('reasoning_only')):
         raise ValueError('Cooperation requires registered worker routes and a tool-capable primary')
@@ -71,6 +83,8 @@ def cooperation_routes(route_name, spec, routes, workspace):
     if kind not in CLOUD_KINDS | LOCAL_KINDS:
         raise ValueError('Cooperation requires an inference backend')
     modern = 'routes' in cooperation
+    if 'roles' in cooperation and not modern:
+        raise ValueError('Worker roles require registered cooperation.routes partners')
     if modern:
         names = cooperation['routes']
         if (not isinstance(names, list) or not names or any(not isinstance(n, str) for n in names)
@@ -108,10 +122,15 @@ def cooperation_routes(route_name, spec, routes, workspace):
                 thinking = None
         workers[alias] = {'backend': backend, 'thinking': thinking,
                          'cache_stable_prefix': bool(modern and partner.get('cache_stable_prefix', False))}
+    roles = cooperation.get('roles', {})
+    if (not isinstance(roles, dict) or set(roles) - {'search', 'review'}
+            or any(not isinstance(name, str) or 'route:' + name not in workers for name in roles.values())):
+        raise ValueError('Worker roles must map search/review to registered cooperation partners')
+    worker_roles = {role: 'route:' + name for role, name in roles.items()} or None
     policy = CooperativePolicy(**cooperation['optimizer']) if 'optimizer' in cooperation else None
     if policy is None and (modern or kind != 'omlx' or set(cooperation) != {'cloud_route'}):
         raise ValueError('Cooperation requires a typed five-mode optimizer')
-    return workers, policy, cooperation.get('profiles')
+    return workers, policy, cooperation.get('profiles'), worker_roles
 
 
 def initial_backend(catalog, policy):

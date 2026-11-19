@@ -8,6 +8,7 @@ from unittest.mock import patch
 
 from agent.registry import create_default_registry
 from agent.session import AgentSession
+from agent.tool_protocol import ToolArgumentsError
 from computer.backend import AXBackend, ComputerBackend
 from computer.local_native import LocalNativeBackend, KINDS
 from computer.runtime import ComputerRuntime, ControlState
@@ -322,7 +323,7 @@ class NativeTests(unittest.TestCase):
             self.runtime.act('type_text', **self.proposal('😀' * 33))
         with self.assertRaises(ValueError):
             self.runtime.act('type_text', **{**self.proposal(), 'enabled': True})
-        with self.assertRaises(TypeError):
+        with self.assertRaisesRegex(ToolArgumentsError, r'\$\.allow_frontmost: unexpected field'):
             self.registry.call('type_text', {**self.proposal(), 'allow_frontmost': True})
         self.assertEqual(self.transport.sent, 0)
 

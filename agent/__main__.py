@@ -52,7 +52,7 @@ def main(argv=None, *, recommendation=None):
     parser.add_argument("--max-workers-per-turn", type=int, default=2)
     parser.add_argument("--max-worker-steps", type=int, default=3)
     parser.add_argument("--max-worker-tool-calls", type=int, default=4)
-    parser.add_argument("--max-worker-token-units", type=int, default=32768)
+    parser.add_argument("--max-worker-token-units", type=int, default=SessionBudgets().max_worker_token_units)
     parser.add_argument("--local-only", action="store_true", help="Hard no-cloud policy; requires a configured local backend.")
     parser.add_argument("--allow-host-execute", action="store_true", help="Opt into experimental unsandboxed host commands, still subject to the Gateway.")
     parser.add_argument("--permission-mode", choices=PERMISSION_MODES, default="approve-mutations")

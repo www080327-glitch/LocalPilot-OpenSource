@@ -1,0 +1,176 @@
+{
+  "status": "RUNTIME_REGRESSION_PASS_NOT_RELEASE_READY",
+  "base_commit": "fe9765c69ce8a39e8a3682d61ceb67c86894c3b4",
+  "first_frozen_commit": "05a5dd7aae139d3df37e9215ff063c0870323c59",
+  "runtime_source_commit": "02838a5db0b342647fc0f7904738bee87f167cf0",
+  "runtime_source_manifest": "SOURCE_MANIFEST.json",
+  "runtime_source_unchanged_after_final_core_run": true,
+  "final_test_only_delta": {
+    "file": "tests/test_wechat_ilink_bridge.mjs",
+    "sha256": "238555bf48bc8582ce310977e0c0671b9b5424524cb935f06d860b5f792b20e7",
+    "description": "11 stale display-text assertions updated to match existing bridge behavior from 1fca748; same routes, sender ownership, counts, restart, blocked state and no-replay assertions. Completed replies checked as the exact full body. Product code unchanged.",
+    "committed_at_report": false
+  },
+  "paid_model_calls": 0,
+  "provider_availability_verified": false,
+  "environment": "ENVIRONMENT.json",
+  "dependency_inventory": "python-dependencies-final.txt",
+  "final_gates": [
+    {
+      "name": "Core full",
+      "log": "core-full-r3.log",
+      "run": 1735,
+      "passed": 1636,
+      "skipped": 99,
+      "failed": 0,
+      "errors": 0,
+      "seconds": 235.996,
+      "status": "PASS"
+    },
+    {
+      "name": "Companion full",
+      "log": "companion-full-r1.log",
+      "run": 763,
+      "passed": 730,
+      "skipped": 33,
+      "failed": 0,
+      "errors": 0,
+      "seconds": 44.597,
+      "status": "PASS"
+    },
+    {
+      "name": "Channels five Node files",
+      "log": "channels-node-r2.log",
+      "run": 86,
+      "passed": 86,
+      "skipped": 0,
+      "failed": 0,
+      "seconds": 3.081111254,
+      "status": "PASS"
+    },
+    {
+      "name": "Recall/rotation/egress/output/RuntimeAPI final targeted",
+      "log": "recall-final-r2.log",
+      "run": 130,
+      "passed": 130,
+      "skipped": 0,
+      "failed": 0,
+      "seconds": 10.413,
+      "status": "PASS"
+    },
+    {
+      "name": "Explicit worker models and transports",
+      "log": "worker-models-r1.log",
+      "run": 69,
+      "passed": 69,
+      "failed": 0,
+      "status": "PASS",
+      "provider": "Local TLS fixture only"
+    }
+  ],
+  "passed_counts_note": "The 130 and 69 targeted tests overlap full Core; do not sum into unique full-suite totals. Python Channels tests are already included in Core full. Skips are not passes.",
+  "retained_failures": [
+    {
+      "log": "core-full-r1.log",
+      "run": 1710,
+      "failed": 6,
+      "errors": 6,
+      "skipped": 99,
+      "reason": "Validation environment lacked defusedxml and did not match pinned MCP/packaging dependencies; one loopback-health scheduling failure. Dependencies repaired in isolated validation venv; unchanged failing health test passed focused recheck and final full.",
+      "followup": "core-env-check-r1.log"
+    },
+    {
+      "log": "core-full-r2.log",
+      "run": 1734,
+      "failed": 1,
+      "skipped": 99,
+      "reason": "Stream timeout fixture assumed the Timer callback was scheduled during an 80ms sleep. Original unchanged case passed three isolated rechecks. Test now waits on existing service condition/state, retaining 50ms task budget, cancelling/timed_out outcome and no-extra-chunk assertions; production timeout unchanged.",
+      "followup": "stream-timeout-recheck.log, core-full-r3.log"
+    },
+    {
+      "log": "channels-node-full.log",
+      "run": 86,
+      "passed": 76,
+      "failed": 10,
+      "reason": "Stale copy assertions against intentional previously changed WeChat user messages; two split completed body on an obsolete first-line prefix. Only assertions updated.",
+      "followup": "channels-node-r2.log"
+    },
+    {
+      "log": "recall-unicode-before.log",
+      "reason": "Real new recall bug: Unicode excerpts exceeded Registry output bytes, destroying structured references. Fixed by text-only byte-budget shrinking with character-accurate next_offset; final actual-Registry test reconstructs full non-BMP response and retains all ten search references.",
+      "followup": "recall-final-r2.log"
+    },
+    {
+      "log": "targeted-r1.log",
+      "reason": "Initial validation environment missing watchdog; installed existing required dependency then reran."
+    },
+    {
+      "log": "recall-final-r1.log",
+      "reason": "Runner named a nonexistent test module; existing selected cases passed; corrected selection is recall-final-r2."
+    },
+    {
+      "log": "long-turn-r1.log",
+      "reason": "Measurement runner used an unsupported wait keyword; corrected runner receipt is long-turn-r2."
+    }
+  ],
+  "rollback": {
+    "status": "PASS",
+    "old_source_commit": "fe9765c69ce8a39e8a3682d61ceb67c86894c3b4",
+    "script": "check_rollback.py",
+    "receipts": [
+      "rollback-case/candidate-create.json",
+      "rollback-case/rc18-write.json",
+      "rollback-case/candidate-reopen.json"
+    ],
+    "phases": "Candidate writes 4 tasks; actual unchanged RC18 source opens same schema3 database and adds 3; candidate reopens, recalls old and downgrade-period text and adds task8. Original task snapshots and segment hashes retained. Final6 segments/index sources.",
+    "backup_restore_used": false,
+    "history_discarded": false
+  },
+  "child_ownership": "child-recall-ownership.json",
+  "independent_review": [
+    "../pet/runtime-final-delta-review.json",
+    "../pet/recall-cloud-review.json",
+    "../pet/recall-filter-limit-review.json",
+    "../pet/recall-filter-limit-fixed.json"
+  ],
+  "code_changes": [
+    "New explicitly configured OpenAI models use existing Responses adapter, keeping old default worker paths and data policy.",
+    "Main persisted V5 session can recall exact visible same-session conversation text using derived SQLite index; current read/folder grants and same full-config scope enforced.",
+    "Profile rebuild reattaches recall; generic cloud projection exposes eligible user text only and filters before ten-result limit.",
+    "Unicode snippets and reads retain all structural references and correct continuation offsets within Registry UTF-8 envelope.",
+    "Adaptive/current-turn retention and quiescent Computer/exact-cloud-grant session rotation now supported without widening grants or weakening restart observation barrier."
+  ],
+  "remaining_source_work": [
+    {
+      "name": "Single very long task incremental checkpoints",
+      "status": "NOT_IMPLEMENTED",
+      "hardware_blocker": false,
+      "measurement": "long-turn-case-r2/measurements.json",
+      "script": "measure_long_turn.py",
+      "task_seconds": 28.957937872,
+      "receipts": 96,
+      "final_checkpoint_bytes": 4914062,
+      "final_checkpoint_ms": 153.4641919997739,
+      "note": "Single observed workload, not statistical performance guarantee. Whole active checkpoint still copied/serialized/written at every durable boundary although model request window stays bounded.",
+      "plan": "See docs/development/RC19_RUNTIME_FOLLOWUP.md for incremental message/receipt/child blocks, transactional manifest, fault recovery and lossless Suite downgrade materialization requirements."
+    },
+    {
+      "name": "Arbitrary cross-configuration canonical recall",
+      "status": "NOT_IMPLEMENTED",
+      "note": "Archived lookup requires the same full host configuration digest. Changing model/profile/budget can exclude older segments without deleting them. Tool receipts remain in original task/archive APIs, not generic text recall."
+    },
+    {
+      "name": "Exact cloud grant list long-term growth",
+      "status": "NOT_SEGMENTED",
+      "note": "Rotation preserves exact prior hashes unchanged; this does not compact the grant list."
+    }
+  ],
+  "not_claimed": [
+    "Zero bugs",
+    "Fresh RC19 live Luna or Sol engineering acceptance",
+    "Native macOS/Intel/physical desktop acceptance",
+    "Every repository skip satisfied",
+    "Any paid provider model is available"
+  ],
+  "runtime_document": "docs/development/RC19_RUNTIME_FOLLOWUP.md"
+}

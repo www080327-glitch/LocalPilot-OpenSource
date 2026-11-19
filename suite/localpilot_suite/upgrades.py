@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import sqlite3
 import subprocess
 import sys
 import time
@@ -13,7 +14,7 @@ import uuid
 import zipfile
 
 from . import app_install, upgrade_channels
-from .channel_paths import private_directory, private_json
+from .channel_paths import private_directory, private_file, private_json
 from .channels import save
 
 NAMES = {'core':'localpilot-agent-service', 'companion':'localpilot-companion', 'suite':'localpilot-suite', 'channels':'localpilot-channels'}
@@ -58,6 +59,7 @@ def plan(home, wheels=(), previous=(), *, app=None, test_app=False, python=None)
         'runtime_versions':observed['versions'], 'python_version':observed['python'],
         'service_policy':'require_stopped; no task replay', 'data_policy':'preserve',
         'automatic_downloads':False, 'restart_gui':bool(app_plan), 'legacy_core_channel_overlap':legacy_channels,
+        'runtime_storage':_runtime_storage(home),
         'blocking_services':_running_services(home, python), 'channels':upgrade_channels.inventory(home), 'status':'plan_only'}
     value['fingerprint'] = _fingerprint(value)
     save(directory / 'plan.json', value)
@@ -96,8 +98,13 @@ def execute(home, identity, *, fingerprint=None, rollback=False):
     if value['desktop']:
         current = app_install.make_plan(Path(value['desktop']['source']), test_app=value['desktop']['test_app'])
         app_install.check_reviewed_plan(current, value['desktop'])
+    storage = None
+    if value['desktop'] or any(row['module'] == 'core' for row in value['components']):
+        # A broken target can remove the exporter before automatic rollback.
+        storage = _prepare_runtime_compatibility(value, directory, 'install')
     receipt = {'id':identity, 'status':'installing', 'started_at':time.time(), 'attempted':[],
-        'steps':[], 'data_preserved':True, 'automatic_task_replay':False, 'desktop_attempted':False}
+        'steps':[], 'data_preserved':True, 'automatic_task_replay':False, 'desktop_attempted':False,
+        'runtime_storage':storage}
     save(directory / 'receipt.json', receipt)
     try:
         for row in value['components']:
@@ -165,6 +172,15 @@ def launch(home, identity, pid, *, fingerprint=None, rollback=False):
 
 def _rollback(value, receipt, directory):
     failures = []
+    if receipt.get('desktop_attempted') or 'core' in receipt['attempted']:
+        try:
+            receipt['rollback_runtime_storage'] = _prepare_runtime_compatibility(value, directory, 'rollback')
+        except (OSError, ValueError, subprocess.SubprocessError) as error:
+            receipt.update(status='failed_rollback_failed', finished_at=time.time(),
+                           rollback_failures=[{'module':'runtime_storage', 'error':str(error)}],
+                           next='Current installation and task data are kept. Resolve runtime compatibility preparation and retry rollback.')
+            save(directory / 'receipt.json', receipt)
+            return receipt
     if receipt.get('desktop_attempted'):
         try:
             app_install.rollback(receipt.get('desktop', value['desktop']))
@@ -197,6 +213,51 @@ def _rollback(value, receipt, directory):
                    rollback_failures=failures, finished_at=time.time())
     save(directory / 'receipt.json', receipt)
     return receipt
+
+
+def _runtime_storage(home):
+    config = Path(home) / 'service.json'
+    if not config.exists():
+        return {'status':'not_configured'}
+    database = private_file(Path(private_json(config)['data_dir']) / 'runtime.sqlite3')
+    if not database.exists():
+        return {'status':'no_database'}
+    try:
+        connection = sqlite3.connect(database.as_uri() + '?mode=ro', uri=True)
+        try:
+            schema = connection.execute('PRAGMA user_version').fetchone()[0]
+        finally:
+            connection.close()
+    except sqlite3.Error as error:
+        raise ValueError('Cannot inspect runtime storage; current installation and task data are kept') from error
+    return {'status':'present', 'database':str(database), 'schema':schema,
+            'compatibility':'materialize_before_switch' if schema == 4 else
+                'legacy_readable' if schema in {0, 1, 2, 3} else 'unsupported'}
+
+
+def _prepare_runtime_compatibility(value, directory, phase):
+    storage = _runtime_storage(value['home'])
+    if storage.get('compatibility') == 'unsupported':
+        raise ValueError('Unsupported runtime storage schema; current installation and task data are kept')
+    if storage.get('schema') != 4:
+        return storage
+    log = directory / ('runtime-' + phase + '-compatibility.log')
+    result = subprocess.run([value['python'], '-m', 'agent.persistence', '--materialize-legacy', storage['database']],
+                            cwd=value['home'], env=_python_env(value['python']), capture_output=True, text=True)
+    log.write_text(result.stdout + result.stderr, encoding='utf-8')
+    log.chmod(0o600)
+    error = 'Runtime compatibility preparation failed; current installation and task data are kept. Inspect ' + str(log)
+    if result.returncode:
+        raise ValueError(error)
+    try:
+        exported = json.loads(result.stdout)
+    except ValueError as exc:
+        raise ValueError(error) from exc
+    if (not isinstance(exported, dict) or exported.get('status') != 'ok' or exported.get('schema_after') != 3
+            or _runtime_storage(value['home']).get('schema') != 3):
+        raise ValueError(error)
+    return {'status':'compatible', 'schema_before':exported.get('schema_before'), 'schema_after':3,
+            'sessions':exported.get('sessions'), 'materialized':exported.get('materialized'), 'log':str(log)}
 
 
 def _runtime(python, home):

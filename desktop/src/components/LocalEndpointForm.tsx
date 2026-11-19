@@ -42,7 +42,15 @@ export function LocalEndpointForm({
         operation: "discover_local_endpoint",
         args: { base_url: endpoint },
       });
-      setModels(observed.models.map((item: { id: string }) => item.id));
+      const available = observed.models.map((item: { id: string }) => item.id);
+      setModels(available);
+      setModel((selected) =>
+        available.includes(selected)
+          ? selected
+          : available.length === 1
+            ? available[0]
+            : "",
+      );
       setResult(observed);
     } catch (error) {
       setError(String(error));
@@ -98,21 +106,28 @@ export function LocalEndpointForm({
     <section className="local-endpoint-form" aria-label="连接本机模型服务">
       <h3>连接本机模型服务</h3>
       <p className="muted">
-        Intel Mac 可使用 llama.cpp 等推理程序的本机 OpenAI 兼容服务。
+        可连接 llama.cpp 等推理程序的本机 OpenAI 兼容服务。
         先启动服务并加载支持工具调用的模型，再填写地址。CPU 或 GPU
         加速由推理服务选择；模型权重不包含在 LocalPilot 中。
       </p>
       <label>
         本机路由名称
-        <input value={name} onChange={(event) => setName(event.target.value)} />
+        <input
+          disabled={!!busy}
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+        />
       </label>
       <label>
         本机端点
         <input
           value={endpoint}
+          disabled={!!busy}
           onChange={(event) => {
             setEndpoint(event.target.value);
             setModels([]);
+            setModel("");
+            setContext("");
             setResult(null);
           }}
           placeholder="http://127.0.0.1:1234/v1"
@@ -131,6 +146,7 @@ export function LocalEndpointForm({
           服务报告的模型
           <select
             value={model}
+            disabled={!!busy}
             onChange={(event) => setModel(event.target.value)}
           >
             <option value="">选择模型</option>
@@ -146,6 +162,7 @@ export function LocalEndpointForm({
         模型 ID
         <input
           value={model}
+          disabled={!!busy}
           onChange={(event) => setModel(event.target.value)}
         />
       </label>
@@ -156,6 +173,7 @@ export function LocalEndpointForm({
           min={4096}
           max={1048576}
           value={context}
+          disabled={!!busy}
           onChange={(event) => setContext(event.target.value)}
           placeholder="填写推理服务实际配置的上限"
         />
@@ -167,6 +185,7 @@ export function LocalEndpointForm({
         <input
           type="checkbox"
           checked={disableThinking}
+          disabled={!!busy}
           onChange={(event) => setDisableThinking(event.target.checked)}
         />
         请求后端关闭模型思考输出
@@ -178,6 +197,7 @@ export function LocalEndpointForm({
         <input
           type="checkbox"
           checked={companion}
+          disabled={!!busy}
           onChange={(event) => setCompanion(event.target.checked)}
         />
         同时让 Companion 使用这个本机端点
@@ -187,6 +207,7 @@ export function LocalEndpointForm({
           Companion 推理电源策略
           <select
             value={powerPolicy}
+            disabled={!!busy}
             onChange={(event) => setPowerPolicy(event.target.value)}
           >
             <option value="system">跟随系统电源策略</option>

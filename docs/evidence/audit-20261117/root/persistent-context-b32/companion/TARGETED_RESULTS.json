@@ -1,0 +1,53 @@
+{
+  "candidate": {
+    "baseline_commit": "e278f0677c8eed4c0d49b6b08a672e15fe56495d",
+    "candidate_commit": null,
+    "identity_rule": "Baseline plus working-tree modifications, identified by exact source SHA manifests; no new commit ID asserted",
+    "desktop": "5.0.1-rc.15",
+    "core": "5.0.0b32",
+    "companion": "0.5.7b9"
+  },
+  "tests": 101,
+  "passed": 101,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "unittest_seconds": 4.039,
+  "exit_code": 0,
+  "command": [
+    "<python312>/bin/python",
+    "-B",
+    "-m",
+    "unittest",
+    "companion.tests.test_chat_history_archive",
+    "companion.tests.test_v042_chat_context",
+    "companion.tests.test_v043_display_history",
+    "companion.tests.test_v043_host",
+    "companion.tests.test_pa_sources",
+    "companion.tests.test_pa_training",
+    "companion.tests.test_pet",
+    "companion.tests.test_pet_history",
+    "-v"
+  ],
+  "cwd": "<candidate-worktree>",
+  "source_manifest": "TARGETED_SOURCE_FILES.json",
+  "source_manifest_provenance": "12 owned-file snapshot captured immediately before the targeted run; no separate automated pre/post capture for this run. The subsequent full Python gate has automated pre/post manifests. A later UI-only order fix is identified by FRONTEND_SOURCE_FILES.json.",
+  "log": "raw/companion/companion-final-targeted.log",
+  "log_sha256": "95fb0c14180b09718f1512e57b23b53dd264d6cc4f627af733ea5a62bcd1e1d0",
+  "baseline_regression": {
+    "tests": 10,
+    "passed": 4,
+    "failed": 6,
+    "errors": 0,
+    "skipped": 0,
+    "unittest_seconds": 0.574,
+    "log": "raw/companion/baseline-final-regression.log",
+    "local_baseline_commit": "54bc8e3c0983775b19eedb386de1271f8d3e3263",
+    "checked_production_files_equal_e278": [
+      "companion/memory/store.py",
+      "companion/runtime/dialogue.py",
+      "companion/runtime/routing.py"
+    ]
+  },
+  "evidence_kind": "Real SQLite, FTS, source lineage, routing and existing local HTTP fixtures with scripted generation; not model-quality evaluation"
+}

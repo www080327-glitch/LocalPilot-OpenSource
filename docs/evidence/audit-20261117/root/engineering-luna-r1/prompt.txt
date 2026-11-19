@@ -1,0 +1,30 @@
+Deliver the small standard-library Python project in this workspace.
+Read SPEC.md and the public tests/fixtures. The existing modules are unfinished stubs.
+Full permission is already granted. Use only this project; do not install dependencies,
+access credentials/network services, or modify Core, qualification files outside the
+workspace, SPEC.md, tests, or fixtures. Do not implement a lookup table of fixture answers.
+The shell tool's timeout is measured in SECONDS. Use timeout 60 for the short test/CLI
+commands here; it is not a millisecond value.
+
+First delegate TWO independent cloud children in mode async, read_only false, each with
+budget {"steps":20,"tools":40}. Start both before waiting. Child A owns only
+logstats/parser.py: implement Record/parse_records per SPEC.md, and run ParserTests.
+Child B owns only logstats/aggregate.py: implement summarize per the public Record
+interface, and run AggregateTests. Children can select only their own test class with
+unittest discover -s tests -p test_acceptance.py -k ParserTests (or -k AggregateTests).
+Each child must use apply_patch to change its own
+module, so the resulting per-file tool receipts prove actual implementation. Children
+must not edit each other's module, CLI, tests, or fixtures. Do not do their work in the
+parent instead of delegating. The Record data-class stub already supports imports while
+the children work concurrently. Use wait_children to collect both results.
+
+Then review/integrate their work and implement logstats/__main__.py in the parent using
+apply_patch. Run real tests and CLI with shell (commands below). Fix genuine failures
+within the task budget; report any integration repairs to child modules. Leave result.json
+as the actual CLI output, not a manually written answer. Run:
+/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python -S -m unittest discover -s tests -p test_acceptance.py -v
+/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python -S -m logstats fixtures/basic.csv --output result.json
+Read result.json and report changed modules, actual test outcome, CLI outcome, and any
+remaining limitations. Completion prose alone does not pass: an external runner will
+copy only the four delivered modules and run the original immutable tests/CLI cases.
+The task deadline is 1200 seconds. Do not start background processes or wait for user input.

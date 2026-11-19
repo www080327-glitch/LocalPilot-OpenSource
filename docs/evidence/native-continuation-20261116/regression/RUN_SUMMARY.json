@@ -1,0 +1,59 @@
+{
+  "source_commit": "59fad12de6f57006fc7510805af2dfd1718c16ea",
+  "runs": [
+    {
+      "name": "core",
+      "command": [
+        "<PREVIOUS_WORKSPACE>/LocalPilot-OpenSource/.venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-t",
+        ".",
+        "-v"
+      ],
+      "source_commit": "59fad12de6f57006fc7510805af2dfd1718c16ea",
+      "returncode": 0,
+      "wall_seconds": 163.755,
+      "summary": "ur_modes_and_hard_ceiling) ... ok\ntest_full_unknown_risk_requires_one_exact_host_approval (tests.test_workspace_grants.FolderControls.test_full_unknown_risk_requires_one_exact_host_approval) ... ok\ntest_grant_persistence_revocation_identity_and_scope (tests.test_workspace_grants.FolderControls.test_grant_persistence_revocation_identity_and_scope) ... ok\ntest_judge_receives_patch_and_command_without_audit_bodies (tests.test_workspace_grants.FolderControls.test_judge_receives_patch_and_command_without_audit_bodies) ... ok\ntest_mkdir_move_rename_copy_and_identity (tests.test_workspace_grants.FolderControls.test_mkdir_move_rename_copy_and_identity) ... ok\ntest_scope_operator_and_private_roots (tests.test_workspace_grants.FolderControls.test_scope_operator_and_private_roots) ... ok\ntest_unknown_after_dispatched_effect (tests.test_workspace_grants.FolderControls.test_unknown_after_dispatched_effect) ... ok\ntest_unknown_extension_and_reserved_names (tests.test_workspace_grants.FolderControls.test_unknown_extension_and_reserved_names) ... ok\ntest_wrong_hash_no_overwrite_and_outside (tests.test_workspace_grants.FolderControls.test_wrong_hash_no_overwrite_and_outside) ... ok\n\n----------------------------------------------------------------------\nRan 1565 tests in 163.146s\n\nOK (skipped=90)\n"
+    },
+    {
+      "name": "suite",
+      "command": [
+        "<PREVIOUS_WORKSPACE>/LocalPilot-OpenSource/.venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "suite/tests",
+        "-t",
+        "suite",
+        "-v"
+      ],
+      "source_commit": "59fad12de6f57006fc7510805af2dfd1718c16ea",
+      "returncode": 1,
+      "wall_seconds": 0.058,
+      "summary": "as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/__main__.py\", line 18, in <module>\n    main(module=None)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/main.py\", line 104, in __init__\n    self.parseArgs(argv)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/main.py\", line 130, in parseArgs\n    self._do_discovery(argv[2:])\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/main.py\", line 253, in _do_discovery\n    self.createTests(from_discovery=True, Loader=Loader)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/main.py\", line 160, in createTests\n    self.test = loader.discover(self.start, self.pattern, self.top)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py\", line 308, in discover\n    raise ImportError('Start directory is not importable: %r' % start_dir)\nImportError: Start directory is not importable: '<PREVIOUS_WORKSPACE>/LocalPilot-polish-final-20261116/suite/tests'\n"
+    },
+    {
+      "name": "companion",
+      "command": [
+        "<PREVIOUS_WORKSPACE>/LocalPilot-OpenSource/.venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "companion/tests",
+        "-t",
+        ".",
+        "-v"
+      ],
+      "source_commit": "59fad12de6f57006fc7510805af2dfd1718c16ea",
+      "returncode": 0,
+      "wall_seconds": 32.283,
+      "summary": "vailable_when_ax_disabled) ... ok\ntest_pause_files_and_native_across_restart_state (companion.tests.test_v04_service.ServiceV04Tests.test_pause_files_and_native_across_restart_state) ... ok\ntest_queue_truncation_remains_visible (companion.tests.test_v04_service.ServiceV04Tests.test_queue_truncation_remains_visible) ... ok\ntest_scope_exclusion_hides_old_observations (companion.tests.test_v04_service.ServiceV04Tests.test_scope_exclusion_hides_old_observations) ... ok\ntest_secret_named_document_not_read (companion.tests.test_v04_service.ServiceV04Tests.test_secret_named_document_not_read) ... ok\ntest_secure_subtree_rejected_again_at_service_boundary (companion.tests.test_v04_service.ServiceV04Tests.test_secure_subtree_rejected_again_at_service_boundary) ... ok\ntest_sensitive_document_not_indexed_and_existing_purged (companion.tests.test_v04_service.ServiceV04Tests.test_sensitive_document_not_indexed_and_existing_purged) ... ok\ntest_source_version_and_stale_context (companion.tests.test_v04_service.ServiceV04Tests.test_source_version_and_stale_context) ... ok\ntest_unknown_task_id_denied (companion.tests.test_v04_service.ServiceV04Tests.test_unknown_task_id_denied) ... ok\n\n----------------------------------------------------------------------\nRan 722 tests in 31.929s\n\nOK (skipped=33)\n"
+    }
+  ]
+}

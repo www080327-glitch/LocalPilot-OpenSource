@@ -1,0 +1,31 @@
+{
+  "utc": "2026-11-16T21:10:34.454460+00:00",
+  "root": "/workspace/scratch/c0f3ec78c621/native-rc12-h",
+  "model_or_task_submission_performed": false,
+  "model_download_performed": false,
+  "api_key_entered": false,
+  "account_connected": false,
+  "live_service_task_count": null,
+  "live_service_inspection": "NOT_RUN: short UI scope stopped before live capability inspection at root direction. No prepared inspection script was executed.",
+  "companion_config": {
+    "backend": "disabled",
+    "watch_dirs": [],
+    "native_observation_enabled": false,
+    "notifications": false,
+    "proactive_level": "off",
+    "localpilot_auto_local": false,
+    "allow_automatic_cloud": false
+  },
+  "database_counts": {
+    "client/product-v5/data/runtime.sqlite3": {
+      "checkpoints": 0,
+      "journal": 0
+    },
+    "client/product-v5/companion-data/memory.sqlite3": {
+      "memories": 0,
+      "training_examples": 0,
+      "observation_events": 0
+    }
+  },
+  "scope": "Profile H only; independent benchmark, engineering, grading and b28 long-soak jobs are excluded."
+}

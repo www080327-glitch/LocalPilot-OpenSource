@@ -1,0 +1,1021 @@
+{
+  "id": "resp_4b74c3e0745a414bbf41fcaefa097969",
+  "object": "localpilot.task",
+  "session_id": "sess_132e156e23654e1184135ed8cc96bd3d",
+  "user_input": "Delegate TWO independent tasks in async mode before waiting. Both use backend_preference cloud, mode async, read_only false. Child A must use shell to run /workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python child-a.py, then read_file child-a.json. Child B must use shell to run /workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python child-b.py, then read_file child-b.json. Do not execute the child scripts in the parent. After both delegates, use wait_children to collect them, then report CHILD-A-DONE and CHILD-B-DONE. Full permission is already granted.",
+  "execution_model": "gpt-6-luna",
+  "desktop_options": {
+    "permission_mode": "full",
+    "agent_profile": "standard",
+    "execution_budget": "standard",
+    "prompt_revision": 2,
+    "scope_revision": 3
+  },
+  "thinking": {
+    "requested": null,
+    "effective": "medium",
+    "supported": [
+      "none",
+      "low",
+      "medium",
+      "high",
+      "xhigh",
+      "max"
+    ]
+  },
+  "pause_requested": false,
+  "model": "localpilot",
+  "session_model": "localpilot",
+  "previous_task_id": null,
+  "created_at": 1794849023,
+  "deadline": 1794849623.2475739,
+  "timeout_seconds": 600,
+  "status": "completed",
+  "quiescent": true,
+  "result": {
+    "text": "CHILD-A-DONE  \nCHILD-B-DONE\n\nBoth delegated tasks completed successfully. Each script exited with code 0, and both JSON files contained the corresponding completion marker.",
+    "prompt_version": "localpilot-v5-v1",
+    "status": "completed",
+    "runtime_status": "completed",
+    "deliverable_status": "present",
+    "verification_status": "not_run",
+    "engineering_status": "unverified",
+    "task_outcome": "unverified",
+    "task_succeeded": false,
+    "verification": null,
+    "runtime_metrics": {
+      "model_attempts": 9,
+      "request_utf8_bytes": 183696,
+      "response_bytes": 28566,
+      "response_bytes_source": "complete_responses_only",
+      "failed_attempts": 0,
+      "failed_attempt_provider_usage": null,
+      "admission_units": 212262,
+      "finalization_reason": null,
+      "final_reserve_units": 42022,
+      "state_bytes": 4347,
+      "cache_bytes": 0,
+      "hybrid": {
+        "calls": 9,
+        "actual_api_cost": "UNKNOWN",
+        "local_resource_cost": "adapter_wall_seconds_only",
+        "backend_id": "selected",
+        "generation": 0,
+        "switching_overhead_seconds": 0,
+        "by_backend": {
+          "selected": {
+            "kind": "cloud",
+            "calls": 9,
+            "known_input_tokens": 30161,
+            "known_output_tokens": 967,
+            "unknown_usage_calls": 0,
+            "known_request_wall_seconds": 81.79418325424194,
+            "known_inference_seconds": 74.77988624572754,
+            "known_queue_seconds": 7.014347314834595,
+            "unknown_inference_time_calls": 0,
+            "unknown_latency_calls": 0,
+            "estimated_api_cost_usd": null,
+            "cost_source": "host_rate_estimate_only",
+            "configured_models": [
+              "gpt-6-luna"
+            ],
+            "prompt_cache_hit_tokens": 9146,
+            "prompt_cache_miss_tokens": 21015,
+            "cache_hit_ratio": 0.3032392825171579,
+            "cache_usage_unknown_calls": 0,
+            "wall_output_tokens_per_second": 12.931284715015844,
+            "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+          }
+        },
+        "source_mix": {
+          "scope": "current_task_including_children",
+          "by_source": {
+            "local": {
+              "admitted_requests": 0,
+              "dispatched_requests": 0,
+              "request_share": 0.0,
+              "known_input_output_tokens": 0,
+              "token_share": 0.0,
+              "unknown_usage_requests": 0
+            },
+            "cloud": {
+              "admitted_requests": 9,
+              "dispatched_requests": 9,
+              "request_share": 1.0,
+              "known_input_output_tokens": 31128,
+              "token_share": 1.0,
+              "unknown_usage_requests": 0
+            }
+          },
+          "requests_without_dispatch_evidence": 0,
+          "token_share_status": "PROVIDER_REPORTED",
+          "actual_cost_status": "UNKNOWN"
+        }
+      }
+    },
+    "completion": {
+      "execution": "settled",
+      "delivery": "delivered",
+      "attempts": 1,
+      "history": [
+        {
+          "attempt": 1,
+          "kind": "delivered",
+          "text_sha256": "9e7fca450bdfb3ba1d7d93452ac8c18d49c033e2bc886ae56c6185cca5b3516d",
+          "ledger_sha256": "1c754830c2a43cc12c5a08826c0bb6c45184cf84caf5241fbc68a82403c98cd7"
+        }
+      ],
+      "readiness": null,
+      "ledger_sha256": "1c754830c2a43cc12c5a08826c0bb6c45184cf84caf5241fbc68a82403c98cd7",
+      "receipt_count": 7,
+      "obligations": {
+        "pending_approval": false,
+        "queued_calls": 0,
+        "unfinished_goals": 0,
+        "unfinished_workers": 0,
+        "worker_obligations": false,
+        "computer_obligations": 0,
+        "unfinished_handoff": 0,
+        "unknown_receipts": 0,
+        "mutation_intent": false
+      }
+    },
+    "tool_budget": {
+      "tool_count": 13,
+      "schema_utf8_bytes": 4094,
+      "prompt_utf8_bytes": 1222,
+      "schema_tokens": null,
+      "prompt_tokens": null,
+      "estimated_schema_tokens_bytes_div_4": 1024,
+      "estimated_prompt_tokens_bytes_div_4": 306,
+      "token_count_status": "estimate_only_without_tokenizer",
+      "scope": "Compact JSON schemas and raw prompt; excludes provider framing, chat template, task and history."
+    },
+    "prompt_profile": "standard",
+    "tool_profile": "compact",
+    "total_steps": 9,
+    "total_tool_calls": 7,
+    "reported_models": [
+      "gpt-6-luna"
+    ],
+    "model_latency_seconds": 81.7974426130022,
+    "cache": {
+      "status": "available",
+      "hit_tokens": 9146,
+      "miss_tokens": 21015,
+      "hit_ratio": 0.3032392825171579
+    },
+    "model_calls": [
+      {
+        "latency_seconds": 10.039796081000532,
+        "tool_call_count": 2,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2836,
+        "reported_model": "gpt-6-luna",
+        "input_tokens": 2836,
+        "output_tokens": 400,
+        "finish_reason": "tool_calls"
+      },
+      {
+        "latency_seconds": 6.931791561000864,
+        "tool_call_count": 1,
+        "prompt_cache_hit_tokens": 1648,
+        "prompt_cache_miss_tokens": 1854,
+        "reported_model": "gpt-6-luna",
+        "input_tokens": 3502,
+        "output_tokens": 25,
+        "finish_reason": "tool_calls"
+      },
+      {
+        "latency_seconds": 7.954470971999399,
+        "tool_call_count": 1,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2852,
+        "reported_model": "gpt-6-luna",
+        "input_tokens": 2852,
+        "output_tokens": 70,
+        "finish_reason": "tool_calls"
+      },
+      {
+        "latency_seconds": 15.286129150998022,
+        "tool_call_count": 1,
+        "prompt_cache_hit_tokens": 1170,
+        "prompt_cache_miss_tokens": 1766,
+        "reported_model": "gpt-6-luna",
+        "input_tokens": 2936,
+        "output_tokens": 81,
+        "finish_reason": "tool_calls"
+      },
+      {
+        "latency_seconds": 8.676886523004214,
+        "tool_call_count": 1,
+        "prompt_cache_hit_tokens": 1170,
+        "prompt_cache_miss_tokens": 1952,
+        "reported_model": "gpt-6-luna",
+        "input_tokens": 3122,
+        "output_tokens": 35,
+        "finish_reason": "tool_calls"
+      },
+      {
+        "latency_seconds": 7.466614564997144,
+        "tool_call_count": 1,
+        "prompt_cache_hit_tokens": 1170,
+        "prompt_cache_miss_tokens": 2044,
+        "reported_model": "gpt-6-luna",
+        "input_tokens": 3214,
+        "output_tokens": 35,
+        "finish_reason": "tool_calls"
+      },
+      {
+        "latency_seconds": 6.5429602619988145,
+        "tool_call_count": 0,
+        "prompt_cache_hit_tokens": 1170,
+        "prompt_cache_miss_tokens": 2267,
+        "reported_model": "gpt-6-luna",
+        "input_tokens": 3437,
+        "output_tokens": 104,
+        "finish_reason": "stop"
+      },
+      {
+        "latency_seconds": 10.274189665004087,
+        "tool_call_count": 0,
+        "prompt_cache_hit_tokens": 1170,
+        "prompt_cache_miss_tokens": 2346,
+        "reported_model": "gpt-6-luna",
+        "input_tokens": 3516,
+        "output_tokens": 134,
+        "finish_reason": "stop"
+      },
+      {
+        "latency_seconds": 8.624603832999128,
+        "tool_call_count": 0,
+        "prompt_cache_hit_tokens": 1648,
+        "prompt_cache_miss_tokens": 3098,
+        "reported_model": "gpt-6-luna",
+        "input_tokens": 4746,
+        "output_tokens": 83,
+        "finish_reason": "stop"
+      }
+    ],
+    "runtime_metrics_scope": "latest_runtime_turn"
+  },
+  "streamed_text": "",
+  "required_action": null,
+  "error": null,
+  "output": [
+    {
+      "role": "assistant",
+      "content": null,
+      "tool_calls": [
+        {
+          "id": "call_YdERAlezIridnTILrU5Bi2SI",
+          "type": "function",
+          "function": {
+            "name": "delegate",
+            "arguments": "{\"backend_preference\":\"cloud\",\"mode\":\"async\",\"read_only\":false,\"task\":\"Child A task: Use the shell tool to run exactly `/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python child-a.py`. Then use read_file on `child-a.json`. Do not substitute another script or run any other task. Report the shell result and the file contents.\"}"
+          }
+        },
+        {
+          "id": "call_pjzaqBPApUzA7zTLrq6VlZKH",
+          "type": "function",
+          "function": {
+            "name": "delegate",
+            "arguments": "{\"backend_preference\":\"cloud\",\"mode\":\"async\",\"read_only\":false,\"task\":\"Child B task: Use the shell tool to run exactly `/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python child-b.py`. Then use read_file on `child-b.json`. Do not substitute another script or run any other task. Report the shell result and the file contents.\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "{\"ok\": true, \"result\": {\"status\": \"queued\", \"worker_id\": \"1.1\"}}",
+      "tool_call_id": "call_YdERAlezIridnTILrU5Bi2SI"
+    },
+    {
+      "role": "tool",
+      "content": "{\"ok\": true, \"result\": {\"status\": \"queued\", \"worker_id\": \"1.2\"}}",
+      "tool_call_id": "call_pjzaqBPApUzA7zTLrq6VlZKH"
+    },
+    {
+      "role": "assistant",
+      "content": null,
+      "tool_calls": [
+        {
+          "id": "call_kqCJzvlqlYK4KTlJW5sZQAT5",
+          "type": "function",
+          "function": {
+            "name": "wait_children",
+            "arguments": "{}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "{\"ok\": true, \"result\": [{\"worker_id\": \"1.1\", \"status\": \"completed\", \"collected\": true, \"text\": \"Shell result: completed successfully (exit code 0); stdout and stderr were empty.\\n\\n`child-a.json`:\\n```json\\n{\\\"start\\\": 1794849041.3697479, \\\"end\\\": 1794849053.3698752, \\\"marker\\\": \\\"CHILD-A-DONE\\\"}\\n```\", \"usage\": {\"token_units\": 64017, \"tool_proposals\": 2, \"attempts\": 3, \"request_bytes\": 55845, \"response_bytes\": 8172, \"failed_attempts\": 0}, \"obligation_status\": \"resolved\", \"approval\": null, \"timeline\": [{\"event\": \"start\", \"at\": 1794849033.3463106}, {\"event\": \"completed\", \"at\": 1794849068.6489158}]}, {\"worker_id\": \"1.2\", \"status\": \"completed\", \"collected\": true, \"text\": \"Shell command `/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python child-b.py` completed successfully (exit code 0; no stdout or stderr).\\n\\nContents of `child-b.json`:\\n```json\\n{\\\"start\\\": 1794849048.7066033, \\\"end\\\": 1794849060.7080436, \\\"marker\\\": \\\"CHILD-B-DONE\\\"}\\n```\", \"usage\": {\"token_units\": 65624, \"tool_proposals\": 2, \"attempts\": 3, \"request_bytes\": 57066, \"response_bytes\": 8558, \"failed_attempts\": 0}, \"obligation_status\": \"resolved\", \"approval\": null, \"timeline\": [{\"event\": \"start\", \"at\": 1794849033.3692057}, {\"event\": \"completed\", \"at\": 1794849078.520518}]}]}",
+      "tool_call_id": "call_kqCJzvlqlYK4KTlJW5sZQAT5"
+    },
+    {
+      "role": "assistant",
+      "content": "CHILD-A-DONE  \nCHILD-B-DONE\n\nBoth delegated tasks completed successfully. Each script exited with code 0, and both JSON files contained the corresponding completion marker."
+    }
+  ],
+  "tools": [
+    {
+      "turn_id": 1,
+      "id": "call_YdERAlezIridnTILrU5Bi2SI",
+      "name": "delegate",
+      "signature": "e194c362b906920e4c26b5ae928a84b51f481e7617d26dd03afd4b0eb4b461d0",
+      "arguments": "{\"backend_preference\":\"cloud\",\"mode\":\"async\",\"read_only\":false,\"task\":\"Child A task: Use the shell tool to run exactly `/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python child-a.py`. Then use read_file on `child-a.json`. Do not substitute another script or run any other task. Report the shell result and the file contents.\"}",
+      "payload": {
+        "ok": true,
+        "result": {
+          "status": "queued",
+          "worker_id": "1.1"
+        }
+      },
+      "read_receipt": null,
+      "receipt_id": "turn:1/call:call_YdERAlezIridnTILrU5Bi2SI/entry:0",
+      "status": "completed",
+      "side_effect_completed": true,
+      "side_effect_status": "completed",
+      "receipt_reused": false
+    },
+    {
+      "turn_id": 1,
+      "id": "call_pjzaqBPApUzA7zTLrq6VlZKH",
+      "name": "delegate",
+      "signature": "88cd075ae2f4d3b002a23efb1ae226b346e2b3debf477574dcf4c26550c019c7",
+      "arguments": "{\"backend_preference\":\"cloud\",\"mode\":\"async\",\"read_only\":false,\"task\":\"Child B task: Use the shell tool to run exactly `/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python child-b.py`. Then use read_file on `child-b.json`. Do not substitute another script or run any other task. Report the shell result and the file contents.\"}",
+      "payload": {
+        "ok": true,
+        "result": {
+          "status": "queued",
+          "worker_id": "1.2"
+        }
+      },
+      "read_receipt": null,
+      "receipt_id": "turn:1/call:call_pjzaqBPApUzA7zTLrq6VlZKH/entry:1",
+      "status": "completed",
+      "side_effect_completed": true,
+      "side_effect_status": "completed",
+      "receipt_reused": false
+    },
+    {
+      "turn_id": 1,
+      "id": "call_Us21ac2ktXZI6UFyAMk8PuIX",
+      "name": "shell",
+      "signature": "2bfa2d0449061ff9b81fbfe0f46927706b1b980d15ecb2a5c9373b3843ffa239",
+      "arguments": "{\"command\":\"/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python child-a.py\"}",
+      "payload": {
+        "ok": true,
+        "result": {
+          "status": "ok",
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "",
+          "truncated": false,
+          "action_sent": true,
+          "process_completed": true,
+          "partial_effects_possible": false,
+          "action_may_have_applied": false,
+          "replay_allowed": false,
+          "verification": "NOT_RUN",
+          "network": "available",
+          "sandbox_mode": "full"
+        }
+      },
+      "read_receipt": null,
+      "receipt_id": "worker:1.1/turn:1/call:call_Us21ac2ktXZI6UFyAMk8PuIX/entry:0",
+      "status": "completed",
+      "side_effect_completed": true,
+      "side_effect_status": "completed",
+      "receipt_reused": false,
+      "worker_id": "1.1",
+      "source_turn_id": 1
+    },
+    {
+      "turn_id": 1,
+      "id": "call_5BzAFR1OO8IbQ6Opjly6y95f",
+      "name": "shell",
+      "signature": "ccb351902b3b84ea4c6fc9287e78632678095c6b9995b10b4650f08a83984b8d",
+      "arguments": "{\"command\":\"/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python child-b.py\"}",
+      "payload": {
+        "ok": true,
+        "result": {
+          "status": "ok",
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "",
+          "truncated": false,
+          "action_sent": true,
+          "process_completed": true,
+          "partial_effects_possible": false,
+          "action_may_have_applied": false,
+          "replay_allowed": false,
+          "verification": "NOT_RUN",
+          "network": "available",
+          "sandbox_mode": "full"
+        }
+      },
+      "read_receipt": null,
+      "receipt_id": "worker:1.2/turn:1/call:call_5BzAFR1OO8IbQ6Opjly6y95f/entry:0",
+      "status": "completed",
+      "side_effect_completed": true,
+      "side_effect_status": "completed",
+      "receipt_reused": false,
+      "worker_id": "1.2",
+      "source_turn_id": 1
+    },
+    {
+      "turn_id": 1,
+      "id": "call_P4pmJkprvJESUJpLqnbSr9r8",
+      "name": "read_file",
+      "signature": "f581292d6f2f224330936deae99d156cbd76deb64eea14b4a6ccbd5ed896a885",
+      "arguments": "{\"path\":\"child-a.json\"}",
+      "payload": {
+        "ok": true,
+        "result": "{\"start\": 1794849041.3697479, \"end\": 1794849053.3698752, \"marker\": \"CHILD-A-DONE\"}"
+      },
+      "read_receipt": {
+        "evidence_id": "read-01938848968a95a8",
+        "source_call_id": "call_P4pmJkprvJESUJpLqnbSr9r8",
+        "version": {
+          "path": "child-a.json",
+          "sha256": "e96010b0dac600c3db70ae148a60be6e9b757b63154ca9835fcc703b203a0d75",
+          "size_bytes": 82
+        },
+        "coverage": {
+          "kind": "full_file",
+          "truncated": false,
+          "excerpt_complete": true,
+          "scope": "whole_file",
+          "excerpt_bytes": 82
+        },
+        "excerpt": {
+          "text": "{\"start\": 1794849041.3697479, \"end\": 1794849053.3698752, \"marker\": \"CHILD-A-DONE\"}",
+          "omitted_bytes": 0
+        },
+        "reused": false,
+        "new_coverage": true
+      },
+      "receipt_id": "worker:1.1/turn:1/call:call_P4pmJkprvJESUJpLqnbSr9r8/entry:1",
+      "status": "completed",
+      "side_effect_completed": true,
+      "side_effect_status": "completed",
+      "receipt_reused": false,
+      "worker_id": "1.1",
+      "source_turn_id": 1
+    },
+    {
+      "turn_id": 1,
+      "id": "call_Lcjq5Eaa7cqORWg43U2GWves",
+      "name": "read_file",
+      "signature": "ee9b987918a33f63a4aaf511aa25af23595fc19cf457cddd36b90f47788bf2d3",
+      "arguments": "{\"path\":\"child-b.json\"}",
+      "payload": {
+        "ok": true,
+        "result": "{\"start\": 1794849048.7066033, \"end\": 1794849060.7080436, \"marker\": \"CHILD-B-DONE\"}"
+      },
+      "read_receipt": {
+        "evidence_id": "read-acb1b859da19fc59",
+        "source_call_id": "call_Lcjq5Eaa7cqORWg43U2GWves",
+        "version": {
+          "path": "child-b.json",
+          "sha256": "ddcf604ddff2bbca7ffcda1c0baaa384715d31e08973e41383d97a873838a813",
+          "size_bytes": 82
+        },
+        "coverage": {
+          "kind": "full_file",
+          "truncated": false,
+          "excerpt_complete": true,
+          "scope": "whole_file",
+          "excerpt_bytes": 82
+        },
+        "excerpt": {
+          "text": "{\"start\": 1794849048.7066033, \"end\": 1794849060.7080436, \"marker\": \"CHILD-B-DONE\"}",
+          "omitted_bytes": 0
+        },
+        "reused": false,
+        "new_coverage": true
+      },
+      "receipt_id": "worker:1.2/turn:1/call:call_Lcjq5Eaa7cqORWg43U2GWves/entry:1",
+      "status": "completed",
+      "side_effect_completed": true,
+      "side_effect_status": "completed",
+      "receipt_reused": false,
+      "worker_id": "1.2",
+      "source_turn_id": 1
+    },
+    {
+      "turn_id": 1,
+      "id": "call_kqCJzvlqlYK4KTlJW5sZQAT5",
+      "name": "wait_children",
+      "signature": "73fc579b8ccc0592f813ec9f051f337a000070dd93aea6d4a5037d5ffe51cec2",
+      "arguments": "{}",
+      "payload": {
+        "ok": true,
+        "result": [
+          {
+            "worker_id": "1.1",
+            "status": "completed",
+            "collected": true,
+            "text": "Shell result: completed successfully (exit code 0); stdout and stderr were empty.\n\n`child-a.json`:\n```json\n{\"start\": 1794849041.3697479, \"end\": 1794849053.3698752, \"marker\": \"CHILD-A-DONE\"}\n```",
+            "usage": {
+              "token_units": 64017,
+              "tool_proposals": 2,
+              "attempts": 3,
+              "request_bytes": 55845,
+              "response_bytes": 8172,
+              "failed_attempts": 0
+            },
+            "obligation_status": "resolved",
+            "approval": null,
+            "timeline": [
+              {
+                "event": "start",
+                "at": 1794849033.3463106
+              },
+              {
+                "event": "completed",
+                "at": 1794849068.6489158
+              }
+            ]
+          },
+          {
+            "worker_id": "1.2",
+            "status": "completed",
+            "collected": true,
+            "text": "Shell command `/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python child-b.py` completed successfully (exit code 0; no stdout or stderr).\n\nContents of `child-b.json`:\n```json\n{\"start\": 1794849048.7066033, \"end\": 1794849060.7080436, \"marker\": \"CHILD-B-DONE\"}\n```",
+            "usage": {
+              "token_units": 65624,
+              "tool_proposals": 2,
+              "attempts": 3,
+              "request_bytes": 57066,
+              "response_bytes": 8558,
+              "failed_attempts": 0
+            },
+            "obligation_status": "resolved",
+            "approval": null,
+            "timeline": [
+              {
+                "event": "start",
+                "at": 1794849033.3692057
+              },
+              {
+                "event": "completed",
+                "at": 1794849078.520518
+              }
+            ]
+          }
+        ]
+      },
+      "read_receipt": null,
+      "receipt_id": "turn:1/call:call_kqCJzvlqlYK4KTlJW5sZQAT5/entry:6",
+      "status": "completed",
+      "side_effect_completed": true,
+      "side_effect_status": "completed",
+      "receipt_reused": false
+    }
+  ],
+  "goals": [],
+  "subagents": [
+    {
+      "id": "1.1",
+      "turn_id": 1,
+      "backend": "cloud",
+      "tier": null,
+      "provider": "openai",
+      "configured_model": "gpt-6-luna",
+      "status": "completed",
+      "task": "Child A task: Use the shell tool to run exactly `/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python child-a.py`. Then use read_file on `child-a.json`. Do not substitute another script or run any other task. Report the shell result and the file contents.",
+      "permission_mode": "full-permission",
+      "read_only": false,
+      "workspace": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-superagent-r1/workspace",
+      "depth": 1,
+      "backend_id": "selected",
+      "async": true,
+      "call": {
+        "id": "call_YdERAlezIridnTILrU5Bi2SI",
+        "type": "function",
+        "function": {
+          "name": "delegate",
+          "arguments": "{\"backend_preference\":\"cloud\",\"mode\":\"async\",\"read_only\":false,\"task\":\"Child A task: Use the shell tool to run exactly `/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python child-a.py`. Then use read_file on `child-a.json`. Do not substitute another script or run any other task. Report the shell result and the file contents.\"}"
+        }
+      },
+      "reservation": {
+        "_attempts": 30,
+        "_tool_proposals": 60,
+        "_token_units": 8388608
+      },
+      "collected": true,
+      "queued_at": 1794849033.3123195,
+      "timeline": [
+        {
+          "event": "start",
+          "at": 1794849033.3463106
+        },
+        {
+          "event": "completed",
+          "at": 1794849068.6489158
+        }
+      ],
+      "receipts": [
+        {
+          "turn_id": 1,
+          "id": "call_Us21ac2ktXZI6UFyAMk8PuIX",
+          "name": "shell",
+          "signature": "2bfa2d0449061ff9b81fbfe0f46927706b1b980d15ecb2a5c9373b3843ffa239",
+          "arguments": "{\"command\":\"/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python child-a.py\"}",
+          "payload": {
+            "ok": true,
+            "result": {
+              "status": "ok",
+              "exit_code": 0,
+              "stdout": "",
+              "stderr": "",
+              "truncated": false,
+              "action_sent": true,
+              "process_completed": true,
+              "partial_effects_possible": false,
+              "action_may_have_applied": false,
+              "replay_allowed": false,
+              "verification": "NOT_RUN",
+              "network": "available",
+              "sandbox_mode": "full"
+            }
+          },
+          "read_receipt": null,
+          "receipt_id": "turn:1/call:call_Us21ac2ktXZI6UFyAMk8PuIX/entry:0",
+          "status": "completed",
+          "side_effect_completed": true,
+          "side_effect_status": "completed",
+          "receipt_reused": false
+        },
+        {
+          "turn_id": 1,
+          "id": "call_P4pmJkprvJESUJpLqnbSr9r8",
+          "name": "read_file",
+          "signature": "f581292d6f2f224330936deae99d156cbd76deb64eea14b4a6ccbd5ed896a885",
+          "arguments": "{\"path\":\"child-a.json\"}",
+          "payload": {
+            "ok": true,
+            "result": "{\"start\": 1794849041.3697479, \"end\": 1794849053.3698752, \"marker\": \"CHILD-A-DONE\"}"
+          },
+          "read_receipt": {
+            "evidence_id": "read-01938848968a95a8",
+            "source_call_id": "call_P4pmJkprvJESUJpLqnbSr9r8",
+            "version": {
+              "path": "child-a.json",
+              "sha256": "e96010b0dac600c3db70ae148a60be6e9b757b63154ca9835fcc703b203a0d75",
+              "size_bytes": 82
+            },
+            "coverage": {
+              "kind": "full_file",
+              "truncated": false,
+              "excerpt_complete": true,
+              "scope": "whole_file",
+              "excerpt_bytes": 82
+            },
+            "excerpt": {
+              "text": "{\"start\": 1794849041.3697479, \"end\": 1794849053.3698752, \"marker\": \"CHILD-A-DONE\"}",
+              "omitted_bytes": 0
+            },
+            "reused": false,
+            "new_coverage": true
+          },
+          "receipt_id": "turn:1/call:call_P4pmJkprvJESUJpLqnbSr9r8/entry:1",
+          "status": "completed",
+          "side_effect_completed": true,
+          "side_effect_status": "completed",
+          "receipt_reused": false
+        }
+      ],
+      "approval": null,
+      "pending_calls": [],
+      "usage": {
+        "token_units": 64017,
+        "tool_proposals": 2,
+        "attempts": 3,
+        "request_bytes": 55845,
+        "response_bytes": 8172,
+        "failed_attempts": 0
+      },
+      "model_calls": 3,
+      "hybrid_usage": {
+        "calls": 3,
+        "actual_api_cost": "UNKNOWN",
+        "local_resource_cost": "adapter_wall_seconds_only",
+        "backend_id": "selected",
+        "generation": 0,
+        "switching_overhead_seconds": 0,
+        "by_backend": {
+          "selected": {
+            "kind": "cloud",
+            "calls": 3,
+            "known_input_tokens": 9411,
+            "known_output_tokens": 209,
+            "unknown_usage_calls": 0,
+            "known_request_wall_seconds": 23.17329692840576,
+            "known_inference_seconds": 23.149123668670654,
+            "known_queue_seconds": 0.024189472198486328,
+            "unknown_inference_time_calls": 0,
+            "unknown_latency_calls": 0,
+            "estimated_api_cost_usd": null,
+            "cost_source": "host_rate_estimate_only",
+            "configured_models": [
+              "gpt-6-luna"
+            ],
+            "prompt_cache_hit_tokens": 2340,
+            "prompt_cache_miss_tokens": 7071,
+            "cache_hit_ratio": 0.24864520242269683,
+            "cache_usage_unknown_calls": 0,
+            "wall_output_tokens_per_second": 9.028419519951612,
+            "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+          }
+        },
+        "source_mix": {
+          "scope": "current_task_including_children",
+          "by_source": {
+            "local": {
+              "admitted_requests": 0,
+              "dispatched_requests": 0,
+              "request_share": 0.0,
+              "known_input_output_tokens": 0,
+              "token_share": 0.0,
+              "unknown_usage_requests": 0
+            },
+            "cloud": {
+              "admitted_requests": 3,
+              "dispatched_requests": 3,
+              "request_share": 1.0,
+              "known_input_output_tokens": 9620,
+              "token_share": 1.0,
+              "unknown_usage_requests": 0
+            }
+          },
+          "requests_without_dispatch_evidence": 0,
+          "token_share_status": "PROVIDER_REPORTED",
+          "actual_cost_status": "UNKNOWN"
+        }
+      },
+      "current_backend_id": "selected",
+      "judge_calls": 0,
+      "judge_provider_usage": "NOT_APPLICABLE",
+      "unfinished_calls": [],
+      "obligation_status": "resolved",
+      "text": "Shell result: completed successfully (exit code 0); stdout and stderr were empty.\n\n`child-a.json`:\n```json\n{\"start\": 1794849041.3697479, \"end\": 1794849053.3698752, \"marker\": \"CHILD-A-DONE\"}\n```"
+    },
+    {
+      "id": "1.2",
+      "turn_id": 1,
+      "backend": "cloud",
+      "tier": null,
+      "provider": "openai",
+      "configured_model": "gpt-6-luna",
+      "status": "completed",
+      "task": "Child B task: Use the shell tool to run exactly `/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python child-b.py`. Then use read_file on `child-b.json`. Do not substitute another script or run any other task. Report the shell result and the file contents.",
+      "permission_mode": "full-permission",
+      "read_only": false,
+      "workspace": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-superagent-r1/workspace",
+      "depth": 1,
+      "backend_id": "selected",
+      "async": true,
+      "call": {
+        "id": "call_pjzaqBPApUzA7zTLrq6VlZKH",
+        "type": "function",
+        "function": {
+          "name": "delegate",
+          "arguments": "{\"backend_preference\":\"cloud\",\"mode\":\"async\",\"read_only\":false,\"task\":\"Child B task: Use the shell tool to run exactly `/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python child-b.py`. Then use read_file on `child-b.json`. Do not substitute another script or run any other task. Report the shell result and the file contents.\"}"
+        }
+      },
+      "reservation": {
+        "_attempts": 30,
+        "_tool_proposals": 60,
+        "_token_units": 8388608
+      },
+      "collected": true,
+      "queued_at": 1794849033.3238814,
+      "timeline": [
+        {
+          "event": "start",
+          "at": 1794849033.3692057
+        },
+        {
+          "event": "completed",
+          "at": 1794849078.520518
+        }
+      ],
+      "receipts": [
+        {
+          "turn_id": 1,
+          "id": "call_5BzAFR1OO8IbQ6Opjly6y95f",
+          "name": "shell",
+          "signature": "ccb351902b3b84ea4c6fc9287e78632678095c6b9995b10b4650f08a83984b8d",
+          "arguments": "{\"command\":\"/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python child-b.py\"}",
+          "payload": {
+            "ok": true,
+            "result": {
+              "status": "ok",
+              "exit_code": 0,
+              "stdout": "",
+              "stderr": "",
+              "truncated": false,
+              "action_sent": true,
+              "process_completed": true,
+              "partial_effects_possible": false,
+              "action_may_have_applied": false,
+              "replay_allowed": false,
+              "verification": "NOT_RUN",
+              "network": "available",
+              "sandbox_mode": "full"
+            }
+          },
+          "read_receipt": null,
+          "receipt_id": "turn:1/call:call_5BzAFR1OO8IbQ6Opjly6y95f/entry:0",
+          "status": "completed",
+          "side_effect_completed": true,
+          "side_effect_status": "completed",
+          "receipt_reused": false
+        },
+        {
+          "turn_id": 1,
+          "id": "call_Lcjq5Eaa7cqORWg43U2GWves",
+          "name": "read_file",
+          "signature": "ee9b987918a33f63a4aaf511aa25af23595fc19cf457cddd36b90f47788bf2d3",
+          "arguments": "{\"path\":\"child-b.json\"}",
+          "payload": {
+            "ok": true,
+            "result": "{\"start\": 1794849048.7066033, \"end\": 1794849060.7080436, \"marker\": \"CHILD-B-DONE\"}"
+          },
+          "read_receipt": {
+            "evidence_id": "read-acb1b859da19fc59",
+            "source_call_id": "call_Lcjq5Eaa7cqORWg43U2GWves",
+            "version": {
+              "path": "child-b.json",
+              "sha256": "ddcf604ddff2bbca7ffcda1c0baaa384715d31e08973e41383d97a873838a813",
+              "size_bytes": 82
+            },
+            "coverage": {
+              "kind": "full_file",
+              "truncated": false,
+              "excerpt_complete": true,
+              "scope": "whole_file",
+              "excerpt_bytes": 82
+            },
+            "excerpt": {
+              "text": "{\"start\": 1794849048.7066033, \"end\": 1794849060.7080436, \"marker\": \"CHILD-B-DONE\"}",
+              "omitted_bytes": 0
+            },
+            "reused": false,
+            "new_coverage": true
+          },
+          "receipt_id": "turn:1/call:call_Lcjq5Eaa7cqORWg43U2GWves/entry:1",
+          "status": "completed",
+          "side_effect_completed": true,
+          "side_effect_status": "completed",
+          "receipt_reused": false
+        }
+      ],
+      "approval": null,
+      "pending_calls": [],
+      "usage": {
+        "token_units": 65624,
+        "tool_proposals": 2,
+        "attempts": 3,
+        "request_bytes": 57066,
+        "response_bytes": 8558,
+        "failed_attempts": 0
+      },
+      "model_calls": 3,
+      "hybrid_usage": {
+        "calls": 3,
+        "actual_api_cost": "UNKNOWN",
+        "local_resource_cost": "adapter_wall_seconds_only",
+        "backend_id": "selected",
+        "generation": 0,
+        "switching_overhead_seconds": 0,
+        "by_backend": {
+          "selected": {
+            "kind": "cloud",
+            "calls": 3,
+            "known_input_tokens": 9666,
+            "known_output_tokens": 250,
+            "unknown_usage_calls": 0,
+            "known_request_wall_seconds": 33.02592658996582,
+            "known_inference_seconds": 26.062955141067505,
+            "known_queue_seconds": 6.962985277175903,
+            "unknown_inference_time_calls": 0,
+            "unknown_latency_calls": 0,
+            "estimated_api_cost_usd": null,
+            "cost_source": "host_rate_estimate_only",
+            "configured_models": [
+              "gpt-6-luna"
+            ],
+            "prompt_cache_hit_tokens": 3510,
+            "prompt_cache_miss_tokens": 6156,
+            "cache_hit_ratio": 0.36312849162011174,
+            "cache_usage_unknown_calls": 0,
+            "wall_output_tokens_per_second": 9.592158626942268,
+            "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+          }
+        },
+        "source_mix": {
+          "scope": "current_task_including_children",
+          "by_source": {
+            "local": {
+              "admitted_requests": 0,
+              "dispatched_requests": 0,
+              "request_share": 0.0,
+              "known_input_output_tokens": 0,
+              "token_share": 0.0,
+              "unknown_usage_requests": 0
+            },
+            "cloud": {
+              "admitted_requests": 3,
+              "dispatched_requests": 3,
+              "request_share": 1.0,
+              "known_input_output_tokens": 9916,
+              "token_share": 1.0,
+              "unknown_usage_requests": 0
+            }
+          },
+          "requests_without_dispatch_evidence": 0,
+          "token_share_status": "PROVIDER_REPORTED",
+          "actual_cost_status": "UNKNOWN"
+        }
+      },
+      "current_backend_id": "selected",
+      "judge_calls": 0,
+      "judge_provider_usage": "NOT_APPLICABLE",
+      "unfinished_calls": [],
+      "obligation_status": "resolved",
+      "text": "Shell command `/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python child-b.py` completed successfully (exit code 0; no stdout or stderr).\n\nContents of `child-b.json`:\n```json\n{\"start\": 1794849048.7066033, \"end\": 1794849060.7080436, \"marker\": \"CHILD-B-DONE\"}\n```"
+    }
+  ],
+  "computer": null,
+  "completion": {
+    "execution": "settled",
+    "delivery": "delivered",
+    "attempts": 1,
+    "history": [
+      {
+        "attempt": 1,
+        "kind": "delivered",
+        "text_sha256": "9e7fca450bdfb3ba1d7d93452ac8c18d49c033e2bc886ae56c6185cca5b3516d",
+        "ledger_sha256": "1c754830c2a43cc12c5a08826c0bb6c45184cf84caf5241fbc68a82403c98cd7"
+      }
+    ],
+    "readiness": null,
+    "ledger_sha256": "1c754830c2a43cc12c5a08826c0bb6c45184cf84caf5241fbc68a82403c98cd7",
+    "receipt_count": 7,
+    "obligations": {
+      "pending_approval": false,
+      "queued_calls": 0,
+      "unfinished_goals": 0,
+      "unfinished_workers": 0,
+      "worker_obligations": false,
+      "computer_obligations": 0,
+      "unfinished_handoff": 0,
+      "unknown_receipts": 0,
+      "mutation_intent": false
+    }
+  },
+  "last_event_id": 318,
+  "service": {
+    "request_id": "req_cfb7a053b30542e1b7f872da857d2e19",
+    "client_subject": "http",
+    "route_decision": {
+      "selection": "explicit",
+      "selected": "localpilot",
+      "backend_model": "gpt-6-luna",
+      "decisions": [
+        {
+          "model": "localpilot",
+          "reason": "selected"
+        }
+      ],
+      "backend_fallback": false
+    },
+    "origin_agent": "http",
+    "parent_task_id": null,
+    "external_delegation_depth": 1,
+    "external_redelegation_allowed": false,
+    "low_power_consent": false
+  },
+  "receipt_summary": {
+    "count": 7,
+    "unknown_effects": 0
+  },
+  "file_operation_verification": {
+    "status": "NOT_RUN",
+    "scope": "filesystem effects only",
+    "receipts": 0
+  },
+  "verification_summary": {
+    "runtime_status": "completed",
+    "deliverable_status": "present",
+    "verification_status": "not_run",
+    "engineering_status": "unverified",
+    "task_outcome": "unverified"
+  }
+}

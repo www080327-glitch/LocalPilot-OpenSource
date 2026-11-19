@@ -1,8 +1,10 @@
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
 import sys
+import tempfile
 import unittest
 
 
@@ -21,8 +23,13 @@ class LinuxNativeProcessTests(unittest.TestCase):
         if bus.returncode and 'Failed to open socket: Operation not permitted' in bus.stderr:
             self.skipTest('Environment blocks the isolated D-Bus Unix socket; native GTK test NOT_RUN')
         self.assertEqual(bus.returncode, 0, bus.stderr)
-        result = subprocess.run([shutil.which('dbus-run-session'), '--', sys.executable,
-            str(Path(__file__).with_name('linux_native_fixture.py'))], capture_output=True, text=True, timeout=40)
+        environment = os.environ.copy()
+        environment.pop('AT_SPI_BUS_ADDRESS', None)
+        with tempfile.TemporaryDirectory(prefix='localpilot-owned-atspi-') as runtime:
+            environment['XDG_RUNTIME_DIR'] = runtime
+            result = subprocess.run([shutil.which('dbus-run-session'), '--', sys.executable,
+                str(Path(__file__).with_name('linux_native_fixture.py'))], capture_output=True, text=True,
+                timeout=40, env=environment)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         report = json.loads(result.stdout.strip().splitlines()[-1])
         self.assertEqual(report['status'], 'PASS')

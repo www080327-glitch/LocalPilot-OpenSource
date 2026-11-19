@@ -1,0 +1,17 @@
+Command: PlistBuddy Bundle ID/version; codesign --verify --deep --strict; codesign -dvv; lipo -verify_arch arm64
+Bundle ID: io.localpilot.desktop.test
+Version: 5.0.1-rc.17
+codesign verify: PASS
+Executable=$HOME/.cache/localpilot-desktop/target/release/bundle/macos/LocalPilot Test.app/Contents/MacOS/localpilot-desktop
+Identifier=io.localpilot.desktop.test
+Format=app bundle with Mach-O thin (arm64)
+CodeDirectory v=20500 size=34907 flags=0x10002(adhoc,runtime) hashes=1084+3 location=embedded
+Signature=adhoc
+Info.plist entries=18
+TeamIdentifier=not set
+Runtime Version=27.2.0
+Sealed Resources version=2 rules=13 files=5083
+Internal requirements count=0 size=12
+Total signatures=1
+Chosen signature=1
+arm64 architecture: PASS

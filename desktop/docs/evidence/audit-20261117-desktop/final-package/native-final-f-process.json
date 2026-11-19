@@ -1,0 +1,17 @@
+{
+  "command": [
+    "bash",
+    "/workspace/scratch/c0f3ec78c621/validation/package-b27-b8-b32-Azb7vG/native-smoke/launch-pet-overlay.sh",
+    "/workspace/scratch/c0f3ec78c621/validation/package-b27-b8-b32-Azb7vG/native-smoke/extracted/usr/bin/localpilot-desktop-test",
+    "/workspace/scratch/c0f3ec78c621/native-rc10-f"
+  ],
+  "started_utc": "2026-11-16T17:45:09Z",
+  "display": ":0",
+  "xdg_session_type": "x11",
+  "webkit_disable_sandbox_present": false,
+  "candidate_sha256": "4dd57426eec47489828d18bb6f2ce8a200a7018435144d649cfbad2d44668c84",
+  "scope": "Validation-only read-only helper overlay with standard bubblewrap private /dev and the single existing X11 auth file read-only at its original path; final RC10 candidate from clean GitHub commit 91dd87c6fd4678c103d6383dec1c1385deb38f9a, no system installation, no WebKit sandbox disable.",
+  "pid": 24224,
+  "returncode": 143,
+  "finished_utc": "2026-11-16T17:47:43Z"
+}

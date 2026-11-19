@@ -1,0 +1,17 @@
+{
+  "model_snapshot_manifest_sha256": "e895e8094ef31f088dd09691552d6309e1133d1c665fc36092826a43e3f1027e",
+  "final_source_commit": "59fad12de6f57006fc7510805af2dfd1718c16ea",
+  "differences": [
+    {
+      "path": "agent/session.py",
+      "model_snapshot_sha256": "c69084ae2c633d0a97fe053bba61c76fa6eac6965046b45ccf639cd6d10711b5",
+      "final_source_sha256": "7e48a5c37b1024a3052cf9f18b3411ef93f039c136c7d0f2c0b03231e2ed98f3"
+    },
+    {
+      "path": "companion/README.md",
+      "model_snapshot_sha256": "772e2e0cc691684bfbf6426d04a008a4376a3fcd6934fb3d13aeae95a6bb43cf",
+      "final_source_sha256": "72fd5758b08a25c41c3a561923cf13db741584ff7a1999ea3034146464ac11ad"
+    }
+  ],
+  "late_fix": "AgentSession.request_cancel propagates stop intent to live children; independently covered by actual child Shell cancellation/restart/idempotency regression. No model rerun after this fix."
+}

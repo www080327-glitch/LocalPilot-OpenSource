@@ -79,7 +79,7 @@ def private_file(value, *, create=False):
 
 
 def private_json(value):
-    path = private_file(value)
+    path = canonical_path(value)
     fd = os.open(path, os.O_RDONLY | getattr(os, 'O_NOFOLLOW', 0) | getattr(os, 'O_NONBLOCK', 0))
     try:
         info = os.fstat(fd)

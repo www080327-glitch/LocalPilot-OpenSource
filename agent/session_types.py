@@ -29,7 +29,7 @@ class SessionBudgets:
     max_subagents_per_turn: int = 2
     max_worker_steps: int = 3
     max_worker_tool_calls: int = 4
-    max_worker_token_units: int = 32768
+    max_worker_token_units: int = 131072
     max_worker_output_tokens: int = 512
 
     def __post_init__(self):

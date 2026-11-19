@@ -1,0 +1,50 @@
+{
+  "status": "FAILED_BEFORE_MODEL_INFERENCE",
+  "runner_statuses": {
+    "protocol_status": "FAIL",
+    "orchestration_status": "FAIL",
+    "semantic_status": "FAIL",
+    "engineering_status": "FAIL",
+    "passed": false
+  },
+  "model": "gpt-6-luna",
+  "reasoning": "high",
+  "configured_inference": {
+    "default": {
+      "model": "gpt-6-luna",
+      "protocol": "responses",
+      "thinking": "high"
+    },
+    "companion-execution": {
+      "model": "gpt-6-luna",
+      "protocol": "responses",
+      "thinking": "high"
+    },
+    "companion-reasoning": {
+      "model": "gpt-6-luna",
+      "protocol": "responses",
+      "thinking": "high"
+    },
+    "worker": {
+      "model": "gpt-6-luna",
+      "protocol": "responses",
+      "thinking": "high"
+    }
+  },
+  "task_status": "failed",
+  "task_error": "Local model server unavailable at https://api.openai.com/v1: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)>",
+  "model_calls": 0,
+  "subtasks": 0,
+  "provider_usage": "UNKNOWN",
+  "owned_core_stopped": true,
+  "source_unchanged": true,
+  "original_acceptance_unchanged": true,
+  "task_quiescent": true,
+  "duration_seconds": 12.53210862504784,
+  "runner_sha256": "1878a177ed32600e9d53490ad518a93ece8d729643f2e2681c7b10d11d4724c4",
+  "raw_RESULTS_sha256": "0e6e4415c1ffbd49f27eb4dbfab19e3fffb3d32d50c86f21d34f8f58cfc23fd2",
+  "raw_task_sha256": "d096236d1316b75e4b7191e76964b87c37f01665e45460f9bfc2c3f89455f662",
+  "original_fixture_manifest_sha256": "b22f47e53e46966a7d115b46974c07626217c3b03950735cf4f2b26cf80136fc",
+  "approval_status": "No automatic review rejection occurred in this retry; explicit limited authorization was provided.",
+  "note": "The Full runner used the original synthetic fixtures, two-child cap, and 4096 worker output-token cap. TLS failed before any model call; Sol was not attempted."
+}

@@ -1,0 +1,57 @@
+{
+  "utc": "2026-11-16T22:01:28.499315+00:00",
+  "model_or_task_submission_performed": false,
+  "model_download_performed": false,
+  "api_key_entered": false,
+  "account_connected": false,
+  "live_service_task_count": 0,
+  "live_service_active_task_count": 0,
+  "profiles": {
+    "k": {
+      "root": "/workspace/scratch/c0f3ec78c621/native-rc14-k",
+      "companion_config": {
+        "backend": "disabled",
+        "watch_dirs": [],
+        "native_observation_enabled": false,
+        "notifications": false,
+        "proactive_level": "off",
+        "localpilot_auto_local": false,
+        "allow_automatic_cloud": false
+      },
+      "database_counts": {
+        "client/product-v5/data/runtime.sqlite3": {
+          "checkpoints": 0,
+          "journal": 0
+        },
+        "client/product-v5/companion-data/memory.sqlite3": {
+          "memories": 0,
+          "training_examples": 0,
+          "observation_events": 0
+        }
+      }
+    },
+    "l": {
+      "root": "/workspace/scratch/c0f3ec78c621/native-rc14-l",
+      "companion_config": {
+        "backend": "disabled",
+        "watch_dirs": [],
+        "native_observation_enabled": false,
+        "notifications": false,
+        "proactive_level": "off",
+        "localpilot_auto_local": false,
+        "allow_automatic_cloud": false
+      },
+      "database_counts": {
+        "client/companion-home/companion-data/memory.sqlite3": {
+          "memories": 0,
+          "training_examples": 0,
+          "observation_events": 0
+        }
+      },
+      "core_database": "NOT_CREATED: pet-only Companion profile; no Core count is invented",
+      "animation_probe_attempts": 1,
+      "draft_typed_then_cleared_without_send": true
+    }
+  },
+  "scope": "Only fresh GUI profiles K and L. Separate engineering, grading and b28 two-hour jobs are excluded. No data or credentials from those jobs were read."
+}

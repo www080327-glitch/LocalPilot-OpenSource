@@ -10,9 +10,23 @@ LocalPilot 采用 Apache 2.0 开源协议，致力于让强大、易用且低成
 
 ## 当前源码组件版本
 
-本源码树包含 Desktop **5.0.1-rc.8**、Core **5.0.0b23**、Suite **0.2.0b28**、Companion **0.5.7b5** 和独立 Channels **0.1.0a3**。源码版本不代表已经发布或通过全部原生安装验收；可用发行资产以 GitHub Releases 为准。
+本源码树包含 Desktop **5.0.1-rc.21**、Core **5.0.0b38**、Suite **0.2.0b36**、Companion **0.5.7b12** 和独立 Channels **0.1.0a4**。源码版本不代表已经发布或通过全部原生安装验收；可用发行资产以 GitHub Releases 为准。
 
-2026-11-16 Linux 续作在已合入的 PR #13 上补齐宿主 Shell、Tauri/Linux 构建、发行版 Python 离线组件、XDG/systemd、电源读取、只读桌面来源和本地会议转写，并增加独立测试集及显式 CPU/CUDA 后训练入口。真实 Linux 模型测试保留 **5 PASS / 4 FAIL**，没有把调用成功当成任务质量通过。当前范围与全部计划对照见 [Linux 适配与计划状态](docs/development/LINUX_COMPLETION_20261116.md)，命令、结果和失败历史见 [本轮验收记录](docs/evidence/linux-completion-20261116/RESULTS.md)。
+RC21 修复正常停服后已开始的超时回调仍修改内存任务、尝试写入已关闭数据库的问题。创建与恢复的定时器统一在服务锁内检查关闭状态，显式取消与持久化故障行为不变；保留 RC20 所有失败证据。[当前验收](docs/evidence/rc21-timer-20261119/RESULTS.md)与[本地/云端 Work 续验](docs/development/WORK_RC21_ACCEPTANCE.md)分别记录实际状态。仍为 **NOT_RELEASE_READY**。 当前Core全量仍有一个插件类初始化超时，24项用例未执行；新包内28项回归通过不替代完整门禁。
+
+RC20 继续解决单个长任务反复保存完整活动记录的问题，增加同一事务内的增量块、恢复校验，以及正常停服和回滚前的旧格式自动整理。原文和工具收据保留；任务结束、归档、恢复和兼容转换仍各有完整处理成本。实现边界见[增量保存说明](docs/development/RC20_INCREMENTAL_CHECKPOINTS.md)，结果见[RC20 验收](docs/evidence/rc20-incremental-20261119/RESULTS.md)。仍为 **NOT_RELEASE_READY**。
+
+RC19 修复重新填写云端密钥后仍使用旧密钥、首次设置跳过按钮不前进和 ARM Linux 错选 MLX 路径的问题；桌宠增加角色文件夹导入和显式基础动作，修正拖动方向与动画报告。Core 增加同会话原文检索，并补齐 Adaptive、精确云授权和空闲 Computer 会话的执行段轮换。实现边界见[RC19 续作](docs/development/RC19_FOLLOWUP_20261119.md)，原始结果见[RC19 验收](docs/evidence/rc19-usability-20261119/RESULTS.md)。
+
+RC17 续作补齐子任务输出截断后的原预算恢复，并把同会话来源检查改为索引化的依赖投影，完整历史记录继续保留。Super Agent 仍负责统筹，探索和审阅角色使用各自配置的模型与思考强度。实现、真实模型结果及本机续验入口见[本轮续作](docs/development/RC17_FOLLOWUP_20261117.md)。
+
+RC16 继续处理长期开启同一对话时的记录增长：在任务之间把原始执行段和旧任务结果原子归档，保留同一会话、当前执行账本和已发送的模型窗口；同时修复 Companion 云端委派恢复。实现范围和 schema 3 升级/降级边界见[长期会话分段](docs/development/PERSISTENT_SESSION_SEGMENTS_20261117.md)。RC15 的模型窗口、旧话检索及历史恢复记录保留在[常驻对话续作](docs/development/PERSISTENT_CONTEXT_20261117.md)。
+
+此前审计增加完整权限下的显式长任务预算、OpenAI Responses 接入、Super Agent 实际模型验证，以及桌宠 30 Hz 动画和交互修正。四类各 10 项独立修复、逐项证据和未完成的平台验收统一记录在 [本轮完整审计](docs/development/AUDIT_20261117.md)。公开 ITBench-AA 测试只使用 40 道公开题与 LocalPilot 自身运行时；其结果不是 Artificial Analysis 官方榜单分数。两小时运行、最终原生包与公开题评测以该报告的实际状态为准。
+
+2026-11-16 在 PR #14 基线上继续修复缓存 Session 的认证恢复、Test APP 的独立 WebView 存储和 Harbor 原进程路径别名，并增加显式 OpenAI 云端后端。续作补齐 Companion 的 OpenAI 准入和提供方记录，以及 compact 模式下的 Skills 用途目录。Linux 实际 WebKit 已完成 A/B 草稿、主题、来源偏好隔离及重开检查。云端真实模型使用官方 **Qwen3.5-2B** 的受控 Q8_0 转换；固定 **MMLU-Pro 32 题**与不同批次产品任务分别记录，不据小样本声称 AA 排名。当前范围见 [实现与状态](docs/development/NATIVE_POLISH_20261116.md)，最终交付、包身份和剩余项见 [续作验收记录](docs/evidence/native-continuation-20261116/RESULTS.md)；[前阶段全部结果](docs/evidence/native-polish-20261116/RESULTS.md)及失败保持可查。
+
+上一轮 Linux 适配补齐宿主 Shell、Tauri/DEB 构建、发行版 Python 离线组件、XDG/systemd、电源读取、只读桌面来源和本地会议转写，并增加显式 CPU/CUDA 后训练入口。此前 Qwen2.5-0.5B 的 **5 PASS / 4 FAIL** 及其原协议保留在 [Linux 适配与计划状态](docs/development/LINUX_COMPLETION_20261116.md)和 [原验收记录](docs/evidence/linux-completion-20261116/RESULTS.md)，不由新模型结果覆盖。
 
 此前 Intel 接入已补齐本机 CPU/HTTP 入口、模型列表、真实上下文预算和配置应用；PR #13 的 M1 Max 回归仍是 arm64 证据。Intel 真机要求与原结果保留在 [平台支持与验收](docs/development/PLATFORM_SUPPORT_20261116.md) 和 [原生跟进记录](docs/evidence/intel-device-followup-20261116/RESULTS.md)。
 
@@ -26,10 +40,10 @@ LocalPilot 采用 Apache 2.0 开源协议，致力于让强大、易用且低成
 
 | 平台 | 当前可用路径 | 验收边界 |
 | --- | --- | --- |
-| Apple Silicon Mac | macOS 15+ 桌面 APP；oMLX/MLX 或已有本地 HTTP 服务；云端模型 | PR #13 的 arm64 构建和回归通过，候选未安装或运行真实任务；本轮 RC.8 仍需原生复验。 |
+| Apple Silicon Mac | macOS 15+ 桌面 APP；oMLX/MLX 或已有本地 HTTP 服务；云端模型 | RC18 的 M1 Max 构建、升级/回滚/恢复、标题栏收起保留草稿和真实滑块已通过；角色当时不可见，没有可采样的动画阶段。RC20 新代码仍需按[本轮步骤](docs/development/WORK_RC21_ACCEPTANCE.md)验证，Intel 与多屏不继承 M1 结果。 |
 | **Intel Mac** | **优先支持本地 HTTP + CPU 推理**；Core/Suite CLI、Companion 服务；x86_64 桌面资源与构建路径 | 代码和跨平台协议测试已补齐；尚无通过 Intel 真机验收的安装包。桌面构建仍要求 macOS 15+。 |
-| **Linux x86_64** | **CLI、受限/Full Shell、HTTP/SSE、恢复、本地模型；Tauri/DEB 构建入口；Companion 文件/文字及可选桌面/音轨接入** | Debian 13 实测服务、Shell、真实 CPU 模型和 ASR；图形会话、物理音轨、登录/睡眠与安装升级仍需对应环境。Wayland 无通用全局窗口保证。 |
-| Linux aarch64 / 其他发行版 | 架构分支和 Node 资源入口；源码 CLI 可按系统依赖安装 | 本轮未做对应机器、ELF、系统依赖或桌面实测；不称为已验收平台。 |
+| **Linux x86_64** | **CLI、受限/Full Shell、HTTP/SSE、恢复、本地模型；Tauri/DEB 构建入口；Companion 文件/文字及可选桌面/音轨接入** | RC18 的 Debian 13 Test DEB 构建、提取后的 ELF 与安装态组件检查已有记录。当前 RC20 结果单独记录；系统 DEB 安装循环、X11/Wayland 原生交互、真实会议音轨与登录/睡眠分别验收。通用 Linux GUI 操作型 Computer Use 尚未实现。 |
+| Linux aarch64 / 其他发行版 | Ubuntu 24.04 arm64 的 RC14 Test DEB 已在目标环境构建并完成 apt 安装循环；其他发行版须独立构建 | RC13 重建夹具首装 → RC14 升级 → RC13 降级 → RC14 恢复均通过；该 VM 无 GUI。RC20 新源码不继承 RC14 包验收，其他发行版仍未验收。 |
 
 Intel 本地推理使用外部 CPU 服务，例如 [llama.cpp](https://github.com/ggml-org/llama.cpp) 与兼容的 GGUF 模型。LocalPilot 的 HTTP 路径不依赖 MLX 或 MPS；是否使用 CPU、Metal 或其他加速由模型服务器决定。现有 MLX 权重不能直接当作 GGUF 使用，内置 MLX/LoRA 也不会自动变成 Intel CPU 实现。[LM Studio 官方系统要求](https://lmstudio.ai/docs/app/system-requirements)目前不支持 Intel Mac，因此不把它作为 Intel 安装方案。
 
@@ -91,14 +105,29 @@ localpilot agent --allow-local-on-battery '读取工作文件夹里的项目说�
 
 ### Linux 桌面候选
 
-Linux 桌面采用发行版原生 DEB，内含四组件 wheel 与隔离环境，依赖构建时匹配的系统 Python minor、GTK/WebKit；不含模型。本轮构建的是 **Debian 13 x86_64 独立 Test 候选**，包信息和 SHA-256 见 [桌面验收记录](desktop/docs/evidence/linux-20261116/RESULTS.md)，构建命令见 [Linux 桌面说明](desktop/docs/development/LINUX_20261116.md)。取得**与自己发行版和架构匹配、已核对 SHA-256 的候选包**后：
+Linux 桌面采用发行版原生 DEB，内含四组件 wheel 与隔离环境，依赖构建时匹配的系统 Python minor、GTK/WebKit；不含模型。RC14 的 Debian 13 x86_64 原生短验见 [RC14 验收记录](desktop/docs/evidence/audit-20261117-desktop/final-package-rc14/RESULTS.md)；Ubuntu 24.04 arm64 已另行通过 RC13 重建夹具首装、升级 RC14、回滚 RC13 和恢复 RC14，详见[续验](desktop/docs/evidence/audit-20261117-desktop/native-delivery-20261117/RESULTS.md)。两种架构的产物和哈希互不通用。当前没有公开 RC14 DEB 下载；重新构建必须使用该次输出的 `SHA256SUMS`，不能沿用历史制品哈希。取得**与自己发行版和架构匹配、已核对 SHA-256 的候选包**后安装：
 
 ```sh
-sudo apt install ./LocalPilot-Test-5.0.1-rc.8-linux-x86_64.deb
+sudo apt install ./LocalPilot-Test-5.0.1-rc.21-linux-x86_64.deb
+```
+
+Test 候选要求显式的独立测试目录。首次创建一个尚不存在的目录并写入私有身份标记：
+
+```sh
+export LP_INSTALL_TEST_ROOT="$HOME/LocalPilot-Test-rc20"
+(umask 077; mkdir "$LP_INSTALL_TEST_ROOT" && \
+  printf '%s\n' '{"purpose":"LocalPilot installation E2E"}' \
+    > "$LP_INSTALL_TEST_ROOT/test-owner.json")
 localpilot-desktop-test
 ```
 
-这是独立候选包的安装形式，当前没有新的公开 Linux Release 下载；本轮验证了提取后的运行，真实系统首装/升级仍待验收。Test 包使用自己的身份，不替换日常身份。较新 Debian 构建不能据此承诺兼容所有旧 Ubuntu；AppImage/Flatpak 尚未交付。Companion 可选桌面观察、systemd 和本地音轨的配置见 [Linux Companion](docs/development/LINUX_COMPANION_20261116.md)。
+再次打开时复用同一个目录，无需重建或改写标记：
+
+```sh
+LP_INSTALL_TEST_ROOT="$HOME/LocalPilot-Test-rc20" localpilot-desktop-test
+```
+
+这是独立候选包的安装形式，当前没有新的公开 Linux Release 下载。RC14 Debian x86_64 的 DEB 提取、自检与 WebKit GUI 首次设置已有记录；Ubuntu arm64 Test DEB 的系统 apt 循环也已通过，但没有该 VM 的桌面 GUI 验收。Test 包使用自己的身份和明确的数据目录；普通正式身份不要求这个测试变量。较新 Debian 构建不能据此承诺兼容所有旧 Ubuntu；AppImage/Flatpak 尚未交付。Companion 可选桌面观察、systemd 和本地音轨的配置见 [Linux Companion](docs/development/LINUX_COMPANION_20261116.md)。
 
 ### Apple Silicon：已有桌面安装包
 
@@ -131,7 +160,7 @@ Intel 原生构建入口和依赖来源见 [Intel 桌面构建说明](desktop/do
 | --- | --- |
 | 文件任务 | 让 Agent 读取 CSV、统计数据、写报告、创建或修改 Markdown 文件。结果保存在你选的工作目录。 |
 | 模型管理 | 导入已有模型、查看下载进度、选择模型并自动加载。支持思考开关的本地模型显示关闭／开启两档。 |
-| 本地与云端 | 按任务选择本地模型或 DeepSeek，也可以选择本地优先等来源策略。切换模型时分别保存各自的思考设置。 |
+| 本地与云端 | 按任务选择本地模型、DeepSeek 或 OpenAI，也可以选择本地优先等来源策略。切换模型时分别保存各自的思考设置。 |
 | 连续对话 | 一段会话保留提问、回答和执行记录。切换权限或 Agent 模式不会清空对话。 |
 | 手机入口 | 微信扫码连接后可从手机提交任务，查看进度和实际回答；完成后自动回传，长结果分段发送。 |
 | 桌面宠物 | Companion 提供独立的轻聊和桌面入口，可在设置中开关。 |
@@ -156,7 +185,9 @@ Intel 原生构建入口和依赖来源见 [Intel 桌面构建说明](desktop/do
 
 ## 模型和任务设置
 
-Apple Silicon 可通过 oMLX 连接 MLX 模型；Intel 与 Linux 可连接已有本地 OpenAI 兼容服务。是否适合当前任务还取决于模型的工具调用能力、可用内存和实际上下文长度。DeepSeek 通过 API 接入，密钥保存在本机私有目录。
+Apple Silicon 可通过 oMLX 连接 MLX 模型；Intel 与 Linux 可连接已有本地 OpenAI 兼容服务。是否适合当前任务还取决于模型的工具调用能力、可用内存和实际上下文长度。DeepSeek 与 OpenAI 均可在首次设置或设置页的“连接云端模型”中配置：选择提供商、填写模型和 API 密钥，再点“保存并连接”。OpenAI 默认模型为 `gpt-6-luna`，可按实际需求修改；该入口创建显式 Responses 路由，供主 Agent、子 Agent 和五档来源策略使用。
+
+密钥只保存到本机私有目录，路由配置保留凭据文件路径。保存配置不会发送模型任务，也不会自动切换已有 Session；配置完成后在模型选择器选择目标模型，API 可用性以实际任务结果为准。当前实现与真实 Luna 验证见 [本轮完整审计](docs/development/AUDIT_20261117.md)；[2026-11-16 接入记录](docs/development/OPENAI_AND_PUBLIC_EVALUATION_20261116.md)保留此前手动路由阶段的历史，不作为当前 GUI 操作指南。
 
 来源选项包括完全本地、本地优先、平衡、云端优先和完全云端。完全本地不会调用云端模型；使用云端模型时，允许读取的任务上下文会交给所选服务处理。
 
@@ -216,7 +247,7 @@ npm run dev
 
 Companion → 主 Agent → 多子 Agent、五档来源偏好、按需 Skills、来源记忆、人工审阅训练数据与受管缓存已有实现。Linux 增加固定依赖的 CPU/CUDA LoRA/全参数训练和独立测试集比较，CPU 上已实际更新并重载微型模型；这不代表真实个人数据的训练收益。固定提示/Skill 在本轮 llama.cpp 上验证了热缓存和显式磁盘恢复；外部 HTTP 模型服务器的通用自动缓存管理尚未实现。
 
-**主 Agent 不弱于主流产品、真实多模型协作质量、LoRA 增益和跨后端永久 KV 缓存均没有得到完整实测证明**。旧 534 次正式对照仍为 1 PASS、3 FAIL、13 ERROR、517 无最终结果。系统音轨、真实睡眠唤醒和 Intel 原生验收仍有缺项；当前完整状态见 [Linux 适配与计划对照](docs/development/LINUX_COMPLETION_20261116.md)。
+**主 Agent 不弱于主流产品、真实多模型协作质量、LoRA 增益和跨后端永久 KV 缓存均没有得到完整实测证明**。旧 534 次正式对照仍为 1 PASS、3 FAIL、13 ERROR、517 无最终结果。MMLU-Pro 小样本提供模型知识题证据，不替代 Agent 任务对照。系统音轨、真实睡眠唤醒和 Intel 原生验收仍有缺项；当前完整状态见 [本轮计划对照](docs/development/NATIVE_POLISH_20261116.md)，剩余实际设备工作见 [Work 继续执行提示词](docs/development/WORK_NATIVE_POLISH_20261116.md)。
 
 遇到问题时，请附上版本、模型名称、操作步骤和错误提示。提交日志前先检查并移除 API 密钥和个人信息。
 

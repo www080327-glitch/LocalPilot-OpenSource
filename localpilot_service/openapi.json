@@ -3204,6 +3204,9 @@
                     "properties": {
                       "permission_mode": {
                         "enum": [
+                          "isolated",
+                          "request",
+                          "workspace",
                           "ask",
                           "safe",
                           "uncertain",
@@ -3215,6 +3218,19 @@
                           "standard",
                           "minimal"
                         ]
+                      },
+                      "execution_budget": {
+                        "type": "string",
+                        "enum": [
+                          "standard",
+                          "extended"
+                        ],
+                        "description": "Host-selected finite execution budget; independent of permission mode and task deadline.",
+                        "default": "standard"
+                      },
+                      "workspace_grant": {
+                        "type": "string",
+                        "pattern": "^grant_[0-9a-f]{32}$"
                       }
                     }
                   }
@@ -3338,6 +3354,44 @@
                       "standard",
                       "minimal"
                     ]
+                  },
+                  "permission_mode": {
+                    "enum": [
+                      "isolated",
+                      "request",
+                      "workspace",
+                      "ask",
+                      "safe",
+                      "uncertain",
+                      "full"
+                    ]
+                  },
+                  "expected_permission_mode": {
+                    "enum": [
+                      "isolated",
+                      "request",
+                      "workspace",
+                      "ask",
+                      "safe",
+                      "uncertain",
+                      "full"
+                    ]
+                  },
+                  "execution_budget": {
+                    "type": "string",
+                    "enum": [
+                      "standard",
+                      "extended"
+                    ],
+                    "description": "Host-selected finite execution budget; independent of permission mode and task deadline."
+                  },
+                  "expected_execution_budget": {
+                    "type": "string",
+                    "enum": [
+                      "standard",
+                      "extended"
+                    ],
+                    "description": "Host-selected finite execution budget; independent of permission mode and task deadline."
                   }
                 }
               }
@@ -3346,7 +3400,7 @@
         },
         "responses": {
           "200": {
-            "description": "Checkpointed owned session; permissions unchanged"
+            "description": "Checkpointed session; history and original task execution options retained"
           },
           "403": {
             "description": "Operator or owner binding refused"
@@ -3354,7 +3408,8 @@
           "409": {
             "description": "Busy session or stale profile"
           }
-        }
+        },
+        "description": "Operator updates an idle owned session. Permission and execution-budget changes each require both desired and expected fields. Existing receipts retain their original execution options."
       }
     },
     "/localpilot/v1/workspace-grants": {
@@ -3709,7 +3764,7 @@
           "timeout_seconds": {
             "type": "number",
             "exclusiveMinimum": 0,
-            "maximum": 3600,
+            "maximum": 86400,
             "default": 120
           },
           "max_output_tokens": {

@@ -27,7 +27,9 @@ def canonical_path(value):
                 raise ValueError('state_link_rejected')
             current = Path(target)
             trusted = current.lstat()
-            if not stat.S_ISDIR(trusted.st_mode) or trusted.st_uid != 0 or trusted.st_mode & 0o022:
+            system_sticky_tmp = target == '/private/tmp' and trusted.st_mode & stat.S_ISVTX
+            if (not stat.S_ISDIR(trusted.st_mode) or trusted.st_uid != 0
+                    or trusted.st_mode & 0o022 and not system_sticky_tmp):
                 raise ValueError('untrusted_system_alias')
         elif hasattr(current, 'is_junction') and current.is_junction():
             raise ValueError('state_link_rejected')
@@ -77,7 +79,7 @@ def private_file(value, *, create=False):
 
 
 def private_json(value):
-    path = private_file(value)
+    path = canonical_path(value)
     fd = os.open(path, os.O_RDONLY | getattr(os, 'O_NOFOLLOW', 0) | getattr(os, 'O_NONBLOCK', 0))
     try:
         info = os.fstat(fd)

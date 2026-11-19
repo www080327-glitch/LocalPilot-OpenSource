@@ -362,7 +362,9 @@ class FinalizationRecoveryTests(unittest.TestCase):
                 worker=next(iter(root._children.values()))
                 if worker._durable_phase=='model_inflight':saved.append(snapshot_runtime(root))
         root._persistence_hook=checkpoint
-        self.assertEqual(root.run_turn('delegate fixture').status,'approval_required');root.approve()
+        self.assertEqual(root.run_turn('delegate fixture').status,'completed')
+        self.assertIsNone(root.pending_approval)
+        self.assertTrue(saved)
         snap=saved[0];worker_id=next(iter(snap['children']))
         child_before=unpack(snap['children'][worker_id]['fields'])['_token_units']
         parent_before=unpack(snap['fields'])['_token_units']

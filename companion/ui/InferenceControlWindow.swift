@@ -131,7 +131,7 @@ final class InferenceControlWindow: NSObject, NSPopoverDelegate, NSWindowDelegat
         let phase = value["phase"] as? String ?? "UNKNOWN"
         let local = value["kind"] as? String == "local"
         let agent = value["mode"] as? String == "execution"
-        titleText.stringValue = agent ? "LocalPilot · 标准 Agent 协助" : local ? "LocalPilot · 极简理解" : "DeepSeek · 极简咨询"
+        titleText.stringValue = agent ? "LocalPilot · 标准 Agent 协助" : local ? "LocalPilot · 极简理解" : "云端 · 极简咨询"
         let resources = value["resources"] as? JSONObject ?? [:]
         let ac = resources["on_ac_power"] as? Bool
         let power = ac == true ? "已接电源" : ac == false ? "电池供电" : "电源状态未知"
@@ -139,7 +139,7 @@ final class InferenceControlWindow: NSObject, NSPopoverDelegate, NSWindowDelegat
         let required = value["required_confirmations"] as? [String] ?? []
         var reasons: [String] = []
         if required.contains("agent_help") { reasons.append("是否需要帮助？确认后才启用标准 Agent；工具审批另行进行。") }
-        if value["fallback"] is JSONObject { reasons.append("本地未能解答，建议咨询 DeepSeek；只发送原问题，不重放操作。") }
+        if value["fallback"] is JSONObject { reasons.append("本地未能解答，建议咨询云端模型；只发送原问题，不重放操作。") }
         if required.contains("battery_or_unknown_power") { reasons.append("电池／未知供电：需要本次确认。") }
         if required.contains("memory_wall") { reasons.append("可用内存低于内存墙：需要本次确认。") }
         if required.contains("cloud_question_egress") { reasons.append("仅问题文字发往云端：需要本次确认。") }

@@ -16,7 +16,7 @@ HELPER = Path(__file__).with_name('linux_helper.py')
 def helper_environment():
     result = {'PATH':os.environ.get('PATH', '/usr/bin:/bin'), 'LANG':'C.UTF-8', 'LC_ALL':'C.UTF-8'}
     for name in ('DISPLAY', 'XAUTHORITY', 'XDG_SESSION_TYPE', 'XDG_SESSION_ID', 'XDG_RUNTIME_DIR',
-                 'DBUS_SESSION_BUS_ADDRESS', 'HOME', 'GI_TYPELIB_PATH', 'LD_LIBRARY_PATH', 'XDG_DATA_DIRS'):
+                 'DBUS_SESSION_BUS_ADDRESS', 'AT_SPI_BUS_ADDRESS', 'HOME', 'GI_TYPELIB_PATH', 'LD_LIBRARY_PATH', 'XDG_DATA_DIRS'):
         if name in os.environ:
             result[name] = os.environ[name]
     return result

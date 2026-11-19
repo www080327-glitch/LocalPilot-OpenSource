@@ -12,7 +12,7 @@ from agent.computer_ledger import computer_obligations
 from agent.backends import Message
 from agent.session import AgentSession
 from agent.persistence import (PersistenceError, SQLiteRuntimeStore, configuration, digest, dumps,
-    snapshot_runtime, restore_runtime, recovery_class, nodes, pack, unpack)
+    snapshot_runtime, restore_runtime, recovery_class, nodes, pack, unpack, CheckpointBatch)
 from computer.schemas import WRITE_NAMES
 
 
@@ -24,6 +24,7 @@ HUMAN_EVENTS = {"ComputerFallbackRequired", "ComputerFocusRequired", "ComputerRe
                 "ComputerHumanTakeover"}
 HUMAN_ERRORS = {"secure_element_requires_human", "unsupported_action", "foreground_action_required",
                 "background_contract_unknown", "locked_or_unknown", "accessibility_not_trusted"}
+MAX_TASK_TIMEOUT = 24 * 60 * 60
 
 
 def identifier(prefix):
@@ -62,7 +63,7 @@ class TaskRequest:
 class SessionRecord:
     id: str
     model: str
-    runtime: AgentSession
+    runtime: AgentSession | None
     base_prompt: str
     active_task: str | None = None
     last_task: str | None = None
@@ -76,6 +77,9 @@ class SessionRecord:
     desktop_fingerprint: str | None = None
     extensions: dict | None = None  # Host extensions committed with their configuration identity.
     child_route_contexts: dict | None = None
+    history_generation: int = 0
+    context_start: int | None = None
+    archive: dict | None = None
 
 
 @dataclass
@@ -112,6 +116,7 @@ class TaskRecord:
     generation: int = 0
     control_pending: bool = False
     deadline: float | None = None
+    timeout_seconds: float | None = None
     recovery: dict | None = None
     host_action: dict | None = None
     request_key_digest: str | None = None
@@ -128,18 +133,22 @@ class TaskService:
     Sessions/tasks are bounded; an optional store restores durable checkpoints.
     """
     def __init__(self, routes, *, max_sessions=64, max_tasks=512, max_events=4096,
-                 max_timeout=3600, persistence=None, auto_resume=False, async_policy=None,
-                 session_initializer=None, resource_finalizer=None, configuration_migration=None):
+                 max_timeout=MAX_TASK_TIMEOUT, persistence=None, auto_resume=False, async_policy=None,
+                 session_initializer=None, resource_finalizer=None, configuration_migration=None,
+                 history_rotation_bytes=2 * 1024 * 1024):
         if not routes or not all(isinstance(k, str) and callable(v) for k, v in routes.items()):
             raise ValueError("routes must map logical model IDs to AgentSession factories")
-        if any(type(v) is not int or v <= 0 for v in (max_sessions, max_tasks, max_events, max_timeout)):
+        if any(type(v) is not int or v <= 0 for v in (max_sessions, max_tasks, max_events, max_timeout, history_rotation_bytes)):
             raise ValueError("Service limits must be positive integers")
+        if max_timeout > MAX_TASK_TIMEOUT:
+            raise ValueError(f'Maximum task timeout is {MAX_TASK_TIMEOUT} seconds')
         self.routes = dict(routes)
         self.session_initializer = session_initializer
         self.resource_finalizer = resource_finalizer
         self.configuration_migration = configuration_migration
         self.max_sessions, self.max_tasks = max_sessions, max_tasks
         self.max_events, self.max_timeout = max_events, max_timeout
+        self.history_rotation_bytes = history_rotation_bytes
         self.sessions, self.tasks = {}, {}
         self.condition = threading.Condition(threading.RLock())
         if async_policy is not None and not isinstance(async_policy, AsyncPolicy):
@@ -169,17 +178,33 @@ class TaskService:
         if self.store:
             self.store.ensure_available()
 
-    def _checkpoint(self, session_id, point):
+    def _checkpoint(self, session_id, point, *, archived_tasks=(), archived_session=None, archived_runtime=None):
         if not self.store:
             return
         with self.condition:
             session = self._session(session_id)
+            blocks = CheckpointBatch(self.store, session_id)
             payload = {"version": 1, "configuration": session.runtime._persistence_config,
-                "session": {f.name: getattr(session, f.name) for f in fields(SessionRecord) if f.name != "runtime" and not (f.name in {'extensions', 'child_route_contexts'} and not getattr(session, f.name))},
-                "runtime": snapshot_runtime(session.runtime),
-                "tasks": [pack({f.name: getattr(t, f.name) for f in fields(TaskRecord) if f.name != "timer"})
+                "session": {f.name: getattr(session, f.name) for f in fields(SessionRecord) if f.name not in {"runtime", "archive"} and not (f.name in {'extensions', 'child_route_contexts'} and not getattr(session, f.name))},
+                "runtime": snapshot_runtime(session.runtime, blocks=blocks),
+                "tasks": [self._task_payload(t, blocks=blocks)
                           for t in self.tasks.values() if t.session_id == session_id]}
-            self.store.save(session_id, payload, point)
+            self.store.save(session_id, payload, point,
+                            archived_tasks=[self._task_payload(t) for t in archived_tasks],
+                            archived_session=archived_session, archived_runtime=archived_runtime, blocks=blocks)
+
+    @staticmethod
+    def _task_payload(task, *, blocks=None):
+        values = {f.name: getattr(task, f.name) for f in fields(TaskRecord) if f.name != "timer"}
+        if blocks:
+            path = ['task', task.id]
+            for name in ('events', 'output', 'tools', 'subagents'):
+                values[name] = blocks.sequence(task, name, pack, [*path, name])
+            values['model_calls_by_turn'] = blocks.mapping(task, 'model_calls_by_turn', [*path, 'model_calls_by_turn'])
+            if task.result and 'model_calls' in task.result:
+                values['result'] = dict(task.result)
+                values['result']['model_calls'] = blocks.sequence(task.result, 'model_calls', pack, [*path, 'result', 'model_calls'])
+        return pack(values)
 
     def _attach_persistence(self, session):
         if session.runtime.async_policy is not None and session.runtime.async_policy != self.async_policy:
@@ -196,11 +221,13 @@ class TaskService:
             raise PersistenceError("Runtime database must be outside the tool workspace")
         for runtime in nodes(session.runtime):
             runtime._persistence_hook = lambda point, sid=session.id: self._checkpoint(sid, point)
+        from agent.history_recall import attach
+        attach(session, self.store)
 
     def _arm_timer(self, task):
         if task.deadline is None:
             return
-        task.timer = threading.Timer(max(0, task.deadline - time.time()), lambda: self.cancel(task.id, "timed_out"))
+        task.timer = threading.Timer(max(0, task.deadline - time.time()), self._timeout_task, args=(task.id,))
         task.timer.daemon = True
         task.timer.start()
 
@@ -233,6 +260,7 @@ class TaskService:
                 migration = getattr(self, 'configuration_migration', None)
                 if migration is None or not migration(runtime, payload):
                     raise PersistenceError("Host configuration changed; explicit migration required")
+                cfg = digest(dumps(configuration(runtime)))
                 migrated.append((sid,getattr(migration,'checkpoint_point','host_restore_private_paths_rebased')))
             if runtime.async_policy:
                 runtime._state_condition, runtime._scheduler = self.condition, self.scheduler
@@ -338,14 +366,158 @@ class TaskService:
         return sorted(self.routes)
 
     def _session(self, session_id):
-        if not isinstance(session_id, str) or session_id not in self.sessions:
-            raise APIError("Session not found", "session_not_found", 404)
-        return self.sessions[session_id]
+        if isinstance(session_id, str):
+            if session_id in self.sessions:
+                return self.sessions[session_id]
+            saved = self.store.archived_session(session_id) if self.store else None
+            if saved:
+                return SessionRecord(runtime=None, archive=saved['view'], **saved['session'])
+        raise APIError("Session not found", "session_not_found", 404)
 
     def _task(self, task_id):
-        if not isinstance(task_id, str) or task_id not in self.tasks:
-            raise APIError("Task not found", "task_not_found", 404)
-        return self.tasks[task_id]
+        if isinstance(task_id, str):
+            if task_id in self.tasks:
+                return self.tasks[task_id]
+            saved = self.store.archived_task(task_id) if self.store else None
+            if saved:
+                return TaskRecord(**unpack(saved))
+        raise APIError("Task not found", "task_not_found", 404)
+
+    def task_for_key(self, key_digest):
+        task = next((t for t in self.tasks.values() if t.request_key_digest == key_digest), None)
+        if task is None and self.store:
+            saved = self.store.archived_task_for_key(key_digest)
+            if saved:
+                task = TaskRecord(**unpack(saved))
+        return task
+
+    def session_for_key(self, desktop_key):
+        session = next((s for s in self.sessions.values() if s.desktop_key == desktop_key), None)
+        if session is None and self.store:
+            saved = self.store.archived_session_for_key(desktop_key)
+            if saved:
+                session = SessionRecord(runtime=None, archive=saved['view'], **saved['session'])
+        return session
+
+    def recent_tasks(self, owner_subjects):
+        tasks = [t for t in self.tasks.values() if self._session(t.session_id).owner_subject in owner_subjects]
+        if self.store and len(tasks) < self.max_tasks:
+            tasks += [TaskRecord(**unpack(raw)) for raw in self.store.archived_tasks_for_owners(owner_subjects, self.max_tasks - len(tasks))]
+        return tasks
+
+    def session_scope(self, session):
+        if session.archive is not None:
+            return deepcopy(session.archive['scope'])
+        from dataclasses import asdict
+        registry = session.runtime.registry
+        return {'workspace': str(registry.workspace_root), 'tool_capabilities': asdict(registry.gateway.capabilities),
+                'permission_mode': registry.gateway.mode, 'tools': [s['function']['name'] for s in registry.schemas()],
+                'workspace_grant': (session.desktop_options or {}).get('workspace_grant')}
+
+    def _make_task_room(self):
+        if len(self.tasks) < self.max_tasks:
+            return
+        retired = next((t for t in self.tasks.values()
+                        if t.status in TERMINAL and not t.executing and not t.control_pending), None)
+        if self.store is None or retired is None:
+            raise APIError("Task capacity reached; finish active tasks or configure durable history", "capacity_exceeded", 429)
+        del self.tasks[retired.id]
+        try:
+            self._checkpoint(retired.session_id, 'task_archived', archived_tasks=[retired])
+        except BaseException:
+            self.tasks[retired.id] = retired
+            raise
+
+    def _make_session_room(self):
+        if len(self.sessions) < self.max_sessions:
+            return
+        retired = next((s for s in self.sessions.values() if s.closed and not s.active_task
+                        and all(t.status in TERMINAL and not t.executing and not t.control_pending
+                                for t in self.tasks.values() if t.session_id == s.id)), None)
+        if self.store is None or retired is None:
+            raise APIError("Session capacity reached; close unused sessions or configure durable history", "capacity_exceeded", 429)
+        tasks = [t for t in self.tasks.values() if t.session_id == retired.id]
+        view = {'snapshot': self.session_snapshot(retired.id), 'scope': self.session_scope(retired),
+                'execution_metadata': self._execution_metadata(retired)}
+        self._checkpoint(retired.id, 'session_archived', archived_tasks=tasks, archived_session=view)
+        del self.sessions[retired.id]
+        for task in tasks:
+            del self.tasks[task.id]
+
+    def _rotate_history(self, session):
+        rotation = self._history_rotation(session)
+        if rotation is None:
+            return
+        snapshot, retained, context_start = rotation
+        runtime = session.runtime
+        archived = {'version': 1, 'generation': session.history_generation, 'last_turn': runtime.turn_id,
+                    'configuration': runtime._persistence_config, 'runtime': snapshot,
+                    'child_route_contexts': deepcopy(session.child_route_contexts)}
+        tasks = [task for task in self.tasks.values() if task.session_id == session.id
+                 and task.id != session.last_task and task.status in TERMINAL
+                 and not task.executing and not task.control_pending]
+        retired_ids = {task.id for task in tasks}
+        previous = {name: getattr(runtime, name) for name in retained}
+        previous_tasks = self.tasks
+        previous_routes, previous_start = session.child_route_contexts, session.context_start
+        previous_hybrid = runtime.hybrid.state if runtime.hybrid else None
+        previous_adaptive = runtime.adaptive.state if runtime.adaptive else None
+        for name, value in retained.items():
+            setattr(runtime, name, value)
+        if runtime.hybrid:
+            runtime.hybrid.state = runtime.hybrid.retained_history_state()
+        if runtime.adaptive:
+            runtime.adaptive.state = runtime.adaptive.retained_history_state()
+        self.tasks = {key: task for key, task in self.tasks.items() if key not in retired_ids}
+        if session.child_route_contexts:
+            session.child_route_contexts = {key: value for key, value in session.child_route_contexts.items()
+                                           if key in runtime._children}
+        session.context_start = context_start
+        session.history_generation += 1
+        try:
+            self._checkpoint(session.id, 'history_rotated', archived_tasks=tasks, archived_runtime=archived)
+        except BaseException:
+            for name, value in previous.items():
+                setattr(runtime, name, value)
+            self.tasks = previous_tasks
+            session.child_route_contexts, session.context_start = previous_routes, previous_start
+            if runtime.hybrid:
+                runtime.hybrid.state = previous_hybrid
+            if runtime.adaptive:
+                runtime.adaptive.state = previous_adaptive
+            session.history_generation -= 1
+            raise
+
+    def _history_rotation(self, session):
+        from agent.session_history import retained_turn
+        from agent.session_types import SessionState
+        from agent.computer_ledger import computer_obligations
+
+        runtime = session.runtime
+        if (not self.store or not runtime.engine_policy
+                or not session.last_task or runtime.state != SessionState.TURN_FINISHED):
+            return None
+        latest = self._task(session.last_task)
+        if latest.status not in TERMINAL or latest.executing or latest.control_pending:
+            return None
+        tree = list(nodes(runtime))
+        if runtime.computer and (runtime.computer.paused or any(computer_obligations(runtime.tool_history))):
+            return None
+        recovery = 'REQUIRES_REOBSERVATION' if runtime.computer else 'SAFE_TO_RESUME'
+        if (recovery_class(runtime) != recovery
+                or any(node._queue or node._durable_intent for node in tree)
+                or any(node.state != SessionState.SESSION_FINISHED for node in tree[1:])
+                or self.scheduler and any(self.scheduler.owns_worker(node, worker_id)
+                                          for node in tree for worker_id in node._children)):
+            return None
+        start = session.context_start if session.context_start is not None else latest.history_start
+        retained = retained_turn(runtime, start)
+        if retained is None:
+            return None
+        snapshot = snapshot_runtime(runtime)
+        if len(dumps(snapshot).encode()) < self.history_rotation_bytes:
+            return None
+        return snapshot, *retained
 
     def create_session(self, model="localpilot", *, owner_subject=None, thinking_override=None, desktop_options=None, desktop_key=None, desktop_fingerprint=None):
         with self.condition:
@@ -354,8 +526,7 @@ class TaskService:
                 raise APIError("Service closed", "service_closed", 503)
             if not isinstance(model, str) or model not in self.routes:
                 raise APIError("Unknown logical model/route", "model_not_found", 404)
-            if len(self.sessions) >= self.max_sessions:
-                raise APIError("Session capacity reached; restart or increase the host limit", "capacity_exceeded", 429)
+            self._make_session_room()
             session_id = identifier("sess")
             runtime = self.routes[model](lambda event: self._runtime_event(session_id, event))
             if not isinstance(runtime, AgentSession) or runtime.legacy:
@@ -385,6 +556,8 @@ class TaskService:
     def session_snapshot(self, session_id):
         with self.condition:
             session = self._session(session_id)
+            if session.archive is not None:
+                return deepcopy(session.archive['snapshot'])
             return {"id": session.id, "object": "localpilot.session", "model": session.model,
                     "state": "closed" if session.closed else session.runtime.state.value,
                     "active_task_id": session.active_task, "last_task_id": session.last_task, "desktop_options": session.desktop_options,
@@ -427,15 +600,14 @@ class TaskService:
             # UNKNOWN and failed states. It cannot launch or authorize new work.
             # Lookup precedes capacity, busy-session and session-head checks.
             if key_digest is not None:
-                prior = next((t for t in self.tasks.values() if t.request_key_digest == key_digest), None)
+                prior = self.task_for_key(key_digest)
                 if prior is not None:
                     if owner_subject is not None and self._session(prior.session_id).owner_subject != owner_subject:
                         raise APIError("Task not found", "task_not_found", 404)
                     if prior.request_fingerprint != fingerprint:
                         raise APIError("Idempotency key was used for a different request", "idempotency_conflict", 409)
                     return self._snapshot(prior)
-            if len(self.tasks) >= self.max_tasks:
-                raise APIError("Task capacity reached; restart or increase the host limit", "capacity_exceeded", 429)
+            self._make_task_room()
             if not isinstance(request.model, str) or request.model not in self.routes:
                 raise APIError("Unknown logical model/route", "model_not_found", 404)
             session = self._session(request.session_id) if request.session_id else None
@@ -466,6 +638,7 @@ class TaskService:
                     session.runtime.close()
                     del self.sessions[session.id]
                 raise APIError("max_output_tokens exceeds the host budget")
+            self._rotate_history(session)
             task = TaskRecord(identifier("resp"), session.id, request.model, request.input, request.previous_task_id)
             task.service_metadata = deepcopy(service_metadata)
             task.request_key_digest, task.request_fingerprint = key_digest, fingerprint
@@ -480,6 +653,7 @@ class TaskService:
                     "task_id": task.id, "task_generation": task.generation}
             self.tasks[task.id] = task
             session.active_task = session.last_task = task.id
+            session.context_start = len(session.runtime.messages)
             if session.runtime.engine_policy:
                 # Caller guidance belongs to this turn's data, not the frozen
                 # host instruction prefix or permission authority.
@@ -497,7 +671,8 @@ class TaskService:
                 output_cap = session.runtime.budgets.max_output_tokens
             task.output_cap = output_cap
             task.deadline = time.time() + timeout
-            task.timer = threading.Timer(timeout, lambda: self.cancel(task.id, "timed_out"))
+            task.timeout_seconds = timeout
+            task.timer = threading.Timer(timeout, self._timeout_task, args=(task.id,))
             task.timer.daemon = True
             self._emit(task, "task.created", self._snapshot(task))
             self._launch(task, lambda: session.runtime.run_turn(request.input), output_cap)
@@ -721,6 +896,8 @@ class TaskService:
                     self.condition.notify_all()
 
     def _execution_metadata(self,session):
+        if session.archive is not None:
+            return deepcopy(session.archive['execution_metadata'])
         runtime=session.runtime;caps=runtime.current_backend.capabilities
         return {'execution_model':runtime.current_primary_model,'desktop_options':deepcopy(session.desktop_options),
                 'thinking':{'requested':session.thinking_override,'effective':runtime.thinking_mode if runtime.thinking_mode is not None else caps.default_thinking_effort,'supported':list(caps.supported_thinking_efforts)}}
@@ -736,6 +913,7 @@ class TaskService:
         return deepcopy({"id": task.id, "object": "localpilot.task", "session_id": task.session_id,
             'user_input':question,**metadata,'pause_requested':session.active_task==task.id and session.runtime._host_pause_requested,
             "model": task.model, "session_model": session.model, "previous_task_id": task.previous_task_id, "created_at": task.created_at,
+            'deadline': task.deadline, 'timeout_seconds': task.timeout_seconds,
             "status": task.status, "quiescent": not task.executing and not task.control_pending, "result": task.result,
             "streamed_text": task.pending_text if task.executing else "",
             "required_action": task.required_action, "error": task.error, "output": task.output,
@@ -781,7 +959,10 @@ class TaskService:
             completion = (task.result or {}).get('completion') or {}
             if completion.get('delivery') == 'delivered':
                 return self._snapshot(task)
-            runtime = self._session(task.session_id).runtime
+            session = self._session(task.session_id)
+            if session.closed:
+                raise APIError('No resumable finalization; inspect retained evidence', 'finalization_unavailable', 409)
+            runtime = session.runtime
             if (not runtime.finalization_policy or not runtime._finalizing or
                     not task.recovery or task.recovery['class'] != 'SAFE_TO_RESUME'):
                 raise APIError('No resumable finalization; inspect retained evidence', 'finalization_unavailable', 409)
@@ -815,6 +996,12 @@ class TaskService:
             runtime.request_pause()
             self._emit(task,'task.status',self._snapshot(task))
             return self._snapshot(task)
+
+    def _timeout_task(self, task_id):
+        with self.condition:
+            # Timer.cancel cannot stop a callback already waiting for this lock.
+            if not self.closed:
+                self.cancel(task_id, "timed_out")
 
     def cancel(self, task_id, reason="cancelled", *, drain_response=False):
         if reason not in {"cancelled", "timed_out"}:
@@ -924,7 +1111,7 @@ class TaskService:
         from computer.human_recovery import HumanRecovery
         with self.condition:
             session = self._session(session_id)
-            computer = session.runtime.computer
+            computer = session.runtime.computer if session.runtime else None
             if self.closed or session.closed or not computer or not getattr(computer.backend, "native_keyboard", False):
                 raise APIError("Native recovery unavailable", "recovery_unavailable", 409)
             if session.task_generation != 0 or session.active_task is not None:
@@ -957,6 +1144,8 @@ class TaskService:
     def close_session(self, session_id):
         with self.condition:
             session = self._session(session_id)
+            if session.archive is not None:
+                return self.session_snapshot(session_id)
             if session.active_task:
                 raise APIError("Cancel/resolve the active task before closing", "session_busy", 409)
             session.closed = True
@@ -985,6 +1174,7 @@ class TaskService:
             if self.resource_finalizer:
                 self.resource_finalizer()
             if self.store:
+                self.store.materialize_legacy()
                 self.store.close()
             for session in self.sessions.values():
                 if session.runtime.computer:
@@ -1018,5 +1208,7 @@ class TaskService:
         if self.resource_finalizer:
             self.resource_finalizer()
         if self.store:
+            if not self.store.failed:
+                self.store.materialize_legacy()
             self.store.close()
         return {"status": "ok", "quiescent": True}

@@ -1,0 +1,14 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Pod/product-catalog-757f656dc7-ztqhz",
+      "reasoning": "This pod's repeated container failure interrupted the product-catalog backend and caused independent product-list/product-detail requests to fail; the recommendation service's failures are downstream of this pod, not a separate recommendation fault.",
+      "evidence": "In k8s_events_raw.tsv, a Warning BackOff event at 2026-03-12 21:33:46 says the product-catalog container was restarting. The captured Pod status records restartCount=2 and a prior termination with exitCode=1 at 21:33:45. In otel_traces_raw.tsv, recommendation spans get_product_list and /oteldemo.ProductCatalogService/ListProducts fail with UNAVAILABLE connecting to 100.64.93.19:8080 (the product-catalog Service clusterIP/port in k8s_objects_raw.tsv) at 21:33:59–21:34:00. The pod was running/ready in the later object capture, consistent with a transient restart rather than an ongoing deployment outage."
+    },
+    {
+      "name": "otel-demo/Pod/ad-7f4b99488b-4s2fg",
+      "reasoning": "This pod is the upstream ad backend that refused frontend connections, an independent failure from the product-catalog crash. The namespace spend alerts are consistent with its high resource use, while the frontend errors are downstream symptoms and should not be listed separately.",
+      "evidence": "otel_traces_raw.tsv records four frontend tcp.connect failures, ECONNREFUSED 100.69.223.15:8080, at 21:34:16 and 21:35:02. k8s_objects_raw.tsv maps that Service IP/port to otel-demo/ad and its endpoint to this pod (100.96.4.98:8080); the Service selector and target port match, so the refused connection is at the backend, not a wrong Service mapping. Pod metrics show CPU irate near 0.149 cores at 21:36:39–21:37:09 against the Deployment's 150m CPU limit, with 1,602 throttled of 1,973 CFS periods at 21:38:10 and memory usage peaking at 326,180,864 bytes. CPUSpend and MemorySpend alerts for namespace otel-demo fire from 21:37 onward. The pod appears Running/Ready in object state, but that does not negate the directly observed refused connections."
+    }
+  ]
+}

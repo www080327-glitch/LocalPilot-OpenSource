@@ -39,9 +39,9 @@ class SelectedSkillTests(unittest.TestCase):
         installed = self.skills.install(self.bundle, replace=replace)
         self.skills.enable(name, "user", reviewed_sha256=installed["bundle_sha256"])
 
-    def runtime(self, selected):
+    def runtime(self, selected, *, profile="standard"):
         backend = Backend(answer(None, call("load_skill", {"skill": "activity:user"})), answer("Read the selected guide."))
-        runtime = AgentSession(create_default_registry(self.work, permission_mode="full-permission"),
+        runtime = AgentSession(create_default_registry(self.work, profile=profile, permission_mode="full-permission"),
                                backend=backend, policy="cloud-only", engine_policy=EngineV5Policy())
         self.runtimes.append(runtime)
         configure_session(runtime, self.root / "plugins", skill_home=self.skills.user, skills=selected)
@@ -59,6 +59,28 @@ class SelectedSkillTests(unittest.TestCase):
         self.assertIsNone(runtime.pending_approval)
         tool = next(m for m in backend.requests[-1]["messages"] if m.role == "tool")
         self.assertIn("BODY_ONLY_ON_DEMAND", tool.content)
+
+    def test_compact_model_sees_skill_catalog_without_changing_stored_contract(self):
+        self.install("activity", "BODY_ONLY_ON_DEMAND: cite observed source IDs.")
+        selected = [{"id": "activity", "scope": "user"}]
+        runtime, backend = self.runtime(selected, profile="minimal")
+        saved = snapshot_runtime(runtime)
+        contract = configuration(runtime)
+        schema = next(s for s in contract["schemas"] if s["function"]["name"] == "load_skill")
+        self.assertNotIn("description", schema["function"])
+        self.assertEqual(runtime.run_turn("Use the activity guide.").status, "completed")
+        tools = backend.requests[0]["tools"]
+        model_schema = next(s for s in tools if s["function"]["name"] == "load_skill")
+        self.assertIn("Summarize public activity records", model_schema["function"]["description"])
+        self.assertNotIn("BODY_ONLY_ON_DEMAND", json.dumps(tools))
+        self.assertNotIn("BODY_ONLY_ON_DEMAND", runtime.messages[0].content)
+        tool = next(m for m in backend.requests[-1]["messages"] if m.role == "tool")
+        self.assertIn("BODY_ONLY_ON_DEMAND", tool.content)
+        self.assertEqual(configuration(runtime), contract)
+        restored, restored_backend = self.runtime(selected, profile="minimal")
+        restore_runtime(restored, saved)
+        self.assertEqual(configuration(restored), contract)
+        self.assertEqual(restored_backend.requests, [])
 
     def test_reviewed_content_change_changes_configuration_and_rejects_stale_loader(self):
         self.install("activity", "Old guide")

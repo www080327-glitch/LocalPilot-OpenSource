@@ -1,0 +1,82 @@
+{
+  "status": "FULL_NOT_CLEAN",
+  "source": {
+    "commit": "66665f459bb5ad2d688cdc4bd3693edb7e5e1856",
+    "tree": "31dec4b22999741f5b58c2fdd8e90c29b444d475",
+    "git_worktree_clean_after": true,
+    "source_files_hashed": 830,
+    "source_unchanged": true,
+    "manifest_sha256": "adb3f9bb06628036f0baf054c7d5c62c527d6de68f971e1cc5e03f979ad5b3e9",
+    "actual_loaded_product_modules_observed": 136,
+    "outside_frozen_source": []
+  },
+  "execution": {
+    "attempts": 1,
+    "exit_code": 1,
+    "unittest_reported_seconds": 224.834,
+    "discovered_test_entries": 1743,
+    "unittest_reported_started": 1719,
+    "passed": 1620,
+    "skipped": 99,
+    "started_test_failures": 0,
+    "started_test_errors": 0,
+    "not_started_due_to_class_setup_error": 24,
+    "class_setup_errors": 1,
+    "verified_new_timer_regression_passed": true,
+    "count_source": "Direct count of unittest verbose ok and skipped outcomes and same-name comparison with the prior RC20 full inventory.",
+    "raw_results_passed_field": 1619,
+    "raw_results_passed_field_note": "Archived runner subtracted the setUpClass error from testsRun even though no blocked method entered testsRun. Raw output is retained; explicit verbose ok records give 1620."
+  },
+  "failure": {
+    "case": "setUpClass (test_plugin_ecosystem.PluginTests)",
+    "traceback": "Traceback (most recent call last):\n  File \"/workspace/scratch/b0df9966d470/rc21-work/tests/test_plugin_ecosystem.py\", line 32, in setUpClass\n    cls.catalog = manager.discover(\"fixture\", source_reviewed=True, license_id=\"MIT-test-fixture\")[\"catalog\"]\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/b0df9966d470/rc21-work/localpilot_plugins/manager.py\", line 109, in discover\n    catalog = client.connect()\n              ^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/b0df9966d470/rc21-work/localpilot_plugins/client.py\", line 54, in connect\n    reply = self._receive()\n            ^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/b0df9966d470/rc21-work/localpilot_plugins/client.py\", line 112, in _receive\n    raise TransportFailure(\"timeout\")\nlocalpilot_plugins.client.TransportFailure: timeout\n",
+    "stage": "Class fixture discovery in PluginTests.setUpClass. Parent had started the MCP SDK worker and was waiting for its first catalog frame over stdout. Fixture transport is local stdio, uses a 2-second configured timeout and the parent waits timeout+1.",
+    "attribution": "Transport deadline reached. Evidence does not identify whether startup/import, worker launch of the fixture, protocol initialization, or catalog generation consumed the wait; host-level cause unverified.",
+    "not_started_test_ids": [
+      "test_plugin_ecosystem.PluginTests.test_agent_cancel_interrupts_plugin_and_preserves_receipt",
+      "test_plugin_ecosystem.PluginTests.test_agent_external_success_stays_unknown_and_snapshot_restores_namespace",
+      "test_plugin_ecosystem.PluginTests.test_cancel_during_validation_does_not_launch_plugin",
+      "test_plugin_ecosystem.PluginTests.test_crash_intent_never_replayed",
+      "test_plugin_ecosystem.PluginTests.test_credentials_private_not_inherited_and_echo_redacted",
+      "test_plugin_ecosystem.PluginTests.test_disable_remove_update_revoke_stale_adapters",
+      "test_plugin_ecosystem.PluginTests.test_effect_success_is_unknown_and_idempotent_across_restart",
+      "test_plugin_ecosystem.PluginTests.test_full_json_schema_before_dispatch",
+      "test_plugin_ecosystem.PluginTests.test_full_permission_reuses_review_and_lower_modes_still_ask",
+      "test_plugin_ecosystem.PluginTests.test_host_argument_scope_cannot_be_changed_by_plugin_annotations",
+      "test_plugin_ecosystem.PluginTests.test_install_is_disabled_no_authority_and_requires_source_review",
+      "test_plugin_ecosystem.PluginTests.test_negotiated_capabilities_schema_duplicates_and_version",
+      "test_plugin_ecosystem.PluginTests.test_no_tool_name_collision",
+      "test_plugin_ecosystem.PluginTests.test_plugin_crash_timeout_and_large_result_do_not_break_core",
+      "test_plugin_ecosystem.PluginTests.test_plugin_egress_distinct_and_local_only_cannot_be_overridden",
+      "test_plugin_ecosystem.PluginTests.test_process_cancel_is_bounded_and_reconnects",
+      "test_plugin_ecosystem.PluginTests.test_prompt_argument_validation_precedes_intent",
+      "test_plugin_ecosystem.PluginTests.test_remote_recursive_and_regex_schema_fail_closed",
+      "test_plugin_ecosystem.PluginTests.test_resource_prompt_and_untrusted_instruction_boundary",
+      "test_plugin_ecosystem.PluginTests.test_revocation_by_another_manager_stops_idle_worker",
+      "test_plugin_ecosystem.PluginTests.test_scripted_agent_invalid_schema_is_predispatch",
+      "test_plugin_ecosystem.PluginTests.test_scripted_agent_selection_approval_receipt_and_schema_feedback",
+      "test_plugin_ecosystem.PluginTests.test_scripted_agent_validates_plugin_arguments_once_before_dispatch",
+      "test_plugin_ecosystem.PluginTests.test_taskservice_approval_restart_cancel_and_same_task_id"
+    ],
+    "known_retry_performed": false
+  },
+  "background_threads": {
+    "exception_in_thread_headings": {
+      "tests.log": [],
+      "core-full-final.launch.log": []
+    },
+    "meaning": "No uncaught background thread traceback heading in the two logs from this one run."
+  },
+  "evidence_sha256": {
+    "rc21-runtime/core-full-final/RESULTS.json": "2d31d20131e3eba8a2a5703dd85ab7682f1f8e959a5c25bbd2d8f3a3accfcfe3",
+    "rc21-runtime/core-full-final/tests.log": "8d5d066cf89fbd541d64210ad5e991fbfa04d8a5b162a41ff5e6d4ccadf885af",
+    "rc21-runtime/core-full-final/MODULE_ORIGINS.json": "d3448a82f928e4d24274f3864941ed05b47803e8b8ad37c6a18189565a2a390d",
+    "rc21-runtime/core-full-final/source-before.json": "adb3f9bb06628036f0baf054c7d5c62c527d6de68f971e1cc5e03f979ad5b3e9",
+    "rc21-runtime/core-full-final/source-after.json": "adb3f9bb06628036f0baf054c7d5c62c527d6de68f971e1cc5e03f979ad5b3e9",
+    "rc21-runtime/core-full-final/runner.py": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533",
+    "rc21-runtime/core-full-final.launch.log": "579727fbf9c638663184eeeedcdfccd062985f6f6682f1f34f5e7cfe000d514f",
+    "rc21-runtime/core-full-final.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "rc20-runtime/run_with_loaded_origins.py": "042533810f408150fc1b806e8ff3ff3a9e19a0dde4b5c22fcf34f82e1c906a4f",
+    "runtime/python-dependencies-final.txt": "327c20bce8404b107438e19b290413c87d4362b97dbab8400dddbc22d6de3dc3"
+  }
+}

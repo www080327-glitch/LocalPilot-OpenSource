@@ -1,0 +1,55 @@
+{
+  "test_root_sha256": "73ae10a01c60b89c614b4425456be594856593663d82d133e1117b9fd144b11e",
+  "harness_scripts": [
+    "qualify_openai_agent.py",
+    "qualify_linux_model.py"
+  ],
+  "product_source_root_present_in_harness": false,
+  "interpreter_relative_to_test_root": "client/modules/bundle-700d64a665f74410627a/runtime/bin/python3.14",
+  "core_child_pythonpath": "<test-root>/installed-soak-harness",
+  "product_source_root_on_core_sys_path": false,
+  "modules": {
+    "agent.session": {
+      "relative_to_runtime": "lib/python3.14/site-packages/agent/session.py",
+      "under_site_packages": true
+    },
+    "localpilot_service.cli": {
+      "relative_to_runtime": "lib/python3.14/site-packages/localpilot_service/cli.py",
+      "under_site_packages": true
+    },
+    "companion": {
+      "relative_to_runtime": "lib/python3.14/site-packages/companion/__init__.py",
+      "under_site_packages": true
+    },
+    "localpilot_suite": {
+      "relative_to_runtime": "lib/python3.14/site-packages/localpilot_suite/__init__.py",
+      "under_site_packages": true
+    }
+  },
+  "current_soak_run": {
+    "output": ".private/installed-soak-luna-medium-direct-tunnel",
+    "status": "PASS",
+    "requested_seconds": 7200,
+    "elapsed_seconds": 7219.684034291,
+    "heartbeat_count": 240,
+    "completion_read_file_receipt": true,
+    "model": "gpt-6-luna",
+    "reasoning": "medium"
+  },
+  "runtime_verification": {
+    "python_version": "3.14.6",
+    "core_executable_relative_to_test_root": "client/modules/bundle-700d64a665f74410627a/runtime/bin/python3.14",
+    "core_child_pythonpath": "<test-root>/installed-soak-harness",
+    "core_child_pythonpath_contains_product_source": false,
+    "core_executable_under_test_root": true,
+    "python_no_user_site": true,
+    "no_proxy_for_provider_host": true,
+    "provider_route": "active tunnel interface",
+    "module_origins_are_installed_site_packages": true,
+    "harness_only_contains_runner_scripts": true
+  },
+  "harness_script_sha256": {
+    "qualify_openai_agent.py": "a860afd95c17ec86bdd1b738ae7a4223fd3985eadd262c84259e4f396acf3238",
+    "qualify_linux_model.py": "ed5c8dedf4de8d083f555da81df5185f1a2cbf7b56a17773800bba4bed16b839"
+  }
+}

@@ -2,10 +2,12 @@
 import json
 from pathlib import Path
 import sqlite3
+import sys
 import tempfile
 import threading
 import time
 import unittest
+from unittest.mock import patch
 
 from agent.persistence import SQLiteRuntimeStore, PersistenceError, snapshot_runtime
 from agent.registry import create_default_registry
@@ -76,6 +78,41 @@ class PersistentRuntimeTests(unittest.TestCase):
         self.assertEqual((self.workspace/'one.txt').read_text(), 'saved')
         self.assertEqual(len(r['tools']), 1)
 
+    def test_suspend_ignores_timer_already_waiting_for_the_service_lock(self):
+        self.backend = Backend(create('late.txt'))
+        service = self.service()
+        pending = self.task(service, timeout_seconds=3)
+        self.assertEqual(pending['status'], 'requires_approval')
+        timer = service.tasks[pending['id']].timer
+        errors = []
+
+        def callback_waiting():
+            frame = sys._current_frames().get(timer.ident)
+            callback = timer.function.__code__
+            if frame is None or frame.f_code is not threading.Condition.__enter__.__code__:
+                return False
+            while frame is not None:
+                if frame.f_code is callback:
+                    return True
+                frame = frame.f_back
+            return False
+
+        with patch.object(threading, 'excepthook', errors.append):
+            with service.condition:
+                deadline = time.monotonic() + 10
+                while not callback_waiting() and time.monotonic() < deadline:
+                    time.sleep(0.005)
+                self.assertTrue(callback_waiting(), 'Timer did not enter its callback and wait for the service lock')
+                self.assertEqual(service.suspend(), {'status': 'ok', 'quiescent': True})
+                checkpoint = self.db.read_bytes()
+            timer.join(timeout=5)
+            self.assertFalse(timer.is_alive())
+        self.assertEqual(errors, [])
+        self.assertEqual(service.task_snapshot(pending['id']), pending)
+        self.assertEqual(self.db.read_bytes(), checkpoint)
+        self.assertFalse((self.workspace / 'late.txt').exists())
+        self.assertEqual(len(self.backend.requests), 1)
+
     def test_plan_goal_working_evidence_survive_restart(self):
         self.plan = True
         self.backend = Backend(answer(None, call('manage_goal', {'action':'create','description':'durable goal'}, 'goal')),
@@ -119,7 +156,7 @@ class PersistentRuntimeTests(unittest.TestCase):
                 with self.assertRaises(PersistenceError): self.service()
 
     def test_unknown_and_unversioned_database_are_refused(self):
-        for version in (0, 99):
+        for version in (0, SQLiteRuntimeStore.VERSION + 1):
             self.db = self.root/(str(version)+'.db')
             db = sqlite3.connect(self.db); db.execute('CREATE TABLE alien(x)')
             db.execute('PRAGMA user_version='+str(version)); db.close()

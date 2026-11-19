@@ -1,0 +1,63 @@
+{
+  "core_version": "5.0.0b25",
+  "suite_version": "0.2.0b30",
+  "baseline_commit": "d846fef0f4b442d57e6e37f856a59c5a1a1337de",
+  "files": [
+    {
+      "path": "agent/session_types.py",
+      "sha256": "5344cd6694bd805b64294dbae06b184f92f9ed365878d4e2c1d97f73f1d2a8db"
+    },
+    {
+      "path": "agent/__main__.py",
+      "sha256": "c3d413ce017c3851003eb4525e971e51ea071a6567ad563e3a8371e594ac1fc1"
+    },
+    {
+      "path": "localpilot_service/deployment.py",
+      "sha256": "126e4d9cf37e7c1e996ef1d9734c6c2749fce7145ef0c23534a27657786a10b9"
+    },
+    {
+      "path": "localpilot_service/restore_migration.py",
+      "sha256": "54407fb121c127a7a512a4b4f9f4188229d861bb53f4bdac0cf59d5404b95872"
+    },
+    {
+      "path": "localpilot_service/session_migration.py",
+      "sha256": "a77fa34b56a04866dcad0a64f8aefd418c81d3fd2c80ae34b02e48491731dd7e"
+    },
+    {
+      "path": "localpilot_api/service.py",
+      "sha256": "e3c7306d5d55e09853da2f7f8fb5f955e8aaeea0d711d8fd12be25a5831758de"
+    },
+    {
+      "path": "localpilot_api/session_history.py",
+      "sha256": "4a6f5aee042d4eae9c025ab9986ac38605db276c7a41feab2792a16627fe5992"
+    },
+    {
+      "path": "scripts/qualify_linux_model.py",
+      "sha256": "ed5c8dedf4de8d083f555da81df5185f1a2cbf7b56a17773800bba4bed16b839"
+    },
+    {
+      "path": "tests/test_worker_admission_budget.py",
+      "sha256": "e400775807d3618b5d0284cb472bff4ba201d96b873ba8e2bfecd3daaeb51cc9"
+    },
+    {
+      "path": "agent/session.py",
+      "sha256": "c69084ae2c633d0a97fe053bba61c76fa6eac6965046b45ccf639cd6d10711b5"
+    },
+    {
+      "path": "agent/session_models.py",
+      "sha256": "0bb3cc99a0625fa8a0871d513cb85a500d5342c753434f14a924e386a1547590"
+    },
+    {
+      "path": "agent/session_workers.py",
+      "sha256": "f3a055f165035fee4dba5ed4d5d94f54650ab95c2171c91b1ef08b0cf7efbc4c"
+    },
+    {
+      "path": "agent/child_sessions.py",
+      "sha256": "ffdd60c1e8ddc18f8f8f520b9bc0b5e44e68bf4d257de310a6a3a0f2aa8a76f8"
+    },
+    {
+      "path": "agent/registry.py",
+      "sha256": "09bad88bfed68686b7b18b07c6d8fa3428453afb193c17c4bcd1b5f0c271822d"
+    }
+  ]
+}

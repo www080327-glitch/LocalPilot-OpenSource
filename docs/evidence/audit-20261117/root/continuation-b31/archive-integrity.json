@@ -1,0 +1,80 @@
+{
+  "checked_at_utc": "2026-11-17T01:08:51.683121+00:00",
+  "restored_commit": "89c46468995c46f90a73d9c41ea0044d564cd175",
+  "restored_tree": "af45086818468de3c4dd12e93f5e216ac9aa9b60",
+  "scope": "Previously published evidence bytes only; no execution rerun or historical result reclassification.",
+  "checks": [
+    {
+      "directory": "docs/evidence/audit-20261117/root/cloud-soak-2h-r4-b28-native",
+      "manifest": "ARTIFACT_MANIFEST.json",
+      "manifest_sha256": "b6de1dc5e537b88cb565bba056dfeab6625aafc127c4e1ab3fc517b858b71482",
+      "payload_count": 18,
+      "payload_bytes": 98423,
+      "mismatches": [],
+      "unlisted_files": [],
+      "pass": true
+    },
+    {
+      "directory": "docs/evidence/audit-20261117/root/engineering-luna-r6-b31-native",
+      "manifest": "ARTIFACT_MANIFEST.json",
+      "manifest_sha256": "40bc10c237288d0e0b4b1c8eaccf0f4959f3b8a37f194afcd8eddd8ef3c3abf2",
+      "payload_count": 45,
+      "payload_bytes": 352316,
+      "mismatches": [],
+      "unlisted_files": [],
+      "pass": true
+    },
+    {
+      "directory": "docs/evidence/audit-20261117/root/version-gate",
+      "manifest": "ARTIFACT_MANIFEST.json",
+      "manifest_sha256": "c0fbe8a933cf752fb0e6b4613e2db0f9e70db7cfd08f8de494fe3283081ae75e",
+      "payload_count": 14,
+      "payload_bytes": 16983,
+      "mismatches": [],
+      "unlisted_files": [],
+      "pass": true
+    },
+    {
+      "directory": "docs/evidence/audit-20261117/root/async-settled-shell",
+      "manifest": "ARTIFACT_MANIFEST.json",
+      "manifest_sha256": "fc3e259d63127609911236e372735f63060693b8ffa7861b42487953052c5390",
+      "payload_count": 5,
+      "payload_bytes": 13718,
+      "mismatches": [],
+      "unlisted_files": [],
+      "pass": true
+    },
+    {
+      "directory": "docs/evidence/audit-20261117/root/itbench-aa-r2-original-score",
+      "manifest": "ARTIFACT_MANIFEST.json",
+      "manifest_sha256": "49febbf0629a5b152cce00cbfef13e9e0f7c82eb5f28538828f37f44084d132b",
+      "payload_count": 148,
+      "payload_bytes": 2331249,
+      "mismatches": [],
+      "unlisted_files": [],
+      "pass": true
+    },
+    {
+      "directory": "docs/evidence/audit-20261117/root/itbench-aa-r2-transport-completed",
+      "manifest": "ARTIFACT_MANIFEST.json",
+      "manifest_sha256": "15e524bffb5808cfb59432b0122bd37b83bd2c5c7bf64af7d933054e246c87c9",
+      "payload_count": 444,
+      "payload_bytes": 6257642,
+      "mismatches": [],
+      "unlisted_files": [],
+      "pass": true
+    },
+    {
+      "directory": "desktop/docs/evidence/audit-20261117-desktop/final-package-rc14",
+      "manifest": "MANIFEST.json",
+      "manifest_sha256": "2484946e8909c0228dc02ef2a59858a85dd3cb853e09eab1f45b366af036f771",
+      "payload_count": 69,
+      "payload_bytes": 1427690,
+      "mismatches": [],
+      "unlisted_files": [],
+      "pass": true
+    }
+  ],
+  "total_payloads": 743,
+  "all_pass": true
+}

@@ -1,0 +1,9 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Deployment/product-catalog",
+      "reasoning": "The Deployment's replacement pod template overrides the working image entrypoint with the nonexistent command `invalid-command`. The replacement product-catalog containers therefore cannot start, leaving the Deployment without a ready replica and the Service without a ready endpoint. Calls from frontend, checkout, and recommendation to ProductCatalog consequently fail; those downstream alerts are effects of this single upstream fault, not separate causes.",
+      "evidence": "In k8s_objects_raw.tsv, the product-catalog Deployment is healthy at 17:54:08 (generation 1, one ready/available replica, no command override) but at 17:59:08 its container command is [`invalid-command`], it has no readyReplicas/availableReplicas, and its Available condition is False (MinimumReplicasUnavailable). Warning events at 17:54:17 and 17:54:34 report container start failures for product-catalog-fcf7564cf-2fvnx and product-catalog-fcf7564cf-vjj7l because `invalid-command` is not found; BackOff follows. At 17:59:05, the product-catalog Endpoints object contains only a notReadyAddresses entry. Alerts include KubePodCrashLooping for product-catalog-fcf7564cf-vjj7l and KubeDeploymentReplicasMismatch for product-catalog (active from 17:55:01), then RequestErrorRate for frontend, frontend-proxy, checkout, and recommendation. Metrics show STATUS_CODE_ERROR calls for frontend's ProductCatalogService/GetProduct rising to 2,260 by 18:02:54 and checkout's ProductCatalogService/GetProduct to 309 by 18:03:24, consistent with the lost product-catalog endpoint."
+    }
+  ]
+}

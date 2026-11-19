@@ -1,0 +1,61 @@
+{
+  "status": "PASS",
+  "scope": "One native X11 Tauri/WebKitGTK first-run smoke of final package in fresh owned root C",
+  "desktop_version": "5.0.1-rc.9",
+  "bundle_id": "io.localpilot.desktop.test",
+  "source_commit": "59fad12de6f57006fc7510805af2dfd1718c16ea",
+  "source_dirty": true,
+  "deb": {
+    "path": "/workspace/scratch/c0f3ec78c621/validation/package-b26-b7-b31-uZQqOv/build-source/desktop/release/linux-test-v5.0.1-rc.9/20261116-224140-69/LocalPilot-Test-5.0.1-rc.9-linux-x86_64.deb",
+    "sha256": "4faf7b91de548355aa717800d2f38fc65cccc8a7e87d501f36c1e3312b29a587",
+    "bytes": 114590266
+  },
+  "executable": {
+    "path": "/workspace/scratch/c0f3ec78c621/validation/native-final-smoke-20261116/extracted/usr/bin/localpilot-desktop-test",
+    "sha256": "6cb3172ca81b9a8eeedf22f69d091585d19d1a157682f5ada8ce7bba43d1e11a",
+    "byte_identical_to_prior_ab_test": true
+  },
+  "installed_versions": {
+    "localpilot-agent-service": "5.0.0b26",
+    "localpilot-channels": "0.1.0a3",
+    "localpilot-companion": "0.5.7b7",
+    "localpilot-suite": "0.2.0b31"
+  },
+  "gui_core_version": "5.0.0b26",
+  "screenshots": [
+    "screenshots/c-first-run.jpg",
+    "screenshots/c-main-core-b26.jpg",
+    "screenshots/c-stopped.jpg"
+  ],
+  "method": "Extracted DEB with existing read-only WebKit helper overlay; WebKit sandbox retained",
+  "system_deb_install": false,
+  "fresh_root": "/workspace/scratch/c0f3ec78c621/validation/native-final-smoke-20261116/profile-c",
+  "ab_profiles_reopened_or_modified": false,
+  "full_ab_repeated": false,
+  "prior_manifest_status": "PASS",
+  "runtime_table_counts": {
+    "checkpoints": 0,
+    "journal": 0
+  },
+  "model_tasks_submitted": 0,
+  "model_inference_requests": 0,
+  "weight_downloads": 0,
+  "account_connections": 0,
+  "owned_process_stop": "STOPPED",
+  "owned_remaining": [],
+  "native_manual_smoke_runs": 1,
+  "production_source_edits": 0,
+  "observed_warnings": [
+    "Private /dev does not expose AT-SPI socket",
+    "Read-only host home prevents shader cache writes"
+  ],
+  "unverified": [
+    "System DEB installation and upgrades",
+    "Rollback",
+    "Model execution",
+    "Messaging account connection",
+    "Wayland",
+    "Audio",
+    "macOS"
+  ]
+}

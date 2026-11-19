@@ -1,0 +1,117 @@
+{
+  "config_sha256": "255deabc173db886563bbf440459a2bf1cbd5ef33b4ac68f8db75ebff7d65192",
+  "credential_matches": 0,
+  "exclusion_rules": [
+    "Only explicitly listed files are eligible; engineering snapshot members come from the final audited allowlist.",
+    "Private runtime/state, workspace caches, credentials/environment files and all SQLite/database sidecars are excluded.",
+    "Wheel binaries, archives, model files and unlisted file types are excluded; packaging uses hashes and import proofs.",
+    "Required files are never silently omitted. Undeclared files and directories are not traversed.",
+    "Inputs are not redacted or reformatted. Known API keys are read only from private files and matched exactly; any match aborts export."
+  ],
+  "groups": [
+    {
+      "archive": "engineering-r10.tar.gz",
+      "archive_bytes": 95627,
+      "archive_sha256": "3ac31f0291e54bb7f51171be9ea4b030966fb6594c4264ad25e1fa6d4e8c3807",
+      "audited_expected_hashes": 39,
+      "description": "R10：候选 Luna high 的原始失败证据与固定验收输入，未替换或删减。",
+      "id": "engineering-r10",
+      "manifest": "engineering-r10.MANIFEST.json",
+      "member_count": 40,
+      "summary": "engineering-r10.SUMMARY.md"
+    },
+    {
+      "archive": "engineering-r11.tar.gz",
+      "archive_bytes": 132737,
+      "archive_sha256": "b828fff66c5e4f6e1a2710570fcecb74e3ac7e7af5bb6bddd4780d995f21abc8",
+      "audited_expected_hashes": 40,
+      "description": "R11：最终候选 Sol medium 的原始工程结果、固定验收输入与实际 model/effort 摘录。",
+      "id": "engineering-r11",
+      "manifest": "engineering-r11.MANIFEST.json",
+      "member_count": 41,
+      "summary": "engineering-r11.SUMMARY.md"
+    },
+    {
+      "archive": "engineering-r9.tar.gz",
+      "archive_bytes": 135934,
+      "archive_sha256": "5ef6f2ad4cffb5d7d6d3c2b7406f80fa9eb8bba43cd25d3d75db859f9f37bca6",
+      "audited_expected_hashes": 39,
+      "description": "R9：RC16 基线、Luna high 的原始工程结果与固定验收输入。",
+      "id": "engineering-r9",
+      "manifest": "engineering-r9.MANIFEST.json",
+      "member_count": 40,
+      "summary": "engineering-r9.SUMMARY.md"
+    },
+    {
+      "archive": "packaging-final-core.tar.gz",
+      "archive_bytes": 95570,
+      "archive_sha256": "7fe2f882ce3642d0ec48aa54e840b00e9c597f04da251e4d156cd6f422cd1c98",
+      "audited_expected_hashes": 0,
+      "description": "3764fc0 最终 Core 与原同批其余三个 wheel 的组合安装验证，独立保留构建来源。",
+      "id": "packaging-final-core",
+      "manifest": "packaging-final-core.MANIFEST.json",
+      "member_count": 17,
+      "summary": "packaging-final-core.SUMMARY.md"
+    },
+    {
+      "archive": "packaging-original.tar.gz",
+      "archive_bytes": 175812,
+      "archive_sha256": "a7bc6eb9c02084d02c1d25f7cd9bda35c656f4114f389b951e781971b9c00934",
+      "audited_expected_hashes": 0,
+      "description": "37570b9 原四 wheel 的安装来源、哈希及验证；环境导致的首轮失败与五项复验均保留。",
+      "id": "packaging-original",
+      "manifest": "packaging-original.MANIFEST.json",
+      "member_count": 23,
+      "summary": "packaging-original.SUMMARY.md"
+    },
+    {
+      "archive": "regressions.tar.gz",
+      "archive_bytes": 483306,
+      "archive_sha256": "7a623b9a99f21ae573d99a1fe0b572626ac055615c0cebe287a6a3b7ce7a7515",
+      "audited_expected_hashes": 0,
+      "description": "Core 首轮与复验、Companion/Suite 原始回归记录；首轮失败照原样保留。",
+      "id": "regressions",
+      "manifest": "regressions.MANIFEST.json",
+      "member_count": 34,
+      "summary": "regressions.SUMMARY.md"
+    },
+    {
+      "archive": "scheduling.tar.gz",
+      "archive_bytes": 24903,
+      "archive_sha256": "dea6ba278ebde2f3000ec9cb9bdbc2502c0836d5c16cf7d316d5e1efa93f1909",
+      "audited_expected_hashes": 0,
+      "description": "分工配置、真实 loopback 角色/effort/恢复验证、完整前端及浏览器启动失败证据。",
+      "id": "scheduling",
+      "manifest": "scheduling.MANIFEST.json",
+      "member_count": 20,
+      "summary": "scheduling.SUMMARY.md"
+    },
+    {
+      "archive": "storage.tar.gz",
+      "archive_bytes": 210228,
+      "archive_sha256": "852c82d127b5429c15159fa2c3b80a5461e66d16efd563defe0f4f86ea835e97",
+      "audited_expected_hashes": 0,
+      "description": "任务逐条存储迁移和原始性能记录；不含数据库、恢复副本或运行状态。",
+      "id": "storage",
+      "manifest": "storage.MANIFEST.json",
+      "member_count": 20,
+      "summary": "storage.SUMMARY.md"
+    },
+    {
+      "archive": "superagent.tar.gz",
+      "archive_bytes": 50463,
+      "archive_sha256": "6bdf9045e3d893a5258f0cd7c2ffdb4c6c7ee49d2ebe1f1ec7c93d04275736da",
+      "audited_expected_hashes": 0,
+      "description": "Super Agent 定向与跨版本验证、独立审阅、原 4k 窗口 rotation 失败诊断及修复复验。",
+      "id": "superagent",
+      "manifest": "superagent.MANIFEST.json",
+      "member_count": 46,
+      "summary": "superagent.SUMMARY.md"
+    }
+  ],
+  "kind": "PUBLIC_EVIDENCE_BYTE_PRESERVING_EXPORT",
+  "known_credential_files_scanned": 1,
+  "raw_input_bytes_preserved": true,
+  "schema_version": 1,
+  "script_sha256": "cd2acaf1eaf9539dd51414d93240d0d061ac32dab8fa9b741f503d7211fd1b61"
+}

@@ -1,0 +1,28 @@
+{
+  "status": "UI_ACCEPTANCE_NOT_RUN",
+  "observations": [
+    {
+      "surface": "Browser extension",
+      "result": "No originating browser context; unavailable"
+    },
+    {
+      "surface": "Local Chromium via existing Playwright",
+      "result": "socket() failed: Operation not permitted; SIGABRT before page creation",
+      "archive_log": "raw/companion/ui-history-r1.log"
+    },
+    {
+      "surface": "Cloud CUA browser",
+      "url": "http://127.0.0.1:1420",
+      "result": "ERR_CONNECTION_REFUSED"
+    },
+    {
+      "surface": "Vite development server",
+      "result": "npm run dev printed ready; a separate exec curl could not connect; root stopped this owned Vite process",
+      "archive_log": "raw/companion/cua-vite.log"
+    }
+  ],
+  "provenance": "Local Chromium and Vite startup have archived logs; extension, cloud browser, cross-exec connection and shutdown observations are the root agent handoff from this session, not independent replayable receipts.",
+  "manual_fixture_attempts_archived": false,
+  "model_requests": 0,
+  "ui_pass_claim": false
+}

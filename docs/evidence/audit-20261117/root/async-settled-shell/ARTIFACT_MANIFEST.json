@@ -1,0 +1,50 @@
+{
+  "kind": "async settled host Shell failure local regression evidence",
+  "files": [
+    {
+      "file": "AFTER.log",
+      "bytes": 6344,
+      "sha256": "6675f5fd4f1c3f62f75fff96439c4b57d0a52bdecb6d89442fc6edd088cb160d"
+    },
+    {
+      "file": "BEFORE.log",
+      "bytes": 1068,
+      "sha256": "38490ef852ecc496035531274fe84790e9c31d048a60ae7009aa9d8bef5b8280"
+    },
+    {
+      "file": "RESULTS.md",
+      "bytes": 4921,
+      "sha256": "38d1d4adae193ef417cfb22ac271751b4f362994f28b8d351f9cebb6a85d3e54"
+    },
+    {
+      "file": "SOURCE_AFTER.json",
+      "bytes": 942,
+      "sha256": "b9ebdb95c674d0098242da1bb986031cb4c43a4af1c89c2835d739d63018d045"
+    },
+    {
+      "file": "SOURCE_BEFORE.json",
+      "bytes": 443,
+      "sha256": "25089990684240b3ab8028e353659d2fbf1481895e368b9624b1e7c176f54cd9"
+    }
+  ],
+  "log_publication": [
+    {
+      "file": "BEFORE.log",
+      "original_file": "validation/audit-20261117/async-settled-shell-before.log",
+      "original_sha256": "999de26c3b47d61b438473c9e0bec1c6ea218b338099f211123635afca7fb38c",
+      "published_sha256": "38490ef852ecc496035531274fe84790e9c31d048a60ae7009aa9d8bef5b8280",
+      "original_bytes": 1119,
+      "published_bytes": 1068,
+      "transformation": "Only exact primary repository absolute path prefix replaced with <source_root>"
+    },
+    {
+      "file": "AFTER.log",
+      "original_file": "validation/audit-20261117/async-settled-shell-after.log",
+      "original_sha256": "6675f5fd4f1c3f62f75fff96439c4b57d0a52bdecb6d89442fc6edd088cb160d",
+      "published_sha256": "6675f5fd4f1c3f62f75fff96439c4b57d0a52bdecb6d89442fc6edd088cb160d",
+      "original_bytes": 6344,
+      "published_bytes": 6344,
+      "transformation": "Only exact primary repository absolute path prefix replaced with <source_root>"
+    }
+  ]
+}

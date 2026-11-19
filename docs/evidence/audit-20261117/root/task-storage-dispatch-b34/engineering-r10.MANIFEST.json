@@ -1,0 +1,260 @@
+{
+  "archive": "engineering-r10.tar.gz",
+  "archive_bytes": 95627,
+  "archive_sha256": "3ac31f0291e54bb7f51171be9ea4b030966fb6594c4264ad25e1fa6d4e8c3807",
+  "audited_expected_hashes": 39,
+  "description": "R10：候选 Luna high 的原始失败证据与固定验收输入，未替换或删减。",
+  "exclusion_rules": [
+    "Only explicitly listed files are eligible; engineering snapshot members come from the final audited allowlist.",
+    "Private runtime/state, workspace caches, credentials/environment files and all SQLite/database sidecars are excluded.",
+    "Wheel binaries, archives, model files and unlisted file types are excluded; packaging uses hashes and import proofs.",
+    "Required files are never silently omitted. Undeclared files and directories are not traversed.",
+    "Inputs are not redacted or reformatted. Known API keys are read only from private files and matched exactly; any match aborts export."
+  ],
+  "id": "engineering-r10",
+  "manifest": "engineering-r10.MANIFEST.json",
+  "member_count": 40,
+  "members": [
+    {
+      "bytes": 204,
+      "original_sha256": "7ee1dbdb48998e1e7491305368b600c58c901c8e18ec2921c51228d2352e4749",
+      "path": "engineering-candidate-luna-high-r10.log",
+      "public_sha256": "7ee1dbdb48998e1e7491305368b600c58c901c8e18ec2921c51228d2352e4749"
+    },
+    {
+      "bytes": 8904,
+      "original_sha256": "eaeba2d0b93a308336d71dee1d485c0efc3d1611657a0e98dcb1224128bfc9e8",
+      "path": "engineering-candidate-luna-high-r10/FAILURE_ANALYSIS.json",
+      "public_sha256": "eaeba2d0b93a308336d71dee1d485c0efc3d1611657a0e98dcb1224128bfc9e8"
+    },
+    {
+      "bytes": 9996,
+      "original_sha256": "f976ff5ca505f452a918ebd07b4ba0a05fc945939a8255397d85dc8600e707a9",
+      "path": "engineering-candidate-luna-high-r10/POSTRUN_SUMMARY.json",
+      "public_sha256": "f976ff5ca505f452a918ebd07b4ba0a05fc945939a8255397d85dc8600e707a9"
+    },
+    {
+      "bytes": 14987,
+      "original_sha256": "9f5757ec5e25b3040a470894ac54a0f71f0faf95a924690c2e1460592ca59533",
+      "path": "engineering-candidate-luna-high-r10/PROTOCOL.json",
+      "public_sha256": "9f5757ec5e25b3040a470894ac54a0f71f0faf95a924690c2e1460592ca59533"
+    },
+    {
+      "bytes": 120011,
+      "original_sha256": "f61df664f7bfc237d7535da7f76d147ff7c143e988aa31da59f6ea1600903bab",
+      "path": "engineering-candidate-luna-high-r10/RESULTS.json",
+      "public_sha256": "f61df664f7bfc237d7535da7f76d147ff7c143e988aa31da59f6ea1600903bab"
+    },
+    {
+      "bytes": 23542,
+      "original_sha256": "de55a69b75b48713a3d7dc6443712a0a1e1967dc8c23d89828062da50eca3450",
+      "path": "engineering-candidate-luna-high-r10/RUN_EXECUTION.json",
+      "public_sha256": "de55a69b75b48713a3d7dc6443712a0a1e1967dc8c23d89828062da50eca3450"
+    },
+    {
+      "bytes": 1139,
+      "original_sha256": "b22f47e53e46966a7d115b46974c07626217c3b03950735cf4f2b26cf80136fc",
+      "path": "engineering-candidate-luna-high-r10/acceptance-manifest.json",
+      "public_sha256": "b22f47e53e46966a7d115b46974c07626217c3b03950735cf4f2b26cf80136fc"
+    },
+    {
+      "bytes": 3304,
+      "original_sha256": "3a581fcd5925e86dfcea0d87bbbcacfaf0065ed8139280c100769d8c6870c3e6",
+      "path": "engineering-candidate-luna-high-r10/acceptance-original/SPEC.md",
+      "public_sha256": "3a581fcd5925e86dfcea0d87bbbcacfaf0065ed8139280c100769d8c6870c3e6"
+    },
+    {
+      "bytes": 168,
+      "original_sha256": "6c0dcee9e8d138f61ed6da850c9bc77be3ccabe49a98fb99a693298a6b431d41",
+      "path": "engineering-candidate-luna-high-r10/acceptance-original/fixtures/basic.csv",
+      "public_sha256": "6c0dcee9e8d138f61ed6da850c9bc77be3ccabe49a98fb99a693298a6b431d41"
+    },
+    {
+      "bytes": 374,
+      "original_sha256": "3d8d1af6ab844d19fc24b4029044458ef877dfc129232e3f9824e6bf5d54d34a",
+      "path": "engineering-candidate-luna-high-r10/acceptance-original/fixtures/basic.expected.json",
+      "public_sha256": "3d8d1af6ab844d19fc24b4029044458ef877dfc129232e3f9824e6bf5d54d34a"
+    },
+    {
+      "bytes": 26,
+      "original_sha256": "318a41c33c77ab0db8e5c651bd4b9918c26222daf02f90d8e2e01a8bb5be516a",
+      "path": "engineering-candidate-luna-high-r10/acceptance-original/fixtures/empty.csv",
+      "public_sha256": "318a41c33c77ab0db8e5c651bd4b9918c26222daf02f90d8e2e01a8bb5be516a"
+    },
+    {
+      "bytes": 61,
+      "original_sha256": "74097f4b98ff64d3b01a6233836f5505ebe99bee92b9c8bc3537cb14a2f6dd34",
+      "path": "engineering-candidate-luna-high-r10/acceptance-original/fixtures/invalid.csv",
+      "public_sha256": "74097f4b98ff64d3b01a6233836f5505ebe99bee92b9c8bc3537cb14a2f6dd34"
+    },
+    {
+      "bytes": 208,
+      "original_sha256": "c70350dc5653955376297e2ccedff0e24cf1371f5f09101958d0cd9182b723d8",
+      "path": "engineering-candidate-luna-high-r10/acceptance-original/fixtures/precision.csv",
+      "public_sha256": "c70350dc5653955376297e2ccedff0e24cf1371f5f09101958d0cd9182b723d8"
+    },
+    {
+      "bytes": 528,
+      "original_sha256": "ac5226181296f432e36f85e1bee5b5b6c1efb519bb1ae12755dd971e66850603",
+      "path": "engineering-candidate-luna-high-r10/acceptance-original/fixtures/precision.expected.json",
+      "public_sha256": "ac5226181296f432e36f85e1bee5b5b6c1efb519bb1ae12755dd971e66850603"
+    },
+    {
+      "bytes": 45,
+      "original_sha256": "ae8f92d8e600d6dc9ad8d3ac5063b4ee18d5ef365e259d9323608625b76ef7de",
+      "path": "engineering-candidate-luna-high-r10/acceptance-original/logstats/__init__.py",
+      "public_sha256": "ae8f92d8e600d6dc9ad8d3ac5063b4ee18d5ef365e259d9323608625b76ef7de"
+    },
+    {
+      "bytes": 137,
+      "original_sha256": "f849849731b05ad7b37f1e6636741a8c7ecaf00a8d5e78712e5d132522546a5b",
+      "path": "engineering-candidate-luna-high-r10/acceptance-original/logstats/__main__.py",
+      "public_sha256": "f849849731b05ad7b37f1e6636741a8c7ecaf00a8d5e78712e5d132522546a5b"
+    },
+    {
+      "bytes": 177,
+      "original_sha256": "9d2e4a7aec763e41478efb936a03fccb545b72f775218aa8e11123e241535d0b",
+      "path": "engineering-candidate-luna-high-r10/acceptance-original/logstats/aggregate.py",
+      "public_sha256": "9d2e4a7aec763e41478efb936a03fccb545b72f775218aa8e11123e241535d0b"
+    },
+    {
+      "bytes": 311,
+      "original_sha256": "16b2d904fab3ccfbfe24baa15473981957458ce4996f582b8c8c5238bc69cbda",
+      "path": "engineering-candidate-luna-high-r10/acceptance-original/logstats/parser.py",
+      "public_sha256": "16b2d904fab3ccfbfe24baa15473981957458ce4996f582b8c8c5238bc69cbda"
+    },
+    {
+      "bytes": 6928,
+      "original_sha256": "e406b48f904550da19c4feff630962f393197f024bcc0c77683163fe26081837",
+      "path": "engineering-candidate-luna-high-r10/acceptance-original/tests/test_acceptance.py",
+      "public_sha256": "e406b48f904550da19c4feff630962f393197f024bcc0c77683163fe26081837"
+    },
+    {
+      "bytes": 257405,
+      "original_sha256": "3a9702ec354aa54d8f73c4b5c6fee6332f31c50447fb1271c9ad73979bcb4618",
+      "path": "engineering-candidate-luna-high-r10/engineering-task.json",
+      "public_sha256": "3a9702ec354aa54d8f73c4b5c6fee6332f31c50447fb1271c9ad73979bcb4618"
+    },
+    {
+      "bytes": 6178,
+      "original_sha256": "54c51ed4dbf6af5a6246a34c311afc7167b0f9929a776d34fe25091009c089c6",
+      "path": "engineering-candidate-luna-high-r10/external-cli.json",
+      "public_sha256": "54c51ed4dbf6af5a6246a34c311afc7167b0f9929a776d34fe25091009c089c6"
+    },
+    {
+      "bytes": 30230,
+      "original_sha256": "4a8a1fbe629dd430e6772d167ae1b76f288af8e589025e06726dc881487cfca8",
+      "path": "engineering-candidate-luna-high-r10/external-unittest.json",
+      "public_sha256": "4a8a1fbe629dd430e6772d167ae1b76f288af8e589025e06726dc881487cfca8"
+    },
+    {
+      "bytes": 2562,
+      "original_sha256": "6c3f9cad41e8c1c40d9443fc73f233a248584ab97e40305c610ab4a38577219c",
+      "path": "engineering-candidate-luna-high-r10/file-manifest.json",
+      "public_sha256": "6c3f9cad41e8c1c40d9443fc73f233a248584ab97e40305c610ab4a38577219c"
+    },
+    {
+      "bytes": 3304,
+      "original_sha256": "3a581fcd5925e86dfcea0d87bbbcacfaf0065ed8139280c100769d8c6870c3e6",
+      "path": "engineering-candidate-luna-high-r10/final-project/SPEC.md",
+      "public_sha256": "3a581fcd5925e86dfcea0d87bbbcacfaf0065ed8139280c100769d8c6870c3e6"
+    },
+    {
+      "bytes": 168,
+      "original_sha256": "6c0dcee9e8d138f61ed6da850c9bc77be3ccabe49a98fb99a693298a6b431d41",
+      "path": "engineering-candidate-luna-high-r10/final-project/fixtures/basic.csv",
+      "public_sha256": "6c0dcee9e8d138f61ed6da850c9bc77be3ccabe49a98fb99a693298a6b431d41"
+    },
+    {
+      "bytes": 374,
+      "original_sha256": "3d8d1af6ab844d19fc24b4029044458ef877dfc129232e3f9824e6bf5d54d34a",
+      "path": "engineering-candidate-luna-high-r10/final-project/fixtures/basic.expected.json",
+      "public_sha256": "3d8d1af6ab844d19fc24b4029044458ef877dfc129232e3f9824e6bf5d54d34a"
+    },
+    {
+      "bytes": 26,
+      "original_sha256": "318a41c33c77ab0db8e5c651bd4b9918c26222daf02f90d8e2e01a8bb5be516a",
+      "path": "engineering-candidate-luna-high-r10/final-project/fixtures/empty.csv",
+      "public_sha256": "318a41c33c77ab0db8e5c651bd4b9918c26222daf02f90d8e2e01a8bb5be516a"
+    },
+    {
+      "bytes": 61,
+      "original_sha256": "74097f4b98ff64d3b01a6233836f5505ebe99bee92b9c8bc3537cb14a2f6dd34",
+      "path": "engineering-candidate-luna-high-r10/final-project/fixtures/invalid.csv",
+      "public_sha256": "74097f4b98ff64d3b01a6233836f5505ebe99bee92b9c8bc3537cb14a2f6dd34"
+    },
+    {
+      "bytes": 208,
+      "original_sha256": "c70350dc5653955376297e2ccedff0e24cf1371f5f09101958d0cd9182b723d8",
+      "path": "engineering-candidate-luna-high-r10/final-project/fixtures/precision.csv",
+      "public_sha256": "c70350dc5653955376297e2ccedff0e24cf1371f5f09101958d0cd9182b723d8"
+    },
+    {
+      "bytes": 528,
+      "original_sha256": "ac5226181296f432e36f85e1bee5b5b6c1efb519bb1ae12755dd971e66850603",
+      "path": "engineering-candidate-luna-high-r10/final-project/fixtures/precision.expected.json",
+      "public_sha256": "ac5226181296f432e36f85e1bee5b5b6c1efb519bb1ae12755dd971e66850603"
+    },
+    {
+      "bytes": 45,
+      "original_sha256": "ae8f92d8e600d6dc9ad8d3ac5063b4ee18d5ef365e259d9323608625b76ef7de",
+      "path": "engineering-candidate-luna-high-r10/final-project/logstats/__init__.py",
+      "public_sha256": "ae8f92d8e600d6dc9ad8d3ac5063b4ee18d5ef365e259d9323608625b76ef7de"
+    },
+    {
+      "bytes": 921,
+      "original_sha256": "d8e720747b4a9bc74ccf691e2626ecafd177912f23615a325f71535dcf685fa4",
+      "path": "engineering-candidate-luna-high-r10/final-project/logstats/__main__.py",
+      "public_sha256": "d8e720747b4a9bc74ccf691e2626ecafd177912f23615a325f71535dcf685fa4"
+    },
+    {
+      "bytes": 2141,
+      "original_sha256": "c96e94ca68d1e9ea800472559bbdc882dc4d38ca265057b718d11cf9b6234e3f",
+      "path": "engineering-candidate-luna-high-r10/final-project/logstats/aggregate.py",
+      "public_sha256": "c96e94ca68d1e9ea800472559bbdc882dc4d38ca265057b718d11cf9b6234e3f"
+    },
+    {
+      "bytes": 311,
+      "original_sha256": "16b2d904fab3ccfbfe24baa15473981957458ce4996f582b8c8c5238bc69cbda",
+      "path": "engineering-candidate-luna-high-r10/final-project/logstats/parser.py",
+      "public_sha256": "16b2d904fab3ccfbfe24baa15473981957458ce4996f582b8c8c5238bc69cbda"
+    },
+    {
+      "bytes": 6928,
+      "original_sha256": "e406b48f904550da19c4feff630962f393197f024bcc0c77683163fe26081837",
+      "path": "engineering-candidate-luna-high-r10/final-project/tests/test_acceptance.py",
+      "public_sha256": "e406b48f904550da19c4feff630962f393197f024bcc0c77683163fe26081837"
+    },
+    {
+      "bytes": 3433,
+      "original_sha256": "6de1dc8ed188df996e4ebcd46d7f5ccb1c499caf8cb8995eb1b644394892d8b1",
+      "path": "engineering-candidate-luna-high-r10/project.diff",
+      "public_sha256": "6de1dc8ed188df996e4ebcd46d7f5ccb1c499caf8cb8995eb1b644394892d8b1"
+    },
+    {
+      "bytes": 2396,
+      "original_sha256": "cf4cc64fcd5eb2b0a97323d677562e3ac7c090b491b93025c92811ade7dcef0a",
+      "path": "engineering-candidate-luna-high-r10/prompt.txt",
+      "public_sha256": "cf4cc64fcd5eb2b0a97323d677562e3ac7c090b491b93025c92811ade7dcef0a"
+    },
+    {
+      "bytes": 422,
+      "original_sha256": "4d03609ea2cd0dd9db86366015ddf08b10e16eab2a45df20f7a3d3bab37ee214",
+      "path": "engineering-candidate-luna-high-r10/resolved-inference.json",
+      "public_sha256": "4d03609ea2cd0dd9db86366015ddf08b10e16eab2a45df20f7a3d3bab37ee214"
+    },
+    {
+      "bytes": 1238,
+      "original_sha256": "603b4a44b1de4ac5bf6159d496350670ecdebffe64db9e461e10bf7130580dd8",
+      "path": "engineering-candidate-luna-high-r10/resolved-runtime-budgets.json",
+      "public_sha256": "603b4a44b1de4ac5bf6159d496350670ecdebffe64db9e461e10bf7130580dd8"
+    },
+    {
+      "bytes": 36204,
+      "original_sha256": "1878a177ed32600e9d53490ad518a93ece8d729643f2e2681c7b10d11d4724c4",
+      "path": "engineering-candidate-luna-high-r10/runner.py",
+      "public_sha256": "1878a177ed32600e9d53490ad518a93ece8d729643f2e2681c7b10d11d4724c4"
+    }
+  ],
+  "summary": "engineering-r10.SUMMARY.md"
+}

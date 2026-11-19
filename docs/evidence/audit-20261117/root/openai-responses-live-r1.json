@@ -1,0 +1,91 @@
+{
+  "case": "Luna Responses reasoning and function roundtrip",
+  "model": "gpt-6-luna",
+  "thinking": "medium",
+  "source_sha256": "10a07af342ebed9e7041d5d21062e30a67ed45a220ca8b0dfe24a73f4d353d4b",
+  "calls": [
+    {
+      "model": "gpt-6-luna",
+      "finish_reason": "tool_calls",
+      "usage": {
+        "prompt_tokens": 68,
+        "completion_tokens": 24,
+        "total_tokens": 92,
+        "provider_usage": {
+          "input_tokens": 68,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 0
+            },
+            "cached_tokens": 0
+          },
+          "output_tokens": 24,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 92
+        },
+        "prompt_tokens_details": {
+          "cache_write_tokens": 0,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 0
+          },
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 68
+      },
+      "tool_names": [
+        "public_fixture_echo"
+      ]
+    },
+    {
+      "model": "gpt-6-luna",
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 110,
+        "completion_tokens": 10,
+        "total_tokens": 120,
+        "provider_usage": {
+          "input_tokens": 110,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 0
+            },
+            "cached_tokens": 0
+          },
+          "output_tokens": 10,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 120
+        },
+        "prompt_tokens_details": {
+          "cache_write_tokens": 0,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 0
+          },
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 110
+      },
+      "output_text": "LOCALPILOT_FUNCTION_OK",
+      "text_chunks": 6
+    }
+  ],
+  "status": "PASS",
+  "seconds": 21.713
+}

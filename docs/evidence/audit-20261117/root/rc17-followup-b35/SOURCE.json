@@ -1,0 +1,52 @@
+{
+  "repository": "www080327-glitch/LocalPilot-OpenSource",
+  "pr_number": 15,
+  "branch": "codex/native-polish-final-20261116",
+  "baseline_commit": "6c923a95c749d1db2c6d2548e2109cd79b02d938",
+  "product": {
+    "commit": "8e27340e3d0cabbb37ace7a652de9b1f2f0d0eee",
+    "tree": "42461b0b85f4aaf07290854277a5d54fe531dd70",
+    "full_regression_scope": "Three suites, 820 recorded source files each, before/after equal and matched to this commit",
+    "installed_payload_files": 346,
+    "installed_tests_passed": 66,
+    "imported_product_modules_from_site_packages": 152
+  },
+  "final_role_harness": {
+    "commit": "b69542583954c49672a636ba43f1ef310238883c",
+    "tree": "cded45c5c68089c0654bc25a90a541a189e7d73e",
+    "changes_after_product_commit": [
+      "docs/development/WORK_CONTINUE_20261117_B35.md",
+      "scripts/qualify_openai_worker_roles.py",
+      "tests/test_worker_role_qualification.py"
+    ],
+    "unchanged_other_tracked_paths": 3756,
+    "local_boundary_tests_passed": 3,
+    "real_smoke_source_files": 111,
+    "real_smoke_status": "PASS_WORKSPACE_SCOPED_SERVICE_READ_ONLY"
+  },
+  "component_versions": {
+    "core": "5.0.0b35",
+    "companion": "0.5.7b12",
+    "desktop": "5.0.1-rc.17",
+    "suite": "0.2.0b34",
+    "channels": "0.1.0a4"
+  },
+  "key_files_sha256": {
+    "agent/session.py": "666c8c2c5ce858720ff4d110af69c9ee0e53c854e95ab5b4d8d1f5426309b7c8",
+    "tests/test_worker_output_recovery.py": "1f8e3c924bd0c76161ddc3bebfa5cf5148d6755804fb2c7fc734510fd32256b3",
+    "companion/memory/task_store.py": "acc4762875c7f6bd870cb1ebf985ec3b351928ce3a1315cf0f08ca45f2f975b2",
+    "companion/runtime/tasks.py": "298a035c817323960e67a8b75fbd34e08b1cec4e6a1b43e589201da210957621",
+    "companion/tests/test_task_store.py": "3e8aaed29aee8e91eb3143bde2ac49e83378f09d896003e8cec009a7a58e25bd",
+    "companion/tests/test_task_history.py": "5a8821f486146105686fe78316b24fdc6e764c74232daf7eac0980f0163705ce",
+    "companion/tests/test_pa_context_lineage.py": "633154570c74168426ad4337fa903fc209de2b5bf98292875e9509e5e79d8b4c",
+    "scripts/qualify_openai_worker_roles.py": "5204ebb437bcaf7aca926dd6f5deeb433cc5bf9a9e4c97b465ab000841c0ea7e",
+    "tests/test_worker_role_qualification.py": "d351a9faca241861bd7743444a3376a159e173b35bdc04095a4c92dd97a35cc4"
+  },
+  "engineering_r12": {
+    "source_commit": "8e27340e3d0cabbb37ace7a652de9b1f2f0d0eee",
+    "status": "BLOCKED_BY_AUTOMATIC_APPROVAL_REVIEW",
+    "runner_sha256": "1878a177ed32600e9d53490ad518a93ece8d729643f2e2681c7b10d11d4724c4",
+    "provider_usage": "UNKNOWN"
+  },
+  "later_changes": "Only documentation and evidence; no claim that a later whole tree reran the frozen full suite."
+}

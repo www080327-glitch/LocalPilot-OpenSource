@@ -1,0 +1,631 @@
+{
+  "index": 13,
+  "scenario": "Scenario-14",
+  "dataset_revision": "76df38a82288f75ba9e41dc8c515033332497473",
+  "attempt": 1,
+  "output_valid": true,
+  "task_status": "completed",
+  "input_bytes": 784981753,
+  "input_files": 80,
+  "download_seconds": 242.73092582199752,
+  "task_id": "resp_811be325dad04937a8135e8589e239b4",
+  "task_error": null,
+  "required_action": null,
+  "task_seconds": 636.1861143600036,
+  "model_calls": [
+    {
+      "latency_seconds": 3.1401134499974432,
+      "tool_call_count": 1,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 1880,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 3372,
+      "output_tokens": 58,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 8.377360796002904,
+      "tool_call_count": 1,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 2421,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 3913,
+      "output_tokens": 49,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 9.468574053993507,
+      "tool_call_count": 3,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 2645,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 4137,
+      "output_tokens": 249,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 10.736373072002607,
+      "tool_call_count": 2,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 4979,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 6471,
+      "output_tokens": 437,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 12.85981922600331,
+      "tool_call_count": 3,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 8052,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 9544,
+      "output_tokens": 616,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 14.903988466001465,
+      "tool_call_count": 3,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 15753,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 17245,
+      "output_tokens": 763,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 12.99490068799787,
+      "tool_call_count": 3,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 18889,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 20381,
+      "output_tokens": 933,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 13.298958453000523,
+      "tool_call_count": 3,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 23257,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 24749,
+      "output_tokens": 1075,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 13.723466452996945,
+      "tool_call_count": 3,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 28439,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 29931,
+      "output_tokens": 980,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 24.893717749000643,
+      "tool_call_count": 3,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 35112,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 36604,
+      "output_tokens": 1277,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 15.18282303900196,
+      "tool_call_count": 3,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 38845,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 40337,
+      "output_tokens": 1351,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 22.130598027993983,
+      "tool_call_count": 3,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 46237,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 47729,
+      "output_tokens": 1615,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 25.265672667999752,
+      "tool_call_count": 3,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 50207,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 51699,
+      "output_tokens": 2000,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 30.191981533003855,
+      "tool_call_count": 3,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 60462,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 61954,
+      "output_tokens": 2621,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 35.76732100800291,
+      "tool_call_count": 3,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 70424,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 71916,
+      "output_tokens": 3056,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 52.52406382000481,
+      "tool_call_count": 3,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 80032,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 81524,
+      "output_tokens": 4635,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 22.007075943998643,
+      "tool_call_count": 3,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 88468,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 89960,
+      "output_tokens": 1614,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 46.31034165700112,
+      "tool_call_count": 1,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 95870,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 97362,
+      "output_tokens": 3288,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 47.46696062900446,
+      "tool_call_count": 3,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 100065,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 101557,
+      "output_tokens": 3784,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 40.84896183000092,
+      "tool_call_count": 1,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 105707,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 107199,
+      "output_tokens": 2818,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 28.495557155001734,
+      "tool_call_count": 3,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 108874,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 110366,
+      "output_tokens": 2173,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 39.41015324199543,
+      "tool_call_count": 1,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 114216,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 115708,
+      "output_tokens": 2619,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 14.236231520997535,
+      "tool_call_count": 2,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 118474,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 119966,
+      "output_tokens": 492,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 11.480738157006272,
+      "tool_call_count": 1,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 119800,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 121292,
+      "output_tokens": 237,
+      "finish_reason": "tool_calls"
+    },
+    {
+      "latency_seconds": 22.261621310004557,
+      "tool_call_count": 0,
+      "prompt_cache_hit_tokens": 1492,
+      "prompt_cache_miss_tokens": 120182,
+      "reported_model": "gpt-6-luna",
+      "input_tokens": 121674,
+      "output_tokens": 1251,
+      "finish_reason": "stop"
+    }
+  ],
+  "runtime_metrics": {
+    "model_attempts": 25,
+    "request_utf8_bytes": 8612795,
+    "response_bytes": 544404,
+    "response_bytes_source": "complete_responses_only",
+    "failed_attempts": 0,
+    "failed_attempt_provider_usage": null,
+    "admission_units": 9157199,
+    "finalization_reason": null,
+    "final_reserve_units": 74616,
+    "state_bytes": 6686,
+    "cache_bytes": 1261,
+    "hybrid": {
+      "calls": 25,
+      "actual_api_cost": "UNKNOWN",
+      "local_resource_cost": "adapter_wall_seconds_only",
+      "backend_id": "selected",
+      "generation": 0,
+      "switching_overhead_seconds": 0,
+      "by_backend": {
+        "selected": {
+          "kind": "cloud",
+          "calls": 25,
+          "known_input_tokens": 1496590,
+          "known_output_tokens": 39991,
+          "unknown_usage_calls": 0,
+          "known_request_wall_seconds": 577.9610760211945,
+          "known_inference_seconds": 577.562385559082,
+          "known_queue_seconds": 0.39905595779418945,
+          "unknown_inference_time_calls": 0,
+          "unknown_latency_calls": 0,
+          "estimated_api_cost_usd": null,
+          "cost_source": "host_rate_estimate_only",
+          "configured_models": [
+            "gpt-6-luna"
+          ],
+          "prompt_cache_hit_tokens": 37300,
+          "prompt_cache_miss_tokens": 1459290,
+          "cache_hit_ratio": 0.024923325693743777,
+          "cache_usage_unknown_calls": 0,
+          "wall_output_tokens_per_second": 69.24100495444938,
+          "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+        }
+      },
+      "source_mix": {
+        "scope": "current_task_including_children",
+        "by_source": {
+          "local": {
+            "admitted_requests": 0,
+            "dispatched_requests": 0,
+            "request_share": 0.0,
+            "known_input_output_tokens": 0,
+            "token_share": 0.0,
+            "unknown_usage_requests": 0
+          },
+          "cloud": {
+            "admitted_requests": 25,
+            "dispatched_requests": 25,
+            "request_share": 1.0,
+            "known_input_output_tokens": 1536581,
+            "token_share": 1.0,
+            "unknown_usage_requests": 0
+          }
+        },
+        "requests_without_dispatch_evidence": 0,
+        "token_share_status": "PROVIDER_REPORTED",
+        "actual_cost_status": "UNKNOWN"
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "manage_goal",
+      "status": "completed",
+      "arguments": "{\"action\":\"create\",\"description\":\"Identify the minimal independent Kubernetes resource faults from snapshot evidence and write validated agent_output.json\",\"status\":\"in_progress\"}"
+    },
+    {
+      "name": "list_directory",
+      "status": "completed",
+      "arguments": "{\"path\":\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace\"}"
+    },
+    {
+      "name": "list_directory",
+      "status": "completed",
+      "arguments": "{\"path\":\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/alerts\"}"
+    },
+    {
+      "name": "list_directory",
+      "status": "completed",
+      "arguments": "{\"path\":\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/metrics\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import os; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace\\\"; files=[\\\"k8s_events_raw.tsv\\\",\\\"k8s_objects_raw.tsv\\\",\\\"otel_logs_raw.tsv\\\",\\\"otel_traces_raw.tsv\\\"]; [(print(f, os.path.getsize(os.path.join(b,f))),print(open(os.path.join(b,f)).readline().rstrip())) for f in files]'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import json,glob,os; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/alerts\\\"; fs=sorted(glob.glob(b+\\\"/*.json\\\")); print(\\\"files\\\",len(fs));\\nfor f in [fs[0],fs[-1],next((x for x in fs if \\\"alerting_state\\\" in x),fs[0])]:\\n d=json.load(open(f)); print(\\\"FILE\\\",os.path.basename(f),\\\"TYPE\\\",type(d).__name__); print(json.dumps(d,ensure_ascii=False)[:7000])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\";\\nfor f in [\\\"k8s_events_raw.tsv\\\",\\\"k8s_objects_raw.tsv\\\",\\\"otel_logs_raw.tsv\\\",\\\"otel_traces_raw.tsv\\\"]:\\n d=pd.read_csv(b+f,sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); print(\\\"\\\\n\\\",f,d.shape); print(\\\"cols\\\",list(d.columns));\\n for c in [\\\"SeverityText\\\",\\\"EventName\\\",\\\"ServiceName\\\",\\\"StatusCode\\\",\\\"SpanName\\\"]:\\n  if c in d: print(c,d[c].value_counts().head(12).to_dict())'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import json,glob,os,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/alerts\\\"; fs=sorted(glob.glob(b+\\\"/alerts_at_*.json\\\")); z=collections.defaultdict(list);\\nfor f in fs:\\n for a in json.load(open(f)):\\n  l=a.get(\\\"labels\\\",{}); z[(l.get(\\\"alertname\\\"),l.get(\\\"namespace\\\"),l.get(\\\"service_name\\\"),l.get(\\\"pod\\\"),l.get(\\\"severity\\\"))].append((os.path.basename(f),a.get(\\\"state\\\"),a.get(\\\"value\\\"),a.get(\\\"annotations\\\",{}).get(\\\"description\\\",\\\"\\\")))\\nfor k,v in z.items():\\n print(\\\"ALERT\\\",k,\\\"n\\\",len(v),\\\"first\\\",v[0],\\\"last\\\",v[-1])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\";\\nfor f in [\\\"k8s_events_raw.tsv\\\",\\\"k8s_objects_raw.tsv\\\"]:\\n d=pd.read_csv(b+f,sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); print(\\\"FILE\\\",f); print(\\\"firstbody\\\",d.iloc[0][\\\"Body\\\"][:3000]); print(\\\"attrs\\\",d.iloc[0][\\\"ResourceAttributes\\\"][:1200]); print(\\\"logattrs\\\",d.iloc[0][\\\"LogAttributes\\\"][:2000]); print(\\\"body nonempty\\\",(d.Body!=\\\"\\\").sum()); print(\\\"body samples\\\");\\n for x in d.Body[d.Body!=\\\"\\\"].head(6): print(x[:1500])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import os; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/metrics\\\";\\nfor f in os.listdir(b):\\n p=os.path.join(b,f); print(\\\"FILE\\\",f,\\\"size\\\",os.path.getsize(p)); print(open(p).readline().rstrip())'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"k8s_events_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); groups=collections.Counter(); ex={};\\nfor _,r in d.iterrows():\\n try:o=json.loads(r.Body).get(\\\"object\\\",{}); io=o.get(\\\"involvedObject\\\",{}); key=(io.get(\\\"namespace\\\",\\\"\\\"),io.get(\\\"kind\\\",\\\"\\\"),io.get(\\\"name\\\",\\\"\\\"),o.get(\\\"type\\\",\\\"\\\"),o.get(\\\"reason\\\",\\\"\\\"),o.get(\\\"message\\\",\\\"\\\")); groups[key]+=int(o.get(\\\"count\\\",1)); ex[key]=(r.TimestampTime,o.get(\\\"firstTimestamp\\\"),o.get(\\\"lastTimestamp\\\"))\\n except Exception:pass\\nfor k,n in groups.most_common(): print(n,ex[k],k)'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"k8s_objects_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); print(\\\"timestamps\\\",d.TimestampTime.min(),d.TimestampTime.max()); c=collections.Counter(); sample={};\\nfor _,r in d.iterrows():\\n try:\\n  o=json.loads(r.Body).get(\\\"object\\\",{}); k=o.get(\\\"kind\\\"); m=o.get(\\\"metadata\\\",{}); ns=m.get(\\\"namespace\\\",\\\"\\\"); name=m.get(\\\"name\\\",\\\"\\\"); c[(ns,k,name)]+=1; sample[(ns,k,name)]=o\\n except Exception: pass\\nprint(\\\"unique\\\",len(c));\\nfor (ns,k,n),o in c.most_common(200):\\n if k not in (\\\"Pod\\\",\\\"Service\\\",\\\"Deployment\\\",\\\"ReplicaSet\\\"): print(\\\"OBJECT\\\",ns,k,n,\\\"snapshots\\\",c[(ns,k,n)],json.dumps(o,ensure_ascii=False)[:2500])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"k8s_objects_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); print(d[[\\\"Timestamp\\\",\\\"TimestampTime\\\",\\\"ResourceAttributes\\\",\\\"LogAttributes\\\"]].head(4).to_string(index=False)); print(\\\"sample body\\\",d.iloc[-1].Body[:2200])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"k8s_events_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); z=collections.Counter(); ex={};\\nfor _,r in d.iterrows():\\n try:o=json.loads(r.Body).get(\\\"object\\\",{}); io=o.get(\\\"involvedObject\\\",{}); key=(io.get(\\\"namespace\\\",\\\"\\\"),io.get(\\\"kind\\\",\\\"\\\"),io.get(\\\"name\\\",\\\"\\\"),o.get(\\\"type\\\",\\\"\\\"),o.get(\\\"reason\\\",\\\"\\\"),o.get(\\\"message\\\",\\\"\\\")); z[key]+=int(o.get(\\\"count\\\",1)); ex[key]=(r.TimestampTime,o.get(\\\"firstTimestamp\\\"),o.get(\\\"lastTimestamp\\\"))\\n except:pass\\nfor k,n in z.items():\\n if k[3]==\\\"Warning\\\" or (k[4] not in (\\\"RELOAD\\\",\\\"Info\\\") and any(q in k[4]+k[5] for q in [\\\"Failed\\\",\\\"Error\\\",\\\"BackOff\\\",\\\"Unhealthy\\\",\\\"Exceeded\\\",\\\"Forbidden\\\",\\\"FailedScheduling\\\"])): print(n,ex[k],k)'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"k8s_objects_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); c=collections.Counter(); last={};\\nfor _,r in d.iterrows():\\n try:o=json.loads(r.Body); m=o.get(\\\"metadata\\\",{}); k=(m.get(\\\"namespace\\\",\\\"cluster\\\"),o.get(\\\"kind\\\",\\\"\\\"),m.get(\\\"name\\\",\\\"\\\")); c[k]+=1; last[k]=o\\n except: pass\\nprint(\\\"object kinds\\\",collections.Counter(k[1] for k in c)); print(\\\"unique\\\",len(c));\\nfor (ns,kind,name),cnt in c.items():\\n if kind in [\\\"ResourceQuota\\\",\\\"LimitRange\\\",\\\"PersistentVolumeClaim\\\",\\\"Deployment\\\",\\\"StatefulSet\\\",\\\"Pod\\\",\\\"Node\\\",\\\"ConfigMap\\\",\\\"Secret\\\",\\\"HorizontalPodAutoscaler\\\",\\\"StorageClass\\\",\\\"PersistentVolume\\\",\\\"VolumeAttachment\\\",\\\"Service\\\",\\\"Ingress\\\",\\\"CiliumLoadBalancerIPPool\\\",\\\"Lease\\\"]:\\n  o=last[(ns,kind,name)]; status=o.get(\\\"status\\\",{}); spec=o.get(\\\"spec\\\",{}); print(\\\"OBJ\\\",ns,kind,name,\\\"n\\\",cnt,\\\"spec\\\",json.dumps(spec,ensure_ascii=False)[:1200],\\\"status\\\",json.dumps(status,ensure_ascii=False)[:1800])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"k8s_objects_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); kinds=collections.Counter(); x=[];\\nfor _,r in d.iterrows():\\n try:o=json.loads(r.Body); k=o.get(\\\"kind\\\"); m=o.get(\\\"metadata\\\",{}); kinds[k]+=1\\n except:pass\\nprint(kinds); print(\\\"sample first\\\",json.dumps(json.loads(d.iloc[0].Body),ensure_ascii=False)[:1000])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"k8s_events_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False);\\nfor _,r in d.iterrows():\\n try:\\n  o=json.loads(r.Body).get(\\\"object\\\",{}); io=o.get(\\\"involvedObject\\\",{});\\n  if o.get(\\\"type\\\")==\\\"Warning\\\": print(r.TimestampTime,io.get(\\\"namespace\\\",\\\"cluster\\\"),io.get(\\\"kind\\\"),io.get(\\\"name\\\"),o.get(\\\"reason\\\"),o.get(\\\"message\\\"),\\\"count\\\",o.get(\\\"count\\\"))\\n except:pass'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"k8s_objects_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); last={};\\nfor _,r in d.iterrows():\\n try:o=json.loads(r.Body); m=o.get(\\\"metadata\\\",{}); key=(m.get(\\\"namespace\\\",\\\"cluster\\\"),o.get(\\\"kind\\\"),m.get(\\\"name\\\")); last[key]=o\\n except:pass\\nfor (ns,k,n),o in last.items():\\n if k==\\\"Pod\\\":\\n  s=o.get(\\\"status\\\",{}); phase=s.get(\\\"phase\\\"); cs=s.get(\\\"containerStatuses\\\",[]); bad=[(c.get(\\\"name\\\"),c.get(\\\"ready\\\"),c.get(\\\"restartCount\\\"),c.get(\\\"state\\\")) for c in cs if not c.get(\\\"ready\\\") or c.get(\\\"restartCount\\\",0)>0];\\n  if phase!=\\\"Running\\\" or bad: print(\\\"POD\\\",ns,n,\\\"phase\\\",phase,\\\"conditions\\\",s.get(\\\"conditions\\\"),\\\"badcontainers\\\",json.dumps(bad)[:1000])\\n if k in (\\\"Deployment\\\",\\\"StatefulSet\\\"):\\n  s=o.get(\\\"status\\\",{}); spec=o.get(\\\"spec\\\",{}); desired=spec.get(\\\"replicas\\\",1); ready=s.get(\\\"readyReplicas\\\",0); avail=s.get(\\\"availableReplicas\\\",0); gen=o.get(\\\"metadata\\\",{}).get(\\\"generation\\\"); obs=s.get(\\\"observedGeneration\\\");\\n  if ready!=desired or avail!=desired or (obs is not None and obs<gen): print(\\\"CTRL\\\",ns,k,n,\\\"desired\\\",desired,\\\"ready\\\",ready,\\\"avail\\\",avail,\\\"status\\\",json.dumps(s)[:1600])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"k8s_objects_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); last={};\\nfor _,r in d.iterrows():\\n try:o=json.loads(r.Body); m=o.get(\\\"metadata\\\",{}); key=(m.get(\\\"namespace\\\",\\\"cluster\\\"),o.get(\\\"kind\\\"),m.get(\\\"name\\\")); last[key]=o\\n except:pass\\nfor (ns,k,n),o in last.items():\\n if k in (\\\"PersistentVolumeClaim\\\",\\\"PersistentVolume\\\",\\\"LimitRange\\\",\\\"Node\\\",\\\"StorageClass\\\"):\\n  print(\\\"OBJ\\\",ns,k,n,\\\"spec\\\",json.dumps(o.get(\\\"spec\\\",{}),ensure_ascii=False)[:1500],\\\"status\\\",json.dumps(o.get(\\\"status\\\",{}),ensure_ascii=False)[:1500])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/metrics/\\\";\\nfor f in [\\\"service_frontend_raw.tsv\\\",\\\"service_frontend-proxy_raw.tsv\\\",\\\"service_checkout_raw.tsv\\\",\\\"service_ad_raw.tsv\\\",\\\"pod_frontend-675fd7b5c5-h8sk5_raw.tsv\\\",\\\"pod_frontend-proxy-6b4d584985-w6g8c_raw.tsv\\\",\\\"pod_cart-755465879b-bpsqk_raw.tsv\\\",\\\"pod_product-catalog-7c7f8b68dc-477tv_raw.tsv\\\"]:\\n d=pd.read_csv(b+f,sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); print(\\\"\\\\nFILE\\\",f,\\\"rows\\\",len(d)); print(\\\"metric\\\",d.metric_name.value_counts().to_dict()); print(\\\"status\\\",d.status_code.value_counts().to_dict() if \\\"status_code\\\" in d else \\\"\\\"); print(\\\"timestamps\\\",d.timestamp.min(),d.timestamp.max());\\n for m,g in d.groupby(\\\"metric_name\\\"):\\n  print(\\\" \\\",m,\\\"n\\\",len(g),\\\"values\\\",g.value.head(4).tolist(),\\\"tail\\\",g.value.tail(4).tolist(),\\\"tags\\\",g.tags.iloc[0][:400])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,re; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"otel_logs_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); print(\\\"time range\\\",d.TimestampTime.min(),d.TimestampTime.max()); print(\\\"severities\\\",d.SeverityText.value_counts().to_dict()); m=d.Body.str.contains(r\\\"(?i)error|fail|exception|refused|timeout|unavailable|denied|quota|crash\\\",regex=True); x=d[m]; print(\\\"matching\\\",len(x));\\nfor _,r in x.iterrows():\\n print(r.TimestampTime,r.ServiceName,r.SeverityText,r.Body[:900],\\\"attrs\\\",r.ResourceAttributes[:350],\\\"logs\\\",r.LogAttributes[:500])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"otel_traces_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); x=d[d.StatusCode==\\\"Error\\\"]; print(\\\"error spans\\\",len(x)); print(\\\"services\\\",x.ServiceName.value_counts().to_dict());\\nfor _,r in x.head(100).iterrows(): print(r.Timestamp,r.ServiceName,r.SpanName,\\\"dur\\\",r.Duration,\\\"status\\\",r.StatusMessage,\\\"attrs\\\",r.SpanAttributes[:1200],\\\"resource\\\",r.ResourceAttributes[:500],\\\"events\\\",r[\\\"Events.Name\\\"],r[\\\"Events.Attributes\\\"][:400])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"k8s_objects_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); print(\\\"unique\\\"); latest={}; hist=collections.defaultdict(list);\\nfor _,r in d.iterrows():\\n try:o=json.loads(r.Body); m=o.get(\\\"metadata\\\",{}); k=(m.get(\\\"namespace\\\",\\\"cluster\\\"),o.get(\\\"kind\\\"),m.get(\\\"name\\\")); latest[k]=o; hist[k].append((r.TimestampTime,o))\\n except:pass\\nfor ns,k,n in [(\\\"otel-demo\\\",\\\"Service\\\",\\\"frontend\\\"),(\\\"otel-demo\\\",\\\"Endpoints\\\",\\\"frontend\\\"),(\\\"otel-demo\\\",\\\"Deployment\\\",\\\"frontend\\\"),(\\\"otel-demo\\\",\\\"ReplicaSet\\\",\\\"frontend-675fd7b5c5\\\"),(\\\"otel-demo\\\",\\\"Pod\\\",\\\"frontend-675fd7b5c5-h8sk5\\\"),(\\\"otel-demo\\\",\\\"Service\\\",\\\"frontend-proxy\\\"),(\\\"otel-demo\\\",\\\"Endpoints\\\",\\\"frontend-proxy\\\"),(\\\"otel-demo\\\",\\\"Deployment\\\",\\\"frontend-proxy\\\"),(\\\"otel-demo\\\",\\\"Pod\\\",\\\"frontend-proxy-6b4d584985-w6g8c\\\"),(\\\"otel-demo\\\",\\\"Service\\\",\\\"product-catalog\\\"),(\\\"otel-demo\\\",\\\"Endpoints\\\",\\\"product-catalog\\\")]:\\n key=(ns,k,n); print(\\\"\\\\n\\\",key,\\\"versions\\\",len(hist[key]));\\n for t,o in hist[key]:\\n  print(t,json.dumps({\\\"meta\\\":{\\\"labels\\\":o.get(\\\"metadata\\\",{}).get(\\\"labels\\\"),\\\"generation\\\":o.get(\\\"metadata\\\",{}).get(\\\"generation\\\")},\\\"spec\\\":o.get(\\\"spec\\\"),\\\"status\\\":o.get(\\\"status\\\")},ensure_ascii=False)[:2200])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,collections,json; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"otel_traces_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); x=d[d.StatusCode==\\\"Error\\\"].copy(); x[\\\"minute\\\"]=x.Timestamp.str.slice(0,16); print(\\\"error minute svc\\\"); print(x.groupby([\\\"minute\\\",\\\"ServiceName\\\"]).size().to_string()); print(\\\"\\\\nerror types by svc/span/status\\\")\\nfor key,g in x.groupby([\\\"ServiceName\\\",\\\"SpanName\\\",\\\"StatusMessage\\\"]): print(len(g),key,\\\"times\\\",g.Timestamp.min(),g.Timestamp.max(),\\\"attr\\\",g.SpanAttributes.iloc[0][:500],\\\"resource\\\",g.ResourceAttributes.iloc[0][:250])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/metrics/\\\";\\nfor f in [\\\"service_frontend_raw.tsv\\\",\\\"service_frontend-proxy_raw.tsv\\\",\\\"service_checkout_raw.tsv\\\",\\\"service_ad_raw.tsv\\\"]:\\n d=pd.read_csv(b+f,sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); d=d[(d.metric_name==\\\"traces_span_metrics_calls_total\\\") & d.timestamp.str.startswith(\\\"2025-12-15 17:\\\")]; print(\\\"\\\\n\\\",f); print(d[[\\\"timestamp\\\",\\\"value\\\",\\\"service_name\\\",\\\"status_code\\\",\\\"tags\\\"]].to_string(index=False,max_colwidth=300))'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"k8s_events_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False);\\nfor _,r in d.iterrows():\\n try:o=json.loads(r.Body).get(\\\"object\\\",{}); io=o.get(\\\"involvedObject\\\",{}); ts=str(o.get(\\\"lastTimestamp\\\") or r.TimestampTime);\\n except:continue\\n if \\\"2025-12-15T17:45\\\" <= ts <= \\\"2025-12-15T18:00\\\": print(ts,io.get(\\\"namespace\\\",\\\"cluster\\\"),io.get(\\\"kind\\\"),io.get(\\\"name\\\"),o.get(\\\"type\\\"),o.get(\\\"reason\\\"),o.get(\\\"message\\\"),\\\"count\\\",o.get(\\\"count\\\"))'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"k8s_objects_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); hist=collections.defaultdict(list);\\nfor _,r in d.iterrows():\\n try:o=json.loads(r.Body); m=o.get(\\\"metadata\\\",{}); key=(m.get(\\\"namespace\\\",\\\"cluster\\\"),o.get(\\\"kind\\\"),m.get(\\\"name\\\")); hist[key].append((r.TimestampTime,o))\\n except:pass\\nfor key,arr in hist.items():\\n ns,k,n=key\\n if ns==\\\"otel-demo\\\" and k in (\\\"Deployment\\\",\\\"Endpoints\\\",\\\"Pod\\\",\\\"ReplicaSet\\\") and any(x in n for x in [\\\"frontend\\\",\\\"checkout\\\",\\\"product-catalog\\\",\\\"cart\\\",\\\"ad\\\"]):\\n  print(\\\"\\\\nRES\\\",key,\\\"versions\\\",len(arr));\\n  for t,o in arr:\\n   if t>=\\\"2025-12-15 17:47\\\":\\n    if k==\\\"Deployment\\\": val={\\\"generation\\\":o.get(\\\"metadata\\\",{}).get(\\\"generation\\\"),\\\"spec\\\":o.get(\\\"spec\\\"),\\\"status\\\":o.get(\\\"status\\\")}\\n    elif k==\\\"Endpoints\\\": val=o.get(\\\"subsets\\\")\\n    elif k==\\\"Pod\\\": val={\\\"node\\\":o.get(\\\"spec\\\",{}).get(\\\"nodeName\\\"),\\\"ip\\\":o.get(\\\"status\\\",{}).get(\\\"podIP\\\"),\\\"phase\\\":o.get(\\\"status\\\",{}).get(\\\"phase\\\"),\\\"conds\\\":o.get(\\\"status\\\",{}).get(\\\"conditions\\\"),\\\"cs\\\":o.get(\\\"status\\\",{}).get(\\\"containerStatuses\\\")}\\n    else: val={\\\"owner\\\":o.get(\\\"metadata\\\",{}).get(\\\"ownerReferences\\\"),\\\"spec\\\":o.get(\\\"spec\\\"),\\\"status\\\":o.get(\\\"status\\\")}\\n    print(t,json.dumps(val,ensure_ascii=False)[:1100])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/metrics/\\\";\\nfor f in [\\\"pod_frontend-675fd7b5c5-h8sk5_raw.tsv\\\",\\\"pod_frontend-proxy-6b4d584985-w6g8c_raw.tsv\\\",\\\"pod_checkout-5dccddf8bb-q5fkd_raw.tsv\\\",\\\"pod_product-catalog-7c7f8b68dc-477tv_raw.tsv\\\",\\\"pod_cart-755465879b-bpsqk_raw.tsv\\\"]:\\n d=pd.read_csv(b+f,sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); print(\\\"\\\\n\\\",f,\\\"rows\\\",len(d),\\\"metrics\\\",d.metric_name.value_counts().to_dict()); print(\\\"tags\\\",d.tags.head(1).tolist()); print(\\\"time\\\",d.timestamp.min(),d.timestamp.max())'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"otel_traces_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); x=d[d.StatusCode==\\\"Error\\\"];\\nfor svc,g in x.groupby(\\\"ServiceName\\\"):\\n print(\\\"\\\\nSVC\\\",svc,\\\"n\\\",len(g),\\\"time\\\",g.Timestamp.min(),g.Timestamp.max());\\n for _,r in g.iterrows():\\n  if r.Timestamp >= \\\"2025-12-15 17:45\\\":\\n   try:a=json.loads(r.SpanAttributes)\\n   except:a={}\\n   try:res=json.loads(r.ResourceAttributes)\\n   except:res={}\\n   print(r.Timestamp,r.SpanName,\\\"msg\\\",r.StatusMessage[:250].replace(\\\"\\\\n\\\",\\\" \\\"),\\\"attrs\\\",{k:v for k,v in a.items() if k in [\\\"http.response.status_code\\\",\\\"http.route\\\",\\\"url.path\\\",\\\"rpc.grpc.status_code\\\",\\\"rpc.method\\\",\\\"rpc.service\\\",\\\"server.address\\\",\\\"network.peer.address\\\",\\\"error.type\\\"]},\\\"pod\\\",res.get(\\\"k8s.pod.name\\\"));'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,ast,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/metrics/\\\";\\nfor f in [\\\"service_frontend_raw.tsv\\\",\\\"service_frontend-proxy_raw.tsv\\\",\\\"service_checkout_raw.tsv\\\",\\\"service_ad_raw.tsv\\\",\\\"service_payment_raw.tsv\\\"]:\\n d=pd.read_csv(b+f,sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); d=d[d.metric_name==\\\"traces_span_metrics_calls_total\\\"];\\n z=collections.defaultdict(lambda:collections.defaultdict(float));\\n for _,r in d.iterrows():\\n  if not r.timestamp.startswith(\\\"2025-12-15 17:\\\"):continue\\n  try:t=ast.literal_eval(r.tags)\\n  except:t={}\\n  svc=(t.get(\\\"span_name\\\") or t.get(\\\"span.name\\\") or t.get(\\\"otel_scope_name\\\") or str(t)); stat=r.status_code; minute=r.timestamp[11:16]; z[minute][(stat,svc)]+=float(r.value)\\n print(\\\"\\\\nFILE\\\",f)\\n for minute,items in sorted(z.items()):\\n  vals=[(k,v) for k,v in items.items() if v>0]\\n  if vals: print(minute,vals[:20])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"k8s_objects_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); h=collections.defaultdict(list);\\nfor _,r in d.iterrows():\\n try:o=json.loads(r.Body); m=o.get(\\\"metadata\\\",{}); key=(m.get(\\\"namespace\\\",\\\"cluster\\\"),o.get(\\\"kind\\\"),m.get(\\\"name\\\")); h[key].append((r.TimestampTime,o))\\n except:pass\\nfor name in [\\\"ad\\\",\\\"payment\\\",\\\"frontend\\\",\\\"frontend-proxy\\\",\\\"checkout\\\"]:\\n for key,a in h.items():\\n  if key[0]==\\\"otel-demo\\\" and key[1]==\\\"Deployment\\\" and key[2]==name:\\n   print(\\\"DEPLOY\\\",key,\\\"versions\\\",len(a));\\n   for t,o in a: print(t,\\\"gen\\\",o.get(\\\"metadata\\\",{}).get(\\\"generation\\\"),\\\"rep\\\",o.get(\\\"spec\\\",{}).get(\\\"replicas\\\"),\\\"template\\\",json.dumps(o.get(\\\"spec\\\",{}).get(\\\"template\\\",{}).get(\\\"spec\\\",{}),ensure_ascii=False)[:1000],\\\"status\\\",o.get(\\\"status\\\"))'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"otel_traces_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); x=d[(d.StatusCode==\\\"Error\\\")&(d.Timestamp>=\\\"2025-12-15 17:49\\\")&(d.Timestamp<=\\\"2025-12-15 17:51\\\")];\\nfor svc,g in x.groupby(\\\"ServiceName\\\"):\\n print(\\\"SVC\\\",svc,\\\"count\\\",len(g)); print(\\\"spans\\\",g.SpanName.value_counts().to_dict()); print(\\\"messages\\\",g.StatusMessage.value_counts().head(8).to_dict());\\n for _,r in g.head(2).iterrows(): print(\\\"SAMPLE\\\",r.Timestamp,r.SpanName,r.StatusMessage[:500],\\\"spanattrs\\\",r.SpanAttributes[:700])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"k8s_objects_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); h=collections.defaultdict(list);\\nfor _,r in d.iterrows():\\n try:o=json.loads(r.Body); m=o.get(\\\"metadata\\\",{}); key=(m.get(\\\"namespace\\\",\\\"cluster\\\"),o.get(\\\"kind\\\"),m.get(\\\"name\\\")); h[key].append((r.TimestampTime,o))\\n except:pass\\nfor svc in [\\\"frontend\\\",\\\"frontend-proxy\\\",\\\"checkout\\\",\\\"payment\\\",\\\"ad\\\"]:\\n print(\\\"\\\\nSVC\\\",svc)\\n for (ns,k,n),arr in h.items():\\n  if ns!=\\\"otel-demo\\\" or not (n==svc or n.startswith(svc+\\\"-\\\")):continue\\n  if k not in [\\\"Service\\\",\\\"Endpoints\\\",\\\"Deployment\\\",\\\"ReplicaSet\\\",\\\"Pod\\\"]:continue\\n  for t,o in arr:\\n   if \\\"2025-12-15 17:49\\\"<=t<=\\\"2025-12-15 17:55\\\":\\n    meta=o.get(\\\"metadata\\\",{}); s=o.get(\\\"status\\\",{}); spec=o.get(\\\"spec\\\",{}); \\n    if k==\\\"Service\\\": val={\\\"clusterIP\\\":spec.get(\\\"clusterIP\\\"),\\\"selector\\\":spec.get(\\\"selector\\\"),\\\"ports\\\":spec.get(\\\"ports\\\")}\\n    elif k==\\\"Endpoints\\\": val={\\\"subsets\\\":o.get(\\\"subsets\\\")}\\n    elif k==\\\"Deployment\\\": val={\\\"gen\\\":meta.get(\\\"generation\\\"),\\\"specRep\\\":spec.get(\\\"replicas\\\"),\\\"images\\\":[c.get(\\\"image\\\") for c in spec.get(\\\"template\\\",{}).get(\\\"spec\\\",{}).get(\\\"containers\\\",[])],\\\"ann\\\":spec.get(\\\"template\\\",{}).get(\\\"metadata\\\",{}).get(\\\"annotations\\\"),\\\"ready\\\":s.get(\\\"readyReplicas\\\"),\\\"available\\\":s.get(\\\"availableReplicas\\\"),\\\"conditions\\\":s.get(\\\"conditions\\\")}\\n    elif k==\\\"ReplicaSet\\\": val={\\\"replicas\\\":spec.get(\\\"replicas\\\"),\\\"selector\\\":spec.get(\\\"selector\\\"),\\\"podLabels\\\":spec.get(\\\"template\\\",{}).get(\\\"metadata\\\",{}).get(\\\"labels\\\"),\\\"images\\\":[c.get(\\\"image\\\") for c in spec.get(\\\"template\\\",{}).get(\\\"spec\\\",{}).get(\\\"containers\\\",[])],\\\"status\\\":s}\\n    else: val={\\\"node\\\":spec.get(\\\"nodeName\\\"),\\\"ip\\\":s.get(\\\"podIP\\\"),\\\"phase\\\":s.get(\\\"phase\\\"),\\\"conditions\\\":[(c.get(\\\"type\\\"),c.get(\\\"status\\\"),c.get(\\\"reason\\\"),c.get(\\\"message\\\")) for c in s.get(\\\"conditions\\\",[])],\\\"containers\\\":[(c.get(\\\"name\\\"),c.get(\\\"ready\\\"),c.get(\\\"restartCount\\\"),c.get(\\\"state\\\")) for c in s.get(\\\"containerStatuses\\\",[])]}\\n    print(t,k,n,json.dumps(val,ensure_ascii=False)[:900])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,ast,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/metrics/\\\";\\nfor f in [\\\"service_frontend_raw.tsv\\\",\\\"service_frontend-proxy_raw.tsv\\\",\\\"service_checkout_raw.tsv\\\",\\\"service_payment_raw.tsv\\\",\\\"service_ad_raw.tsv\\\"]:\\n d=pd.read_csv(b+f,sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); d=d[(d.metric_name==\\\"traces_span_metrics_calls_total\\\") & (d.status_code==\\\"STATUS_CODE_ERROR\\\") & d.timestamp.str.startswith(\\\"2025-12-15 17:\\\")]; print(\\\"\\\\n\\\",f,\\\"rows\\\",len(d));\\n for _,r in d.iterrows():\\n  if r.timestamp[11:16] in [\\\"17:49\\\",\\\"17:50\\\",\\\"17:51\\\",\\\"17:52\\\",\\\"17:53\\\",\\\"17:54\\\",\\\"17:55\\\",\\\"17:56\\\",\\\"17:57\\\",\\\"17:58\\\",\\\"17:59\\\"]:\\n   try:t=ast.literal_eval(r.tags)\\n   except:t={}\\n   print(r.timestamp,\\\"val\\\",r.value,\\\"span\\\",t.get(\\\"span_name\\\"),\\\"peer\\\",t.get(\\\"peer.service\\\"),\\\"status\\\",r.status_code,\\\"tags\\\",{k:v for k,v in t.items() if k in [\\\"span_name\\\",\\\"span.kind\\\",\\\"peer.service\\\",\\\"rpc.method\\\",\\\"rpc.service\\\",\\\"http.route\\\",\\\"http.status_code\\\"]})'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,ast,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/metrics/\\\";\\nfor f in [\\\"service_frontend_raw.tsv\\\",\\\"service_frontend-proxy_raw.tsv\\\",\\\"service_checkout_raw.tsv\\\",\\\"service_payment_raw.tsv\\\",\\\"service_ad_raw.tsv\\\"]:\\n d=pd.read_csv(b+f,sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); d=d[(d.metric_name==\\\"traces_span_metrics_calls_total\\\") & d.timestamp.str.startswith(\\\"2025-12-15 17:\\\")]; print(\\\"\\\\nFILE\\\",f);\\n for t,g in d.groupby(\\\"timestamp\\\"):\\n  if t[11:16] not in [\\\"17:49\\\",\\\"17:50\\\",\\\"17:51\\\",\\\"17:52\\\",\\\"17:53\\\",\\\"17:54\\\",\\\"17:55\\\",\\\"17:56\\\",\\\"17:57\\\",\\\"17:58\\\",\\\"17:59\\\"]:continue\\n  z=collections.defaultdict(float)\\n  for _,r in g.iterrows():z[r.status_code]+=float(r.value)\\n  print(t,\\\"rows\\\",len(g),\\\"status sums\\\",dict(z))'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"otel_traces_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); x=d[(d.ServiceName.isin([\\\"frontend\\\",\\\"frontend-proxy\\\",\\\"checkout\\\",\\\"payment\\\",\\\"ad\\\"])) & (d.Timestamp>=\\\"2025-12-15 17:49\\\") & (d.Timestamp<=\\\"2025-12-15 18:00\\\")]; print(\\\"rows\\\",len(x));\\nfor svc,g in x.groupby(\\\"ServiceName\\\"):\\n print(\\\"\\\\n\\\",svc,\\\"status\\\",g.StatusCode.value_counts().to_dict(),\\\"span top\\\",g.SpanName.value_counts().head(12).to_dict(),\\\"time\\\",g.Timestamp.min(),g.Timestamp.max());\\n for _,r in g[(g.StatusCode==\\\"Error\\\")].groupby(\\\"SpanName\\\").head(1).iterrows():print(\\\"ERR\\\",r.Timestamp,r.SpanName,r.StatusMessage[:300],r.SpanAttributes[:500])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"k8s_objects_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); last={};\\nfor _,r in d.iterrows():\\n try:o=json.loads(r.Body); m=o.get(\\\"metadata\\\",{}); last[(m.get(\\\"namespace\\\",\\\"cluster\\\"),o.get(\\\"kind\\\"),m.get(\\\"name\\\"))]=o\\n except:pass\\nfor (ns,k,n),o in last.items():\\n if k==\\\"Node\\\":\\n  s=o.get(\\\"status\\\",{}); print(\\\"NODE\\\",n,\\\"conditions\\\",[(x.get(\\\"type\\\"),x.get(\\\"status\\\"),x.get(\\\"reason\\\"),x.get(\\\"message\\\"),x.get(\\\"lastTransitionTime\\\")) for x in s.get(\\\"conditions\\\",[])],\\\"taints\\\",o.get(\\\"spec\\\",{}).get(\\\"taints\\\"),\\\"capacity\\\",s.get(\\\"capacity\\\"),\\\"allocatable\\\",s.get(\\\"allocatable\\\"))'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,re,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"otel_logs_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); x=d[d.ServiceName==\\\"frontend-proxy\\\"].copy(); x=x[x.TimestampTime.str.startswith(\\\"2025-12-15 17:\\\")]; x[\\\"code\\\"]=x.Body.str.extract(r\\\"HTTP/1\\\\.1\\\\\\\"\\\\s+(\\\\d{3})\\\",expand=False); x[\\\"minute\\\"]=x.TimestampTime.str.slice(0,16); print(\\\"rows\\\",len(x),\\\"codes\\\",x.code.value_counts().to_dict());\\nfor t,g in x.groupby(\\\"minute\\\"): print(t,\\\"n\\\",len(g),\\\"codes\\\",g.code.value_counts().to_dict(),\\\"bodies\\\",g.Body.head(2).tolist())'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,ast,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/metrics/\\\";\\nfor f in [\\\"pod_frontend-675fd7b5c5-h8sk5_raw.tsv\\\",\\\"pod_frontend-proxy-6b4d584985-w6g8c_raw.tsv\\\",\\\"pod_ad-6cb57f76d-xmcq6_raw.tsv\\\",\\\"pod_payment-9c8ffb665-qrm84_raw.tsv\\\",\\\"pod_otel-collector-564d9c7987-dbhm6_raw.tsv\\\"]:\\n d=pd.read_csv(b+f,sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); print(\\\"\\\\n\\\",f)\\n for metric in [\\\"container_cpu_cfs_periods_total\\\",\\\"container_cpu_cfs_throttled_periods_total\\\",\\\"container_memory_usage_bytes\\\",\\\"container_memory_working_set_bytes\\\",\\\"container_memory_limit_bytes\\\",\\\"container_memory_failcnt\\\",\\\"container_memory_failures_total\\\",\\\"container_cpu_usage_seconds_total\\\",\\\"cluster:namespace:pod_memory:active:kube_pod_container_resource_limits\\\",\\\"cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits\\\"]:\\n  g=d[d.metric_name==metric];\\n  if len(g):\\n   g=g[g.timestamp.str.startswith(\\\"2025-12-15 17:\\\")]; print(metric,\\\"n\\\",len(g),\\\"range\\\",g.value.min(),g.value.max(),\\\"rows\\\",[(r.timestamp,r.value) for r in g.tail(3).itertuples(index=False)])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"otel_logs_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); x=d[d.TimestampTime.between(\\\"2025-12-15 17:48:00\\\",\\\"2025-12-15 18:00:00\\\")]; print(\\\"rows\\\",len(x),\\\"by service\\\",x.ServiceName.value_counts().to_dict());\\nfor svc,g in x.groupby(\\\"ServiceName\\\"):\\n if svc in [\\\"frontend\\\",\\\"frontend-proxy\\\",\\\"checkout\\\",\\\"payment\\\",\\\"ad\\\",\\\"cart\\\",\\\"product-catalog\\\",\\\"otel-collector\\\"]:\\n  print(\\\"\\\\n\\\",svc,\\\"rows\\\",len(g),\\\"sev\\\",g.SeverityText.value_counts().to_dict());\\n  for body in g.Body.unique()[:4]: print(body[:600])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,ast,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/metrics/\\\";\\nfor f in [\\\"service_ad_raw.tsv\\\",\\\"service_frontend_raw.tsv\\\",\\\"service_frontend-proxy_raw.tsv\\\",\\\"service_payment_raw.tsv\\\",\\\"service_checkout_raw.tsv\\\"]:\\n d=pd.read_csv(b+f,sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); d=d[(d.metric_name==\\\"traces_span_metrics_calls_total\\\") & d.timestamp.str.startswith(\\\"2025-12-15 17:\\\")]; print(\\\"\\\\n\\\",f)\\n for _,r in d.iterrows():\\n  if r.timestamp[11:16] not in [\\\"17:27\\\",\\\"17:40\\\",\\\"17:49\\\",\\\"17:50\\\",\\\"17:51\\\",\\\"17:52\\\",\\\"17:55\\\",\\\"17:58\\\",\\\"17:59\\\"]:continue\\n  try:t=ast.literal_eval(r.tags)\\n  except:t={}\\n  print(r.timestamp,r.value,r.status_code,t.get(\\\"span_name\\\"))'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,ast,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/metrics/\\\";\\nfor f in [\\\"pod_ad-6cb57f76d-xmcq6_raw.tsv\\\",\\\"pod_payment-9c8ffb665-qrm84_raw.tsv\\\",\\\"pod_frontend-675fd7b5c5-h8sk5_raw.tsv\\\"]:\\n d=pd.read_csv(b+f,sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); print(\\\"\\\\n\\\",f)\\n for metric in [\\\"container_cpu_cfs_periods_total\\\",\\\"container_cpu_cfs_throttled_periods_total\\\",\\\"container_memory_usage_bytes\\\",\\\"container_memory_failcnt\\\"]:\\n  g=d[d.metric_name==metric];\\n  if not len(g):continue\\n  z=[]\\n  for _,r in g.iterrows():\\n   if not r.timestamp.startswith(\\\"2025-12-15 17:\\\"):continue\\n   try:t=ast.literal_eval(r.tags)\\n   except:t={}\\n   if t.get(\\\"container\\\") in [\\\"ad\\\",\\\"payment\\\",\\\"frontend\\\"] and r.timestamp[11:16] in [\\\"17:49\\\",\\\"17:50\\\",\\\"17:51\\\",\\\"17:55\\\",\\\"17:58\\\",\\\"17:59\\\"]: z.append((r.timestamp,r.value,t.get(\\\"cpu\\\"),t.get(\\\"id\\\")))\\n  if z: print(metric,z[:12],\\\"...tail\\\",z[-5:])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"k8s_objects_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); last={};\\nfor _,r in d.iterrows():\\n try:o=json.loads(r.Body); m=o.get(\\\"metadata\\\",{}); last[(m.get(\\\"namespace\\\",\\\"cluster\\\"),o.get(\\\"kind\\\"),m.get(\\\"name\\\"))]=o\\n except:pass\\nfor k,o in last.items():\\n if k[0]==\\\"otel-demo\\\" and k[1]==\\\"Pod\\\" and k[2] in [\\\"ad-6cb57f76d-xmcq6\\\",\\\"payment-9c8ffb665-qrm84\\\",\\\"frontend-675fd7b5c5-h8sk5\\\"]:\\n  print(k,\\\"status\\\",json.dumps(o.get(\\\"status\\\",{}),ensure_ascii=False)[:1500]);\\n  for c in o.get(\\\"spec\\\",{}).get(\\\"containers\\\",[]):print(\\\"container\\\",c.get(\\\"name\\\"),\\\"resources\\\",c.get(\\\"resources\\\"),\\\"probe\\\",c.get(\\\"readinessProbe\\\"),\\\"startup\\\",c.get(\\\"startupProbe\\\"),\\\"liveness\\\",c.get(\\\"livenessProbe\\\"))'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"otel_traces_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); x=d[d.ServiceName.isin([\\\"flagd\\\",\\\"ad\\\",\\\"fraud-detection\\\",\\\"recommendation\\\"])]; print(\\\"rows\\\",len(x));\\nfor svc,g in x.groupby(\\\"ServiceName\\\"):\\n print(\\\"\\\\nSVC\\\",svc,\\\"rows\\\",len(g),\\\"status\\\",g.StatusCode.value_counts().to_dict());\\n for _,r in g.iterrows():\\n  if r.StatusCode==\\\"Error\\\" or \\\"flagd\\\" in r.SpanName.lower() or \\\"flag\\\" in r.SpanName.lower():print(r.Timestamp,r.SpanName,\\\"dur\\\",r.Duration,\\\"status\\\",r.StatusCode,\\\"msg\\\",r.StatusMessage[:500].replace(\\\"\\\\n\\\",\\\" \\\"),\\\"attrs\\\",r.SpanAttributes[:800])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"k8s_objects_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); h=collections.defaultdict(list);\\nfor _,r in d.iterrows():\\n try:o=json.loads(r.Body); m=o.get(\\\"metadata\\\",{}); key=(m.get(\\\"namespace\\\",\\\"cluster\\\"),o.get(\\\"kind\\\"),m.get(\\\"name\\\")); h[key].append((r.TimestampTime,o))\\n except:pass\\nfor (ns,k,n),arr in h.items():\\n if ns==\\\"otel-demo\\\" and (\\\"flagd\\\" in n):\\n  print(\\\"\\\\n\\\",ns,k,n,\\\"vers\\\",len(arr));\\n  for t,o in arr[-3:]:\\n   if k in [\\\"Deployment\\\",\\\"StatefulSet\\\"]: val={\\\"gen\\\":o.get(\\\"metadata\\\",{}).get(\\\"generation\\\"),\\\"replicas\\\":o.get(\\\"spec\\\",{}).get(\\\"replicas\\\"),\\\"status\\\":o.get(\\\"status\\\"),\\\"template\\\":o.get(\\\"spec\\\",{}).get(\\\"template\\\",{})}\\n   elif k==\\\"Service\\\":val=o.get(\\\"spec\\\")\\n   elif k==\\\"Endpoints\\\":val=o.get(\\\"subsets\\\")\\n   elif k==\\\"Pod\\\":val={\\\"status\\\":o.get(\\\"status\\\"),\\\"spec\\\":o.get(\\\"spec\\\")}\\n   else:val={\\\"spec\\\":o.get(\\\"spec\\\"),\\\"status\\\":o.get(\\\"status\\\")}\\n   print(t,json.dumps(val,ensure_ascii=False)[:1500])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,ast; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/metrics/service_ad_raw.tsv\\\"; d=pd.read_csv(b,sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); x=d[(d.metric_name==\\\"traces_span_metrics_calls_total\\\")&(d.status_code==\\\"STATUS_CODE_ERROR\\\")];\\nfor _,r in x.iterrows():\\n try:t=ast.literal_eval(r.tags)\\n except:t={}\\n print(r.timestamp,r.value,t.get(\\\"span_name\\\"),t.get(\\\"rpc.grpc.status_code\\\"),t.get(\\\"rpc.service\\\"),t.get(\\\"rpc.method\\\"),t.get(\\\"error.type\\\"))'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,ast,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/metrics/\\\";\\nfor f in [\\\"pod_frontend-675fd7b5c5-h8sk5_raw.tsv\\\",\\\"pod_ad-6cb57f76d-xmcq6_raw.tsv\\\",\\\"pod_payment-9c8ffb665-qrm84_raw.tsv\\\"]:\\n d=pd.read_csv(b+f,sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); print(\\\"\\\\n\\\",f)\\n for m in [\\\"container_cpu_cfs_periods_total\\\",\\\"container_cpu_cfs_throttled_periods_total\\\"]:\\n  g=d[d.metric_name==m]; arr=[]\\n  for _,r in g.head(8).iterrows():\\n   try:t=ast.literal_eval(r.tags)\\n   except:t={}\\n   arr.append((r.timestamp,r.value,{k:v for k,v in t.items() if k not in [\\\"id\\\",\\\"prometheus\\\",\\\"prometheus_replica\\\"]}))\\n  print(m,arr)'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"otel_logs_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); x=d[d.ServiceName.isin([\\\"ad\\\",\\\"payment\\\",\\\"frontend\\\",\\\"frontend-proxy\\\",\\\"checkout\\\"]) & d.TimestampTime.between(\\\"2025-12-15 17:49:40\\\",\\\"2025-12-15 17:51:10\\\")];\\nfor _,r in x.iterrows():\\n if any(q in r.Body.lower() for q in [\\\"started\\\",\\\"server started\\\",\\\"error\\\",\\\"charge\\\",\\\"received\\\",\\\"ads\\\"]): print(r.TimestampTime,r.ServiceName,r.Body[:500])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import json,glob,os; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/alerts\\\";\\nfor f in sorted(glob.glob(b+\\\"/alerts_at_*.json\\\")):\\n if \\\"17-49\\\" in f or \\\"17-50\\\" in f or \\\"17-55\\\" in f or \\\"17-56\\\" in f or \\\"17-58\\\" in f:\\n  print(os.path.basename(f));\\n  for a in json.load(open(f)):\\n   l=a.get(\\\"labels\\\",{});\\n   if l.get(\\\"alertname\\\") in [\\\"RequestErrorRate\\\",\\\"NoRequestsDetected\\\"]: print(l,a.get(\\\"value\\\"),a.get(\\\"annotations\\\",{}).get(\\\"description\\\"))'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"k8s_objects_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); last={};\\nfor _,r in d.iterrows():\\n try:o=json.loads(r.Body); m=o.get(\\\"metadata\\\",{}); last[(m.get(\\\"namespace\\\",\\\"cluster\\\"),o.get(\\\"kind\\\"),m.get(\\\"name\\\"))]=o\\n except:pass\\nfor name in [\\\"ad\\\",\\\"payment\\\"]:\\n o=last[(\\\"otel-demo\\\",\\\"Deployment\\\",name)]; p=o.get(\\\"spec\\\",{}).get(\\\"template\\\",{}).get(\\\"spec\\\",{}).get(\\\"containers\\\",[{}])[0]; print(name,\\\"generation\\\",o.get(\\\"metadata\\\",{}).get(\\\"generation\\\"),\\\"annotation\\\",o.get(\\\"spec\\\",{}).get(\\\"template\\\",{}).get(\\\"metadata\\\",{}).get(\\\"annotations\\\"),\\\"replicas\\\",o.get(\\\"spec\\\",{}).get(\\\"replicas\\\"),\\\"readinessProbe\\\",p.get(\\\"readinessProbe\\\"),\\\"livenessProbe\\\",p.get(\\\"livenessProbe\\\"),\\\"status\\\",o.get(\\\"status\\\"))'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd; p=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/otel_traces_raw.tsv\\\"; d=pd.read_csv(p,sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); x=d[(d.StatusCode==\\\"Error\\\") & (d.Timestamp>=\\\"2025-12-15 17:49\\\")];\\nfor svc,span in [(\\\"frontend\\\",\\\"grpc.oteldemo.AdService/GetAds\\\"),(\\\"payment\\\",\\\"grpc.oteldemo.PaymentService/Charge\\\"),(\\\"checkout\\\",\\\"oteldemo.PaymentService/Charge\\\"),(\\\"checkout\\\",\\\"oteldemo.CheckoutService/PlaceOrder\\\")]:\\n g=x[(x.ServiceName==svc)&(x.SpanName==span)]; print(svc,span,\\\"count\\\",len(g),\\\"first\\\",g.Timestamp.min(),\\\"last\\\",g.Timestamp.max(),\\\"msg\\\",g.StatusMessage.iloc[0][:250] if len(g) else \\\"\\\")'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,ast,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/otel_logs_raw.tsv\\\"; d=pd.read_csv(b,sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); x=d[d.ServiceName.isin([\\\"ad\\\",\\\"payment\\\"]) & d.TimestampTime.between(\\\"2025-12-15 17:49:45\\\",\\\"2025-12-15 17:51:10\\\")];\\nfor svc,g in x.groupby(\\\"ServiceName\\\"):\\n print(\\\"SVC\\\",svc,\\\"rows\\\",len(g)); z=collections.defaultdict(list)\\n for _,r in g.iterrows():\\n  try:a=ast.literal_eval(r.ResourceAttributes)\\n  except:a={}\\n  z[a.get(\\\"k8s.pod.name\\\",\\\"?\\\")].append((r.TimestampTime,r.Body[:100]))\\n for p,arr in z.items(): print(p,\\\"count\\\",len(arr),\\\"first\\\",arr[0],\\\"last\\\",arr[-1])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,json,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/\\\"; d=pd.read_csv(b+\\\"k8s_objects_raw.tsv\\\",sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); h=collections.defaultdict(list);\\nfor _,r in d.iterrows():\\n try:o=json.loads(r.Body); m=o.get(\\\"metadata\\\",{}); h[(m.get(\\\"namespace\\\",\\\"cluster\\\"),o.get(\\\"kind\\\"),m.get(\\\"name\\\"))].append((r.TimestampTime,o))\\n except:pass\\nfor name in [\\\"ad\\\",\\\"payment\\\"]:\\n for (ns,k,n),arr in h.items():\\n  if ns==\\\"otel-demo\\\" and k==\\\"Endpoints\\\" and n==name:\\n   print(name,\\\"endpoint history\\\");\\n   for t,o in arr: print(t,[(a.get(\\\"ip\\\"),a.get(\\\"targetRef\\\",{}).get(\\\"name\\\")) for s in (o.get(\\\"subsets\\\") or []) for a in s.get(\\\"addresses\\\",[])],\\\"notReady\\\",[(a.get(\\\"ip\\\"),a.get(\\\"targetRef\\\",{}).get(\\\"name\\\")) for s in (o.get(\\\"subsets\\\") or []) for a in s.get(\\\"notReadyAddresses\\\",[])])'\",\"timeout\":120}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import pandas as pd,re,collections; b=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/otel_logs_raw.tsv\\\"; d=pd.read_csv(b,sep=\\\"\\\\t\\\",dtype=str,keep_default_na=False); x=d[d.ServiceName==\\\"frontend-proxy\\\"].copy(); x=x[x.TimestampTime.between(\\\"2025-12-15 17:49:00\\\",\\\"2025-12-15 18:00:00\\\")]; x[\\\"code\\\"]=x.Body.str.extract(r\\\"HTTP/1\\\\.1\\\\\\\"\\\\s+(\\\\d{3})\\\",expand=False); x[\\\"min\\\"]=x.TimestampTime.str.slice(0,16); print(x.groupby([\\\"min\\\",\\\"code\\\"]).size().to_string());\\nfor _,r in x[x.code.isin([\\\"500\\\",\\\"503\\\",\\\"504\\\"])].head(15).iterrows(): print(r.TimestampTime,r.Body[:220])'\",\"timeout\":120}"
+    },
+    {
+      "name": "apply_patch",
+      "status": "completed",
+      "arguments": "{\"changes\":[{\"operation\":\"create\",\"path\":\"agent_output.json\",\"content\":\"{\\n  \\\"contributing_factors\\\": [\\n    {\\n      \\\"name\\\": \\\"otel-demo/Deployment/ad\\\",\\n      \\\"reasoning\\\": \\\"The single-replica ad Deployment was restarted during the incident and has no readiness probe, allowing traffic to reach its replacement while the application listener was not yet available. Frontend requests to the ad dependency then failed, producing /api/data 500s and the frontend/frontend-proxy error alerts. Those frontend and proxy failures are downstream effects, not separate causes.\\\",\\n      \\\"evidence\\\": \\\"At 17:50:43 the Deployment snapshot shows generation 2, one replica, and kubectl.kubernetes.io/restartedAt=2025-12-15T17:49:49Z; its pod template has no readinessProbe. Kubernetes events show the new ReplicaSet created at 17:49:49 and the old ad pod terminated at 17:49:52; the new Pod is marked Ready at 17:49:52. Traces contain 67 frontend grpc.oteldemo.AdService/GetAds errors from 17:49:54.611 through 17:50:57.205, with ECONNREFUSED to 100.65.180.246:8080, the ClusterIP of otel-demo/Service/ad. The corresponding frontend /api/data requests return 500; RequestErrorRate alerts for frontend (2.58) and frontend-proxy (1.34) are firing at 17:55.\\\"\\n    },\\n    {\\n      \\\"name\\\": \\\"otel-demo/Deployment/payment\\\",\\n      \\\"reasoning\\\": \\\"This is a separate failure in the checkout payment branch. The one-replica payment rollout exposed traffic before the replacement payment server had started; checkout's PaymentService calls consequently failed, so PlaceOrder requests errored. The ad failure does not explain this independent payment dependency failure.\\\",\\n      \\\"evidence\\\": \\\"At 17:50:43 the Deployment snapshot shows generation 2, one replica, and kubectl.kubernetes.io/restartedAt=2025-12-15T17:49:49Z; its pod template has no readinessProbe. Events show the new ReplicaSet created at 17:49:49 and the old payment pod terminated at 17:49:53. The replacement Pod is marked Ready at 17:49:53, but its log says 'payment gRPC server started on port 8080' only at 17:51:02. Traces show 33 PaymentService/Charge and 33 CheckoutService/PlaceOrder failures from 17:49:56 to 17:50:57 with connection refused to 100.70.188.60:8080, the ClusterIP of otel-demo/Service/payment. The RequestErrorRate alert for checkout fires at 17:53.\\\"\\n    }\\n  ]\\n}\\n\"}]}"
+    },
+    {
+      "name": "read_file",
+      "status": "completed",
+      "arguments": "{\"path\":\"agent_output.json\"}"
+    },
+    {
+      "name": "shell",
+      "status": "completed",
+      "arguments": "{\"command\":\"python -c 'import json,os; p=\\\"/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/case-013/workspace/agent_output.json\\\"; d=json.load(open(p)); assert set(d)=={\\\"contributing_factors\\\"}; assert isinstance(d[\\\"contributing_factors\\\"],list); assert all(isinstance(x,dict) and set(x)=={\\\"name\\\",\\\"reasoning\\\",\\\"evidence\\\"} and all(isinstance(x[k],str) for k in x) for x in d[\\\"contributing_factors\\\"]); assert all(len(x[\\\"name\\\"].split(\\\"/\\\"))==3 and \\\"uid\\\" not in x[\\\"name\\\"].lower() for x in d[\\\"contributing_factors\\\"]); print(\\\"JSON/schema OK; factors\\\",len(d[\\\"contributing_factors\\\"]),\\\"bytes\\\",os.path.getsize(p))'\",\"timeout\":120}"
+    },
+    {
+      "name": "manage_goal",
+      "status": "completed",
+      "arguments": "{\"action\":\"complete\",\"id\":\"0a6bd3aa-eebc-44bb-ab28-e8d86e1f83f8\"}"
+    }
+  ],
+  "total_seconds": 879.2519444799982,
+  "owned_core_stopped": true
+}

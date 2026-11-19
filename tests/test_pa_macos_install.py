@@ -165,6 +165,29 @@ class IsolatedInstallerTests(unittest.TestCase):
         self.assertFalse(Path(plan['stage']).exists())
         self.assert_daily_unchanged()
 
+    def test_live_background_process_is_named_in_plan_and_blocks_before_swap(self):
+        plan = self.plan()
+        target = Path(plan['destination'])
+        worker = target / 'Contents/MacOS/companion-worker.py'
+        worker.write_text('import time\ntime.sleep(30)\n')
+        process = subprocess.Popen([sys.executable, str(worker)])
+        try:
+            with patch.object(installer.subprocess, 'run', side_effect=self.native):
+                current = installer.make_plan(self.source, test_app=True, home=self.home)
+            self.assertIn(process.pid, [row['pid'] for row in current['blocking_processes']])
+            with self.assertRaisesRegex(ValueError, 'Core 和 Companion'):
+                installer.install(current)
+            self.assertIn(process.pid, [row['pid'] for row in current['blocking_processes']])
+            self.assertFalse(Path(current['stage']).exists())
+            self.assertFalse(Path(current['archive_directory']).exists())
+            self.assertEqual(installer.digest(target), current['old_sha256'])
+            self.assertIsNone(process.poll())
+        finally:
+            process.terminate()
+            process.wait(timeout=5)
+        self.assertEqual(installer.running_app_processes(target), [])
+        self.assert_daily_unchanged()
+
     def test_receipt_is_preserved_and_cannot_be_overwritten(self):
         path = self.root / 'result.json'
         installer.save_receipt(path, {'status': 'failed', 'rollback': 'restored_previous_app'})

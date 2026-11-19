@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "source_commit": "66665f459bb5ad2d688cdc4bd3693edb7e5e1856",
+  "source_tree": "31dec4b22999741f5b58c2fdd8e90c29b444d475",
+  "legacy_commit": "fe9765c69ce8a39e8a3682d61ceb67c86894c3b4",
+  "original_fixture_sha256": "f57ebbb1787ec3fd37afe72d01dd79c29e64795c407c8530453c0d91bb35e0bd",
+  "adapted_fixture_sha256": "8403e6a657a9e72abec02255c7c87f9e3fe50009efa972b0e9ccd88734a3b621",
+  "wheel_hashes": {
+    "localpilot_agent_service-5.0.0b38-py3-none-any.whl": "1ae15a6048ee3f9c49cf25d8f21a7fe5f3c41e115e3dd1822510bb0bb8028ea1",
+    "localpilot_agent_service-5.0.0b35-py3-none-any.whl": "0460b05485731ea5b30ec781441970b8ba84fabd0735f752838a3fd6e7f440ca"
+  },
+  "active_schema": 4,
+  "conversion": {
+    "status": "compatible",
+    "schema_before": 4,
+    "schema_after": 3,
+    "sessions": 1,
+    "materialized": true,
+    "log": "/tmp/lp-rc21-packaged-rollback-jt43rq4z/home/upgrades/upgrade_1892679f53e34ee3a960ffdd68e67faf/runtime-install-compatibility.log"
+  },
+  "final_stop_schema": 3,
+  "original_journal_rows_preserved": 28,
+  "task_counts": [
+    4,
+    7,
+    8
+  ],
+  "legacy_segments_after_reupgrade": 6,
+  "task_snapshots_and_segments_preserved": true,
+  "installed_product_paths": [
+    "/tmp/lp-rc21-packaged-rollback-jt43rq4z/runtime/lib/python3.13/site-packages/agent/persistence.py",
+    "/tmp/lp-rc21-packaged-rollback-jt43rq4z/runtime/lib/python3.13/site-packages/agent/persistence.py",
+    "/tmp/lp-rc21-packaged-rollback-jt43rq4z/runtime/lib/python3.13/site-packages/agent/persistence.py"
+  ],
+  "system_installation": false,
+  "data": "Independent extracted runtime copy and synthetic scripted-provider fixture"
+}

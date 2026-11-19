@@ -1,0 +1,141 @@
+{
+  "description": "Private originals retained; published copies replace recorded source, validation, Python-runtime, and temporary-directory prefixes. Synthetic task content and outcomes unchanged.",
+  "files": [
+    {
+      "original_path": "model-continuation-raw-logs/cancel-regression-r4.log",
+      "original_bytes": 11195,
+      "original_sha256": "aa4f75f3bf7ab65efd2bcecc635a87d39cfcf080c6d2698b3a9cf8eac064959f",
+      "published_path": "cancel-regression-r4.log",
+      "published_bytes": 11195,
+      "published_sha256": "aa4f75f3bf7ab65efd2bcecc635a87d39cfcf080c6d2698b3a9cf8eac064959f"
+    },
+    {
+      "original_path": "model-continuation-raw-logs/child-shell-runtime-r1.log",
+      "original_bytes": 4650,
+      "original_sha256": "4baa56af7b05cce3648fe27d992e5063383d2de15c38e4fc4e0cea2652576ef3",
+      "published_path": "child-shell-runtime-r1.log",
+      "published_bytes": 3903,
+      "published_sha256": "70d29749fd68e8e11c1d772ead2279e1e7708613c39ee16542e9844e87279538"
+    },
+    {
+      "original_path": "model-continuation-raw-logs/child-shell-runtime-r2.log",
+      "original_bytes": 4555,
+      "original_sha256": "afd04ff17afe8b43cb4050fa614d54d97e53127f8d62a4094c87e7a80a7795a0",
+      "published_path": "child-shell-runtime-r2.log",
+      "published_bytes": 4201,
+      "published_sha256": "7b812296a65f5a3378b6c32d7d2c12bac73e3f0ea3b4f5eb7c0764079164b264"
+    },
+    {
+      "original_path": "model-continuation-raw-logs/child-shell-runtime-r3.log",
+      "original_bytes": 307,
+      "original_sha256": "4d026891227ae7bc8c989db4c71e34528965bf3bfbedec19d22204dc6e871764",
+      "published_path": "child-shell-runtime-r3.log",
+      "published_bytes": 307,
+      "published_sha256": "4d026891227ae7bc8c989db4c71e34528965bf3bfbedec19d22204dc6e871764"
+    },
+    {
+      "original_path": "model-continuation-raw-logs/openai-companion-r3.log",
+      "original_bytes": 11219,
+      "original_sha256": "fc543a0e7cfa9cb656c7c44dea8ba066641e4bc91b5feeebf6b0134e2e0eeedc",
+      "published_path": "openai-companion-r3.log",
+      "published_bytes": 11219,
+      "published_sha256": "fc543a0e7cfa9cb656c7c44dea8ba066641e4bc91b5feeebf6b0134e2e0eeedc"
+    },
+    {
+      "original_path": "model-continuation-raw-logs/openai-companion-targeted-r2.log",
+      "original_bytes": 1505,
+      "original_sha256": "af8b6f31c3199e4ca03e570bcddb9f8b9cbf802adbda74b0e9010af448f5ebf8",
+      "published_path": "openai-companion-targeted-r2.log",
+      "published_bytes": 1449,
+      "published_sha256": "c3296e312603366978d0eb6a1025873890b194800b8c5c1de9252e185a65b591"
+    },
+    {
+      "original_path": "model-continuation-raw-logs/openai-companion-targeted.log",
+      "original_bytes": 3371,
+      "original_sha256": "a25e6b3c3d8964d1f3405a8c7ffa6a8c8fb18b662b67086fc08d426bae331a03",
+      "published_path": "openai-companion-targeted.log",
+      "published_bytes": 2923,
+      "published_sha256": "ebdd9a889be097659cce1f0fd2627f62b6aed05ee32ee7d7a43eac278ffd9a00"
+    },
+    {
+      "original_path": "guided-completion-r3/PROTOCOL.json",
+      "original_bytes": 7885,
+      "original_sha256": "f36d42cd7595296cded84df4639b0d497e79d29b9ab649fa986b899132fe7108",
+      "published_path": "PROTOCOL.json",
+      "published_bytes": 7885,
+      "published_sha256": "f36d42cd7595296cded84df4639b0d497e79d29b9ab649fa986b899132fe7108"
+    },
+    {
+      "original_path": "guided-completion-r3/RESULTS.json",
+      "original_bytes": 18725,
+      "original_sha256": "fdaeb7b10ba2ded099f333d151c2fc0889e0716cc136c97eb09864a80bb930c8",
+      "published_path": "SUMMARY.json",
+      "published_bytes": 18485,
+      "published_sha256": "81012a70cd99a25c09393563970e1253ac255c612529aabae77a9eaac267be92"
+    },
+    {
+      "original_path": "guided-completion-r3/child-cancel-task.json",
+      "original_bytes": 27593,
+      "original_sha256": "5142d1ecd6963fdd9cb28413035604e57f71d23b761056578aaaa4f2ede6744b",
+      "published_path": "child-cancel-task.json",
+      "published_bytes": 26873,
+      "published_sha256": "10a117a951c5a712bd94c0b1dcbb576e9278613910bfa865a3d61e776815db81"
+    },
+    {
+      "original_path": "guided-completion-r3/companion-submit.json",
+      "original_bytes": 3502,
+      "original_sha256": "cc1d2662195610950698c91e153ced7473bbb3ae3e04954f7c169dc2a7d5397c",
+      "published_path": "companion-submit.json",
+      "published_bytes": 3502,
+      "published_sha256": "cc1d2662195610950698c91e153ced7473bbb3ae3e04954f7c169dc2a7d5397c"
+    },
+    {
+      "original_path": "guided-completion-r3/companion-final.json",
+      "original_bytes": 28589,
+      "original_sha256": "25f7265c162bd9c12fe58236d401532aaf917ccb930bb3e081bb3fad3c34a2b5",
+      "published_path": "companion-final.json",
+      "published_bytes": 28589,
+      "published_sha256": "25f7265c162bd9c12fe58236d401532aaf917ccb930bb3e081bb3fad3c34a2b5"
+    },
+    {
+      "original_path": "guided-completion-r3/provider-command.json",
+      "original_bytes": 873,
+      "original_sha256": "c7932d989bfeb8ffbebc91191a945927d07801858e10c7d7e46a6881a69da8a7",
+      "published_path": "provider-command.json",
+      "published_bytes": 717,
+      "published_sha256": "80f0dcb2378055ab2604df39baca46bddcebba5f2948d740f3ca3cb2f8114569"
+    },
+    {
+      "original_path": "guided-completion-r3/provider.log",
+      "original_bytes": 19037,
+      "original_sha256": "a226aa83add87b9aeedcd5ebcf1cf25759fba27be543b3fc711ea4279410cc5f",
+      "published_path": "provider.log",
+      "published_bytes": 18991,
+      "published_sha256": "9ccabc1fda568564b93a63798bf979009e218a3e3fa01ddc3cff1ac07b7fffad"
+    },
+    {
+      "original_path": "guided-completion-r3/core.log",
+      "original_bytes": 109,
+      "original_sha256": "d7ab69d740e73c22e0ff482bac8c470866fc12795920e74eb99e1a037599c517",
+      "published_path": "core.log",
+      "published_bytes": 109,
+      "published_sha256": "d7ab69d740e73c22e0ff482bac8c470866fc12795920e74eb99e1a037599c517"
+    },
+    {
+      "original_path": "guided-completion-r3/provider-metrics-final.txt",
+      "original_bytes": 2594,
+      "original_sha256": "839f77525de642bb600ba0f85dab9304126ace8dea8be8911edc5cd45e94f451",
+      "published_path": "provider-metrics-final.txt",
+      "published_bytes": 2594,
+      "published_sha256": "839f77525de642bb600ba0f85dab9304126ace8dea8be8911edc5cd45e94f451"
+    },
+    {
+      "original_path": "guided-completion-r3/resolved-runtime-budgets.json",
+      "original_bytes": 1046,
+      "original_sha256": "77924b6342a5cd8edc730d14d472b1ade2a1d643e22dee3729b0f9b21248f22b",
+      "published_path": "resolved-runtime-budgets.json",
+      "published_bytes": 1046,
+      "published_sha256": "77924b6342a5cd8edc730d14d472b1ade2a1d643e22dee3729b0f9b21248f22b"
+    }
+  ]
+}

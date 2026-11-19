@@ -4,7 +4,9 @@ from dataclasses import dataclass
 
 from .deepseek import DeepSeekBackend
 from .openai_backend import OpenAIWorkerBackend
+from .openai_responses import OpenAIResponsesBackend
 from .cloud_credentials import CloudCredentialError
+from .policy import DataPolicy
 
 
 TIERS = ("LIGHT", "STRONG")
@@ -36,7 +38,13 @@ def configure_workers(mapping=None, *, data_policy=None):
         reason = None
         try:
             if configured.provider == "openai":
-                backend = OpenAIWorkerBackend(model=configured.model, data_policy=data_policy)
+                if configured.model in {"gpt-6-luna", "gpt-6-sol"}:
+                    backend = OpenAIWorkerBackend(model=configured.model, data_policy=data_policy)
+                else:
+                    policy = data_policy or DataPolicy()
+                    policy.check_cloud_send()
+                    backend = OpenAIResponsesBackend(model=configured.model)
+                    backend.data_policy = policy
             else:
                 backend = DeepSeekBackend(model=configured.model, data_policy=data_policy)
         except ValueError as error:

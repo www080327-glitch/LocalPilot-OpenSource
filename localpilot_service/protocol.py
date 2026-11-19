@@ -12,8 +12,8 @@ OPTIONAL_CAPABILITIES = (
     'omlx_thinking_toggle_v1', 'desktop_permissions_v3', 'task_low_power_consent_v1',
     'task_outcome_v1', 'routing_preferences_v1', 'model_manager_read_v1', 'model_health_read_v1',
     'session_thinking_v1', 'model_resource_v1', 'pause_v1', 'lifecycle_suspend_v1',
-    'desktop_session_v1', 'desktop_session_idempotency_v1', 'desktop_profile_switch_v1',
-    'desktop_model_switch_v1', 'desktop_child_history_v1', 'route_orchestration_v1',
+    'desktop_session_v1', 'desktop_session_idempotency_v1', 'desktop_profile_switch_v1', 'desktop_execution_budget_v1',
+    'desktop_model_switch_v1', 'desktop_child_history_v1', 'route_orchestration_v1', 'worker_roles_v1',
     'model_source_mix_v1', 'attachments_v1', 'attachments_v2', 'workspace_grants_v1',
     'bounded_file_operations_v1',
 )
@@ -26,11 +26,13 @@ def local_agent_constraints():
 
 
 def manifest():
+    from localpilot_api.service import MAX_TASK_TIMEOUT
     return {"agent_service_api": API_VERSION,
             "companion_client_contract": CLIENT_CONTRACT_VERSION,
             "api_supported": {"minimum": "1.0", "maximum_exclusive": "2.0"},
             "minimum_companion": "0.5.5rc1", "capabilities": list(CAPABILITIES + OPTIONAL_CAPABILITIES),
-            "limits": {"task_input_json_utf8_bytes": 4096,"attachment_batch_bytes":2147483648,"attachment_metadata_bytes":8388608}, "local_agent_constraints":local_agent_constraints(), "model_health": "NOT_PROBED"}
+            "limits": {"task_input_json_utf8_bytes": 4096,"attachment_batch_bytes":2147483648,"attachment_metadata_bytes":8388608,
+                       'task_timeout_seconds': MAX_TASK_TIMEOUT}, "local_agent_constraints":local_agent_constraints(), "model_health": "NOT_PROBED"}
 
 
 def check(health):

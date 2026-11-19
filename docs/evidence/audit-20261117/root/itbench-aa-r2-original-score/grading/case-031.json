@@ -1,0 +1,193 @@
+{
+  "index": 31,
+  "scenario": "Scenario-35",
+  "fingerprint": "5cb111f8f482105c305cf0602b33f4c709df7392e905c9e06f0573f599b8ce9b",
+  "candidate_status": "completed",
+  "prediction_sha256": "2c97536ebea14d38624b205e7fc6f7dcea3b441ebb626797435951857a9d8e17",
+  "prediction_count": 1,
+  "response": {
+    "message": {
+      "role": "assistant",
+      "content": "{\"contributing_factor_entities\":[{\"submitted_entity_name\":\"chaos-mesh/Schedule/otel-demo-ad-jvm-chaos\",\"normalized_gt_entity_id\":\"otel-demo-ad-jvm-chaos\",\"reasoning\":\"Submitted Schedule in namespace chaos-mesh has resource name otel-demo-ad-jvm-chaos, which matches the ground-truth JVMChaos entity; Schedule-to-generated-chaos matching is supported when namespace and name agree.\"}]}",
+      "native_replay": {
+        "kind": "openai_responses_v1",
+        "model": "gpt-5.5",
+        "base_url": "https://api.openai.com/v1",
+        "sha256": "121c2d9c85ad67577965ebaaaec3e7eb56cc2b477b670332fd356cc4a356f8eb",
+        "items": [
+          {
+            "type": "reasoning",
+            "id": "rs_0e70870ecdccefc1016afb6f47f52087d0b5035dd5f9a8890f",
+            "summary": [],
+            "encrypted_content": "gAAAAABq-29KMVPSEPD0-HaMvym0OqzdZc2n1vzTVC_Vs1nhfvysYJZHf7OEhChN5pa3wrlrMn4PGU42M93ILuoLY4S7iucYKY0y8y7TcNS5aiMvmjs0Fgk7qG2WUs9D7PP3zvjujgOrsbP9f9nvIs5MGA_Uj9w_kZCHGMw8vriP09tnDEeUoH_JgyX2qeWPIamGAmKl-CAct-9PTx04Y6yU4FCTNHdu0xyeRv1Jj40f02V6Nk47Bcfv7j5R2MKq5lg6F0Nsiuz5qmMKLbk5Y8ypxp1gnDaKD7STq5ddRHhT-6Y2rFwuL_oHzhjr8fkF2DNT9FrTNdg5O6wo8qnbRoz1kq1x7kKor-wkGJ3BkLi1BGZqhn3lC7bqzeyLRIZk7fOcKMEyP3LAIDZEADuK22AmsiNyZ910mM61MsXT_BJsN67leIISSwL11pCx7RXdRxEO4YViNTOnww3yBnVcGebdLPA75S_znaRNH4GdimaAb_10NzujwJkpS7LtMUzxoVowpDsYBw5l0C8ejvozc4zCAQDkEo01rJzkRKL59W0pYKM9gqff6TCGJ9qAjVme0QuF6sS9C2jfKLPvU9ydpykFFlFFdsk8wrsYZ-yCWEn4iFexS4TRqy7r1vmkHEL4F4op2ySL0R_mJlTPBWNJvk2xM1LvNuJVjjnHuA9iLhMzA1Gliu4eOmssLQIAUfBel3htg5KuONQ1CucUHtJOhSa-pGse2-fWVArFatTAbJiEw4ZS3fmbOTi10u7uoPDkdoKnrBfBjZqrAq9XqW80cYlB6vo9boWc1fpNcUGNQdbpBjuB0FzHplpEUy-qw5PUNC5iCw0iaS_79CK3GgLtU1x_1sAHevzQ-b5M-FmnsQICsKeljv1o_qRcRKHs4OBCtHnwxP94D94a-fy1xxIv13SJragTnbwuErZ0uw6NxE356iGLnU6CMhfG18IPBKuUmdhNR3IP3zSNv4cWUBAVxy5r5iBocu7yQm46iIkzjGfTT7DV_q8f1UtMkLyrjDNj_YflBps1oBsj3Yxdqm7s1q927SOdwEqcT86uj_fwp6YEKQfI7ASRBL9oP8S7cFhvFgtftNaOGHT4YUYC_Q0NJi1D37_NvXh1uYVQoyZ_dIabCY4whAXrJX2HFqFdXU80mkoYw5LC9mc0b3eemqsH2gtRtKmhDCGW6xob509-Ybh3BX6ugqzOmZIarTDngmy1HpeQzJZvyDer5GM_2nIwDgHrBOMVzVOyOD1bcYrzFa3znq9yvYq1qcdgNnniup0-oyjAphEHfy62tabktVgx5T3OVM9AQ4onYcRN5gJ_0_ai3K2wbmspH6vZwQcNA6_QIUjQI8fxgSvlq4zJYtDSxxXN_04_NgJ1x9gDMNj2izhbGXllvonhUN8N6lrZwx4GAH0NK3NPwdpTWmH6aPbKOGdiOQdnz-5tFspDFNtsO2kr3CrL3Qr7g6HV3eoU13f-SOVSrtOBFJJtRC7uHuFeTPXji24u3ZTeMG1n8LlC78Ujm7zR_LEZ2z_Lnyl0e9UReuggHtqYutQq6j8QiKo2xHn4xGbyGxx2nzj_jMbRmamx-GjUTG56IyJRzcggkQ1CXX-RY6nmZ5x5Ic-r9OKmWpUAa4B8-8UuNHhZQ4v8ifZy9AbExrB42NKh2RG-rQ3SBwt3_xDEKvhkOYHUeRp39Pe5rI8nAqz39lXlH1Vszra7_kV2YhsObBbxXkDzveLOGRb5uTIyLimSG8L7Vc_9runPTb3vV-hJas3JtvBZZbZ93lkk7Fyel_SIZCLKmcajwnR8QqC6SSGLBsUgL1LVxywmEpSa0SJqYDonb_mmzmHznHNwU7WodB79l8e2SHHnZllAGh5zBDEzVyICZKvs2BOWEsfJphHyFO3ke7Y7PUEWvJriRDz58HqjRuD8D47YC_3-a9iYn1BjLLdh_B9C2m9SzEfcaFuE1kdOJADs_Y3oJl3f2j6-XivxHHUUXQ2QU6Q50omfer-00arUzNg5OblsEGLH0xkFyC5d3faiGu7c6YPW5mWW-m_wDQj_6AML0dzQEM5lp-6a0kv9Bnve7M-KG-Mt4xedSYulefgzccqlitxPUZUhlAU6WayLDG1sHbeFjQUGmf1sRV5_vzMGmMdbc1_E7P7QZkMX9lgp0Q2C9PjP88yf_o24aJc23BHcgxzteO8cLYpN5difUR_1NlZN-mYhmwD-XadJ2vf-uPDYwo2dvDWPPbitOE8ZZqRkIAtd2OU4Tk8Pk_q4TP_G3YuIZv7_q9H4e9dAbPtikGZm6GyAWBVSivFwvZ6zNAlEZkM0TCjnUCH2EIGiJP7PJkRmrufzg0ygQ2YIaw9D3GTohLui1NAyW63LssmFJKzims5D_rCwtPQagv5qfU7pJ3X4D5ZxV9xZutOjij4Z9zIjYSx8uxxb85NQQmEJcodLVmuS8j-Qsr_9yprkytAU5ghBaeNGuLt5ANYxy2fxF6IIaWte4LvZ9JQgl3FLMKxrnB7wjMgaOL2zRz0XzSDbmBRZovz30eY9CGRNgCHjLQk8CHucXHFlLF18QEA6WOiY8jVjDq71LW07U4bGX-QYbcnXSbJ8wSCiYelWyGvzZwfTblz7SciusMllun_Fw8ELxdg-2k5fn5QW472owgYWSHobJsPbX8QyavS4rActAfp48raT4w75sgdZR-rIxCDfXdtt09jWbNKhsH5gCHQaZRqqQDTIzT7ast5zLNKPmkd8dV5a_sJF6uq6TvNT99SveadiRkgpxVwKspr3Fvyo9akIhQsG4LIN94tF8DUn8MfQ9CZ0TmgdoZ2FQzQ2w16LBFH1WSz_S0F-P_t5F0Bll9oqBgVE24KX6G46fVCi-c_ggJi3Nt_jueqouVhegurh__7iQMgxwJFkSOOTt1i7tTsry4LgZIKQ8rWbH9BsdOrtglD0BrWujo5UPSh94XXyh-nHVIYy4kvMHCYEC-pOVGFGQgDNohFWaznqtIMpR82Q2hMPYOxJZwAoweI72T1en2wXFcld5fG-pRk_v5b5YLEWdqs-bnSLk_MT8GaUXcsbXuJmxvPPP8nRHCLusHsJ1tb7xyGhv-aTPvwEfyUW3kO_sdaFjp5YCXCzvqWURpLoyj8hIWCQTs9NRGApvKGIWcXTYwcnVbC69teEj13Lz3PGR-HNSw0SWd5q8h6i7RwR3tow58N2iRYzEiA-h72EkrmPMEWvP5g_CrUmNa3jVPlk8w9WX6dUASFICUgfwLA0PVJ416ARrDlKjtZG8kdshsaKLaFlYjUM44KCCx_Alt3pGolIUKHTtsrsEclODCNevd64F4ENWTbrnnjesNYsG7qsPzkKLA4T9b8qQP8jzEdy8HKhc-hC0Hpom2jrlwTOm8I4WB76fJf8UCJKBXiIrxtSJstcuoLR"
+          },
+          {
+            "type": "message",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "{\"contributing_factor_entities\":[{\"submitted_entity_name\":\"chaos-mesh/Schedule/otel-demo-ad-jvm-chaos\",\"normalized_gt_entity_id\":\"otel-demo-ad-jvm-chaos\",\"reasoning\":\"Submitted Schedule in namespace chaos-mesh has resource name otel-demo-ad-jvm-chaos, which matches the ground-truth JVMChaos entity; Schedule-to-generated-chaos matching is supported when namespace and name agree.\"}]}"
+              }
+            ],
+            "phase": "final_answer"
+          }
+        ]
+      }
+    },
+    "usage": {
+      "prompt_tokens": 771,
+      "completion_tokens": 228,
+      "total_tokens": 999,
+      "provider_usage": {
+        "input_tokens": 771,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 0
+          },
+          "cached_tokens": 0
+        },
+        "output_tokens": 228,
+        "output_tokens_details": {
+          "reasoning_tokens": 135
+        },
+        "total_tokens": 999
+      },
+      "prompt_tokens_details": {
+        "cache_write_tokens": 0,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 0
+        },
+        "cached_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 135
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 771
+    },
+    "reported_model": "gpt-5.5-2026-04-23",
+    "finish_reason": "stop"
+  },
+  "status": "graded",
+  "score": 1.0,
+  "true_positive_groups": 1,
+  "false_positive_groups": 0,
+  "unmatched_predictions": 0,
+  "missed_root_groups": 0,
+  "root_groups": 1,
+  "provider_response": {
+    "id": "resp_0e70870ecdccefc1016afb6f47281c87d0be34b0c1f00935a1",
+    "object": "response",
+    "created_at": 1794862919,
+    "status": "completed",
+    "access_programs": null,
+    "background": false,
+    "billing": {
+      "payer": "developer"
+    },
+    "completed_at": 1794862922,
+    "error": null,
+    "frequency_penalty": 0.0,
+    "image": {
+      "context_compression": "disabled"
+    },
+    "incomplete_details": null,
+    "input_transformations": [],
+    "instructions": null,
+    "max_output_tokens": 16384,
+    "max_tool_calls": null,
+    "model": "gpt-5.5-2026-04-23",
+    "moderation": null,
+    "output": [
+      {
+        "id": "rs_0e70870ecdccefc1016afb6f47f52087d0b5035dd5f9a8890f",
+        "type": "reasoning",
+        "content": [],
+        "encrypted_content": "gAAAAABq-29KMVPSEPD0-HaMvym0OqzdZc2n1vzTVC_Vs1nhfvysYJZHf7OEhChN5pa3wrlrMn4PGU42M93ILuoLY4S7iucYKY0y8y7TcNS5aiMvmjs0Fgk7qG2WUs9D7PP3zvjujgOrsbP9f9nvIs5MGA_Uj9w_kZCHGMw8vriP09tnDEeUoH_JgyX2qeWPIamGAmKl-CAct-9PTx04Y6yU4FCTNHdu0xyeRv1Jj40f02V6Nk47Bcfv7j5R2MKq5lg6F0Nsiuz5qmMKLbk5Y8ypxp1gnDaKD7STq5ddRHhT-6Y2rFwuL_oHzhjr8fkF2DNT9FrTNdg5O6wo8qnbRoz1kq1x7kKor-wkGJ3BkLi1BGZqhn3lC7bqzeyLRIZk7fOcKMEyP3LAIDZEADuK22AmsiNyZ910mM61MsXT_BJsN67leIISSwL11pCx7RXdRxEO4YViNTOnww3yBnVcGebdLPA75S_znaRNH4GdimaAb_10NzujwJkpS7LtMUzxoVowpDsYBw5l0C8ejvozc4zCAQDkEo01rJzkRKL59W0pYKM9gqff6TCGJ9qAjVme0QuF6sS9C2jfKLPvU9ydpykFFlFFdsk8wrsYZ-yCWEn4iFexS4TRqy7r1vmkHEL4F4op2ySL0R_mJlTPBWNJvk2xM1LvNuJVjjnHuA9iLhMzA1Gliu4eOmssLQIAUfBel3htg5KuONQ1CucUHtJOhSa-pGse2-fWVArFatTAbJiEw4ZS3fmbOTi10u7uoPDkdoKnrBfBjZqrAq9XqW80cYlB6vo9boWc1fpNcUGNQdbpBjuB0FzHplpEUy-qw5PUNC5iCw0iaS_79CK3GgLtU1x_1sAHevzQ-b5M-FmnsQICsKeljv1o_qRcRKHs4OBCtHnwxP94D94a-fy1xxIv13SJragTnbwuErZ0uw6NxE356iGLnU6CMhfG18IPBKuUmdhNR3IP3zSNv4cWUBAVxy5r5iBocu7yQm46iIkzjGfTT7DV_q8f1UtMkLyrjDNj_YflBps1oBsj3Yxdqm7s1q927SOdwEqcT86uj_fwp6YEKQfI7ASRBL9oP8S7cFhvFgtftNaOGHT4YUYC_Q0NJi1D37_NvXh1uYVQoyZ_dIabCY4whAXrJX2HFqFdXU80mkoYw5LC9mc0b3eemqsH2gtRtKmhDCGW6xob509-Ybh3BX6ugqzOmZIarTDngmy1HpeQzJZvyDer5GM_2nIwDgHrBOMVzVOyOD1bcYrzFa3znq9yvYq1qcdgNnniup0-oyjAphEHfy62tabktVgx5T3OVM9AQ4onYcRN5gJ_0_ai3K2wbmspH6vZwQcNA6_QIUjQI8fxgSvlq4zJYtDSxxXN_04_NgJ1x9gDMNj2izhbGXllvonhUN8N6lrZwx4GAH0NK3NPwdpTWmH6aPbKOGdiOQdnz-5tFspDFNtsO2kr3CrL3Qr7g6HV3eoU13f-SOVSrtOBFJJtRC7uHuFeTPXji24u3ZTeMG1n8LlC78Ujm7zR_LEZ2z_Lnyl0e9UReuggHtqYutQq6j8QiKo2xHn4xGbyGxx2nzj_jMbRmamx-GjUTG56IyJRzcggkQ1CXX-RY6nmZ5x5Ic-r9OKmWpUAa4B8-8UuNHhZQ4v8ifZy9AbExrB42NKh2RG-rQ3SBwt3_xDEKvhkOYHUeRp39Pe5rI8nAqz39lXlH1Vszra7_kV2YhsObBbxXkDzveLOGRb5uTIyLimSG8L7Vc_9runPTb3vV-hJas3JtvBZZbZ93lkk7Fyel_SIZCLKmcajwnR8QqC6SSGLBsUgL1LVxywmEpSa0SJqYDonb_mmzmHznHNwU7WodB79l8e2SHHnZllAGh5zBDEzVyICZKvs2BOWEsfJphHyFO3ke7Y7PUEWvJriRDz58HqjRuD8D47YC_3-a9iYn1BjLLdh_B9C2m9SzEfcaFuE1kdOJADs_Y3oJl3f2j6-XivxHHUUXQ2QU6Q50omfer-00arUzNg5OblsEGLH0xkFyC5d3faiGu7c6YPW5mWW-m_wDQj_6AML0dzQEM5lp-6a0kv9Bnve7M-KG-Mt4xedSYulefgzccqlitxPUZUhlAU6WayLDG1sHbeFjQUGmf1sRV5_vzMGmMdbc1_E7P7QZkMX9lgp0Q2C9PjP88yf_o24aJc23BHcgxzteO8cLYpN5difUR_1NlZN-mYhmwD-XadJ2vf-uPDYwo2dvDWPPbitOE8ZZqRkIAtd2OU4Tk8Pk_q4TP_G3YuIZv7_q9H4e9dAbPtikGZm6GyAWBVSivFwvZ6zNAlEZkM0TCjnUCH2EIGiJP7PJkRmrufzg0ygQ2YIaw9D3GTohLui1NAyW63LssmFJKzims5D_rCwtPQagv5qfU7pJ3X4D5ZxV9xZutOjij4Z9zIjYSx8uxxb85NQQmEJcodLVmuS8j-Qsr_9yprkytAU5ghBaeNGuLt5ANYxy2fxF6IIaWte4LvZ9JQgl3FLMKxrnB7wjMgaOL2zRz0XzSDbmBRZovz30eY9CGRNgCHjLQk8CHucXHFlLF18QEA6WOiY8jVjDq71LW07U4bGX-QYbcnXSbJ8wSCiYelWyGvzZwfTblz7SciusMllun_Fw8ELxdg-2k5fn5QW472owgYWSHobJsPbX8QyavS4rActAfp48raT4w75sgdZR-rIxCDfXdtt09jWbNKhsH5gCHQaZRqqQDTIzT7ast5zLNKPmkd8dV5a_sJF6uq6TvNT99SveadiRkgpxVwKspr3Fvyo9akIhQsG4LIN94tF8DUn8MfQ9CZ0TmgdoZ2FQzQ2w16LBFH1WSz_S0F-P_t5F0Bll9oqBgVE24KX6G46fVCi-c_ggJi3Nt_jueqouVhegurh__7iQMgxwJFkSOOTt1i7tTsry4LgZIKQ8rWbH9BsdOrtglD0BrWujo5UPSh94XXyh-nHVIYy4kvMHCYEC-pOVGFGQgDNohFWaznqtIMpR82Q2hMPYOxJZwAoweI72T1en2wXFcld5fG-pRk_v5b5YLEWdqs-bnSLk_MT8GaUXcsbXuJmxvPPP8nRHCLusHsJ1tb7xyGhv-aTPvwEfyUW3kO_sdaFjp5YCXCzvqWURpLoyj8hIWCQTs9NRGApvKGIWcXTYwcnVbC69teEj13Lz3PGR-HNSw0SWd5q8h6i7RwR3tow58N2iRYzEiA-h72EkrmPMEWvP5g_CrUmNa3jVPlk8w9WX6dUASFICUgfwLA0PVJ416ARrDlKjtZG8kdshsaKLaFlYjUM44KCCx_Alt3pGolIUKHTtsrsEclODCNevd64F4ENWTbrnnjesNYsG7qsPzkKLA4T9b8qQP8jzEdy8HKhc-hC0Hpom2jrlwTOm8I4WB76fJf8UCJKBXiIrxtSJstcuoLR",
+        "summary": []
+      },
+      {
+        "id": "msg_0e70870ecdccefc1016afb6f4957e487d0b746b5c9b54071ee",
+        "type": "message",
+        "status": "completed",
+        "content": [
+          {
+            "type": "output_text",
+            "annotations": [],
+            "logprobs": [],
+            "text": "{\"contributing_factor_entities\":[{\"submitted_entity_name\":\"chaos-mesh/Schedule/otel-demo-ad-jvm-chaos\",\"normalized_gt_entity_id\":\"otel-demo-ad-jvm-chaos\",\"reasoning\":\"Submitted Schedule in namespace chaos-mesh has resource name otel-demo-ad-jvm-chaos, which matches the ground-truth JVMChaos entity; Schedule-to-generated-chaos matching is supported when namespace and name agree.\"}]}"
+          }
+        ],
+        "phase": "final_answer",
+        "role": "assistant"
+      }
+    ],
+    "parallel_tool_calls": true,
+    "presence_penalty": 0.0,
+    "previous_response_id": null,
+    "prompt_cache_key": null,
+    "prompt_cache_retention": "24h",
+    "reasoning": {
+      "context": "current_turn",
+      "effort": "medium",
+      "mode": "standard",
+      "summary": null
+    },
+    "safety_identifier": null,
+    "service_tier": "default",
+    "store": false,
+    "temperature": 1.0,
+    "text": {
+      "format": {
+        "type": "text"
+      },
+      "verbosity": "medium"
+    },
+    "tool_choice": "auto",
+    "tool_usage": {
+      "image_gen": {
+        "input_tokens": 0,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 0
+        },
+        "output_tokens": 0,
+        "output_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 0
+        },
+        "total_tokens": 0
+      },
+      "web_search": {
+        "num_requests": 0
+      }
+    },
+    "tools": [],
+    "top_logprobs": 0,
+    "top_p": 0.98,
+    "truncation": "disabled",
+    "usage": {
+      "input_tokens": 771,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 0
+        },
+        "cached_tokens": 0
+      },
+      "output_tokens": 228,
+      "output_tokens_details": {
+        "reasoning_tokens": 135
+      },
+      "total_tokens": 999
+    },
+    "user": null,
+    "metadata": {}
+  },
+  "elapsed_seconds": 3.483015213001636
+}

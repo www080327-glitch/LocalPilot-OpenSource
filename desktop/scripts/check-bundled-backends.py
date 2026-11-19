@@ -3,7 +3,7 @@ import hashlib,json,subprocess,zipfile,importlib.util,marshal,tomllib,re
 from email.parser import Parser
 from pathlib import Path
 import argparse,os,platform
-from macos_artifacts import architecture,runtime_lock,verify_macho
+from macos_artifacts import architecture,bundled_runtime_lock,verify_macho
 parser=argparse.ArgumentParser()
 parser.add_argument("--arch",default=architecture(platform.machine()),choices=["arm64","x86_64"])
 parser.add_argument("--dependency-lock",type=Path,default=os.environ.get("LP_GUI_DEPENDENCY_LOCK"))
@@ -15,7 +15,7 @@ manifest=json.loads((root/'manifest.json').read_text())
 if sorted(manifest.get('wheels',[]))!=sorted(p.name for p in (root/'wheels').glob('*.whl')):
     raise SystemExit('Bundled manifest wheel list differs from actual files')
 required={'localpilot-agent-service','localpilot-companion','localpilot-suite','localpilot-channels'}
-lock=runtime_lock(args.dependency_lock or root.parents[1]/'runtime-dependencies.json',arch)
+lock=bundled_runtime_lock(root,arch,args.dependency_lock)
 if manifest.get('architecture','arm64')!=arch:raise SystemExit('Bundled runtime architecture differs from build target')
 if (root/'runtime-dependencies.json').exists():
     bundled_lock=(root/'runtime-dependencies.json').read_bytes()

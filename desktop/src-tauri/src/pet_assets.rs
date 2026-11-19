@@ -4,52 +4,42 @@ use base64::Engine;
 use sha2::{Digest, Sha256};
 use std::io::Write;
 
+pub(super) const HIT_ALPHA: u8 = 24;
+const CHARACTER_IDS: [&str; 8] = [
+    "deepseek-whale-maid-chibi-v4",
+    "chatgpt-white-dragon-chibi-v5",
+    "claude-orange-scholar-chibi-v3",
+    "gemini-star-cat-chibi-v1",
+    "grok-gothic-chibi-v1",
+    "kimi-moon-maid-chibi-v2",
+    "qwen-chibi-scholar-v3",
+    "zhipu-chibi-tech-v2",
+];
+
 pub struct Sprite {
     pub width: u32,
     pub height: u32,
+    #[cfg_attr(not(any(target_os = "macos", test)), allow(dead_code))]
     pub alpha: Vec<u8>,
 }
-impl Sprite {
+pub struct Atlas {
+    pub sprite: Sprite,
+    rows: [[u32; 4]; 11],
+}
+impl Atlas {
     pub fn frame_rect(&self, column: u32, row: u32) -> [u32; 4] {
-        let fw = self.width / 8;
-        let fh = self.height / 11;
-        let mut bounds = [fw, fh, 0, 0];
-        // One shared row transform preserves stride registration and baseline.
-        for c in 0..8 {
-            for y in 0..fh {
-                for x in 0..fw {
-                    if self.alpha[((row.min(10) * fh + y) * self.width + c * fw + x) as usize] > 24
-                    {
-                        bounds[0] = bounds[0].min(x);
-                        bounds[1] = bounds[1].min(y);
-                        bounds[2] = bounds[2].max(x + 1);
-                        bounds[3] = bounds[3].max(y + 1);
-                    }
-                }
-            }
-        }
-        if bounds[2] <= bounds[0] || bounds[3] <= bounds[1] {
-            return [column.min(7) * fw, row.min(10) * fh, fw, fh];
-        }
+        let fw = self.sprite.width / 8;
+        let fh = self.sprite.height / 11;
+        let bounds = self.rows[row as usize];
         [
-            column.min(7) * fw + bounds[0],
-            row.min(10) * fh + bounds[1],
-            bounds[2] - bounds[0],
-            bounds[3] - bounds[1],
+            column * fw + bounds[0],
+            row * fh + bounds[1],
+            bounds[2],
+            bounds[3],
         ]
     }
-    pub fn hit(&self, x: f64, y: f64, width: f64, height: f64, pose: (u32, u32)) -> bool {
-        if x < 0.0 || y < 0.0 || x >= width || y >= height || width <= 0.0 || height <= 0.0 {
-            return false;
-        }
-        let fw = self.width / 8;
-        let fh = self.height / 11;
-        let px = (x / width * fw as f64) as u32 + pose.0.min(7) * fw;
-        let py = (y / height * fh as f64) as u32 + pose.1.min(10) * fh;
-        self.alpha[(py * self.width + px) as usize] > 12
-    }
 }
-fn decode(bytes: &[u8]) -> Result<Sprite, String> {
+pub(super) fn decode(bytes: &[u8]) -> Result<Atlas, String> {
     if bytes.len() > 16 * 1024 * 1024 {
         return Err("素材超过 16 MB".into());
     }
@@ -67,10 +57,41 @@ fn decode(bytes: &[u8]) -> Result<Sprite, String> {
     if !alpha.iter().any(|a| *a == 0) || !alpha.iter().any(|a| *a > 128) {
         return Err("素材必须有真实透明区域和可见角色".into());
     }
-    Ok(Sprite {
-        width: w,
-        height: h,
-        alpha,
+    let (fw, fh) = (w / 8, h / 11);
+    let mut rows = [[fw, fh, 0, 0]; 11];
+    // A shared crop per row preserves stride registration without rescanning
+    // the entire eight-frame row on every animation tick.
+    for (y, scanline) in alpha.chunks_exact(w as usize).enumerate() {
+        let bounds = &mut rows[y / fh as usize];
+        for (x, a) in scanline.iter().enumerate() {
+            if *a > HIT_ALPHA {
+                let (x, y) = (x as u32 % fw, y as u32 % fh);
+                bounds[0] = bounds[0].min(x);
+                bounds[1] = bounds[1].min(y);
+                bounds[2] = bounds[2].max(x + 1);
+                bounds[3] = bounds[3].max(y + 1);
+            }
+        }
+    }
+    for bounds in &mut rows {
+        *bounds = if bounds[2] > bounds[0] && bounds[3] > bounds[1] {
+            [
+                bounds[0],
+                bounds[1],
+                bounds[2] - bounds[0],
+                bounds[3] - bounds[1],
+            ]
+        } else {
+            [0, 0, fw, fh]
+        };
+    }
+    Ok(Atlas {
+        sprite: Sprite {
+            width: w,
+            height: h,
+            alpha,
+        },
+        rows,
     })
 }
 #[tauri::command]
@@ -85,21 +106,11 @@ pub async fn pet_asset(
         .home_dir()
         .map_err(|e| e.to_string())?
         .join(".codex/pets");
-    let allowed = [
-        "deepseek-whale-maid-chibi-v4",
-        "chatgpt-white-dragon-chibi-v5",
-        "claude-orange-scholar-chibi-v3",
-        "gemini-star-cat-chibi-v1",
-        "grok-gothic-chibi-v1",
-        "kimi-moon-maid-chibi-v2",
-        "qwen-chibi-scholar-v3",
-        "zhipu-chibi-tech-v2",
-    ];
     if action == "import_edge" {
         let meta = private_json(&data(&app)?.join("pet-asset-v1.json"))?;
         let identity = meta["id"]
             .as_str()
-            .filter(|id| allowed.contains(id))
+            .filter(|id| CHARACTER_IDS.contains(id))
             .ok_or("请先选择本机角色")?;
         let folder = rfd::AsyncFileDialog::new()
             .set_title("导入该角色的个人探头姿态包（pack.json 与 poses.png）")
@@ -108,74 +119,26 @@ pub async fn pet_asset(
         let Some(folder) = folder else {
             return Ok(json!({"cancelled":true}));
         };
-        let metadata: Value = serde_json::from_slice(
-            &fs::read(folder.path().join("pack.json")).map_err(|_| "缺少姿态配置")?,
-        )
-        .map_err(|_| "姿态配置无效")?;
-        if metadata["id"] != identity || metadata["version"] != 1 {
-            return Err("姿态包不属于当前角色".into());
-        }
-        let source = folder.path().join("poses.png");
-        let info = fs::symlink_metadata(&source).map_err(|_| "姿态图片不可读")?;
-        if !info.is_file() || info.len() > 16 * 1024 * 1024 {
-            return Err("姿态必须是小于 16 MB 的普通 PNG 文件".into());
-        }
-        let bytes = fs::read(source).map_err(|_| "姿态不可读")?;
-        let root = data(&app)?.join("edge-packs").join(identity);
-        fs::create_dir_all(&root).map_err(|e| e.to_string())?;
-        fs::set_permissions(&root, fs::Permissions::from_mode(0o700)).map_err(|e| e.to_string())?;
-        let target = root.join("poses.png");
-        let mut f = fs::OpenOptions::new()
-            .write(true)
-            .create(true)
-            .truncate(true)
-            .mode(0o600)
-            .custom_flags(libc::O_NOFOLLOW)
-            .open(target)
-            .map_err(|e| e.to_string())?;
-        f.write_all(&bytes).map_err(|e| e.to_string())?;
-        for name in ["comic", "tail"] {
-            if metadata["extras"][name].is_object() {
-                let source = folder.path().join(format!("{name}.png"));
-                let inf = fs::symlink_metadata(&source).map_err(|_| "补充姿态缺失")?;
-                if !inf.is_file() || inf.len() > 16 * 1024 * 1024 {
-                    return Err("补充姿态文件无效".into());
-                }
-                let bytes = fs::read(source).map_err(|_| "补充姿态不可读")?;
-                let target = root.join(format!("{name}.png"));
-                let mut f = fs::OpenOptions::new()
-                    .write(true)
-                    .create(true)
-                    .truncate(true)
-                    .mode(0o600)
-                    .custom_flags(libc::O_NOFOLLOW)
-                    .open(target)
-                    .map_err(|e| e.to_string())?;
-                f.write_all(&bytes).map_err(|e| e.to_string())?;
-            }
-        }
-        let mut metadata = metadata;
-        metadata["sha256"] = json!(format!("{:x}", Sha256::digest(&bytes)));
-        save(&root.join("pack.json"), &metadata)?;
-        let edge = edge_pack(&app, identity)?;
+        let packs = data(&app)?.join("edge-packs");
+        let (pack, edge) = import_edge_pack(folder.path(), &packs, identity)?;
+        app.state::<pet_native::PetState>()
+            .edge
+            .lock()
+            .unwrap()
+            .pack = Some(pack);
         app.emit("pet-edge-asset", &edge)
             .map_err(|e| e.to_string())?;
         return Ok(edge);
     }
     if action == "catalog" {
-        let items: Vec<Value> = allowed
+        let items: Vec<Value> = CHARACTER_IDS
             .iter()
             .filter_map(|id| {
-                let meta: Value =
-                    serde_json::from_slice(&fs::read(library.join(id).join("pet.json")).ok()?)
-                        .ok()?;
-                if meta["id"] != *id
-                    || meta["spriteVersionNumber"] != 2
-                    || !library.join(id).join("spritesheet.webp").is_file()
-                {
+                let (identity, label) = character_metadata(&library.join(id)).ok()?;
+                if identity != *id || !library.join(id).join("spritesheet.webp").is_file() {
                     return None;
                 }
-                Some(json!({"id":id,"label":meta["displayName"]}))
+                Some(json!({"id":id,"label":label}))
             })
             .collect();
         return Ok(
@@ -183,17 +146,33 @@ pub async fn pet_asset(
         );
     }
     let target = data(&app)?.join("pet-sprite.webp");
-    if action == "import" || action == "select_local" {
+    if ["import", "import_package", "select_local"].contains(&action.as_str()) {
         let selected;
-        let chosen_path = if action == "select_local" {
+        let mut identity = None;
+        let chosen_path = if action == "import_package" {
+            let folder = rfd::AsyncFileDialog::new()
+                .set_title("选择角色文件夹（pet.json 和 spritesheet.webp）")
+                .pick_folder()
+                .await;
+            let Some(folder) = folder else {
+                return Ok(json!({"cancelled":true}));
+            };
+            identity = Some(character_metadata(folder.path())?);
+            folder.path().join("spritesheet.webp")
+        } else if action == "select_local" {
             let id = id
                 .as_deref()
-                .filter(|id| allowed.contains(id))
+                .filter(|id| CHARACTER_IDS.contains(id))
                 .ok_or("角色身份无效")?;
+            let found = character_metadata(&library.join(id))?;
+            if found.0 != id {
+                return Err("角色文件夹与身份不一致".into());
+            }
+            identity = Some(found);
             library.join(id).join("spritesheet.webp")
         } else {
             let chosen = rfd::AsyncFileDialog::new()
-                .set_title("导入有权个人使用的同系列 DeepSeek 娘图集")
+                .set_title("导入有权个人使用的 8 列、11 行透明角色图集")
                 .add_filter("透明 WebP 图集", &["webp"])
                 .pick_file()
                 .await;
@@ -203,10 +182,15 @@ pub async fn pet_asset(
             selected = chosen;
             selected.path().to_path_buf()
         };
-        let id = allowed
-            .iter()
-            .find(|id| chosen_path == library.join(id).join("spritesheet.webp"))
-            .map(|id| (*id).to_string());
+        if identity.is_none() {
+            identity = CHARACTER_IDS
+                .iter()
+                .find(|id| chosen_path == library.join(id).join("spritesheet.webp"))
+                .and_then(|id| character_metadata(&library.join(id)).ok());
+        }
+        let (id, label) = identity
+            .map(|(id, label)| (Some(id), label))
+            .unwrap_or((None, "个人角色".into()));
         let info = fs::symlink_metadata(&chosen_path).map_err(|_| "素材不可读")?;
         if !info.is_file() || info.len() > 16 * 1024 * 1024 {
             return Err("素材必须是普通文件，且小于 16 MB".into());
@@ -226,12 +210,15 @@ pub async fn pet_asset(
             .map_err(|e| e.to_string())?;
         save(
             &data(&app)?.join("pet-asset-v1.json"),
-            &json!({"version":1,"sha256":format!("{:x}",Sha256::digest(&bytes)),"usage":"personal_import","redistribution":"not_granted","id":id,"label":id.as_deref().and_then(|id| fs::read(library.join(id).join("pet.json")).ok()).and_then(|b| serde_json::from_slice::<Value>(&b).ok()).and_then(|m| m["displayName"].as_str().map(String::from)).unwrap_or_else(||"个人角色".into())}),
+            &json!({"version":1,"sha256":format!("{:x}",Sha256::digest(&bytes)),"usage":"personal_import","redistribution":"not_granted","id":id,"label":label}),
         )?;
     } else if action != "load" {
         return Err("未知素材操作".into());
     }
     if !target.exists() {
+        let state = app.state::<pet_native::PetState>();
+        *state.sprite.lock().unwrap() = None;
+        state.edge.lock().unwrap().pack = None;
         return Ok(json!({"status":"asset_pending","label":"素材待确认"}));
     }
     let info = fs::symlink_metadata(&target).map_err(|_| "素材不可读")?;
@@ -248,8 +235,8 @@ pub async fn pet_asset(
         return Err("素材身份已变更，请重新导入".into());
     }
     let sprite = decode(&bytes)?;
-    let width = sprite.width;
-    let height = sprite.height;
+    let width = sprite.sprite.width;
+    let height = sprite.sprite.height;
     *app.state::<pet_native::PetState>().sprite.lock().unwrap() = Some(sprite);
     let meta = private_json(&data(&app)?.join("pet-asset-v1.json"))?;
     let edge = edge_pack(&app, meta["id"].as_str().unwrap_or(""))?;
@@ -259,38 +246,311 @@ pub async fn pet_asset(
     Ok(payload)
 }
 
+pub(super) fn diagnostic_appearance(root: &Path, basic: bool) -> Value {
+    let character = private_json(&root.join("pet-asset-v1.json"))
+        .ok()
+        .and_then(|meta| meta["id"].as_str().map(String::from));
+    json!({"character":character,"appearance_mode":if basic {"basic"} else {"extended"}})
+}
+
+fn character_metadata(folder: &Path) -> Result<(String, String), String> {
+    let bytes = fs::read(folder.join("pet.json"))
+        .map_err(|_| "请选择包含 pet.json 和 spritesheet.webp 的角色文件夹")?;
+    let meta: Value = serde_json::from_slice(&bytes).map_err(|_| "角色说明 pet.json 无法读取")?;
+    let id = meta["id"]
+        .as_str()
+        .filter(|id| CHARACTER_IDS.contains(id))
+        .ok_or("这个角色身份尚未支持，请选择角色列表中的图集")?;
+    if meta["spriteVersionNumber"] != 2 {
+        return Err("请选择第 2 版角色图集，包含 8 列、11 行动作".into());
+    }
+    Ok((
+        id.to_owned(),
+        meta["displayName"].as_str().unwrap_or(id).to_owned(),
+    ))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
-    fn alpha_hit_testing_tracks_the_displayed_frame_and_transparent_space() {
-        let mut alpha = vec![0; 8 * 11];
-        alpha[1] = 255;
-        let sprite = Sprite {
-            width: 8,
-            height: 11,
-            alpha,
+    fn atlas_crops_each_row_once_and_preserves_frame_registration() {
+        let mut image = image::RgbaImage::new(32, 44);
+        image.put_pixel(1, 8, image::Rgba([255, 255, 255, 255]));
+        image.put_pixel(7, 10, image::Rgba([255, 255, 255, 255]));
+        let mut bytes = std::io::Cursor::new(Vec::new());
+        image.write_to(&mut bytes, image::ImageFormat::Png).unwrap();
+        let atlas = decode(bytes.get_ref()).unwrap();
+        assert_eq!(atlas.frame_rect(0, 2), [1, 8, 3, 3]);
+        assert_eq!(atlas.frame_rect(1, 2), [5, 8, 3, 3]);
+        assert_eq!(atlas.frame_rect(7, 2), [29, 8, 3, 3]);
+        assert_eq!(atlas.frame_rect(0, 0), [0, 0, 4, 4]);
+    }
+
+    #[test]
+    fn package_identity_is_read_from_the_selected_folder() {
+        let folder = std::env::temp_dir().join(format!("lp-character-{}", uuid::Uuid::new_v4()));
+        fs::create_dir(&folder).unwrap();
+        let path = folder.join("pet.json");
+        let mut meta = json!({"id":"deepseek-whale-maid-chibi-v4","displayName":"我的蓝鲸","spriteVersionNumber":2});
+        fs::write(&path, serde_json::to_vec(&meta).unwrap()).unwrap();
+        assert_eq!(
+            character_metadata(&folder).unwrap(),
+            ("deepseek-whale-maid-chibi-v4".into(), "我的蓝鲸".into())
+        );
+        meta["spriteVersionNumber"] = json!(1);
+        fs::write(&path, serde_json::to_vec(&meta).unwrap()).unwrap();
+        assert!(character_metadata(&folder).is_err());
+        meta["spriteVersionNumber"] = json!(2);
+        meta["id"] = json!("unknown-character");
+        fs::write(&path, serde_json::to_vec(&meta).unwrap()).unwrap();
+        assert!(character_metadata(&folder).is_err());
+        fs::remove_dir_all(folder).unwrap();
+    }
+
+    #[test]
+    fn diagnostics_keep_imported_identity_without_an_optional_edge_pack() {
+        let root =
+            std::env::temp_dir().join(format!("lp-pet-diagnostics-{}", uuid::Uuid::new_v4()));
+        fs::create_dir(&root).unwrap();
+        let identity = "deepseek-whale-maid-chibi-v4";
+        save(
+            &root.join("pet-asset-v1.json"),
+            &json!({"version":1,"id":identity}),
+        )
+        .unwrap();
+        assert_eq!(
+            diagnostic_appearance(&root, true),
+            json!({"character":identity,"appearance_mode":"basic"})
+        );
+        assert_eq!(
+            diagnostic_appearance(&root, false),
+            json!({"character":identity,"appearance_mode":"extended"})
+        );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn rejected_edge_import_preserves_the_installed_pack_and_accepts_a_valid_replacement() {
+        let root = std::env::temp_dir().join(format!("lp-pet-import-{}", uuid::Uuid::new_v4()));
+        let source = root.join("source");
+        let packs = root.join("installed");
+        fs::create_dir_all(&source).unwrap();
+        let id = "fixture";
+        let installed = packs.join(id);
+        let mut poses = serde_json::Map::new();
+        for (i, name) in [
+            "TOP_LEFT",
+            "TOP_RIGHT",
+            "LEFT_EDGE",
+            "RIGHT_EDGE",
+            "BOTTOM_LEFT",
+            "BOTTOM_RIGHT",
+            "RETRACTED",
+            "WORKING",
+            "IDLE_POT",
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            poses.insert(name.into(), json!([i * 2, 0, 2, 2]));
+        }
+        let mut metadata = json!({"id":id, "version":1, "poses":poses});
+        save(&source.join("pack.json"), &metadata).unwrap();
+        let sprite = |color: u8| {
+            let mut image = image::RgbaImage::new(18, 2);
+            for x in (0..18).step_by(2) {
+                image.put_pixel(x, 0, image::Rgba([color, 30, 50, 255]));
+            }
+            let mut bytes = std::io::Cursor::new(Vec::new());
+            image.write_to(&mut bytes, image::ImageFormat::Png).unwrap();
+            bytes.into_inner()
         };
-        assert!(!sprite.hit(10.0, 10.0, 144.0, 156.0, (0, 0)));
-        assert!(sprite.hit(10.0, 10.0, 144.0, 156.0, (1, 0)));
-        assert!(!sprite.hit(-1.0, 10.0, 144.0, 156.0, (1, 0)));
+        let first = sprite(10);
+        fs::write(source.join("poses.png"), &first).unwrap();
+        let (_, original) = import_edge_pack(&source, &packs, id).unwrap();
+        let manifest = fs::read(installed.join("pack.json")).unwrap();
+        fs::write(installed.join("author-license.txt"), b"personal-use only").unwrap();
+        let check_original = || {
+            assert_eq!(
+                fs::read(installed.join("author-license.txt")).unwrap(),
+                b"personal-use only"
+            );
+            assert_eq!(fs::read(installed.join("poses.png")).unwrap(), first);
+            assert_eq!(fs::read(installed.join("pack.json")).unwrap(), manifest);
+            assert_eq!(read_edge_pack(&installed, id).unwrap().1, original);
+        };
+        let second = sprite(100);
+        fs::write(source.join("poses.png"), &second).unwrap();
+        metadata["extras"] = json!({"tail":{"rect":[0,0,2,2]}});
+        save(&source.join("pack.json"), &metadata).unwrap();
+        assert!(import_edge_pack(&source, &packs, id)
+            .err()
+            .unwrap()
+            .contains("tail.png"));
+        check_original();
+        metadata.as_object_mut().unwrap().remove("extras");
+        save(&source.join("pack.json"), &metadata).unwrap();
+        fs::write(source.join("poses.png"), b"broken PNG").unwrap();
+        assert!(import_edge_pack(&source, &packs, id)
+            .err()
+            .unwrap()
+            .contains("PNG"));
+        check_original();
+        fs::write(source.join("poses.png"), &second).unwrap();
+        metadata["sha256"] = json!("incorrect-source-checksum");
+        save(&source.join("pack.json"), &metadata).unwrap();
+        assert!(import_edge_pack(&source, &packs, id)
+            .err()
+            .unwrap()
+            .contains("身份已变化"));
+        check_original();
+        metadata.as_object_mut().unwrap().remove("sha256");
+        save(&source.join("pack.json"), &metadata).unwrap();
+        metadata["poses"]["LEFT_EDGE"] = json!([0, 1, 2, 1]);
+        save(&source.join("pack.json"), &metadata).unwrap();
+        assert!(import_edge_pack(&source, &packs, id)
+            .err()
+            .unwrap()
+            .contains("LEFT_EDGE 姿态区域没有可见像素"));
+        check_original();
+        metadata["poses"]["LEFT_EDGE"] = json!([4, 0, 2, 2]);
+        save(&source.join("pack.json"), &metadata).unwrap();
+        let (_, replacement) = import_edge_pack(&source, &packs, id).unwrap();
+        assert_ne!(replacement, original);
+        assert_eq!(
+            fs::read(installed.join("author-license.txt")).unwrap(),
+            b"personal-use only"
+        );
+        assert_eq!(read_edge_pack(&installed, id).unwrap().1, replacement);
+        assert_eq!(fs::read(source.join("poses.png")).unwrap(), second);
+        assert_eq!(fs::read_dir(&packs).unwrap().count(), 1);
+        assert!(read_edge_pack(&installed, "different-fixture")
+            .err()
+            .unwrap()
+            .contains("不属于当前角色"));
+        fs::remove_dir_all(root).unwrap();
     }
 }
 
 fn edge_pack(app: &tauri::AppHandle, id: &str) -> Result<Value, String> {
-    if !id_ok(id) {
-        return Ok(json!({"status":"pending"}));
-    }
     let root = data(app)?.join("edge-packs").join(id);
-    if !root.join("pack.json").exists() {
-        app.state::<pet_native::PetState>()
-            .edge
-            .lock()
-            .unwrap()
-            .pack = None;
+    let state = app.state::<pet_native::PetState>();
+    if !id_ok(id) || !root.join("pack.json").exists() {
+        state.edge.lock().unwrap().pack = None;
         return Ok(json!({"status":"pending"}));
     }
+    match read_edge_pack(&root, id) {
+        Ok((pack, payload)) => {
+            state.edge.lock().unwrap().pack = Some(pack);
+            Ok(payload)
+        }
+        Err(error) => {
+            state.edge.lock().unwrap().pack = None;
+            Ok(json!({"status":"invalid","error":error}))
+        }
+    }
+}
+
+fn import_edge_pack(
+    source: &Path,
+    packs: &Path,
+    id: &str,
+) -> Result<(pet_edge::Pack, Value), String> {
+    use std::os::unix::fs::DirBuilderExt;
+    let mut metadata: Value =
+        serde_json::from_slice(&fs::read(source.join("pack.json")).map_err(|_| "缺少姿态配置")?)
+            .map_err(|_| "姿态配置无效")?;
+    let work = packs.join(format!(".import-{}", uuid::Uuid::new_v4()));
+    let candidate = work.join("candidate");
+    fs::DirBuilder::new()
+        .recursive(true)
+        .mode(0o700)
+        .create(&candidate)
+        .map_err(|e| e.to_string())?;
+    let target = packs.join(id);
+    let mut preserve_backup = false;
+    let result = (|| {
+        for name in ["poses", "comic", "tail"] {
+            if name != "poses" && !metadata["extras"][name].is_object() {
+                continue;
+            }
+            let filename = format!("{name}.png");
+            let origin = source.join(&filename);
+            let info =
+                fs::symlink_metadata(&origin).map_err(|_| format!("姿态文件缺失：{filename}"))?;
+            if !info.is_file() || info.len() > 16 * 1024 * 1024 {
+                return Err(format!("姿态必须是小于 16 MB 的普通文件：{filename}"));
+            }
+            let bytes = fs::read(origin).map_err(|e| e.to_string())?;
+            let mut file = fs::OpenOptions::new()
+                .write(true)
+                .create_new(true)
+                .mode(0o600)
+                .open(candidate.join(filename))
+                .map_err(|e| e.to_string())?;
+            file.write_all(&bytes).map_err(|e| e.to_string())?;
+            if name == "poses" && metadata.get("sha256").is_none() {
+                metadata["sha256"] = json!(format!("{:x}", Sha256::digest(&bytes)));
+            }
+        }
+        save(&candidate.join("pack.json"), &metadata)?;
+        let ready = read_edge_pack(&candidate, id)?;
+        fs::DirBuilder::new()
+            .recursive(true)
+            .mode(0o700)
+            .create(&target)
+            .map_err(|e| e.to_string())?;
+        fs::set_permissions(&target, fs::Permissions::from_mode(0o700))
+            .map_err(|e| e.to_string())?;
+        let files: Vec<_> = ["poses.png", "comic.png", "tail.png", "pack.json"]
+            .into_iter()
+            .filter(|name| candidate.join(name).exists())
+            .collect();
+        // Replace only managed files. Keep source art, license notes and other user files in place.
+        for name in &files {
+            match fs::hard_link(target.join(name), work.join(name)) {
+                Ok(()) => (),
+                Err(e) if e.kind() == std::io::ErrorKind::NotFound => (),
+                Err(e) => return Err(e.to_string()),
+            }
+        }
+        for (index, name) in files.iter().enumerate() {
+            if let Err(error) = fs::rename(candidate.join(name), target.join(name)) {
+                for old in files[..index].iter().rev() {
+                    let backup = work.join(old);
+                    let restore = if backup.symlink_metadata().is_ok() {
+                        fs::rename(backup, target.join(old))
+                    } else {
+                        fs::remove_file(target.join(old))
+                    };
+                    if restore.is_err() {
+                        preserve_backup = true;
+                    }
+                }
+                return Err(if preserve_backup {
+                    format!(
+                        "导入失败（{error}），未能完全恢复，原文件保存在 {}",
+                        work.display()
+                    )
+                } else {
+                    error.to_string()
+                });
+            }
+        }
+        Ok(ready)
+    })();
+    if !preserve_backup {
+        let _ = fs::remove_dir_all(work);
+    }
+    result
+}
+
+fn read_edge_pack(root: &Path, id: &str) -> Result<(pet_edge::Pack, Value), String> {
     let metadata = private_json(&root.join("pack.json"))?;
+    if metadata["id"] != id || metadata["version"] != 1 {
+        return Err("姿态包不属于当前角色，或版本不受支持".into());
+    }
     let file = root.join("poses.png");
     let info = fs::symlink_metadata(&file).map_err(|_| "姿态文件缺失")?;
     if !info.is_file()
@@ -328,16 +588,7 @@ fn edge_pack(app: &tauri::AppHandle, id: &str) -> Result<Value, String> {
     ];
     let mut rects = vec![];
     for name in names {
-        let r: &Value = &metadata["poses"][name];
-        let r: [u32; 4] = serde_json::from_value(r.clone()).map_err(|_| "姿态边界无效")?;
-        if r[2] == 0
-            || r[3] == 0
-            || r[0].checked_add(r[2]).is_none_or(|x| x > w)
-            || r[1].checked_add(r[3]).is_none_or(|y| y > h)
-        {
-            return Err("姿态越界".into());
-        }
-        rects.push(r);
+        rects.push(visible_rect(&metadata["poses"][name], w, h, &alpha, name)?);
     }
     let mut extras = HashMap::new();
     let mut extra_payload = serde_json::Map::new();
@@ -370,15 +621,7 @@ fn edge_pack(app: &tauri::AppHandle, id: &str) -> Result<Value, String> {
             if !alpha.contains(&0) {
                 return Err("补充姿态缺少真实透明区域".into());
             }
-            let rect: [u32; 4] = serde_json::from_value(metadata["extras"][name]["rect"].clone())
-                .map_err(|_| "补充姿态边界无效")?;
-            if rect[2] == 0
-                || rect[3] == 0
-                || rect[0].checked_add(rect[2]).is_none_or(|x| x > ew)
-                || rect[1].checked_add(rect[3]).is_none_or(|y| y > eh)
-            {
-                return Err("补充姿态越界".into());
-            }
+            let rect = visible_rect(&metadata["extras"][name]["rect"], ew, eh, &alpha, name)?;
             extras.insert(
                 name.into(),
                 pet_edge::Extra {
@@ -403,11 +646,7 @@ fn edge_pack(app: &tauri::AppHandle, id: &str) -> Result<Value, String> {
             .unwrap_or(0.955)
             .clamp(0.8, 1.0),
     ];
-    app.state::<pet_native::PetState>()
-        .edge
-        .lock()
-        .unwrap()
-        .pack = Some(pet_edge::Pack {
+    let pack = pet_edge::Pack {
         sprite: Sprite {
             width: w,
             height: h,
@@ -417,8 +656,37 @@ fn edge_pack(app: &tauri::AppHandle, id: &str) -> Result<Value, String> {
         identity: id.into(),
         contact,
         extras,
-    });
-    Ok(
+    };
+    Ok((
+        pack,
         json!({"status":"ready","width":w,"height":h,"url":format!("data:image/png;base64,{}",base64::engine::general_purpose::STANDARD.encode(bytes)),"extras":extra_payload,"presentation":metadata["presentation"]}),
-    )
+    ))
+}
+
+fn visible_rect(
+    value: &Value,
+    width: u32,
+    height: u32,
+    alpha: &[u8],
+    name: &str,
+) -> Result<[u32; 4], String> {
+    let rect: [u32; 4] =
+        serde_json::from_value(value.clone()).map_err(|_| format!("{name} 姿态边界无效"))?;
+    let [x, y, w, h] = rect;
+    if w == 0
+        || h == 0
+        || x.checked_add(w).is_none_or(|right| right > width)
+        || y.checked_add(h).is_none_or(|bottom| bottom > height)
+    {
+        return Err(format!("{name} 姿态越界"));
+    }
+    if !(y..y + h).any(|row| {
+        let start = (row * width + x) as usize;
+        alpha[start..start + w as usize]
+            .iter()
+            .any(|pixel| *pixel > HIT_ALPHA)
+    }) {
+        return Err(format!("{name} 姿态区域没有可见像素"));
+    }
+    Ok(rect)
 }

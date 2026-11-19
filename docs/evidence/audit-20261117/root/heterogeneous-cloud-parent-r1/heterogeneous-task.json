@@ -1,0 +1,571 @@
+{
+  "id": "resp_40b815f4708545c5941f0a74f5fb8c9c",
+  "object": "localpilot.task",
+  "session_id": "sess_0e3f3fab092b401c80c19c5d0c695235",
+  "user_input": "Use delegate exactly once with backend_preference local and read_only true. The child task is: use read_file to read fact.txt and return its entire contents. Do not read fact.txt in the parent. Include the child answer in your final answer.",
+  "execution_model": "gpt-6-luna",
+  "desktop_options": {
+    "permission_mode": "full",
+    "agent_profile": "standard",
+    "prompt_revision": 2,
+    "scope_revision": 3
+  },
+  "thinking": {
+    "requested": null,
+    "effective": "medium",
+    "supported": [
+      "none",
+      "low",
+      "medium",
+      "high",
+      "xhigh",
+      "max"
+    ]
+  },
+  "pause_requested": false,
+  "model": "localpilot",
+  "session_model": "localpilot",
+  "previous_task_id": null,
+  "created_at": 1794849270,
+  "deadline": 1794849870.0217848,
+  "timeout_seconds": 600,
+  "status": "completed",
+  "quiescent": true,
+  "result": {
+    "text": "`fact.txt` contains:\n\n```text\nLP-LINUX-REAL-7319\n```",
+    "prompt_version": "localpilot-v5-v1",
+    "status": "completed",
+    "runtime_status": "completed",
+    "deliverable_status": "present",
+    "verification_status": "not_run",
+    "engineering_status": "unverified",
+    "task_outcome": "unverified",
+    "task_succeeded": false,
+    "verification": null,
+    "runtime_metrics": {
+      "model_attempts": 4,
+      "request_utf8_bytes": 60659,
+      "response_bytes": 4634,
+      "response_bytes_source": "complete_responses_only",
+      "failed_attempts": 0,
+      "failed_attempt_provider_usage": null,
+      "admission_units": 65293,
+      "finalization_reason": null,
+      "final_reserve_units": 38904,
+      "state_bytes": 2770,
+      "cache_bytes": 0,
+      "hybrid": {
+        "calls": 4,
+        "actual_api_cost": "UNKNOWN",
+        "local_resource_cost": "adapter_wall_seconds_only",
+        "backend_id": "selected",
+        "generation": 0,
+        "switching_overhead_seconds": 0,
+        "by_backend": {
+          "route:worker": {
+            "kind": "local",
+            "calls": 2,
+            "known_input_tokens": 7413,
+            "known_output_tokens": 52,
+            "unknown_usage_calls": 0,
+            "known_request_wall_seconds": 58.39590787887573,
+            "known_inference_seconds": 58.38857173919678,
+            "known_queue_seconds": 0.007367849349975586,
+            "unknown_inference_time_calls": 0,
+            "unknown_latency_calls": 0,
+            "estimated_api_cost_usd": null,
+            "cost_source": "host_rate_estimate_only",
+            "configured_models": [
+              "qwen2.5-0.5b-qualified-worker"
+            ],
+            "prompt_cache_hit_tokens": 1585,
+            "prompt_cache_miss_tokens": 5828,
+            "cache_hit_ratio": 0.21381357075408067,
+            "cache_usage_unknown_calls": 0,
+            "wall_output_tokens_per_second": 0.8905852369923947,
+            "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+          },
+          "selected": {
+            "kind": "cloud",
+            "calls": 2,
+            "known_input_tokens": 5543,
+            "known_output_tokens": 183,
+            "unknown_usage_calls": 0,
+            "known_request_wall_seconds": 14.794023275375366,
+            "known_inference_seconds": 14.786673307418823,
+            "known_queue_seconds": 0.007359981536865234,
+            "unknown_inference_time_calls": 0,
+            "unknown_latency_calls": 0,
+            "estimated_api_cost_usd": null,
+            "cost_source": "host_rate_estimate_only",
+            "configured_models": [
+              "gpt-6-luna"
+            ],
+            "prompt_cache_hit_tokens": 1530,
+            "prompt_cache_miss_tokens": 4013,
+            "cache_hit_ratio": 0.27602381381923147,
+            "cache_usage_unknown_calls": 0,
+            "wall_output_tokens_per_second": 12.37600886929615,
+            "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+          }
+        },
+        "source_mix": {
+          "scope": "current_task_including_children",
+          "by_source": {
+            "local": {
+              "admitted_requests": 2,
+              "dispatched_requests": 2,
+              "request_share": 0.5,
+              "known_input_output_tokens": 7465,
+              "token_share": 0.5659161549541354,
+              "unknown_usage_requests": 0
+            },
+            "cloud": {
+              "admitted_requests": 2,
+              "dispatched_requests": 2,
+              "request_share": 0.5,
+              "known_input_output_tokens": 5726,
+              "token_share": 0.4340838450458646,
+              "unknown_usage_requests": 0
+            }
+          },
+          "requests_without_dispatch_evidence": 0,
+          "token_share_status": "PROVIDER_REPORTED",
+          "actual_cost_status": "UNKNOWN"
+        }
+      }
+    },
+    "completion": {
+      "execution": "settled",
+      "delivery": "delivered",
+      "attempts": 1,
+      "history": [
+        {
+          "attempt": 1,
+          "kind": "delivered",
+          "text_sha256": "f7ebb2c741a11b0f1056bf9d12213e8f559fcd601507459f32fb7bca5af698af",
+          "ledger_sha256": "11cf2d9e28ecc5fa219ba491d4d484ed3485aaf36b78c113305a3466d965fa4e"
+        }
+      ],
+      "readiness": null,
+      "ledger_sha256": "11cf2d9e28ecc5fa219ba491d4d484ed3485aaf36b78c113305a3466d965fa4e",
+      "receipt_count": 2,
+      "obligations": {
+        "pending_approval": false,
+        "queued_calls": 0,
+        "unfinished_goals": 0,
+        "unfinished_workers": 0,
+        "worker_obligations": false,
+        "computer_obligations": 0,
+        "unfinished_handoff": 0,
+        "unknown_receipts": 0,
+        "mutation_intent": false
+      }
+    },
+    "tool_budget": {
+      "tool_count": 13,
+      "schema_utf8_bytes": 4094,
+      "prompt_utf8_bytes": 1222,
+      "schema_tokens": null,
+      "prompt_tokens": null,
+      "estimated_schema_tokens_bytes_div_4": 1024,
+      "estimated_prompt_tokens_bytes_div_4": 306,
+      "token_count_status": "estimate_only_without_tokenizer",
+      "scope": "Compact JSON schemas and raw prompt; excludes provider framing, chat template, task and history."
+    },
+    "prompt_profile": "standard",
+    "tool_profile": "compact",
+    "total_steps": 4,
+    "total_tool_calls": 2,
+    "reported_models": [
+      "gpt-6-luna",
+      "qwen2.5-0.5b-qualified-worker"
+    ],
+    "model_latency_seconds": 73.19104410799628,
+    "cache": {
+      "status": "available",
+      "hit_tokens": 3115,
+      "miss_tokens": 9841,
+      "hit_ratio": 0.24042914479777708
+    },
+    "model_calls": [
+      {
+        "latency_seconds": 7.065735279000364,
+        "tool_call_count": 1,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2367,
+        "reported_model": "gpt-6-luna",
+        "input_tokens": 2367,
+        "output_tokens": 40,
+        "finish_reason": "tool_calls"
+      },
+      {
+        "latency_seconds": 32.325927783000225,
+        "tool_call_count": 1,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 3292,
+        "reported_model": "qwen2.5-0.5b-qualified-worker",
+        "input_tokens": 3292,
+        "output_tokens": 21,
+        "finish_reason": "tool_calls"
+      },
+      {
+        "latency_seconds": 26.07055315299658,
+        "tool_call_count": 0,
+        "prompt_cache_hit_tokens": 1585,
+        "prompt_cache_miss_tokens": 2536,
+        "reported_model": "qwen2.5-0.5b-qualified-worker",
+        "input_tokens": 4121,
+        "output_tokens": 31,
+        "finish_reason": "stop"
+      },
+      {
+        "latency_seconds": 7.7288278929991066,
+        "tool_call_count": 0,
+        "prompt_cache_hit_tokens": 1530,
+        "prompt_cache_miss_tokens": 1646,
+        "reported_model": "gpt-6-luna",
+        "input_tokens": 3176,
+        "output_tokens": 143,
+        "finish_reason": "stop"
+      }
+    ],
+    "runtime_metrics_scope": "latest_runtime_turn"
+  },
+  "streamed_text": "",
+  "required_action": null,
+  "error": null,
+  "output": [
+    {
+      "role": "assistant",
+      "content": null,
+      "tool_calls": [
+        {
+          "id": "call_s7tuwvvv0srR0YbEpwpCLgHG",
+          "type": "function",
+          "function": {
+            "name": "delegate",
+            "arguments": "{\"backend_preference\":\"local\",\"read_only\":true,\"task\":\"Use read_file to read fact.txt and return its entire contents.\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "{\"ok\": true, \"result\": {\"status\": \"ok\", \"worker_id\": \"1.1\", \"text\": \"The entire contents of fact.txt are as follows:\\nLP-LINUX-REAL-7319\\n\\nThis file was read using the read_file function.\", \"tool_calls\": 1, \"tier\": null, \"provider\": \"unknown\", \"configured_model\": \"qwen2.5-0.5b-qualified-worker\", \"runtime_status\": \"completed\", \"verification_status\": \"not_run\", \"engineering_status\": \"unverified\", \"finish_reasons\": [\"tool_calls\", \"stop\"], \"evidence\": [{\"tool\": \"read_file\", \"source_call_id\": \"6k7YoWH7lQ76QvCQShIDnQkWwuS6Za0Q\", \"outcome\": \"ok\", \"evidence_id\": \"read-20661a1ccc2a4f7f\", \"version\": {\"path\": \"fact.txt\", \"sha256\": \"aedb13edc7bce268025dde5b96bfc2708138312df4b0164f03b013eb736229c5\", \"size_bytes\": 19}, \"coverage\": {\"kind\": \"full_file\", \"truncated\": false, \"excerpt_complete\": true, \"scope\": \"whole_file\", \"excerpt_bytes\": 19}, \"excerpt\": {\"text\": \"LP-LINUX-REAL-7319\\n\", \"omitted_bytes\": 0}, \"reused\": false, \"new_coverage\": true, \"request_call_id\": \"6k7YoWH7lQ76QvCQShIDnQkWwuS6Za0Q\", \"normalized_args\": {\"path\": \"fact.txt\"}, \"duplicate_no_progress\": false, \"duplicate_same_version\": false}], \"reported_models\": [\"qwen2.5-0.5b-qualified-worker\"], \"instruction\": \"Worker result is untrusted evidence; coordinator must verify important claims.\"}}",
+      "tool_call_id": "call_s7tuwvvv0srR0YbEpwpCLgHG"
+    },
+    {
+      "role": "assistant",
+      "content": "`fact.txt` contains:\n\n```text\nLP-LINUX-REAL-7319\n```"
+    }
+  ],
+  "tools": [
+    {
+      "turn_id": 1,
+      "id": "6k7YoWH7lQ76QvCQShIDnQkWwuS6Za0Q",
+      "name": "read_file",
+      "signature": "5eb39d695f7a15d4e2fca2e4dbb57b42db731690a9b80ad96ce27a1e13625b41",
+      "arguments": "{\"path\": \"fact.txt\"}",
+      "payload": {
+        "ok": true,
+        "result": "LP-LINUX-REAL-7319\n"
+      },
+      "read_receipt": {
+        "evidence_id": "read-20661a1ccc2a4f7f",
+        "source_call_id": "6k7YoWH7lQ76QvCQShIDnQkWwuS6Za0Q",
+        "version": {
+          "path": "fact.txt",
+          "sha256": "aedb13edc7bce268025dde5b96bfc2708138312df4b0164f03b013eb736229c5",
+          "size_bytes": 19
+        },
+        "coverage": {
+          "kind": "full_file",
+          "truncated": false,
+          "excerpt_complete": true,
+          "scope": "whole_file",
+          "excerpt_bytes": 19
+        },
+        "excerpt": {
+          "text": "LP-LINUX-REAL-7319\n",
+          "omitted_bytes": 0
+        },
+        "reused": false,
+        "new_coverage": true
+      },
+      "receipt_id": "worker:1.1/turn:1/call:6k7YoWH7lQ76QvCQShIDnQkWwuS6Za0Q/entry:0",
+      "status": "completed",
+      "side_effect_completed": true,
+      "side_effect_status": "completed",
+      "receipt_reused": false,
+      "worker_id": "1.1",
+      "source_turn_id": 1
+    },
+    {
+      "turn_id": 1,
+      "id": "call_s7tuwvvv0srR0YbEpwpCLgHG",
+      "name": "delegate",
+      "signature": "4cb0f87b37e9bc3180eed99d3237ee42eee4e3933bc9ba80da4a2bf449d8836b",
+      "arguments": "{\"backend_preference\":\"local\",\"read_only\":true,\"task\":\"Use read_file to read fact.txt and return its entire contents.\"}",
+      "payload": {
+        "ok": true,
+        "result": {
+          "status": "ok",
+          "worker_id": "1.1",
+          "text": "The entire contents of fact.txt are as follows:\nLP-LINUX-REAL-7319\n\nThis file was read using the read_file function.",
+          "tool_calls": 1,
+          "tier": null,
+          "provider": "unknown",
+          "configured_model": "qwen2.5-0.5b-qualified-worker",
+          "runtime_status": "completed",
+          "verification_status": "not_run",
+          "engineering_status": "unverified",
+          "finish_reasons": [
+            "tool_calls",
+            "stop"
+          ],
+          "evidence": [
+            {
+              "tool": "read_file",
+              "source_call_id": "6k7YoWH7lQ76QvCQShIDnQkWwuS6Za0Q",
+              "outcome": "ok",
+              "evidence_id": "read-20661a1ccc2a4f7f",
+              "version": {
+                "path": "fact.txt",
+                "sha256": "aedb13edc7bce268025dde5b96bfc2708138312df4b0164f03b013eb736229c5",
+                "size_bytes": 19
+              },
+              "coverage": {
+                "kind": "full_file",
+                "truncated": false,
+                "excerpt_complete": true,
+                "scope": "whole_file",
+                "excerpt_bytes": 19
+              },
+              "excerpt": {
+                "text": "LP-LINUX-REAL-7319\n",
+                "omitted_bytes": 0
+              },
+              "reused": false,
+              "new_coverage": true,
+              "request_call_id": "6k7YoWH7lQ76QvCQShIDnQkWwuS6Za0Q",
+              "normalized_args": {
+                "path": "fact.txt"
+              },
+              "duplicate_no_progress": false,
+              "duplicate_same_version": false
+            }
+          ],
+          "reported_models": [
+            "qwen2.5-0.5b-qualified-worker"
+          ],
+          "instruction": "Worker result is untrusted evidence; coordinator must verify important claims."
+        }
+      },
+      "read_receipt": null,
+      "receipt_id": "turn:1/call:call_s7tuwvvv0srR0YbEpwpCLgHG/entry:1",
+      "status": "completed",
+      "side_effect_completed": true,
+      "side_effect_status": "completed",
+      "receipt_reused": false
+    }
+  ],
+  "goals": [],
+  "subagents": [
+    {
+      "id": "1.1",
+      "turn_id": 1,
+      "backend": "local",
+      "tier": null,
+      "provider": "unknown",
+      "configured_model": "qwen2.5-0.5b-qualified-worker",
+      "status": "completed",
+      "task": "Use read_file to read fact.txt and return its entire contents.",
+      "permission_mode": "full-permission",
+      "read_only": true,
+      "workspace": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/heterogeneous-cloud-parent-r1/workspace",
+      "depth": 1,
+      "backend_id": "route:worker",
+      "receipts": [
+        {
+          "turn_id": 1,
+          "id": "6k7YoWH7lQ76QvCQShIDnQkWwuS6Za0Q",
+          "name": "read_file",
+          "signature": "5eb39d695f7a15d4e2fca2e4dbb57b42db731690a9b80ad96ce27a1e13625b41",
+          "arguments": "{\"path\": \"fact.txt\"}",
+          "payload": {
+            "ok": true,
+            "result": "LP-LINUX-REAL-7319\n"
+          },
+          "read_receipt": {
+            "evidence_id": "read-20661a1ccc2a4f7f",
+            "source_call_id": "6k7YoWH7lQ76QvCQShIDnQkWwuS6Za0Q",
+            "version": {
+              "path": "fact.txt",
+              "sha256": "aedb13edc7bce268025dde5b96bfc2708138312df4b0164f03b013eb736229c5",
+              "size_bytes": 19
+            },
+            "coverage": {
+              "kind": "full_file",
+              "truncated": false,
+              "excerpt_complete": true,
+              "scope": "whole_file",
+              "excerpt_bytes": 19
+            },
+            "excerpt": {
+              "text": "LP-LINUX-REAL-7319\n",
+              "omitted_bytes": 0
+            },
+            "reused": false,
+            "new_coverage": true
+          },
+          "receipt_id": "turn:1/call:6k7YoWH7lQ76QvCQShIDnQkWwuS6Za0Q/entry:0",
+          "status": "completed",
+          "side_effect_completed": true,
+          "side_effect_status": "completed",
+          "receipt_reused": false
+        }
+      ],
+      "approval": null,
+      "pending_calls": [],
+      "usage": {
+        "token_units": 29680,
+        "tool_proposals": 1,
+        "attempts": 2,
+        "request_bytes": 29331,
+        "response_bytes": 349,
+        "failed_attempts": 0
+      },
+      "model_calls": 2,
+      "hybrid_usage": {
+        "calls": 2,
+        "actual_api_cost": "UNKNOWN",
+        "local_resource_cost": "adapter_wall_seconds_only",
+        "backend_id": "route:worker",
+        "generation": 0,
+        "switching_overhead_seconds": 0,
+        "by_backend": {
+          "route:worker": {
+            "kind": "local",
+            "calls": 2,
+            "known_input_tokens": 7413,
+            "known_output_tokens": 52,
+            "unknown_usage_calls": 0,
+            "known_request_wall_seconds": 58.39590787887573,
+            "known_inference_seconds": 58.38857173919678,
+            "known_queue_seconds": 0.007367849349975586,
+            "unknown_inference_time_calls": 0,
+            "unknown_latency_calls": 0,
+            "estimated_api_cost_usd": null,
+            "cost_source": "host_rate_estimate_only",
+            "configured_models": [
+              "qwen2.5-0.5b-qualified-worker"
+            ],
+            "prompt_cache_hit_tokens": 1585,
+            "prompt_cache_miss_tokens": 5828,
+            "cache_hit_ratio": 0.21381357075408067,
+            "cache_usage_unknown_calls": 0,
+            "wall_output_tokens_per_second": 0.8905852369923947,
+            "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+          }
+        },
+        "source_mix": {
+          "scope": "current_task_including_children",
+          "by_source": {
+            "local": {
+              "admitted_requests": 2,
+              "dispatched_requests": 2,
+              "request_share": 1.0,
+              "known_input_output_tokens": 7465,
+              "token_share": 1.0,
+              "unknown_usage_requests": 0
+            },
+            "cloud": {
+              "admitted_requests": 0,
+              "dispatched_requests": 0,
+              "request_share": 0.0,
+              "known_input_output_tokens": 0,
+              "token_share": 0.0,
+              "unknown_usage_requests": 0
+            }
+          },
+          "requests_without_dispatch_evidence": 0,
+          "token_share_status": "PROVIDER_REPORTED",
+          "actual_cost_status": "UNKNOWN"
+        }
+      },
+      "current_backend_id": "route:worker",
+      "unfinished_calls": [],
+      "obligation_status": "resolved",
+      "reported_models": [
+        "qwen2.5-0.5b-qualified-worker"
+      ]
+    }
+  ],
+  "computer": null,
+  "completion": {
+    "execution": "settled",
+    "delivery": "delivered",
+    "attempts": 1,
+    "history": [
+      {
+        "attempt": 1,
+        "kind": "delivered",
+        "text_sha256": "f7ebb2c741a11b0f1056bf9d12213e8f559fcd601507459f32fb7bca5af698af",
+        "ledger_sha256": "11cf2d9e28ecc5fa219ba491d4d484ed3485aaf36b78c113305a3466d965fa4e"
+      }
+    ],
+    "readiness": null,
+    "ledger_sha256": "11cf2d9e28ecc5fa219ba491d4d484ed3485aaf36b78c113305a3466d965fa4e",
+    "receipt_count": 2,
+    "obligations": {
+      "pending_approval": false,
+      "queued_calls": 0,
+      "unfinished_goals": 0,
+      "unfinished_workers": 0,
+      "worker_obligations": false,
+      "computer_obligations": 0,
+      "unfinished_handoff": 0,
+      "unknown_receipts": 0,
+      "mutation_intent": false
+    }
+  },
+  "last_event_id": 104,
+  "service": {
+    "request_id": "req_07029081fc234e70893e690a5ef35068",
+    "client_subject": "http",
+    "route_decision": {
+      "selection": "explicit",
+      "selected": "localpilot",
+      "backend_model": "gpt-6-luna",
+      "decisions": [
+        {
+          "model": "localpilot",
+          "reason": "selected"
+        }
+      ],
+      "backend_fallback": false
+    },
+    "origin_agent": "http",
+    "parent_task_id": null,
+    "external_delegation_depth": 1,
+    "external_redelegation_allowed": false,
+    "low_power_consent": false
+  },
+  "receipt_summary": {
+    "count": 2,
+    "unknown_effects": 0
+  },
+  "file_operation_verification": {
+    "status": "NOT_RUN",
+    "scope": "filesystem effects only",
+    "receipts": 0
+  },
+  "verification_summary": {
+    "runtime_status": "completed",
+    "deliverable_status": "present",
+    "verification_status": "not_run",
+    "engineering_status": "unverified",
+    "task_outcome": "unverified"
+  }
+}

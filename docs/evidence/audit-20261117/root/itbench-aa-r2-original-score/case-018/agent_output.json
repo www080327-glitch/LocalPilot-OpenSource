@@ -1,0 +1,9 @@
+{
+  "contributing_factors": [
+    {
+      "name": "chaos-mesh/Schedule/otel-demo-email-checkout-network-partition",
+      "reasoning": "This recurring Schedule is the upstream fault: it repeatedly spawns and starts NetworkChaos experiments that partition network traffic for the shipping and quote pods, making shipping's quote dependency time out. The resulting shipping 500s propagate through checkout and frontend requests, explaining the firing latency/error alerts; these downstream services are symptoms, not independent causes.",
+      "evidence": "In k8s_events_raw.tsv, at 2025-12-15 17:53:00 the Schedule spawned a NetworkChaos child and updated lastScheduleTime; the child started and Applied events name otel-demo/shipping-75d58f5d84-jgxvv and otel-demo/quote-6b5877698d-8fn9w. The same Schedule spawned further children at 17:54, 17:55, and 17:56, showing repeated disruption. In otel_traces_raw.tsv, trace 8aba459d0560d56b6550d12ad4c228ce at 17:53:03 records shipping POST quote ending in Timeout after about 5.0 s, shipping /get-quote returning 500, checkout PlaceOrder failing with INTERNAL, and frontend POST /api/checkout returning 500. alerts_in_alerting_state_2025-12-15T175844.259487Z.json shows firing RequestLatency alerts for shipping and checkout and RequestErrorRate alerts for shipping, checkout, frontend, and frontend-proxy. The captured shipping and quote pods were Running/Ready and their Deployments had 1/1 available replicas, so their failures trace to the scheduled network disruption rather than unavailable replicas."
+    }
+  ]
+}

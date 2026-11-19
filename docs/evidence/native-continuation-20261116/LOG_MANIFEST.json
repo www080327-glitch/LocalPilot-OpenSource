@@ -1,0 +1,130 @@
+{
+  "files": [
+    {
+      "file": "regression/companion-final-r1.log.gz",
+      "original_sha256": "36e00ecd9711b8eec7523ecc6f7300e54d3129aa512ce0f30bddcdb58a9af5d3",
+      "published_sha256": "9e9d2cfb03cbfc0a5893a5f40c97e2ddb09003733afe4ea55cc2184cb2667aa4",
+      "transformation": "replace workspace prefixes only; gzip mtime=0"
+    },
+    {
+      "file": "regression/SUITE_R2_SUMMARY.json",
+      "original_sha256": "9abbf14636a50306fadb2a56130ace991310a7826d25e26c39950c1c85575d99",
+      "published_sha256": "a6619534a212903784efc67a6c2a6fd197777d77108cc1f7e71ad87eca85bf0e",
+      "transformation": "replace workspace prefixes only"
+    },
+    {
+      "file": "regression/run.sh",
+      "original_sha256": "186f98ec1fb858fa4a13aca360afc74da8831cdb28039bbba9544081547a2f57",
+      "published_sha256": "95864c485757f9776a93c0ee84530b4b06ec1fb7de22f0da674b8c1911574788",
+      "transformation": "replace workspace prefixes only"
+    },
+    {
+      "file": "regression/core-final-r1.log.gz",
+      "original_sha256": "3ba66879640199d6f3fad8f733f106aa4a8a6a88046d56f7071aa2dd43f5a1eb",
+      "published_sha256": "5546244865c51b3320e0d0ef84863d4f61e1df36db78a9ef45e7a3f3daa15a83",
+      "transformation": "replace workspace prefixes only; gzip mtime=0"
+    },
+    {
+      "file": "regression/suite-final-r1.log.gz",
+      "original_sha256": "963da8233548a85c4039bc98405f55c726de88a87d0e82f9e48360518353f8cb",
+      "published_sha256": "7aa162925d2eabfb9cbf47d5b12e7f017fb684549128cbdd075203517af864ee",
+      "transformation": "replace workspace prefixes only; gzip mtime=0"
+    },
+    {
+      "file": "regression/suite-final-r2.log.gz",
+      "original_sha256": "1fd1227898046bf4a1c570ef485c491897e1bad040a5c5ebfec67c49a2b96aa4",
+      "published_sha256": "6df2f8239fc30937691a429f4af98595cbb6fc4b3146cf7ffcfc392473219cdf",
+      "transformation": "replace workspace prefixes only; gzip mtime=0"
+    },
+    {
+      "file": "regression/RUN_SUMMARY.json",
+      "original_sha256": "28203ccd57613e7f14757134f9ab2de15f1e7254d1c3ddae12038e56370217e6",
+      "published_sha256": "b7f3a3d5820a004715da92774f3cb57cbf51ececba47d0d1144cc79cbb2751b2",
+      "transformation": "replace workspace prefixes only"
+    },
+    {
+      "file": "package/SOURCE_SNAPSHOT.json",
+      "original_sha256": "e977b1f7438331017cbe7eb9817641b9af295d58da4ef371a3fbd54204b3afa0",
+      "published_sha256": "e977b1f7438331017cbe7eb9817641b9af295d58da4ef371a3fbd54204b3afa0",
+      "transformation": "verbatim generated report"
+    },
+    {
+      "file": "package/VERIFIED_MODULES.json",
+      "original_sha256": "25a59137057f16dafacbed926066396b15cea459265968ea90883e460869bd3d",
+      "published_sha256": "25a59137057f16dafacbed926066396b15cea459265968ea90883e460869bd3d",
+      "transformation": "verbatim generated report"
+    },
+    {
+      "file": "package/candidate-versions.json",
+      "original_sha256": "4430f22bdaec7c45c6a4494c1d64ea1fea8e72d918690fd2f684b42904466772",
+      "published_sha256": "4430f22bdaec7c45c6a4494c1d64ea1fea8e72d918690fd2f684b42904466772",
+      "transformation": "verbatim generated report"
+    },
+    {
+      "file": "package/verify-resources-against-original-source.log.gz",
+      "original_sha256": "25a59137057f16dafacbed926066396b15cea459265968ea90883e460869bd3d",
+      "published_sha256": "ce630e170e7322cdeafcac701ee53f480667d6f2e4467f61aba3ddbf1c25ce0e",
+      "transformation": "replace workspace prefixes only; gzip mtime=0"
+    },
+    {
+      "file": "package/verify-resources-after-build.log.gz",
+      "original_sha256": "25a59137057f16dafacbed926066396b15cea459265968ea90883e460869bd3d",
+      "published_sha256": "ce630e170e7322cdeafcac701ee53f480667d6f2e4467f61aba3ddbf1c25ce0e",
+      "transformation": "replace workspace prefixes only; gzip mtime=0"
+    },
+    {
+      "file": "package/wheel-core.log.gz",
+      "original_sha256": "837d37257e1fad8c9cbcfdb06cd1dade8d144ce1554f548bfaf499f47faf6e93",
+      "published_sha256": "da27d0d86c02647b8052be0adbfa2c1d9a53cefd484f5b99391f9a479b907928",
+      "transformation": "replace workspace prefixes only; gzip mtime=0"
+    },
+    {
+      "file": "package/wheel-companion.log.gz",
+      "original_sha256": "b1204aa32f43b2c5134ef3ee4e46374747f3e13ca827441cf780328bb5374e58",
+      "published_sha256": "3d51e8fd996ec24f159a542116ccfbe3aaa5fff98b1516e4e89225f36011fb42",
+      "transformation": "replace workspace prefixes only; gzip mtime=0"
+    },
+    {
+      "file": "package/wheel-suite.log.gz",
+      "original_sha256": "85c81f1be01ac98dc82556c9fdaa3cfc7cc9566863a53fab926fcd4b10ef9aaa",
+      "published_sha256": "a548652d8fc5505ce386c6b62e9dcfc39697eeb160987dbb69dde4d5c57b4ccf",
+      "transformation": "replace workspace prefixes only; gzip mtime=0"
+    },
+    {
+      "file": "package/wheel-channels.log.gz",
+      "original_sha256": "ad11d08d8b65f76325c9f0329652b034a84882520decb021db10e0a4c17cebbe",
+      "published_sha256": "8e7ac10841437eb3de854bbd72ce96c4b76be1b4db6b7700f4b8b4c55396f49f",
+      "transformation": "replace workspace prefixes only; gzip mtime=0"
+    },
+    {
+      "file": "package/prepare-resources.log.gz",
+      "original_sha256": "a76e8ec2c388fafff69a2ba58a6c51a2327e63f36c0e023a556de0bd6c3e0f65",
+      "published_sha256": "1e4330ddaffd98496ae3ab984b044eb479050837f6d4c5ae982c0108f50ad6af",
+      "transformation": "replace workspace prefixes only; gzip mtime=0"
+    },
+    {
+      "file": "package/build-linux-test.log.gz",
+      "original_sha256": "7b8a7ea8dca2ff8f567141599017e29451dfbf7e7ee22bd3a6b717955e67fef9",
+      "published_sha256": "19f70f037611b4149f15edd2ae24f0a85f6067e9ffaeeae55718aece33a41224",
+      "transformation": "replace workspace prefixes only; gzip mtime=0"
+    },
+    {
+      "file": "package/delivery-directory.txt",
+      "original_sha256": "071a46e68788567ba0a617f1a30503e832f7cf11f280146b589a9331bc361629",
+      "published_sha256": "89f65975ed448d7e92b7fbd950e72ac4d9443a9f52acb9963e78ed718513fd65",
+      "transformation": "replace workspace prefixes only"
+    },
+    {
+      "file": "package/RESULTS.json",
+      "original_sha256": "f6c218bcd5ab47e2470a8091abf07cfc141049175c70f6e8ef106070a25d56be",
+      "published_sha256": "f6c218bcd5ab47e2470a8091abf07cfc141049175c70f6e8ef106070a25d56be",
+      "transformation": "verbatim generated report"
+    },
+    {
+      "file": "package/SHA256SUMS",
+      "original_sha256": "fe1672dbfafe10d1260765a2fdcf4a0206f7c4ebf81418004829e59693b6b8d3",
+      "published_sha256": "fe1672dbfafe10d1260765a2fdcf4a0206f7c4ebf81418004829e59693b6b8d3",
+      "transformation": "verbatim generated report"
+    }
+  ]
+}

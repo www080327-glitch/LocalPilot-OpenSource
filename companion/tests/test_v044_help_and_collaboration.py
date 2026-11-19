@@ -73,7 +73,7 @@ class HelpCollaborationTests(unittest.TestCase):
         self.assertEqual(len(self.fixture.service.tasks),0)
         result=self.app.controls.start(ticket,True)
         self.fixture.service.wait(result['task_id'])
-        record=self.app.store.get('localpilot_tasks')[result['task_id']]
+        record=self.app.store.tasks.get(result['task_id'])
         self.assertEqual(record['transport']['mode'],'execution')
         self.assertTrue(record['transport']['user_help_approved'])
         self.assertEqual(self.cloud.requests,[])
@@ -127,7 +127,7 @@ class HelpCollaborationTests(unittest.TestCase):
         result=self.app.controls.start(ticket,True);self.finish_cloud(result)
         self.assertEqual(len(self.cloud.requests),1)
         self.assertEqual(len(self.fixture.backend.requests),1)
-        self.assertNotEqual(result['session_id'],self.app.store.get('localpilot_tasks')[task]['result']['session_id'])
+        self.assertNotEqual(result['session_id'],self.app.store.tasks.get(task)['result']['session_id'])
 
     def test_capability_hint_only_suggests_cloud_and_never_sends_local_answer(self):
         self.app.store.set('inference_options',{'allow_automatic_cloud':True})
@@ -142,6 +142,27 @@ class HelpCollaborationTests(unittest.TestCase):
         payload=json.dumps([m.to_dict() for m in self.cloud.requests[0]['messages']])
         self.assertNotIn('PRIVATE_LOCAL_ANSWER',payload)
         self.assertIn('Explain this synthetic public question',payload)
+
+    def test_explicit_openai_route_requires_confirmation_and_keeps_source_identity(self):
+        self.fixture.server.catalog['cloud'].update(adapter='openai', model='scripted-openai')
+        task=self.minimal(self.answer('[NEEDS_CLOUD] PRIVATE_LOCAL_ANSWER'))
+        self.observe(task)
+        control=self.app.controls.current
+        self.assertEqual(control['kind'],'cloud')
+        self.assertEqual(control['model'],'OpenAI · scripted-openai（仅原问题）')
+        self.assertIn('cloud_question_egress',control['required_confirmations'])
+        ticket=control['id'];self.app.controls.ack(ticket)
+        self.assertEqual(self.app.controls.start(ticket)['status'],'confirmation_required')
+        self.assertEqual(self.cloud.requests,[])
+        result=self.app.controls.start(ticket,True)
+        final=self.finish_cloud(result)
+        self.assertEqual(final['agent_response'],'Cloud synthetic answer')
+        self.assertTrue(final['quiescent'])
+        self.assertEqual(final['task']['verification_summary']['runtime_status'],'completed')
+        self.assertEqual(len(self.cloud.requests),1)
+        payload=json.dumps([m.to_dict() for m in self.cloud.requests[0]['messages']])
+        self.assertIn('Explain this synthetic public question',payload)
+        self.assertNotIn('PRIVATE_LOCAL_ANSWER',payload)
 
     def test_enabled_cloud_option_allows_hard_failure_after_visible_control(self):
         self.app.store.set('inference_options',{'allow_automatic_cloud':True})
@@ -194,7 +215,7 @@ class HelpCollaborationTests(unittest.TestCase):
         ticket=self.app.controls.current['id'];self.app.controls.ack(ticket)
         self.fixture.server.catalog['cloud']['adapter']='remote-openai'
         result=self.app.controls.start(ticket,True)
-        self.assertEqual(result['error']['code'],'cloud_backend_not_deepseek')
+        self.assertEqual(result['error']['code'],'cloud_backend_not_supported')
         self.assertEqual(len(self.cloud.requests),0)
         self.assertEqual(len(self.fixture.service.tasks),1)
 

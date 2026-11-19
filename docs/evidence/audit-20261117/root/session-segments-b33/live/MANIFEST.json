@@ -1,0 +1,299 @@
+{
+  "scope": "Reviewed publication copies; RAW_MANIFEST files describe private originals.",
+  "transform": "Only explicit absolute path prefixes and temporary directory aliases. No outcomes or fixture values changed.",
+  "archive": {
+    "file": "evidence.tar.gz",
+    "bytes": 36707,
+    "sha256": "1f42e9a5e394e23f27db0b2cbecdcd6999e7da419364964394648ba15f5817cb"
+  },
+  "files": [
+    {
+      "path": "live-luna-segments-r1.log",
+      "raw_bytes": 4657,
+      "raw_sha256": "e035633ed677c8e23c14c2c4561b27921e69fa21aee114bede1a9a32c8a69950",
+      "published_bytes": 4657,
+      "published_sha256": "e035633ed677c8e23c14c2c4561b27921e69fa21aee114bede1a9a32c8a69950",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-luna-segments-r1/RESULTS.json",
+      "raw_bytes": 6003,
+      "raw_sha256": "ad45bf50a679bf59fafe82554aa0ab93ee50516c93cccfe540ee79ebeb99da62",
+      "published_bytes": 6003,
+      "published_sha256": "ad45bf50a679bf59fafe82554aa0ab93ee50516c93cccfe540ee79ebeb99da62",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-luna-segments-r1/before-rotation-size.json",
+      "raw_bytes": 64,
+      "raw_sha256": "350045939e354c85bc2f201ce16d687f18596af06e6c49a04e4a46bd23a9e50b",
+      "published_bytes": 64,
+      "published_sha256": "350045939e354c85bc2f201ce16d687f18596af06e6c49a04e4a46bd23a9e50b",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-luna-segments-r1/fixtures.json",
+      "raw_bytes": 146,
+      "raw_sha256": "afb222ec9bf156accbefaceeefb3b39e103be74308da3ee78c6f956e5440b6ef",
+      "published_bytes": 146,
+      "published_sha256": "afb222ec9bf156accbefaceeefb3b39e103be74308da3ee78c6f956e5440b6ef",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-luna-segments-r1/prefix-comparisons.json",
+      "raw_bytes": 1078,
+      "raw_sha256": "29a924c5dd89a8253f60ee684cdc320403adeabd9645a993535c705e86d43199",
+      "published_bytes": 1078,
+      "published_sha256": "29a924c5dd89a8253f60ee684cdc320403adeabd9645a993535c705e86d43199",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-luna-segments-r1/prompts.json",
+      "raw_bytes": 669,
+      "raw_sha256": "60fac9e57f96cb8b31d7533dfd974de6d76c6629d4f851b9ee0f8a5d9cd80ca9",
+      "published_bytes": 669,
+      "published_sha256": "60fac9e57f96cb8b31d7533dfd974de6d76c6629d4f851b9ee0f8a5d9cd80ca9",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-luna-segments-r1/request-01.json",
+      "raw_bytes": 8501,
+      "raw_sha256": "722e56936ebb23e0e6c8f2b4dd9c341d29c40a98a88c947fefc943353805e423",
+      "published_bytes": 8458,
+      "published_sha256": "504fa11c083f82a13f24973c8a78e29cab7b21a937967d1f4a3d938234ab7be1",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 1
+      }
+    },
+    {
+      "path": "live-luna-segments-r1/request-02.json",
+      "raw_bytes": 12186,
+      "raw_sha256": "316e2c0130f351acb3ad45954a1163548188531485e1b8eb65530f636a8ac018",
+      "published_bytes": 12100,
+      "published_sha256": "cca07a8a051b3d66fa974379472fee7238f8a5e276fe17f4b60589d7ded54491",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 2
+      }
+    },
+    {
+      "path": "live-luna-segments-r1/request-03.json",
+      "raw_bytes": 16471,
+      "raw_sha256": "4689ca43c4e993d7c5e87f490a1d33bb12b639dfc504e55294bc6b87327a11d9",
+      "published_bytes": 16342,
+      "published_sha256": "6aedb2f48e8a2b3ab33f9207e7cc0c63e0a35daf5746f837127cf995c3ec7f2d",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 3
+      }
+    },
+    {
+      "path": "live-luna-segments-r1/request-04.json",
+      "raw_bytes": 19674,
+      "raw_sha256": "81516d66d499cc06996d1cda623a928ec147091fc64f8398ecc19ee85f12ee82",
+      "published_bytes": 19502,
+      "published_sha256": "6b5a5201cad61ee2d158daf104212c9452f9cc72ad9887f572ecb8c4fee79ab0",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 4
+      }
+    },
+    {
+      "path": "live-luna-segments-r1/request-05.json",
+      "raw_bytes": 23666,
+      "raw_sha256": "e3d672c657a35e26b57e8c7e8bd8507b9aeac7a863de5be51237f2eb879c672f",
+      "published_bytes": 23451,
+      "published_sha256": "c1469f9bedba8de077ae10bc02c8ed0ac480048c62cbfbad5e48fa6751e0dbb0",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 5
+      }
+    },
+    {
+      "path": "live-luna-segments-r1/request-06.json",
+      "raw_bytes": 26789,
+      "raw_sha256": "1ec904826d8e1034d34cb3630ec2d239721d14b612c29b6eb37c51f26c04c638",
+      "published_bytes": 26531,
+      "published_sha256": "b8b0b692258d4c6529dc048c14dac7483e50d45f54f708f4e9abd9db3b3a9bd0",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 6
+      }
+    },
+    {
+      "path": "live-luna-segments-r1/request-07.json",
+      "raw_bytes": 30409,
+      "raw_sha256": "a20fa2d457ea83f87887395078ef623f26a12641f18661754ec5691878d28a4b",
+      "published_bytes": 30108,
+      "published_sha256": "5e747c876e695813286714150e89bb33c57cc2227fe2010986bd4c7a1bfdcfeb",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 7
+      }
+    },
+    {
+      "path": "live-luna-segments-r1/request-08.json",
+      "raw_bytes": 33416,
+      "raw_sha256": "f30f571c2da4245c04182c9cdd4aebb731775b8a2d6b05f283562a0273cc3435",
+      "published_bytes": 33072,
+      "published_sha256": "da9cb19f9c91831fb0524ceff5018d1b4c2baea7f7800b8e8281d2933890278c",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 8
+      }
+    },
+    {
+      "path": "live-luna-segments-r1/responses.json",
+      "raw_bytes": 9369,
+      "raw_sha256": "e5a6106569d850e26d98c5b85575c027ee03e20b9d9fa3903734d66fd5555719",
+      "published_bytes": 9369,
+      "published_sha256": "e5a6106569d850e26d98c5b85575c027ee03e20b9d9fa3903734d66fd5555719",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-luna-segments-r1/source-hashes.json",
+      "raw_bytes": 11202,
+      "raw_sha256": "59d3f3702ba8c57a689666d526caaf77fe8e69a0a240c9a8ffc15424997d7db6",
+      "published_bytes": 11202,
+      "published_sha256": "59d3f3702ba8c57a689666d526caaf77fe8e69a0a240c9a8ffc15424997d7db6",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-luna-segments-r1/task-1.json",
+      "raw_bytes": 11567,
+      "raw_sha256": "638d5df044ce37cda7a07f5be19698fa5504a046a99d5cf6063681869c659c27",
+      "published_bytes": 11567,
+      "published_sha256": "638d5df044ce37cda7a07f5be19698fa5504a046a99d5cf6063681869c659c27",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-luna-segments-r1/task-2.json",
+      "raw_bytes": 9361,
+      "raw_sha256": "a70e687b41a58062dcfbfed2b4170227a02585890d509602e0330a140469f21b",
+      "published_bytes": 9361,
+      "published_sha256": "a70e687b41a58062dcfbfed2b4170227a02585890d509602e0330a140469f21b",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-luna-segments-r1/task-3.json",
+      "raw_bytes": 9385,
+      "raw_sha256": "269e9d9ae461fa4e5bda71810fbbee1b376bf90dc99f9cc52c0c38376d7f28bf",
+      "published_bytes": 9385,
+      "published_sha256": "269e9d9ae461fa4e5bda71810fbbee1b376bf90dc99f9cc52c0c38376d7f28bf",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-luna-segments-r1/task-4.json",
+      "raw_bytes": 7122,
+      "raw_sha256": "0db006db49cdffac0dc39f561e8c18b869f5ed57d225b6d3a55ccda132ad826f",
+      "published_bytes": 7122,
+      "published_sha256": "0db006db49cdffac0dc39f561e8c18b869f5ed57d225b6d3a55ccda132ad826f",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-luna-segments-r1/workspace/first.txt",
+      "raw_bytes": 54,
+      "raw_sha256": "8de89f9246374bff7502089e03c7eebac236ef8cd53f6451ad8febe823f17135",
+      "published_bytes": 54,
+      "published_sha256": "8de89f9246374bff7502089e03c7eebac236ef8cd53f6451ad8febe823f17135",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-luna-segments-r1/workspace/fourth.txt",
+      "raw_bytes": 32,
+      "raw_sha256": "73f85c96ffc6190e611039914ac9ca4f66d96894afdc7060c008abde51aa86da",
+      "published_bytes": 32,
+      "published_sha256": "73f85c96ffc6190e611039914ac9ca4f66d96894afdc7060c008abde51aa86da",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-luna-segments-r1/workspace/second.txt",
+      "raw_bytes": 32,
+      "raw_sha256": "8b4fe79c11d7117310c2e433decade840ee566d331d544cd1ee97423ff358ff2",
+      "published_bytes": 32,
+      "published_sha256": "8b4fe79c11d7117310c2e433decade840ee566d331d544cd1ee97423ff358ff2",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-luna-segments-r1/workspace/third.txt",
+      "raw_bytes": 32,
+      "raw_sha256": "b2cfe9f4091a03b4724af844cd64bd81562816ff30c3469a204de2eef3c5adc8",
+      "published_bytes": 32,
+      "published_sha256": "b2cfe9f4091a03b4724af844cd64bd81562816ff30c3469a204de2eef3c5adc8",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-review/RAW_MANIFEST.json",
+      "raw_bytes": 975,
+      "raw_sha256": "442b0ee768e254129f5c6410677c58defae10a325e6654935d20b07434b165d9",
+      "published_bytes": 975,
+      "published_sha256": "442b0ee768e254129f5c6410677c58defae10a325e6654935d20b07434b165d9",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-review/REVIEW.md",
+      "raw_bytes": 4179,
+      "raw_sha256": "ee8daef6fb6450bcdb992687bff04b5a9d841b1838fe2341fb58d1c20cdf9e7a",
+      "published_bytes": 4179,
+      "published_sha256": "ee8daef6fb6450bcdb992687bff04b5a9d841b1838fe2341fb58d1c20cdf9e7a",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-review/review-luna-r1.json",
+      "raw_bytes": 12488,
+      "raw_sha256": "84283d2083c2a1d2db6af8b7f44f699c92b5e0a9e7bf267703932109aa81c154",
+      "published_bytes": 12488,
+      "published_sha256": "84283d2083c2a1d2db6af8b7f44f699c92b5e0a9e7bf267703932109aa81c154",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-review/review-luna.json",
+      "raw_bytes": 12879,
+      "raw_sha256": "b534851d782965d9370017e1b7f729120cfdc9157c1e20840a13e1c798b41294",
+      "published_bytes": 12879,
+      "published_sha256": "b534851d782965d9370017e1b7f729120cfdc9157c1e20840a13e1c798b41294",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-review/review-run-r1.log",
+      "raw_bytes": 312,
+      "raw_sha256": "c1162164b4df2e769a309dcadbc66f0694bc7bd65754d70a3d741768419aac31",
+      "published_bytes": 312,
+      "published_sha256": "c1162164b4df2e769a309dcadbc66f0694bc7bd65754d70a3d741768419aac31",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-review/review-run.log",
+      "raw_bytes": 279,
+      "raw_sha256": "77cb166f9bd700249ea5d1d2b928e5058eb58010620ad839e193ce19d0ca1720",
+      "published_bytes": 279,
+      "published_sha256": "77cb166f9bd700249ea5d1d2b928e5058eb58010620ad839e193ce19d0ca1720",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "live-review/review_live-r1.py",
+      "raw_bytes": 19787,
+      "raw_sha256": "ffc1e74260df00df2073cb74b06ec7bab6b97d7aa0ae173a17f3dfbc4d6a70a2",
+      "published_bytes": 19661,
+      "published_sha256": "920ca615d5cd176e2d62d2e62e8b4fdc4bbf294da9cb87e9399ba1ff06230980",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 1,
+        "<VALIDATION_ROOT>": 1,
+        "<PRIVATE_KEY_FILE>": 1
+      }
+    },
+    {
+      "path": "live-review/review_live.py",
+      "raw_bytes": 20220,
+      "raw_sha256": "ddd4343c0770010c33eb38cdfd6668489ce86735cca0b2859c2ff576f2762d66",
+      "published_bytes": 20094,
+      "published_sha256": "04286b2b1bad84cf81b34134bc9ee4d8135a9012a30f7c1ae45b8450f731a555",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 1,
+        "<VALIDATION_ROOT>": 1,
+        "<PRIVATE_KEY_FILE>": 1
+      }
+    },
+    {
+      "path": "live_segments.py",
+      "raw_bytes": 12388,
+      "raw_sha256": "9029a56792c22d1548c04d07ad94a48ad6b49903c844b530904a2bd466472b69",
+      "published_bytes": 12388,
+      "published_sha256": "9029a56792c22d1548c04d07ad94a48ad6b49903c844b530904a2bd466472b69",
+      "path_prefix_replacements": {}
+    }
+  ]
+}

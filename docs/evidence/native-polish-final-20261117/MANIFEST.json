@@ -1,0 +1,215 @@
+{
+  "source_head": "97dae142a2deccfb1ed0add0c2cd49b4b02a8fad",
+  "files": [
+    {
+      "path": ".gitignore",
+      "sha256": "48fca7bf2eaca6dab68265e25b38c38c27eaf3cbde15c4f627b6f916515bf9a7",
+      "bytes": 10
+    },
+    {
+      "path": "COMMANDS.md",
+      "sha256": "366cb43d460ddd22227c95bbdc3c8b5fb5906c2f1b0247a2e514955d3aecd915",
+      "bytes": 2388
+    },
+    {
+      "path": "PR_STATE_BEFORE_UPDATE.json",
+      "sha256": "0637c436fefa6db679b437c66a70126a901c66a1b0c5a22bed91e6cf77d028ff",
+      "bytes": 297
+    },
+    {
+      "path": "R12_RESULT_SUMMARY.json",
+      "sha256": "c1657183fbd3bed941c11aeaa48ea73d4c01b849e4b4a9605bdcb2a144f2578d",
+      "bytes": 1882
+    },
+    {
+      "path": "RESULTS.md",
+      "sha256": "921670aa2aa9fae941964efdee7625f9f85af9c91bb506106652364fad884ac9",
+      "bytes": 6636
+    },
+    {
+      "path": "SOURCE.json",
+      "sha256": "b603fce0e4d976db7546f8685d10db47f7dc9e3059ceaa6771e192e76aa76431",
+      "bytes": 1176
+    },
+    {
+      "path": "app-slot-state.json",
+      "sha256": "b8fa96e6b60f0281840bec4b7d76fb10d64349b35f40c3f2ffa85bc598ea0680",
+      "bytes": 741
+    },
+    {
+      "path": "artifact-container-check.log",
+      "sha256": "5291d6ce2da5269cee13f39afcac27671ffee6470119acb9d671089afd91a86a",
+      "bytes": 1279
+    },
+    {
+      "path": "browser/browser-tests.json",
+      "sha256": "c5a768c6e5277459cfb6cee17af918910696be629fd793989e419b40c92d1773",
+      "bytes": 5277
+    },
+    {
+      "path": "browser/invalid-extra-screenshot-option.log",
+      "sha256": "1fd88f233787c6995625f68ff7390d4df66dbdb5927af730d80f6b4f93a05902",
+      "bytes": 623
+    },
+    {
+      "path": "browser/playwright.log",
+      "sha256": "0663de2271d11ef1c6df3bb365ce1cf3cdbb400b07a286f65ae38196cd01ee62",
+      "bytes": 882
+    },
+    {
+      "path": "browser/test-results/.last-run.json",
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+      "bytes": 45
+    },
+    {
+      "path": "browser-traced/browser-tests.json",
+      "sha256": "047ab108a4d3742c2416b70f5f53d8ed0f41865441addeefa406482cc8317ddf",
+      "bytes": 6089
+    },
+    {
+      "path": "browser-traced/playwright.log",
+      "sha256": "11e42b9d1b9d344fba7defcd37878088a20324ef0f9409dc2d493ba7916c2c12",
+      "bytes": 900
+    },
+    {
+      "path": "browser-traced/test-results/.last-run.json",
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+      "bytes": 45
+    },
+    {
+      "path": "browser-traced/test-results/model-configuration-option-11377-ator-and-configured-efforts/trace.zip",
+      "sha256": "846c044922a3a6695654d803933d23b9b306b960188664154726699e566fe7b0",
+      "bytes": 310812
+    },
+    {
+      "path": "browser-traced/test-results/model-configuration-removi-2e8dc--clears-both-optional-roles/trace.zip",
+      "sha256": "967f0b420be534d1b3bbde9631c4264b261da8db343fcfe13406402688a92be4",
+      "bytes": 307528
+    },
+    {
+      "path": "build-channels-retry.log",
+      "sha256": "b96c8e1cd338a8bd0cde6c0c78a77c6925559e99a177932671707234b45877cb",
+      "bytes": 7648
+    },
+    {
+      "path": "build-channels.log",
+      "sha256": "5d2d278a4a2141c489f2ada5029e8ce6e457abb534dc107f54d3a6316127f4b9",
+      "bytes": 1054
+    },
+    {
+      "path": "build-companion.log",
+      "sha256": "ec2840c9425dbcac69051effcc5f5b77f4c64c94f7869dc08860b2cfa889cb5c",
+      "bytes": 1003
+    },
+    {
+      "path": "build-core-retry.log",
+      "sha256": "5aaa0557a47fc4bbb0b8d45a045ff079d294556bd3c774fa18c362ed02a7b2cc",
+      "bytes": 956
+    },
+    {
+      "path": "build-core.log",
+      "sha256": "92e61ebc5fa4e4118280c665648210510212cfacc63dc845e21ef5c116db4078",
+      "bytes": 6582
+    },
+    {
+      "path": "build-suite.log",
+      "sha256": "0049b4fa13b9712f9db693d2fce3541ee9604a42ffac6862919cfeee8e85cad1",
+      "bytes": 975
+    },
+    {
+      "path": "build-tool-bootstrap.log",
+      "sha256": "7624225e916bbf70efaf7d93099bbe18d3d210ecdcfadd08107701244cd9a1ef",
+      "bytes": 627
+    },
+    {
+      "path": "build-tool-channel-bootstrap.log",
+      "sha256": "d850191e0e6e76916e61355a5c9f854ae2495ac01ccec56558f16175b88782cb",
+      "bytes": 694
+    },
+    {
+      "path": "candidate-verification.log",
+      "sha256": "cab60f4978bc4e3bd0770b84782e5188ef546e2e5768cd6e7fa3825a31514e55",
+      "bytes": 726
+    },
+    {
+      "path": "check-bundled-backends.log",
+      "sha256": "700d64a665f74410627aea14b62282aec8cd74bb67063ca7524cf1083bd4896b",
+      "bytes": 6648
+    },
+    {
+      "path": "desktop-npm-ci.log",
+      "sha256": "bf34e87b09f7c8c1770ec60e573c130ab0032694596617a964f165aca90636ee",
+      "bytes": 333
+    },
+    {
+      "path": "engineering-luna-high-r12-followup.log",
+      "sha256": "7ee1dbdb48998e1e7491305368b600c58c901c8e18ec2921c51228d2352e4749",
+      "bytes": 204
+    },
+    {
+      "path": "install-plan-summary.json",
+      "sha256": "18161d04e9ef6d9982bf88b7572052f67818edb99aa7dcb19884f0adc5808da2",
+      "bytes": 704
+    },
+    {
+      "path": "install-plan.log",
+      "sha256": "b6118a00b6ad96091240d6659a17653015d9b719719fce6ec5343b8ecffc4b08",
+      "bytes": 192
+    },
+    {
+      "path": "installer-help.txt",
+      "sha256": "b74727c4e33e15a08a48ecab1146a1f839e24d7e030665c5e959aed4e7e6bf5f",
+      "bytes": 506
+    },
+    {
+      "path": "macos-artifact-hashes.txt",
+      "sha256": "6e4b15a23fbd70faac393de6d54305e80c49b18611e2f0c5a23665f7aaad5b15",
+      "bytes": 604
+    },
+    {
+      "path": "macos-backend-check.log",
+      "sha256": "02db523c459233aa14b715a2bc9f7ec270cab8c59fc863bcfb743801a32793bc",
+      "bytes": 363
+    },
+    {
+      "path": "macos-build.log",
+      "sha256": "764520e6060138cba3d1df4ec6686d461e5e44c6400a2fc47846065ceccd8b47",
+      "bytes": 13908
+    },
+    {
+      "path": "macos-dependency-build.log",
+      "sha256": "1ad30ebc02561eeee6a6f957759076318a76e4360729d3c5f865375c12e1e5fa",
+      "bytes": 4642
+    },
+    {
+      "path": "macos-host-summary.txt",
+      "sha256": "e81ae9d9fb67c30788509d8bc5a1e612d408199a53e5f93b24067429d14517ee",
+      "bytes": 396
+    },
+    {
+      "path": "openai-endpoint-check.log",
+      "sha256": "c9b80594ac2342d30c4958a6e15cfa0a1d20c5c574caf290db4b798e3455115b",
+      "bytes": 100
+    },
+    {
+      "path": "prepare-bundled-backends.log",
+      "sha256": "3b3a12fc82bb62fcb17c08940ee9bb4baad5118ee0bd20c248895b147a312414",
+      "bytes": 5117
+    },
+    {
+      "path": "screenshots/roles-clear.jpg",
+      "sha256": "34427526cc03295e9ef744b73af555ef0d99c848dafd5ca2d2b095ad27a15228",
+      "bytes": 30405
+    },
+    {
+      "path": "screenshots/roles-save.jpg",
+      "sha256": "b6ec4f2fa21e4300a4c72b62cc423f65f7624abfd7b1fa3648267ccb3685e220",
+      "bytes": 31219
+    },
+    {
+      "path": "version-gate.log",
+      "sha256": "bd23bde16aa64012682bcd525bdaa717d1b94457e76f92c2db4b30e684e3b8db",
+      "bytes": 113
+    }
+  ]
+}

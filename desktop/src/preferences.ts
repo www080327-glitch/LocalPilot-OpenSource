@@ -83,14 +83,20 @@ export function taskPreferences(t: Json, fallback: Preferences): Preferences {
 }
 export const preferenceLabel = (p: Preferences) =>
   `${sources.find((s) => s.id === p.source)?.label}`;
+export const cloudAdapters = [
+  "deepseek",
+  "deepseek-native",
+  "openai",
+  "remote-openai",
+  "remote-vllm",
+];
 export const isCloud = (m: Model) =>
-  ["deepseek", "deepseek-native", "remote-openai", "remote-vllm"].includes(m.adapter) ||
-  m.cloud_egress !== "LOCAL_ONLY";
+  cloudAdapters.includes(m.adapter) || m.cloud_egress !== "LOCAL_ONLY";
 export function sourceAllows(p: Preferences, m: Model) {
   return p.source === "local_only"
     ? !isCloud(m)
     : p.source === "cloud_only"
-      ? ["deepseek", "deepseek-native", "remote-openai", "remote-vllm"].includes(m.adapter)
+      ? cloudAdapters.includes(m.adapter)
       : true;
 }
 export function routingSupported(h: Json | null, c: Json | null) {

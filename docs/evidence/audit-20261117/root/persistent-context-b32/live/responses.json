@@ -1,0 +1,221 @@
+[
+  {
+    "model": "gpt-6-luna",
+    "finish_reason": "tool_calls",
+    "usage": {
+      "prompt_tokens": 1260,
+      "completion_tokens": 19,
+      "total_tokens": 1279,
+      "provider_usage": {
+        "input_tokens": 1260,
+        "input_tokens_details": {
+          "cache_write_tokens": 1257,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 1257
+          },
+          "cached_tokens": 0
+        },
+        "output_tokens": 19,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1279
+      },
+      "prompt_tokens_details": {
+        "cache_write_tokens": 1257,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 1257
+        },
+        "cached_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1260
+    },
+    "diagnostics": {
+      "response_id": "resp_0dbfee90d14fc85a016afbd00c476c87d1b0fc93c42f19a78b",
+      "input_transformations": []
+    },
+    "reasoning_output_ids": []
+  },
+  {
+    "model": "gpt-6-luna",
+    "finish_reason": "tool_calls",
+    "usage": {
+      "prompt_tokens": 2015,
+      "completion_tokens": 30,
+      "total_tokens": 2045,
+      "provider_usage": {
+        "input_tokens": 2015,
+        "input_tokens_details": {
+          "cache_write_tokens": 755,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 755
+          },
+          "cached_tokens": 1257
+        },
+        "output_tokens": 30,
+        "output_tokens_details": {
+          "reasoning_tokens": 9
+        },
+        "total_tokens": 2045
+      },
+      "prompt_tokens_details": {
+        "cache_write_tokens": 755,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 755
+        },
+        "cached_tokens": 1257
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 9
+      },
+      "prompt_cache_hit_tokens": 1257,
+      "prompt_cache_miss_tokens": 758
+    },
+    "diagnostics": {
+      "response_id": "resp_0677539d4d2a5a63016afbd013274887d18cd05d5f86eb8ea3",
+      "input_transformations": []
+    },
+    "reasoning_output_ids": [
+      "rs_0677539d4d2a5a63016afbd014429c87d198edde44b3ec6ee8"
+    ]
+  },
+  {
+    "model": "gpt-6-luna",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 2982,
+      "completion_tokens": 27,
+      "total_tokens": 3009,
+      "provider_usage": {
+        "input_tokens": 2982,
+        "input_tokens_details": {
+          "cache_write_tokens": 967,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 967
+          },
+          "cached_tokens": 2012
+        },
+        "output_tokens": 27,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3009
+      },
+      "prompt_tokens_details": {
+        "cache_write_tokens": 967,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 967
+        },
+        "cached_tokens": 2012
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 2012,
+      "prompt_cache_miss_tokens": 970
+    },
+    "diagnostics": {
+      "response_id": "resp_0677539d4d2a5a63016afbd019a14c87d1bb3d53118dea626e",
+      "input_transformations": []
+    },
+    "reasoning_output_ids": []
+  },
+  {
+    "model": "gpt-6-luna",
+    "finish_reason": "tool_calls",
+    "usage": {
+      "prompt_tokens": 3538,
+      "completion_tokens": 36,
+      "total_tokens": 3574,
+      "provider_usage": {
+        "input_tokens": 3538,
+        "input_tokens_details": {
+          "cache_write_tokens": 556,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 556
+          },
+          "cached_tokens": 2979
+        },
+        "output_tokens": 36,
+        "output_tokens_details": {
+          "reasoning_tokens": 15
+        },
+        "total_tokens": 3574
+      },
+      "prompt_tokens_details": {
+        "cache_write_tokens": 556,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 556
+        },
+        "cached_tokens": 2979
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 15
+      },
+      "prompt_cache_hit_tokens": 2979,
+      "prompt_cache_miss_tokens": 559
+    },
+    "diagnostics": {
+      "response_id": "resp_0677539d4d2a5a63016afbd0205acc87d1a2e65e369b7b7a6a",
+      "input_transformations": []
+    },
+    "reasoning_output_ids": [
+      "rs_0677539d4d2a5a63016afbd021934c87d1b5f4e479b2f351da"
+    ]
+  },
+  {
+    "model": "gpt-6-luna",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 4303,
+      "completion_tokens": 40,
+      "total_tokens": 4343,
+      "provider_usage": {
+        "input_tokens": 4303,
+        "input_tokens_details": {
+          "cache_write_tokens": 765,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 765
+          },
+          "cached_tokens": 3535
+        },
+        "output_tokens": 40,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 4343
+      },
+      "prompt_tokens_details": {
+        "cache_write_tokens": 765,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 765
+        },
+        "cached_tokens": 3535
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 3535,
+      "prompt_cache_miss_tokens": 768
+    },
+    "diagnostics": {
+      "response_id": "resp_0677539d4d2a5a63016afbd02713a887d1acf4afc6483c77bd",
+      "input_transformations": []
+    },
+    "reasoning_output_ids": []
+  }
+]

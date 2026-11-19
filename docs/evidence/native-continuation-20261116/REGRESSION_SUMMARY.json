@@ -1,0 +1,39 @@
+{
+  "source_commit": "59fad12de6f57006fc7510805af2dfd1718c16ea",
+  "runs": [
+    {
+      "name": "core",
+      "exit_code": 0,
+      "collected": 1565,
+      "skipped": 90,
+      "passed": 1475,
+      "seconds": 163.146
+    },
+    {
+      "name": "suite",
+      "exit_code": 1,
+      "collected": null,
+      "skipped": null,
+      "passed": null,
+      "seconds": 0.058
+    },
+    {
+      "name": "companion",
+      "exit_code": 0,
+      "collected": 722,
+      "skipped": 33,
+      "passed": 689,
+      "seconds": 31.929
+    },
+    {
+      "name": "suite-r2",
+      "exit_code": 0,
+      "collected": 115,
+      "skipped": 1,
+      "passed": 114,
+      "seconds": 24.873
+    }
+  ],
+  "suite_r1": "Invocation error before test discovery: unnecessary -t suite; original failure retained. Correct repository command passed in r2.",
+  "source_changes_between_runs": false
+}

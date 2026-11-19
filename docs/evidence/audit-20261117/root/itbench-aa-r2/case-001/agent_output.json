@@ -1,0 +1,9 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Deployment/frontend",
+      "reasoning": "The single frontend replica is the upstream bottleneck: its very low 100m CPU limit is accompanied by sustained severe CFS throttling, delaying frontend API handlers. Requests routed through frontend-proxy therefore wait past the proxy's 15-second upstream timeout and return 504s. The delayed cart-add request is eventually processed only after PlaceOrder has read an empty cart; shipping then returns 400 and checkout/frontend propagate a 500. This connects the latency and checkout symptoms to this one cause, rather than treating frontend-proxy, checkout, or shipping as independent causes.",
+      "evidence": "k8s_objects_raw.tsv records otel-demo/Deployment/frontend at one replica with container CPU request 50m and limit 100m. alerts/alerts_at_2025-12-15T18-17-09.387695.json has CPUThrottlingHigh for pod frontend-675fd7b5c5-jlpzp (active from 17:23:45) at 91.52%; metrics/pod_frontend-675fd7b5c5-jlpzp_raw.tsv shows 25,790 throttled CFS periods out of 27,805 at 18:01:34.929. In otel_traces_raw.tsv, frontend-proxy ingress for GET /api/recommendations at 17:23:54 returns 504 after 15,002,026,000 ns (response flag UT), while frontend handling starts at 17:24:23.544. For the cart/checkout flow, the /api/cart request at 17:24:08 times out at the proxy; frontend handles it at 17:24:35.740 and CartService/AddItem succeeds, but PlaceOrder at 17:24:23 had read cart.items.count=0 and its call to shipping /get-quote returned HTTP 400, propagating to checkout/frontend HTTP 500. The same 18:17 alert snapshot has RequestLatency and RequestErrorRate firing for frontend-proxy, checkout, and frontend."
+    }
+  ]
+}

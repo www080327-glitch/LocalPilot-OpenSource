@@ -1,0 +1,131 @@
+{
+  "utc": "2026-11-16T17:47:23Z",
+  "profiles": {
+    "E": {
+      "root": "/workspace/scratch/c0f3ec78c621/validation/package-b27-b8-b32-Azb7vG/native-smoke/profile-e",
+      "companion_config": [
+        {
+          "relative_path": "client/product-v5/companion.json",
+          "backend": "disabled",
+          "watch_dirs": [],
+          "native_observation_enabled": false,
+          "notifications": false,
+          "proactive_level": "off",
+          "localpilot_auto_local": false,
+          "allow_automatic_cloud": false
+        }
+      ],
+      "database_counts": {
+        "client/product-v5/data/runtime.sqlite3": {
+          "checkpoints": 0,
+          "journal": 0
+        },
+        "client/product-v5/companion-data/memory.sqlite3": {
+          "memories": 0,
+          "files": 0,
+          "state": 2,
+          "notices": 0,
+          "source_versions": 0,
+          "claims": 0,
+          "conflicts": 0,
+          "memory_fts": 0,
+          "memory_fts_data": 2,
+          "memory_fts_idx": 0,
+          "memory_fts_content": 0,
+          "memory_fts_docsize": 0,
+          "memory_fts_config": 1,
+          "observation_schema": 1,
+          "observation_retention_policy": 1,
+          "observation_events": 0,
+          "observation_occurrences": 0,
+          "observation_occurrence_archive": 0,
+          "observation_versions": 0,
+          "observation_document_links": 0,
+          "observation_claims": 0,
+          "observation_conflicts": 0,
+          "observation_derivations": 0,
+          "observation_fts": 0,
+          "observation_fts_data": 2,
+          "observation_fts_idx": 0,
+          "observation_fts_content": 0,
+          "observation_fts_docsize": 0,
+          "observation_fts_config": 1,
+          "connected_sources": 0,
+          "source_import_files": 0,
+          "training_examples": 0
+        },
+        "client/product-v5/data/documents-v2/documents.sqlite3": {
+          "attachments": 0,
+          "parses": 0,
+          "nodes": 0,
+          "search": 0,
+          "search_data": 2,
+          "search_idx": 0,
+          "search_content": 0,
+          "search_docsize": 0,
+          "search_config": 1,
+          "bindings": 0,
+          "vision_grants": 0
+        }
+      },
+      "task_journal_checkpoint_submission_files": [],
+      "explicit_model_or_task_submission_performed": false
+    },
+    "F": {
+      "root": "/workspace/scratch/c0f3ec78c621/native-rc10-f",
+      "companion_config": [
+        {
+          "relative_path": "client/companion-home/companion.json",
+          "backend": "disabled",
+          "watch_dirs": [],
+          "native_observation_enabled": false,
+          "notifications": false,
+          "proactive_level": "off",
+          "localpilot_auto_local": false,
+          "allow_automatic_cloud": false
+        }
+      ],
+      "database_counts": {
+        "client/companion-home/companion-data/memory.sqlite3": {
+          "memories": 0,
+          "files": 0,
+          "state": 2,
+          "notices": 0,
+          "source_versions": 0,
+          "claims": 0,
+          "conflicts": 0,
+          "memory_fts": 0,
+          "memory_fts_data": 2,
+          "memory_fts_idx": 0,
+          "memory_fts_content": 0,
+          "memory_fts_docsize": 0,
+          "memory_fts_config": 1,
+          "observation_schema": 1,
+          "observation_retention_policy": 1,
+          "observation_events": 0,
+          "observation_occurrences": 0,
+          "observation_occurrence_archive": 0,
+          "observation_versions": 0,
+          "observation_document_links": 0,
+          "observation_claims": 0,
+          "observation_conflicts": 0,
+          "observation_derivations": 0,
+          "observation_fts": 0,
+          "observation_fts_data": 2,
+          "observation_fts_idx": 0,
+          "observation_fts_content": 0,
+          "observation_fts_docsize": 0,
+          "observation_fts_config": 1,
+          "connected_sources": 0,
+          "source_import_files": 0,
+          "training_examples": 0
+        }
+      },
+      "task_journal_checkpoint_submission_files": [],
+      "explicit_model_or_task_submission_performed": false
+    }
+  },
+  "service_E_task_count": 0,
+  "manual_draft": "rc10-focus-draft typed, never sent, then cleared",
+  "count_note": "Schema/FTS metadata rows are reported separately by actual table name; task checkpoints/journal, memories, training examples and observation event rows are zero."
+}

@@ -1,6 +1,7 @@
 """Retain completed workers against their original host route after a model change."""
 from contextlib import contextmanager
 from copy import deepcopy
+from dataclasses import asdict
 
 from agent.async_runtime import policy_snapshot
 from agent.persistence import PersistenceError, configuration, digest, dumps
@@ -68,7 +69,8 @@ def _restore_parent(service, saved, descriptor):
             if migration is None or not migration(parent,
                     {'configuration':descriptor['configuration_sha256']}, host_configuration=contract):
                 raise PersistenceError('Historical child route contract changed: ' + model)
-            descriptor['configuration_sha256'] = actual
+            contract['budgets'] = asdict(parent.budgets)
+            descriptor['configuration_sha256'] = digest(dumps(contract))
         return parent
     except BaseException:
         parent.close()

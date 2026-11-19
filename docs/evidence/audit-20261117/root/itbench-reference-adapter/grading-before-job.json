@@ -1,0 +1,20 @@
+{
+  "command": [
+    "/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python",
+    "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/final-source-91dd87c/scripts/grade_itbench_aa.py",
+    "--output",
+    "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed",
+    "--key-file",
+    "<private_key_file>"
+  ],
+  "cwd": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/final-source-91dd87c",
+  "log": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-native-grading.log",
+  "exit_receipt": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-native-grading-exit.json",
+  "supervisor_sha256": "31eebe99550dec0e33fa8cb03206fe2350dde070f185dd1ff25498d7d712af8d",
+  "grader_sha256": "26ca645748a5272409bbc74f92e366a7d2b95138a86e92fec2d94db86733f8f0",
+  "wait_for": [
+    "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2/RUN_SUMMARY.json",
+    "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/RUN_SUMMARY.json"
+  ],
+  "execution_surface": "Same native desktop Terminal after resumed candidate cohort has 40 final receipts"
+}

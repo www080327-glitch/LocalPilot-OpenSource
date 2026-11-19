@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-11-17T01:20:01.327355+00:00",
+  "scope": "b31 restored-source Core regression, current installed-wheel lifecycle, read-only archive/prefix review and current documentation; no native installer or new model evaluation",
+  "source_commit": "89c46468995c46f90a73d9c41ea0044d564cd175",
+  "production_source_commit": "c5439659a579b2ee9e74fd53e6d3232fe12fb855",
+  "manifest_excludes_self": true,
+  "files": [
+    {
+      "file": "PUBLICATION_TRANSFORMS.json",
+      "bytes": 6559,
+      "sha256": "c53f03787f49c43cb29bdf6742ac509b78bef71959e39d20e030115983cdca72"
+    },
+    {
+      "file": "RESULTS.md",
+      "bytes": 8399,
+      "sha256": "e3ed397a96ea08c3c256d909db22e391410857a480674db2fd60c5a76725a5a3"
+    },
+    {
+      "file": "SUMMARY.json",
+      "bytes": 5406,
+      "sha256": "e4b5ddbe89bfd58b4dcfb666248b49ea79ff768c80701d6c5a6992e1d9a63c9e"
+    },
+    {
+      "file": "archive-integrity.json",
+      "bytes": 2886,
+      "sha256": "7700eb766bef8fb2588fb017cfba80debce078172b8b5ba93483849efd057dbf"
+    },
+    {
+      "file": "core-core-full.log.gz",
+      "bytes": 43525,
+      "sha256": "5e0dd6df0cc00f8f56808909c2eb3089caea74c7f424bb15d6041299b03e2b15"
+    },
+    {
+      "file": "core-run.json.gz",
+      "bytes": 31189,
+      "sha256": "927d404cb374b9a46f6e3ca9016617a118e90edad4f4f3bff8bf5f0a33d1f7c9"
+    },
+    {
+      "file": "installed/build.log.gz",
+      "bytes": 7419,
+      "sha256": "b0f1b50565e26f63e239171e028dd9cc2b9f3d8f1236859dced6dfbb3686e4ad"
+    },
+    {
+      "file": "installed/import-proof.json",
+      "bytes": 868,
+      "sha256": "038d8e1c5550e3a99a1ae56bfec24f5c04f65082e2608ca217103c08790551bc"
+    },
+    {
+      "file": "installed/import-proof.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "installed/install.log.gz",
+      "bytes": 246,
+      "sha256": "a090ee89bc0db1b0010322064535932f61253f4291ea6d9cdc23450592c9e74f"
+    },
+    {
+      "file": "installed/pip-check.log",
+      "bytes": 30,
+      "sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09"
+    },
+    {
+      "file": "installed/run.json",
+      "bytes": 1458,
+      "sha256": "61ab3c8b2c5135f5a425084022a87f47d78b764d45b4a54ac9403cd9b7b951b6"
+    },
+    {
+      "file": "installed/tests.log",
+      "bytes": 2550,
+      "sha256": "5b8866b9cd03f5abe8beaed78e330a63cc8b42884ac776d7a9301a7cd7460d98"
+    },
+    {
+      "file": "owned-process-check.json",
+      "bytes": 154,
+      "sha256": "43013195fbcfe9a36d3d916be4add1398c8aa36037594a0d4e2aab66b89cd510"
+    },
+    {
+      "file": "prefix-review/README.md",
+      "bytes": 2166,
+      "sha256": "e152e9d8b6bb9db59d8439ee359f82f6768c5a591bf43d7f21abf9b6621e7b3a"
+    },
+    {
+      "file": "prefix-review/probe-tool-output.transcript.txt",
+      "bytes": 297,
+      "sha256": "b8795ce0a4ec34d4d241343abcf76de1defb654d3c95e2fdca78dde576cd48f7"
+    },
+    {
+      "file": "prefix-review/probe.py",
+      "bytes": 1471,
+      "sha256": "d4247592f79f6a23b6c6dbb9c2c34809ef5301cc20cf75526c7c09485c6b2e62"
+    },
+    {
+      "file": "prefix-review/test-command.txt",
+      "bytes": 129,
+      "sha256": "3cc9e4d8ed0256103da7dc47d1ad3308cbf51acbaec7aead727148f53ff7d380"
+    },
+    {
+      "file": "version-check.json",
+      "bytes": 124,
+      "sha256": "ec3a7619c60b68dd3171b8b4687f92b1b8982be068807b4e5e3e693a099b97dd"
+    }
+  ]
+}

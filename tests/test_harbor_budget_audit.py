@@ -61,6 +61,13 @@ class BudgetAuditTests(unittest.TestCase):
         self.identity['tokenizer_sha256']='different'
         self.assertFalse(self.audit()['qualified'])
 
+    def test_explicit_openai_cannot_bypass_local_measured_budget_contract(self):
+        for arm in self.spec['arms']:
+            arm['agent']['kwargs'].update(provider_kind='openai', endpoint='https://api.openai.com/v1')
+        report = comparison_configuration(self.spec)
+        self.assertFalse(report['qualified'])
+        self.assertIn('Cloud transport has not qualified measured tokenizer budgets', report['reasons'])
+
     def test_missing_provider_usage_or_failure_retains_original_ledger(self):
         self.fixture.usage['completion_tokens']=None
         with self.assertRaises(ModelBudgetExceeded):

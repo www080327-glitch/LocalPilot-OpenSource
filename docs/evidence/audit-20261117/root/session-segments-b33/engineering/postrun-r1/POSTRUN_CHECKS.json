@@ -1,0 +1,95 @@
+{
+  "kind": "ENGINEERING_R8_POSTRUN_RECEIPT_REVIEW",
+  "reviewed_at_utc": "2026-11-17T06:53:28.674320+00:00",
+  "review_status": "FAIL",
+  "original_qualification_status": "FAIL",
+  "new_model_requests": 0,
+  "new_tests_run": 0,
+  "checks": {
+    "orchestration_recomputed_exactly": true,
+    "protocol_except_source_matches_r7": true,
+    "runner_bytes_match_frozen_commit": true,
+    "runner_sha256_unchanged_from_r7": true,
+    "prompt_sha256_matches_protocol_and_r7": true,
+    "twelve_fixture_hashes_match_original_runner": true,
+    "original_acceptance_bytes_exact": true,
+    "workspace_spec_tests_fixtures_unchanged": true,
+    "only_expected_original_modules_changed": false,
+    "delivered_hashes_equal_all_copies": true,
+    "executed_source_files_match_pinned_git_objects": true,
+    "recorded_source_identity_stable": true,
+    "execution_head_tree_and_clean_state_stable": true,
+    "only_one_original_runner_attempt": true,
+    "owned_core_stop_recorded": true,
+    "task_completed_and_quiescent": true,
+    "original_external_17_tests_and_4_cli_pass": true,
+    "original_failure_status_retained": true,
+    "no_unknown_effect_receipts": true,
+    "runtime_owner_lock_released_after_stop": true
+  },
+  "executed_source": {
+    "local_commit": "b6f95da47f706581a780d6874382be53d99b33c4",
+    "tree": "36d464811bbfd9538274d88bd2c13fbcf80374be",
+    "runtime_source_manifest_sha256": "eb7719c62117b2ff13f30b550e0b3a7139cee342be1b70053fccbdd4c3d8bc81",
+    "recorded_source_file_count": 111,
+    "publication_mapping": "Not assigned by this reviewer; the executed source identity is not rewritten."
+  },
+  "product_result": {
+    "runtime_status": "completed",
+    "deliverable_status": "present",
+    "verification_status": "not_run",
+    "engineering_status": "unverified",
+    "task_outcome": "unverified",
+    "task_succeeded": false
+  },
+  "completion": {
+    "execution": "settled",
+    "delivery": "delivered",
+    "attempts": 1,
+    "history": [
+      {
+        "attempt": 1,
+        "kind": "delivered",
+        "text_sha256": "13e97c0e3d9a0c8dc8c632764030903efbcf66d02bc88c80204dabac9cd0d47b",
+        "ledger_sha256": "1f08ad94efe6bd7f16935e4a158744f7555aa818323fbb7a10946b56a35c7549"
+      }
+    ],
+    "readiness": null,
+    "ledger_sha256": "1f08ad94efe6bd7f16935e4a158744f7555aa818323fbb7a10946b56a35c7549",
+    "receipt_count": 68,
+    "obligations": {
+      "pending_approval": false,
+      "queued_calls": 0,
+      "unfinished_goals": 0,
+      "unfinished_workers": 0,
+      "worker_obligations": false,
+      "computer_obligations": 0,
+      "unfinished_handoff": 0,
+      "unknown_receipts": 0,
+      "mutation_intent": false
+    }
+  },
+  "aggregate_usage": {
+    "model_calls": 31,
+    "parent_model_calls": 17,
+    "input_tokens": 1261082,
+    "output_tokens": 15487,
+    "cache_hit_tokens": 1060881,
+    "cache_miss_tokens": 200201,
+    "tool_receipts": 68,
+    "parent_tool_receipts": 39,
+    "failed_tool_receipts": 4,
+    "failed_model_attempts": 0,
+    "children_already_included": true,
+    "actual_cost": "UNKNOWN",
+    "balance_queries": 0
+  },
+  "provider_diagnostics": {
+    "actual_reported_models": [
+      "gpt-6-luna"
+    ],
+    "nonempty_response_ids": 31,
+    "empty_input_transformations": 31,
+    "scope": "Observed response diagnostics do not establish internal reasoning reuse."
+  }
+}

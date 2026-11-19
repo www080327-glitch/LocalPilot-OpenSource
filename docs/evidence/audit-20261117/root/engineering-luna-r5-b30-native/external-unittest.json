@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "<task_python_env>/bin/python",
+    "-S",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_acceptance.py",
+    "-v"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "test_empty (test_acceptance.AggregateTests.test_empty) ... ok\ntest_exact_totals_and_sorting (test_acceptance.AggregateTests.test_exact_totals_and_sorting) ... ok\ntest_order_independence_and_no_mutation (test_acceptance.AggregateTests.test_order_independence_and_no_mutation) ... ok\ntest_empty_input_dataset (test_acceptance.CLITests.test_empty_input_dataset) ... ok\ntest_invalid_row_preserves_existing_output (test_acceptance.CLITests.test_invalid_row_preserves_existing_output) ... ok\ntest_missing_file (test_acceptance.CLITests.test_missing_file) ... ok\ntest_precision_and_unicode_file_output (test_acceptance.CLITests.test_precision_and_unicode_file_output) ... ok\ntest_stdout_json (test_acceptance.CLITests.test_stdout_json) ... ok\ntest_field_counts_and_empty_fields (test_acceptance.ParserTests.test_field_counts_and_empty_fields) ... ok\ntest_header_errors (test_acceptance.ParserTests.test_header_errors) ... ok\ntest_header_only (test_acceptance.ParserTests.test_header_only) ... ok\ntest_invalid_timestamp_and_category (test_acceptance.ParserTests.test_invalid_timestamp_and_category) ... ok\ntest_invalid_values (test_acceptance.ParserTests.test_invalid_values) ... ok\ntest_malformed_csv (test_acceptance.ParserTests.test_malformed_csv) ... ok\ntest_quoting_blank_lines_and_utc (test_acceptance.ParserTests.test_quoting_blank_lines_and_utc) ... ok\ntest_row_number_after_blanks (test_acceptance.ParserTests.test_row_number_after_blanks) ... ok\ntest_trim_fields_and_multiline_category (test_acceptance.ParserTests.test_trim_fields_and_multiline_category) ... ok\n\n----------------------------------------------------------------------\nRan 17 tests in 0.156s\n\nOK\n",
+  "seconds": 0.21407358400028897,
+  "tests_run": 17,
+  "passed": true
+}

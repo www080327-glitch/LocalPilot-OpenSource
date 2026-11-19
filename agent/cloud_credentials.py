@@ -9,7 +9,7 @@ class CloudCredentialError(ValueError):
         super().__init__('Cloud credential configuration: ' + category)
 
 
-def resolve_deepseek_key(api_key=None, *, key_file=None):
+def resolve_cloud_key(api_key=None, *, key_file=None, key_env, file_env):
     """Explicit key > explicit file > environment key > environment file.
 
     Files contain one raw key, must be owner-only regular files and are never
@@ -17,10 +17,10 @@ def resolve_deepseek_key(api_key=None, *, key_file=None):
     """
     if api_key is not None:
         key = api_key
-    elif key_file is None and os.environ.get('DEEPSEEK_API_KEY'):
-        key = os.environ['DEEPSEEK_API_KEY']
+    elif key_file is None and os.environ.get(key_env):
+        key = os.environ[key_env]
     else:
-        path = key_file if key_file is not None else os.environ.get('DEEPSEEK_API_KEY_FILE')
+        path = key_file if key_file is not None else os.environ.get(file_env)
         if not path:
             raise CloudCredentialError('missing_credentials')
         try:
@@ -42,6 +42,16 @@ def resolve_deepseek_key(api_key=None, *, key_file=None):
     if not isinstance(key, str) or not key or len(key) > 4096 or any(c.isspace() or ord(c) < 32 or ord(c) > 126 for c in key):
         raise CloudCredentialError('invalid_credential_format')
     return key
+
+
+def resolve_deepseek_key(api_key=None, *, key_file=None):
+    return resolve_cloud_key(api_key, key_file=key_file,
+                             key_env='DEEPSEEK_API_KEY', file_env='DEEPSEEK_API_KEY_FILE')
+
+
+def resolve_openai_key(api_key=None, *, key_file=None):
+    return resolve_cloud_key(api_key, key_file=key_file,
+                             key_env='OPENAI_API_KEY', file_env='OPENAI_API_KEY_FILE')
 
 
 def deepseek_configured():

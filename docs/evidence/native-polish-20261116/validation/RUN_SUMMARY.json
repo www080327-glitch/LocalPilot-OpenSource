@@ -1,0 +1,206 @@
+{
+  "format": 1,
+  "regression": {
+    "core-final-r2.log": {
+      "tests": 1556,
+      "pass": 1466,
+      "skip": 90,
+      "fail": 0,
+      "error": 0,
+      "seconds": 159.639,
+      "summary": "OK (skipped=90)",
+      "skip_reasons": {
+        "Historical benchmark implementation/fixtures are absent from the public source tree; NOT_RUN": 12,
+        "Requires installed Suite and explicit built optional wheel; POSIX lifecycle": 5,
+        "NOT_RUN: requires native macOS host Shell/Seatbelt": 3,
+        "Pinned Harbor evaluation environment required": 15,
+        "Real local model budget qualification is opt-in": 4,
+        "Pinned Harbor schema environment": 2,
+        "optional official SDK is not installed": 26,
+        "NOT_RUN: requires pinned public PR9 source": 2,
+        "Optional contract check requires the pinned Harbor checkout and schema dependencies": 1,
+        "needs an actual pinned pre-catalog checkout": 1,
+        "optional official OpenAI SDK is not installed": 16,
+        "Benchmark cost ledger is not published in the product tree": 2,
+        "TimedBackend is in the missing benchmark package": 1
+      }
+    },
+    "core-full-r1.log": {
+      "tests": 1552,
+      "pass": 1462,
+      "skip": 90,
+      "fail": 0,
+      "error": 0,
+      "seconds": 157.656,
+      "summary": "OK (skipped=90)",
+      "skip_reasons": {
+        "Historical benchmark implementation/fixtures are absent from the public source tree; NOT_RUN": 12,
+        "Requires installed Suite and explicit built optional wheel; POSIX lifecycle": 5,
+        "NOT_RUN: requires native macOS host Shell/Seatbelt": 3,
+        "Pinned Harbor evaluation environment required": 15,
+        "Real local model budget qualification is opt-in": 4,
+        "Pinned Harbor schema environment": 2,
+        "optional official SDK is not installed": 26,
+        "NOT_RUN: requires pinned public PR9 source": 2,
+        "Optional contract check requires the pinned Harbor checkout and schema dependencies": 1,
+        "needs an actual pinned pre-catalog checkout": 1,
+        "optional official OpenAI SDK is not installed": 16,
+        "Benchmark cost ledger is not published in the product tree": 2,
+        "TimedBackend is in the missing benchmark package": 1
+      }
+    },
+    "suite-final-r3.log": {
+      "tests": 115,
+      "pass": 114,
+      "skip": 1,
+      "fail": 0,
+      "error": 0,
+      "seconds": 29.862,
+      "summary": "OK (skipped=1)",
+      "skip_reasons": {
+        "macOS fixed system alias": 1
+      }
+    },
+    "suite-full-r1.log": {
+      "tests": 115,
+      "pass": 112,
+      "skip": 1,
+      "fail": 0,
+      "error": 2,
+      "seconds": 29.954,
+      "summary": "FAILED (errors=2, skipped=1)",
+      "skip_reasons": {
+        "macOS fixed system alias": 1
+      }
+    },
+    "suite-full-r2.log": {
+      "tests": 115,
+      "pass": 114,
+      "skip": 1,
+      "fail": 0,
+      "error": 0,
+      "seconds": 24.37,
+      "summary": "OK (skipped=1)",
+      "skip_reasons": {
+        "macOS fixed system alias": 1
+      }
+    }
+  },
+  "browser_attempts": {
+    "baseline-ui-r2/browser-tests.json": {
+      "stats": {
+        "startTime": "2026-11-16T09:44:54.439Z",
+        "duration": 1445.4360000000001,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "global_errors": 0,
+      "interpretation": "Real Chromium with synthetic IPC; run identity errors and expected old-version failures are retained, not treated as product passes."
+    },
+    "baseline-ui-r3/browser-tests.json": {
+      "stats": {
+        "startTime": "2026-11-16T09:48:12.840Z",
+        "duration": 1681.8870000000002,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "global_errors": 0,
+      "interpretation": "Real Chromium with synthetic IPC; run identity errors and expected old-version failures are retained, not treated as product passes."
+    },
+    "baseline-ui-r4/browser-tests.json": {
+      "stats": {
+        "startTime": "2026-11-16T09:51:50.178Z",
+        "duration": 6403.707,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "global_errors": 0,
+      "interpretation": "Real Chromium with synthetic IPC; run identity errors and expected old-version failures are retained, not treated as product passes."
+    },
+    "baseline-ui/browser-tests.json": {
+      "stats": {
+        "startTime": "2026-11-16T09:42:33.154Z",
+        "duration": 1483.7800000000002,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "global_errors": 0,
+      "interpretation": "Real Chromium with synthetic IPC; run identity errors and expected old-version failures are retained, not treated as product passes."
+    },
+    "final-ui-r3/browser-tests.json": {
+      "stats": {
+        "startTime": "2026-11-16T09:48:14.968Z",
+        "duration": 132855.987,
+        "expected": 40,
+        "skipped": 0,
+        "unexpected": 7,
+        "flaky": 0
+      },
+      "global_errors": 0,
+      "interpretation": "Real Chromium with synthetic IPC; run identity errors and expected old-version failures are retained, not treated as product passes."
+    },
+    "final-ui-r4/browser-tests.json": {
+      "stats": {
+        "startTime": "2026-11-16T09:51:57.347Z",
+        "duration": 82935.87299999999,
+        "expected": 46,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "global_errors": 0,
+      "interpretation": "Real Chromium with synthetic IPC; run identity errors and expected old-version failures are retained, not treated as product passes."
+    },
+    "final-ui-r5/browser-tests.json": {
+      "stats": {
+        "startTime": "2026-11-16T09:55:46.913Z",
+        "duration": 76397.26699999999,
+        "expected": 47,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "global_errors": 0,
+      "interpretation": "Real Chromium with synthetic IPC; run identity errors and expected old-version failures are retained, not treated as product passes."
+    },
+    "final-ui/browser-tests.json": {
+      "stats": {
+        "startTime": "2026-11-16T09:42:35.182Z",
+        "duration": 71882.354,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 47,
+        "flaky": 0
+      },
+      "global_errors": 0,
+      "interpretation": "Real Chromium with synthetic IPC; run identity errors and expected old-version failures are retained, not treated as product passes."
+    }
+  },
+  "desktop_final": {
+    "vitest_pass": 74,
+    "typescript_vite": "PASS",
+    "rust_default_pass": 50,
+    "rust_default_ignored": 3,
+    "rust_real_core_http_pass": 1,
+    "rust_real_core_model": "scripted fixture",
+    "playwright_pass": 47,
+    "playwright_fail": 0,
+    "playwright_bridge": "synthetic IPC"
+  },
+  "native_desktop_startup": {
+    "status": "BLOCKED",
+    "error": "WebKitNetworkProcess executable missing at required system path",
+    "webview_profile_sentinel": "NOT_RUN"
+  },
+  "rc9_final_packaged_app": "NOT_BUILT_AT_CAPTURE",
+  "prior_candidate": "build-linux-test-r1 is an earlier RC.9 candidate with Companion b5; final b6 package is not certified by these logs",
+  "model_or_asr_or_training": "Not included; tracked in separate model and linux-atspi evidence"
+}

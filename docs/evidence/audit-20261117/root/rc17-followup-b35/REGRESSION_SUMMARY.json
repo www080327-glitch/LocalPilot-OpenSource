@@ -1,0 +1,40 @@
+{
+  "suites": [
+    {
+      "suite": "core",
+      "source_commit": "8e27340e3d0cabbb37ace7a652de9b1f2f0d0eee",
+      "run": 1719,
+      "passed": 1627,
+      "failures": 0,
+      "errors": 0,
+      "skips": 92,
+      "source_unchanged": true,
+      "successful": true
+    },
+    {
+      "suite": "companion",
+      "source_commit": "8e27340e3d0cabbb37ace7a652de9b1f2f0d0eee",
+      "run": 763,
+      "passed": 730,
+      "failures": 0,
+      "errors": 0,
+      "skips": 33,
+      "source_unchanged": true,
+      "successful": true
+    },
+    {
+      "suite": "suite",
+      "source_commit": "8e27340e3d0cabbb37ace7a652de9b1f2f0d0eee",
+      "run": 127,
+      "passed": 126,
+      "failures": 0,
+      "errors": 0,
+      "skips": 1,
+      "source_unchanged": true,
+      "successful": true
+    }
+  ],
+  "source_commit": "8e27340e3d0cabbb37ace7a652de9b1f2f0d0eee",
+  "timing_note": "Correctness regressions; suites overlapped late in this run. Elapsed times are not a performance comparison.",
+  "skips_are_not_passes": true
+}

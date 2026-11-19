@@ -255,17 +255,19 @@ class HybridController:
                         pass  # Exact authorized path/hash proposals; no file bodies.
                     elif call.name not in {'read_file', 'file_info', 'list_files', 'list_directory','list_entries','inspect_file'}:
                         public = {
-                            'delegate': {'backend_preference', 'backend_id', 'model', 'tier', 'read_only', 'mode', 'budget'},
+                            'delegate': {'backend_preference', 'backend_id', 'model', 'tier', 'role', 'read_only', 'mode', 'budget'},
                             'request_model_switch': {'target', 'backend_id', 'model', 'task_complexity', 'scope'},
                             'child_status': set(), 'wait_children': set(), 'cancel_child': {'worker_id'},
                             'manage_goal': {'action', 'id', 'status'}, 'get_env': set(),
                             'search_text': {'path', 'file_pattern', 'case_sensitive', 'max_results'},
+                            'recall_history': {'reference', 'offset'},
                         }.get(call.name, set())
                         projected = {k: deepcopy(v) for k, v in args.items() if k in public}
                         private_fields = {
                             'delegate': {'task'}, 'request_model_switch': {'reason'},
                             'manage_goal': {'description', 'subgoals'},
                             'search_text': {'query'}, 'execute': {'argv'}, 'run_command': {'argv'},
+                            'recall_history': {'query'},
                         }.get(call.name, set())
                         # Keep schema field names and types; a hash must never
                         # masquerade as a fresh, advertised tool parameter.
@@ -288,6 +290,11 @@ class HybridController:
                 m.tool_calls = calls
             elif m.role == 'tool':
                 name, args = proposals.get(m.tool_call_id, (None, {}))
+                history_reader = getattr(self.runtime.registry, 'canonical_history_reader', None)
+                if name == 'recall_history' and history_reader is not None:
+                    m.content = json.dumps(history_reader.project_cloud_result(json.loads(m.content or '{}')))
+                    out.append(m)
+                    continue
                 if name in getattr(self.runtime.registry, 'public_tool_results', ()):
                     out.append(m)
                     continue
@@ -399,7 +406,7 @@ class HybridController:
                     'denied_local_only' if self.policy.egress.mode == 'LOCAL_ONLY' or r.hard_data_policy.local_only else
                     'denied_size' if summary['bytes'] > self.policy.egress.max_request_bytes else
                     'allowed' if self.policy.egress.mode == 'CLOUD_ALLOWED' or summary['request_sha256'] in self.state['grants'] else 'approval_required')
-        self.state['egress'].append({**summary, 'decision': decision, 'at': time.time()})
+        self.state['egress'].append({**summary, 'decision': decision, 'at': time.time(), 'turn_id': r.turn_id})
         r._emit('CloudEgressDecision', **summary, decision=decision)
         if decision == 'approval_required':
             raise CloudEgressApprovalNeeded(summary)
@@ -463,7 +470,8 @@ class HybridController:
                 raise CloudEgressDenied('Cloud request budget exhausted')
         if r.adaptive and not self.backend.is_local:
             r.adaptive.reserve_cloud(request_units, r._request_output_tokens or r.budgets.max_output_tokens)
-        attempt = {'id': len(self.state['attempts']), 'backend_id': self.state['backend_id'],
+        attempt = {'id': self.state['attempts'][-1]['id'] + 1 if self.state['attempts'] else 0,
+            'backend_id': self.state['backend_id'],
             'kind': self.kind(self.state['backend_id']), 'configured_model': r.current_primary_model,
             'provider': getattr(self.backend, 'provider', 'local_http' if self.backend.is_local else 'unknown'),
             'task_identity': deepcopy(self.state['task']), 'turn_id': r.turn_id, 'worker_id': r._worker_id,
@@ -476,6 +484,8 @@ class HybridController:
 
     def end_attempt(self, attempt, response=None, error=None):
         usage = (response.usage or {}) if response else {}
+        if response and response.diagnostics is not None:
+            attempt['provider_diagnostics'] = deepcopy(response.diagnostics)
         attempt.update(status='response' if response else 'failed',
             latency_seconds=time.time() - attempt['started_at'],
             reported_model=response.model if response else None,
@@ -597,6 +607,17 @@ class HybridController:
             result.append({'backend_id': alias, 'kind': self.kind(alias), 'eligible': reason is None,
                            'reason': reason, 'source': 'deterministic_shadow_not_recommender_authority'})
         return result
+
+    def retained_history_state(self):
+        turn = self.runtime.turn_id
+        attempts = [record for record in self.state['attempts'] if record['turn_id'] == turn]
+        # A turn can finish before dispatch; keep the last identity in that case.
+        attempts = attempts or self.state['attempts'][-1:]
+        requests = {record['egress_sha256'] for record in attempts}
+        return {**self.state, 'attempts': attempts,
+                'handoffs': [record for record in self.state['handoffs'] if record['turn_id'] == turn],
+                'egress': [record for record in self.state['egress'] if record.get('turn_id') == turn
+                           or 'turn_id' not in record and record['request_sha256'] in requests]}
 
     def restore(self, data):
         if data.get('configuration') != sha(self.configuration()):

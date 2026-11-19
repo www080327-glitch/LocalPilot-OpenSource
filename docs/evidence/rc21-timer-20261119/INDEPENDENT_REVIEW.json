@@ -1,0 +1,30 @@
+{
+  "status": "PASS_BOUNDED_INDEPENDENT_SOURCE_AND_EVIDENCE_REVIEW",
+  "reviewed_commit": "bd5ded785f984358ccbfa6df2e79d3ed1085a00b",
+  "reviewed_tree": "ecff5af0dbd126e3088d9b39d7537b37db8d360e",
+  "parent_commit": "2e7d2e61eba5efc7e3bc1fc3cec85c55323323d9",
+  "changed_file_sha256": {
+    "localpilot_api/service.py": "f4f81f1d20e00cc5b941fdd31bb9d45bbe533b0a22541f83454dac60432ac215",
+    "tests/test_persistent_runtime.py": "e89ac363922e567728614ddf1140942e760e80ab75bb6af7810861ed33e8a571"
+  },
+  "scope": "Read-only review of the timer callback after normal suspension and the focused regression on the real service, runtime, timer, and SQLite store.",
+  "reproduced_rc20_failure": "The real timer entered cancellation and waited for the service condition. Quiescent suspend finished and closed a healthy SQLite store. Releasing the condition let the timer mutate in-memory task state and raise PersistenceError. The durable approval, journal, and checkpoint remained unchanged.",
+  "review_findings": [
+    "Both timer constructors dispatch to the same private _timeout_task callback. Their timeout values, daemon behavior, and start order remain unchanged.",
+    "The callback reads closed while holding the existing TaskService Condition, which wraps an RLock. Calling cancel for an open service reacquires that lock safely and preserves the existing timed_out behavior. The closed check and cancellation cannot interleave with suspend closing the store.",
+    "Suspend owns the same condition while setting closed, writing its durable boundary, cancelling timers, exporting legacy storage, and closing the store. A callback already waiting becomes a no-op when it acquires the lock after suspension.",
+    "Public cancel and shutdown definitions retain identical source. Shutdown still explicitly cancels active tasks after setting closed, and ordinary timeouts still execute for an open service.",
+    "The new regression observes the real timer already inside its callback and blocked entering the condition. It does not substitute for Timer, TaskService, cancel, or SQLite. Its temporary excepthook collects uncaught thread exceptions so the test can fail on them. It checks that the timer exits, the task snapshot and SQLite bytes remain unchanged, the proposed file is absent, and the single scripted request is not repeated.",
+    "The red log fails on the collected PersistenceError with the old callback. The green log passes the new regression and four existing deadline/approval recovery cases. The exact overlap regression uses the new-task constructor; the restored path shares the reviewed callback and its existing downtime timeout test passes."
+  ],
+  "reviewed_log_sha256": {
+    "rc20-runtime/reproduce_timer_after_clean_suspend-r2.log": "4d3334676b02547d21962e290633f3f515ffc0d75ce532e0807f8cc79a67b762",
+    "rc21-runtime/timer-regression-before.log": "22d3dbd26fb28fd11a90998246c470ded926890b856941dea2c8669450b4974f",
+    "rc21-runtime/timer-regression-after.log": "0a9d66c0cfcb38df9937ccfe3aa97a08d02f41bfb5c21cdae7811f102ee9435a"
+  },
+  "scope_limits": [
+    "This reviewer performed source and existing-receipt inspection. The reviewed green log records five targeted tests.",
+    "The review does not explain the RC20 plugin HTTP or schema-worker errors, assert a clean full Core run, or supply package or device evidence for a later tree."
+  ],
+  "remaining_concrete_blockers_in_reviewed_diff": []
+}

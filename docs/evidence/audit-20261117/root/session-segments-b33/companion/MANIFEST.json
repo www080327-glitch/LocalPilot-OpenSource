@@ -1,0 +1,207 @@
+{
+  "scope": "Reviewed publication copies; RAW_MANIFEST files describe private originals.",
+  "transform": "Only explicit absolute path prefixes and temporary directory aliases. No outcomes or fixture values changed.",
+  "archive": {
+    "file": "evidence.tar.gz",
+    "bytes": 96125,
+    "sha256": "b4926a886667a8e2913f00121b3d34c2f75354161710a2df43af4f95f0931900"
+  },
+  "files": [
+    {
+      "path": "companion-full-r1/run.json",
+      "raw_bytes": 1206,
+      "raw_sha256": "95c1c3420c8cd3576a7894ddc10fcd7f21a5fe27f5e08cc5112af57757938c2f",
+      "published_bytes": 1131,
+      "published_sha256": "218aef44097ab85d3fbb70c9a6ecd9ef8ab2c25d5babc1b94da48e29723fb31d",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 1,
+        "<PINNED_TEST_ENVIRONMENT>": 1
+      }
+    },
+    {
+      "path": "companion-full-r1/run_suite.py",
+      "raw_bytes": 3339,
+      "raw_sha256": "d3ccdfa0dfd7d653000ad68b08bc486ac9d285c7edc57107c85bf01d779b7c67",
+      "published_bytes": 3264,
+      "published_sha256": "68dd3f841b4bed6abfd8d49315faf6cac47c7adf5b46746b9db125624fb387e6",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 1,
+        "<PINNED_TEST_ENVIRONMENT>": 1
+      }
+    },
+    {
+      "path": "companion-full-r1/source-after.json",
+      "raw_bytes": 73284,
+      "raw_sha256": "4e099953a5e3ea436bc1247486f80f8158a7b181d5ea8cc30c787feab5f1574c",
+      "published_bytes": 73284,
+      "published_sha256": "4e099953a5e3ea436bc1247486f80f8158a7b181d5ea8cc30c787feab5f1574c",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "companion-full-r1/source-before.json",
+      "raw_bytes": 73284,
+      "raw_sha256": "4e099953a5e3ea436bc1247486f80f8158a7b181d5ea8cc30c787feab5f1574c",
+      "published_bytes": 73284,
+      "published_sha256": "4e099953a5e3ea436bc1247486f80f8158a7b181d5ea8cc30c787feab5f1574c",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "companion-full-r1/unittest.log",
+      "raw_bytes": 128988,
+      "raw_sha256": "5552eeced6c9377914307f02553c9af5b32f4cb93b05e4f460557076d0dcea0f",
+      "published_bytes": 128988,
+      "published_sha256": "5552eeced6c9377914307f02553c9af5b32f4cb93b05e4f460557076d0dcea0f",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "companion-growth/RAW_MANIFEST.json",
+      "raw_bytes": 1950,
+      "raw_sha256": "28b045fa5d8203214fc5b3f35e87a5bbc88946fff5d7e8f4b0e51d7eb5da07d2",
+      "published_bytes": 1950,
+      "published_sha256": "28b045fa5d8203214fc5b3f35e87a5bbc88946fff5d7e8f4b0e51d7eb5da07d2",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "companion-growth/after-results.json",
+      "raw_bytes": 3196,
+      "raw_sha256": "6dcf5ecfca615bdc550f298dcd886888fac5132100936ad1cd5b3abb38889c39",
+      "published_bytes": 3196,
+      "published_sha256": "6dcf5ecfca615bdc550f298dcd886888fac5132100936ad1cd5b3abb38889c39",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "companion-growth/after-run.log",
+      "raw_bytes": 1033,
+      "raw_sha256": "1947df120262b3e8bccab63ae1ee9917e7e43c7b6d3b96deb2244e0124151afc",
+      "published_bytes": 1033,
+      "published_sha256": "1947df120262b3e8bccab63ae1ee9917e7e43c7b6d3b96deb2244e0124151afc",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "companion-growth/audit-review.json",
+      "raw_bytes": 10278,
+      "raw_sha256": "c4107c996acf6771ba82167694ccdbb230671ddda17ee419a23c5f6ec02b924a",
+      "published_bytes": 10278,
+      "published_sha256": "c4107c996acf6771ba82167694ccdbb230671ddda17ee419a23c5f6ec02b924a",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "companion-growth/history-baseline.log",
+      "raw_bytes": 10987,
+      "raw_sha256": "e5a0be16ff31971e9cda449c16280286f7991c164ae55b193509d4534a535bff",
+      "published_bytes": 10423,
+      "published_sha256": "119b73607d99117044f167fbb18ee41776a400801790e1b75a0d9f0d0c48b16d",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 12
+      }
+    },
+    {
+      "path": "companion-growth/history-r1.log",
+      "raw_bytes": 810,
+      "raw_sha256": "e5aada615e6ea9f9f65595d53759a4cab991219467f5c11167258a3ddbd890fe",
+      "published_bytes": 810,
+      "published_sha256": "e5aada615e6ea9f9f65595d53759a4cab991219467f5c11167258a3ddbd890fe",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "companion-growth/history-regression-final.log",
+      "raw_bytes": 18544,
+      "raw_sha256": "e75d98957b08301bd98d57136ba52a8bdf8ef9056e31f55f2e3d0b37a8f8b559",
+      "published_bytes": 18544,
+      "published_sha256": "e75d98957b08301bd98d57136ba52a8bdf8ef9056e31f55f2e3d0b37a8f8b559",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "companion-growth/history-regression-r2.log",
+      "raw_bytes": 18544,
+      "raw_sha256": "e650f6f9593ca0d9c35fd575bcbb32b81145b12318f0d1199b4b9bcba0e3baa7",
+      "published_bytes": 18544,
+      "published_sha256": "e650f6f9593ca0d9c35fd575bcbb32b81145b12318f0d1199b4b9bcba0e3baa7",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "companion-growth/measure_after.py",
+      "raw_bytes": 4750,
+      "raw_sha256": "6cf461cf54cb52ce9eb20caa8245b07679c0249cdd103d20c10e2472e855cb5c",
+      "published_bytes": 4750,
+      "published_sha256": "6cf461cf54cb52ce9eb20caa8245b07679c0249cdd103d20c10e2472e855cb5c",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "companion-growth/probe.py",
+      "raw_bytes": 7271,
+      "raw_sha256": "022854fbbcd96ab4ab79fd753ff0ae903b8abf7f1e685ec665d7c587f9eb4651",
+      "published_bytes": 7224,
+      "published_sha256": "496ebbbf88576a16bd932fee2dea715b828c11f4ffcf7267cc2714241ce8a654",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 1
+      }
+    },
+    {
+      "path": "companion-growth/results.json",
+      "raw_bytes": 9772,
+      "raw_sha256": "a551bcc092f829f2e5c7e1c994376b0126ff3a771f29d2eadab1d91a6a9e6e2e",
+      "published_bytes": 9772,
+      "published_sha256": "a551bcc092f829f2e5c7e1c994376b0126ff3a771f29d2eadab1d91a6a9e6e2e",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "companion-growth/run.log",
+      "raw_bytes": 445,
+      "raw_sha256": "41dec0aefa147043af0c248b2890c4581bf300e7f83f70c0bdaef3035680e538",
+      "published_bytes": 445,
+      "published_sha256": "41dec0aefa147043af0c248b2890c4581bf300e7f83f70c0bdaef3035680e538",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "companion-growth/transport-results.json",
+      "raw_bytes": 2481,
+      "raw_sha256": "a0350ce2a1b2560138069e10ab49426b5c045f3ad5affcc462ea5e288d50dd16",
+      "published_bytes": 2481,
+      "published_sha256": "a0350ce2a1b2560138069e10ab49426b5c045f3ad5affcc462ea5e288d50dd16",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "companion-growth/transport-run.log",
+      "raw_bytes": 492,
+      "raw_sha256": "da1f5bca5112c9b95f2681a96df89e046705c51b37944b2a64e08372e9dcb3bc",
+      "published_bytes": 492,
+      "published_sha256": "da1f5bca5112c9b95f2681a96df89e046705c51b37944b2a64e08372e9dcb3bc",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "companion-growth/transport_probe.py",
+      "raw_bytes": 4677,
+      "raw_sha256": "752ec3970125a826b76050c9ca176bdf05fd37d7872ca3dcd9b6f5be30857acc",
+      "published_bytes": 4677,
+      "published_sha256": "752ec3970125a826b76050c9ca176bdf05fd37d7872ca3dcd9b6f5be30857acc",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "companion/cloud-recovery-baseline.log",
+      "raw_bytes": 994,
+      "raw_sha256": "ac089d5a0233cf4c9b4dd10805fdad557b08b6b20ea1425cbb966ace56d9d1c7",
+      "published_bytes": 947,
+      "published_sha256": "4bd42d77339d40d8dff9426ce3599063e014196f14e1ba1d86ad447635bc9093",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 1
+      }
+    },
+    {
+      "path": "companion/recovery-history-final.log",
+      "raw_bytes": 13840,
+      "raw_sha256": "f973041605f8f5aa15340143ab9b1776c75c4020d2a80577f0ef6638af5db9fd",
+      "published_bytes": 13840,
+      "published_sha256": "f973041605f8f5aa15340143ab9b1776c75c4020d2a80577f0ef6638af5db9fd",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "companion/recovery-review.json",
+      "raw_bytes": 3295,
+      "raw_sha256": "c56fcd8959a86d2a5bed1d3755bb068f9a8db5664489a7d087b0716bba8e4c9f",
+      "published_bytes": 3295,
+      "published_sha256": "c56fcd8959a86d2a5bed1d3755bb068f9a8db5664489a7d087b0716bba8e4c9f",
+      "path_prefix_replacements": {}
+    }
+  ]
+}

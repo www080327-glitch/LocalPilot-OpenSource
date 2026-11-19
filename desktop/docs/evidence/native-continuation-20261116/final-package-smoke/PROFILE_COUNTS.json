@@ -1,0 +1,60 @@
+{
+  "root": "/workspace/scratch/c0f3ec78c621/validation/native-final-smoke-20261116/profile-c",
+  "inspection": "read-only after owned process stop",
+  "runtime_table_counts": {
+    "checkpoints": 0,
+    "journal": 0
+  },
+  "installed_distribution_versions": {
+    "localpilot-agent-service": "5.0.0b26",
+    "localpilot-channels": "0.1.0a3",
+    "localpilot-companion": "0.5.7b7",
+    "localpilot-suite": "0.2.0b31"
+  },
+  "metadata_files": [
+    {
+      "path": "client/modules/bundle-25a59137057f16dafacb/runtime/lib/python3.13/site-packages/localpilot_agent_service-5.0.0b26.dist-info/METADATA",
+      "sha256": "7623ecee96fbda1f64fef94091f6a654b0ba5ec62f673c5ab7141bd2398b0f10"
+    },
+    {
+      "path": "client/modules/bundle-25a59137057f16dafacb/runtime/lib/python3.13/site-packages/localpilot_channels-0.1.0a3.dist-info/METADATA",
+      "sha256": "96ee89d88fc107afdb1f5aa188ec034ae87e93e3aed34281b35adfd933070a39"
+    },
+    {
+      "path": "client/modules/bundle-25a59137057f16dafacb/runtime/lib/python3.13/site-packages/localpilot_companion-0.5.7b7.dist-info/METADATA",
+      "sha256": "6bf13cc2d4af44f4fa8bdf3a61e221d3f2bcb9b2e18be6d4c3876cbb2ce94658"
+    },
+    {
+      "path": "client/modules/bundle-25a59137057f16dafacb/runtime/lib/python3.13/site-packages/localpilot_suite-0.2.0b31.dist-info/METADATA",
+      "sha256": "a0436fd5094360d112fbc1cc560bfc8fe1190d2693977bb024a39ee26f1421eb"
+    }
+  ],
+  "core_ready_log": {
+    "version": "5.0.0b26",
+    "host": "127.0.0.1",
+    "port": 50049,
+    "status": "ready",
+    "model_health": "NOT_PROBED"
+  },
+  "model_routes": {
+    "default": {
+      "kind": "unavailable",
+      "model": "not-selected",
+      "deployment_status": "not_deployed"
+    },
+    "companion-execution": {
+      "kind": "unavailable",
+      "model": "not-selected",
+      "deployment_status": "not_deployed"
+    },
+    "companion-reasoning": {
+      "kind": "unavailable",
+      "model": "not-selected",
+      "deployment_status": "not_deployed"
+    }
+  },
+  "gui_model_tasks_submitted": 0,
+  "gui_model_inference_requests": 0,
+  "gui_weight_downloads": 0,
+  "gui_account_connections": 0
+}

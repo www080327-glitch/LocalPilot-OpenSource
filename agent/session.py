@@ -40,7 +40,7 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
                  budgets=None, eligibility=None, data_policy=None, event_callback=None, trace=None,
                  prompt_profile="standard", system_prompt=None, streaming=True,
                  runtime_tools=True, legacy=False, retry_policy=None, depth=0,
-                 cloud_worker_backends=None, worker_availability=None, verification_callback=None,
+                 cloud_worker_backends=None, worker_availability=None, worker_roles=None, verification_callback=None,
                  stabilization=None, computer_runtime=None, computer_owner=True,
                  finalization_policy=None, completion_check=None, async_policy=None,
                  harness_policy=None, task_contract=None,
@@ -178,6 +178,8 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
             self.computer.event_callback = self._computer_event
         self.goals = GoalStore()
         self.messages = []
+        from .context_v5 import RequestHistory
+        self._request_history = RequestHistory()
         self.tool_history = []
         self.completed_tool_calls = {}
         self.subagents = []
@@ -216,6 +218,7 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
             catalog = hybrid_backends or {k: b for k, b in {'local': self.local_backend, 'cloud': self.cloud_backend}.items()
                 if getattr(getattr(b, 'model_info', None), 'effective_context', None)}
             self.hybrid = HybridController(self, hybrid_policy, catalog, hybrid_primary or self.primary)
+        self.worker_roles = self._worker_role_configuration(worker_roles)
         if adaptive_policy is not None:
             from .adaptive import AdaptiveController
             self.adaptive = AdaptiveController(self, adaptive_policy, capability_profiles, task_traits)
@@ -384,6 +387,20 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
                     schema['function']['parameters']['properties'].update({
                         'backend_id': {'type': 'string', 'enum': eligible},
                         'model': {'type': 'string', 'description': 'Exact registered configured model assertion; not an arbitrary provider model.'}})
+                    if schema['function']['name'] == 'delegate':
+                        properties = schema['function']['parameters']['properties']
+                        tiers = [tier for tier, backend in self.cloud_worker_backends.items()
+                                 if backend is not None and any(self.hybrid.catalog[k] is backend
+                                     and self.hybrid.kind(k) == 'cloud' for k in eligible)]
+                        if tiers:
+                            properties['tier']['enum'] = sorted(tiers)
+                        else:
+                            properties.pop('tier', None)
+                        roles = [role for role, alias in self.worker_roles.items() if alias in eligible]
+                        if roles:
+                            properties['role'] = {'type': 'string', 'enum': sorted(roles),
+                                'description': 'Configured read-only worker role. The host selects its model; '
+                                    'omit tier. backend_id and model may only assert this role\'s registered model.'}
                     if self.harness_policy or self.engine_policy:
                         key='target' if schema['function']['name']=='request_model_switch' else 'backend_preference'
                         schema['function']['parameters']['properties'][key]['enum']=sorted({self.hybrid.kind(k) for k in eligible})
@@ -393,15 +410,15 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
         if self.async_policy and self.runtime_tools:
             next(s for s in schemas if s['function']['name'] == 'delegate')['function']['parameters']['properties']['mode'] = {"type":"string", "enum":["sync","async"]}
             schemas.extend(deepcopy(ASYNC_SCHEMAS))
-        workspace_schemas = self.registry.schemas()
+        workspace_schemas = self.registry.schemas(for_model=True)
         if self.harness_policy or self.engine_policy:
             caps = self.registry.gateway.capabilities
             writable = caps.write and not caps.read_only and not self._planning and not self.registry.gateway.plan_read_only and not self._finalizing
             executable = caps.execute and not caps.read_only and not self._planning and not self.registry.gateway.plan_read_only and not self._finalizing and self.hybrid is None
             workspace_schemas = [s for s in workspace_schemas
                 if not (s['function']['name'] in {'execute', 'run_command'} and not executable)
-                and not (s['function']['name'] in {'apply_patch','make_directory','move_file','copy_file'} and not writable)
-                and not (s['function']['name'] in {'read_file', 'list_directory', 'search_text', 'file_info', 'list_entries','inspect_file'} and not caps.read)]
+                and not (s['function']['name'] in {'apply_patch','make_directory','move_file','copy_file','shell'} and not writable)
+                and not (s['function']['name'] in {'read_file', 'list_directory', 'search_text', 'file_info', 'list_entries','inspect_file', 'recall_history'} and not caps.read)]
         result = workspace_schemas + schemas
         if self._cache_enabled() or self.engine_policy:
             # Registration order and dict insertion order are not model semantics.
@@ -551,7 +568,7 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
             messages=[m.to_dict() for m in self.messages], model_calls=list(self._usage),
             prompt_version="localpilot-v5-v1" if self.engine_policy else f"{self.prompt_profile}-v0.1" if self.legacy else "runtime-v2-computer-use-alpha" if self.computer else "runtime-v1.4",
             status=status, approvals=[self._approval_view()] if self.pending_approval else None,
-            tool_budget=measure_tool_budget(self.registry.schemas(), self.base_prompt),
+            tool_budget=measure_tool_budget(self.registry.schemas(for_model=True), self.base_prompt),
             prompt_profile=self.prompt_profile, tool_profile=self.registry.tool_profile,
             runtime_status=status,
             deliverable_status=("missing" if not (self._turn_text if text is None else text).strip() else
@@ -710,6 +727,10 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
             raise ValueError("Invalid stop reason")
         self._stop_reason = reason
         self._stop_requested.set()
+        # A synchronous child Shell cannot reach its parent check until the tool returns.
+        for child in tuple(self._children.values()):
+            if child.state != SessionState.SESSION_FINISHED:
+                child.request_cancel(reason)
         plugin_manager = getattr(self.registry, 'plugin_manager', None)
         if plugin_manager:
             plugin_manager.cancel()
@@ -845,16 +866,19 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
                 prompt_cache_hit_tokens=usage.get("prompt_cache_hit_tokens"),
                 prompt_cache_miss_tokens=usage.get("prompt_cache_miss_tokens"),
                 reported_model=response.model, input_tokens=usage.get("prompt_tokens"),
-                output_tokens=usage.get("completion_tokens"), finish_reason=response.finish_reason))
+                output_tokens=usage.get("completion_tokens"), finish_reason=response.finish_reason,
+                provider_diagnostics=deepcopy(response.diagnostics)))
             if self._drain_current_model and self._stop_requested.is_set():
                 self._turn_text=message.content or ""
             # A complete response already incurred known provider usage. Host
             # cancellation retires execution, not that billing/evidence record.
             self._check_cancel()
             if response.finish_reason is not None and response.finish_reason not in {"stop", "tool_calls"}:
-                detail = "Model response incomplete: finish_reason=" + response.finish_reason + "; no tools executed."
+                detail = "Model response incomplete: finish_reason=" + response.finish_reason + "; no tools from this response executed."
                 self._emit("ErrorEvent", error_type="IncompleteModelResponse", message=detail,
                            finish_reason=response.finish_reason)
+                if self._recover_worker_output(response):
+                    continue
                 # Keep the partial answer in the result, without placing an
                 # incomplete assistant/tool group into canonical history.
                 if (self.finalization_policy and not self._planning and response.finish_reason == 'length'
@@ -950,6 +974,27 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
                 return self._finish("Tool call IDs must be present and unique within a response.", "error")
             self._queue.extend(calls)
             self._persist("response_accepted", "ready")
+
+    def _recover_worker_output(self, response):
+        if (response.finish_reason != 'length' or not self.depth or not self.engine_policy
+                or self._planning or self._finalizing
+                or sum(usage.finish_reason == 'length' for usage in self._usage) != 1
+                or self._attempts >= self.budgets.max_steps - int(self.controls.reserve)):
+            return False
+        # Persisted usage also counts this recovery across checkpoints. The
+        # incomplete assistant/native replay never enters canonical history.
+        self.messages.append(Message('user',
+            'Host output feedback (no new authority): Your last response reached the '
+            f'{self.budgets.max_output_tokens}-token output limit and was discarded. '
+            'No tools from that response executed; earlier completed tool receipts remain valid. '
+            'Continue this same task with shorter complete tool calls and fresh call IDs. '
+            'Split large patches into smaller edits and perform the required checks. '
+            'Only one output-length recovery is allowed; all original budgets and permissions remain.'))
+        self._emit('WorkerOutputRecovery', worker_id=self._worker_id, attempt=1,
+                   discarded_tool_proposals=len(response.message.tool_calls),
+                   max_output_tokens=self.budgets.max_output_tokens)
+        self._persist('worker_output_recovery', 'ready')
+        return True
 
 
     @serialized
@@ -1094,7 +1139,9 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
 
     def _runtime_preapproved(self, target):
         return self.permission_mode == "full-permission" and (
-            target == "local" or self.hybrid is not None and self.hybrid.policy.egress.mode == "CLOUD_ALLOWED")
+            target == "local" or self.hybrid is not None and self.hybrid.policy.egress.mode == "CLOUD_ALLOWED"
+            or self.hybrid is None and self.routing_policy == RoutingPolicy.CLOUD_ONLY
+            and not self.hard_data_policy.local_only)
 
     def _switch_request(self, call, args):
         target = args["target"]

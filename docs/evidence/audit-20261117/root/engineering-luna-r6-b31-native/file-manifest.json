@@ -1,0 +1,37 @@
+{
+  "before_sha256": {
+    "SPEC.md": "3a581fcd5925e86dfcea0d87bbbcacfaf0065ed8139280c100769d8c6870c3e6",
+    "fixtures/basic.csv": "6c0dcee9e8d138f61ed6da850c9bc77be3ccabe49a98fb99a693298a6b431d41",
+    "fixtures/basic.expected.json": "3d8d1af6ab844d19fc24b4029044458ef877dfc129232e3f9824e6bf5d54d34a",
+    "fixtures/empty.csv": "318a41c33c77ab0db8e5c651bd4b9918c26222daf02f90d8e2e01a8bb5be516a",
+    "fixtures/invalid.csv": "74097f4b98ff64d3b01a6233836f5505ebe99bee92b9c8bc3537cb14a2f6dd34",
+    "fixtures/precision.csv": "c70350dc5653955376297e2ccedff0e24cf1371f5f09101958d0cd9182b723d8",
+    "fixtures/precision.expected.json": "ac5226181296f432e36f85e1bee5b5b6c1efb519bb1ae12755dd971e66850603",
+    "logstats/__init__.py": "ae8f92d8e600d6dc9ad8d3ac5063b4ee18d5ef365e259d9323608625b76ef7de",
+    "logstats/__main__.py": "f849849731b05ad7b37f1e6636741a8c7ecaf00a8d5e78712e5d132522546a5b",
+    "logstats/aggregate.py": "9d2e4a7aec763e41478efb936a03fccb545b72f775218aa8e11123e241535d0b",
+    "logstats/parser.py": "16b2d904fab3ccfbfe24baa15473981957458ce4996f582b8c8c5238bc69cbda",
+    "tests/test_acceptance.py": "e406b48f904550da19c4feff630962f393197f024bcc0c77683163fe26081837"
+  },
+  "after_sha256": {
+    "SPEC.md": "3a581fcd5925e86dfcea0d87bbbcacfaf0065ed8139280c100769d8c6870c3e6",
+    "tests/test_acceptance.py": "e406b48f904550da19c4feff630962f393197f024bcc0c77683163fe26081837",
+    "fixtures/basic.csv": "6c0dcee9e8d138f61ed6da850c9bc77be3ccabe49a98fb99a693298a6b431d41",
+    "fixtures/precision.csv": "c70350dc5653955376297e2ccedff0e24cf1371f5f09101958d0cd9182b723d8",
+    "fixtures/empty.csv": "318a41c33c77ab0db8e5c651bd4b9918c26222daf02f90d8e2e01a8bb5be516a",
+    "fixtures/invalid.csv": "74097f4b98ff64d3b01a6233836f5505ebe99bee92b9c8bc3537cb14a2f6dd34",
+    "fixtures/basic.expected.json": "3d8d1af6ab844d19fc24b4029044458ef877dfc129232e3f9824e6bf5d54d34a",
+    "fixtures/precision.expected.json": "ac5226181296f432e36f85e1bee5b5b6c1efb519bb1ae12755dd971e66850603",
+    "logstats/__init__.py": "ae8f92d8e600d6dc9ad8d3ac5063b4ee18d5ef365e259d9323608625b76ef7de",
+    "logstats/parser.py": "ab230d5bdb8c1d9c149ac876427405cf7566c1afdb1ec9c2b322498707e784ae",
+    "logstats/aggregate.py": "32bd02069fc34be28f9d5fad432bf6bbf6dac05b4849e746104b12f81daccd47",
+    "logstats/__main__.py": "3a4d78f4dccf1e90297d4ebd217273ac2d10e3a75c9af4397e69ca9b25eac6b3",
+    "result.json": "a3211a34cf3e4419cf8c2c89c33d51009dbff3d2ee06b6597cde3912af3e5a69"
+  },
+  "changed_paths": [
+    "logstats/parser.py",
+    "logstats/aggregate.py",
+    "logstats/__main__.py"
+  ],
+  "scope": "Fixed project, public acceptance fixtures, and requested CLI output."
+}

@@ -1,0 +1,496 @@
+{
+  "kind": "PRESCRIBED_ARGUMENT_DIAGNOSTIC",
+  "protocol_sha256": "4f975a68d00f03b29737eceb82ff3cd377077d55a5be955907b2785d0b7e3103",
+  "cases": {
+    "prescribed_child_read": {
+      "completed_child_read": false,
+      "task_id": "resp_eb67fab0db5c4d19a5b8d0f595f17f20",
+      "task_status": "incomplete",
+      "answer": "<tool_call>\n<function=shell>\n<parameter=command>\nfile \"fact.txt\"\n</parameter>\n</function>\n</tool_call>",
+      "tools": [
+        "delegate",
+        "list_directory"
+      ],
+      "subagents": [
+        {
+          "id": "1.1",
+          "turn_id": 1,
+          "backend": "local",
+          "tier": null,
+          "provider": "unknown",
+          "configured_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "status": "error",
+          "task": "Read the contents of fact.txt using read_file with path=\"fact.txt\"",
+          "permission_mode": "workspace-auto",
+          "read_only": true,
+          "workspace": "/workspace/scratch/2a488f6eabf5/validation/polish-20261116/model/prescribed-delegation-r1/workspace",
+          "depth": 1,
+          "backend_id": "selected",
+          "receipts": [],
+          "approval": null,
+          "pending_calls": [],
+          "usage": {
+            "token_units": 12717,
+            "tool_proposals": 0,
+            "attempts": 1,
+            "request_bytes": 10293,
+            "response_bytes": 2424,
+            "failed_attempts": 0
+          },
+          "model_calls": 1,
+          "hybrid_usage": {
+            "calls": 1,
+            "actual_api_cost": "UNKNOWN",
+            "local_resource_cost": "adapter_wall_seconds_only",
+            "backend_id": "selected",
+            "generation": 0,
+            "switching_overhead_seconds": 0,
+            "by_backend": {
+              "selected": {
+                "kind": "local",
+                "calls": 1,
+                "known_input_tokens": 2401,
+                "known_output_tokens": 512,
+                "unknown_usage_calls": 0,
+                "known_request_wall_seconds": 66.7049777507782,
+                "known_inference_seconds": 66.70302557945251,
+                "known_queue_seconds": 0.001957416534423828,
+                "unknown_inference_time_calls": 0,
+                "unknown_latency_calls": 0,
+                "estimated_api_cost_usd": null,
+                "cost_source": "host_rate_estimate_only",
+                "configured_models": [
+                  "localpilot-qwen35-2b-q8_0-qualified"
+                ],
+                "prompt_cache_hit_tokens": 0,
+                "prompt_cache_miss_tokens": 2401,
+                "cache_hit_ratio": 0.0,
+                "cache_usage_unknown_calls": 0,
+                "wall_output_tokens_per_second": 7.675813736366985,
+                "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+              }
+            },
+            "source_mix": {
+              "scope": "current_task_including_children",
+              "by_source": {
+                "local": {
+                  "admitted_requests": 1,
+                  "dispatched_requests": 1,
+                  "request_share": 1.0,
+                  "known_input_output_tokens": 2913,
+                  "token_share": 1.0,
+                  "unknown_usage_requests": 0
+                },
+                "cloud": {
+                  "admitted_requests": 0,
+                  "dispatched_requests": 0,
+                  "request_share": 0.0,
+                  "known_input_output_tokens": 0,
+                  "token_share": 0.0,
+                  "unknown_usage_requests": 0
+                }
+              },
+              "requests_without_dispatch_evidence": 0,
+              "token_share_status": "PROVIDER_REPORTED",
+              "actual_cost_status": "UNKNOWN"
+            }
+          },
+          "current_backend_id": "selected",
+          "unfinished_calls": [],
+          "obligation_status": "unresolved",
+          "reported_models": [
+            "localpilot-qwen35-2b-q8_0-qualified"
+          ]
+        }
+      ],
+      "model_calls": [
+        {
+          "latency_seconds": 56.85798453000098,
+          "tool_call_count": 1,
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 4149,
+          "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "input_tokens": 4149,
+          "output_tokens": 85,
+          "finish_reason": "tool_calls"
+        },
+        {
+          "latency_seconds": 66.70520279500124,
+          "tool_call_count": 0,
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 2401,
+          "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "input_tokens": 2401,
+          "output_tokens": 512,
+          "finish_reason": "length"
+        },
+        {
+          "latency_seconds": 82.53935028300111,
+          "tool_call_count": 1,
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 5467,
+          "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "input_tokens": 5467,
+          "output_tokens": 116,
+          "finish_reason": "tool_calls"
+        },
+        {
+          "latency_seconds": 59.639796761999605,
+          "tool_call_count": 0,
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 4509,
+          "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "input_tokens": 4509,
+          "output_tokens": 30,
+          "finish_reason": "stop"
+        }
+      ],
+      "runtime_metrics": {
+        "model_attempts": 4,
+        "request_utf8_bytes": 65112,
+        "response_bytes": 3448,
+        "response_bytes_source": "complete_responses_only",
+        "failed_attempts": 0,
+        "failed_attempt_provider_usage": null,
+        "admission_units": 68560,
+        "finalization_reason": "token_reserve",
+        "final_reserve_units": 38520,
+        "state_bytes": 3369,
+        "cache_bytes": 0,
+        "hybrid": {
+          "calls": 4,
+          "actual_api_cost": "UNKNOWN",
+          "local_resource_cost": "adapter_wall_seconds_only",
+          "backend_id": "selected",
+          "generation": 0,
+          "switching_overhead_seconds": 0,
+          "by_backend": {
+            "selected": {
+              "kind": "local",
+              "calls": 4,
+              "known_input_tokens": 16526,
+              "known_output_tokens": 743,
+              "unknown_usage_calls": 0,
+              "known_request_wall_seconds": 265.74146246910095,
+              "known_inference_seconds": 265.7050485610962,
+              "known_queue_seconds": 0.03645753860473633,
+              "unknown_inference_time_calls": 0,
+              "unknown_latency_calls": 0,
+              "estimated_api_cost_usd": null,
+              "cost_source": "host_rate_estimate_only",
+              "configured_models": [
+                "localpilot-qwen35-2b-q8_0-qualified"
+              ],
+              "prompt_cache_hit_tokens": 0,
+              "prompt_cache_miss_tokens": 16526,
+              "cache_hit_ratio": 0.0,
+              "cache_usage_unknown_calls": 0,
+              "wall_output_tokens_per_second": 2.7963337694321404,
+              "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+            }
+          },
+          "source_mix": {
+            "scope": "current_task_including_children",
+            "by_source": {
+              "local": {
+                "admitted_requests": 4,
+                "dispatched_requests": 4,
+                "request_share": 1.0,
+                "known_input_output_tokens": 17269,
+                "token_share": 1.0,
+                "unknown_usage_requests": 0
+              },
+              "cloud": {
+                "admitted_requests": 0,
+                "dispatched_requests": 0,
+                "request_share": 0.0,
+                "known_input_output_tokens": 0,
+                "token_share": 0.0,
+                "unknown_usage_requests": 0
+              }
+            },
+            "requests_without_dispatch_evidence": 0,
+            "token_share_status": "PROVIDER_REPORTED",
+            "actual_cost_status": "UNKNOWN"
+          }
+        }
+      },
+      "receipt_summary": {
+        "count": 2,
+        "unknown_effects": 0
+      },
+      "quiescent": true,
+      "status": "FAIL",
+      "seconds": 266.88256911699864
+    },
+    "prescribed_child_cancel_restart": {
+      "reason": "No child Shell marker before the declared cancellation boundary",
+      "task_id": "resp_993a63ae39634bd688dfb2820edd81db",
+      "task_status": "failed",
+      "answer": "I see that `delegate` with tier \"LIGHT\" failed because it needs a cloud worker. The budget shows \"remaining_steps\": 3, meaning I've used only 1 step (the delegate call itself). There are 2 more steps available, but the remaining_tokens is also at zero according to the evidence: `\"remaining_admission_units\":82772`, wait no that doesn't look right.\n\nLet me re-read the token count in the budget - it says `tokens`:32768 which should give us plenty of tokens. The issue is the command itself needs shell execution, but I can't execute commands directly as a parent agent.\n\nLooking at the available tools and the problem constraints again:\n- I have 1 step used (delegate call)\n- Budget shows \"remaining_steps\": 3, meaning there are 2 more steps after this delegate call\n- But the underlying shell command requirement conflicts with \"Do not execute the command in the parent\"\n\nThe fundamental issue is:\n1. The goal requires executing a shell command `printf child-started >> child-cancel.txt; sleep 60` \n2. I'm told **not** to execute it in the parent, but this execution is necessary for the task's completion\n3. Shell commands require an executable backend\n\nGiven these constraints and that I can only use delegate once, let me reconsider: perhaps the user means not to run a specific shell command directly while delegating - maybe using `delegate`'s ability to call shell through some mechanism would work instead of executing it myself in parent mode.\n\nActually, looking more carefully at the error message saying \"LIGHT/STRONG tier requires a cloud worker\" and remaining_steps=3 (available for additional delegate calls), I should use delegate once but perhaps with different parameters or reconsider my approach. The core issue is that direct shell command execution isn't possible as parent work in this constrained setup - only `delegate` can run subagents.\n\nLet me use one more try at delegate, possibly adjusting the task description or accepting that while delegate ran successfully (even though we got an error about tier), there's a way to complete through worker delegation that respects the \"don't execute in parent\" constraint:\nModel response incomplete: finish_reason=length; no tools executed.",
+      "tools": [
+        "delegate"
+      ],
+      "subagents": [],
+      "model_calls": [
+        {
+          "latency_seconds": 73.1431693850027,
+          "tool_call_count": 1,
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 4165,
+          "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "input_tokens": 4165,
+          "output_tokens": 271,
+          "finish_reason": "tool_calls"
+        },
+        {
+          "latency_seconds": 69.42726061800204,
+          "tool_call_count": 1,
+          "prompt_cache_hit_tokens": 2629,
+          "prompt_cache_miss_tokens": 2136,
+          "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "input_tokens": 4765,
+          "output_tokens": 512,
+          "finish_reason": "length"
+        }
+      ],
+      "runtime_metrics": {
+        "model_attempts": 2,
+        "request_utf8_bytes": 34323,
+        "response_bytes": 3740,
+        "response_bytes_source": "complete_responses_only",
+        "failed_attempts": 0,
+        "failed_attempt_provider_usage": null,
+        "admission_units": 38063,
+        "finalization_reason": null,
+        "final_reserve_units": 38136,
+        "state_bytes": 2099,
+        "cache_bytes": 0,
+        "hybrid": {
+          "calls": 2,
+          "actual_api_cost": "UNKNOWN",
+          "local_resource_cost": "adapter_wall_seconds_only",
+          "backend_id": "selected",
+          "generation": 0,
+          "switching_overhead_seconds": 0,
+          "by_backend": {
+            "selected": {
+              "kind": "local",
+              "calls": 2,
+              "known_input_tokens": 8930,
+              "known_output_tokens": 783,
+              "unknown_usage_calls": 0,
+              "known_request_wall_seconds": 142.56993794441223,
+              "known_inference_seconds": 142.56404662132263,
+              "known_queue_seconds": 0.005903959274291992,
+              "unknown_inference_time_calls": 0,
+              "unknown_latency_calls": 0,
+              "estimated_api_cost_usd": null,
+              "cost_source": "host_rate_estimate_only",
+              "configured_models": [
+                "localpilot-qwen35-2b-q8_0-qualified"
+              ],
+              "prompt_cache_hit_tokens": 2629,
+              "prompt_cache_miss_tokens": 6301,
+              "cache_hit_ratio": 0.29440089585666296,
+              "cache_usage_unknown_calls": 0,
+              "wall_output_tokens_per_second": 5.492268342240577,
+              "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+            }
+          },
+          "source_mix": {
+            "scope": "current_task_including_children",
+            "by_source": {
+              "local": {
+                "admitted_requests": 2,
+                "dispatched_requests": 2,
+                "request_share": 1.0,
+                "known_input_output_tokens": 9713,
+                "token_share": 1.0,
+                "unknown_usage_requests": 0
+              },
+              "cloud": {
+                "admitted_requests": 0,
+                "dispatched_requests": 0,
+                "request_share": 0.0,
+                "known_input_output_tokens": 0,
+                "token_share": 0.0,
+                "unknown_usage_requests": 0
+              }
+            },
+            "requests_without_dispatch_evidence": 0,
+            "token_share_status": "PROVIDER_REPORTED",
+            "actual_cost_status": "UNKNOWN"
+          }
+        }
+      },
+      "receipt_summary": {
+        "count": 1,
+        "unknown_effects": 0
+      },
+      "quiescent": true,
+      "status": "FAIL",
+      "seconds": 143.47094895899863
+    },
+    "prescribed_companion_relative_read": {
+      "completed_relative_read": true,
+      "task_id": "resp_70554c002584463eb3f4a4a29c1482c8",
+      "task_status": "timed_out",
+      "answer": "Turn stopped by the host.",
+      "tools": [
+        "read_file",
+        "read_file",
+        "read_file"
+      ],
+      "subagents": [],
+      "model_calls": [
+        {
+          "latency_seconds": 49.143257784002344,
+          "tool_call_count": 1,
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 3697,
+          "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "input_tokens": 3697,
+          "output_tokens": 26,
+          "finish_reason": "tool_calls"
+        },
+        {
+          "latency_seconds": 33.146788987000036,
+          "tool_call_count": 1,
+          "prompt_cache_hit_tokens": 2131,
+          "prompt_cache_miss_tokens": 2392,
+          "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "input_tokens": 4523,
+          "output_tokens": 26,
+          "finish_reason": "tool_calls"
+        },
+        {
+          "latency_seconds": 41.978304117001244,
+          "tool_call_count": 1,
+          "prompt_cache_hit_tokens": 2190,
+          "prompt_cache_miss_tokens": 3209,
+          "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "input_tokens": 5399,
+          "output_tokens": 26,
+          "finish_reason": "tool_calls"
+        },
+        {
+          "latency_seconds": 101.39740647299914,
+          "tool_call_count": 0,
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 6060,
+          "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "input_tokens": 6060,
+          "output_tokens": 280,
+          "finish_reason": "length"
+        }
+      ],
+      "runtime_metrics": {
+        "model_attempts": 5,
+        "request_utf8_bytes": 89861,
+        "response_bytes": 1894,
+        "response_bytes_source": "complete_responses_only",
+        "failed_attempts": 1,
+        "failed_attempt_provider_usage": null,
+        "admission_units": 99947,
+        "finalization_reason": "delivery_length",
+        "final_reserve_units": 20191,
+        "state_bytes": 2450,
+        "cache_bytes": 482,
+        "hybrid": {
+          "calls": 5,
+          "actual_api_cost": "UNKNOWN",
+          "local_resource_cost": "adapter_wall_seconds_only",
+          "backend_id": "selected",
+          "generation": 0,
+          "switching_overhead_seconds": 0,
+          "by_backend": {
+            "selected": {
+              "kind": "local",
+              "calls": 5,
+              "known_input_tokens": 19679,
+              "known_output_tokens": 358,
+              "unknown_usage_calls": 1,
+              "known_request_wall_seconds": 299.93537282943726,
+              "known_inference_seconds": 299.921347618103,
+              "known_queue_seconds": 0.014053583145141602,
+              "unknown_inference_time_calls": 0,
+              "unknown_latency_calls": 0,
+              "estimated_api_cost_usd": null,
+              "cost_source": "host_rate_estimate_only",
+              "configured_models": [
+                "localpilot-qwen35-2b-q8_0-qualified"
+              ],
+              "prompt_cache_hit_tokens": null,
+              "prompt_cache_miss_tokens": null,
+              "cache_hit_ratio": null,
+              "cache_usage_unknown_calls": 1,
+              "wall_output_tokens_per_second": 1.193646277076115,
+              "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+            }
+          },
+          "source_mix": {
+            "scope": "current_task_including_children",
+            "by_source": {
+              "local": {
+                "admitted_requests": 5,
+                "dispatched_requests": 5,
+                "request_share": 1.0,
+                "known_input_output_tokens": 20037,
+                "token_share": null,
+                "unknown_usage_requests": 1
+              },
+              "cloud": {
+                "admitted_requests": 0,
+                "dispatched_requests": 0,
+                "request_share": 0.0,
+                "known_input_output_tokens": 0,
+                "token_share": null,
+                "unknown_usage_requests": 0
+              }
+            },
+            "requests_without_dispatch_evidence": 0,
+            "token_share_status": "UNKNOWN",
+            "actual_cost_status": "UNKNOWN"
+          }
+        }
+      },
+      "receipt_summary": {
+        "count": 3,
+        "unknown_effects": 0
+      },
+      "quiescent": true,
+      "status": "FAIL",
+      "seconds": 300.92486202099826
+    }
+  },
+  "cloud_calls": 0,
+  "api_cost_usd": 0,
+  "energy_cost": "UNKNOWN",
+  "provider_processes": [
+    {
+      "pid": 7,
+      "wall_seconds": 713.9111316279996,
+      "peak_rss_kib": 2630452,
+      "source": "/proc/PID/status VmHWM before termination",
+      "returncode": 0
+    }
+  ],
+  "owned_processes_stopped": true,
+  "source_raw_report_sha256": "3144dda139525d50a3c602d8097fb273cdaf905816eebdd0a1557d47235830b3",
+  "source_freeze_sha256": "e6f6bf16864dff9c3f7e9dfc6691129cbbbdc2d4c5693357ce023db089a14316",
+  "tested_component_versions": {
+    "Core": "5.0.0b24",
+    "Companion": "0.5.7b5"
+  },
+  "counts": {
+    "PASS": 0,
+    "FAIL": 3,
+    "ERROR": 0
+  },
+  "interpretation": {
+    "prescribed_child_read": "Child was created, but host entered final_only before the first tool attempt because the 32768-byte-unit worker ceiling could not admit exploration plus reserved delivery. No child read receipt.",
+    "prescribed_child_cancel_restart": "The model again supplied local + LIGHT despite explicit omission instructions. No child or Shell marker was created; child cancellation/restart was not exercised.",
+    "prescribed_companion_relative_read": "A real relative read succeeded; two later reads reused the same evidence. Final-only output was length-limited and the task reached 300 seconds without completed delivery."
+  }
+}

@@ -1,0 +1,285 @@
+{
+  "scope": "RC14 full-source build PASS, extracted-DEB native K/L PASS, one complete 6007 ms animation sample PASS, zero GUI model tasks, owned shutdown complete",
+  "source_commit": "c5439659a579b2ee9e74fd53e6d3232fe12fb855",
+  "source_tree": "d0b0b33b036587ef0f0a802ca728419e9a444587",
+  "files": {
+    "01-initial-rc14.png": {
+      "bytes": 78559,
+      "sha256": "4fb90e006d338bedab881c9a3c3ff438eca20c50630c616243db915d8ab28ee4"
+    },
+    "02-prepare-components-rc14.png": {
+      "bytes": 114476,
+      "sha256": "cf0959e203ed21c4d839c15db45b567b78a441baa8d6fdfb06fe974506af11d7"
+    },
+    "03-connected-components-no-model.png": {
+      "bytes": 126237,
+      "sha256": "c31414aad5c1872384f318b87f7aee00b1ed8760de9c3ce7a3348bf07e6f8f7f"
+    },
+    "04-openai-empty-key.png": {
+      "bytes": 125932,
+      "sha256": "74dc638f1c43404376e0f332325c7d7370bfee5611d6f36b61ad538484f12d29"
+    },
+    "05-ready-components-rc14.png": {
+      "bytes": 96239,
+      "sha256": "959884003cc7a21fb264ca62a7fe02330eec51ec4ced420f6768c9cc5afcaac7"
+    },
+    "06-main-core-b31.png": {
+      "bytes": 72065,
+      "sha256": "a148df08365d8bfd3671083cb4c4efb5f8c941552dda826671a11563752341c1"
+    },
+    "07-long-task-24h-unsent.png": {
+      "bytes": 73251,
+      "sha256": "e7e567bc86f9995197c9cdfe2f768e6daec2df1584bac3fae9a2e45d3027b377"
+    },
+    "08-live-service-capabilities.png": {
+      "bytes": 55147,
+      "sha256": "769b0861307cbdf6e941561af42d56e2e33b35d9e2ecf2d51b3e75f196131280"
+    },
+    "09-k-owned-stop.png": {
+      "bytes": 57020,
+      "sha256": "314fb953319bc7ccd3e78da5961d39dabf4f9109b61aac2edb1bf1f3a619f9f8"
+    },
+    "10-pet-initial.png": {
+      "bytes": 7324,
+      "sha256": "7c50e50b1fb7edf536f07bf08302654d52d68267c0441a9748b04d23159c65c1"
+    },
+    "11-pet-after-single-animation.png": {
+      "bytes": 7537,
+      "sha256": "ca5f8cc478f6b435be26d0604b432357b0be07e0f5c647b9da36775ccf884cfb"
+    },
+    "12-compact-bubble.png": {
+      "bytes": 11755,
+      "sha256": "24897e2490f7a1170283e0dc2096c3b9a9fc2c9cb42bc190d1c960191a2493a0"
+    },
+    "13-focused-unsent-draft.png": {
+      "bytes": 12000,
+      "sha256": "529b2a8cfe21188d0e9390b1eefa4d376bbbb561af51596f570d12ec41a38281"
+    },
+    "14-cleared-unsent-draft.png": {
+      "bytes": 11755,
+      "sha256": "24897e2490f7a1170283e0dc2096c3b9a9fc2c9cb42bc190d1c960191a2493a0"
+    },
+    "RESULTS.md": {
+      "bytes": 9397,
+      "sha256": "1cf5846977152af127499c0d98e1676cef9e2f233c355125e644b70804ab077d"
+    },
+    "SHA256SUMS": {
+      "bytes": 111,
+      "sha256": "e057a798fc4880654935b9243d1dbd26909d3bdebae290e99a1433c23b1f71cb"
+    },
+    "animation-attempt.json": {
+      "bytes": 294,
+      "sha256": "ba5e86c2e2a735bfe1ba0c7c66d762c3fa7fb2b69d6fedea7e91741e33a0351f"
+    },
+    "animation-final-single-run.json": {
+      "bytes": 1732,
+      "sha256": "302ecd1aafb6bce0d050b6b39ccd9791b1b015b1a0674a7cf9cac2c3972c9458"
+    },
+    "animation-final-summary.json": {
+      "bytes": 1112,
+      "sha256": "fe8349c8cb22ae43722c9928ca29362d9f4251d239537e446518c50f87f17950"
+    },
+    "build-config.json": {
+      "bytes": 719,
+      "sha256": "7443683b420c991f4a3ec193505cedcd5e68aff64200a547d5f5b00fa6e16503"
+    },
+    "build-linux-test.log.gz": {
+      "bytes": 5354,
+      "sha256": "eaf46233b6e198ffe68db030ebb8d053fc9a2513fa7090948af902b0e0a85154"
+    },
+    "build-native-exit.json": {
+      "bytes": 98,
+      "sha256": "6f90c7a245ef62796b878e3777aa5ea96c68937655620e30282ae7b0c9c009c6"
+    },
+    "build-native-job.json": {
+      "bytes": 929,
+      "sha256": "b9901167cb53b3f88309ba2dda1812a211bc36e51de9c253cbb974fd9957ff98"
+    },
+    "build-native-launcher.sh": {
+      "bytes": 283,
+      "sha256": "9010368f214f1ef03ece3a594f73979ada029599f009f6f7249fe9d21706dd99"
+    },
+    "build-native-supervisor.py": {
+      "bytes": 1279,
+      "sha256": "31eebe99550dec0e33fa8cb03206fe2350dde070f185dd1ff25498d7d712af8d"
+    },
+    "build-rc14-native.log.gz": {
+      "bytes": 210,
+      "sha256": "2aca371999fabf1f2e8cb2d0324751f968387441580617b94b6251c79b0c8260"
+    },
+    "build-recipe.sh": {
+      "bytes": 5447,
+      "sha256": "58451e0af231fe7f7b3a57f62e5d1f37cd2c807ed289e037e6294ed9aa66e0af"
+    },
+    "candidate-identity.json": {
+      "bytes": 1820,
+      "sha256": "ecb3ae5df85f7d78967f896b901e25765efa92b929528ddaf6b6846e92a01701"
+    },
+    "candidate-versions.json": {
+      "bytes": 112,
+      "sha256": "e9b793476cc03137af3cd1ef1bdac8250738f16dbf9c1c352199abe288ab92b1"
+    },
+    "collect-evidence.py": {
+      "bytes": 9192,
+      "sha256": "52c3f9a94221609251e561c2c5f8acf095846b6a6c414fc5fee484a523879b64"
+    },
+    "compact-bubble-windows.json": {
+      "bytes": 921,
+      "sha256": "54eae08fe5fb6febb74f0ebe325c0732a13a17052b70daf8a2bd366eeecb68c2"
+    },
+    "core-service.log.gz": {
+      "bytes": 112,
+      "sha256": "2b5a00e8f05c1c86ebaf11e252edcd4c3c49e61a07ff892b1e09dcf0a3f9dc6c"
+    },
+    "fixture-l-manifest.json": {
+      "bytes": 656,
+      "sha256": "d60d6925c30545d2d2b8419a212abee07e3ec64c045404e35694fa13cde3b624"
+    },
+    "frozen-service-version.py": {
+      "bytes": 87,
+      "sha256": "1fe67309030df4b77d8541a29b81845e45ece60b3193bd43e5bae8bc51ceee52"
+    },
+    "inspect-service.py": {
+      "bytes": 1050,
+      "sha256": "22612df33331f0a08d5fdd34eddb89fdf2c35bdd6f4164501c1a045b22a5c758"
+    },
+    "inspect-service.sh": {
+      "bytes": 318,
+      "sha256": "8b996371cbddaf917c602e47fbb3ba65108d510433adbe07ef6f498a5771620e"
+    },
+    "k-stopped-windows.json": {
+      "bytes": 444,
+      "sha256": "26924e94e6a4a3ffc2a3be5a6873438ed3bda3126edf03a68581f42d696a4040"
+    },
+    "launch-l.py": {
+      "bytes": 1448,
+      "sha256": "fb19179660417f077220fb87f6c082d529f32a5ef4b0e61c94a2242c2c1fbbff"
+    },
+    "launch-l.sh": {
+      "bytes": 234,
+      "sha256": "96354dc1b30b367ae3ef95a036143e5b9e220c2833101c0a4a8496dc7f48ef3b"
+    },
+    "launch-owned-webview-minimal.sh": {
+      "bytes": 2146,
+      "sha256": "8edd7ebf185f13902e6a8a9dadb28b0c22fac966f542bb3b6cf19a8c1e91f4a4"
+    },
+    "launch-pet-overlay.sh": {
+      "bytes": 2162,
+      "sha256": "c9d80749de52e876122afdbaabe25722fe3db7af7e49de46636f50840278a101"
+    },
+    "launch.py": {
+      "bytes": 1469,
+      "sha256": "4fdad8a58c22570fc1dc24645c45b72f7a9cf0f52868658143bf2b2a16d55a56"
+    },
+    "launch.sh": {
+      "bytes": 232,
+      "sha256": "59e71e4031781591c4876d83c1423c0ae1d11bbbeec94b6a6c9f4fb26099db25"
+    },
+    "make-fixture-l.py": {
+      "bytes": 2706,
+      "sha256": "a7948c986b968121a4e6c0d6b31f628bf7c5e64fb6f7a307fc146cb9acaea99e"
+    },
+    "native-no-model-requests.json": {
+      "bytes": 1873,
+      "sha256": "e6a482f76a698f10a74e616b9e20b5bd439b855f8f1d8bb3f6463282872407d1"
+    },
+    "native-rc14-k-process.json": {
+      "bytes": 952,
+      "sha256": "7f31fd4c70beed3c5e0659dce65a5858aac1eac879208fbcc974c9fb7a0857e8"
+    },
+    "native-rc14-k-stop.json": {
+      "bytes": 1480,
+      "sha256": "3a3b9c00256e24d93431c73247c4204b2e8af471b3a4f135dedacebf5f37e196"
+    },
+    "native-rc14-k.log.gz": {
+      "bytes": 289,
+      "sha256": "aa39cb97f991ba062865edc8ff5267b2ebb34866e153ef20af4ef7b215566640"
+    },
+    "native-rc14-l-process.json": {
+      "bytes": 931,
+      "sha256": "b17eafe1f7ff5c64a8ddbb0ba29f27c5cab37f081b260c14a1c12a101ea9af0f"
+    },
+    "native-rc14-l-stop.json": {
+      "bytes": 1489,
+      "sha256": "998be677f320ca779066f5b8873f40b1e1031ce0e924e8caf0aa6b6f4dedb0f0"
+    },
+    "native-rc14-l.log.gz": {
+      "bytes": 417,
+      "sha256": "cf84e427b42061a6c8015f6477268ae0c67cf978e1c3e0192bc9babbc1e69706"
+    },
+    "package-results.json": {
+      "bytes": 4685,
+      "sha256": "bff8485443516288ce97648f7f12ad4ea72425878e9c9fcb55e2e8bcdcb4466e"
+    },
+    "pet-control-l.py": {
+      "bytes": 496,
+      "sha256": "08fdb5b8982079dfffc30322002927007f367ee417d0316a8347e8cb1e742a2a"
+    },
+    "prepare-resources.log.gz": {
+      "bytes": 3774,
+      "sha256": "3181a5ceafe4a5889598f6a9a0e106134079494a3d3bfee080fb9d2abff22375"
+    },
+    "previous-rc13-evidence-integrity.json": {
+      "bytes": 5491,
+      "sha256": "1863c6f58695e20016ff5658cce9432f55c6a87b1de1a851ec3cc00805d8b0d7"
+    },
+    "qualification-scope.json": {
+      "bytes": 678,
+      "sha256": "dac3469897d584055cffe3eea7ee6861c7eeb6d104db8a71374f279fdc2034d6"
+    },
+    "runtime-version-match.json": {
+      "bytes": 526,
+      "sha256": "4c4c1ce24229b61f8c4a65ff3fb1d78245cd0ff9958d916d413bf7b90eb83d71"
+    },
+    "service-capabilities.json": {
+      "bytes": 2357,
+      "sha256": "1a1d1d4c20cef0ae0e5ad046d4c22f96609494aeff1de46347b43c1901b2d055"
+    },
+    "source-snapshot.json": {
+      "bytes": 466344,
+      "sha256": "84e14b5c3315a98df930792e93507bb6856855e16a9095063d621facb448a00a"
+    },
+    "stop.py": {
+      "bytes": 4677,
+      "sha256": "57e413149a0fbda52b38c8bc5068928fdbcecfc20d05b698f9b1c10ed27d06e0"
+    },
+    "test-owner-k.json": {
+      "bytes": 247,
+      "sha256": "ee6620c0ddf63d7f2d441dbd0418114459dbf9ab297251e97927f5f9fea27b54"
+    },
+    "test-owner-l.json": {
+      "bytes": 197,
+      "sha256": "ad5d11ea8c6240c0adca5462b00d98963f50f1a7b3d3fec4eec8f076a0e384bd"
+    },
+    "verified-modules.json": {
+      "bytes": 6935,
+      "sha256": "cdf295c7d9b19837d0c8ad806393503f5c1142ff293c2d825f9816843c5cd333"
+    },
+    "verified-source-after-build.json": {
+      "bytes": 6935,
+      "sha256": "cdf295c7d9b19837d0c8ad806393503f5c1142ff293c2d825f9816843c5cd333"
+    },
+    "verified-source-before-build.json": {
+      "bytes": 6935,
+      "sha256": "cdf295c7d9b19837d0c8ad806393503f5c1142ff293c2d825f9816843c5cd333"
+    },
+    "wheel-channels.log.gz": {
+      "bytes": 916,
+      "sha256": "3975f0124460af22df9a233c855a885d430542a2b2e2286c6042fa9d44e4f596"
+    },
+    "wheel-companion.log.gz": {
+      "bytes": 2766,
+      "sha256": "c225d93879149cb65f4fe1cb31f60068cad7c8e2ba5fb01c4e3fd0882d914cdb"
+    },
+    "wheel-core.log.gz": {
+      "bytes": 3869,
+      "sha256": "b3ee52ec8672be6a74fcb87622c53fe2aad8f6ba08bc8ea21d0e721af6446081"
+    },
+    "wheel-suite.log.gz": {
+      "bytes": 1060,
+      "sha256": "05a348ba62df62b9679e9b13530591ad12f582370054a8f48c466997b57d1fb8"
+    }
+  },
+  "payload_files": 69,
+  "payload_bytes": 1427690
+}

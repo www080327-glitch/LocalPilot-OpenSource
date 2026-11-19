@@ -1,0 +1,19 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Deployment/shipping",
+      "reasoning": "The shipping rollout introduced an unusable outbound request URI. Shipping then fails each /get-quote request with InvalidUri and returns HTTP 500; checkout's PlaceOrder errors and the frontend/proxy checkout 500s are downstream propagation of that one fault, not independent checkout or frontend-proxy roots.",
+      "evidence": "Kubernetes events show Deployment/shipping scaling up ReplicaSet shipping-5ffdc77bc8 at 17:52:47, starting Pod shipping-5ffdc77bc8-755zn at 17:52:54, and scaling down the previous shipping ReplicaSet. Traces first show failures at 17:52:57 on that new pod: shipping POST has url.full=\":///\" and StatusMessage Http(http::Error(InvalidUri(InvalidFormat))); its /get-quote span returns 500. The related checkout PlaceOrder span says \"shipping quote failure ... expected 200, got 500\". Envoy logs record 333 HTTP 500 POST /api/checkout responses from 17:52:57 to 18:01:48; the 17:57 alerts show request-error rates for shipping (0.822), checkout (0.844), frontend (1.644), and frontend-proxy (0.889)."
+    },
+    {
+      "name": "otel-demo/Deployment/frontend",
+      "reasoning": "The frontend container is independently CPU-throttled under the Deployment's tight CPU cap. This accounts for the separate intermittent upstream-connection-reset 503s seen at the proxy; it is distinct from the later checkout 500 chain caused by shipping.",
+      "evidence": "The object snapshot gives frontend requests=50m and limits=100m CPU. CPUThrottlingHigh fires for pod frontend-675fd7b5c5-lmznt, reporting 28.45% throttling (alert sample 17:58; activeAt 17:43:01). Frontend-proxy access logs show 503 UC upstream_reset_before_response_started{connection_termination} with upstream cluster frontend, including 503s during 17:55-18:00 while the throttling alert is firing."
+    },
+    {
+      "name": "otel-demo/Deployment/postgresql",
+      "reasoning": "This is a separate database CPU-capacity fault: the Deployment's 50m CPU limit is associated with sustained throttling of its PostgreSQL container. It is not the cause of the shipping URI/checkout 500s, which traces attribute to shipping, but it explains the independent postgresql CPU-throttling incident signal.",
+      "evidence": "The object snapshot gives PostgreSQL requests=25m and limits=50m CPU. CPUThrottlingHigh for pod postgresql-c7fd45b87-2j8dd reports 32.52% throttling, activeAt 17:56:31 (18:11 alert snapshot), and remains around 30.58-33.85% in snapshots through 18:16."
+    }
+  ]
+}

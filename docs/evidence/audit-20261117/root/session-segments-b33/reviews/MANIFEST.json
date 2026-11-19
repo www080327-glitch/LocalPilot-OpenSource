@@ -1,0 +1,143 @@
+{
+  "scope": "Reviewed publication copies; RAW_MANIFEST files describe private originals.",
+  "transform": "Only explicit absolute path prefixes and temporary directory aliases. No outcomes or fixture values changed.",
+  "archive": {
+    "file": "evidence.tar.gz",
+    "bytes": 19281,
+    "sha256": "b7355d163426768ace88ed3cd9e84c06e9bb9d871f1aa7d09325f1b58378a0b9"
+  },
+  "files": [
+    {
+      "path": "review/RAW_MANIFEST.json",
+      "raw_bytes": 2506,
+      "raw_sha256": "68d8c8c5b19f2c210e741e437c198497e32ce0e6e29b0ad1abc18918d3e00fd7",
+      "published_bytes": 2506,
+      "published_sha256": "68d8c8c5b19f2c210e741e437c198497e32ce0e6e29b0ad1abc18918d3e00fd7",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "review/RESULTS.md",
+      "raw_bytes": 4918,
+      "raw_sha256": "e3d86f8375d674867f25252b31ab2f701b3787e807511b4147ff853d4a6bb33b",
+      "published_bytes": 4918,
+      "published_sha256": "e3d86f8375d674867f25252b31ab2f701b3787e807511b4147ff853d4a6bb33b",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "review/STORE_REVIEW.md",
+      "raw_bytes": 2694,
+      "raw_sha256": "dca1771bd144c62bd8065fc878706fae3747f449d1c453c56a00421d6ca1f602",
+      "published_bytes": 2694,
+      "published_sha256": "dca1771bd144c62bd8065fc878706fae3747f449d1c453c56a00421d6ca1f602",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "review/hybrid-empty-turn-attempt-fix-only.json",
+      "raw_bytes": 1538,
+      "raw_sha256": "579bd2f857e3bc0662568bcfa155739f2e1cc06f9b1f5c03396b8dee6c493c89",
+      "published_bytes": 1538,
+      "published_sha256": "579bd2f857e3bc0662568bcfa155739f2e1cc06f9b1f5c03396b8dee6c493c89",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "review/hybrid-review-r2/RESULTS.json",
+      "raw_bytes": 2607,
+      "raw_sha256": "7ec24248cf1dfe337f6881e783f1d116cccc99d77b094eca3d89daf3aefdbbe5",
+      "published_bytes": 2523,
+      "published_sha256": "aa692f8f8c1249f698d79fc084339f5e0f8a42bf3aa7e805433b74bb273762d7",
+      "path_prefix_replacements": {
+        "<PINNED_TEST_ENVIRONMENT>": 3
+      }
+    },
+    {
+      "path": "review/hybrid-review-r2/targeted-tests.log",
+      "raw_bytes": 1416,
+      "raw_sha256": "1c37d831e5dbfa1f5b667ce2c48a8301384a8bf885528f895cb730b825d94031",
+      "published_bytes": 1416,
+      "published_sha256": "1c37d831e5dbfa1f5b667ce2c48a8301384a8bf885528f895cb730b825d94031",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "review/hybrid-review-r2/without_attempt_anchor.log",
+      "raw_bytes": 999,
+      "raw_sha256": "1e39f0d2017cc6bf23cb885d8411fe29b93c308f6f6b59e83fd7656002159cd4",
+      "published_bytes": 999,
+      "published_sha256": "98acb51cfc21c485a0b4303545dfd008ffd94a2ffad72ae1f0cbe6ea398346b5",
+      "path_prefix_replacements": {
+        "<TEMP_DIRECTORY>": 1
+      }
+    },
+    {
+      "path": "review/hybrid-review-r2/without_unadmitted_tail.log",
+      "raw_bytes": 1180,
+      "raw_sha256": "cde098d393435c62164f6fe606ee34eab03d171c6b04ee03df5e4b9a0cc89787",
+      "published_bytes": 1180,
+      "published_sha256": "52b68ff53826a07e186938ce9d651b2f786c90faad74ad3e02cea928765ff22f",
+      "path_prefix_replacements": {
+        "<TEMP_DIRECTORY>": 1
+      }
+    },
+    {
+      "path": "review/hybrid_empty_turn_review.py",
+      "raw_bytes": 3470,
+      "raw_sha256": "175953959bb605b15424921dc38801244e2c862b69f914e97c5fdb1029d3d26a",
+      "published_bytes": 3423,
+      "published_sha256": "1d44039ced5fb66b60fb03a3e329678758576cc029a4fce91d1b42d792deda4d",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 1
+      }
+    },
+    {
+      "path": "review/journal-allocation-comparison.json",
+      "raw_bytes": 445,
+      "raw_sha256": "785715a0b704adf915f9e165c60ba518243a7113f2c69f6b1e243c26aceac30a",
+      "published_bytes": 445,
+      "published_sha256": "785715a0b704adf915f9e165c60ba518243a7113f2c69f6b1e243c26aceac30a",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "review/schema2-persistence-original.py",
+      "raw_bytes": 31709,
+      "raw_sha256": "b37366404cd2389557f0120c454e5345bc67dfc053c32eba12d25753667d5178",
+      "published_bytes": 31709,
+      "published_sha256": "b37366404cd2389557f0120c454e5345bc67dfc053c32eba12d25753667d5178",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "review/service-review-results.json",
+      "raw_bytes": 2751,
+      "raw_sha256": "045c8275afa9faca85bc40c38e0bf87dbd74b6b9e1a71e18b0d52360d3881500",
+      "published_bytes": 2751,
+      "published_sha256": "045c8275afa9faca85bc40c38e0bf87dbd74b6b9e1a71e18b0d52360d3881500",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "review/service_review.py",
+      "raw_bytes": 6177,
+      "raw_sha256": "84edc46a0142ccf8e166e1b38f302c90242d4651c66cd6becd6b4247b4148581",
+      "published_bytes": 6130,
+      "published_sha256": "e8621e3d2b74d254f21dad0bd315bdaba9602c7af27a4b621440a76cc76e3b69",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 1
+      }
+    },
+    {
+      "path": "review/store-review-results.json",
+      "raw_bytes": 988,
+      "raw_sha256": "73adc0ab626668b03dab8979a5ea6a4950559b4b3bd12d74e109193c3ce784c2",
+      "published_bytes": 988,
+      "published_sha256": "73adc0ab626668b03dab8979a5ea6a4950559b4b3bd12d74e109193c3ce784c2",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "review/store_review.py",
+      "raw_bytes": 5189,
+      "raw_sha256": "22e228a0954eb98681383af02dc549bba45954ffd6b9e9aa0d2afe53f944478e",
+      "published_bytes": 5142,
+      "published_sha256": "7093c0dd64fe46020473cae8cf327f97b845759bbece1bd299ab536cdb8c7a39",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 1
+      }
+    }
+  ]
+}

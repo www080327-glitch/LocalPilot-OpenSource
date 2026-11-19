@@ -12,8 +12,8 @@ RUNTIME_SCHEMAS = [
         "task_complexity": {"type": "string", "enum": ["very_simple", "simple", "complex"]},
         "scope": {"type": "string", "enum": ["turn", "session"]}}, ["target", "reason", "task_complexity"]),
     schema("delegate", "Proactively run an independent bounded subagent when useful. Default read-only; independent context, parent budget and permission ceilings. Its result returns here for your verification and continuation. In Plan Mode delegate only read-only exploration/planning.", {
-        "task": {"type": "string"}, "backend_preference": {"type": "string", "enum": ["local", "cloud"]},
-        "tier": {"type": "string", "enum": ["LIGHT", "STRONG"], "description": "Cloud only. LIGHT for bounded simple work; STRONG for complex work needing more capability or context. Omit for the compatible DeepSeek worker."},
+        "task": {"type": "string", "description": "Independent task contract: owned/shared files, required outputs and checks. Preserve supplied interpreter paths and exact check commands; include essential context explicitly."}, "backend_preference": {"type": "string", "enum": ["local", "cloud"]},
+        "tier": {"type": "string", "enum": ["LIGHT", "STRONG"], "description": "Optional configured cloud worker tier. LIGHT for bounded simple work; STRONG for complex work. Omit to use the host's default registered cloud worker."},
         "read_only": {"type": "boolean"}, "budget": {"type": "object", "properties": {
             "steps": {"type": "integer", "minimum": 1}, "tools": {"type": "integer", "minimum": 0},
             "tokens": {"type": "integer", "minimum": 1}}, "additionalProperties": False}}, ["task", "backend_preference"]),

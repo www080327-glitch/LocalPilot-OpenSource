@@ -34,9 +34,17 @@ class MCPClient:
         self.watch_stop = threading.Event()
 
     def connect(self):
+        import psutil
+
         self.close()
         if self.cancelled.is_set():
             raise TransportFailure('cancelled')
+        # The SDK starts stdio servers in separate process groups. Require
+        # process-tree enumeration before launching a worker we must reap.
+        try:
+            psutil.pids()
+        except (PermissionError, psutil.AccessDenied) as error:
+            raise TransportFailure("process_inspection_unavailable") from error
         self.cancel_at = None
         self.directory = tempfile.TemporaryDirectory(prefix="localpilot-plugin-")
         # Child SDK process has a private disposable cwd/HOME, explicit package

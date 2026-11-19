@@ -1,0 +1,14 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Deployment/frontend",
+      "reasoning": "The sole frontend replica is capped at 100m CPU and is heavily throttled during the incident. When that upstream stalls or terminates connections, frontend-proxy returns 503s. This explains the frontend request failures independently of the Kafka-path problem.",
+      "evidence": "k8s_objects_raw.tsv shows Deployment/frontend at 1 replica with 1 ready and container CPU limit 100m (50m request); its Pod is Ready with no restarts. In alerts/alerts_at_2025-12-15T18-22-33.275225.json, CPUThrottlingHigh for frontend-675fd7b5c5-ssc7t is firing at 31.08%, active since 17:36:35, while RequestErrorRate for frontend-proxy is also firing. In metrics/pod_frontend-675fd7b5c5-ssc7t_raw.tsv at 17:38:20.361, throttled CFS periods increased 77 of 168 total periods (45.8%). Trace 4c2edcc88143cff1c2509ab40f4ba12d at 17:38:18.224 records a load-generator 503; frontend-proxy's ingress span reports 503/UC and its frontend upstream egress span records connection termination."
+    },
+    {
+      "name": "chaos-mesh/Schedule/otel-demo-fraud-detection-kafka-network-partition",
+      "reasoning": "This recurring network-partition schedule repeatedly applies NetworkChaos to both fraud-detection and Kafka, severing their network path and causing Kafka connection closures. It is an independent fault from frontend CPU throttling; listing Kafka or fraud-detection again would only name affected resources downstream of this cause.",
+      "evidence": "k8s_events_raw.tsv records a Warning/Forbid for this Schedule at 17:38:25 because a prior generated job was still running. The same event stream records NetworkChaos/otel-demo-fraud-detection-kafka-network-partition-8f5gf successfully applied at 18:03:00 to both fraud-detection pods and kafka-ff7884766-29vm9, with similar applications recurring through 18:13. alerts/alerts_in_alerting_state_2025-12-15T180706.042024Z.json shows KafkaConnectionClosureRate firing for job otel-collector, active since 18:03:35 (value about 0.0624), immediately after those partition applications."
+    }
+  ]
+}

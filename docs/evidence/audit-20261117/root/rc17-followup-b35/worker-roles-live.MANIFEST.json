@@ -1,0 +1,89 @@
+{
+  "name": "worker-roles-live",
+  "description": "受工作区约束的只读角色真实模型集成及独立审计",
+  "archive": "worker-roles-live.tar.gz",
+  "sha256": "efc97b9fdc4637287aab416aca2116210688216bd3e496f063778551908809a4",
+  "bytes": 35105,
+  "manifest": "worker-roles-live.MANIFEST.json",
+  "files_count": 13,
+  "files": [
+    {
+      "path": "WORKER_ROLE_INDEPENDENT_REVIEW.json",
+      "bytes": 1321,
+      "original_sha256": "31f56a65e38cb8487c167ff1b68c3effa9c475167dfdf1e0494774b782d20e64",
+      "public_sha256": "31f56a65e38cb8487c167ff1b68c3effa9c475167dfdf1e0494774b782d20e64"
+    },
+    {
+      "path": "WORKER_ROLE_SUMMARY.json",
+      "bytes": 4469,
+      "original_sha256": "364382a07b91a7c2b0d4da067b269ebedabface3ff1898b72dfeb8a42e872fb9",
+      "public_sha256": "364382a07b91a7c2b0d4da067b269ebedabface3ff1898b72dfeb8a42e872fb9"
+    },
+    {
+      "path": "worker-roles-service-readonly-r1.log",
+      "bytes": 129,
+      "original_sha256": "1cfef4f5bc6ac29b87bc0b7f58d9e63da4898fe47d38e2cfc259989fb83c1019",
+      "public_sha256": "1cfef4f5bc6ac29b87bc0b7f58d9e63da4898fe47d38e2cfc259989fb83c1019"
+    },
+    {
+      "path": "worker-roles-service-readonly-r1/HOST_DELEGATE_APPROVALS.json",
+      "bytes": 2181,
+      "original_sha256": "999205d095d34af2a7f28766235bff36813105df01dcc30c279c434830d38733",
+      "public_sha256": "999205d095d34af2a7f28766235bff36813105df01dcc30c279c434830d38733"
+    },
+    {
+      "path": "worker-roles-service-readonly-r1/PROTOCOL.json",
+      "bytes": 1493,
+      "original_sha256": "47e5dc6be6b65e0b1355f4b2579b8cf87c4453a10ec2012db5903ea064bc2114",
+      "public_sha256": "47e5dc6be6b65e0b1355f4b2579b8cf87c4453a10ec2012db5903ea064bc2114"
+    },
+    {
+      "path": "worker-roles-service-readonly-r1/RESULTS.json",
+      "bytes": 58004,
+      "original_sha256": "47aa7256c0b2568f75a2a6efc6c132d15bdda74f1f5847e1b461dd8f3e03eca6",
+      "public_sha256": "47aa7256c0b2568f75a2a6efc6c132d15bdda74f1f5847e1b461dd8f3e03eca6"
+    },
+    {
+      "path": "worker-roles-service-readonly-r1/ROLE_EVIDENCE_AFTER_RESTART.json",
+      "bytes": 14940,
+      "original_sha256": "e6f30c65f10c6a2e1d42f8ba69a4b6f45e50bae7696a9d401ea1e81634ca688d",
+      "public_sha256": "e6f30c65f10c6a2e1d42f8ba69a4b6f45e50bae7696a9d401ea1e81634ca688d"
+    },
+    {
+      "path": "worker-roles-service-readonly-r1/ROLE_EVIDENCE_BEFORE_RESTART.json",
+      "bytes": 14940,
+      "original_sha256": "e6f30c65f10c6a2e1d42f8ba69a4b6f45e50bae7696a9d401ea1e81634ca688d",
+      "public_sha256": "e6f30c65f10c6a2e1d42f8ba69a4b6f45e50bae7696a9d401ea1e81634ca688d"
+    },
+    {
+      "path": "worker-roles-service-readonly-r1/prompt.txt",
+      "bytes": 1164,
+      "original_sha256": "97b1744334886a5bae493f07c474b92675976eddcea513cfd0ac8f2406e5f72a",
+      "public_sha256": "97b1744334886a5bae493f07c474b92675976eddcea513cfd0ac8f2406e5f72a"
+    },
+    {
+      "path": "worker-roles-service-readonly-r1/resolved-runtime-budgets.json",
+      "bytes": 1837,
+      "original_sha256": "bce561c093cde864d079da13055f0320c5c7af5ecf61545e70cde45bade342f3",
+      "public_sha256": "bce561c093cde864d079da13055f0320c5c7af5ecf61545e70cde45bade342f3"
+    },
+    {
+      "path": "worker-roles-service-readonly-r1/worker-roles-progress.json",
+      "bytes": 209,
+      "original_sha256": "d4f51350101c38ce6eb66a7460e6dd226d762b9ca5364ae2bc1cc9a26c886c38",
+      "public_sha256": "d4f51350101c38ce6eb66a7460e6dd226d762b9ca5364ae2bc1cc9a26c886c38"
+    },
+    {
+      "path": "worker-roles-service-readonly-r1/worker-roles-restored-task.json",
+      "bytes": 51978,
+      "original_sha256": "c28af6726700c15b4bc10df8a24218dfb743137d32adccb19580d83cb7fc8624",
+      "public_sha256": "c28af6726700c15b4bc10df8a24218dfb743137d32adccb19580d83cb7fc8624"
+    },
+    {
+      "path": "worker-roles-service-readonly-r1/worker-roles-task.json",
+      "bytes": 51978,
+      "original_sha256": "2fc453e2e1878f680db9320434b2517c8a56e4a081ba8a29be5c7d09beca1377",
+      "public_sha256": "2fc453e2e1878f680db9320434b2517c8a56e4a081ba8a29be5c7d09beca1377"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "run": "r14-a",
+  "started_utc": "2026-11-16T13:25:39Z",
+  "signal_sent": false,
+  "scope": "Only SIGTERM the verified UI main process below this run wrapper; no signal is sent to external PIDs or separate services.",
+  "status": "ABORTED_IDENTITY",
+  "error_class": "FileNotFoundError",
+  "error": "[Errno 2] No such file or directory: '/proc/18867/exe'",
+  "finished_utc": "2026-11-16T13:25:39Z"
+}

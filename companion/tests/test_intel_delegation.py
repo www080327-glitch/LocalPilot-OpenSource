@@ -205,7 +205,7 @@ class PortableDelegationTests(unittest.TestCase):
         task_id = final["task_id"]
         self.close_app()
         self.app = Companion(self.config)
-        stored = self.app.store.get("localpilot_tasks")[task_id]
+        stored = self.app.store.tasks.get(task_id)
         self.assertEqual(stored["last_status"]["status"], "completed")
         self.assertEqual(stored["last_status"]["session_id"], final["session_id"])
         self.assertEqual(self.app.localpilot.recover(task_id)["task_id"], task_id)

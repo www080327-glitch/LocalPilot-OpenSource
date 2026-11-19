@@ -296,3 +296,9 @@ class AdaptiveController:
         if data['configuration'] != sha(self.configuration()):
             raise PersistenceError('Adaptive configuration/profile checkpoint mismatch')
         self.state = deepcopy(data['state'])
+
+    def retained_history_state(self):
+        turn = self.runtime.turn_id
+        return {**self.state,
+                'decisions': [record for record in self.state['decisions'] if record['key']['turn'] == turn],
+                'cloud_reservations': [record for record in self.state['cloud_reservations'] if record['turn'] == turn]}

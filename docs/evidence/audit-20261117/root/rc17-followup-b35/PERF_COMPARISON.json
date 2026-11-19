@@ -1,0 +1,165 @@
+{
+  "baseline_commit": "6c923a95c749d1db2c6d2548e2109cd79b02d938",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "baseline_files": {
+    "companion/memory/task_store.py": "8edc68adb6d0b453277b8bc97bfba0302a69c8c87b465a56c9ba303d854dada2",
+    "companion/runtime/tasks.py": "1a12db8883eeadae9ee5db513626974c88c31ed1f95089081117e42e7f8f8e55"
+  },
+  "candidate_files": {
+    "companion/memory/task_store.py": "acc4762875c7f6bd870cb1ebf985ec3b351928ce3a1315cf0f08ca45f2f975b2",
+    "companion/runtime/tasks.py": "298a035c817323960e67a8b75fbd34e08b1cec4e6a1b43e589201da210957621"
+  },
+  "scope": "Real TaskStore and TaskController; synthetic same-session history; one shared empty dependency set; no HTTP, model or native UI measurement.",
+  "method": "Baseline then candidate sequentially, one warmup and five timed steady queries; migration and old-writer invalidation/backfill reported separately.",
+  "cases": [
+    {
+      "task_count": 1000,
+      "stored_payload_bytes": 21107780,
+      "baseline": {
+        "median_ms": 37.086462,
+        "warm_samples_ms": [
+          37.086462,
+          36.706221,
+          36.918043,
+          40.118094,
+          40.831798
+        ]
+      },
+      "one_time_existing_row_upgrade_ms": 143.021866,
+      "complete_payloads_and_ids_unchanged": true,
+      "candidate": {
+        "median_ms": 0.067981,
+        "warm_samples_ms": [
+          0.076964,
+          0.070785,
+          0.067981,
+          0.066929,
+          0.06763
+        ]
+      },
+      "steady_projection_rows": 1,
+      "steady_pending_payload_rows": 0,
+      "query_plans": {
+        "SELECT DISTINCT context_request FROM localpilot_tasks WHERE session_id='shared-session' AND endpoint='synthetic'": [
+          [
+            3,
+            0,
+            54,
+            "SEARCH localpilot_tasks USING COVERING INDEX task_context_session (session_id=? AND endpoint=?)"
+          ],
+          [
+            14,
+            0,
+            0,
+            "USE TEMP B-TREE FOR DISTINCT"
+          ]
+        ],
+        "SELECT task_id,payload FROM localpilot_tasks WHERE context_request IS NULL": [
+          [
+            3,
+            0,
+            213,
+            "SCAN localpilot_tasks USING INDEX task_context_pending"
+          ]
+        ]
+      },
+      "steady_sql_trace": [
+        "SELECT task_id,payload FROM localpilot_tasks WHERE context_request IS NULL",
+        "SELECT DISTINCT context_request FROM localpilot_tasks WHERE session_id='shared-session' AND endpoint='synthetic'"
+      ],
+      "old_single_write_pending": 1,
+      "old_single_write_first_query_ms": 0.218042,
+      "old_batch_write_pending": 1000,
+      "old_batch_write_first_query_ms": 76.335678,
+      "pending_after_backfill": 0,
+      "steady_after_backfill": {
+        "median_ms": 0.069312,
+        "warm_samples_ms": [
+          0.071706,
+          0.069312,
+          0.068921,
+          0.067279,
+          0.071055
+        ]
+      }
+    },
+    {
+      "task_count": 10000,
+      "stored_payload_bytes": 211097780,
+      "baseline": {
+        "median_ms": 367.01105,
+        "warm_samples_ms": [
+          367.01105,
+          395.227901,
+          388.675508,
+          353.255783,
+          343.219845
+        ]
+      },
+      "one_time_existing_row_upgrade_ms": 1202.734658,
+      "complete_payloads_and_ids_unchanged": true,
+      "candidate": {
+        "median_ms": 0.73135,
+        "warm_samples_ms": [
+          0.681476,
+          0.73135,
+          0.811148,
+          0.676669,
+          0.752451
+        ]
+      },
+      "steady_projection_rows": 1,
+      "steady_pending_payload_rows": 0,
+      "query_plans": {
+        "SELECT DISTINCT context_request FROM localpilot_tasks WHERE session_id='shared-session' AND endpoint='synthetic'": [
+          [
+            3,
+            0,
+            54,
+            "SEARCH localpilot_tasks USING COVERING INDEX task_context_session (session_id=? AND endpoint=?)"
+          ],
+          [
+            14,
+            0,
+            0,
+            "USE TEMP B-TREE FOR DISTINCT"
+          ]
+        ],
+        "SELECT task_id,payload FROM localpilot_tasks WHERE context_request IS NULL": [
+          [
+            3,
+            0,
+            213,
+            "SCAN localpilot_tasks USING INDEX task_context_pending"
+          ]
+        ]
+      },
+      "steady_sql_trace": [
+        "SELECT task_id,payload FROM localpilot_tasks WHERE context_request IS NULL",
+        "SELECT DISTINCT context_request FROM localpilot_tasks WHERE session_id='shared-session' AND endpoint='synthetic'"
+      ],
+      "old_single_write_pending": 1,
+      "old_single_write_first_query_ms": 0.786482,
+      "old_batch_write_pending": 10000,
+      "old_batch_write_first_query_ms": 853.209099,
+      "pending_after_backfill": 0,
+      "steady_after_backfill": {
+        "median_ms": 0.634647,
+        "warm_samples_ms": [
+          0.644342,
+          0.623671,
+          0.634647,
+          0.640796,
+          0.619736
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "SQLite still scans the smaller covering index for the requested session.",
+    "Distinct dependency sets are revalidated on every request; all-unique dependencies remain proportional to their actual count.",
+    "The legacy batch update setup uses the unchanged RC17 UPSERT SQL; it is not an HTTP workload.",
+    "Initial row projection and invalidated old-writer rows require full payload reads once, as separately timed above."
+  ]
+}

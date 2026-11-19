@@ -1,0 +1,17 @@
+{
+  "uid": 1000,
+  "docker_cli_available": false,
+  "dockerd_available": false,
+  "sockets": {
+    "/var/run/docker.sock": false,
+    "/run/codex-docker/docker.sock": false,
+    "/run/user/1000/docker.sock": false
+  },
+  "credential_presence_only": {
+    "OPENAI_API_KEY": false,
+    "DEEPSEEK_API_KEY": false
+  },
+  "external_requests_sent": 0,
+  "old_534_queue_opened": false,
+  "physical_intel_mac_available": false
+}

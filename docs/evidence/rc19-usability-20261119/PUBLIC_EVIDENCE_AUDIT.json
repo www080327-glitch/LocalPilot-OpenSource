@@ -1,0 +1,79 @@
+{
+  "status": "PASS_INTEGRITY_AND_PROVENANCE",
+  "snapshot": "/workspace/scratch/b0df9966d470/nov19-validation/public-evidence-final-01",
+  "snapshot_phase": "final",
+  "archives": [
+    {
+      "archive": "desktop-native.tar.gz",
+      "members": 71,
+      "bytes": 478004,
+      "sha256": "8bec67f0c1ba953e774bc5c0a152628683fcc430e89d83dc66ae2a961d98da5b"
+    },
+    {
+      "archive": "desktop-ui.tar.gz",
+      "members": 18,
+      "bytes": 15567,
+      "sha256": "f6ca978dc511e6d3f97951b44583c5fede83e394934f21ad45fb225ad30c41bd"
+    },
+    {
+      "archive": "provenance.tar.gz",
+      "members": 4,
+      "bytes": 9517,
+      "sha256": "c7fb7780b0078451d1004384edf74258f55459bb0131872a19f151347d9d8fd3"
+    },
+    {
+      "archive": "reviews.tar.gz",
+      "members": 9,
+      "bytes": 6908,
+      "sha256": "718403b842a41bf74caccfe7ed54ff904e8885a0de8205d6efcb86b79179963d"
+    },
+    {
+      "archive": "runtime.tar.gz",
+      "members": 48,
+      "bytes": 204173,
+      "sha256": "b3f286c33586d98b00c82a32442104d952ba5089b43e4b036687fc7f37909b5a"
+    }
+  ],
+  "raw_member_count": 150,
+  "raw_member_bytes": 3237387,
+  "archive_bytes": 714169,
+  "standalone_files": 12,
+  "checksummed_files": 18,
+  "snapshot_total_files": 19,
+  "source_trees": [
+    {
+      "local": "05a5dd7aae139d3df37e9215ff063c0870323c59",
+      "public": "c65ab45b9a66458f6152fb16295e0c85e04fdf64",
+      "expected_tree": "5910952cdd567c3676eb0c00a6e62a07934d0653",
+      "actual_local_tree": "5910952cdd567c3676eb0c00a6e62a07934d0653",
+      "matches": true
+    },
+    {
+      "local": "02838a5db0b342647fc0f7904738bee87f167cf0",
+      "public": "26ae7a1a1ace2a6d0200121b1ef14e4ea4baf9e1",
+      "expected_tree": "3983bab60b25a6e60515e4baaaf221b6f27f9f7a",
+      "actual_local_tree": "3983bab60b25a6e60515e4baaaf221b6f27f9f7a",
+      "matches": true
+    }
+  ],
+  "tested_source_file_hashes_compared_to_final_commit": 132,
+  "runtime_receipt_checksum_entries_verified": 21,
+  "preserved_failure_examples": [
+    "runtime/core-full-r1.log",
+    "runtime/core-full-r2.log",
+    "runtime/channels-node-full.log",
+    "runtime/recall-unicode-before.log",
+    "runtime/long-turn-r1.log",
+    "ui/baseline-page.log",
+    "ui/installed-browser.log",
+    "install/linux/native-ui.log"
+  ],
+  "transformations": [],
+  "credential_candidates": 0,
+  "issues": [],
+  "limits": [
+    "Independent archive readback, source receipt and count checks; no new product tests or GUI assertions.",
+    "Public commit-to-tree mapping relies on root remote readback; this audit rechecks matching local trees.",
+    "Final root RESULTS and Work/requirements documents are separate and will be reviewed when available."
+  ]
+}

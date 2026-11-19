@@ -1,0 +1,71 @@
+{
+  "name": "browser-native",
+  "description": "两个页面用例的启动阻断与原生环境交接",
+  "archive": "browser-native.tar.gz",
+  "sha256": "62dd0662db4defef338c1dfff6e58f4617599f56ae907bd38d0769c35a0c4662",
+  "bytes": 22233,
+  "manifest": "browser-native.MANIFEST.json",
+  "files_count": 10,
+  "files": [
+    {
+      "path": "browser-followup-20261117/MANIFEST.json",
+      "bytes": 1568,
+      "original_sha256": "af1868bbe512b2d31e20ce2b25b34c774f20243b4feb415665187af87f2e1cbd",
+      "public_sha256": "af1868bbe512b2d31e20ce2b25b34c774f20243b4feb415665187af87f2e1cbd"
+    },
+    {
+      "path": "browser-followup-20261117/REMAINING_SCOPE.json",
+      "bytes": 5522,
+      "original_sha256": "abaae794d934a6b6b778ea0f621805a43d8669db9db66c98b4fb8f087c310c46",
+      "public_sha256": "abaae794d934a6b6b778ea0f621805a43d8669db9db66c98b4fb8f087c310c46"
+    },
+    {
+      "path": "browser-followup-20261117/RESULTS.json",
+      "bytes": 28460,
+      "original_sha256": "f865e63f8dcb076bbdcad945018803073d111f28daa38935e8a243b7f23a38a7",
+      "public_sha256": "f865e63f8dcb076bbdcad945018803073d111f28daa38935e8a243b7f23a38a7"
+    },
+    {
+      "path": "browser-followup-20261117/UI_NATIVE_HANDOFF.md",
+      "bytes": 4209,
+      "original_sha256": "433c6980ea58b25987a89de18d8944f9fc87824773296f9675124390010c7348",
+      "public_sha256": "433c6980ea58b25987a89de18d8944f9fc87824773296f9675124390010c7348"
+    },
+    {
+      "path": "browser-followup-20261117/dependency-source.json",
+      "bytes": 945,
+      "original_sha256": "b37f67ffbd039d4211e6c0d698cc140ce47129dba3e36b3b37dad7961d9cc6dc",
+      "public_sha256": "b37f67ffbd039d4211e6c0d698cc140ce47129dba3e36b3b37dad7961d9cc6dc"
+    },
+    {
+      "path": "browser-followup-20261117/run-1.log",
+      "bytes": 11831,
+      "original_sha256": "639217afea5af533d0d6a675136e7e579044389556f705491749bc4ecfe20312",
+      "public_sha256": "639217afea5af533d0d6a675136e7e579044389556f705491749bc4ecfe20312"
+    },
+    {
+      "path": "browser-followup-20261117/run-1/browser-tests.json",
+      "bytes": 36361,
+      "original_sha256": "1dd6ae3c3191561a9f58fddd5865120ff2ce722e665021d9f6b1422c66264538",
+      "public_sha256": "1dd6ae3c3191561a9f58fddd5865120ff2ce722e665021d9f6b1422c66264538"
+    },
+    {
+      "path": "browser-followup-20261117/run-1/test-results/.last-run.json",
+      "bytes": 145,
+      "original_sha256": "edd64482c7e0a1e83e33b004914db45cd80b60943eae1124e916b12582e7bac7",
+      "public_sha256": "edd64482c7e0a1e83e33b004914db45cd80b60943eae1124e916b12582e7bac7"
+    },
+    {
+      "path": "browser-followup-20261117/run-1/test-results/model-configuration-option-11377-ator-and-configured-efforts/error-context.md",
+      "bytes": 5092,
+      "original_sha256": "09bad2abf32475cb8088e4f452003c3009a4fb3994beb545a5a198fec8db0205",
+      "public_sha256": "09bad2abf32475cb8088e4f452003c3009a4fb3994beb545a5a198fec8db0205"
+    },
+    {
+      "path": "browser-followup-20261117/run-1/test-results/model-configuration-removi-2e8dc--clears-both-optional-roles/error-context.md",
+      "bytes": 5087,
+      "original_sha256": "b515eb9b72e0b02b65269d873045d53d68d82c4e2eabc68d72e2113f7dca8de4",
+      "public_sha256": "b515eb9b72e0b02b65269d873045d53d68d82c4e2eabc68d72e2113f7dca8de4"
+    }
+  ]
+}

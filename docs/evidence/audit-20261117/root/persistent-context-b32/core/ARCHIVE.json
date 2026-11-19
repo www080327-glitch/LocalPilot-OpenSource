@@ -1,0 +1,124 @@
+{
+  "archive": "evidence.tar.gz",
+  "bytes": 134898,
+  "sha256": "e1c47e1b5d3f255c6ee73d8c56171eef1bf57e33abd3aee7d704a39a00abfb88",
+  "payload_count": 23,
+  "payloads": [
+    {
+      "path": "core/context-targets-r1.log",
+      "bytes": 30452,
+      "sha256": "717f2338050af126e325902310a90b6c79ab0cce5f3ce422849c507246e2f838"
+    },
+    {
+      "path": "core/context-targets-r2.log",
+      "bytes": 30754,
+      "sha256": "f3ef9391e7d853db724efa4f7cdb8a7972436aa719fa41808aa079df44d24042"
+    },
+    {
+      "path": "core/initial-targets.log",
+      "bytes": 8834,
+      "sha256": "39018085c3268d1c7bbdd450bb6297e159b9061cf752ab42dbfbf2b5e5f907c7"
+    },
+    {
+      "path": "core/measure_window.py",
+      "bytes": 3275,
+      "sha256": "1180ce5db5b1345c86098d636eee899dc5cd4183c060af2ab652e83a5e41f9bc"
+    },
+    {
+      "path": "core/owned-source-hashes.json",
+      "bytes": 552,
+      "sha256": "e77e1b7301c7696be288e922a8ee4410f17c3a8fd51b75aaa95fc7fdebff9843"
+    },
+    {
+      "path": "core/pet-history-order-review.json",
+      "bytes": 1005,
+      "sha256": "33aa60fcb3c430a28a177b767a45cc4360d114e4aef01b6c4b4749a0b7688a04"
+    },
+    {
+      "path": "core/request-history-r1.log",
+      "bytes": 2271,
+      "sha256": "e616038e03f44365d3af6ddca151349b1f45b9efbdbba648e837b5281e21bacf"
+    },
+    {
+      "path": "core/request-history-r2.log",
+      "bytes": 1518,
+      "sha256": "bc0701cf767e28f0d72d6c18c0f2625b8ca28f73fc689f29eda25dafd913d241"
+    },
+    {
+      "path": "core/request-history-r3.log",
+      "bytes": 2763,
+      "sha256": "7b985ff3aad4e6e03abe07844f47139fba160de54ed7be041d54f766673b0a2a"
+    },
+    {
+      "path": "core/request-history-r4.log",
+      "bytes": 3065,
+      "sha256": "5774848c2a45263128e66da66eeb8337b402b91157754ebff8ac6d3df509f30f"
+    },
+    {
+      "path": "core/request-history-r5.log",
+      "bytes": 7761,
+      "sha256": "a8261011c84bd78791e4679df1ad12e67aba2bc182569a76e04b0b4183988685"
+    },
+    {
+      "path": "core/request-history-r6.log",
+      "bytes": 10463,
+      "sha256": "9a95e6f5beb9845dada6f3bf28739ff19d65c2c03d787035d7fcce7a2ab5d84f"
+    },
+    {
+      "path": "core/request-history-r7.log",
+      "bytes": 6344,
+      "sha256": "709391717f854312493a10953a824f2fbe73f4719611ac3b455422fbd3bc6c7a"
+    },
+    {
+      "path": "core/window-after-headroom-12000.json",
+      "bytes": 1056,
+      "sha256": "1bb0a356ea4d02eee37d47ecb7ec8a58c7a8c4200aca4688ed8f2583386037c1"
+    },
+    {
+      "path": "core/window-after-headroom-5500.json",
+      "bytes": 1051,
+      "sha256": "88c9afa3ed875c8a0d5f965eda9a1a4b283ba7d84f2d999c5cc854a0b27ba114"
+    },
+    {
+      "path": "core/window-before-headroom.json",
+      "bytes": 1052,
+      "sha256": "774f0c2121e016bfe01476f30f50979956aae3fc27cbac2eb892c5857e01b183"
+    },
+    {
+      "path": "core/window-final-12000.json",
+      "bytes": 1463,
+      "sha256": "373950e616d7355bd7b70865ef50effb3840ff29447d6661adb1c6a162734f4f"
+    },
+    {
+      "path": "core/window-final-5500.json",
+      "bytes": 1458,
+      "sha256": "a6455d263c8df096493e07b415ec6cf8b9b5cbda62364ff7575099ff6ae21503"
+    },
+    {
+      "path": "core-full-r1/core-full.log",
+      "bytes": 277720,
+      "sha256": "eb754c4192b11eff626efdc73dba90292179f636ecd509a7849daa1fd4b8484d"
+    },
+    {
+      "path": "core-full-r1/run.json",
+      "bytes": 60141,
+      "sha256": "9474890b50eb83ac0c5e0d80a1dfa99afc7b6881e7e1dd85f687551301a1a0a4"
+    },
+    {
+      "path": "core-full-r2/core-full.log",
+      "bytes": 277926,
+      "sha256": "4599f5c870568be4fda44b94a979d3218d5384e0b1e4e9bcc611f28ef467e037"
+    },
+    {
+      "path": "core-full-r2/run.json",
+      "bytes": 60766,
+      "sha256": "560dcadd9798810e64822796ad39bbfd69f7af6577e9b89aac7860515f40c515"
+    },
+    {
+      "path": "core-full-r2/skip-classification.json",
+      "bytes": 25656,
+      "sha256": "9927581795c70abc75bca017cb91d7caef019037f4a757027f2c77f0fe8d018f"
+    }
+  ],
+  "transformations": "Archive payloads are byte-identical to selected run files. Provider request files were already sanitized by their runner; runtime databases and credentials are excluded."
+}

@@ -1,0 +1,14 @@
+{
+  "cwd": "<WORKSPACE>/LocalPilot-polish-final-20261116",
+  "commands": {
+    "baseline-r1.log": "python -m unittest tests.test_worker_admission_budget.WorkerAdmissionBudgetTests.test_default_worker_reads_real_file_and_restore_does_not_replay -v",
+    "current-r1.log": "python -m unittest tests.test_worker_admission_budget.WorkerAdmissionBudgetTests -v",
+    "upgrade-r1.log": "LOCALPILOT_WORKER_BUDGET_LEGACY_SOURCE=<WORKSPACE>/LocalPilot-polish-20261116 LOCALPILOT_WORKER_BUDGET_EVIDENCE=<WORKSPACE>/validation/polish-20261116/child-budget/legacy-fixture-r1 python -m unittest tests.test_worker_admission_budget.WorkerBudgetUpgradeTests -v",
+    "current-r2.log": "LOCALPILOT_WORKER_BUDGET_LEGACY_SOURCE=<WORKSPACE>/LocalPilot-polish-20261116 LOCALPILOT_WORKER_BUDGET_EVIDENCE=<WORKSPACE>/validation/polish-20261116/child-budget/legacy-fixture-r2 python -m unittest tests.test_worker_admission_budget -v",
+    "current-r3.log": "LOCALPILOT_WORKER_BUDGET_LEGACY_SOURCE=<WORKSPACE>/LocalPilot-polish-20261116 LOCALPILOT_WORKER_BUDGET_EVIDENCE=<WORKSPACE>/validation/polish-20261116/child-budget/legacy-fixture-r3 python -m unittest tests.test_worker_admission_budget -v",
+    "targeted-r1.log": "LOCALPILOT_WORKER_BUDGET_LEGACY_SOURCE=<WORKSPACE>/LocalPilot-polish-20261116 python -m unittest tests.test_worker_admission_budget tests.test_worker_output_budget tests.test_worker_tiering tests.test_child_registry_factory tests.test_persistent_runtime tests.test_restore_async_migration tests.test_restore_child_route_paths tests.test_restore_path_migration tests.test_pa_model_switch tests.test_async_runtime tests.test_hybrid_runtime -v",
+    "combined-baseline-r1.log": "LOCALPILOT_WORKER_BUDGET_LEGACY_SOURCE=<WORKSPACE>/LocalPilot-polish-20261116 LOCALPILOT_WORKER_BUDGET_EVIDENCE=<WORKSPACE>/validation/polish-20261116/child-budget/legacy-fixture-r4 python -m unittest tests.test_worker_admission_budget.WorkerBudgetUpgradeTests -v",
+    "current-r4.log": "LOCALPILOT_WORKER_BUDGET_LEGACY_SOURCE=<WORKSPACE>/LocalPilot-polish-20261116 LOCALPILOT_WORKER_BUDGET_EVIDENCE=<WORKSPACE>/validation/polish-20261116/child-budget/legacy-fixture-r5 python -m unittest tests.test_worker_admission_budget -v",
+    "targeted-r2.log": "LOCALPILOT_WORKER_BUDGET_LEGACY_SOURCE=<WORKSPACE>/LocalPilot-polish-20261116 python -m unittest tests.test_worker_admission_budget tests.test_worker_output_budget tests.test_worker_tiering tests.test_child_registry_factory tests.test_persistent_runtime tests.test_restore_async_migration tests.test_restore_child_route_paths tests.test_restore_path_migration tests.test_pa_model_switch tests.test_async_runtime tests.test_hybrid_runtime -v"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "status": "BLOCKED_BY_AUTOMATIC_APPROVAL_REVIEW",
+  "completed_engineering_gate": false,
+  "model_quality_result": null,
+  "reason": "write_stdin continuation was rejected for possible private repository content egress to OpenAI; no alternate execution of the Full engineering task was attempted.",
+  "runner_sha256": "1878a177ed32600e9d53490ad518a93ece8d729643f2e2681c7b10d11d4724c4",
+  "source_commit": "8e27340e3d0cabbb37ace7a652de9b1f2f0d0eee",
+  "expected_fixture_files": 12,
+  "workspace_files": 13,
+  "original_fixture_hashes_match": true,
+  "results_json_present": false,
+  "provider_usage": null,
+  "provider_calls_completed": "UNKNOWN",
+  "stop_receipt": "AUTOREVIEW_BLOCK.json",
+  "required_followup": "Explicit authorization for the narrowly described OpenAI Full engineering test, or a supported external isolation environment; retain the original protocol and do not relabel a different permission mode as its PASS."
+}

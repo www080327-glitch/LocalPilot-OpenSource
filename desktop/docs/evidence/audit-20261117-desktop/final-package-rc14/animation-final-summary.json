@@ -1,0 +1,30 @@
+{
+  "attempts": 1,
+  "source_commit": "c5439659a579b2ee9e74fd53e6d3232fe12fb855",
+  "package_sha256": "66aed474856ffa958ec07d383dd8f31840bbbdabbd0613e229ce342f9b78ce61",
+  "device_pixel_ratio": 1,
+  "reduced_motion": false,
+  "total_duration_ms": 6007,
+  "source_frames_per_direction": 8,
+  "scope": "Actual native WebKit requestAnimationFrame sampling of laid-out visible sprite geometry/opacity/transform/background-position; not physical display photometry or 24 independent drawings.",
+  "segments": [
+    {
+      "mode": "RETRACTING",
+      "frames": 69,
+      "visible_changes": 34,
+      "duration_ms": 1126,
+      "raf_opportunities_per_second": 60.39076376554174,
+      "visual_changes_per_second": 29.75653742110009,
+      "full_observed_phase_visual_changes_per_second": 29.30728241563055
+    },
+    {
+      "mode": "PEEKING",
+      "frames": 81,
+      "visible_changes": 40,
+      "duration_ms": 1347,
+      "raf_opportunities_per_second": 59.39123979213066,
+      "visual_changes_per_second": 30.023094688221708,
+      "full_observed_phase_visual_changes_per_second": 28.953229398663698
+    }
+  ]
+}

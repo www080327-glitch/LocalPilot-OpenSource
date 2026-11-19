@@ -14,7 +14,6 @@ from agent.session import AgentSession, SessionBudgets
 from localpilot_api.service import TaskService
 from .security import AccessPolicy, Principal, private_json
 from .server import ServiceServer
-from .backend_contract import generation_options
 from .route_backends import build_backend, cooperation_routes, initial_backend, CLOUD_KINDS
 from .verification import configured_verifier, configured_execution_check
 
@@ -59,11 +58,13 @@ def build(config_path):
         engine = spec.get('engine', 'legacy')
         if engine not in {'legacy', 'v5'}: raise ValueError('Unknown internal agent engine')
         kind = backend_spec["kind"]
-        if kind not in {"vllm", "remote-vllm", "omlx", "local-openai", "deepseek", "deepseek-native", "remote-openai", "unavailable"}:
+        if kind not in {"vllm", "remote-vllm", "omlx", "local-openai", "deepseek", "deepseek-native", "remote-openai", "openai", "unavailable"}:
             raise ValueError("Unknown backend adapter")
         allowed = {"kind", "model", "base_url", "context_budget", "timeout", "api_key_env", "key_file", "capabilities", "reasoning_efforts", "generation_parameters"}
         if kind in {"vllm", "remote-vllm", "omlx", "local-openai", "remote-openai"}:
             allowed.update({"include_stream_usage", "chat_template_kwargs"})
+        if kind == "openai":
+            allowed.update({"include_stream_usage", "protocol"})
         if kind == "deepseek":
             allowed.add("agent_engine")
         if set(backend_spec) - allowed:
@@ -72,9 +73,8 @@ def build(config_path):
             raise ValueError("Unknown agent engine")
         if type(backend_spec.get("include_stream_usage", False)) is not bool:
             raise ValueError("include_stream_usage must be a boolean host option")
-        generation_options(backend_spec.get("generation_parameters", {}))
         cloud = kind in CLOUD_KINDS
-        workers, cooperative_policy, cooperative_profiles = cooperation_routes(name, spec, config['routes'], workspace)
+        workers, cooperative_policy, cooperative_profiles, worker_roles = cooperation_routes(name, spec, config['routes'], workspace)
         partner = bool(workers)
         partner_is_local = any(w['backend']['kind'] not in CLOUD_KINDS for w in workers.values())
         has_cloud = cloud or any(w['backend']['kind'] in CLOUD_KINDS for w in workers.values())
@@ -162,11 +162,12 @@ def build(config_path):
             raise ValueError("Packaged service requires host approval for mutations")
         def factory(callback, b=dict(backend_spec), w=workspace, p=permission, cap=capabilities,
                     dp=hard_policy, budgets=budget, is_cloud=cloud, ep=egress,
+                    worker_budget_defaulted='max_worker_token_units' not in budget_values,
                     paths=tuple(spec.get("cloud_egress_paths", ())), thinking=spec.get("thinking"),
                     verification=verification, verifier=verifier, cache_stable_prefix=cache_stable_prefix,
                     prompt_profile=prompt_profile, tool_profile=tool_profile, reasoning_only=reasoning_only, model_host=model_host, engine=engine, workers=workers,
                     strict_task=strict_task, plugins=plugins, computer_config=computer_config,
-                    cooperative_policy=cooperative_policy, cooperative_profiles=cooperative_profiles,
+                    cooperative_policy=cooperative_policy, cooperative_profiles=cooperative_profiles, worker_roles=worker_roles,
                     route_async_policy=route_async_policy, modern_cooperation='routes' in spec.get('cooperation', {})):
             backend = build_backend(b, dp, manager=model_host, cache_stable_prefix=cache_stable_prefix)
             if model_host and hasattr(backend,"service_contract"):
@@ -207,11 +208,12 @@ def build(config_path):
                 computer_runtime=computer,
                 hybrid_policy=HybridPolicy(CloudEgressPolicy(ep, paths), automatic_failover=bool(cooperative_policy and cooperative_policy.mode not in {'local-only','cloud-only'})) if computer is None else None,
                 hybrid_backends=backend_catalog if computer is None else None, hybrid_primary=primary if computer is None else None,
-                cooperative_policy=cooperative_policy, cooperative_profiles=cooperative_profiles,
+                cooperative_policy=cooperative_policy, cooperative_profiles=cooperative_profiles, worker_roles=worker_roles,
                 engine_policy=EngineV5Policy() if engine == 'v5' else None,
                 strict_task=strict_task, completion_check=execution_check,
                 async_policy=route_async_policy,
                 event_callback=callback, retry_policy=RetryPolicy(max_attempts=2 if engine == 'v5' or b.get("agent_engine") == "deepseek_optimized" else 1), verification_callback=session_verifier)
+            runtime._worker_budget_defaulted = worker_budget_defaulted
             runtime._workspace_grants=workspace_grants
             if plugins is not None:
                 from localpilot_plugins.adapter import configure_session
@@ -235,6 +237,8 @@ def build(config_path):
             catalog[name]["orchestration"] = {"mode": "async_children", "limits": policy_snapshot(route_async_policy)}
         if workers:
             catalog[name]["worker_routes"] = list(workers)
+        if worker_roles:
+            catalog[name]['worker_roles'] = dict(worker_roles)
         if kind in {'vllm','remote-vllm'}:
             catalog[name]['capabilities']=[key for key,enabled in {
                 'streaming':bc.get('streaming',True),'tool_calling':bc.get('tool_calling',False),
@@ -274,8 +278,8 @@ def build(config_path):
     try:
         from .documents import DocumentEngine
         documents = DocumentEngine(data / 'documents-v2')
-        from .restore_migration import configured_migration
-        migration = configured_migration(config)
+        from .restore_migration import configured_migration, worker_budget_compatibility
+        migration = worker_budget_compatibility(configured_migration(config))
         service = TaskService(routes, persistence=data / "runtime.sqlite3", auto_resume=False,
             async_policy=async_policy,
             configuration_migration=migration,

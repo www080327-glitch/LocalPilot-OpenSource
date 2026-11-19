@@ -1,0 +1,14 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Pod/flagd-7b48fd4796-slcsz",
+      "reasoning": "flagd is the common upstream failure for feature-flag evaluation. The frontend's /api/data request calls AdService/GetAds, and ad's flagd ResolveBoolean calls time out; the request then outlasts the proxy's 15-second wait and becomes a 504. The flagd errors also appear in other clients, so ad and the proxy are downstream symptoms rather than separate root factors.",
+      "evidence": "otel_traces_raw.tsv: at 17:23:39 the frontend-proxy ingress span for GET /api/data?contextKeys=books ends 504 with response flag UT after 15 seconds; its frontend GET /api/data -> grpc.oteldemo.AdService/GetAds -> ad -> flagd ResolveBoolean path includes gRPC status 4 errors, and the frontend route lasts about 36 seconds. The traces also contain a flagd ResolveBoolean error with 'context deadline exceeded' (17:24:07) and a flagd EventStream error 'stream closed due to server-side timeout' (17:43:20); ad, fraud-detection, and recommendation clients report flagd gRPC status 4. k8s_objects_raw.tsv and pod metrics identify the serving flagd Pod as flagd-7b48fd4796-slcsz in otel-demo. The 17:53:41 firing RequestErrorRate alerts report frontend 2.36 and frontend-proxy 1.24."
+    },
+    {
+      "name": "otel-demo/Pod/frontend-675fd7b5c5-c8fk6",
+      "reasoning": "This is a separate frontend availability constraint: the only frontend Pod is substantially CPU-throttled, matching proxy upstream-reset failures on cart and product requests (not just the /api/data path explained by flagd). That resource pressure contributes to frontend/proxy request errors independently of the flagd dependency failure.",
+      "evidence": "alerts_at_2025-12-15T17-40-47.174044.json has CPUThrottlingHigh firing for container frontend in Pod frontend-675fd7b5c5-c8fk6 at 25.07%. Its pod metrics show an active CPU limit of 0.1 core (request 0.05 core) and rising CFS throttled-period counts. otel_logs_raw.tsv records frontend-proxy 503 UC (upstream_reset_before_response_started{connection_termination}) responses to frontend on /api/cart and /api/products at 17:43, after the throttle alert; the 17:53:41 RequestErrorRate alert also fires for frontend and frontend-proxy."
+    }
+  ]
+}

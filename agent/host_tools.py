@@ -37,10 +37,10 @@ SHELL_DEFAULT_TIMEOUT = 120
 SHELL_MAX_TIMEOUT = 3600
 
 
-def shell(workspace_root, command, timeout=SHELL_DEFAULT_TIMEOUT, access='workspace', *, mode, private_roots=(), cancel_event=None):
+def shell(workspace_root, command, timeout=SHELL_DEFAULT_TIMEOUT, access='workspace', *, mode, private_roots=(), cancel_event=None, max_timeout=SHELL_MAX_TIMEOUT):
     if sys.platform not in {'darwin', 'linux'}:raise ValueError('Host Shell requires macOS or Linux')
     if not isinstance(command,str) or not 1<=len(command)<=16000 or '\0' in command:raise ValueError('Invalid shell command')
-    if isinstance(timeout,bool) or not isinstance(timeout,(float,int)) or not math.isfinite(timeout) or not 0<timeout<=SHELL_MAX_TIMEOUT:raise ValueError(f'Shell timeout must be positive and at most {SHELL_MAX_TIMEOUT} seconds')
+    if isinstance(timeout,bool) or not isinstance(timeout,(float,int)) or not math.isfinite(timeout) or not 0<timeout<=max_timeout:raise ValueError(f'Shell timeout must be positive and at most {max_timeout} seconds')
     if access not in {'workspace','full'}:raise ValueError('Unknown Shell access scope')
     if mode=='isolated' and access=='full':raise PermissionError('Strict isolation does not allow full Shell scope')
     effective = 'full' if mode in {'full','request'} or access=='full' else 'isolated' if mode=='isolated' else 'workspace'
@@ -112,12 +112,16 @@ def public_get(workspace_root, url):
     finally:connection.close()
 
 
-def register(registry, mode, private_roots):
+def register(registry, mode, private_roots, *, max_timeout=SHELL_MAX_TIMEOUT):
     from .permissions import ToolRiskMetadata
     # These descriptions are part of existing durable Session fingerprints.
-    tools=[('shell',partial(shell,mode=mode,private_roots=private_roots),
+    if max_timeout != SHELL_MAX_TIMEOUT:
+        registry.scope_policy['shell_max_timeout'] = max_timeout
+    else:
+        registry.scope_policy.pop('shell_max_timeout', None)
+    tools=[('shell',partial(shell,mode=mode,private_roots=private_roots,max_timeout=max_timeout),
             ToolRiskMetadata(mutating=True,requires_shell=True,external_side_effect=True),
-            {'command':{'type':'string'},'timeout':{'type':'number','exclusiveMinimum':0,'maximum':SHELL_MAX_TIMEOUT,'default':SHELL_DEFAULT_TIMEOUT},'access':{'type':'string','enum':['workspace','full']}},['command'],
+            {'command':{'type':'string'},'timeout':{'type':'number','exclusiveMinimum':0,'maximum':max_timeout,'default':SHELL_DEFAULT_TIMEOUT},'access':{'type':'string','enum':['workspace','full']}},['command'],
             'Run a bounded macOS Shell. Full permission uses the current OS user without an app sandbox; read-only and workspace modes confine writes, not network. Timeout is a runtime budget, not an approval requirement. Exit zero alone does not verify a task.'),
            ('http_get',public_get,ToolRiskMetadata(read_only=True,mutating=False,network_access=True,requires_host_approval=False),
             {'url':{'type':'string'}},['url'],

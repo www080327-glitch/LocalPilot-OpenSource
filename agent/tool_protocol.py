@@ -59,17 +59,13 @@ def schema_errors(value, schema, path='$'):
 
 def validate_arguments(name, arguments, schemas):
     canonical = 'execute' if name == 'run_command' else name
-    from .schemas import TOOL_SCHEMAS
-    from .runtime_tools import RUNTIME_TOOL_NAMES, ASYNC_TOOL_NAMES
-    if canonical not in {s['function']['name'] for s in TOOL_SCHEMAS} | RUNTIME_TOOL_NAMES | ASYNC_TOOL_NAMES:
-        # Native/host extensions retain their owning protocol validators. This
-        # change cannot reinterpret postconditions, qualification or UNKNOWN.
-        return
     schema = next((s['function']['parameters'] for s in schemas
                    if s['function']['name'] == canonical), None)
     if not isinstance(arguments, dict):
         raise ToolArgumentsError(['$: expected object'])
-    errors = schema_errors(arguments, schema) if schema is not None else []
+    if schema is None:
+        return
+    errors = schema_errors(arguments, schema)
     if canonical == 'apply_patch' and not errors:
         for i, change in enumerate(arguments['changes']):
             operation = change['operation']
@@ -127,6 +123,31 @@ def resolves_patch_rejection(rejected, successful):
             if not any(all(k in c and type(c[k]) is type(v) and c[k] == v for k,v in wanted.items()) for c in performed):
                 return False
         return True
+    except (ValueError, KeyError, TypeError):
+        return False
+
+
+def resolves_shell_rejection(rejected, successful):
+    """Settle only an undispatched Shell proposal whose timeout was corrected."""
+    import json
+    failed, completed = rejected['payload'].get('result'), successful['payload'].get('result')
+    if (rejected['name'] != 'shell' or successful['name'] != 'shell'
+            or rejected['payload'].get('error', {}).get('type') != 'schema_validation'
+            or not isinstance(failed, dict) or failed.get('stage') != 'not_dispatched'
+            or failed.get('action_sent') is not False or failed.get('action_may_have_applied') is not False
+            or rejected.get('side_effect_status') != 'not_completed'
+            or not successful['payload'].get('ok') or successful.get('receipt_reused')
+            or successful.get('side_effect_status') != 'completed'
+            or not isinstance(completed, dict) or completed.get('process_completed') is not True
+            or rejected.get('worker_id') != successful.get('worker_id')):
+        return False
+    try:
+        before, after = json.loads(rejected['arguments']), json.loads(successful['arguments'])
+        if not isinstance(before, dict) or before.get('command') != after['command']:
+            return False
+        before.pop('timeout', None)
+        after.pop('timeout', None)
+        return before == after
     except (ValueError, KeyError, TypeError):
         return False
 

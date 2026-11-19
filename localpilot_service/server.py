@@ -51,11 +51,8 @@ class ScopedService:
         if isinstance(value, dict) and "session_model" in value:
             value["session_model"] = reverse.get(value["session_model"], value["session_model"])
         if isinstance(value,dict) and value.get('object')=='localpilot.session':
-            from dataclasses import asdict
-            session=self.runtime._session(value['id']);registry=session.runtime.registry
-            value['effective_scope']={'workspace':str(registry.workspace_root),'tool_capabilities':asdict(registry.gateway.capabilities),
-                'permission_mode':registry.gateway.mode,'tools':[s['function']['name'] for s in registry.schemas()],
-                'workspace_grant':(session.desktop_options or {}).get('workspace_grant')}
+            session=self.runtime._session(value['id'])
+            value['effective_scope']=self.runtime.session_scope(session)
         if isinstance(value, dict) and value.get("object") == "localpilot.task":
             tools = value.get("tools", [])
             value["receipt_summary"] = {"count": len(tools), "unknown_effects": sum(t.get("side_effect_status") == "unknown" for t in tools)}
@@ -63,13 +60,14 @@ class ScopedService:
             session=self.runtime._session(task.session_id)
             value["desktop_options"]=(task.execution_metadata or {}).get('desktop_options',session.desktop_options)
             from .workspaces import verify_operations
+            workspace=Path(self.runtime.session_scope(session)['workspace'])
             grant=(session.desktop_options or {}).get('workspace_grant')
             if grant:
                 try:
                     with self.server.workspace_grants.guard(grant,'inspect_file',{}):
-                        value["file_operation_verification"]=verify_operations(tools,session.runtime.workspace)
+                        value["file_operation_verification"]=verify_operations(tools,workspace)
                 except (PermissionError,OSError):value["file_operation_verification"]={"status":"BLOCKED","reason":"folder grant revoked or identity/system access changed; no fresh reads"}
-            else:value["file_operation_verification"]=verify_operations(tools,session.runtime.workspace)
+            else:value["file_operation_verification"]=verify_operations(tools,workspace)
             manager=self.server.resources.manager(task)
             if manager:value["model_resource"]={"managed":True,**manager.status()}
             result = value.get("result") or {}
@@ -104,7 +102,7 @@ class ScopedService:
                 self._session_access(request.session_id)
                 if self.runtime._session(request.session_id).owner_subject != self.principal.subject:
                     raise APIError("Operators cannot submit into another client's session", "scope_forbidden", 403)
-            prior = next((t for t in self.runtime.tasks.values() if t.request_key_digest == hashlib.sha256(namespaced.encode()).hexdigest()), None)
+            prior = self.runtime.task_for_key(hashlib.sha256(namespaced.encode()).hexdigest())
             if prior is None:
                 from agent.stabilization import encoded
                 try:
@@ -328,7 +326,7 @@ class ServiceHandler(Handler):
                 namespaced = hashlib.sha256((self.principal.subject+'\0'+key).encode()).hexdigest()
                 digest = hashlib.sha256(namespaced.encode()).hexdigest()
                 with self.server.service.condition:
-                    prior = next((t for t in self.server.service.tasks.values() if t.request_key_digest==digest),None)
+                    prior = self.server.service.task_for_key(digest)
                     if prior:
                         self.scoped._session_access(prior.session_id)
                         public = next((k for k,v in self.principal.routes.items() if v==prior.model),None)
@@ -461,8 +459,7 @@ class ServiceHandler(Handler):
                 with self.server.service.condition:
                     visible = {principal.subject} | (set(principal.approval_for) if principal.operator else set())
                     tasks = [self.scoped._public(self.server.service.task_snapshot(t.id))
-                             for t in self.server.service.tasks.values()
-                             if self.server.service._session(t.session_id).owner_subject in visible]
+                             for t in self.server.service.recent_tasks(visible)]
                 return self._json({"tasks": tasks})
             if self.command == "GET" and path == "/openapi.json":
                 self.scoped._scope("read")

@@ -1,0 +1,330 @@
+{
+  "status": "completed",
+  "phase": "completed",
+  "task_id": "resp_1e444887d42e46cea334ba55823483f8",
+  "session_id": "sess_0c56ac6722b04503b36203e78ab53846",
+  "quiescent": true,
+  "task_execution": "completed",
+  "agent_response": "COMPANION_LUNA_OK",
+  "reasoning_help_requested": false,
+  "semantic_status": "UNVERIFIED",
+  "goal_verified": false,
+  "unknown_mutation": false,
+  "cache_usage": {
+    "status": "PROVIDER_REPORTED",
+    "input_tokens": 460,
+    "output_tokens": 21,
+    "cache_hit_tokens": 0,
+    "cache_miss_tokens": 460,
+    "cache_hit_ratio": 0.0,
+    "cost": "UNKNOWN_NOT_INVOICE",
+    "models": [
+      "gpt-6-luna"
+    ]
+  },
+  "runtime_status": "completed",
+  "deliverable_status": "present",
+  "route_decision": {
+    "selection": "explicit",
+    "selected": "companion-reasoning",
+    "backend_model": "gpt-6-luna",
+    "decisions": [
+      {
+        "model": "companion-reasoning",
+        "reason": "selected"
+      }
+    ],
+    "backend_fallback": false
+  },
+  "model_resource": null,
+  "required_action": null,
+  "recovery": null,
+  "error": null,
+  "completion": {
+    "execution": "settled",
+    "delivery": "delivered",
+    "attempts": 1,
+    "history": [
+      {
+        "attempt": 1,
+        "kind": "delivered",
+        "text_sha256": "ab9896e7d63564d1301a7318148addba96be1f367c75ba25866e83104a18eda4",
+        "ledger_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    ],
+    "readiness": null,
+    "ledger_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "receipt_count": 0,
+    "obligations": {
+      "pending_approval": false,
+      "queued_calls": 0,
+      "unfinished_goals": 0,
+      "unfinished_workers": 0,
+      "worker_obligations": false,
+      "computer_obligations": 0,
+      "unfinished_handoff": 0,
+      "unknown_receipts": 0,
+      "mutation_intent": false
+    }
+  },
+  "verification_status": "not_run",
+  "engineering_status": "unverified",
+  "last_event_id": 20,
+  "task": {
+    "id": "resp_1e444887d42e46cea334ba55823483f8",
+    "object": "localpilot.task",
+    "session_id": "sess_0c56ac6722b04503b36203e78ab53846",
+    "user_input": "Reply with COMPANION_LUNA_OK only.",
+    "execution_model": "gpt-6-luna",
+    "desktop_options": null,
+    "thinking": {
+      "requested": null,
+      "effective": "medium",
+      "supported": [
+        "none",
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ]
+    },
+    "pause_requested": false,
+    "model": "companion-reasoning",
+    "session_model": "companion-reasoning",
+    "previous_task_id": null,
+    "created_at": 1794849102,
+    "deadline": 1794849462.7541301,
+    "timeout_seconds": 360,
+    "status": "completed",
+    "quiescent": true,
+    "result": {
+      "text": "COMPANION_LUNA_OK",
+      "prompt_version": "localpilot-v5-v1",
+      "status": "completed",
+      "runtime_status": "completed",
+      "deliverable_status": "present",
+      "verification_status": "not_run",
+      "engineering_status": "unverified",
+      "task_outcome": "unverified",
+      "task_succeeded": false,
+      "verification": null,
+      "runtime_metrics": {
+        "model_attempts": 1,
+        "request_utf8_bytes": 2328,
+        "response_bytes": 2256,
+        "response_bytes_source": "complete_responses_only",
+        "failed_attempts": 0,
+        "failed_attempt_provider_usage": null,
+        "admission_units": 4584,
+        "finalization_reason": null,
+        "final_reserve_units": 33834,
+        "state_bytes": 1431,
+        "cache_bytes": 0,
+        "hybrid": {
+          "calls": 1,
+          "actual_api_cost": "UNKNOWN",
+          "local_resource_cost": "adapter_wall_seconds_only",
+          "backend_id": "selected",
+          "generation": 0,
+          "switching_overhead_seconds": 0,
+          "by_backend": {
+            "selected": {
+              "kind": "cloud",
+              "calls": 1,
+              "known_input_tokens": 460,
+              "known_output_tokens": 21,
+              "unknown_usage_calls": 0,
+              "known_request_wall_seconds": 7.354437351226807,
+              "known_inference_seconds": 7.350620746612549,
+              "known_queue_seconds": 0.0038220882415771484,
+              "unknown_inference_time_calls": 0,
+              "unknown_latency_calls": 0,
+              "estimated_api_cost_usd": null,
+              "cost_source": "host_rate_estimate_only",
+              "configured_models": [
+                "gpt-6-luna"
+              ],
+              "prompt_cache_hit_tokens": 0,
+              "prompt_cache_miss_tokens": 460,
+              "cache_hit_ratio": 0.0,
+              "cache_usage_unknown_calls": 0,
+              "wall_output_tokens_per_second": 2.8569015766018966,
+              "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+            }
+          },
+          "source_mix": {
+            "scope": "current_task_including_children",
+            "by_source": {
+              "local": {
+                "admitted_requests": 0,
+                "dispatched_requests": 0,
+                "request_share": 0.0,
+                "known_input_output_tokens": 0,
+                "token_share": 0.0,
+                "unknown_usage_requests": 0
+              },
+              "cloud": {
+                "admitted_requests": 1,
+                "dispatched_requests": 1,
+                "request_share": 1.0,
+                "known_input_output_tokens": 481,
+                "token_share": 1.0,
+                "unknown_usage_requests": 0
+              }
+            },
+            "requests_without_dispatch_evidence": 0,
+            "token_share_status": "PROVIDER_REPORTED",
+            "actual_cost_status": "UNKNOWN"
+          }
+        }
+      },
+      "completion": {
+        "execution": "settled",
+        "delivery": "delivered",
+        "attempts": 1,
+        "history": [
+          {
+            "attempt": 1,
+            "kind": "delivered",
+            "text_sha256": "ab9896e7d63564d1301a7318148addba96be1f367c75ba25866e83104a18eda4",
+            "ledger_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          }
+        ],
+        "readiness": null,
+        "ledger_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "receipt_count": 0,
+        "obligations": {
+          "pending_approval": false,
+          "queued_calls": 0,
+          "unfinished_goals": 0,
+          "unfinished_workers": 0,
+          "worker_obligations": false,
+          "computer_obligations": 0,
+          "unfinished_handoff": 0,
+          "unknown_receipts": 0,
+          "mutation_intent": false
+        }
+      },
+      "tool_budget": {
+        "tool_count": 0,
+        "schema_utf8_bytes": 2,
+        "prompt_utf8_bytes": 0,
+        "schema_tokens": null,
+        "prompt_tokens": null,
+        "estimated_schema_tokens_bytes_div_4": 1,
+        "estimated_prompt_tokens_bytes_div_4": 0,
+        "token_count_status": "estimate_only_without_tokenizer",
+        "scope": "Compact JSON schemas and raw prompt; excludes provider framing, chat template, task and history."
+      },
+      "prompt_profile": "minimal_0",
+      "tool_profile": "compact",
+      "total_steps": 1,
+      "total_tool_calls": 0,
+      "reported_models": [
+        "gpt-6-luna"
+      ],
+      "model_latency_seconds": 7.355616107000969,
+      "cache": {
+        "status": "available",
+        "hit_tokens": 0,
+        "miss_tokens": 460,
+        "hit_ratio": 0.0
+      },
+      "model_calls": [
+        {
+          "latency_seconds": 7.355616107000969,
+          "tool_call_count": 0,
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 460,
+          "reported_model": "gpt-6-luna",
+          "input_tokens": 460,
+          "output_tokens": 21,
+          "finish_reason": "stop"
+        }
+      ],
+      "runtime_metrics_scope": "latest_runtime_turn"
+    },
+    "streamed_text": "",
+    "required_action": null,
+    "error": null,
+    "output": [
+      {
+        "role": "assistant",
+        "content": "COMPANION_LUNA_OK"
+      }
+    ],
+    "tools": [],
+    "goals": [],
+    "subagents": [],
+    "computer": null,
+    "completion": {
+      "execution": "settled",
+      "delivery": "delivered",
+      "attempts": 1,
+      "history": [
+        {
+          "attempt": 1,
+          "kind": "delivered",
+          "text_sha256": "ab9896e7d63564d1301a7318148addba96be1f367c75ba25866e83104a18eda4",
+          "ledger_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      ],
+      "readiness": null,
+      "ledger_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "receipt_count": 0,
+      "obligations": {
+        "pending_approval": false,
+        "queued_calls": 0,
+        "unfinished_goals": 0,
+        "unfinished_workers": 0,
+        "worker_obligations": false,
+        "computer_obligations": 0,
+        "unfinished_handoff": 0,
+        "unknown_receipts": 0,
+        "mutation_intent": false
+      }
+    },
+    "last_event_id": 20,
+    "service": {
+      "request_id": "req_d802e9eaed6e4b6e8905c7c0cab5b517",
+      "client_subject": "companion",
+      "route_decision": {
+        "selection": "explicit",
+        "selected": "companion-reasoning",
+        "backend_model": "gpt-6-luna",
+        "decisions": [
+          {
+            "model": "companion-reasoning",
+            "reason": "selected"
+          }
+        ],
+        "backend_fallback": false
+      },
+      "origin_agent": "companion",
+      "parent_task_id": null,
+      "external_delegation_depth": 1,
+      "external_redelegation_allowed": false,
+      "control_ticket": "e1f64994f3d1439dbe8cd4ef4ae46dcb",
+      "low_power_consent": false
+    },
+    "receipt_summary": {
+      "count": 0,
+      "unknown_effects": 0
+    },
+    "file_operation_verification": {
+      "status": "NOT_RUN",
+      "scope": "filesystem effects only",
+      "receipts": 0
+    },
+    "verification_summary": {
+      "runtime_status": "completed",
+      "deliverable_status": "present",
+      "verification_status": "not_run",
+      "engineering_status": "unverified",
+      "task_outcome": "unverified"
+    }
+  },
+  "progress_text": "",
+  "progress_snapshot": true
+}

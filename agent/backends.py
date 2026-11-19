@@ -80,6 +80,7 @@ class BackendResponse:
     # None preserves compatibility with older/scripted backends. HTTP adapters
     # supply the actual provider value, including length/content_filter.
     finish_reason: str | None = None
+    diagnostics: dict | None = None
 
 
 @dataclass

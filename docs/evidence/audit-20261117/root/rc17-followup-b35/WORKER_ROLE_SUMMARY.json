@@ -1,0 +1,140 @@
+{
+  "kind": "SYNTHETIC_HETEROGENEOUS_WORKER_ROLE_INTEGRATION",
+  "models": {
+    "parent": {
+      "model": "gpt-6.1-sol",
+      "thinking": "medium"
+    },
+    "search": {
+      "model": "gpt-6-luna",
+      "thinking": "high"
+    },
+    "review": {
+      "model": "gpt-6.1-sol",
+      "thinking": "medium"
+    }
+  },
+  "preflight_only": false,
+  "session_boundary": "WORKSPACE_SCOPED_SERVICE_READ_ONLY",
+  "inference_status": "PASS",
+  "ranking_claim": false,
+  "passed": true,
+  "checks": {
+    "completed_and_quiescent": true,
+    "two_named_children": true,
+    "three_runtime_nodes": true,
+    "ordinary_service_session": true,
+    "fixtures_unchanged": true,
+    "parent_collected_summary": true,
+    "parent_did_not_read_or_mutate": true,
+    "parent_read_only_workspace_boundary": true,
+    "parent_inference": true,
+    "1.1_read_only_workspace_boundary": true,
+    "1.1_inference": true,
+    "1.1_read_only": true,
+    "1.2_read_only_workspace_boundary": true,
+    "1.2_inference": true,
+    "1.2_read_only": true,
+    "1.1_read_receipts": true,
+    "1.1_observed_fixture_summary": true,
+    "1.1_completed_collected": true,
+    "1.2_read_receipts": true,
+    "1.2_observed_fixture_summary": true,
+    "1.2_completed_collected": true,
+    "aggregate_count_once": true,
+    "workspace_unchanged": true,
+    "synthetic_workspace_only": true,
+    "same_task_after_restart": true,
+    "same_session_after_restart": true,
+    "same_receipts_after_restart": true,
+    "same_children_after_restart": true,
+    "same_result_after_restart": true,
+    "same_runtime_evidence_after_restart": true
+  },
+  "model_run_seconds": 84.11220253899955,
+  "model_call_count": 10,
+  "provider_usage_once": {
+    "input_tokens": 56832,
+    "output_tokens": 1489,
+    "prompt_cache_hit_tokens": 31101
+  },
+  "product_verification_unchanged": {
+    "verification_status": "not_run",
+    "engineering_status": "unverified",
+    "task_outcome": "unverified",
+    "task_succeeded": false
+  },
+  "provider_usage_scope": "Parent aggregate only; it already includes both children. This is not a billing statement.",
+  "effort_scope": "ModelRequestStarted records actual host request model/effort. Provider responses echo model, not effort.",
+  "fixture_sha256_after": {
+    "role-marker.txt": "15283b3eb6a1fc9578c9bc1ba3a83eb44db566726550f8c86e62bd4cb7273239",
+    "role-fixture.py": "ad8a906c9dce98fbed7e903e652522b5bd66db736a139d3b4d8f6e0d528b09e1"
+  },
+  "workspace_before": {
+    "sha256": {
+      "fact.txt": "aedb13edc7bce268025dde5b96bfc2708138312df4b0164f03b013eb736229c5",
+      "role-fixture.py": "ad8a906c9dce98fbed7e903e652522b5bd66db736a139d3b4d8f6e0d528b09e1",
+      "role-marker.txt": "15283b3eb6a1fc9578c9bc1ba3a83eb44db566726550f8c86e62bd4cb7273239"
+    },
+    "symlinks": [],
+    "directories": []
+  },
+  "workspace_after": {
+    "sha256": {
+      "fact.txt": "aedb13edc7bce268025dde5b96bfc2708138312df4b0164f03b013eb736229c5",
+      "role-fixture.py": "ad8a906c9dce98fbed7e903e652522b5bd66db736a139d3b4d8f6e0d528b09e1",
+      "role-marker.txt": "15283b3eb6a1fc9578c9bc1ba3a83eb44db566726550f8c86e62bd4cb7273239"
+    },
+    "symlinks": [],
+    "directories": []
+  },
+  "database_exported": false,
+  "owned_core_stopped": true,
+  "source_unchanged": true,
+  "private_exclusions": [
+    "core-private/",
+    "workspace/",
+    "core.log"
+  ],
+  "source": {
+    "git_head": "b69542583954c49672a636ba43f1ef310238883c",
+    "git_tree": "cded45c5c68089c0654bc25a90a541a189e7d73e",
+    "manifest_sha256": "bb0368ef4a3413aac8941c42d2445b7351e2a57b9fb2ff65a2e89a0ac4bff8f8",
+    "runner_sha256": "5204ebb437bcaf7aca926dd6f5deeb433cc5bf9a9e4c97b465ab000841c0ea7e",
+    "verified_file_count": 111
+  },
+  "receipt_count": 7,
+  "calls_by_node": {
+    "parent": 4,
+    "search": 3,
+    "review": 3
+  },
+  "children_timeline": {
+    "search": [
+      {
+        "event": "start",
+        "at": 1794919285.6980045
+      },
+      {
+        "event": "completed",
+        "at": 1794919313.591767
+      }
+    ],
+    "review": [
+      {
+        "event": "start",
+        "at": 1794919313.9912193
+      },
+      {
+        "event": "completed",
+        "at": 1794919341.8011038
+      }
+    ]
+  },
+  "limits": [
+    "Child lifetimes did not overlap; this is not a parallel speedup result.",
+    "Parent received receipt metadata, not child prose.",
+    "No length response, code writing or execution; not Full engineering qualification.",
+    "No cost, stability or token-saving comparison."
+  ]
+}

@@ -175,6 +175,16 @@ class LinuxSystemdTests(unittest.TestCase):
 
 
 class LinuxObservationTests(unittest.TestCase):
+    def test_helper_preserves_accessibility_bus_without_model_credentials(self):
+        from companion.observers.linux import helper_environment
+        address = 'unix:path=/tmp/localpilot-owned-atspi/bus'
+        with patch.dict(os.environ, {'AT_SPI_BUS_ADDRESS':address, 'OPENAI_API_KEY':'not-a-real-key',
+                                     'HTTPS_PROXY':'https://example.invalid'}):
+            environment = helper_environment()
+        self.assertEqual(environment['AT_SPI_BUS_ADDRESS'], address)
+        self.assertNotIn('OPENAI_API_KEY', environment)
+        self.assertNotIn('HTTPS_PROXY', environment)
+
     def raw(self, source='linux.atspi'):
         return {'source':source, 'kind':'ax.snapshot', 'timestamp':datetime.now(timezone.utc).isoformat(),
             'object':{'bundle_id':'linux.synthetic', 'pid':123},

@@ -91,8 +91,8 @@ class InferenceControls:
                 route=self.app.config.localpilot_cloud_analysis_route if kind=="cloud" else self.app.config.localpilot_analysis_route if mode=="reasoning" else self.app.config.localpilot_route
                 entry=next((m for m in registry.get("models",[]) if m.get("id")==route),{})
             except Exception:return {"status":"unavailable","text":"推理路由暂时无法核验。"}
-            if kind=="cloud" and entry.get("adapter") not in {"deepseek","deepseek-native"}:
-                return {"status":"unavailable","text":"没有可核验的 DeepSeek 极简咨询路由；未发送问题。"}
+            if kind=="cloud" and entry.get("adapter") not in {"deepseek","deepseek-native","openai"}:
+                return {"status":"unavailable","text":"没有可核验的 DeepSeek 或 OpenAI 极简咨询路由；未发送问题。"}
             lifecycle=entry.get("local_model_lifecycle",{})
             if kind=='local' and entry.get('adapter')=='omlx' and entry.get('deployment_status')!='ready':
                 return {'status':'unavailable','text':'本地模型尚未加载。请在模型库单独授权加载后再确认帮助；本次没有提交任务。'}
@@ -107,7 +107,7 @@ class InferenceControls:
                 "digest":self.app.review_digest(pending),"scope":self.app.privacy.consent_id(),
                 "required_confirmations":required,"resources":state,"force_cloud_confirmation":force_cloud_confirmation,"fallback":fallback,"created_at":time.time(),
                 "expires_at":time.time()+300,"memory_wall_bytes":minimum,"panel_presented":False,"task_id":None,
-                "model":self.app.config.localpilot_expected_local_model if kind=="local" else "DeepSeek · "+str(entry.get("model","已配置模型"))[:120]+"（仅原问题）"}
+                "model":self.app.config.localpilot_expected_local_model if kind=="local" else ("OpenAI" if entry.get("adapter")=="openai" else "DeepSeek")+" · "+str(entry.get("model","已配置模型"))[:120]+"（仅原问题）"}
             self.stop_event=threading.Event();self.save()
             return {"status":"inference_prepared","text":"已准备推理控制窗；显示停止按钮后才会开始调用。","control":self.public()}
 

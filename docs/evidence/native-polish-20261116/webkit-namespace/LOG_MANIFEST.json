@@ -1,0 +1,921 @@
+{
+  "format": 1,
+  "captured_at_utc": "2026-11-16T11:05:50.464059+00:00",
+  "scope": "Validation-only WebKit namespace and native launch diagnostics. Includes original failures and corrected preflights. No application databases, credentials/cookies, model weights/gold, user Mac materials, or helper binaries. Trace selection excludes read/write data and uses raw execve/execveat arguments.",
+  "public_transformation": [
+    "Remove ANSI control sequences",
+    "Replace workspace root prefix with <WORKSPACE>",
+    "Gzip with mtime=0"
+  ],
+  "files": [
+    {
+      "original": "validation/polish-20261116/desktop/desktop-environment.json",
+      "archive": "logs/desktop-environment.json.gz",
+      "bytes": 835,
+      "public_bytes": 835,
+      "original_sha256": "2e9432896e013dc9918cf52756c4bf163222d1524abb09ec07bc1c6dfb692e55",
+      "public_sha256": "2e9432896e013dc9918cf52756c4bf163222d1524abb09ec07bc1c6dfb692e55",
+      "gzip_sha256": "8460aa73ac81e802b11ebbc30f6d48832225449fa80b62e26d37807f3c9bb57a"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/inspect-native-owned-processes.py",
+      "archive": "logs/inspect-native-owned-processes.py.gz",
+      "bytes": 1676,
+      "public_bytes": 1656,
+      "original_sha256": "03a4db000adc3fe3d64a5bd9b0496eeabf73c805ebc2019f334df1f2f8aa1099",
+      "public_sha256": "1dd3a8031bd536baad59fafda3ea93353872980e91c886bc1d13da40e856c58a",
+      "gzip_sha256": "a5ad5156fb8ac4127787012b2b196f5362bb447db27ba6a1d91068c6ff24be92"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-final-r2-a.log",
+      "archive": "logs/native-final-r2-a.log.gz",
+      "bytes": 0,
+      "public_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-final-r3-a-process.json",
+      "archive": "logs/native-final-r3-a-process.json.gz",
+      "bytes": 601,
+      "public_bytes": 541,
+      "original_sha256": "88d8c439a3e93d51059efaef0dc8514cd99ce6ae2b7528625db7e80a88a17c98",
+      "public_sha256": "f3ea7041e372164647234522297eef2ed2439d3c943d8ff0541c229a15ebc2b3",
+      "gzip_sha256": "23b2089c40e987c5de148d37aeea9ac97acf5b8588f890059f84a8cda918968f"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-final-r3-a.log",
+      "archive": "logs/native-final-r3-a.log.gz",
+      "bytes": 0,
+      "public_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-final-r4-a-process.json",
+      "archive": "logs/native-final-r4-a-process.json.gz",
+      "bytes": 828,
+      "public_bytes": 768,
+      "original_sha256": "312405d6cc08ee4606029270bf5022f1f47baa5477245f4010839cd26937d42f",
+      "public_sha256": "b19f955b9e8742c8e9f6f0f8daf99f59e98b5c4524d37563bae684a77953ed1a",
+      "gzip_sha256": "2b1709d6244a5f548baf6d2eddf4c10e9b27ac4d61e3ba4dca90bf6450039bc1"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-final-r4-a.log",
+      "archive": "logs/native-final-r4-a.log.gz",
+      "bytes": 0,
+      "public_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-final-r5-a-process.json",
+      "archive": "logs/native-final-r5-a-process.json.gz",
+      "bytes": 631,
+      "public_bytes": 611,
+      "original_sha256": "48cca03e831cea788dda81441004a51f0502d39016e11955ea0e96452a95f8cc",
+      "public_sha256": "77b6995e4b7c67d4cba6293c00b8926831d27606cb5809b1ea883bd6e07894d7",
+      "gzip_sha256": "4f78af65f69b2af3aa78148b9500963c097aadc50d917b9d4b1e92ea358c5435"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-final-r5-a.log",
+      "archive": "logs/native-final-r5-a.log.gz",
+      "bytes": 224,
+      "public_bytes": 224,
+      "original_sha256": "c0e0bd5f6bff82f011a93f15c3c9c39195a3c5d66c221d71cdf4b013a5fdb10e",
+      "public_sha256": "c0e0bd5f6bff82f011a93f15c3c9c39195a3c5d66c221d71cdf4b013a5fdb10e",
+      "gzip_sha256": "3a6b353fc58b36fed5c4b69f20e3a2f9163ca812c33744dd52b3e1f72fe46a6f"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-final-r6-a-process.json",
+      "archive": "logs/native-final-r6-a-process.json.gz",
+      "bytes": 1712,
+      "public_bytes": 1632,
+      "original_sha256": "8d427af6e039c438c7a1ca6c365aaa9227058fe918d8a946fcce2b7276381756",
+      "public_sha256": "9d9778ec68b5439aed1904813ccaff5b8c0a7aeef28c1ce3b8168cc04003fdad",
+      "gzip_sha256": "8317c3714bb567f5c9cd8ec8ac9590c3464e3e3f4c8831ee7f0a5d8dd0647d90"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-final-r6-a.log",
+      "archive": "logs/native-final-r6-a.log.gz",
+      "bytes": 0,
+      "public_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-final-r6-a.trace",
+      "archive": "logs/native-final-r6-a.trace.gz",
+      "bytes": 1026294,
+      "public_bytes": 927674,
+      "original_sha256": "af26a1ff22006599996f0ae3f6fff6ce2d629d23a1e3237dc185de0ea3aab3f0",
+      "public_sha256": "51ef5d56261dcf962d916b0afc185d3c2e4fa725dc36618fb736b1ac1041afdd",
+      "gzip_sha256": "4882952b63b616e4f09bc750485a8636657feea7bb00b418dfc9cf4d9e5a1569"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-final-r6-cause-excerpt.json",
+      "archive": "logs/native-final-r6-cause-excerpt.json.gz",
+      "bytes": 16074,
+      "public_bytes": 14394,
+      "original_sha256": "9d4fc0e549ac8040b8d6615f152afb32a51a881c7f4e28adeb614e480829e71f",
+      "public_sha256": "bc7dfc82f7511d985e083f41138f11bd12c6e84935c940e8fc9ab2da82808210",
+      "gzip_sha256": "fe7a406b9f2a8eed33e69193a4f8314b4f62e19fd669abb9cab0bcead01af5ff"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-final-r6-true.trace",
+      "archive": "logs/native-final-r6-true.trace.gz",
+      "bytes": 1737,
+      "public_bytes": 1597,
+      "original_sha256": "01a0d7618a7d4db419630cd4485af05fb267bfb055fe2996755148c237e42e36",
+      "public_sha256": "e42c87521a6935139aa02216d7352be76341e3439f1cf36bbdc21a66ca6d3994",
+      "gzip_sha256": "9164d18adde9dfa1fcb9462124be71cec44c12396577c669819f6b9d42c51ded"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-final-r7-a-process.json",
+      "archive": "logs/native-final-r7-a-process.json.gz",
+      "bytes": 866,
+      "public_bytes": 806,
+      "original_sha256": "a814098bc286e2bc5a1b38f931c2cdd251610d767f37675283e9dca583aa07dd",
+      "public_sha256": "cd46cebfb6a69a71ce7e58accaeea43bfee4e44167dc62acca6df831b1d091c4",
+      "gzip_sha256": "4e11acefee5c31e643a62a65b69cada6cb78bf771d50885d75ac3b6871970161"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-final-r7-a.log",
+      "archive": "logs/native-final-r7-a.log.gz",
+      "bytes": 644,
+      "public_bytes": 604,
+      "original_sha256": "06a1a962a6ae3667d6350290a5c94e8ca6f8e3faff9588f5ab4d1f00fb2d672f",
+      "public_sha256": "90218118d7420d417368c15801398cde64457fc30de9a254bf70eece0bbb482b",
+      "gzip_sha256": "616fa4cfca5d62dc240690520122201bd286c9881af2dd614a05e303cc2b83ad"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-r1.log",
+      "archive": "logs/native-r1.log.gz",
+      "bytes": 224,
+      "public_bytes": 224,
+      "original_sha256": "839aa5e2cc06bd91dfc37fd6df9d9fc0fbc18a58ad7161a0f264eee2a1490404",
+      "public_sha256": "839aa5e2cc06bd91dfc37fd6df9d9fc0fbc18a58ad7161a0f264eee2a1490404",
+      "gzip_sha256": "6e53ef32b751dbca52fe573077c4c52a5e7d6a8014b5fd0974a0374f53614bef"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-r2-a.sh",
+      "archive": "logs/native-r2-a.sh.gz",
+      "bytes": 561,
+      "public_bytes": 461,
+      "original_sha256": "fa406237816184c6d8822d3020d2ec779d35a683cbd42d6accf27b900d7d69db",
+      "public_sha256": "36f038f28a58179e21a026fc0d7a9c805bfc856edfb7f3a574c173960fb16e3f",
+      "gzip_sha256": "0e8a5c90abfe549367209d34b78dc716d25cc4c18f14bb6bf8099aff1287dbc6"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-r3-a.py",
+      "archive": "logs/native-r3-a.py.gz",
+      "bytes": 1007,
+      "public_bytes": 987,
+      "original_sha256": "a9b0c64055660945a53af474b778433983debefb42dcca13a14a2bfed814ed49",
+      "public_sha256": "e423a9dc4f26b40a75336694caaa5d2f0aa71a9e75b31620af22888bac33800d",
+      "gzip_sha256": "77633f80c9639e7e6f815923e7b5f376934f5e9b98af71c89b808496311f57b1"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-r3-a.sh",
+      "archive": "logs/native-r3-a.sh.gz",
+      "bytes": 222,
+      "public_bytes": 182,
+      "original_sha256": "850b04e331c7720a10cd8d6fa4baf17d4c5c4f32feeda83ad7ddf7cd5e3fe738",
+      "public_sha256": "a3ecbdf3aa47308540736c1a2ab17042c7629e3b7296fd05cc690a51750fee35",
+      "gzip_sha256": "07c3ef8dbaeac40dcf8a893c1d0bea547f93e03d5a2101b63340f8bf3eaacd15"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-r4-a.py",
+      "archive": "logs/native-r4-a.py.gz",
+      "bytes": 1241,
+      "public_bytes": 1221,
+      "original_sha256": "86c125883d1c237770ccd59634686615a681a7faa34b1be21468c91085a34595",
+      "public_sha256": "04bfe36aff7e5e3797302fd8467353719e726f2cb38a67c65cd1d205aab0cde0",
+      "gzip_sha256": "fbce13c9121e0162ba56651fe4173c7cbbf5f0959d599dd438a69b95cd7b7961"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-r4-a.sh",
+      "archive": "logs/native-r4-a.sh.gz",
+      "bytes": 222,
+      "public_bytes": 182,
+      "original_sha256": "4227842005f4176ad3c675da121db98ad600aeed1ee9f188543b12d83bec70d1",
+      "public_sha256": "86bca4ad5f264bdea924d5af190aa3b94fad4d8aeece30a8a103d589b7f90a37",
+      "gzip_sha256": "a1aa1f172cde0ba1f6628b963d24bba157c218383f1d8d684673785fae63d09e"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-r5-a.py",
+      "archive": "logs/native-r5-a.py.gz",
+      "bytes": 1420,
+      "public_bytes": 1400,
+      "original_sha256": "c051887ae0c868b6e25934eaabd16b0c4f8d1c5ef4bb0b474dac88333373e9c6",
+      "public_sha256": "14da863352afc70cfbe85028d9bf4465bccc94dcb1125184f2cd5e45b3b6be7e",
+      "gzip_sha256": "700b4086efb99e3c4a29b44c7c3be024e578f5a41df20e8890ab907715994732"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-r5-a.sh",
+      "archive": "logs/native-r5-a.sh.gz",
+      "bytes": 222,
+      "public_bytes": 182,
+      "original_sha256": "b03cfc13e68b57cfc3321b5082b0f4ed28f5e348be9fc2aa0ab284c86ba23b37",
+      "public_sha256": "6bd580a21afed86a6a05c4618cee7138090ccf3f5d9a37ceaee158c5da476b4c",
+      "gzip_sha256": "9772a15b419c2910b563bff75e499378b619adad437147285540f09934c6a41c"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-r6-a.py",
+      "archive": "logs/native-r6-a.py.gz",
+      "bytes": 2558,
+      "public_bytes": 2538,
+      "original_sha256": "462895660a57f0f761f747d3fe2f893303e4d69049be4bc8616fb5b2a95773d1",
+      "public_sha256": "a39947432f122df659611ad20a13dc4c8c55087fe08703ad52f52ce7ef5ab52f",
+      "gzip_sha256": "79a0a25021792b23fa445a59be259eda0b3ef88d7c1500dcff89eb31f8c8dc0b"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-r6-a.sh",
+      "archive": "logs/native-r6-a.sh.gz",
+      "bytes": 222,
+      "public_bytes": 182,
+      "original_sha256": "96e7abec4882f674ddb0f331f1bbf6e6cf92053d98719976f10a19826b373319",
+      "public_sha256": "96161baf3bcfaeaafb7d7b727215e782703cfe558cddb688e25f9a2c41be4ac0",
+      "gzip_sha256": "e05183962dabbc38baa3b5006d9421679f9e63bda9bfbd10a82640916a6ecb5c"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-r7-a.py",
+      "archive": "logs/native-r7-a.py.gz",
+      "bytes": 1279,
+      "public_bytes": 1259,
+      "original_sha256": "d6457e1a90f8b98816bc169a59873520e5585af35c68ea1f8ad4fa82fd9f8b6e",
+      "public_sha256": "975e1060a5eb61538a0cb6b8ab3ccdb7c8b84cb45b6fa3d0d28ba4e1a71e3f6b",
+      "gzip_sha256": "48d423d0e72c8c125aada1705a2d6cac446d5d8efba1cf5754cd3009d82d0ba4"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-r7-a.sh",
+      "archive": "logs/native-r7-a.sh.gz",
+      "bytes": 455,
+      "public_bytes": 375,
+      "original_sha256": "803a437a526816813b8c23240ecdcf94583aef488502e8baca069bd384e844fa",
+      "public_sha256": "8194bee4e610e34a8b6db3a3278bf0e119a01308b351459b0d595dff0e674680",
+      "gzip_sha256": "7409a78940e11fbf5cfc2e2f55598f4b5edddfbb6043b3ec83144300dca29440"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-r9-a.py",
+      "archive": "logs/native-r9-a.py.gz",
+      "bytes": 1348,
+      "public_bytes": 1328,
+      "original_sha256": "a40f0d88091c4964ddf4fe5172c3cc4b103883e17e745b51af66c28d960df19a",
+      "public_sha256": "bf4f8cab3ec6c517b8a2e30ebfde09c4dbc8baad58b25ab5be248cecaca4890f",
+      "gzip_sha256": "8a85370aae3620cbae33ca8b7cd433bb555c8ef3ac9971d9499562e45bf71bf7"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-r9-a.sh",
+      "archive": "logs/native-r9-a.sh.gz",
+      "bytes": 455,
+      "public_bytes": 375,
+      "original_sha256": "889b72cabae5a634c997c95fa66392b3a015fdc380609834f60cb34e6cc89e8e",
+      "public_sha256": "c99a0e7a852d33c5161a03744a212adb2b98422b2937485db9090a77b695f8f7",
+      "gzip_sha256": "dfb3a92d0b976ae4e0151beb20a3ac2fbb0456c6819f56846f4bb22943e4d318"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-trace-preflight/RESULTS.json",
+      "archive": "logs/native-trace-preflight/RESULTS.json.gz",
+      "bytes": 12235,
+      "public_bytes": 12215,
+      "original_sha256": "f91c0bbf8d41343fa398ee73569a985740bfc8e49dcced8ec67736448787a1a6",
+      "public_sha256": "10dd5e5e487b273afd863a6a378fe671a4403b3e4b598f4e22716dad3f7e7f30",
+      "gzip_sha256": "cb0c51ebf55bb447fb9716e461f75bcc04f83c7c2cd10f2813fc95a028d592cf"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-trace-preflight/help.log",
+      "archive": "logs/native-trace-preflight/help.log.gz",
+      "bytes": 9814,
+      "public_bytes": 9814,
+      "original_sha256": "683a562c1d4a0e0abd681a1b678d14b685bc4b89428d0fbb1425c36d3d5b2a90",
+      "public_sha256": "683a562c1d4a0e0abd681a1b678d14b685bc4b89428d0fbb1425c36d3d5b2a90",
+      "gzip_sha256": "305708f2f51c5082a15b591f9b55ffdc42f6d1922f1fe411a7cb9e87ae15c56e"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-trace-preflight/owned-true.trace",
+      "archive": "logs/native-trace-preflight/owned-true.trace.gz",
+      "bytes": 0,
+      "public_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-trace-preflight/owned_true.log",
+      "archive": "logs/native-trace-preflight/owned_true.log.gz",
+      "bytes": 283,
+      "public_bytes": 283,
+      "original_sha256": "54c4fd1054c5c741ab0218ea148520f87ad3298ea3fac32a7fbfe043550ca21f",
+      "public_sha256": "54c4fd1054c5c741ab0218ea148520f87ad3298ea3fac32a7fbfe043550ca21f",
+      "gzip_sha256": "e058933764ef017ac2020e54286c236556b7d1c80915c4867ab983d5de40eb5d"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-trace-preflight/package.log",
+      "archive": "logs/native-trace-preflight/package.log.gz",
+      "bytes": 59,
+      "public_bytes": 59,
+      "original_sha256": "6cd0cc82d8336b656cf4f47c1e140c156f81b74de90cd5379d96931c012387d9",
+      "public_sha256": "6cd0cc82d8336b656cf4f47c1e140c156f81b74de90cd5379d96931c012387d9",
+      "gzip_sha256": "94828478f49319debecf4e7283cb6caab2dfc5eb6a1b758c56168288d1b7e316"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-trace-preflight/package_verification.log",
+      "archive": "logs/native-trace-preflight/package_verification.log.gz",
+      "bytes": 40,
+      "public_bytes": 40,
+      "original_sha256": "2768100337f6e04952edf86459bde9b0cb5db1e25491191cfc1368a2c7f7994a",
+      "public_sha256": "2768100337f6e04952edf86459bde9b0cb5db1e25491191cfc1368a2c7f7994a",
+      "gzip_sha256": "9729558f9ed6f8a226833c63a202355e0724523d4afee082584de2c1c646a0c6"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-trace-preflight/package_version.log",
+      "archive": "logs/native-trace-preflight/package_version.log.gz",
+      "bytes": 46,
+      "public_bytes": 46,
+      "original_sha256": "1cdeff3e5c288d52f54507f203d30629a268b085b3adf965cc7e6360aa476b16",
+      "public_sha256": "1cdeff3e5c288d52f54507f203d30629a268b085b3adf965cc7e6360aa476b16",
+      "gzip_sha256": "54597a6642c313b1bea991b80eda0218f531716d675ccdc86bd4653f9848b8a2"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-trace-preflight/version.log",
+      "archive": "logs/native-trace-preflight/version.log.gz",
+      "bytes": 327,
+      "public_bytes": 327,
+      "original_sha256": "cd32bce250370753dc898d1a2e703c90aa433ef79267363e01d0a357432f7dba",
+      "public_sha256": "cd32bce250370753dc898d1a2e703c90aa433ef79267363e01d0a357432f7dba",
+      "gzip_sha256": "34727884c4dcd6a72c384b90d9b969107ddf96b5c7257a1d718b0d1b61f5c575"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/native-trace-tool-inventory.json",
+      "archive": "logs/native-trace-tool-inventory.json.gz",
+      "bytes": 361,
+      "public_bytes": 361,
+      "original_sha256": "359e8eb5158790983e84db060127bc64d74680c7c458d1264a2405a069f74122",
+      "public_sha256": "359e8eb5158790983e84db060127bc64d74680c7c458d1264a2405a069f74122",
+      "gzip_sha256": "dc9179c2771df5ba960ba33f6a2957786549c449d743023cfb67a64cecfe5b3e"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-context-default-r10/ATTEMPT_EXEC.json",
+      "archive": "logs/webkit-context-default-r10/ATTEMPT_EXEC.json.gz",
+      "bytes": 809,
+      "public_bytes": 809,
+      "original_sha256": "8c07e33bb3b2f15c54ca55a40c4e10dd31277c74cd7fb4115437068d9d3ed53a",
+      "public_sha256": "8c07e33bb3b2f15c54ca55a40c4e10dd31277c74cd7fb4115437068d9d3ed53a",
+      "gzip_sha256": "79e650a4d2c697d4f738b889dd6a1874bc9b491c75ca08a7bd62e24ac6debb4a"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-context-default-r10/SDK_SOURCE_READONLY.json",
+      "archive": "logs/webkit-context-default-r10/SDK_SOURCE_READONLY.json.gz",
+      "bytes": 5434,
+      "public_bytes": 5394,
+      "original_sha256": "89f587d0c41aa15b20c7b8b33b2eae98fb8796c2328173c5c098d76e2a59edd3",
+      "public_sha256": "cee25d05de8cb8550cd399f84ed5af012ededea86e033c9a5affbdd1c933a2f9",
+      "gzip_sha256": "e5094b26b0287c1506ed4de30baed58922612943800e1a1ae63d4baf2e7dd6bb"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r4/README.md",
+      "archive": "logs/webkit-minimal-overlay-r4/README.md.gz",
+      "bytes": 2627,
+      "public_bytes": 2627,
+      "original_sha256": "4b5d33471906ca1c6ba486cc50245720e6d4c2b1cb404cb7d741e1f5ffe39002",
+      "public_sha256": "4b5d33471906ca1c6ba486cc50245720e6d4c2b1cb404cb7d741e1f5ffe39002",
+      "gzip_sha256": "ca9a046242771c1851ae5266e5d2edb96bc87222e103d936bc35730bebcd11b8"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r4/dependency-summary.json",
+      "archive": "logs/webkit-minimal-overlay-r4/dependency-summary.json.gz",
+      "bytes": 664,
+      "public_bytes": 624,
+      "original_sha256": "b3def486137817fa51cf0d4d76f83c258851eaade66030e5ff655abb196bd0ca",
+      "public_sha256": "494c60933f88bed84688e48231c98ccc6b6c91848ed6fe88dedcb02c22948c72",
+      "gzip_sha256": "92df5ecdf9ba85c971b56de9b74df8133f10ffb16584800af0d3ba1b164aa4a1"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r4/elf-program-headers.txt",
+      "archive": "logs/webkit-minimal-overlay-r4/elf-program-headers.txt.gz",
+      "bytes": 2697,
+      "public_bytes": 2697,
+      "original_sha256": "0df3c31c6efdad2de37ff8a733114b7b93518dab282bc894c2a81681114d92fd",
+      "public_sha256": "0df3c31c6efdad2de37ff8a733114b7b93518dab282bc894c2a81681114d92fd",
+      "gzip_sha256": "6b3534d43f2be4ecdd9d3b2f80a318dd0e5292824771d9ccbe0064e0d5f66bd7"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r4/exec-preflight.log",
+      "archive": "logs/webkit-minimal-overlay-r4/exec-preflight.log.gz",
+      "bytes": 1794,
+      "public_bytes": 1794,
+      "original_sha256": "8a237e88387623591fb6ec73b220dc12a7efb850ea587a56cdf0e8876267992c",
+      "public_sha256": "8a237e88387623591fb6ec73b220dc12a7efb850ea587a56cdf0e8876267992c",
+      "gzip_sha256": "aa61e4444c18c77bfa3f1f8036d481488502819c3a978079ebad45c22326d00f"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r4/full_sysroot-ldd.txt",
+      "archive": "logs/webkit-minimal-overlay-r4/full_sysroot-ldd.txt.gz",
+      "bytes": 28940,
+      "public_bytes": 25600,
+      "original_sha256": "d499baabff40e2adee2432b5a225bdbeae2d8aa2aedaaca90d23525101014744",
+      "public_sha256": "c80b0708353a194d98e810b59e2eed421a9a68599ab755592b185ce2c1df5c86",
+      "gzip_sha256": "ff9a6e265d8fd358751ceeb53bf67fe5b3e0d18a6df03106d170d81c008aa395"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r4/full_sysroot_self_check.json",
+      "archive": "logs/webkit-minimal-overlay-r4/full_sysroot_self_check.json.gz",
+      "bytes": 1348,
+      "public_bytes": 1288,
+      "original_sha256": "78b66181ed3b7bc9b2e5e2c0dd7791c4a35805999ad03836f98e6fe595a94c95",
+      "public_sha256": "2eefda1b4cca551fcf0437387391cd891685f259af18b9edd0f49e1ce73d7d06",
+      "gzip_sha256": "39b7b7d36f55f9b33bf6384e61f26bc071189990a317ef6a1876a9b0e0e737ec"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r4/launch-owned-webview-minimal.sh",
+      "archive": "logs/webkit-minimal-overlay-r4/launch-owned-webview-minimal.sh.gz",
+      "bytes": 1815,
+      "public_bytes": 1775,
+      "original_sha256": "63a6fcc5dfe420c581faa56b16e8cf82853c7e27c2c1939b0ee51cb42f144188",
+      "public_sha256": "d9f45cf6e1ef9e828c6cbb8ee238f9eb1710cadf27871848062e15b85891806b",
+      "gzip_sha256": "95eaeda59745c3e9e1cfd4d2a804fc70fea1c4b04a5878a47732482919c383e2"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r4/layer-identity.json",
+      "archive": "logs/webkit-minimal-overlay-r4/layer-identity.json.gz",
+      "bytes": 2387,
+      "public_bytes": 2267,
+      "original_sha256": "fa67aa6c2d50f32aa17450e7c973020f5d75724397d7b0acf2009c7e82412dd6",
+      "public_sha256": "cdfbfee71e28872df9ed6ce0958e89fe2df6dfe9aea9fb52b927aa1ccae9251f",
+      "gzip_sha256": "8833b9be16d269d0a3633dab63c786f3fc517951eb005ecd96e6b5eb3e549346"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r4/minimal-ldd.txt",
+      "archive": "logs/webkit-minimal-overlay-r4/minimal-ldd.txt.gz",
+      "bytes": 28940,
+      "public_bytes": 25600,
+      "original_sha256": "bc8e71c63a09992df14045791e7b615ab67bbb8e51f0aaa5a20d56f2ac374568",
+      "public_sha256": "04ed66b309476a8db9efdee8c995d6ec0b4e954985f311e5d8d68bee1d478e5d",
+      "gzip_sha256": "164f7e928232b555167f9cf3e57353899944910c5c70851555ab0c70fca962fd"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r4/minimal_overlay_self_check.json",
+      "archive": "logs/webkit-minimal-overlay-r4/minimal_overlay_self_check.json.gz",
+      "bytes": 1353,
+      "public_bytes": 1293,
+      "original_sha256": "d637cac8900d1519a4c3436bdf4d1d37821c5228100c145d70a310e6e1245f37",
+      "public_sha256": "5ff024913da3771394ed0a2cd1cff042d494a4102fafe1cfe536d5c80429a43d",
+      "gzip_sha256": "7cc8997bf398cd0a5e2da2c37df511dbfcb28000d9d50a80249c0d6dd5cc3d4c"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r4/package-origin-check.json",
+      "archive": "logs/webkit-minimal-overlay-r4/package-origin-check.json.gz",
+      "bytes": 2181,
+      "public_bytes": 2181,
+      "original_sha256": "1e9da5816ac8c586c43991bb187d3d6f5cb9c6b7cc2a3c4f7afcc5c6f2122245",
+      "public_sha256": "1e9da5816ac8c586c43991bb187d3d6f5cb9c6b7cc2a3c4f7afcc5c6f2122245",
+      "gzip_sha256": "c82358f1b40b54f117209efa67a86d0e4e82a10bbd0a9907ea6db2fd25064d50"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r4/plain-ldd.txt",
+      "archive": "logs/webkit-minimal-overlay-r4/plain-ldd.txt.gz",
+      "bytes": 28940,
+      "public_bytes": 25600,
+      "original_sha256": "3f36c3ff16264d6e70395a7d5c018098638f2a2bd73ba17bcab5e97d9f2ae272",
+      "public_sha256": "7098195bf322408b5d872511e5bc0f100e8589e639da4fde6a57649992aeac87",
+      "gzip_sha256": "3a6b0838472b3e7037ca12c744eed7ff1c40f6d1e14bfce83f4186725547fb37"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r4/plain_self_check.json",
+      "archive": "logs/webkit-minimal-overlay-r4/plain_self_check.json.gz",
+      "bytes": 781,
+      "public_bytes": 761,
+      "original_sha256": "17ed5b3bd2b67494482270ab31556779d2e299c3963bc105413e67952904b784",
+      "public_sha256": "ac8a3dd8e878e918979a283c033cd62b754f91113e74903dc670e39b1dca26dc",
+      "gzip_sha256": "f54e08a7ce946f52f90df7acb802b6dbc90b0f0544f8a24ab2e99ed822f09303"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r7/audit_readonly.py",
+      "archive": "logs/webkit-minimal-overlay-r7/audit_readonly.py.gz",
+      "bytes": 3945,
+      "public_bytes": 3945,
+      "original_sha256": "535f81deff72f3b414148b88b83457420504412de6744d8eace41ee52dbff9f9",
+      "public_sha256": "535f81deff72f3b414148b88b83457420504412de6744d8eace41ee52dbff9f9",
+      "gzip_sha256": "5ad6dcc69d326967a27026bef2fde6b568aede00e7e53b383e32030dcba47d5c"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r7/cua-preflight.log",
+      "archive": "logs/webkit-minimal-overlay-r7/cua-preflight.log.gz",
+      "bytes": 2241,
+      "public_bytes": 2241,
+      "original_sha256": "d2635d51fd935f01548a97327a5555ee3995f8bec4f3e4aacaeae25cdf25c5ee",
+      "public_sha256": "d2635d51fd935f01548a97327a5555ee3995f8bec4f3e4aacaeae25cdf25c5ee",
+      "gzip_sha256": "54a1d7f86b96afe30eef5ae33875b070795414a35c1dd23b560f9134697facec"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r7/exec-preflight.log",
+      "archive": "logs/webkit-minimal-overlay-r7/exec-preflight.log.gz",
+      "bytes": 2256,
+      "public_bytes": 2256,
+      "original_sha256": "a23643dd4117a4da8ba70cf88365144349ebae287cbaf52fa11294a5eeed8260",
+      "public_sha256": "a23643dd4117a4da8ba70cf88365144349ebae287cbaf52fa11294a5eeed8260",
+      "gzip_sha256": "3acf2dbaa91e449a3ef032dab6281239fa43dedd83f76e8d0f74506ff177d550"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r7/launch-owned-webview-minimal.sh",
+      "archive": "logs/webkit-minimal-overlay-r7/launch-owned-webview-minimal.sh.gz",
+      "bytes": 1840,
+      "public_bytes": 1800,
+      "original_sha256": "4381c9b5ffdbae7230653c834d753a8ed42494baf817ac48113b6a53f4622e24",
+      "public_sha256": "4b09431574ebdab144b28d35668f1ebeb1dcfa4f17b34ba946858dd959ccc7c5",
+      "gzip_sha256": "ab862080fe1bf26c562c4ea4aadba670f471a67628442b7c4f0a9aaa26a16451"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r7/run-preflight.sh",
+      "archive": "logs/webkit-minimal-overlay-r7/run-preflight.sh.gz",
+      "bytes": 813,
+      "public_bytes": 733,
+      "original_sha256": "1b39926cf4a079817d8f0ae9548c293ffdcc95aab02831b08d8843243cb8895f",
+      "public_sha256": "44639b5a6ee1f3a86e9484c95d7eeb857036c807e53c77ff4ba8ed87aaed5ee6",
+      "gzip_sha256": "04240c526be2afdd432a4c0b4fd50b01bc3368717de54fa11165824f0052e301"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r7/uid-preflight.json",
+      "archive": "logs/webkit-minimal-overlay-r7/uid-preflight.json.gz",
+      "bytes": 560,
+      "public_bytes": 560,
+      "original_sha256": "b17f1dae2668b1a8a1060144667de683999003849dc732ea482702c5d2c637f4",
+      "public_sha256": "b17f1dae2668b1a8a1060144667de683999003849dc732ea482702c5d2c637f4",
+      "gzip_sha256": "1bbd61b0da8151345ad3f5b385e7d9cb0ad898a499e98db2234e40b2ef04e109"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r9/audit_readonly.py",
+      "archive": "logs/webkit-minimal-overlay-r9/audit_readonly.py.gz",
+      "bytes": 4899,
+      "public_bytes": 4899,
+      "original_sha256": "71b3050dcc04baa8dc7826ae9b90fc2f41992dfc46279f029187c39cac08ca36",
+      "public_sha256": "71b3050dcc04baa8dc7826ae9b90fc2f41992dfc46279f029187c39cac08ca36",
+      "gzip_sha256": "6600b58685fb5234ead963c03a2e2a697eac48bd9cc45690787909b77a18c3e8"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r9/cua-preflight.log",
+      "archive": "logs/webkit-minimal-overlay-r9/cua-preflight.log.gz",
+      "bytes": 2654,
+      "public_bytes": 2654,
+      "original_sha256": "f0a136bf425e5cace4ff797aea526b2ad82b8aeab0888943cf9332e3ed91d3a9",
+      "public_sha256": "f0a136bf425e5cace4ff797aea526b2ad82b8aeab0888943cf9332e3ed91d3a9",
+      "gzip_sha256": "fb7281710a8232c07e8edf0561bc10c5ef826068fdb7fdcd23d5340254f0d3d1"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r9/launch-owned-webview-minimal.sh",
+      "archive": "logs/webkit-minimal-overlay-r9/launch-owned-webview-minimal.sh.gz",
+      "bytes": 2146,
+      "public_bytes": 2106,
+      "original_sha256": "8edd7ebf185f13902e6a8a9dadb28b0c22fac966f542bb3b6cf19a8c1e91f4a4",
+      "public_sha256": "8094a57ff9441fb36be98fd5048d1d1a490a2db161b2925090ecf1d52054fd7b",
+      "gzip_sha256": "b3af7c5b912c5c40c29b512dbb59e2f1cbc691e9ddf8e33c3c794e857043cd15"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-minimal-overlay-r9/run-preflight.sh",
+      "archive": "logs/webkit-minimal-overlay-r9/run-preflight.sh.gz",
+      "bytes": 1076,
+      "public_bytes": 976,
+      "original_sha256": "c5da07b91d66e104ab0982d8a26b71a4f85e53385ad8698f1143780b6b2f73e7",
+      "public_sha256": "2d8659aaf7599037002c88e2d5a13ef8256a0947c8d1727e55b360e7999da3b5",
+      "gzip_sha256": "bf64752035542b1f38f4ca206529ad653123289e2a40c04052e92bad191c3b69"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/WebKitGPUProcess-sysroot-ldd.txt",
+      "archive": "logs/webkit-namespace-preflight-r1/WebKitGPUProcess-sysroot-ldd.txt.gz",
+      "bytes": 28940,
+      "public_bytes": 25600,
+      "original_sha256": "ea781e011a7328a0f17b2ee1cfa4576a9388b23a4d36d7b91efc13d58902fe61",
+      "public_sha256": "44aa04707a50b60d3d2e6ac0b4efcfae363a5219a802f9b3b613b12d2c161aa9",
+      "gzip_sha256": "b2dea0a78d564e57a2ae0ea4d3e42433525b556af7cb3dc4174e130e7cfa4f24"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/WebKitNetworkProcess-sysroot-ldd.txt",
+      "archive": "logs/webkit-namespace-preflight-r1/WebKitNetworkProcess-sysroot-ldd.txt.gz",
+      "bytes": 28940,
+      "public_bytes": 25600,
+      "original_sha256": "8d717492e46c28e888ae713b6778ad1cb603fe7115fe18cb63b94e2d19a8f89f",
+      "public_sha256": "2a45a17e734ba507edcd71b6ba008a1d28793e476e758dcafcc54c676007b8eb",
+      "gzip_sha256": "9a79aa768a51aa48a38f9883bb4c9b3505a754b6fd0cc5cc9ccc9ce2f0ea22be"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/WebKitWebProcess-sysroot-ldd.txt",
+      "archive": "logs/webkit-namespace-preflight-r1/WebKitWebProcess-sysroot-ldd.txt.gz",
+      "bytes": 28940,
+      "public_bytes": 25600,
+      "original_sha256": "e6eaf053b64aff65740e64db807028750e45b1a74097aa5250567f0945835d60",
+      "public_sha256": "dd26fe2aa8f4524fafeeb095c10cc0f173c9c95f5daebd37a47f6ac407603df4",
+      "gzip_sha256": "a6ed28cab2d440b563172fb00a73729e89ea8b7f62160095b69a8106636a70de"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/audit_readonly.py",
+      "archive": "logs/webkit-namespace-preflight-r1/audit_readonly.py.gz",
+      "bytes": 1446,
+      "public_bytes": 1446,
+      "original_sha256": "f41dcdbdd7a5c071aff5dd70cda2f65e915be113b3215f1c4add9f85017cda2d",
+      "public_sha256": "f41dcdbdd7a5c071aff5dd70cda2f65e915be113b3215f1c4add9f85017cda2d",
+      "gzip_sha256": "7f21a16479ba6e15dc3bca004b6ed7217cf9d3150b73fa47ae862b4c5176c62c"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/binary-and-dependency-check.json",
+      "archive": "logs/webkit-namespace-preflight-r1/binary-and-dependency-check.json.gz",
+      "bytes": 1724,
+      "public_bytes": 1624,
+      "original_sha256": "bfe836a989870ae2e4c0cd94937051cd0d69a96de9c508ad6ec2b0fac2b1140c",
+      "public_sha256": "9bdf37e27c4ad6acc05920881c436d150356719afd1993fb7072a49f29eca05c",
+      "gzip_sha256": "fb06fc571927f246d68a22173c03f71baff898158f7cc46bba30426225a8becf"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/bwrap-help.txt",
+      "archive": "logs/webkit-namespace-preflight-r1/bwrap-help.txt.gz",
+      "bytes": 5556,
+      "public_bytes": 5556,
+      "original_sha256": "2fa5163e8a152ac606ef78978b2e6d68ab8ba33d77ac10f5f3c443eeb25642df",
+      "public_sha256": "2fa5163e8a152ac606ef78978b2e6d68ab8ba33d77ac10f5f3c443eeb25642df",
+      "gzip_sha256": "79f89b215384d9a727d2a77b9ba2aaa4a6f2a33035b44379af2c146c6c1db366"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/bwrap-host-ldd.txt",
+      "archive": "logs/webkit-namespace-preflight-r1/bwrap-host-ldd.txt.gz",
+      "bytes": 732,
+      "public_bytes": 652,
+      "original_sha256": "a45926dff62a6fdeadacec7c35ecb924499cd7f83cb09ecf24801b26dcd5f967",
+      "public_sha256": "c5f74a3b5b1c69242968c7832fbe78b07b362eaa1ef464d12cad7e5d3fb4e093",
+      "gzip_sha256": "b2e99a443a4ee060b75ecb3486da818a07999782c723027f6efd0afb9b04920d"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/bwrap-overlay-man-excerpt.txt",
+      "archive": "logs/webkit-namespace-preflight-r1/bwrap-overlay-man-excerpt.txt.gz",
+      "bytes": 2245,
+      "public_bytes": 2245,
+      "original_sha256": "b7d573a8328e38fd6af1b786d5a2e4bcaad2381cb7f11231e5af0fc227ab6c3e",
+      "public_sha256": "b7d573a8328e38fd6af1b786d5a2e4bcaad2381cb7f11231e5af0fc227ab6c3e",
+      "gzip_sha256": "359c9386c01056862f4bf372a177926982380e83f9bf783d88194d1cbdcd7eee"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/bwrap-sysroot-ldd.txt",
+      "archive": "logs/webkit-namespace-preflight-r1/bwrap-sysroot-ldd.txt.gz",
+      "bytes": 732,
+      "public_bytes": 652,
+      "original_sha256": "da347dd8ac1acdf9998a2c368ed2fa1fd0d5bca788a8c8687a2e2d71a1a8db58",
+      "public_sha256": "732c4a9d94118809088cbca4a448536f2e7ff2e0e9e3c4d88b2837af09956094",
+      "gzip_sha256": "caed23d986f1629b2ba707261ea5ea3f8755221e6d57b7b8528d3555ec0b321d"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/bwrap-version.txt",
+      "archive": "logs/webkit-namespace-preflight-r1/bwrap-version.txt.gz",
+      "bytes": 18,
+      "public_bytes": 18,
+      "original_sha256": "c2e785078f5ddb8cb9a495292e71a198c051793b15c4a77d9d13675e28e714a7",
+      "public_sha256": "c2e785078f5ddb8cb9a495292e71a198c051793b15c4a77d9d13675e28e714a7",
+      "gzip_sha256": "d0b47a6737237c83e9f15537fec82d1b15fcd1da1a4b3ad1d6e19bd9ca626e08"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/cua-preflight.log",
+      "archive": "logs/webkit-namespace-preflight-r1/cua-preflight.log.gz",
+      "bytes": 1187,
+      "public_bytes": 1167,
+      "original_sha256": "63b5c7f0213a9f1fb48e6db373696be75de433ff78c52f572aa85ea3777f765b",
+      "public_sha256": "a306741a15bef35efbd3c5a7bfa072fabe16c4c135683b1c888d4b8bbd1e2c88",
+      "gzip_sha256": "1d0a1ae575bf2b83fb83d57b2717b828f9049b519ea6194700db864d0b07acf6"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/direct_missing_helper_bind.json",
+      "archive": "logs/webkit-namespace-preflight-r1/direct_missing_helper_bind.json.gz",
+      "bytes": 596,
+      "public_bytes": 576,
+      "original_sha256": "d8852f68d4e3dad4d4fc4aa680bbaf28e2cc663f6a4d29bc6c133b5605072151",
+      "public_sha256": "9bbe3eada453c6e3d760f4c646882211294dc14fe5d27c7f8f02605cfc7d6378",
+      "gzip_sha256": "8b6ee4542a1e3e1d19c15cf0e3168d9a2f222ba2f0c258a8e57715bd955fe6c6"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/docker-rootless-readonly.json",
+      "archive": "logs/webkit-namespace-preflight-r1/docker-rootless-readonly.json.gz",
+      "bytes": 1329,
+      "public_bytes": 1329,
+      "original_sha256": "2f0d38b0bbe60499d04d06e3a6a5f894f3093911b62d216d3584db1b8964e152",
+      "public_sha256": "2f0d38b0bbe60499d04d06e3a6a5f894f3093911b62d216d3584db1b8964e152",
+      "gzip_sha256": "254fa3f23b809482c026720f47cbf162d02f4118709b476413c32f8bf3bec69b"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/launch-owned-webview.sh",
+      "archive": "logs/webkit-namespace-preflight-r1/launch-owned-webview.sh.gz",
+      "bytes": 1787,
+      "public_bytes": 1747,
+      "original_sha256": "7f64c9059c63ff0ecff718a4ed8d306b77ed337be0d4fa5c5b3372025726c922",
+      "public_sha256": "652bce29aa83c9b2a8d636ffa999732fe3a0fb9de17bdb77c3bdf9ae87967510",
+      "gzip_sha256": "59867d916703fc9510b6456464d81bd7d7ec3cccec5b3c2a2411850c6acaa15b"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/nested_readonly_namespace.json",
+      "archive": "logs/webkit-namespace-preflight-r1/nested_readonly_namespace.json.gz",
+      "bytes": 403,
+      "public_bytes": 403,
+      "original_sha256": "ff7db44e850fc2e1e84e593ea43ae3c5cdbac24b4c549ed10cc8399c175caa65",
+      "public_sha256": "ff7db44e850fc2e1e84e593ea43ae3c5cdbac24b4c549ed10cc8399c175caa65",
+      "gzip_sha256": "2986c9ef68a1497abae95a056307a817eb78943929fa84d4e8450053db46f16d"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/nested_with_private_proc.json",
+      "archive": "logs/webkit-namespace-preflight-r1/nested_with_private_proc.json.gz",
+      "bytes": 450,
+      "public_bytes": 450,
+      "original_sha256": "f632176d06f7d033dc858131e4e7ef189900cbd147781dbafca50393e0fef2ce",
+      "public_sha256": "f632176d06f7d033dc858131e4e7ef189900cbd147781dbafca50393e0fef2ce",
+      "gzip_sha256": "ba1f72b635dbfe5a77c2d999179689bc1bff02047816a6292814dd746a302dc6"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/overlay-dependencies-without-ld-override.json",
+      "archive": "logs/webkit-namespace-preflight-r1/overlay-dependencies-without-ld-override.json.gz",
+      "bytes": 1860,
+      "public_bytes": 1820,
+      "original_sha256": "0dcca858a6eeadb2228cc9bae57beb73fc3ab43db520c9b36a6187c1addd7af7",
+      "public_sha256": "ccd1185dd7e3341a3d4330344624e3898b470559e8c8a88199646ca9cb2a5a86",
+      "gzip_sha256": "77598ab6084dde0bcc413622ea0b42e411b5a4bf3c7759b68393fd61886300a6"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/package-origin-check.json",
+      "archive": "logs/webkit-namespace-preflight-r1/package-origin-check.json.gz",
+      "bytes": 2070,
+      "public_bytes": 2070,
+      "original_sha256": "4ca0f97b8834e24325e00bcf63b64e52822e30493c2ac2cb534730983d6b2c59",
+      "public_sha256": "4ca0f97b8834e24325e00bcf63b64e52822e30493c2ac2cb534730983d6b2c59",
+      "gzip_sha256": "b4fa116b487c3556395605f69873daa3e67e19a9c21fef043e1fad7f1bd9784b"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/readonly_dual_overlay_and_nested.json",
+      "archive": "logs/webkit-namespace-preflight-r1/readonly_dual_overlay_and_nested.json.gz",
+      "bytes": 3235,
+      "public_bytes": 3195,
+      "original_sha256": "51367302f7d123824449404f07302d772b324796736aa3a761013c7b39b194f1",
+      "public_sha256": "7e690eee1007288eeeb2c8769de25eef1134d967c38390ea627eeca6b0dacdd6",
+      "gzip_sha256": "c5ab6f045e21e0fcb3f5e3f9b1b34a9ee95c45ba7fd112ff7198b52bb0a108dd"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/readonly_library_overlay.json",
+      "archive": "logs/webkit-namespace-preflight-r1/readonly_library_overlay.json.gz",
+      "bytes": 734,
+      "public_bytes": 714,
+      "original_sha256": "e9dcbc08789fd3574d3d3839e1ed418f7a607a5750b7395d60cb81e74cc67bf9",
+      "public_sha256": "dbbbc6d048808d66123f086663717686c379e4941830c5a003d2d68bfc6dd251",
+      "gzip_sha256": "c31a515a5e64ec5137816ba2dcc5e952ad9db5e1af32686ea8e8e8eb084806c7"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/readonly_namespace.json",
+      "archive": "logs/webkit-namespace-preflight-r1/readonly_namespace.json.gz",
+      "bytes": 241,
+      "public_bytes": 241,
+      "original_sha256": "731b3ebd9a7600865fe27526b0e3d57f2069354d1b87109ecdec23e00bb4a3d6",
+      "public_sha256": "731b3ebd9a7600865fe27526b0e3d57f2069354d1b87109ecdec23e00bb4a3d6",
+      "gzip_sha256": "d880e7c403e6930483994c036fa51bcbafbaaf803f56a043d9344bacc4f17848"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/run-cua-preflight.sh",
+      "archive": "logs/webkit-namespace-preflight-r1/run-cua-preflight.sh.gz",
+      "bytes": 708,
+      "public_bytes": 648,
+      "original_sha256": "3606ae5897760b13f08802281dc611e8abfe8ca34e92b3a667b0affd78942512",
+      "public_sha256": "dbd864f2440ed591bc70dc66bc55a2e72aa4254140c80043c6ef88ddd02c7764",
+      "gzip_sha256": "a20666d88563e79e8b127799328b22cef95c8b4540bbd2c5de87221d7cd6b0ae"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r1/xdg-dbus-proxy-sysroot-ldd.txt",
+      "archive": "logs/webkit-namespace-preflight-r1/xdg-dbus-proxy-sysroot-ldd.txt.gz",
+      "bytes": 2210,
+      "public_bytes": 1950,
+      "original_sha256": "419b23a3ef4f952226ec107c69386f44e1bdb1b86782d41006e6e3a7307cf936",
+      "public_sha256": "3ae133fcf960bb8686f0d19a639aef4086f219277a85a0aeba0008e91e0327cc",
+      "gzip_sha256": "45ca0ff6aeeda87dbe0332cd9b41905814f7c79a4223e40e194070b1b784d3b7"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r2/PREFLIGHT_SHA256.json",
+      "archive": "logs/webkit-namespace-preflight-r2/PREFLIGHT_SHA256.json.gz",
+      "bytes": 3817,
+      "public_bytes": 3817,
+      "original_sha256": "e7947fe4b9857b7b1c9233ab33d72cd7fd16dfcc80cab4f1456b4218e38502d8",
+      "public_sha256": "e7947fe4b9857b7b1c9233ab33d72cd7fd16dfcc80cab4f1456b4218e38502d8",
+      "gzip_sha256": "f915fb54bf4adbdc88f6c5190f6868ec6feb2d9cbb53728f0f7ff72ea7b06cb1"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r2/README.md",
+      "archive": "logs/webkit-namespace-preflight-r2/README.md.gz",
+      "bytes": 5136,
+      "public_bytes": 5136,
+      "original_sha256": "fcf73063e4d9cae7277734ddb25beb1dc13223616d91ae01c80e2a5dd69ed23a",
+      "public_sha256": "fcf73063e4d9cae7277734ddb25beb1dc13223616d91ae01c80e2a5dd69ed23a",
+      "gzip_sha256": "0f3fd9cb72ac3a2c49dee3d77eef0d683c87dfba5fe2d09c7bce8a6cb20533b4"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r2/audit_readonly.py",
+      "archive": "logs/webkit-namespace-preflight-r2/audit_readonly.py.gz",
+      "bytes": 3317,
+      "public_bytes": 3317,
+      "original_sha256": "ad9bb76b41a53155e3a8bb07d48df9aa4daca315fea81cefc7216324d79c0e27",
+      "public_sha256": "ad9bb76b41a53155e3a8bb07d48df9aa4daca315fea81cefc7216324d79c0e27",
+      "gzip_sha256": "8dbd55acab8421bf2148dbb53db211da137560114ac9d63490420368272b71ea"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r2/cua-preflight.log",
+      "archive": "logs/webkit-namespace-preflight-r2/cua-preflight.log.gz",
+      "bytes": 1794,
+      "public_bytes": 1794,
+      "original_sha256": "c513daf34bd36963082ed15fa61c40b91c7d6596bfd1719cb4ed79310c186883",
+      "public_sha256": "c513daf34bd36963082ed15fa61c40b91c7d6596bfd1719cb4ed79310c186883",
+      "gzip_sha256": "1be9c87462892c935175b435d6a19107ce9edf4bd2563b5ec64986cc77149d04"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-namespace-preflight-r2/exec-preflight.log",
+      "archive": "logs/webkit-namespace-preflight-r2/exec-preflight.log.gz",
+      "bytes": 1794,
+      "public_bytes": 1794,
+      "original_sha256": "8a237e88387623591fb6ec73b220dc12a7efb850ea587a56cdf0e8876267992c",
+      "public_sha256": "8a237e88387623591fb6ec73b220dc12a7efb850ea587a56cdf0e8876267992c",
+      "gzip_sha256": "aa61e4444c18c77bfa3f1f8036d481488502819c3a978079ebad45c22326d00f"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-r9-startup-snapshot/SNAPSHOT.json",
+      "archive": "logs/webkit-r9-startup-snapshot/SNAPSHOT.json.gz",
+      "bytes": 1407,
+      "public_bytes": 1287,
+      "original_sha256": "d270df54752517d3c9e2f1e82cb35802d2f328e63f497fc1344d2ee8a7eaeb13",
+      "public_sha256": "17f17da4a1ce87e38738b323b69a27d36bc5fef7a0f6f15cd4af903b89da68ea",
+      "gzip_sha256": "e8c3deeb4c1deff1460a96f8b04932c2b250734743fe68a2cd6b1dc2ee340d2d"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-r9-startup-snapshot/native-final-r9-a-process.json",
+      "archive": "logs/webkit-r9-startup-snapshot/native-final-r9-a-process.json.gz",
+      "bytes": 872,
+      "public_bytes": 812,
+      "original_sha256": "77b6a12fb5430bb5a7a0ba98df5f80ddfbd93d09c35f3074b88dc3c3290d8a2e",
+      "public_sha256": "f7e24fa2ab57fed31a1c63be4d11f79016b4674c137104611e0a4d15d0677954",
+      "gzip_sha256": "4a7468b1f1f865efe82fe51562121d18ab8595c8df5e0355a8bf858e96b66b33"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-r9-startup-snapshot/native-final-r9-a.log",
+      "archive": "logs/webkit-r9-startup-snapshot/native-final-r9-a.log.gz",
+      "bytes": 969,
+      "public_bytes": 969,
+      "original_sha256": "86be3eed0b273ab6fbd5c6a150ac2c708f4ff6c4c16068d01e06aca99bdaaad6",
+      "public_sha256": "86be3eed0b273ab6fbd5c6a150ac2c708f4ff6c4c16068d01e06aca99bdaaad6",
+      "gzip_sha256": "f2e1205b6b8a4b74916dc66e200fbe75e87a52f7629d5b2be53c4190082c2442"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-r9-startup-snapshot/native-final-r9-owned-processes.json",
+      "archive": "logs/webkit-r9-startup-snapshot/native-final-r9-owned-processes.json.gz",
+      "bytes": 5070,
+      "public_bytes": 5050,
+      "original_sha256": "58857a78f751882dce5201f413d5183183a69605342a720a5ba72bbab0d843a6",
+      "public_sha256": "0c799bd48056ed276278860576ef5f9838a49d9ab68bb021d653056e4856430d",
+      "gzip_sha256": "c5e704022b80a2a62da5ff5ae8abc7523ffa8b1c235aa6a0ef0293357197a694"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-x11-identity-r8/inspect_identity.py",
+      "archive": "logs/webkit-x11-identity-r8/inspect_identity.py.gz",
+      "bytes": 1112,
+      "public_bytes": 1112,
+      "original_sha256": "37df7b279281bfcf55106a14ea9fd4cfde0e66dfa418d62183d30cb7e28b304b",
+      "public_sha256": "37df7b279281bfcf55106a14ea9fd4cfde0e66dfa418d62183d30cb7e28b304b",
+      "gzip_sha256": "8d90847cad8b61165ac6eab776876246ddcaa3952309a54e06ee6d267095d043"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-x11-identity-r8/namespace.json",
+      "archive": "logs/webkit-x11-identity-r8/namespace.json.gz",
+      "bytes": 436,
+      "public_bytes": 436,
+      "original_sha256": "fff509cb822fe3bd87e3246d23bd8571e34dcc88ec87d7a8c97103fb676afb22",
+      "public_sha256": "fff509cb822fe3bd87e3246d23bd8571e34dcc88ec87d7a8c97103fb676afb22",
+      "gzip_sha256": "eff4c79bcbd54dc7e304f5b85b25ce1916e13f15c6df8af4ba760b4c70596cf2"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/webkit-x11-identity-r8/outer.json",
+      "archive": "logs/webkit-x11-identity-r8/outer.json.gz",
+      "bytes": 636,
+      "public_bytes": 636,
+      "original_sha256": "ce1ab189500926864411c77b4680342f5960ebe02ee281846e0a2484cf79ecdb",
+      "public_sha256": "ce1ab189500926864411c77b4680342f5960ebe02ee281846e0a2484cf79ecdb",
+      "gzip_sha256": "ce7b15620148e3a4beb37d08bd485e8233691fb9a29fc64be1b47f012a4343b5"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/wk-r2.sh",
+      "archive": "logs/wk-r2.sh.gz",
+      "bytes": 830,
+      "public_bytes": 750,
+      "original_sha256": "f317c0d81f0b07c7e4553691413313776d68a8b63853222d898436d732c94136",
+      "public_sha256": "e89d04af7d50dbcedea06b4db27a400f1e6fcdafa8332ccccbefb4c38d291e57",
+      "gzip_sha256": "fba263eca9702ea841137aec80243e16df949bf1a2d8915e6cfd8985bed82eb7"
+    },
+    {
+      "original": "validation/polish-20261116/desktop/wk-x11-r8.sh",
+      "archive": "logs/wk-x11-r8.sh.gz",
+      "bytes": 1426,
+      "public_bytes": 1226,
+      "original_sha256": "d3ef0d05de17354ffe639dd1e163db699cf9557f8faf2c22a4df0efad9ae6788",
+      "public_sha256": "6d43ca6fade4099f36c6fe16ecee06c23f7bc24dce0d41c169a2d7903c7d197d",
+      "gzip_sha256": "8db89fab84b96c84d1f74e85074a41b309e4a8d2de81110289173b72d759ce18"
+    }
+  ]
+}

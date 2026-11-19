@@ -1,0 +1,119 @@
+{
+  "archive": "../archives/linux-native-raw.tar.gz",
+  "bytes": 51679,
+  "sha256": "9d7ae86b189d61e4e9d2f306407901ed29484d59241b9d6d5b106e3516d3cff4",
+  "members": {
+    "linux/evidence/host/apt-download-before-index.log": {
+      "bytes": 265,
+      "sha256": "fc14d5d4e1a04c4eb7bf68bf18fa2d3478b140d589785ff7ee57debeb9816143"
+    },
+    "linux/evidence/host/compile-offline-before-fetch.log": {
+      "bytes": 120,
+      "sha256": "9ba4a1a1f7d4d8785411fd1a414665fe1bbd7e01ccc85b033fed92b72f52c57c"
+    },
+    "linux/evidence/host/extract-sysroot.py": {
+      "bytes": 1156,
+      "sha256": "66f0f9af38cbabb3d507f0f491820f81d3f6842da492a97f07d3ab5d8b5b7dab"
+    },
+    "linux/evidence/host/prepare-first-failure.log": {
+      "bytes": 7028,
+      "sha256": "4cd7080c78ca377b59067242d4704b224a26952621a386ed7f115a4bd6354339"
+    },
+    "linux/evidence/host/require-hashes.txt": {
+      "bytes": 3488,
+      "sha256": "c8ca1d28571352af0c9e2b041bef09ede5a9be41a775bd740dd15aef7d38322e"
+    },
+    "linux/lifecycle/RESULTS.json": {
+      "bytes": 2455,
+      "sha256": "ee255bc04373920171ab077e2a4b1ae650e34cc5de9943611f3983fea8dacee8"
+    },
+    "linux/lifecycle/check_step.py": {
+      "bytes": 5012,
+      "sha256": "65de773e246894bb3d20d3a5c76a36b0763b0eb9e7f0e936c35c6f381add7755"
+    },
+    "linux/lifecycle/preflight.json": {
+      "bytes": 1882,
+      "sha256": "56473e0e3b78a3564e1dfc9647a1628e1cab79148ec0c0fb50fa1fa571226bc4"
+    },
+    "linux/lifecycle/root/var/log/dpkg.log": {
+      "bytes": 262,
+      "sha256": "fb9ec8822fb3aad741f01a21da3870200ff8fcda0f7341667d07e970b9bb652b"
+    },
+    "linux/lifecycle/step-1-5.0.1-rc.17.json": {
+      "bytes": 3296,
+      "sha256": "baab426b5b6ad15297b3f9289caa2db78c83fbb705fcc537cceb6f3acab24896"
+    },
+    "linux/packaged-companion/run.py": {
+      "bytes": 2137,
+      "sha256": "67e00fd5d2c439fbf891757320bffb0b94488537813381eeb4f948fca286afb8"
+    },
+    "linux/packaged-companion/tests.log": {
+      "bytes": 3433,
+      "sha256": "115fd078c3117be0ec13dc1b0359fe4ff95cb45e2567d03fca0e913ae5bc7094"
+    },
+    "linux/r1/build-config.json": {
+      "bytes": 719,
+      "sha256": "7443683b420c991f4a3ec193505cedcd5e68aff64200a547d5f5b00fa6e16503"
+    },
+    "linux/r1/cargo-check-offline.log": {
+      "bytes": 120,
+      "sha256": "9ba4a1a1f7d4d8785411fd1a414665fe1bbd7e01ccc85b033fed92b72f52c57c"
+    },
+    "linux/r1/native-build.log": {
+      "bytes": 29622,
+      "sha256": "9eee1cf4a5a5f453241cdbcac32876def071da33a7aa560b5a9a8db2ce088832"
+    },
+    "linux/r1/native-build.sh": {
+      "bytes": 980,
+      "sha256": "a3acfa67321aa2367a5a9140a199f785db4eb5e44e28b50ec71403d8a0627808"
+    },
+    "linux/r1/package-SHA256SUMS": {
+      "bytes": 111,
+      "sha256": "a3f292886646e8dafd05a6932ab9a8f460f52399887c92d3a88f7eb3f483555a"
+    },
+    "linux/r1/sysroot-extract.log": {
+      "bytes": 29,
+      "sha256": "eab849563853778d4265f6e79d1d23d4c3b688c67fce32de5cef6ca6fa9a36d1"
+    },
+    "linux/r1/sysroot-packages.json": {
+      "bytes": 50810,
+      "sha256": "d07cbc7ea246832c74ce7a0b0332370c1960ce2af8eb4c58e3b1c2a1fa254ce6"
+    },
+    "linux/r1/verified-linux-backend-r2.log": {
+      "bytes": 6938,
+      "sha256": "a9ff7a80fe856e0012fb0272a7f1d0f8e04a688f06472d4df9840ccdafdc1869"
+    },
+    "linux/r2/build-config.json": {
+      "bytes": 719,
+      "sha256": "7443683b420c991f4a3ec193505cedcd5e68aff64200a547d5f5b00fa6e16503"
+    },
+    "linux/r2/native-build.log": {
+      "bytes": 17939,
+      "sha256": "3a47b3fed42ab83f34b3f9fd3f850dc9369d37ddc6495f6b81eba9fc3fb365e5"
+    },
+    "linux/r2/native-edge-test.sh": {
+      "bytes": 2327,
+      "sha256": "65dea77e0a9e5deac3887a851ba6778b98500f9dbeade6f9c4fca6bc2fe7e024"
+    },
+    "linux/r2/native-rust-suite.log": {
+      "bytes": 4840,
+      "sha256": "6b9d54670878a235b662dcc61d6a379a4af51ce2c05c20b46ac78a9f92a4ef10"
+    },
+    "linux/r2/package-SHA256SUMS": {
+      "bytes": 111,
+      "sha256": "51544bb7dd7db4d5e1c75e56136fbd0a73d239cc1af9861aa4fbb3a11dc31fbc"
+    },
+    "linux/r2/packaged-core-recovery.log": {
+      "bytes": 164,
+      "sha256": "882a609ba44749f8da8031fea4e809475f8a474ef13550658d60381aa4b09850"
+    },
+    "linux/r2/verified-linux-backend.log": {
+      "bytes": 6938,
+      "sha256": "a9ff7a80fe856e0012fb0272a7f1d0f8e04a688f06472d4df9840ccdafdc1869"
+    },
+    "pet/native-edge-tests.log": {
+      "bytes": 684,
+      "sha256": "7a7ed1e919ee9563013fa7787a8e6bd7791aaea50f6d342f5d20b8fcd10827b1"
+    }
+  }
+}

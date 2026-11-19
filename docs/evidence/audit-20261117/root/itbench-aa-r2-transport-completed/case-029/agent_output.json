@@ -1,0 +1,19 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Deployment/ad",
+      "reasoning": "The Deployment template pins the replacement ad pod to a hostname that does not exist in the cluster. That prevents the replacement pod from scheduling and leaves the rollout incomplete, producing a pending/not-ready replica; this is an independent scheduling fault, not an effect of quota exhaustion.",
+      "evidence": "The 18:04:40 object snapshot shows spec.template.spec.nodeSelector kubernetes.io/hostname=invalid-node. The ad-dd7f45975-mw86p Pod is Pending with PodScheduled=False and an Unschedulable message; its FailedScheduling event (17:54:51 onward) says 4 of 5 nodes fail the selector and the remaining node has an untolerated control-plane taint. The snapshot's topology lists four worker hostnames and a tainted control-plane node, none named invalid-node. PendingPodsDetected later reports 2 pending pods, and KubePodNotReady fires for this pod."
+    },
+    {
+      "name": "otel-demo/Deployment/cart",
+      "reasoning": "This Deployment independently applies the same nonexistent-host selector to its replacement cart pod. The scheduler therefore cannot place that replica; the cart symptom is not explained by the ad Deployment because this is a separate template and pod.",
+      "evidence": "The 18:04:40 object snapshot shows spec.template.spec.nodeSelector kubernetes.io/hostname=invalid-node. The cart-5b597c6db5-pkzkh Pod is Pending with PodScheduled=False; its FailedScheduling event (17:54:59 onward) says 4 of 5 nodes fail the selector and the remaining node has an untolerated control-plane taint. The topology has no invalid-node hostname. PendingPodsDetected reports 2 pending pods, and KubePodNotReady fires for this cart pod."
+    },
+    {
+      "name": "otel-demo/Deployment/frontend",
+      "reasoning": "The sole frontend replica is capped at 100m CPU and is measurably CPU-throttled under load. The CPU cap constrains frontend response capacity and is the upstream resource fault consistent with the concurrent frontend/proxy request errors; it is separate from the ad/cart scheduling faults.",
+      "evidence": "The 18:04:40 Deployment snapshot has replicas=1 and frontend container requests.cpu=50m, limits.cpu=100m. CPUThrottlingHigh fires for frontend from 17:46 onward with observed throttling of about 25–29% (for example 27.66% at 17:46 and 29.25% at 17:51, recurring through 18:16). The frontend-proxy RequestErrorRate alert reports 0.01111 at 17:49, 17:54, and 18:10–18:12; frontend and frontend-proxy metrics also contain STATUS_CODE_ERROR series during 17:45–18:08. A failing trace records an ingress 503 from frontend-proxy with upstream_cluster=frontend and response_flags=UC."
+    }
+  ]
+}

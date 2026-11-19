@@ -33,7 +33,7 @@ class PersonalActivityTests(unittest.TestCase):
         return self.app.observation_memory.add(self.app.privacy.filter_native(raw))
 
     def attach_task(self, task_id="fixture_task"):
-        self.app.store.set("localpilot_tasks", {task_id:{"endpoint":self.app.config.localpilot_endpoint}})
+        self.app.store.tasks.put(task_id, {"endpoint":self.app.config.localpilot_endpoint})
         return task_id
 
     def test_low_frequency_morning_and_evening_greetings_are_persistent_and_model_free(self):
@@ -153,7 +153,7 @@ class PersonalActivityTests(unittest.TestCase):
         result = {"task_id":task_id, "status":"completed", "quiescent":True, "agent_response":"Synthetic answer", "goal_verified":False}
         self.app.receive_task_update(task_id, result)
         self.app.receive_task_update(task_id, result)
-        saved = self.app.store.get("localpilot_tasks")[task_id]
+        saved = self.app.store.tasks.get(task_id)
         self.assertIn("尚未经独立验收", saved["feedback"]["text"])
         self.assertFalse(saved["feedback"]["goal_verified"])
         self.assertIn("notice_id", saved["feedback"])
@@ -165,7 +165,7 @@ class PersonalActivityTests(unittest.TestCase):
         self.app.store.set("proactive_level", "off")
         for status, quiet, expected in (("requires_human", False, "需要你接手"), ("requires_approval", False, "等待"), ("failed", True, "失败")):
             self.app.receive_task_update(task_id, {"task_id":task_id, "status":status, "quiescent":quiet})
-            saved = self.app.store.get("localpilot_tasks")[task_id]
+            saved = self.app.store.tasks.get(task_id)
             self.assertIn(expected, saved["feedback"]["text"])
         self.assertEqual(self.app.store.db.execute("SELECT count(*) FROM notices").fetchone()[0], 0)
 
@@ -173,7 +173,7 @@ class PersonalActivityTests(unittest.TestCase):
         task_id = self.attach_task()
         self.app.receive_task_update(task_id, {"task_id":task_id, "status":"completed", "quiescent":True,
                                              "unknown_mutation":True, "goal_verified":False})
-        feedback = self.app.store.get("localpilot_tasks")[task_id]["feedback"]
+        feedback = self.app.store.tasks.get(task_id)["feedback"]
         self.assertIn("尚不确定", feedback["text"])
         self.assertIn("不会自动重做", feedback["text"])
 

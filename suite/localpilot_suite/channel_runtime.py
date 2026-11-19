@@ -71,7 +71,7 @@ def _install(home):
     if shutil.disk_usage(root).free < 512 * 1024 ** 2:
         raise ValueError('CHANNEL_NODE_INSUFFICIENT_DISK')
     # A partial transfer is only a cache. Nothing executes before the full pin matches.
-    bundled = Path(sys.executable).resolve().parents[2] / 'channel-runtime' / name
+    bundled = Path(sys.prefix).parent / 'channel-runtime' / name
     used_bundled = bundled.is_file() and digest(bundled) == checksum
     if used_bundled:
         shutil.copyfile(bundled, partial)

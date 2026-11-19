@@ -1,0 +1,9 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Deployment/ad",
+      "reasoning": "The Ad deployment is the upstream cause of the customer-facing errors: its single ad container is capped at 256Mi and is OOM-killed, interrupting AdService connections. Frontend requests that call AdService then fail, and frontend-proxy reports the propagated request errors; those front-end resources are symptoms, not independent causes.",
+      "evidence": "In k8s_objects_raw.tsv, otel-demo/Deployment/ad has one replica and a 256Mi memory limit; otel-demo/Pod/ad-85d5cc9454-sz5hc records lastState.reason=OOMKilled, exitCode=137 at 2026-03-12 21:36:58Z and restartCount=1. Its pod metrics reach container_memory_max_usage_bytes=268435456 at 21:38:30, equal to 256Mi. otel-demo/Service/ad maps 100.67.41.86:8080 to the ad pod, and frontend traces record ECONNREFUSED to that address (including 21:32:57, 21:33:08, 21:33:38, 21:35:01, and 21:37:05); frontend traces include 284 grpc.oteldemo.AdService/GetAds spans. HighRequestErrorRate is firing for both frontend (2.24 at 21:39, 2.33 at 21:58) and frontend-proxy (1.09 at 21:39, 1.18 at 21:58), with firing snapshots throughout 21:39–21:58."
+    }
+  ]
+}

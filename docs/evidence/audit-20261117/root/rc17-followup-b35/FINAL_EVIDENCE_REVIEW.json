@@ -1,0 +1,1474 @@
+{
+  "kind": "INDEPENDENT_FINAL_EVIDENCE_READ_ONLY_AUDIT",
+  "reviewer_task": "evidence_review",
+  "created_utc": "2026-11-17T12:56:41.009411+00:00",
+  "status": "PASS",
+  "product_source_commit": "8e27340e3d0cabbb37ace7a652de9b1f2f0d0eee",
+  "role_harness_source_commit": "b69542583954c49672a636ba43f1ef310238883c",
+  "scope": {
+    "model_calls_by_reviewer": 0,
+    "new_test_runs": 0,
+    "repository_mutations": 0,
+    "prior_smoke_read_only_review_preserved": true,
+    "remote_publication_not_checked_here": true
+  },
+  "archive_count": 9,
+  "archive_member_count": 123,
+  "raw_validation_bytes_match": true,
+  "top_summary_byte_copies": {
+    "BASELINE_EVIDENCE_REVIEW.json": "evidence-review.json",
+    "BROWSER_SUMMARY.json": "browser-followup-20261117/RESULTS.json",
+    "ENGINEERING_R12_BLOCKED.json": "engineering-luna-high-r12/BLOCKED_SUMMARY.json",
+    "INDEPENDENT_IMPLEMENTATION_REVIEW.json": "INDEPENDENT_IMPLEMENTATION_REVIEW.json",
+    "PACKAGING_SUMMARY.json": "packaging-followup/r1/SUMMARY.json",
+    "PERF_COMPARISON.json": "session-context-20261117/PERF_COMPARISON.json",
+    "REGRESSION_SUMMARY.json": "REGRESSION_SUMMARY.json",
+    "REPOSITORY_VISIBILITY.json": "REPOSITORY_VISIBILITY.json",
+    "SOURCE.json": "SOURCE_FOLLOWUP.json",
+    "WORKER_ROLE_INDEPENDENT_REVIEW.json": "WORKER_ROLE_INDEPENDENT_REVIEW.json",
+    "WORKER_ROLE_SUMMARY.json": "WORKER_ROLE_SUMMARY.json"
+  },
+  "archives": [
+    {
+      "name": "regressions",
+      "archive": "regressions.tar.gz",
+      "bytes": 318720,
+      "sha256": "120d0efb1cf6c095926f25fadfbcc6209e31b34a0ce63b951ff02879fa686f7c",
+      "files_count": 17
+    },
+    {
+      "name": "truncation-recovery",
+      "archive": "truncation-recovery.tar.gz",
+      "bytes": 4180,
+      "sha256": "3e787cd33c39e4fb4da7513bc81b5001f15cd51188357992fdcb402a59cbe2e4",
+      "files_count": 3
+    },
+    {
+      "name": "session-context",
+      "archive": "session-context.tar.gz",
+      "bytes": 9063,
+      "sha256": "56e32c970757711f05f219d120a0d95e9ab487a5e01046dda3a17dbcfbbfc5a6",
+      "files_count": 9
+    },
+    {
+      "name": "installed-packages",
+      "archive": "installed-packages.tar.gz",
+      "bytes": 143523,
+      "sha256": "40564951f6511bad4484c1bd1fa99e9a87f61fd0b932de77bc9946bd4366a268",
+      "files_count": 27
+    },
+    {
+      "name": "browser-native",
+      "archive": "browser-native.tar.gz",
+      "bytes": 22233,
+      "sha256": "62dd0662db4defef338c1dfff6e58f4617599f56ae907bd38d0769c35a0c4662",
+      "files_count": 10
+    },
+    {
+      "name": "worker-roles-local",
+      "archive": "worker-roles-local.tar.gz",
+      "bytes": 68577,
+      "sha256": "73d98b4b5d59657a8c81374b537cfffae5223df1a5f2a0bdc3897121a5cc8162",
+      "files_count": 16
+    },
+    {
+      "name": "worker-roles-live",
+      "archive": "worker-roles-live.tar.gz",
+      "bytes": 35105,
+      "sha256": "efc97b9fdc4637287aab416aca2116210688216bd3e496f063778551908809a4",
+      "files_count": 13
+    },
+    {
+      "name": "engineering-r12-blocked",
+      "archive": "engineering-r12-blocked.tar.gz",
+      "bytes": 24093,
+      "sha256": "ea466e866f7eafc7c97d8bff56ed1fc3d73954543d900ba5576df2c2a6df8254",
+      "files_count": 24
+    },
+    {
+      "name": "delivery-review",
+      "archive": "delivery-review.tar.gz",
+      "bytes": 6121,
+      "sha256": "e5e10db0cd2ba53fd8b1e8c6e6d32b6b53ac11366d75134188534ec41603b762",
+      "files_count": 4
+    }
+  ],
+  "members_checked": [
+    {
+      "archive": "regressions.tar.gz",
+      "path": "REGRESSION_SUMMARY.json",
+      "bytes": 1026,
+      "sha256": "001184390a8872a4f9df4aac3a949669d32de3853707608b3d79acebb9191dab",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/REGRESSION_SUMMARY.json"
+    },
+    {
+      "archive": "regressions.tar.gz",
+      "path": "regressions/companion-r1/RESULTS.json",
+      "bytes": 8863,
+      "sha256": "e4b612cb0a29b935ee6aa67dfa65229c41b4b5b6a59470b5e3af9ece3b4ddd1a",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/regressions/companion-r1/RESULTS.json"
+    },
+    {
+      "archive": "regressions.tar.gz",
+      "path": "regressions/companion-r1/runner.py",
+      "bytes": 3110,
+      "sha256": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/regressions/companion-r1/runner.py"
+    },
+    {
+      "archive": "regressions.tar.gz",
+      "path": "regressions/companion-r1/source-after.json",
+      "bytes": 88880,
+      "sha256": "3f899764c5f9eaa51bbf036ca9e754c857eab738f0978c8c39bf666122874abc",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/regressions/companion-r1/source-after.json"
+    },
+    {
+      "archive": "regressions.tar.gz",
+      "path": "regressions/companion-r1/source-before.json",
+      "bytes": 88880,
+      "sha256": "3f899764c5f9eaa51bbf036ca9e754c857eab738f0978c8c39bf666122874abc",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/regressions/companion-r1/source-before.json"
+    },
+    {
+      "archive": "regressions.tar.gz",
+      "path": "regressions/companion-r1/tests.log",
+      "bytes": 119652,
+      "sha256": "46eb9236529fabbbfefdfd0a28a8ba134c37a9152dbbba382e0541f13551f8e5",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/regressions/companion-r1/tests.log"
+    },
+    {
+      "archive": "regressions.tar.gz",
+      "path": "regressions/core-r1/RESULTS.json",
+      "bytes": 22962,
+      "sha256": "4a8adb795b3e8fe5df6b4589e046b2445993482dad27449d5ef1b85a6c19c0aa",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/regressions/core-r1/RESULTS.json"
+    },
+    {
+      "archive": "regressions.tar.gz",
+      "path": "regressions/core-r1/runner.py",
+      "bytes": 3110,
+      "sha256": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/regressions/core-r1/runner.py"
+    },
+    {
+      "archive": "regressions.tar.gz",
+      "path": "regressions/core-r1/source-after.json",
+      "bytes": 88880,
+      "sha256": "3f899764c5f9eaa51bbf036ca9e754c857eab738f0978c8c39bf666122874abc",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/regressions/core-r1/source-after.json"
+    },
+    {
+      "archive": "regressions.tar.gz",
+      "path": "regressions/core-r1/source-before.json",
+      "bytes": 88880,
+      "sha256": "3f899764c5f9eaa51bbf036ca9e754c857eab738f0978c8c39bf666122874abc",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/regressions/core-r1/source-before.json"
+    },
+    {
+      "archive": "regressions.tar.gz",
+      "path": "regressions/core-r1/tests.log",
+      "bytes": 283405,
+      "sha256": "f6e89ad454231277018b6ba0330d3a35bf609708e3962971f178cdbdc85038af",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/regressions/core-r1/tests.log"
+    },
+    {
+      "archive": "regressions.tar.gz",
+      "path": "regressions/suite-r1/RESULTS.json",
+      "bytes": 764,
+      "sha256": "1b5ea28a36fb40d56a8b35426f10919fe8045d3dd196bacf958bd4d875b47835",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/regressions/suite-r1/RESULTS.json"
+    },
+    {
+      "archive": "regressions.tar.gz",
+      "path": "regressions/suite-r1/runner.py",
+      "bytes": 3110,
+      "sha256": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/regressions/suite-r1/runner.py"
+    },
+    {
+      "archive": "regressions.tar.gz",
+      "path": "regressions/suite-r1/source-after.json",
+      "bytes": 88880,
+      "sha256": "3f899764c5f9eaa51bbf036ca9e754c857eab738f0978c8c39bf666122874abc",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/regressions/suite-r1/source-after.json"
+    },
+    {
+      "archive": "regressions.tar.gz",
+      "path": "regressions/suite-r1/source-before.json",
+      "bytes": 88880,
+      "sha256": "3f899764c5f9eaa51bbf036ca9e754c857eab738f0978c8c39bf666122874abc",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/regressions/suite-r1/source-before.json"
+    },
+    {
+      "archive": "regressions.tar.gz",
+      "path": "regressions/suite-r1/tests.log",
+      "bytes": 22616,
+      "sha256": "258a1319902a89886fc209d30bc2a5a3e0e2340b66faafb65f74a5792608b7d2",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/regressions/suite-r1/tests.log"
+    },
+    {
+      "archive": "regressions.tar.gz",
+      "path": "run_regressions.py",
+      "bytes": 3110,
+      "sha256": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/run_regressions.py"
+    },
+    {
+      "archive": "truncation-recovery.tar.gz",
+      "path": "INDEPENDENT_IMPLEMENTATION_REVIEW.json",
+      "bytes": 1704,
+      "sha256": "9d06264bf7b7785b36f3d5410813a6ab82ea18c26bfa9686cb806f5717be4a2a",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/INDEPENDENT_IMPLEMENTATION_REVIEW.json"
+    },
+    {
+      "archive": "truncation-recovery.tar.gz",
+      "path": "truncation-recovery/RESULTS.json",
+      "bytes": 990,
+      "sha256": "ead4469aecc249347bfcc1f78348b9c064a06b94550715eba2b1a60d9b115b1f",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/truncation-recovery/RESULTS.json"
+    },
+    {
+      "archive": "truncation-recovery.tar.gz",
+      "path": "truncation-recovery/directed.log",
+      "bytes": 17818,
+      "sha256": "2569fb114bcc7ea1b1ebe7c00e0e18f7dc290b9e75c88fbe9f2f6cafb1f7a645",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/truncation-recovery/directed.log"
+    },
+    {
+      "archive": "session-context.tar.gz",
+      "path": "session-context-20261117/INITIAL_ENVIRONMENT_FAILURE.json",
+      "bytes": 485,
+      "sha256": "93bc88a3c60d667ae74ae5c3a255f66b6af0480cb115a4980a605366a6b12185",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/session-context-20261117/INITIAL_ENVIRONMENT_FAILURE.json"
+    },
+    {
+      "archive": "session-context.tar.gz",
+      "path": "session-context-20261117/PERF_COMPARISON.json",
+      "bytes": 5523,
+      "sha256": "09cc9e715c36e7cd8b0c9423bc4e9d26fdff8d4aff0deccde6666b35fb33c908",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/session-context-20261117/PERF_COMPARISON.json"
+    },
+    {
+      "archive": "session-context.tar.gz",
+      "path": "session-context-20261117/RESULTS.json",
+      "bytes": 5349,
+      "sha256": "8f66409ce87ec665d43bbc1d2d98fa73807fd653eea7b575e46bebd1ca855cb6",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/session-context-20261117/RESULTS.json"
+    },
+    {
+      "archive": "session-context.tar.gz",
+      "path": "session-context-20261117/SOURCE.json",
+      "bytes": 738,
+      "sha256": "54824880429708006e914cf95a82ffaa718656dd66dbdcca79f3b51852dc96c3",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/session-context-20261117/SOURCE.json"
+    },
+    {
+      "archive": "session-context.tar.gz",
+      "path": "session-context-20261117/compare_session_context.py",
+      "bytes": 7506,
+      "sha256": "2ab95fa5b74226fea7efff80f6cf98b2ff9ca532368a255bb8ce28559ae2a50b",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/session-context-20261117/compare_session_context.py"
+    },
+    {
+      "archive": "session-context.tar.gz",
+      "path": "session-context-20261117/performance.log",
+      "bytes": 5523,
+      "sha256": "09cc9e715c36e7cd8b0c9423bc4e9d26fdff8d4aff0deccde6666b35fb33c908",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/session-context-20261117/performance.log"
+    },
+    {
+      "archive": "session-context.tar.gz",
+      "path": "session-context-20261117/targeted-tests-r2.log",
+      "bytes": 11886,
+      "sha256": "8cca37688a7e2d1f556ba08be6b989ab43689c48b4708e1edd56c8ea2c0236e4",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/session-context-20261117/targeted-tests-r2.log"
+    },
+    {
+      "archive": "session-context.tar.gz",
+      "path": "session-context-20261117/targeted-tests.log",
+      "bytes": 12487,
+      "sha256": "ae8a77b7812125ee0a942ff135cb794498a15663081e978ec0bc1ef8ce92af1a",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/session-context-20261117/targeted-tests.log"
+    },
+    {
+      "archive": "session-context.tar.gz",
+      "path": "session-context-20261117/task-store-final.log",
+      "bytes": 2539,
+      "sha256": "92c54d04e7ee5ef4c152a01a9d802bcc1de03b6b603c0e770b5c56b35bdd924c",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/session-context-20261117/task-store-final.log"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/ARTIFACTS.json",
+      "bytes": 3398,
+      "sha256": "0ca8b9f50e5cc160984e8c3c55deaf5b2485c39fc98c5b5359d43e5f48371b13",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/ARTIFACTS.json"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/MANIFEST.json",
+      "bytes": 4078,
+      "sha256": "5fc1138606d479b3c033c2dd5b13ec62e5511914d99d4d0c52facc4ebf2b4596",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/MANIFEST.json"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/PROGRESS.json",
+      "bytes": 77598,
+      "sha256": "807df8c79ecfd693a73311b9615344a2d0df64a85fec418565954b767a7b8d02",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/PROGRESS.json"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/SHA256SUMS",
+      "bytes": 478,
+      "sha256": "35941355a2f233d6f3723ecd03a6f1d887e8610ec4c1716d9020e9173caab30e",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/SHA256SUMS"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/SUMMARY.json",
+      "bytes": 4394,
+      "sha256": "e13fa880b5b36486035f2ea8ba9b944c851213bd63c3e1d63daff8b5e92d8781",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/SUMMARY.json"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/SUMMARY.md",
+      "bytes": 2714,
+      "sha256": "80a1c0c174bd424e65d1c69cf734b6457620bfe62b7cfbf7238361107bb8dcba",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/SUMMARY.md"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/build-companion.log",
+      "bytes": 28294,
+      "sha256": "104bbb4f3175ee00ae0438250004e19589317107ee97084ee0708957b62651ee",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/build-companion.log"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/build-core.log",
+      "bytes": 39642,
+      "sha256": "5b0090f0a92a6633e5fe88b16e8099e07e2733310649261b97d7b15752832870",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/build-core.log"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/cli-version.log",
+      "bytes": 269,
+      "sha256": "eda85c61390a3e63a718cca1a7365021301fece9fe173379ec89913a7434899d",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/cli-version.log"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/dependencies.log",
+      "bytes": 1387,
+      "sha256": "7a567be72807876bd45862ad429f04565edebfb5499118f42d8c51d1adfb3927",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/dependencies.log"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/harness/installed_tests.py",
+      "bytes": 2764,
+      "sha256": "15946518ccf55b9baab49afc97e1544cc6af7880804ccf8179b132dbb0e42cc8",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/harness/installed_tests.py"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/harness/modules.json",
+      "bytes": 380,
+      "sha256": "076e5a89692aa7b230955081fdc75c6c302ac780f861113e0c6b83525c0f39be",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/harness/modules.json"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/harness/test-result.json",
+      "bytes": 36546,
+      "sha256": "91d7dc455dd75cf3a76c87337c22efff93085f472f84b19051c898876a2e9827",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/harness/test-result.json"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/import-proof.json",
+      "bytes": 5483,
+      "sha256": "e68570da725b6bd933f1f9c7898d5539720605df9b286f03232f8b550759c0e1",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/import-proof.json"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/import_probe.py",
+      "bytes": 1445,
+      "sha256": "0106860c743015f9d465fe2ea1f24c91d9a2c6eae4308d469aadfa9cf3f7d32d",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/import_probe.py"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/install.log",
+      "bytes": 1342,
+      "sha256": "e3db5d0206a9c03fc05c49e54719e2cc3de8f8a3c76476ff4353ac63d88b8219",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/install.log"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/installed-source-manifest.json",
+      "bytes": 132833,
+      "sha256": "90c11b57d7b7d4e9919c05e92f312f19bc5ee814e132e8201a55a043f0fb506d",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/installed-source-manifest.json"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/pip-check-after-tests.log",
+      "bytes": 146,
+      "sha256": "531165f66d75deb77c28f28dd1f29abf636315e5b7a05f9f7b873af5e83c4b63",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/pip-check-after-tests.log"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/pip-check.log",
+      "bytes": 146,
+      "sha256": "531165f66d75deb77c28f28dd1f29abf636315e5b7a05f9f7b873af5e83c4b63",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/pip-check.log"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/remaining-runtime-processes.json",
+      "bytes": 134,
+      "sha256": "e41a70a2bbced979139a7db3bdb754b08bceb737cea6bc9cfab5182e70bd8b36",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/remaining-runtime-processes.json"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/run.json",
+      "bytes": 77832,
+      "sha256": "d010b6f4d64ae9c3a86f3ad9d78abdbccd893065c1b3280fa9f307ae11650920",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/run.json"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/runner.py",
+      "bytes": 19163,
+      "sha256": "0bd09fa59f0ffcd968aa0572f2cfe3471285a6f20bf178c948ae6f142e39f26a",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/runner.py"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/source-after.json",
+      "bytes": 72285,
+      "sha256": "495abb23c21c56c9842473caa450a6d311c1724af70e913d5b8843c1aeba5f24",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/source-after.json"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/source-before.json",
+      "bytes": 72285,
+      "sha256": "495abb23c21c56c9842473caa450a6d311c1724af70e913d5b8843c1aeba5f24",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/source-before.json"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/stage.log",
+      "bytes": 24362,
+      "sha256": "26045385d0cbe527248da59b05893f3c11bfd2464e98a28d3378a7cfc1648f1b",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/stage.log"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/tests.log",
+      "bytes": 12363,
+      "sha256": "72725a3d14a0d7a26b6b0f9fa99c1ea9608b78f67b3b95bd3c8148fedc13585e",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/tests.log"
+    },
+    {
+      "archive": "installed-packages.tar.gz",
+      "path": "packaging-followup/r1/venv.log",
+      "bytes": 194,
+      "sha256": "e0397a003d6787f5f5ff0895249a54e76d0ae4868d14e69af2b114647f2a8356",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/packaging-followup/r1/venv.log"
+    },
+    {
+      "archive": "browser-native.tar.gz",
+      "path": "browser-followup-20261117/MANIFEST.json",
+      "bytes": 1568,
+      "sha256": "af1868bbe512b2d31e20ce2b25b34c774f20243b4feb415665187af87f2e1cbd",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/browser-followup-20261117/MANIFEST.json"
+    },
+    {
+      "archive": "browser-native.tar.gz",
+      "path": "browser-followup-20261117/REMAINING_SCOPE.json",
+      "bytes": 5522,
+      "sha256": "abaae794d934a6b6b778ea0f621805a43d8669db9db66c98b4fb8f087c310c46",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/browser-followup-20261117/REMAINING_SCOPE.json"
+    },
+    {
+      "archive": "browser-native.tar.gz",
+      "path": "browser-followup-20261117/RESULTS.json",
+      "bytes": 28460,
+      "sha256": "f865e63f8dcb076bbdcad945018803073d111f28daa38935e8a243b7f23a38a7",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/browser-followup-20261117/RESULTS.json"
+    },
+    {
+      "archive": "browser-native.tar.gz",
+      "path": "browser-followup-20261117/UI_NATIVE_HANDOFF.md",
+      "bytes": 4209,
+      "sha256": "433c6980ea58b25987a89de18d8944f9fc87824773296f9675124390010c7348",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/browser-followup-20261117/UI_NATIVE_HANDOFF.md"
+    },
+    {
+      "archive": "browser-native.tar.gz",
+      "path": "browser-followup-20261117/dependency-source.json",
+      "bytes": 945,
+      "sha256": "b37f67ffbd039d4211e6c0d698cc140ce47129dba3e36b3b37dad7961d9cc6dc",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/browser-followup-20261117/dependency-source.json"
+    },
+    {
+      "archive": "browser-native.tar.gz",
+      "path": "browser-followup-20261117/run-1.log",
+      "bytes": 11831,
+      "sha256": "639217afea5af533d0d6a675136e7e579044389556f705491749bc4ecfe20312",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/browser-followup-20261117/run-1.log"
+    },
+    {
+      "archive": "browser-native.tar.gz",
+      "path": "browser-followup-20261117/run-1/browser-tests.json",
+      "bytes": 36361,
+      "sha256": "1dd6ae3c3191561a9f58fddd5865120ff2ce722e665021d9f6b1422c66264538",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/browser-followup-20261117/run-1/browser-tests.json"
+    },
+    {
+      "archive": "browser-native.tar.gz",
+      "path": "browser-followup-20261117/run-1/test-results/.last-run.json",
+      "bytes": 145,
+      "sha256": "edd64482c7e0a1e83e33b004914db45cd80b60943eae1124e916b12582e7bac7",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/browser-followup-20261117/run-1/test-results/.last-run.json"
+    },
+    {
+      "archive": "browser-native.tar.gz",
+      "path": "browser-followup-20261117/run-1/test-results/model-configuration-option-11377-ator-and-configured-efforts/error-context.md",
+      "bytes": 5092,
+      "sha256": "09bad2abf32475cb8088e4f452003c3009a4fb3994beb545a5a198fec8db0205",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/browser-followup-20261117/run-1/test-results/model-configuration-option-11377-ator-and-configured-efforts/error-context.md"
+    },
+    {
+      "archive": "browser-native.tar.gz",
+      "path": "browser-followup-20261117/run-1/test-results/model-configuration-removi-2e8dc--clears-both-optional-roles/error-context.md",
+      "bytes": 5087,
+      "sha256": "b515eb9b72e0b02b65269d873045d53d68d82c4e2eabc68d72e2113f7dca8de4",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/browser-followup-20261117/run-1/test-results/model-configuration-removi-2e8dc--clears-both-optional-roles/error-context.md"
+    },
+    {
+      "archive": "worker-roles-local.tar.gz",
+      "path": "qualification-sources/qualify_openai_worker_roles.py",
+      "bytes": 18440,
+      "sha256": "5204ebb437bcaf7aca926dd6f5deeb433cc5bf9a9e4c97b465ab000841c0ea7e",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/qualification-sources/qualify_openai_worker_roles.py"
+    },
+    {
+      "archive": "worker-roles-local.tar.gz",
+      "path": "qualification-sources/test_worker_role_qualification.py",
+      "bytes": 9968,
+      "sha256": "d351a9faca241861bd7743444a3376a159e173b35bdc04095a4c92dd97a35cc4",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/qualification-sources/test_worker_role_qualification.py"
+    },
+    {
+      "archive": "worker-roles-local.tar.gz",
+      "path": "worker-role-qualification/RESULTS.json",
+      "bytes": 713,
+      "sha256": "3085f5afe911751246e6bc1659e804b0fa543353cd3f87b4596c5cffd8f4aacd",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-role-qualification/RESULTS.json"
+    },
+    {
+      "archive": "worker-roles-local.tar.gz",
+      "path": "worker-role-qualification/runner-tests.log",
+      "bytes": 505,
+      "sha256": "3f2b8592818822e664c2026d5165b280240d39045d5f29c573a11fda4f11d40b",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-role-qualification/runner-tests.log"
+    },
+    {
+      "archive": "worker-roles-local.tar.gz",
+      "path": "worker-role-service-boundary/INITIAL_ATTEMPTS.json",
+      "bytes": 1567,
+      "sha256": "2e3cb41e8650372c7df97b3c69ee6ed28f106dd14cbbff787f7d90ff46981f8d",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-role-service-boundary/INITIAL_ATTEMPTS.json"
+    },
+    {
+      "archive": "worker-roles-local.tar.gz",
+      "path": "worker-role-service-boundary/ISOLATED_NEGATIVE_PROBE.json",
+      "bytes": 648,
+      "sha256": "e6c16259c00e7a3cd6497996b2f12019c98615185122be860e3cd3bfbe8ba707",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-role-service-boundary/ISOLATED_NEGATIVE_PROBE.json"
+    },
+    {
+      "archive": "worker-roles-local.tar.gz",
+      "path": "worker-role-service-boundary/RESULTS.json",
+      "bytes": 9018,
+      "sha256": "19cb77e5697763b4906f4df237ea2de9a828b79c9787bc786f64fa5f8ae25da0",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-role-service-boundary/RESULTS.json"
+    },
+    {
+      "archive": "worker-roles-local.tar.gz",
+      "path": "worker-role-service-boundary/SOURCE_BEFORE.json",
+      "bytes": 228,
+      "sha256": "7d0191744a74e606c19cb3d46f462e21b4759929df1ccdb6f11fef018d2247bd",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-role-service-boundary/SOURCE_BEFORE.json"
+    },
+    {
+      "archive": "worker-roles-local.tar.gz",
+      "path": "worker-role-service-boundary/outside-negative-evidence.json",
+      "bytes": 102031,
+      "sha256": "78edb8015a8702ab7ffe3c9f0a9f39c420cf3a2b0bc2f1550099829a21ba309d",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-role-service-boundary/outside-negative-evidence.json"
+    },
+    {
+      "archive": "worker-roles-local.tar.gz",
+      "path": "worker-role-service-boundary/outside-negative-requests.json",
+      "bytes": 286043,
+      "sha256": "0017c71d6e65a7ecc9afe6cbb102a5dfc234d85fc8564927ac5ac665128017ba",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-role-service-boundary/outside-negative-requests.json"
+    },
+    {
+      "archive": "worker-roles-local.tar.gz",
+      "path": "worker-role-service-boundary/preflight-final/PROTOCOL.json",
+      "bytes": 1493,
+      "sha256": "47e5dc6be6b65e0b1355f4b2579b8cf87c4453a10ec2012db5903ea064bc2114",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-role-service-boundary/preflight-final/PROTOCOL.json"
+    },
+    {
+      "archive": "worker-roles-local.tar.gz",
+      "path": "worker-role-service-boundary/preflight-final/RESULTS.json",
+      "bytes": 24244,
+      "sha256": "318570f7115be6bb269cd021335ec02485f474ce63c36759aa9f3fee4cd0a298",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-role-service-boundary/preflight-final/RESULTS.json"
+    },
+    {
+      "archive": "worker-roles-local.tar.gz",
+      "path": "worker-role-service-boundary/preflight-final/prompt.txt",
+      "bytes": 1164,
+      "sha256": "97b1744334886a5bae493f07c474b92675976eddcea513cfd0ac8f2406e5f72a",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-role-service-boundary/preflight-final/prompt.txt"
+    },
+    {
+      "archive": "worker-roles-local.tar.gz",
+      "path": "worker-role-service-boundary/role-positive-evidence.json",
+      "bytes": 77943,
+      "sha256": "bb68411ec67bfb44f27f778fcd25ce453b19fa8acc434d311e5ec799a974e35b",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-role-service-boundary/role-positive-evidence.json"
+    },
+    {
+      "archive": "worker-roles-local.tar.gz",
+      "path": "worker-role-service-boundary/role-positive-requests.json",
+      "bytes": 161155,
+      "sha256": "094c767930488bed3ec7ee34a5e8107927ebc7c36cfefe0ab8c17a7ad4078870",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-role-service-boundary/role-positive-requests.json"
+    },
+    {
+      "archive": "worker-roles-local.tar.gz",
+      "path": "worker-role-service-boundary/runner-tests.log",
+      "bytes": 715,
+      "sha256": "d2821813daaa088ca124c0391cf830040b04232d68bc06f4dc627fc5c852c26c",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-role-service-boundary/runner-tests.log"
+    },
+    {
+      "archive": "worker-roles-live.tar.gz",
+      "path": "WORKER_ROLE_INDEPENDENT_REVIEW.json",
+      "bytes": 1321,
+      "sha256": "31f56a65e38cb8487c167ff1b68c3effa9c475167dfdf1e0494774b782d20e64",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/WORKER_ROLE_INDEPENDENT_REVIEW.json"
+    },
+    {
+      "archive": "worker-roles-live.tar.gz",
+      "path": "WORKER_ROLE_SUMMARY.json",
+      "bytes": 4469,
+      "sha256": "364382a07b91a7c2b0d4da067b269ebedabface3ff1898b72dfeb8a42e872fb9",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/WORKER_ROLE_SUMMARY.json"
+    },
+    {
+      "archive": "worker-roles-live.tar.gz",
+      "path": "worker-roles-service-readonly-r1.log",
+      "bytes": 129,
+      "sha256": "1cfef4f5bc6ac29b87bc0b7f58d9e63da4898fe47d38e2cfc259989fb83c1019",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-roles-service-readonly-r1.log"
+    },
+    {
+      "archive": "worker-roles-live.tar.gz",
+      "path": "worker-roles-service-readonly-r1/HOST_DELEGATE_APPROVALS.json",
+      "bytes": 2181,
+      "sha256": "999205d095d34af2a7f28766235bff36813105df01dcc30c279c434830d38733",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-roles-service-readonly-r1/HOST_DELEGATE_APPROVALS.json"
+    },
+    {
+      "archive": "worker-roles-live.tar.gz",
+      "path": "worker-roles-service-readonly-r1/PROTOCOL.json",
+      "bytes": 1493,
+      "sha256": "47e5dc6be6b65e0b1355f4b2579b8cf87c4453a10ec2012db5903ea064bc2114",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-roles-service-readonly-r1/PROTOCOL.json"
+    },
+    {
+      "archive": "worker-roles-live.tar.gz",
+      "path": "worker-roles-service-readonly-r1/RESULTS.json",
+      "bytes": 58004,
+      "sha256": "47aa7256c0b2568f75a2a6efc6c132d15bdda74f1f5847e1b461dd8f3e03eca6",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-roles-service-readonly-r1/RESULTS.json"
+    },
+    {
+      "archive": "worker-roles-live.tar.gz",
+      "path": "worker-roles-service-readonly-r1/ROLE_EVIDENCE_AFTER_RESTART.json",
+      "bytes": 14940,
+      "sha256": "e6f30c65f10c6a2e1d42f8ba69a4b6f45e50bae7696a9d401ea1e81634ca688d",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-roles-service-readonly-r1/ROLE_EVIDENCE_AFTER_RESTART.json"
+    },
+    {
+      "archive": "worker-roles-live.tar.gz",
+      "path": "worker-roles-service-readonly-r1/ROLE_EVIDENCE_BEFORE_RESTART.json",
+      "bytes": 14940,
+      "sha256": "e6f30c65f10c6a2e1d42f8ba69a4b6f45e50bae7696a9d401ea1e81634ca688d",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-roles-service-readonly-r1/ROLE_EVIDENCE_BEFORE_RESTART.json"
+    },
+    {
+      "archive": "worker-roles-live.tar.gz",
+      "path": "worker-roles-service-readonly-r1/prompt.txt",
+      "bytes": 1164,
+      "sha256": "97b1744334886a5bae493f07c474b92675976eddcea513cfd0ac8f2406e5f72a",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-roles-service-readonly-r1/prompt.txt"
+    },
+    {
+      "archive": "worker-roles-live.tar.gz",
+      "path": "worker-roles-service-readonly-r1/resolved-runtime-budgets.json",
+      "bytes": 1837,
+      "sha256": "bce561c093cde864d079da13055f0320c5c7af5ecf61545e70cde45bade342f3",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-roles-service-readonly-r1/resolved-runtime-budgets.json"
+    },
+    {
+      "archive": "worker-roles-live.tar.gz",
+      "path": "worker-roles-service-readonly-r1/worker-roles-progress.json",
+      "bytes": 209,
+      "sha256": "d4f51350101c38ce6eb66a7460e6dd226d762b9ca5364ae2bc1cc9a26c886c38",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-roles-service-readonly-r1/worker-roles-progress.json"
+    },
+    {
+      "archive": "worker-roles-live.tar.gz",
+      "path": "worker-roles-service-readonly-r1/worker-roles-restored-task.json",
+      "bytes": 51978,
+      "sha256": "c28af6726700c15b4bc10df8a24218dfb743137d32adccb19580d83cb7fc8624",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-roles-service-readonly-r1/worker-roles-restored-task.json"
+    },
+    {
+      "archive": "worker-roles-live.tar.gz",
+      "path": "worker-roles-service-readonly-r1/worker-roles-task.json",
+      "bytes": 51978,
+      "sha256": "2fc453e2e1878f680db9320434b2517c8a56e4a081ba8a29be5c7d09beca1377",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/worker-roles-service-readonly-r1/worker-roles-task.json"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "REPOSITORY_VISIBILITY.json",
+      "bytes": 272,
+      "sha256": "0595e9186213184ec6a09e9a7b3c77c218ac9401217161884bb7d4ad3abad5cc",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/REPOSITORY_VISIBILITY.json"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12.log"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/AUTOREVIEW_BLOCK.json",
+      "bytes": 329,
+      "sha256": "0867c510c202789f299eb6fa58c4cb0c7d78deeba90fca5ad56875b7a1b5ef8f",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/AUTOREVIEW_BLOCK.json"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/BLOCKED_SUMMARY.json",
+      "bytes": 937,
+      "sha256": "018a33acf7600414286187194618071698515c24d2e88a86cd0954719dfff6c6",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/BLOCKED_SUMMARY.json"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/PROTOCOL.json",
+      "bytes": 14969,
+      "sha256": "b0a21d0d6f968bf553505ba5ed929caaea42fa167f703597398083ed62798bff",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/PROTOCOL.json"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/acceptance-manifest.json",
+      "bytes": 1139,
+      "sha256": "b22f47e53e46966a7d115b46974c07626217c3b03950735cf4f2b26cf80136fc",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/acceptance-manifest.json"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/acceptance-original/SPEC.md",
+      "bytes": 3304,
+      "sha256": "3a581fcd5925e86dfcea0d87bbbcacfaf0065ed8139280c100769d8c6870c3e6",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/acceptance-original/SPEC.md"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/acceptance-original/fixtures/basic.csv",
+      "bytes": 168,
+      "sha256": "6c0dcee9e8d138f61ed6da850c9bc77be3ccabe49a98fb99a693298a6b431d41",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/acceptance-original/fixtures/basic.csv"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/acceptance-original/fixtures/basic.expected.json",
+      "bytes": 374,
+      "sha256": "3d8d1af6ab844d19fc24b4029044458ef877dfc129232e3f9824e6bf5d54d34a",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/acceptance-original/fixtures/basic.expected.json"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/acceptance-original/fixtures/empty.csv",
+      "bytes": 26,
+      "sha256": "318a41c33c77ab0db8e5c651bd4b9918c26222daf02f90d8e2e01a8bb5be516a",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/acceptance-original/fixtures/empty.csv"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/acceptance-original/fixtures/invalid.csv",
+      "bytes": 61,
+      "sha256": "74097f4b98ff64d3b01a6233836f5505ebe99bee92b9c8bc3537cb14a2f6dd34",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/acceptance-original/fixtures/invalid.csv"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/acceptance-original/fixtures/precision.csv",
+      "bytes": 208,
+      "sha256": "c70350dc5653955376297e2ccedff0e24cf1371f5f09101958d0cd9182b723d8",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/acceptance-original/fixtures/precision.csv"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/acceptance-original/fixtures/precision.expected.json",
+      "bytes": 528,
+      "sha256": "ac5226181296f432e36f85e1bee5b5b6c1efb519bb1ae12755dd971e66850603",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/acceptance-original/fixtures/precision.expected.json"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/acceptance-original/logstats/__init__.py",
+      "bytes": 45,
+      "sha256": "ae8f92d8e600d6dc9ad8d3ac5063b4ee18d5ef365e259d9323608625b76ef7de",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/acceptance-original/logstats/__init__.py"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/acceptance-original/logstats/__main__.py",
+      "bytes": 137,
+      "sha256": "f849849731b05ad7b37f1e6636741a8c7ecaf00a8d5e78712e5d132522546a5b",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/acceptance-original/logstats/__main__.py"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/acceptance-original/logstats/aggregate.py",
+      "bytes": 177,
+      "sha256": "9d2e4a7aec763e41478efb936a03fccb545b72f775218aa8e11123e241535d0b",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/acceptance-original/logstats/aggregate.py"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/acceptance-original/logstats/parser.py",
+      "bytes": 311,
+      "sha256": "16b2d904fab3ccfbfe24baa15473981957458ce4996f582b8c8c5238bc69cbda",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/acceptance-original/logstats/parser.py"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/acceptance-original/tests/test_acceptance.py",
+      "bytes": 6928,
+      "sha256": "e406b48f904550da19c4feff630962f393197f024bcc0c77683163fe26081837",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/acceptance-original/tests/test_acceptance.py"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/engineering-progress.json",
+      "bytes": 160,
+      "sha256": "83ea4c0ad7688677ebaf52ca0f3f600a220f6a96c70256c31755bd29c9d7cf94",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/engineering-progress.json"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/prompt.txt",
+      "bytes": 2360,
+      "sha256": "aaf084caba3d59920155ab2b614c20d8688a1af7fc0a9c50acc5b01f4997015c",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/prompt.txt"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/resolved-inference.json",
+      "bytes": 422,
+      "sha256": "4d03609ea2cd0dd9db86366015ddf08b10e16eab2a45df20f7a3d3bab37ee214",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/resolved-inference.json"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/resolved-runtime-budgets.json",
+      "bytes": 1238,
+      "sha256": "603b4a44b1de4ac5bf6159d496350670ecdebffe64db9e461e10bf7130580dd8",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/resolved-runtime-budgets.json"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "engineering-luna-high-r12/submission.json",
+      "bytes": 4359,
+      "sha256": "dd4a525494e711624f717fa40367f090d22602c238315628e5df00b115c68775",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/engineering-luna-high-r12/submission.json"
+    },
+    {
+      "archive": "engineering-r12-blocked.tar.gz",
+      "path": "qualification-sources/qualify_openai_engineering.py",
+      "bytes": 36204,
+      "sha256": "1878a177ed32600e9d53490ad518a93ece8d729643f2e2681c7b10d11d4724c4",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/qualification-sources/qualify_openai_engineering.py"
+    },
+    {
+      "archive": "delivery-review.tar.gz",
+      "path": "SOURCE_FOLLOWUP.json",
+      "bytes": 2663,
+      "sha256": "d33d24750925e38aa68f035893d21690c2a2c60c7fd9cbc34931be505e9293a1",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/SOURCE_FOLLOWUP.json"
+    },
+    {
+      "archive": "delivery-review.tar.gz",
+      "path": "evidence-review.json",
+      "bytes": 1947,
+      "sha256": "754df732e6be036cf35ca3d7edcc21d08c2f371aa295cb40582736df53d7ffdd",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/evidence-review.json"
+    },
+    {
+      "archive": "delivery-review.tar.gz",
+      "path": "package_followup.py",
+      "bytes": 4391,
+      "sha256": "0fe3f75adc66af6c7b2a4a532fd67e39522732b92619d864b058dcb125e3d1b6",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/package_followup.py"
+    },
+    {
+      "archive": "delivery-review.tar.gz",
+      "path": "public_followup_plan.json",
+      "bytes": 8683,
+      "sha256": "17def2839ea8b25b6f4d3ebce41ac7693ecfc4c7f41124682964fd03cc306b73",
+      "original_path": "/workspace/scratch/b0df9966d470/validation/public_followup_plan.json"
+    }
+  ],
+  "relative_links_checked": [
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/RESULTS.md",
+      "target": "SOURCE.json",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/SOURCE.json"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/RESULTS.md",
+      "target": "PERF_COMPARISON.json",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/PERF_COMPARISON.json"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/RESULTS.md",
+      "target": "../task-storage-dispatch-b34/RESULTS.md",
+      "resolved": "docs/evidence/audit-20261117/root/task-storage-dispatch-b34/RESULTS.md"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/RESULTS.md",
+      "target": "PACKAGING_SUMMARY.json",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/PACKAGING_SUMMARY.json"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/RESULTS.md",
+      "target": "WORKER_ROLE_SUMMARY.json",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/WORKER_ROLE_SUMMARY.json"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/RESULTS.md",
+      "target": "ENGINEERING_R12_BLOCKED.json",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/ENGINEERING_R12_BLOCKED.json"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/RESULTS.md",
+      "target": "SUMMARY.md",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/RESULTS.md",
+      "target": "MANIFEST.json",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/MANIFEST.json"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/RESULTS.md",
+      "target": "SHA256SUMS",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/SHA256SUMS"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/RESULTS.md",
+      "target": "../../../../development/WORK_CONTINUE_20261117_B35.md",
+      "resolved": "docs/development/WORK_CONTINUE_20261117_B35.md"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "target": "regressions.tar.gz",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/regressions.tar.gz"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "target": "regressions.MANIFEST.json",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/regressions.MANIFEST.json"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "target": "truncation-recovery.tar.gz",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/truncation-recovery.tar.gz"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "target": "truncation-recovery.MANIFEST.json",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/truncation-recovery.MANIFEST.json"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "target": "session-context.tar.gz",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/session-context.tar.gz"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "target": "session-context.MANIFEST.json",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/session-context.MANIFEST.json"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "target": "installed-packages.tar.gz",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/installed-packages.tar.gz"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "target": "installed-packages.MANIFEST.json",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/installed-packages.MANIFEST.json"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "target": "browser-native.tar.gz",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/browser-native.tar.gz"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "target": "browser-native.MANIFEST.json",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/browser-native.MANIFEST.json"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "target": "worker-roles-local.tar.gz",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/worker-roles-local.tar.gz"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "target": "worker-roles-local.MANIFEST.json",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/worker-roles-local.MANIFEST.json"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "target": "worker-roles-live.tar.gz",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/worker-roles-live.tar.gz"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "target": "worker-roles-live.MANIFEST.json",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/worker-roles-live.MANIFEST.json"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "target": "engineering-r12-blocked.tar.gz",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/engineering-r12-blocked.tar.gz"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "target": "engineering-r12-blocked.MANIFEST.json",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/engineering-r12-blocked.MANIFEST.json"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "target": "delivery-review.tar.gz",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/delivery-review.tar.gz"
+    },
+    {
+      "document": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "target": "delivery-review.MANIFEST.json",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/delivery-review.MANIFEST.json"
+    },
+    {
+      "document": "docs/development/WORK_CONTINUE_20261117_B35.md",
+      "target": "../evidence/audit-20261117/root/rc17-followup-b35/RESULTS.md",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/RESULTS.md"
+    },
+    {
+      "document": "docs/development/RC17_FOLLOWUP_20261117.md",
+      "target": "../evidence/audit-20261117/root/rc17-followup-b35/RESULTS.md",
+      "resolved": "docs/evidence/audit-20261117/root/rc17-followup-b35/RESULTS.md"
+    },
+    {
+      "document": "docs/development/RC17_FOLLOWUP_20261117.md",
+      "target": "WORK_CONTINUE_20261117_B35.md",
+      "resolved": "docs/development/WORK_CONTINUE_20261117_B35.md"
+    }
+  ],
+  "relative_links_count": 31,
+  "source_mapping": {
+    "git_blobs_checked": 1198,
+    "regressions": [
+      {
+        "suite": "core",
+        "run": 1719,
+        "passed": 1627,
+        "skips": 92,
+        "failures": 0,
+        "errors": 0,
+        "source_files": 820
+      },
+      {
+        "suite": "companion",
+        "run": 763,
+        "passed": 730,
+        "skips": 33,
+        "failures": 0,
+        "errors": 0,
+        "source_files": 820
+      },
+      {
+        "suite": "suite",
+        "run": 127,
+        "passed": 126,
+        "skips": 1,
+        "failures": 0,
+        "errors": 0,
+        "source_files": 820
+      }
+    ],
+    "product_to_role_changes": [
+      "docs/development/WORK_CONTINUE_20261117_B35.md",
+      "scripts/qualify_openai_worker_roles.py",
+      "tests/test_worker_role_qualification.py"
+    ],
+    "unchanged_other_tracked_paths": 3756,
+    "role_smoke_source_files": 111
+  },
+  "installed_packages": {
+    "wheels": 4,
+    "payload_files": 346,
+    "installed_tests": 66,
+    "product_imports": 152,
+    "wheel_installed_git_bytes_verified": true
+  },
+  "smoke": {
+    "status": "PASS_WORKSPACE_SCOPED_SERVICE_READ_ONLY",
+    "models": {
+      "parent": {
+        "model": "gpt-6.1-sol",
+        "thinking": "medium"
+      },
+      "search": {
+        "model": "gpt-6-luna",
+        "thinking": "high"
+      },
+      "review": {
+        "model": "gpt-6.1-sol",
+        "thinking": "medium"
+      }
+    },
+    "calls": {
+      "parent": 4,
+      "search": 3,
+      "review": 3
+    },
+    "total_calls": 10,
+    "receipt_count": 7,
+    "full_read_receipts": 4,
+    "provider_usage_once": {
+      "input_tokens": 56832,
+      "output_tokens": 1489,
+      "prompt_cache_hit_tokens": 31101
+    },
+    "seconds": 84.11220253899955,
+    "restored_evidence_identical": true,
+    "child_lifetime_overlap": false,
+    "gap_seconds": 0.39945220947265625,
+    "parent_child_prose_withheld": true,
+    "length_observed": false,
+    "product_verification": {
+      "verification_status": "not_run",
+      "engineering_status": "unverified",
+      "task_outcome": "unverified",
+      "task_succeeded": false
+    },
+    "receipt_structure": {
+      "task_tools": "Flattened parent and child receipts; filter worker_id for parent own calls.",
+      "parent_tools": [
+        "delegate",
+        "delegate",
+        "wait_children"
+      ],
+      "child_raw_text_preserved": true,
+      "model_projection": "Ordinary cloud-session projection withholds wait_children body; live parent final text acknowledges withholding. Canonical API output keeps the original child text.",
+      "projection_evidence": "Live configuration/events and final text plus matched agent/hybrid.py; live provider request bodies are not exported."
+    }
+  },
+  "preserved_boundaries": [
+    "Full R12 remains BLOCKED_BY_AUTOMATIC_APPROVAL_REVIEW; model result, completed call count and usage unknown.",
+    "Readonly role smoke does not prove Full engineering, length recovery, simultaneous child execution, speedup, token savings or stability.",
+    "1k/10k benchmark uses one shared dependency set; smaller index still scanned; one-time migration and old writer backfill disclosed.",
+    "Browser has one command/two cases and zero page assertions; native Mac/Intel/Linux, visible 24 Hz and installed two-hour soak remain NOT_RUN.",
+    "Archived-canonical retrieval, unsupported execution-segment rotation and active-turn chunk persistence remain implementation work."
+  ],
+  "reviewed_repository_files": [
+    {
+      "path": "agent/hybrid.py",
+      "bytes": 44282,
+      "sha256": "64880fe7cd7b86d5bf8a0934f39198a923800729fdecdf23bb1dbe5d3cd632c2"
+    },
+    {
+      "path": "agent/session.py",
+      "bytes": 81229,
+      "sha256": "666c8c2c5ce858720ff4d110af69c9ee0e53c854e95ab5b4d8d1f5426309b7c8"
+    },
+    {
+      "path": "companion/memory/task_store.py",
+      "bytes": 9503,
+      "sha256": "acc4762875c7f6bd870cb1ebf985ec3b351928ce3a1315cf0f08ca45f2f975b2"
+    },
+    {
+      "path": "companion/runtime/tasks.py",
+      "bytes": 38215,
+      "sha256": "298a035c817323960e67a8b75fbd34e08b1cec4e6a1b43e589201da210957621"
+    },
+    {
+      "path": "companion/tests/test_pa_context_lineage.py",
+      "bytes": 7955,
+      "sha256": "633154570c74168426ad4337fa903fc209de2b5bf98292875e9509e5e79d8b4c"
+    },
+    {
+      "path": "companion/tests/test_task_history.py",
+      "bytes": 6382,
+      "sha256": "5a8821f486146105686fe78316b24fdc6e764c74232daf7eac0980f0163705ce"
+    },
+    {
+      "path": "companion/tests/test_task_store.py",
+      "bytes": 19299,
+      "sha256": "3e8aaed29aee8e91eb3143bde2ac49e83378f09d896003e8cec009a7a58e25bd"
+    },
+    {
+      "path": "docs/development/RC17_FOLLOWUP_20261117.md",
+      "bytes": 4126,
+      "sha256": "e601dd2b0a694d3be0c2674edf02d5f23ba3cc3a7f6114c3ab8d967bfc04426b"
+    },
+    {
+      "path": "docs/development/TASK_STORAGE_SCHEDULING_20261117.md",
+      "bytes": 9078,
+      "sha256": "174b7e2a9d4aca74147804337a92f1b01273660b8d676e3b03a1cc2c1ffd7a7c"
+    },
+    {
+      "path": "docs/development/WORK_CONTINUE_20261117_B35.md",
+      "bytes": 10376,
+      "sha256": "5f7311459faa1eef3351ecd9e01a994c010c621149a78ac9c5b47d719025fcaa"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/BASELINE_EVIDENCE_REVIEW.json",
+      "bytes": 1947,
+      "sha256": "754df732e6be036cf35ca3d7edcc21d08c2f371aa295cb40582736df53d7ffdd"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/BROWSER_SUMMARY.json",
+      "bytes": 28460,
+      "sha256": "f865e63f8dcb076bbdcad945018803073d111f28daa38935e8a243b7f23a38a7"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/DELIVERY_CHECKS.json",
+      "bytes": 971,
+      "sha256": "e71ebd6f20bf97c39527abe5689c130a87348fd4b3b83b8af1b29a210398538c"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/ENGINEERING_R12_BLOCKED.json",
+      "bytes": 937,
+      "sha256": "018a33acf7600414286187194618071698515c24d2e88a86cd0954719dfff6c6"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/INDEPENDENT_IMPLEMENTATION_REVIEW.json",
+      "bytes": 1704,
+      "sha256": "9d06264bf7b7785b36f3d5410813a6ab82ea18c26bfa9686cb806f5717be4a2a"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/MANIFEST.json",
+      "bytes": 3718,
+      "sha256": "c573694276f15591e2c1712bf4d5c5e56bfab1a366e0a3c759230488d0a3e038"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/PACKAGING_SUMMARY.json",
+      "bytes": 4394,
+      "sha256": "e13fa880b5b36486035f2ea8ba9b944c851213bd63c3e1d63daff8b5e92d8781"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/PERF_COMPARISON.json",
+      "bytes": 5523,
+      "sha256": "09cc9e715c36e7cd8b0c9423bc4e9d26fdff8d4aff0deccde6666b35fb33c908"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/REGRESSION_SUMMARY.json",
+      "bytes": 1026,
+      "sha256": "001184390a8872a4f9df4aac3a949669d32de3853707608b3d79acebb9191dab"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/REPOSITORY_VISIBILITY.json",
+      "bytes": 272,
+      "sha256": "0595e9186213184ec6a09e9a7b3c77c218ac9401217161884bb7d4ad3abad5cc"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/RESULTS.md",
+      "bytes": 12622,
+      "sha256": "8081ec2b450ea00f45d1fdc0c2e37c2b5730be2d3a9c23e688c010d85354c78a"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/SHA256SUMS",
+      "bytes": 816,
+      "sha256": "da2397cffbe9cb695453bb0c912e97f9f0e49b53f4fbc7459f7c4cbde4529a28"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/SOURCE.json",
+      "bytes": 2663,
+      "sha256": "d33d24750925e38aa68f035893d21690c2a2c60c7fd9cbc34931be505e9293a1"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/SUMMARY.md",
+      "bytes": 2155,
+      "sha256": "ace78556f9b5d4fdf2b4c7be4028521aea21b7374f9a5e2ae04988cb712ed7fa"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/WORKER_ROLE_INDEPENDENT_REVIEW.json",
+      "bytes": 1321,
+      "sha256": "31f56a65e38cb8487c167ff1b68c3effa9c475167dfdf1e0494774b782d20e64"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/WORKER_ROLE_SUMMARY.json",
+      "bytes": 4469,
+      "sha256": "364382a07b91a7c2b0d4da067b269ebedabface3ff1898b72dfeb8a42e872fb9"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/browser-native.MANIFEST.json",
+      "bytes": 3282,
+      "sha256": "5f586422582abaee0c2e7cea889728142ab47746da5a3b6a7159c98af6c92c11"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/browser-native.tar.gz",
+      "bytes": 22233,
+      "sha256": "62dd0662db4defef338c1dfff6e58f4617599f56ae907bd38d0769c35a0c4662"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/delivery-review.MANIFEST.json",
+      "bytes": 1354,
+      "sha256": "1cf738cee9a84b8a36bc930fae1c8ef2daad5711cc854baa4fa4294d075024a5"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/delivery-review.tar.gz",
+      "bytes": 6121,
+      "sha256": "e5e10db0cd2ba53fd8b1e8c6e6d32b6b53ac11366d75134188534ec41603b762"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/engineering-r12-blocked.MANIFEST.json",
+      "bytes": 7303,
+      "sha256": "28dda07f9bb080a9709974bc92f61be5c8bfff8d09bd7ccfb130c6ca222dc4a2"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/engineering-r12-blocked.tar.gz",
+      "bytes": 24093,
+      "sha256": "ea466e866f7eafc7c97d8bff56ed1fc3d73954543d900ba5576df2c2a6df8254"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/installed-packages.MANIFEST.json",
+      "bytes": 7714,
+      "sha256": "917e8f23f4902df1c8115478c28972bcd449ee96a9a17f9c7dd221a60fb982a0"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/installed-packages.tar.gz",
+      "bytes": 143523,
+      "sha256": "40564951f6511bad4484c1bd1fa99e9a87f61fd0b932de77bc9946bd4366a268"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/regressions.MANIFEST.json",
+      "bytes": 4900,
+      "sha256": "04ab7b28261e8c0ed7deed66fb8fbca0859ac0fe6b6ff3b9eca5583ba5391852"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/regressions.tar.gz",
+      "bytes": 318720,
+      "sha256": "120d0efb1cf6c095926f25fadfbcc6209e31b34a0ce63b951ff02879fa686f7c"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/session-context.MANIFEST.json",
+      "bytes": 2853,
+      "sha256": "b6961d9a6f162b5f3246a32f9be5658156fd36ad8acfee8dbafc34a38e0ab39a"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/session-context.tar.gz",
+      "bytes": 9063,
+      "sha256": "56e32c970757711f05f219d120a0d95e9ab487a5e01046dda3a17dbcfbbfc5a6"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/truncation-recovery.MANIFEST.json",
+      "bytes": 1144,
+      "sha256": "ef2bf8d9d620e0557d34bf3da1b4517ad99bf58443f8c0f24d65270d09096d73"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/truncation-recovery.tar.gz",
+      "bytes": 4180,
+      "sha256": "3e787cd33c39e4fb4da7513bc81b5001f15cd51188357992fdcb402a59cbe2e4"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/worker-roles-live.MANIFEST.json",
+      "bytes": 4066,
+      "sha256": "46722c5a6be67977f3003fc49e5083555a4b63322812fa2f52ee89772c820759"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/worker-roles-live.tar.gz",
+      "bytes": 35105,
+      "sha256": "efc97b9fdc4637287aab416aca2116210688216bd3e496f063778551908809a4"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/worker-roles-local.MANIFEST.json",
+      "bytes": 4931,
+      "sha256": "e19ac52f32254adcd02afd57ee3ce2cb03369d83f03b116c941e3664bb26a449"
+    },
+    {
+      "path": "docs/evidence/audit-20261117/root/rc17-followup-b35/worker-roles-local.tar.gz",
+      "bytes": 68577,
+      "sha256": "73d98b4b5d59657a8c81374b537cfffae5223df1a5f2a0bdc3897121a5cc8162"
+    },
+    {
+      "path": "scripts/qualify_openai_worker_roles.py",
+      "bytes": 18440,
+      "sha256": "5204ebb437bcaf7aca926dd6f5deeb433cc5bf9a9e4c97b465ab000841c0ea7e"
+    },
+    {
+      "path": "tests/test_worker_output_recovery.py",
+      "bytes": 12399,
+      "sha256": "1f8e3c924bd0c76161ddc3bebfa5cf5148d6755804fb2c7fc734510fd32256b3"
+    },
+    {
+      "path": "tests/test_worker_role_qualification.py",
+      "bytes": 9968,
+      "sha256": "d351a9faca241861bd7743444a3376a159e173b35bdc04095a4c92dd97a35cc4"
+    }
+  ],
+  "reviewed_repository_file_count": 47,
+  "errors": [],
+  "audit_corrections": [
+    "Corrected reviewer-only assumptions: task.tools contains all 7 receipts, including child receipts, and canonical child.text is retained. These were not product or archive failures."
+  ],
+  "delivery_checks": {
+    "count": 3,
+    "returncodes": [
+      0,
+      0,
+      0
+    ],
+    "source_head": "b69542583954c49672a636ba43f1ef310238883c"
+  }
+}

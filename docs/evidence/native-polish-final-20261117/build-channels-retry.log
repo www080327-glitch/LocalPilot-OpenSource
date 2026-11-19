@@ -1,0 +1,93 @@
+* Getting build dependencies for wheel...
+running egg_info
+creating localpilot_channels.egg-info
+writing localpilot_channels.egg-info/PKG-INFO
+writing dependency_links to localpilot_channels.egg-info/dependency_links.txt
+writing entry points to localpilot_channels.egg-info/entry_points.txt
+writing top-level names to localpilot_channels.egg-info/top_level.txt
+writing manifest file 'localpilot_channels.egg-info/SOURCES.txt'
+reading manifest file 'localpilot_channels.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+adding license file 'integrations/wechat-ilink-bridge/THIRD_PARTY_NOTICES.md'
+writing manifest file 'localpilot_channels.egg-info/SOURCES.txt'
+* Building wheel...
+running bdist_wheel
+running build
+running build_py
+creating build/lib/localpilot_channels
+copying localpilot_channels/store.py -> build/lib/localpilot_channels
+copying localpilot_channels/server.py -> build/lib/localpilot_channels
+copying localpilot_channels/adapter.py -> build/lib/localpilot_channels
+copying localpilot_channels/client.py -> build/lib/localpilot_channels
+copying localpilot_channels/security.py -> build/lib/localpilot_channels
+copying localpilot_channels/__init__.py -> build/lib/localpilot_channels
+copying localpilot_channels/__main__.py -> build/lib/localpilot_channels
+running egg_info
+writing localpilot_channels.egg-info/PKG-INFO
+writing dependency_links to localpilot_channels.egg-info/dependency_links.txt
+writing entry points to localpilot_channels.egg-info/entry_points.txt
+writing top-level names to localpilot_channels.egg-info/top_level.txt
+reading manifest file 'localpilot_channels.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+adding license file 'integrations/wechat-ilink-bridge/THIRD_PARTY_NOTICES.md'
+writing manifest file 'localpilot_channels.egg-info/SOURCES.txt'
+installing to build/bdist.macosx-10.15-universal2/wheel
+running install
+running install_lib
+creating build/bdist.macosx-10.15-universal2/wheel
+creating build/bdist.macosx-10.15-universal2/wheel/localpilot_channels
+copying build/lib/localpilot_channels/store.py -> build/bdist.macosx-10.15-universal2/wheel/./localpilot_channels
+copying build/lib/localpilot_channels/server.py -> build/bdist.macosx-10.15-universal2/wheel/./localpilot_channels
+copying build/lib/localpilot_channels/adapter.py -> build/bdist.macosx-10.15-universal2/wheel/./localpilot_channels
+copying build/lib/localpilot_channels/client.py -> build/bdist.macosx-10.15-universal2/wheel/./localpilot_channels
+copying build/lib/localpilot_channels/security.py -> build/bdist.macosx-10.15-universal2/wheel/./localpilot_channels
+copying build/lib/localpilot_channels/__init__.py -> build/bdist.macosx-10.15-universal2/wheel/./localpilot_channels
+copying build/lib/localpilot_channels/__main__.py -> build/bdist.macosx-10.15-universal2/wheel/./localpilot_channels
+running install_data
+creating build/bdist.macosx-10.15-universal2/wheel/localpilot_channels-0.1.0a4.data/data
+creating build/bdist.macosx-10.15-universal2/wheel/localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/qq-bridge
+copying integrations/qq-bridge/bridge.mjs -> build/bdist.macosx-10.15-universal2/wheel/localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/qq-bridge
+copying integrations/qq-bridge/cli.mjs -> build/bdist.macosx-10.15-universal2/wheel/localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/qq-bridge
+copying integrations/qq-bridge/gateway.mjs -> build/bdist.macosx-10.15-universal2/wheel/localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/qq-bridge
+copying integrations/qq-bridge/package.json -> build/bdist.macosx-10.15-universal2/wheel/localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/qq-bridge
+creating build/bdist.macosx-10.15-universal2/wheel/localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/wechat-ilink-bridge
+copying integrations/wechat-ilink-bridge/bridge.mjs -> build/bdist.macosx-10.15-universal2/wheel/localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/wechat-ilink-bridge
+copying integrations/wechat-ilink-bridge/cli.mjs -> build/bdist.macosx-10.15-universal2/wheel/localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/wechat-ilink-bridge
+copying integrations/wechat-ilink-bridge/package.json -> build/bdist.macosx-10.15-universal2/wheel/localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/wechat-ilink-bridge
+copying integrations/wechat-ilink-bridge/THIRD_PARTY_NOTICES.md -> build/bdist.macosx-10.15-universal2/wheel/localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/wechat-ilink-bridge
+creating build/bdist.macosx-10.15-universal2/wheel/localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/channel-common
+copying integrations/channel-common/security.mjs -> build/bdist.macosx-10.15-universal2/wheel/localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/channel-common
+copying integrations/channel-common/evidence.mjs -> build/bdist.macosx-10.15-universal2/wheel/localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/channel-common
+copying integrations/channel-common/control.mjs -> build/bdist.macosx-10.15-universal2/wheel/localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/channel-common
+running install_egg_info
+Copying localpilot_channels.egg-info to build/bdist.macosx-10.15-universal2/wheel/./localpilot_channels-0.1.0a4-py3.14.egg-info
+running install_scripts
+creating build/bdist.macosx-10.15-universal2/wheel/localpilot_channels-0.1.0a4.dist-info/WHEEL
+creating '$HOME/Library/Caches/localpilot-pr15-native-20261117/components/.tmp-yblwr4_r/localpilot_channels-0.1.0a4-py3-none-any.whl' and adding 'build/bdist.macosx-10.15-universal2/wheel' to it
+adding 'localpilot_channels/__init__.py'
+adding 'localpilot_channels/__main__.py'
+adding 'localpilot_channels/adapter.py'
+adding 'localpilot_channels/client.py'
+adding 'localpilot_channels/security.py'
+adding 'localpilot_channels/server.py'
+adding 'localpilot_channels/store.py'
+adding 'localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/channel-common/control.mjs'
+adding 'localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/channel-common/evidence.mjs'
+adding 'localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/channel-common/security.mjs'
+adding 'localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/qq-bridge/bridge.mjs'
+adding 'localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/qq-bridge/cli.mjs'
+adding 'localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/qq-bridge/gateway.mjs'
+adding 'localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/qq-bridge/package.json'
+adding 'localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/wechat-ilink-bridge/THIRD_PARTY_NOTICES.md'
+adding 'localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/wechat-ilink-bridge/bridge.mjs'
+adding 'localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/wechat-ilink-bridge/cli.mjs'
+adding 'localpilot_channels-0.1.0a4.data/data/share/localpilot/channels/wechat-ilink-bridge/package.json'
+adding 'localpilot_channels-0.1.0a4.dist-info/licenses/LICENSE'
+adding 'localpilot_channels-0.1.0a4.dist-info/licenses/integrations/wechat-ilink-bridge/THIRD_PARTY_NOTICES.md'
+adding 'localpilot_channels-0.1.0a4.dist-info/METADATA'
+adding 'localpilot_channels-0.1.0a4.dist-info/WHEEL'
+adding 'localpilot_channels-0.1.0a4.dist-info/entry_points.txt'
+adding 'localpilot_channels-0.1.0a4.dist-info/top_level.txt'
+adding 'localpilot_channels-0.1.0a4.dist-info/RECORD'
+removing build/bdist.macosx-10.15-universal2/wheel
+Successfully built localpilot_channels-0.1.0a4-py3-none-any.whl

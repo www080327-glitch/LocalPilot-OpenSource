@@ -5,6 +5,9 @@ use std::io::{Read, Write};
 use std::os::unix::net::{UnixListener, UnixStream};
 use std::sync::atomic::{AtomicBool, Ordering};
 
+pub const ANIMATION_INTERVAL: Duration =
+    Duration::from_nanos(1_000_000_000 / pet_edge::ANIMATION_FPS);
+
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(default, deny_unknown_fields)]
 pub struct PetSettings {
@@ -12,6 +15,7 @@ pub struct PetSettings {
     pub topmost: bool,
     pub size: f64,
     pub animation: bool,
+    pub basic_appearance: bool,
     pub quiet: bool,
     pub focus: bool,
     pub proactive: bool,
@@ -29,6 +33,7 @@ impl Default for PetSettings {
             topmost: true,
             size: 1.0,
             animation: true,
+            basic_appearance: false,
             quiet: false,
             focus: true,
             proactive: false,
@@ -51,11 +56,11 @@ pub struct PetState {
     pub mini_glass: AtomicBool,
     pub restoring: AtomicBool,
     pub ready_scheduled: AtomicBool,
-    pub restore_target: Mutex<Option<tauri::PhysicalPosition<i32>>>,
+    pub browser_reduce_motion: AtomicBool,
     pub standalone: AtomicBool,
     pub settings: Mutex<PetSettings>,
     pub position_save: Mutex<Option<tauri::async_runtime::JoinHandle<()>>>,
-    pub sprite: Mutex<Option<super::pet_assets::Sprite>>,
+    pub sprite: Mutex<Option<super::pet_assets::Atlas>>,
     pub pose: Mutex<(u32, u32)>,
     pub bubble_height: std::sync::atomic::AtomicU32,
     pub dragging: AtomicBool,
@@ -163,6 +168,15 @@ pub fn control_server(app: &tauri::AppHandle) -> Result<bool, String> {
                         (data(&app), super::pet_macos::diagnostics(&app))
                     {
                         let _ = save(&root.join("pet-window-diagnostics.json"), &report);
+                    }
+                }
+                "measure_animation" => {
+                    if app
+                        .state::<crate::test_profile::TestProfile>()
+                        .client
+                        .is_some()
+                    {
+                        let _ = app.emit_to("pet", "pet-measure-animation", ());
                     }
                 }
                 "hide" => {
@@ -379,6 +393,27 @@ pub async fn pet_runtime(
 fn settings(app: &tauri::AppHandle) -> PetSettings {
     app.state::<PetState>().settings.lock().unwrap().clone()
 }
+fn read_settings(root: &Path) -> PetSettings {
+    let mut prefs: PetSettings = private_json(&root.join("pet-settings-v1.json"))
+        .ok()
+        .and_then(|value| serde_json::from_value(value).ok())
+        .unwrap_or_default();
+    prefs.basic_appearance = private_json(&root.join("pet-appearance-v1.json"))
+        .ok()
+        .and_then(|value| value["basic_appearance"].as_bool())
+        .unwrap_or(false);
+    prefs
+}
+fn save_settings(root: &Path, settings: &PetSettings) -> Result<(), String> {
+    let mut legacy = serde_json::to_value(settings).map_err(|error| error.to_string())?;
+    // RC18 rejects unknown fields. Preserve its settings schema during rollback.
+    legacy.as_object_mut().unwrap().remove("basic_appearance");
+    save(&root.join("pet-settings-v1.json"), &legacy)?;
+    save(
+        &root.join("pet-appearance-v1.json"),
+        &json!({"version":1,"basic_appearance":settings.basic_appearance}),
+    )
+}
 fn persist_position(app: &tauri::AppHandle) -> Result<(), String> {
     if let Some(w) = app.get_webview_window("pet") {
         let p = w.outer_position().map_err(|e| e.to_string())?;
@@ -414,15 +449,35 @@ pub fn bubble_origin(
     pet: (i32, i32, u32, u32),
     area: (i32, i32, u32, u32),
     size: (u32, u32),
+    anchor: pet_edge::Anchor,
 ) -> (i32, i32) {
     let (x, y, w, _h) = pet;
     let (ax, ay, aw, ah) = area;
     let (bw, bh) = size;
-    let left = x + w as i32 - bw as i32;
-    let above = y - bh as i32 - 8;
-    let by = if above >= ay { above } else { y + 8 };
+    let mini = pet_edge::chat_box(anchor);
+    let factor = w as f64 / pet_edge::VIEW_W;
+    let (mx, my, mw, mh) = (
+        (mini[0] * factor) as i32,
+        (mini[1] * factor) as i32,
+        (mini[2] * factor) as i32,
+        (mini[3] * factor) as i32,
+    );
+    let left = matches!(
+        anchor,
+        pet_edge::Anchor::TopLeft | pet_edge::Anchor::LeftEdge | pet_edge::Anchor::BottomLeft
+    );
+    let bx = if left {
+        x + mx
+    } else {
+        x + mx + mw - bw as i32
+    };
+    let by = match anchor {
+        pet_edge::Anchor::TopLeft | pet_edge::Anchor::TopRight => y + my,
+        pet_edge::Anchor::BottomLeft | pet_edge::Anchor::BottomRight => y + my + mh - bh as i32,
+        _ => y + my + mh / 2 - bh as i32 / 2,
+    };
     (
-        left.clamp(ax, ax + (aw.saturating_sub(bw)) as i32),
+        bx.clamp(ax, ax + (aw.saturating_sub(bw)) as i32),
         by.clamp(ay, ay + (ah.saturating_sub(bh)) as i32),
     )
 }
@@ -448,37 +503,16 @@ pub fn follow(app: &tauri::AppHandle) -> Result<(), String> {
         .clamp(180, 420);
     let bh = (height as f64 * scale).min(area.size.height as f64) as u32;
     let anchor = app.state::<PetState>().edge.lock().unwrap().anchor;
-    let mini = pet_edge::chat_box(anchor);
-    let factor = s.width as f64 / pet_edge::VIEW_W;
-    let (mx, my, mw, mh) = (
-        (mini[0] * factor) as i32,
-        (mini[1] * factor) as i32,
-        (mini[2] * factor) as i32,
-        (mini[3] * factor) as i32,
-    );
-    let left = matches!(
-        anchor,
-        pet_edge::Anchor::TopLeft | pet_edge::Anchor::LeftEdge | pet_edge::Anchor::BottomLeft
-    );
-    let x = if left {
-        p.x + mx
-    } else {
-        p.x + mx + mw - bw as i32
-    };
-    let y = match anchor {
-        pet_edge::Anchor::TopLeft | pet_edge::Anchor::TopRight => p.y + my,
-        pet_edge::Anchor::BottomLeft | pet_edge::Anchor::BottomRight => p.y + my + mh - bh as i32,
-        _ => p.y + my + mh / 2 - bh as i32 / 2,
-    };
-    let (x, y) = (
-        x.clamp(
+    let (x, y) = bubble_origin(
+        (p.x, p.y, s.width, s.height),
+        (
             area.position.x,
-            area.position.x + area.size.width.saturating_sub(bw) as i32,
-        ),
-        y.clamp(
             area.position.y,
-            area.position.y + area.size.height.saturating_sub(bh) as i32,
+            area.size.width,
+            area.size.height,
         ),
+        (bw, bh),
+        anchor,
     );
     bubble
         .set_size(tauri::PhysicalSize::new(bw, bh))
@@ -514,7 +548,7 @@ pub fn expand(app: &tauri::AppHandle, value: bool, focus: bool) -> Result<(), St
         .state::<PetState>()
         .expanded
         .swap(value, Ordering::Relaxed);
-    if previous == value {
+    if previous == value && !(value && focus) {
         return Ok(());
     }
     pet_edge::chat(app, value);
@@ -529,15 +563,12 @@ pub fn expand(app: &tauri::AppHandle, value: bool, focus: bool) -> Result<(), St
             b.hide().map_err(|e| e.to_string())?;
         }
     }
-    app.emit("pet-state", json!({"expanded":value}))
+    app.emit("pet-state", json!({"expanded":value,"focus":focus}))
         .map_err(|e| e.to_string())?;
     Ok(())
 }
 pub fn create(app: &tauri::AppHandle) -> Result<(), String> {
-    let prefs: PetSettings = private_json(&data(app)?.join("pet-settings-v1.json"))
-        .ok()
-        .and_then(|v| serde_json::from_value(v).ok())
-        .unwrap_or_default();
+    let prefs = read_settings(&data(app)?);
     *app.state::<PetState>().settings.lock().unwrap() = prefs.clone();
     if let Some(w) = app.get_webview_window("pet") {
         w.show().map_err(|e| e.to_string())?;
@@ -549,46 +580,50 @@ pub fn create(app: &tauri::AppHandle) -> Result<(), String> {
     app.state::<PetState>()
         .ready_scheduled
         .store(false, Ordering::Relaxed);
-    let pet = tauri::WebviewWindowBuilder::new(
-        app,
-        "pet",
-        tauri::WebviewUrl::App("index.html?pet=character".into()),
-    )
-    .title("Companion · DeepSeek 娘")
-    .visible(false)
-    .inner_size(pet_edge::VIEW_W * prefs.size, pet_edge::VIEW_H * prefs.size)
-    .decorations(false)
-    .transparent(true)
-    .background_color(tauri::window::Color(0, 0, 0, 0))
-    .shadow(false)
-    .always_on_top(prefs.topmost)
-    .skip_taskbar(true)
-    .focused(false)
-    .resizable(false)
-    .build()
-    .map_err(|e| e.to_string())?;
+    let pet = app
+        .state::<crate::test_profile::TestProfile>()
+        .webview(tauri::WebviewWindowBuilder::new(
+            app,
+            "pet",
+            tauri::WebviewUrl::App("index.html?pet=character".into()),
+        ))
+        .title("Companion · DeepSeek 娘")
+        .visible(false)
+        .inner_size(pet_edge::VIEW_W * prefs.size, pet_edge::VIEW_H * prefs.size)
+        .decorations(false)
+        .transparent(true)
+        .background_color(tauri::window::Color(0, 0, 0, 0))
+        .shadow(false)
+        .always_on_top(prefs.topmost)
+        .skip_taskbar(true)
+        .focused(false)
+        .resizable(false)
+        .build()
+        .map_err(|e| e.to_string())?;
     super::pet_macos::transparent(&pet)?;
     #[cfg(target_os = "macos")]
     pet.set_ignore_cursor_events(true)
         .map_err(|e| e.to_string())?;
     super::pet_macos::install(app);
-    let bubble = tauri::WebviewWindowBuilder::new(
-        app,
-        "pet-bubble",
-        tauri::WebviewUrl::App("index.html?pet=bubble".into()),
-    )
-    .title("Companion 对话")
-    .inner_size(320.0, 180.0)
-    .decorations(false)
-    .transparent(true)
-    .background_color(tauri::window::Color(0, 0, 0, 0))
-    .always_on_top(prefs.topmost)
-    .skip_taskbar(true)
-    .visible(false)
-    .focused(false)
-    .resizable(false)
-    .build()
-    .map_err(|e| e.to_string())?;
+    let bubble = app
+        .state::<crate::test_profile::TestProfile>()
+        .webview(tauri::WebviewWindowBuilder::new(
+            app,
+            "pet-bubble",
+            tauri::WebviewUrl::App("index.html?pet=bubble".into()),
+        ))
+        .title("Companion 对话")
+        .inner_size(320.0, 180.0)
+        .decorations(false)
+        .transparent(true)
+        .background_color(tauri::window::Color(0, 0, 0, 0))
+        .always_on_top(prefs.topmost)
+        .skip_taskbar(true)
+        .visible(false)
+        .focused(false)
+        .resizable(false)
+        .build()
+        .map_err(|e| e.to_string())?;
     #[cfg(target_os = "macos")]
     let material = {
         let workspace = objc2_app_kit::NSWorkspace::sharedWorkspace();
@@ -657,8 +692,6 @@ pub fn create(app: &tauri::AppHandle) -> Result<(), String> {
                 a.position.x + a.size.width as i32 - (430.0 * m.scale_factor()) as i32,
                 a.position.y + a.size.height as i32 - (170.0 * m.scale_factor()) as i32,
             ));
-        *app.state::<PetState>().restore_target.lock().unwrap() =
-            Some(tauri::PhysicalPosition::new(x, y));
         pet.set_position(tauri::PhysicalPosition::new(x, y))
             .map_err(|e| e.to_string())?;
     }
@@ -671,8 +704,10 @@ pub fn create(app: &tauri::AppHandle) -> Result<(), String> {
     // never posts input, activates another app, or records pointer history.
     let handle = app.clone();
     tauri::async_runtime::spawn(async move {
+        let mut frames = tokio::time::interval(ANIMATION_INTERVAL);
+        frames.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
         loop {
-            tokio::time::sleep(Duration::from_millis(50)).await;
+            frames.tick().await;
             let Some(window) = handle.get_webview_window("pet") else {
                 break;
             };
@@ -682,6 +717,7 @@ pub fn create(app: &tauri::AppHandle) -> Result<(), String> {
             }
             if !window.is_visible().unwrap_or(false) {
                 tokio::time::sleep(Duration::from_millis(500)).await;
+                frames.reset();
                 continue;
             }
             let main = handle.clone();
@@ -759,6 +795,20 @@ pub async fn pet_action(
             .map_err(|e| e.to_string())?;
             rx.await.map_err(|e| e.to_string())?
         }
+        "animation_report" => {
+            if app
+                .state::<crate::test_profile::TestProfile>()
+                .client
+                .is_none()
+            {
+                return Err("动画采样仅用于独立测试目录".into());
+            }
+            save(
+                &data(&app)?.join("pet-animation-probe.json"),
+                &value.ok_or("缺少采样结果")?,
+            )?;
+            Ok(json!({}))
+        }
         "state" => Ok(
             json!({"settings":settings(&app),"material":private_json(&data(&app)?.join("pet-material.json")).ok(),"native_pointer":cfg!(target_os = "macos"),"mlx_supported":cfg!(all(target_os = "macos", target_arch = "aarch64")),"expanded":app.state::<PetState>().expanded.load(Ordering::Relaxed),"edge":pet_edge::snapshot(&app)}),
         ),
@@ -772,30 +822,38 @@ pub async fn pet_action(
             Ok(json!({}))
         }
         "drag" => {
-            app.state::<PetState>()
-                .dragging
-                .store(true, Ordering::Relaxed);
-            let window = app.get_webview_window("pet").ok_or("宠物未开启")?;
-            let _ = window.set_ignore_cursor_events(false);
-            let result = window.start_dragging();
-            app.state::<PetState>()
-                .dragging
-                .store(false, Ordering::Relaxed);
-            result.map_err(|e| e.to_string())?;
-            settle(&app)?;
-            Ok(json!({}))
+            #[cfg(target_os = "linux")]
+            {
+                let (tx, rx) = tokio::sync::oneshot::channel();
+                let handle = app.clone();
+                app.run_on_main_thread(move || {
+                    let _ = tx.send(super::pet_macos::begin_drag(&handle));
+                })
+                .map_err(|e| e.to_string())?;
+                rx.await.map_err(|e| e.to_string())??;
+                return Ok(json!({}));
+            }
+            #[cfg(not(target_os = "linux"))]
+            {
+                app.state::<PetState>()
+                    .dragging
+                    .store(true, Ordering::Relaxed);
+                let window = app.get_webview_window("pet").ok_or("宠物未开启")?;
+                let _ = window.set_ignore_cursor_events(false);
+                let result = window.start_dragging();
+                app.state::<PetState>()
+                    .dragging
+                    .store(false, Ordering::Relaxed);
+                result.map_err(|e| e.to_string())?;
+                settle(&app)?;
+                Ok(json!({}))
+            }
         }
-        "pose" => {
-            let v = value.ok_or("缺少角色帧")?;
-            let x = v["column"]
-                .as_u64()
-                .filter(|v| *v < 8)
-                .ok_or("角色帧无效")? as u32;
-            let y = v["row"]
-                .as_u64()
-                .filter(|v| *v < 11)
-                .ok_or("角色状态无效")? as u32;
-            *app.state::<PetState>().pose.lock().unwrap() = (x, y);
+        "motion_preference" => {
+            let reduced = value.and_then(|v| v.as_bool()).ok_or("动态效果偏好无效")?;
+            app.state::<PetState>()
+                .browser_reduce_motion
+                .store(reduced, Ordering::Relaxed);
             Ok(json!({}))
         }
         "resize_bubble" => {
@@ -859,7 +917,7 @@ pub async fn pet_action(
             {
                 return Err("设置超出允许范围".into());
             }
-            save(&data(&app)?.join("pet-settings-v1.json"), &s)?;
+            save_settings(&data(&app)?, &s)?;
             *app.state::<PetState>().settings.lock().unwrap() = s.clone();
             for name in ["pet", "pet-bubble"] {
                 if let Some(w) = app.get_webview_window(name) {
@@ -909,6 +967,7 @@ pub async fn pet_service(
         "ui_snapshot",
         "pet_memory",
         "pet_export",
+        "pet_history",
         "clear",
         "pause_observation",
         "set_reminder",
@@ -1040,25 +1099,107 @@ pub fn setup_tray(app: &tauri::AppHandle) -> Result<(), String> {
 mod tests {
     use super::*;
     #[test]
+    fn basic_appearance_keeps_existing_settings_compatible_with_rollback() {
+        #[derive(Deserialize)]
+        #[serde(deny_unknown_fields)]
+        struct Rc18Settings {
+            version: u32,
+            topmost: bool,
+            size: f64,
+            animation: bool,
+            quiet: bool,
+            focus: bool,
+            proactive: bool,
+            banter: bool,
+            cooldown_minutes: u32,
+            daily_limit: u32,
+            quiet_start: u32,
+            quiet_end: u32,
+            event_allowlist: Vec<String>,
+        }
+        let root = std::env::temp_dir().join(format!("lp-pet-settings-{}", uuid::Uuid::new_v4()));
+        fs::create_dir(&root).unwrap();
+        let prefs = PetSettings {
+            basic_appearance: true,
+            size: 1.2,
+            quiet: true,
+            ..PetSettings::default()
+        };
+        save_settings(&root, &prefs).unwrap();
+        let old: Rc18Settings =
+            serde_json::from_value(private_json(&root.join("pet-settings-v1.json")).unwrap())
+                .unwrap();
+        assert_eq!(old.size, 1.2);
+        assert!(old.quiet && old.topmost && old.animation && old.focus && old.banter);
+        assert!(!old.proactive);
+        assert_eq!(
+            (old.version, old.cooldown_minutes, old.daily_limit),
+            (1, 30, 4)
+        );
+        assert_eq!((old.quiet_start, old.quiet_end), (22, 8));
+        assert_eq!(old.event_allowlist, prefs.event_allowlist);
+        let loaded = read_settings(&root);
+        assert!(loaded.basic_appearance && loaded.quiet);
+        assert_eq!(loaded.size, 1.2);
+        fs::remove_file(root.join("pet-appearance-v1.json")).unwrap();
+        let old_install = read_settings(&root);
+        assert!(!old_install.basic_appearance);
+        assert!(old_install.quiet);
+        assert_eq!(old_install.size, 1.2);
+        fs::remove_dir_all(root).unwrap();
+    }
+    #[test]
     fn edge_placement() {
         assert_eq!(
-            bubble_origin((950, 750, 160, 140), (0, 25, 1200, 830), (380, 460)),
-            (730, 282)
+            bubble_origin(
+                (950, 750, 160, 140),
+                (0, 25, 1200, 830),
+                (380, 460),
+                pet_edge::Anchor::BottomRight
+            ),
+            (663, 359)
         );
         assert_eq!(
-            bubble_origin((5, 30, 160, 140), (0, 25, 1200, 830), (380, 460)),
-            (0, 38)
+            bubble_origin(
+                (5, 30, 160, 140),
+                (0, 25, 1200, 830),
+                (380, 460),
+                pet_edge::Anchor::TopLeft
+            ),
+            (71, 104)
         );
     }
     #[test]
     fn negative_monitor_and_small_workarea() {
         assert_eq!(
-            bubble_origin((-1200, 50, 160, 140), (-1440, 24, 1440, 850), (380, 460)),
-            (-1420, 58)
+            bubble_origin(
+                (-1200, 50, 160, 140),
+                (-1440, 24, 1440, 850),
+                (380, 460),
+                pet_edge::Anchor::RightEdge
+            ),
+            (-1440, 24)
         );
         assert_eq!(
-            bubble_origin((0, 0, 160, 140), (0, 0, 300, 200), (380, 460)),
+            bubble_origin(
+                (0, 0, 160, 140),
+                (0, 0, 300, 200),
+                (380, 460),
+                pet_edge::Anchor::RightEdge
+            ),
             (0, 0)
+        );
+    }
+    #[test]
+    fn bubble_follows_the_same_thought_anchor_at_double_scale() {
+        let a = pet_edge::Anchor::RightEdge;
+        assert_eq!(
+            bubble_origin((100, 400, 240, 220), (0, 0, 1440, 900), (320, 420), a),
+            (0, 242)
+        );
+        assert_eq!(
+            bubble_origin((200, 800, 480, 440), (0, 0, 2880, 1800), (640, 840), a),
+            (0, 484)
         );
     }
 }

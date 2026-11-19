@@ -60,7 +60,7 @@ export function useServiceConnection(
       const h = await call<Json>("api", { method: "GET", path: "/healthz" });
       const activeProfile = await call<NativeProfile>("profile");
       if (sequence !== refreshSequence.current) return;
-      const identity = `${activeProfile.origin}|${h.client_subject}|${h.client_generation || ""}`;
+      const identity = `${activeProfile.home}|${activeProfile.origin}|${h.client_subject}|${h.client_generation || ""}`;
       if (activeIdentity.current && activeIdentity.current !== identity) {
         setPending([]);
         reset();
@@ -68,6 +68,7 @@ export function useServiceConnection(
         restoreDone.current = false;
       }
       activeIdentity.current = identity;
+      setProfile(activeProfile);
       setPending([]);
       setHealth(h);
       if (!compatible(h))

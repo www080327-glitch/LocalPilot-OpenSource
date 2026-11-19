@@ -1,0 +1,299 @@
+{
+  "installed": {
+    "source_commit": "b6f95da47f706581a780d6874382be53d99b33c4",
+    "source_dirty": false,
+    "start_utc": "2026-11-17T06:41:51.459590+00:00",
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "os_release": "PRETTY_NAME=\"Debian GNU/Linux 13 (trixie)\"\nNAME=\"Debian GNU/Linux\"\nVERSION_ID=\"13\"\nVERSION=\"13 (trixie)\"\nVERSION_CODENAME=trixie\nDEBIAN_VERSION_FULL=13.6\nID=debian\nHOME_URL=\"https://www.debian.org/\"\nSUPPORT_URL=\"https://www.debian.org/support\"\nBUG_REPORT_URL=\"https://bugs.debian.org/\"\n",
+    "build_tools": {
+      "build": "1.6.1",
+      "setuptools": "84.2.1",
+      "wheel": "0.48.0"
+    },
+    "expected_versions": {
+      "localpilot-agent-service": "5.0.0b33",
+      "localpilot-suite": "0.2.0b33",
+      "localpilot-companion": "0.5.7b10",
+      "localpilot-channels": "0.1.0a4"
+    },
+    "dependency_pins": [
+      "psutil==7.2.2",
+      "pypdf==6.21.4",
+      "Pillow==12.3.0",
+      "defusedxml==0.7.1",
+      "watchdog==6.0.0"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "<PINNED_TEST_ENVIRONMENT>/.venv/bin/python",
+          "-m",
+          "build",
+          "--wheel",
+          "--no-isolation",
+          "--outdir",
+          "<VALIDATION_ROOT>/installed-r1/wheels",
+          "."
+        ],
+        "cwd": "<SOURCE_ROOT>",
+        "log": "build.log"
+      },
+      {
+        "argv": [
+          "<PINNED_TEST_ENVIRONMENT>/.venv/bin/python",
+          "-m",
+          "build",
+          "--wheel",
+          "--no-isolation",
+          "--outdir",
+          "<VALIDATION_ROOT>/installed-r1/wheels",
+          "companion"
+        ],
+        "cwd": "<SOURCE_ROOT>",
+        "log": "build.log"
+      },
+      {
+        "argv": [
+          "<PINNED_TEST_ENVIRONMENT>/.venv/bin/python",
+          "-m",
+          "build",
+          "--wheel",
+          "--no-isolation",
+          "--outdir",
+          "<VALIDATION_ROOT>/installed-r1/wheels",
+          "suite"
+        ],
+        "cwd": "<SOURCE_ROOT>",
+        "log": "build.log"
+      },
+      {
+        "argv": [
+          "<PINNED_TEST_ENVIRONMENT>/.venv/bin/python",
+          "scripts/build_channels_wheel.py",
+          "--no-isolation",
+          "--out",
+          "<VALIDATION_ROOT>/installed-r1/wheels"
+        ],
+        "cwd": "<SOURCE_ROOT>",
+        "log": "build.log"
+      },
+      {
+        "argv": [
+          "<PINNED_TEST_ENVIRONMENT>/.venv/bin/python",
+          "-m",
+          "venv",
+          "<VALIDATION_ROOT>/installed-r1/runtime"
+        ],
+        "cwd": "<SOURCE_ROOT>",
+        "log": "venv.log"
+      },
+      {
+        "argv": [
+          "<VALIDATION_ROOT>/installed-r1/runtime/bin/python",
+          "-m",
+          "pip",
+          "--disable-pip-version-check",
+          "install",
+          "--no-input",
+          "psutil==7.2.2",
+          "pypdf==6.21.4",
+          "Pillow==12.3.0",
+          "defusedxml==0.7.1",
+          "watchdog==6.0.0"
+        ],
+        "cwd": "<SOURCE_ROOT>",
+        "log": "dependencies.log"
+      },
+      {
+        "argv": [
+          "<VALIDATION_ROOT>/installed-r1/runtime/bin/python",
+          "-m",
+          "pip",
+          "--disable-pip-version-check",
+          "install",
+          "--no-index",
+          "--no-deps",
+          "<VALIDATION_ROOT>/installed-r1/wheels/localpilot_agent_service-5.0.0b33-py3-none-any.whl",
+          "<VALIDATION_ROOT>/installed-r1/wheels/localpilot_channels-0.1.0a4-py3-none-any.whl",
+          "<VALIDATION_ROOT>/installed-r1/wheels/localpilot_companion-0.5.7b10-py3-none-any.whl",
+          "<VALIDATION_ROOT>/installed-r1/wheels/localpilot_suite-0.2.0b33-py3-none-any.whl"
+        ],
+        "cwd": "<SOURCE_ROOT>",
+        "log": "install.log"
+      },
+      {
+        "argv": [
+          "<VALIDATION_ROOT>/installed-r1/runtime/bin/python",
+          "-I",
+          "-m",
+          "pip",
+          "check"
+        ],
+        "cwd": "<VALIDATION_ROOT>/installed-r1",
+        "log": "pip-check.log"
+      },
+      {
+        "argv": [
+          "<VALIDATION_ROOT>/installed-r1/runtime/bin/python",
+          "-I",
+          "-m",
+          "localpilot_suite.cli",
+          "--version"
+        ],
+        "cwd": "<VALIDATION_ROOT>/installed-r1",
+        "log": "cli-version.log"
+      },
+      {
+        "argv": [
+          "<VALIDATION_ROOT>/installed-r1/runtime/bin/python",
+          "-B",
+          "-m",
+          "unittest",
+          "tests.test_channel_suite_diagnostics",
+          "tests.test_channel_suite_integration",
+          "-v"
+        ],
+        "cwd": "<VALIDATION_ROOT>/installed-r1/harness",
+        "log": "tests.log"
+      }
+    ],
+    "real_model_calls": false,
+    "system_install": false,
+    "real_platform_accounts": false,
+    "source_tree": "36d464811bbfd9538274d88bd2c13fbcf80374be",
+    "wheels": [
+      {
+        "file": "localpilot_agent_service-5.0.0b33-py3-none-any.whl",
+        "bytes": 586403,
+        "sha256": "aab808fb8abe27308e822a746abaefc7783c94918647dc50d7a86df6a8b9c19f"
+      },
+      {
+        "file": "localpilot_channels-0.1.0a4-py3-none-any.whl",
+        "bytes": 45932,
+        "sha256": "8113f9b772b428400138fb4d9f390427ae63b5a2a8a521d28d4b76254a4d0dde"
+      },
+      {
+        "file": "localpilot_companion-0.5.7b10-py3-none-any.whl",
+        "bytes": 357355,
+        "sha256": "7207cd18c33a1f5a88c680a0d2066e6c6fbdab531bed4175a6cbe136b4ca634e"
+      },
+      {
+        "file": "localpilot_suite-0.2.0b33-py3-none-any.whl",
+        "bytes": 108572,
+        "sha256": "e903fead67ad13366ec5770a3e54a91002fbd9cb62ebf62bf320727ab0f4d49c"
+      }
+    ],
+    "verified_installed_source_files_by_wheel": {
+      "localpilot_agent_service-5.0.0b33-py3-none-any.whl": 149,
+      "localpilot_channels-0.1.0a4-py3-none-any.whl": 7,
+      "localpilot_companion-0.5.7b10-py3-none-any.whl": 110,
+      "localpilot_suite-0.2.0b33-py3-none-any.whl": 21
+    },
+    "required_changed_sources_verified": [
+      "agent/hybrid.py",
+      "agent/persistence.py",
+      "agent/session_history.py",
+      "companion/runtime/tasks.py",
+      "localpilot_api/service.py"
+    ],
+    "wheel_private_artifact_scan": {
+      "known_credential_checked": true,
+      "matches": 0,
+      "forbidden_paths": 0
+    },
+    "harness_kind": "Existing tests copied without product Python packages; channel assets from installed wheel; imports verified under isolated runtime prefix",
+    "test_start_utc": "2026-11-17T06:42:06.270996+00:00",
+    "test_elapsed_seconds": 6.031911047000904,
+    "test_end_utc": "2026-11-17T06:42:12.302926+00:00",
+    "remaining_owned_processes": [],
+    "status": "PASS",
+    "source_commit_after": "b6f95da47f706581a780d6874382be53d99b33c4",
+    "source_tree_after": "36d464811bbfd9538274d88bd2c13fbcf80374be",
+    "source_revision_unchanged": true,
+    "source_files_verified": 675,
+    "source_unchanged": true,
+    "source_changes": [],
+    "end_utc": "2026-11-17T06:42:12.352492+00:00"
+  },
+  "suite": {
+    "command": [
+      "<VALIDATION_ROOT>/installed-r1/runtime/bin/python",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "suite/tests",
+      "-v"
+    ],
+    "cwd": "<SOURCE_ROOT>",
+    "test_pythonpath": "<SOURCE_ROOT>/suite",
+    "environment": {
+      "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+      "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+      "sqlite_schema": 3,
+      "service_version": "5.0.0b33",
+      "imports": {
+        "agent": "<SOURCE_ROOT>/agent/__init__.py",
+        "companion": "<SOURCE_ROOT>/companion/__init__.py",
+        "localpilot_suite": "<SOURCE_ROOT>/suite/localpilot_suite/__init__.py",
+        "localpilot_service": "<SOURCE_ROOT>/localpilot_service/__init__.py"
+      }
+    },
+    "source_commit": "b6f95da47f706581a780d6874382be53d99b33c4",
+    "source_dirty": false,
+    "start_utc": "2026-11-17T06:42:23.048813+00:00",
+    "real_model_calls": false,
+    "system_install": false,
+    "native_macos_acceptance": false,
+    "source_tree": "36d464811bbfd9538274d88bd2c13fbcf80374be",
+    "exit_code": 0,
+    "elapsed_seconds": 57.13253222200001,
+    "end_utc": "2026-11-17T06:43:20.184534+00:00",
+    "tests_run": 123,
+    "unittest_seconds": 56.774,
+    "warnings": [
+      "test_cloud_setup_failure_restores_both_configs_and_services (test_local_endpoint_portability.PortableSetupProcessTests.test_cloud_setup_failure_restores_both_configs_and_services) ... /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py:1127: ResourceWarning: subprocess 175 is still running",
+      "ResourceWarning: Enable tracemalloc to get the object allocation traceback",
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py:1127: ResourceWarning: subprocess 182 is still running",
+      "ResourceWarning: Enable tracemalloc to get the object allocation traceback"
+    ],
+    "skipped": [
+      "test_private_channel_state_under_system_tmp_preserves_owner_only_files (test_channel_product.ChannelProductTests.test_private_channel_state_under_system_tmp_preserves_owner_only_files) ... skipped 'macOS fixed system alias'"
+    ],
+    "passed": 121,
+    "source_commit_after": "b6f95da47f706581a780d6874382be53d99b33c4",
+    "source_tree_after": "36d464811bbfd9538274d88bd2c13fbcf80374be",
+    "source_revision_unchanged": true,
+    "source_files_verified": 675,
+    "source_unchanged": true,
+    "source_changes": [],
+    "status": "PASS_WITH_DECLARED_SKIP"
+  },
+  "suite_postcheck": {
+    "checked_utc": "2026-11-17T06:44:23.071605+00:00",
+    "source_commit": "b6f95da47f706581a780d6874382be53d99b33c4",
+    "source_tree": "36d464811bbfd9538274d88bd2c13fbcf80374be",
+    "source_clean_after": true,
+    "installed_status": "PASS",
+    "suite_status": "PASS_WITH_DECLARED_SKIP",
+    "suite_tests_run": 123,
+    "suite_passed": 122,
+    "suite_skipped": 1,
+    "suite_raw_line_counted_passes": 121,
+    "suite_standalone_ok_lines": 1,
+    "pass_count_note": "One ResourceWarning interrupts its test-name line; the raw runner counts 121 name-line successes plus one standalone ok. Final unittest result is 123 tests, one skip, zero failures/errors, hence 122 passes.",
+    "resource_warning_count": 2,
+    "resource_warnings": [
+      "test_cloud_setup_failure_restores_both_configs_and_services (test_local_endpoint_portability.PortableSetupProcessTests.test_cloud_setup_failure_restores_both_configs_and_services) ... /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py:1127: ResourceWarning: subprocess 175 is still running",
+      "ResourceWarning: Enable tracemalloc to get the object allocation traceback",
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py:1127: ResourceWarning: subprocess 182 is still running",
+      "ResourceWarning: Enable tracemalloc to get the object allocation traceback"
+    ],
+    "visible_processes_with_runtime_argv": [],
+    "process_check_scope": "Visible process table; an argv item must begin with the exact isolated installed-r1/runtime path. No processes are terminated.",
+    "source_inputs_unchanged": true,
+    "source_revision_unchanged": true
+  }
+}

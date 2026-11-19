@@ -1,0 +1,64 @@
+{
+  "comparison": "Qwen b24 frozen checkout to b25 child-budget change; version metadata handled by integration",
+  "files": [
+    {
+      "path": "agent/session_types.py",
+      "added": 1,
+      "removed": 1,
+      "before_sha256": "319bea9bf3bbba132991c09f16c3ff562eff5db7b9e2c43c6129e096799f9ae9",
+      "after_sha256": "5344cd6694bd805b64294dbae06b184f92f9ed365878d4e2c1d97f73f1d2a8db"
+    },
+    {
+      "path": "agent/__main__.py",
+      "added": 1,
+      "removed": 1,
+      "before_sha256": "7b88c4789c4dbe3104550ac6dc8ef28d78e1a82e7cf7be73f685f649f878bbe4",
+      "after_sha256": "c3d413ce017c3851003eb4525e971e51ea071a6567ad563e3a8371e594ac1fc1"
+    },
+    {
+      "path": "localpilot_service/deployment.py",
+      "added": 4,
+      "removed": 2,
+      "before_sha256": "e9c72303a99c777d8b89eca6dd05f07b1a6459f2b0d4d131f557417c359e23ce",
+      "after_sha256": "126e4d9cf37e7c1e996ef1d9734c6c2749fce7145ef0c23534a27657786a10b9"
+    },
+    {
+      "path": "localpilot_service/restore_migration.py",
+      "added": 40,
+      "removed": 1,
+      "before_sha256": "24749aed03079bc4145aba680b9f74ef0150392f5ba34b3b7558d9f4531079bc",
+      "after_sha256": "54407fb121c127a7a512a4b4f9f4188229d861bb53f4bdac0cf59d5404b95872"
+    },
+    {
+      "path": "localpilot_service/session_migration.py",
+      "added": 6,
+      "removed": 0,
+      "before_sha256": "9ee3e429d51f2ee807a0fe6c85d3de733de0ff6e908551b53c5839db2667038e",
+      "after_sha256": "a77fa34b56a04866dcad0a64f8aefd418c81d3fd2c80ae34b02e48491731dd7e"
+    },
+    {
+      "path": "localpilot_api/service.py",
+      "added": 1,
+      "removed": 0,
+      "before_sha256": "02ffa360e8be7b5c30b8a741b273a4d54c32cd89c31da751452c3b707ed39a44",
+      "after_sha256": "e3c7306d5d55e09853da2f7f8fb5f955e8aaeea0d711d8fd12be25a5831758de"
+    },
+    {
+      "path": "localpilot_api/session_history.py",
+      "added": 3,
+      "removed": 1,
+      "before_sha256": "034e6476db1b121b61295bbe3f87277e3ac892271e6d77ccdefaa95addec45a3",
+      "after_sha256": "4a6f5aee042d4eae9c025ab9986ac38605db276c7a41feab2792a16627fe5992"
+    },
+    {
+      "path": "scripts/qualify_linux_model.py",
+      "added": 8,
+      "removed": 3,
+      "before_sha256": "831acc4a25c21c92891806ee34e6a73bc0f6cbd62bef8cf44600c69588e9d75c",
+      "after_sha256": "ed5c8dedf4de8d083f555da81df5185f1a2cbf7b56a17773800bba4bed16b839"
+    }
+  ],
+  "added": 64,
+  "removed": 9,
+  "new_test_lines": 343
+}

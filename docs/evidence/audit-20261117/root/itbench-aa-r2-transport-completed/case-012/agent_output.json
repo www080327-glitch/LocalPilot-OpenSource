@@ -1,0 +1,14 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Deployment/frontend",
+      "reasoning": "The frontend pod is CPU-throttled under request load, causing its own frontend requests to fail or terminate. The frontend-proxy 503s are downstream of the failing frontend target, so frontend-proxy is not a separate cause.",
+      "evidence": "The frontend Deployment template has a 100m CPU limit (50m request). During 17:45-17:54 the frontend pod's cumulative throttled-period ratio was about 31-33%, and CPUThrottlingHigh subsequently fired for that pod at 26.63-28.41% (18:02-18:10). Traces show frontend-proxy's 'router frontend egress' spans ending with 'connection termination' and load-generator requests receiving HTTP 503 (for example /api/cart, /api/recommendations, and /api/products); these connect the frontend failure to the observed proxy symptom."
+    },
+    {
+      "name": "otel-demo/Deployment/payment",
+      "reasoning": "The payment deployment's severely CPU-throttled payment pod fails Charge operations. Checkout's PaymentService/Charge and PlaceOrder errors are downstream of this, not an independent checkout fault.",
+      "evidence": "The payment Deployment template has a 20m CPU limit. At 17:47:45 Kubernetes created payment-79d86bf97f-9pm9t during the rollout and removed the prior payment pod at 17:47:50. The new pod's throttled-period ratio was 93-98% at 17:48-17:49 and remained about 60-90% through 17:54. Its log at 17:50:02 warns '14 UNAVAILABLE: Connection dropped'; payment Charge and checkout PlaceOrder/PaymentService client error metrics rise around 17:52-17:55, while RequestErrorRate for payment is firing by 17:51."
+    }
+  ]
+}

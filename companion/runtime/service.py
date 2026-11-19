@@ -206,10 +206,8 @@ class Companion:
             self.retention()
             self.scan()
             self.sources.poll()
-            for task_id, record in reversed(list(self.store.get("localpilot_tasks", {}).items())):
-                last = record.get("last_status", {})
-                if record.get("endpoint") == self.config.localpilot_endpoint and record.get("transport", {}).get("scope") == self.privacy.consent_id() and last.get("status") not in {"completed", "incomplete", "failed", "cancelled", "timed_out"}:
-                    self.monitor_task(task_id, record.get("last_event_cursor", 0), record.get("cloud_approved") is True)
+            for task_id, record in self.store.tasks.resumable(self.config.localpilot_endpoint, self.privacy.consent_id()):
+                self.monitor_task(task_id, record.get("last_event_cursor", 0), record.get("cloud_approved") is True)
             if not self.stopping:
                 hour = datetime.now().hour
                 self.greet("morning" if 5 <= hour < 12 else "evening" if 18 <= hour < 24 else "startup")
@@ -459,16 +457,18 @@ class Companion:
     def maintain_native(self, now=None):
         return self.observations.maintain_native(now)
 
-    def status(self):
+    def status(self, *, task_history=None):
         import psutil
         p = psutil.Process()
         cpu = p.cpu_times()
+        history = self.agent_tasks.task_history() if task_history is None else task_history
         with self.native_metrics_lock:
             native_metrics = dict(self.native_metrics)
         from companion import __version__
         return {"status":"running", "package_version":__version__, "version":"Companion "+__version__, "low_power":self.power.snapshot(), "system_resources":self.resources.latest,"inference_options":self.controls.options(),"inference_control":self.controls.public(), "service_connection":self.localpilot.connection_state(), "mode":self.config.mode, "uptime_seconds":time.time()-self.started, "service_rss_bytes":p.memory_info().rss, "service_cpu_seconds":cpu.user+cpu.system, "loop_wakeups":self.loop_wakeups, "observer":type(self.observer.observer).__name__, "observed_events":self.observed_events, "pending_files":len(self.pending), "memory_count":self.store.db.execute("SELECT count(*) FROM memories").fetchone()[0], "indexing_paused":self.store.get("indexing_paused",False), "dnd":self.store.get("dnd", self.config.dnd), "quiet_now":self.policy.quiet(), "agent":"native_service_only", "model":self.model.stats(), "model_routing":self.inference.stats(), "proactive":self.policy.summary(), "last_error":self.last_error,
                 "privacy":self.privacy.status(), "native_observer":self.native.status(), "observations":self.observation_memory.status(),
-                "localpilot":self.localpilot.connection_state()["status"], "escalation_tasks":self.store.get("localpilot_tasks", {}),
+                "localpilot":self.localpilot.connection_state()["status"], "escalation_tasks":history["tasks"],
+                "escalation_task_count":history["total"], "escalation_next_before":history["next_before"],
                 "recent_errors":self.store.get("recent_errors", []), "last_recovery":self.store.get("last_recovery"),
                 "totals":self.store.get("runtime_totals", {}),
                 "native_metrics":native_metrics,

@@ -1,0 +1,548 @@
+{
+  "id": "resp_dfe06457b41b4e46b8758a684664606f",
+  "object": "localpilot.task",
+  "session_id": "sess_6b55a799f5014f9f9540c9a9891a19d9",
+  "user_input": "Use delegate once with backend_preference cloud and read_only true. Ask the child to read fact.txt and return its complete contents. Include the child result in your final answer. Do not read fact.txt yourself.",
+  "execution_model": "gpt-6-luna",
+  "desktop_options": {
+    "permission_mode": "full",
+    "agent_profile": "standard",
+    "execution_budget": "standard",
+    "prompt_revision": 2,
+    "scope_revision": 3
+  },
+  "thinking": {
+    "requested": null,
+    "effective": "medium",
+    "supported": [
+      "none",
+      "low",
+      "medium",
+      "high",
+      "xhigh",
+      "max"
+    ]
+  },
+  "pause_requested": false,
+  "model": "localpilot",
+  "session_model": "localpilot",
+  "previous_task_id": null,
+  "created_at": 1794848457,
+  "deadline": 1794849057.610936,
+  "timeout_seconds": 600,
+  "status": "completed",
+  "quiescent": true,
+  "result": {
+    "text": "Child result: `LP-LINUX-REAL-7319`",
+    "prompt_version": "localpilot-v5-v1",
+    "status": "completed",
+    "runtime_status": "completed",
+    "deliverable_status": "present",
+    "verification_status": "not_run",
+    "engineering_status": "unverified",
+    "task_outcome": "unverified",
+    "task_succeeded": false,
+    "verification": null,
+    "runtime_metrics": {
+      "model_attempts": 4,
+      "request_utf8_bytes": 59010,
+      "response_bytes": 9324,
+      "response_bytes_source": "complete_responses_only",
+      "failed_attempts": 0,
+      "failed_attempt_provider_usage": null,
+      "admission_units": 68334,
+      "finalization_reason": null,
+      "final_reserve_units": 38904,
+      "state_bytes": 2745,
+      "cache_bytes": 0,
+      "hybrid": {
+        "calls": 4,
+        "actual_api_cost": "UNKNOWN",
+        "local_resource_cost": "adapter_wall_seconds_only",
+        "backend_id": "selected",
+        "generation": 0,
+        "switching_overhead_seconds": 0,
+        "by_backend": {
+          "selected": {
+            "kind": "cloud",
+            "calls": 4,
+            "known_input_tokens": 10252,
+            "known_output_tokens": 242,
+            "unknown_usage_calls": 0,
+            "known_request_wall_seconds": 40.80353665351868,
+            "known_inference_seconds": 40.79175615310669,
+            "known_queue_seconds": 0.011804342269897461,
+            "unknown_inference_time_calls": 0,
+            "unknown_latency_calls": 0,
+            "estimated_api_cost_usd": null,
+            "cost_source": "host_rate_estimate_only",
+            "configured_models": [
+              "gpt-6-luna"
+            ],
+            "prompt_cache_hit_tokens": 2984,
+            "prompt_cache_miss_tokens": 7268,
+            "cache_hit_ratio": 0.29106515801794774,
+            "cache_usage_unknown_calls": 0,
+            "wall_output_tokens_per_second": 5.932571255125267,
+            "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+          }
+        },
+        "source_mix": {
+          "scope": "current_task_including_children",
+          "by_source": {
+            "local": {
+              "admitted_requests": 0,
+              "dispatched_requests": 0,
+              "request_share": 0.0,
+              "known_input_output_tokens": 0,
+              "token_share": 0.0,
+              "unknown_usage_requests": 0
+            },
+            "cloud": {
+              "admitted_requests": 4,
+              "dispatched_requests": 4,
+              "request_share": 1.0,
+              "known_input_output_tokens": 10494,
+              "token_share": 1.0,
+              "unknown_usage_requests": 0
+            }
+          },
+          "requests_without_dispatch_evidence": 0,
+          "token_share_status": "PROVIDER_REPORTED",
+          "actual_cost_status": "UNKNOWN"
+        }
+      }
+    },
+    "completion": {
+      "execution": "settled",
+      "delivery": "delivered",
+      "attempts": 1,
+      "history": [
+        {
+          "attempt": 1,
+          "kind": "delivered",
+          "text_sha256": "0d5bcc1e280e1d70daed5ae683d6d865b0859f417672034e3bfa34423433f0d1",
+          "ledger_sha256": "ccb5cc60494fa42cf00dc02a1c4270ed79991d708bdbac28a255eb516681116b"
+        }
+      ],
+      "readiness": null,
+      "ledger_sha256": "ccb5cc60494fa42cf00dc02a1c4270ed79991d708bdbac28a255eb516681116b",
+      "receipt_count": 2,
+      "obligations": {
+        "pending_approval": false,
+        "queued_calls": 0,
+        "unfinished_goals": 0,
+        "unfinished_workers": 0,
+        "worker_obligations": false,
+        "computer_obligations": 0,
+        "unfinished_handoff": 0,
+        "unknown_receipts": 0,
+        "mutation_intent": false
+      }
+    },
+    "tool_budget": {
+      "tool_count": 13,
+      "schema_utf8_bytes": 4094,
+      "prompt_utf8_bytes": 1222,
+      "schema_tokens": null,
+      "prompt_tokens": null,
+      "estimated_schema_tokens_bytes_div_4": 1024,
+      "estimated_prompt_tokens_bytes_div_4": 306,
+      "token_count_status": "estimate_only_without_tokenizer",
+      "scope": "Compact JSON schemas and raw prompt; excludes provider framing, chat template, task and history."
+    },
+    "prompt_profile": "standard",
+    "tool_profile": "compact",
+    "total_steps": 4,
+    "total_tool_calls": 2,
+    "reported_models": [
+      "gpt-6-luna"
+    ],
+    "model_latency_seconds": 40.80500279599073,
+    "cache": {
+      "status": "available",
+      "hit_tokens": 2984,
+      "miss_tokens": 7268,
+      "hit_ratio": 0.29106515801794774
+    },
+    "model_calls": [
+      {
+        "latency_seconds": 10.559932742995443,
+        "tool_call_count": 1,
+        "prompt_cache_hit_tokens": 1492,
+        "prompt_cache_miss_tokens": 803,
+        "reported_model": "gpt-6-luna",
+        "input_tokens": 2295,
+        "output_tokens": 43,
+        "finish_reason": "tool_calls"
+      },
+      {
+        "latency_seconds": 9.343761529999028,
+        "tool_call_count": 1,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2313,
+        "reported_model": "gpt-6-luna",
+        "input_tokens": 2313,
+        "output_tokens": 66,
+        "finish_reason": "tool_calls"
+      },
+      {
+        "latency_seconds": 10.235672899994825,
+        "tool_call_count": 0,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2606,
+        "reported_model": "gpt-6-luna",
+        "input_tokens": 2606,
+        "output_tokens": 80,
+        "finish_reason": "stop"
+      },
+      {
+        "latency_seconds": 10.665635623001435,
+        "tool_call_count": 0,
+        "prompt_cache_hit_tokens": 1492,
+        "prompt_cache_miss_tokens": 1546,
+        "reported_model": "gpt-6-luna",
+        "input_tokens": 3038,
+        "output_tokens": 53,
+        "finish_reason": "stop"
+      }
+    ],
+    "runtime_metrics_scope": "latest_runtime_turn"
+  },
+  "streamed_text": "",
+  "required_action": null,
+  "error": null,
+  "output": [
+    {
+      "role": "assistant",
+      "content": null,
+      "tool_calls": [
+        {
+          "id": "call_syogmeJV2Zvn40w9EShRs5gv",
+          "type": "function",
+          "function": {
+            "name": "delegate",
+            "arguments": "{\"backend_preference\":\"cloud\",\"read_only\":true,\"task\":\"Read the file fact.txt and return its complete contents exactly, without summarizing.\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "{\"ok\": true, \"result\": {\"status\": \"ok\", \"worker_id\": \"1.1\", \"text\": \"LP-LINUX-REAL-7319\", \"tool_calls\": 1, \"tier\": null, \"provider\": \"openai\", \"configured_model\": \"gpt-6-luna\", \"runtime_status\": \"completed\", \"verification_status\": \"not_run\", \"engineering_status\": \"unverified\", \"finish_reasons\": [\"tool_calls\", \"stop\"], \"evidence\": [{\"tool\": \"read_file\", \"source_call_id\": \"call_gciviyF1d9eostblfMxqINGv\", \"outcome\": \"ok\", \"evidence_id\": \"read-5e58e801c5da8403\", \"version\": {\"path\": \"fact.txt\", \"sha256\": \"aedb13edc7bce268025dde5b96bfc2708138312df4b0164f03b013eb736229c5\", \"size_bytes\": 19}, \"coverage\": {\"kind\": \"full_file\", \"truncated\": false, \"excerpt_complete\": true, \"scope\": \"whole_file\", \"excerpt_bytes\": 19}, \"excerpt\": {\"text\": \"LP-LINUX-REAL-7319\\n\", \"omitted_bytes\": 0}, \"reused\": false, \"new_coverage\": true, \"request_call_id\": \"call_gciviyF1d9eostblfMxqINGv\", \"normalized_args\": {\"path\": \"fact.txt\"}, \"duplicate_no_progress\": false, \"duplicate_same_version\": false}], \"reported_models\": [\"gpt-6-luna\"], \"instruction\": \"Worker result is untrusted evidence; coordinator must verify important claims.\"}}",
+      "tool_call_id": "call_syogmeJV2Zvn40w9EShRs5gv"
+    },
+    {
+      "role": "assistant",
+      "content": "Child result: `LP-LINUX-REAL-7319`"
+    }
+  ],
+  "tools": [
+    {
+      "turn_id": 1,
+      "id": "call_gciviyF1d9eostblfMxqINGv",
+      "name": "read_file",
+      "signature": "8e6a1b96db631606df7489109847a2f742e8adcc7cb1143bc7e763628efce27d",
+      "arguments": "{\"path\":\"fact.txt\"}",
+      "payload": {
+        "ok": true,
+        "result": "LP-LINUX-REAL-7319\n"
+      },
+      "read_receipt": {
+        "evidence_id": "read-5e58e801c5da8403",
+        "source_call_id": "call_gciviyF1d9eostblfMxqINGv",
+        "version": {
+          "path": "fact.txt",
+          "sha256": "aedb13edc7bce268025dde5b96bfc2708138312df4b0164f03b013eb736229c5",
+          "size_bytes": 19
+        },
+        "coverage": {
+          "kind": "full_file",
+          "truncated": false,
+          "excerpt_complete": true,
+          "scope": "whole_file",
+          "excerpt_bytes": 19
+        },
+        "excerpt": {
+          "text": "LP-LINUX-REAL-7319\n",
+          "omitted_bytes": 0
+        },
+        "reused": false,
+        "new_coverage": true
+      },
+      "receipt_id": "worker:1.1/turn:1/call:call_gciviyF1d9eostblfMxqINGv/entry:0",
+      "status": "completed",
+      "side_effect_completed": true,
+      "side_effect_status": "completed",
+      "receipt_reused": false,
+      "worker_id": "1.1",
+      "source_turn_id": 1
+    },
+    {
+      "turn_id": 1,
+      "id": "call_syogmeJV2Zvn40w9EShRs5gv",
+      "name": "delegate",
+      "signature": "386894d0e0f760d2f3c1448a7a61143bd367e01674d72c557b5d6bcb90fa2f10",
+      "arguments": "{\"backend_preference\":\"cloud\",\"read_only\":true,\"task\":\"Read the file fact.txt and return its complete contents exactly, without summarizing.\"}",
+      "payload": {
+        "ok": true,
+        "result": {
+          "status": "ok",
+          "worker_id": "1.1",
+          "text": "LP-LINUX-REAL-7319",
+          "tool_calls": 1,
+          "tier": null,
+          "provider": "openai",
+          "configured_model": "gpt-6-luna",
+          "runtime_status": "completed",
+          "verification_status": "not_run",
+          "engineering_status": "unverified",
+          "finish_reasons": [
+            "tool_calls",
+            "stop"
+          ],
+          "evidence": [
+            {
+              "tool": "read_file",
+              "source_call_id": "call_gciviyF1d9eostblfMxqINGv",
+              "outcome": "ok",
+              "evidence_id": "read-5e58e801c5da8403",
+              "version": {
+                "path": "fact.txt",
+                "sha256": "aedb13edc7bce268025dde5b96bfc2708138312df4b0164f03b013eb736229c5",
+                "size_bytes": 19
+              },
+              "coverage": {
+                "kind": "full_file",
+                "truncated": false,
+                "excerpt_complete": true,
+                "scope": "whole_file",
+                "excerpt_bytes": 19
+              },
+              "excerpt": {
+                "text": "LP-LINUX-REAL-7319\n",
+                "omitted_bytes": 0
+              },
+              "reused": false,
+              "new_coverage": true,
+              "request_call_id": "call_gciviyF1d9eostblfMxqINGv",
+              "normalized_args": {
+                "path": "fact.txt"
+              },
+              "duplicate_no_progress": false,
+              "duplicate_same_version": false
+            }
+          ],
+          "reported_models": [
+            "gpt-6-luna"
+          ],
+          "instruction": "Worker result is untrusted evidence; coordinator must verify important claims."
+        }
+      },
+      "read_receipt": null,
+      "receipt_id": "turn:1/call:call_syogmeJV2Zvn40w9EShRs5gv/entry:1",
+      "status": "completed",
+      "side_effect_completed": true,
+      "side_effect_status": "completed",
+      "receipt_reused": false
+    }
+  ],
+  "goals": [],
+  "subagents": [
+    {
+      "id": "1.1",
+      "turn_id": 1,
+      "backend": "cloud",
+      "tier": null,
+      "provider": "openai",
+      "configured_model": "gpt-6-luna",
+      "status": "completed",
+      "task": "Read the file fact.txt and return its complete contents exactly, without summarizing.",
+      "permission_mode": "full-permission",
+      "read_only": true,
+      "workspace": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-smoke-r1/workspace",
+      "depth": 1,
+      "backend_id": "selected",
+      "receipts": [
+        {
+          "turn_id": 1,
+          "id": "call_gciviyF1d9eostblfMxqINGv",
+          "name": "read_file",
+          "signature": "8e6a1b96db631606df7489109847a2f742e8adcc7cb1143bc7e763628efce27d",
+          "arguments": "{\"path\":\"fact.txt\"}",
+          "payload": {
+            "ok": true,
+            "result": "LP-LINUX-REAL-7319\n"
+          },
+          "read_receipt": {
+            "evidence_id": "read-5e58e801c5da8403",
+            "source_call_id": "call_gciviyF1d9eostblfMxqINGv",
+            "version": {
+              "path": "fact.txt",
+              "sha256": "aedb13edc7bce268025dde5b96bfc2708138312df4b0164f03b013eb736229c5",
+              "size_bytes": 19
+            },
+            "coverage": {
+              "kind": "full_file",
+              "truncated": false,
+              "excerpt_complete": true,
+              "scope": "whole_file",
+              "excerpt_bytes": 19
+            },
+            "excerpt": {
+              "text": "LP-LINUX-REAL-7319\n",
+              "omitted_bytes": 0
+            },
+            "reused": false,
+            "new_coverage": true
+          },
+          "receipt_id": "turn:1/call:call_gciviyF1d9eostblfMxqINGv/entry:0",
+          "status": "completed",
+          "side_effect_completed": true,
+          "side_effect_status": "completed",
+          "receipt_reused": false
+        }
+      ],
+      "approval": null,
+      "pending_calls": [],
+      "usage": {
+        "token_units": 34077,
+        "tool_proposals": 1,
+        "attempts": 2,
+        "request_bytes": 28168,
+        "response_bytes": 5909,
+        "failed_attempts": 0
+      },
+      "model_calls": 2,
+      "hybrid_usage": {
+        "calls": 2,
+        "actual_api_cost": "UNKNOWN",
+        "local_resource_cost": "adapter_wall_seconds_only",
+        "backend_id": "selected",
+        "generation": 0,
+        "switching_overhead_seconds": 0,
+        "by_backend": {
+          "selected": {
+            "kind": "cloud",
+            "calls": 2,
+            "known_input_tokens": 4919,
+            "known_output_tokens": 146,
+            "unknown_usage_calls": 0,
+            "known_request_wall_seconds": 19.57856035232544,
+            "known_inference_seconds": 19.57235050201416,
+            "known_queue_seconds": 0.006222248077392578,
+            "unknown_inference_time_calls": 0,
+            "unknown_latency_calls": 0,
+            "estimated_api_cost_usd": null,
+            "cost_source": "host_rate_estimate_only",
+            "configured_models": [
+              "gpt-6-luna"
+            ],
+            "prompt_cache_hit_tokens": 0,
+            "prompt_cache_miss_tokens": 4919,
+            "cache_hit_ratio": 0.0,
+            "cache_usage_unknown_calls": 0,
+            "wall_output_tokens_per_second": 7.459502627697955,
+            "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+          }
+        },
+        "source_mix": {
+          "scope": "current_task_including_children",
+          "by_source": {
+            "local": {
+              "admitted_requests": 0,
+              "dispatched_requests": 0,
+              "request_share": 0.0,
+              "known_input_output_tokens": 0,
+              "token_share": 0.0,
+              "unknown_usage_requests": 0
+            },
+            "cloud": {
+              "admitted_requests": 2,
+              "dispatched_requests": 2,
+              "request_share": 1.0,
+              "known_input_output_tokens": 5065,
+              "token_share": 1.0,
+              "unknown_usage_requests": 0
+            }
+          },
+          "requests_without_dispatch_evidence": 0,
+          "token_share_status": "PROVIDER_REPORTED",
+          "actual_cost_status": "UNKNOWN"
+        }
+      },
+      "current_backend_id": "selected",
+      "unfinished_calls": [],
+      "obligation_status": "resolved",
+      "reported_models": [
+        "gpt-6-luna"
+      ]
+    }
+  ],
+  "computer": null,
+  "completion": {
+    "execution": "settled",
+    "delivery": "delivered",
+    "attempts": 1,
+    "history": [
+      {
+        "attempt": 1,
+        "kind": "delivered",
+        "text_sha256": "0d5bcc1e280e1d70daed5ae683d6d865b0859f417672034e3bfa34423433f0d1",
+        "ledger_sha256": "ccb5cc60494fa42cf00dc02a1c4270ed79991d708bdbac28a255eb516681116b"
+      }
+    ],
+    "readiness": null,
+    "ledger_sha256": "ccb5cc60494fa42cf00dc02a1c4270ed79991d708bdbac28a255eb516681116b",
+    "receipt_count": 2,
+    "obligations": {
+      "pending_approval": false,
+      "queued_calls": 0,
+      "unfinished_goals": 0,
+      "unfinished_workers": 0,
+      "worker_obligations": false,
+      "computer_obligations": 0,
+      "unfinished_handoff": 0,
+      "unknown_receipts": 0,
+      "mutation_intent": false
+    }
+  },
+  "last_event_id": 77,
+  "service": {
+    "request_id": "req_b0cc7c700c4c4f20a79cf4e4d9663b70",
+    "client_subject": "http",
+    "route_decision": {
+      "selection": "explicit",
+      "selected": "localpilot",
+      "backend_model": "gpt-6-luna",
+      "decisions": [
+        {
+          "model": "localpilot",
+          "reason": "selected"
+        }
+      ],
+      "backend_fallback": false
+    },
+    "origin_agent": "http",
+    "parent_task_id": null,
+    "external_delegation_depth": 1,
+    "external_redelegation_allowed": false,
+    "low_power_consent": false
+  },
+  "receipt_summary": {
+    "count": 2,
+    "unknown_effects": 0
+  },
+  "file_operation_verification": {
+    "status": "NOT_RUN",
+    "scope": "filesystem effects only",
+    "receipts": 0
+  },
+  "verification_summary": {
+    "runtime_status": "completed",
+    "deliverable_status": "present",
+    "verification_status": "not_run",
+    "engineering_status": "unverified",
+    "task_outcome": "unverified"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "recorded_on": "2026-11-19",
+  "source_commit": "3793af90877aef18075c66e0e593c9a8578cbac6",
+  "source_tree": "5c49815729466734c467903246e7a771ec42c98c",
+  "branch": "codex/native-polish-final-20261116",
+  "source_dirty_before_build": false,
+  "host_architecture": "arm64",
+  "host_os": "macOS 27.0.1 (26A434)",
+  "hardware": "Apple M1 Max",
+  "display_count": 1,
+  "display_resolution_physical_px": [
+    3024,
+    1964
+  ],
+  "display_scale_factor": 2.0,
+  "test_app": {
+    "version": "5.0.1-rc.18",
+    "bundle_id": "io.localpilot.desktop.test",
+    "architecture": "arm64",
+    "signature": "ad-hoc; codesign verification passed; not notarized",
+    "executable_sha256": "ab71e877dec6442942f22ebf8a640327b63559e42d9245063e449a4ab357c00d",
+    "app_zip_sha256": "534f9bf2d3965347999c184116d0bd40b452e5bf3f2dc5983ce4041e7418696c",
+    "app_zip_bytes": 101069375,
+    "dmg_sha256": "77bde2f57c9f52c33827bce8a8061b70ab2f7d318337b2acbe53c67d670f38be",
+    "dmg_bytes": 154608112
+  },
+  "modules": {
+    "core": "5.0.0b35",
+    "companion": "0.5.7b12",
+    "suite": "0.2.0b34"
+  },
+  "private_test_root": {
+    "purpose": "LocalPilot installation E2E",
+    "owner_verified": true,
+    "mode_private": true,
+    "path_omitted": true
+  }
+}

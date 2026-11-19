@@ -1,5 +1,6 @@
 """Authenticated command dispatch; domain work stays in its owning component."""
 from collections import deque
+import math
 import re
 from queue import Empty
 import time
@@ -41,6 +42,7 @@ class CommandRouter:
             'pause_observation': self.pause_observation,
             'pet_ask': self.pet,
             'pet_export': self.pet,
+            'pet_history': self.pet,
             'pet_memory': self.pet,
             'prepare_cloud': self.prepare_cloud,
             'privacy': self.privacy,
@@ -121,11 +123,12 @@ class CommandRouter:
 
     def ui_snapshot(self, data):
         service = self.service
-        return {"status":"ok", "runtime":service.status(), "privacy":service.privacy.status(),
+        escalation = self.escalation_status({"limit":data.get("task_limit", 30), "before":data.get("task_before")})
+        return {"status":"ok", "runtime":service.status(task_history=escalation), "privacy":service.privacy.status(),
                 "memories":service.recent_memories(),
                 "observations":service.command({"command":"observations"})["observations"][:12],
                 "notices":service.command({"command":"notices"})["notices"],
-                "escalation":service.command({"command":"escalation_status"}), "proactive":service.policy.summary(),
+                "escalation":escalation, "proactive":service.policy.summary(),
                 "feedback_health":service.feedback_health(), "reminders":service.store.get("explicit_reminders", []),
                 "context_cards":service.visible_context(), "inference_control":service.controls.public(), "inference_options":service.controls.options(), "system_resources":service.resources.latest,"resource_alerts":service.resource_alerts}
 
@@ -347,9 +350,16 @@ class CommandRouter:
 
     def escalation_status(self, data):
         service = self.service
+        limit, before = data.get("limit", 30), data.get("before")
+        if type(limit) is not int or not 1 <= limit <= 50:
+            raise ValueError("Task history limit must contain 1..50 records")
+        if before is not None and (not isinstance(before, dict) or set(before) != {"timestamp", "id"}
+                or type(before["timestamp"]) not in (int, float) or not math.isfinite(before["timestamp"])
+                or not isinstance(before["id"], str) or not 0 < len(before["id"]) <= 200):
+            raise ValueError("Invalid task history cursor")
         pending = service.store.get("pending_escalation")
         return {"status":"ok", "pending":pending, "review_digest":service.review_digest(pending),
-                "submission":service.store.get("pending_localpilot_submission"), "tasks":service.store.get("localpilot_tasks", {})}
+                "submission":service.store.get("pending_localpilot_submission"), **service.agent_tasks.task_history(limit, before)}
 
     def task(self, data):
         service = self.service

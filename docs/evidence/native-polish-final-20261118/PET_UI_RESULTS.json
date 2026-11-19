@@ -1,0 +1,57 @@
+{
+  "pet_mode": "enabled_in_isolated_test_root",
+  "edge_pose_pack_present": false,
+  "render_source": "pending",
+  "render_opacity": 0.0,
+  "pending_label": "新版角色姿态待导入",
+  "bubble_input_focus": "PASS: a synthetic test character appeared in the native bubble input and was cleared; no task was submitted.",
+  "bubble_exit": "PASS via the existing pet hide/show control; X button was not separately verified.",
+  "scale_test": {
+    "default_factor": 1.0,
+    "native_window_points_default": [
+      240.0,
+      220.0
+    ],
+    "test_factor": 1.2,
+    "native_window_points_test": [
+      288.0,
+      264.0
+    ],
+    "restored_factor": 1.0,
+    "UI_slider": "NOT_RUN; isolated test settings fixture was used."
+  },
+  "reduce_motion": {
+    "system_initial": false,
+    "system_enabled_during_test": true,
+    "native_edge_motion_when_enabled": false,
+    "system_restored": false,
+    "native_edge_motion_after_restore": true,
+    "application_setting_toggled_and_restored": true
+  },
+  "animation_sample": {
+    "path": "animation-sample.json",
+    "duration_ms": 6009,
+    "device_pixel_ratio": 2,
+    "reduced_motion": false,
+    "segments": [
+      {
+        "mode": "RETRACTING",
+        "duration_ms": 1100,
+        "sample_frames": 34,
+        "visible_changes": 0,
+        "observed_fps": 0
+      },
+      {
+        "mode": "PEEKING",
+        "duration_ms": 1333,
+        "sample_frames": 41,
+        "visible_changes": 0,
+        "observed_fps": 0
+      }
+    ],
+    "visible_rate": "0 visible changes/s; required >=24Hz not met because render remained pending"
+  },
+  "display_count": 1,
+  "multi_display": "NOT_RUN",
+  "visible_video": "NOT_RUN; no character pose rendered, so no visible animation segment to record"
+}

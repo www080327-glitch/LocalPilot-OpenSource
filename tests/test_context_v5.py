@@ -69,13 +69,52 @@ class ContextV5Tests(unittest.TestCase):
                            final_only=True, working_state={'original_task':'deliver'})
         self.assertTrue(any(m.role=='tool' and m.content=='important content' for m in view))
 
-    def test_request_prefix_extends_history_without_snapshot_accumulation(self):
+    def test_stateless_projection_does_not_mutate_canonical_messages(self):
         messages = [Message('system', 'fixed'), Message('user','task')]
         first, _ = transfer(messages, [], 5000, 500, working_state={'budget': 1})
         messages.append(Message('assistant','more'))
         second, _ = transfer(messages, [], 5000, 500, working_state={'budget': 2})
         self.assertEqual(first[:-1], second[:len(first)-1])
         self.assertEqual(len(messages), 3)
+
+    def test_compaction_leaves_room_for_the_next_request(self):
+        messages = [Message('system', 'fixed'), Message('user', 'old ' * 10000)]
+        for index in range(20):
+            messages.extend([Message('assistant', tool_calls=[ToolCall(str(index), 'read_file', '{}')]),
+                             Message('tool', 'observed ' * 110, tool_call_id=str(index))])
+        state = {'original_task': 'continue', 'pending': ['exact task A', 'exact task B']}
+        first, compacted = transfer(messages, [], 5000, 500, working_state=state)
+        self.assertIsNotNone(compacted)
+        following = first + [Message('user', 'next observation ' + 'x' * 1500)]
+        second, compacted_again = transfer(following, [], 5000, 500, working_state=state)
+        self.assertIsNone(compacted_again)
+        self.assertEqual(first, second[:len(first)])
+        self.assertEqual(json.loads(second[-1].content.split('\n', 1)[1]), state)
+
+    def test_newest_complete_tool_group_can_exceed_compaction_target(self):
+        latest = 'fresh observation ' + 'x' * 10000
+        messages = [Message('system', 'fixed'), Message('user', 'old ' * 10000),
+                    Message('assistant', tool_calls=[ToolCall('latest', 'read_file', '{}')]),
+                    Message('tool', latest, tool_call_id='latest')]
+        result, compacted = transfer(messages, [], 5000, 500, working_state={'original_task': 'continue'})
+        self.assertIsNotNone(compacted)
+        self.assertTrue(any(m.role == 'tool' and m.content == latest for m in result))
+        self.assertGreater(context_tokens(result, []), 4500 * 3 // 4)
+        self.assertLessEqual(context_tokens(result, []), 4500)
+
+    def test_redundant_notice_does_not_evict_the_latest_tool_group(self):
+        messages = [Message('system', 'fixed'), Message('user', 'old ' * 10000),
+                    Message('assistant', tool_calls=[ToolCall('latest', 'read_file', '{}')]),
+                    Message('tool', 'fresh observation ' + 'x' * 10000, tool_call_id='latest')]
+        state = {'original_task': 'continue', 'pending': ['exact next action']}
+        wide, _ = transfer(messages, [], 5000, 500, working_state=state)
+        group = [m for m in wide if m.role in {'assistant', 'tool'}]
+        minimum = context_tokens([wide[0]] + group + [wide[-1]], [])
+        narrow, compacted = transfer(messages, [], minimum + 200, 200, working_state=state)
+        self.assertEqual(narrow[1:-1], group)
+        self.assertEqual(context_tokens(narrow, []), minimum)
+        self.assertEqual(compacted['omitted_messages'], 1)
+        self.assertIn('context_omissions', narrow[-1].content)
 
     def test_final_delivery_budget_is_bytes_not_context_tokens(self):
         # ASCII text can fit the model's token window while exceeding the

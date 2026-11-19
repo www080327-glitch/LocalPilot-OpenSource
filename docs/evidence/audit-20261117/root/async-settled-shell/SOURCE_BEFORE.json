@@ -1,0 +1,14 @@
+{
+  "stage": "Before production change, with two new real Full root/async Shell tests",
+  "git_head": "71c771592e68df0ffc8e2f1b95ee3ebe7e6a5d43",
+  "files": [
+    {
+      "file": "agent/session_workers.py",
+      "sha256": "21abc2e0e927fedd4fc1f80c39e18be3d9a9c94295d00972dbf7261484b998fe"
+    },
+    {
+      "file": "tests/test_async_runtime.py",
+      "sha256": "647daa0185ecba45400cf00c3c397ef89bf9ec266495100e5544410ce144a2a7"
+    }
+  ]
+}

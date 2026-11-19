@@ -1,0 +1,18 @@
+test_same_file_updates_are_sequential_with_one_write_and_receipt (tests.test_agent_coding.CodingTests.test_same_file_updates_are_sequential_with_one_write_and_receipt) ... FAIL
+test_full_session_child_accepts_same_file_update_and_noop (tests.test_agent_coding.CodingTests.test_full_session_child_accepts_same_file_update_and_noop) ... ok
+test_later_same_file_mismatch_leaves_entire_batch_unwritten (tests.test_agent_coding.CodingTests.test_later_same_file_mismatch_leaves_entire_batch_unwritten) ... ok
+test_same_file_create_delete_mixes_remain_rejected (tests.test_agent_coding.CodingTests.test_same_file_create_delete_mixes_remain_rejected) ... ok
+test_later_update_hash_must_match_original_not_intermediate_bytes (tests.test_agent_coding.CodingTests.test_later_update_hash_must_match_original_not_intermediate_bytes) ... ok
+
+======================================================================
+FAIL: test_same_file_updates_are_sequential_with_one_write_and_receipt (tests.test_agent_coding.CodingTests.test_same_file_updates_are_sequential_with_one_write_and_receipt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<source_root>/tests/test_agent_coding.py", line 106, in test_same_file_updates_are_sequential_with_one_write_and_receipt
+    self.assertEqual(len(applied), 1)
+AssertionError: 0 != 1
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.058s
+
+FAILED (failures=1)

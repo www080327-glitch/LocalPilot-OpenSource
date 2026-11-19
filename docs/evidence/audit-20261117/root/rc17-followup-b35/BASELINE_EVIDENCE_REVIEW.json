@@ -1,0 +1,72 @@
+{
+  "commit": "6c923a95c749d1db2c6d2548e2109cd79b02d938",
+  "delivery": {
+    "expected_count": 45,
+    "verified_count": 45,
+    "actual_files": 46,
+    "source_commit": "2fcf955f5d9a1d22c8edc5342de85cc0336eda83",
+    "source_tree": "6923f502896ebc565be54532e49107fd1bbd21d9"
+  },
+  "groups": [
+    {
+      "id": "engineering-r10",
+      "member_count": 40,
+      "sha256": "3ac31f0291e54bb7f51171be9ea4b030966fb6594c4264ad25e1fa6d4e8c3807",
+      "pass": true
+    },
+    {
+      "id": "engineering-r11",
+      "member_count": 41,
+      "sha256": "b828fff66c5e4f6e1a2710570fcecb74e3ac7e7af5bb6bddd4780d995f21abc8",
+      "pass": true
+    },
+    {
+      "id": "engineering-r9",
+      "member_count": 40,
+      "sha256": "5ef6f2ad4cffb5d7d6d3c2b7406f80fa9eb8bba43cd25d3d75db859f9f37bca6",
+      "pass": true
+    },
+    {
+      "id": "packaging-final-core",
+      "member_count": 17,
+      "sha256": "7fe2f882ce3642d0ec48aa54e840b00e9c597f04da251e4d156cd6f422cd1c98",
+      "pass": true
+    },
+    {
+      "id": "packaging-original",
+      "member_count": 23,
+      "sha256": "a7bc6eb9c02084d02c1d25f7cd9bda35c656f4114f389b951e781971b9c00934",
+      "pass": true
+    },
+    {
+      "id": "regressions",
+      "member_count": 34,
+      "sha256": "7a623b9a99f21ae573d99a1fe0b572626ac055615c0cebe287a6a3b7ce7a7515",
+      "pass": true
+    },
+    {
+      "id": "scheduling",
+      "member_count": 20,
+      "sha256": "dea6ba278ebde2f3000ec9cb9bdbc2502c0836d5c16cf7d316d5e1efa93f1909",
+      "pass": true
+    },
+    {
+      "id": "storage",
+      "member_count": 20,
+      "sha256": "852c82d127b5429c15159fa2c3b80a5461e66d16efd563defe0f4f86ea835e97",
+      "pass": true
+    },
+    {
+      "id": "superagent",
+      "member_count": 46,
+      "sha256": "6bdf9045e3d893a5258f0cd7c2ffdb4c6c7ee49d2ebe1f1ec7c93d04275736da",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "total_members": 281,
+  "relative_links": {
+    "checked": 64,
+    "missing": []
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "replacements": [
+    {
+      "original_kind": "installed runtime",
+      "placeholder": "<installed_runtime>"
+    },
+    {
+      "original_kind": "continuation validation",
+      "placeholder": "<continuation_validation>"
+    },
+    {
+      "original_kind": "dependency environment",
+      "placeholder": "<dependency_environment>"
+    },
+    {
+      "original_kind": "restored source",
+      "placeholder": "<source_root>"
+    }
+  ],
+  "files": [
+    {
+      "source": "core-b31-r1/core-full.log",
+      "published": "core-core-full.log.gz",
+      "source_bytes": 272546,
+      "source_sha256": "e0203fa3c1153a4dad0e95f5d6eafe48853f1a108a7717bf4b400d7f30af175f",
+      "published_bytes": 43525,
+      "published_sha256": "5e0dd6df0cc00f8f56808909c2eb3089caea74c7f424bb15d6041299b03e2b15",
+      "content_sha256": "e0203fa3c1153a4dad0e95f5d6eafe48853f1a108a7717bf4b400d7f30af175f",
+      "transformation": "absolute path placeholders; deterministic gzip"
+    },
+    {
+      "source": "core-b31-r1/run.json",
+      "published": "core-run.json.gz",
+      "source_bytes": 69098,
+      "source_sha256": "5f2fddd44a48a5060c2969ca0163eea51101ac3057a40d65d313fd38fd7731e1",
+      "published_bytes": 31189,
+      "published_sha256": "927d404cb374b9a46f6e3ca9016617a118e90edad4f4f3bff8bf5f0a33d1f7c9",
+      "content_sha256": "40a0fea880447a100f57a9696b397b17b8ac986feae682be93b5bca95478d1ed",
+      "transformation": "absolute path placeholders; deterministic gzip"
+    },
+    {
+      "source": "installed-components-r1/tests.log",
+      "published": "installed/tests.log",
+      "source_bytes": 2550,
+      "source_sha256": "5b8866b9cd03f5abe8beaed78e330a63cc8b42884ac776d7a9301a7cd7460d98",
+      "published_bytes": 2550,
+      "published_sha256": "5b8866b9cd03f5abe8beaed78e330a63cc8b42884ac776d7a9301a7cd7460d98",
+      "content_sha256": "5b8866b9cd03f5abe8beaed78e330a63cc8b42884ac776d7a9301a7cd7460d98",
+      "transformation": "absolute path placeholders"
+    },
+    {
+      "source": "installed-components-r1/run.json",
+      "published": "installed/run.json",
+      "source_bytes": 1531,
+      "source_sha256": "92925c9a66bf34f1e81a3088684be5f4d09888ba428d7b0158e76f0280dce2f4",
+      "published_bytes": 1458,
+      "published_sha256": "61ab3c8b2c5135f5a425084022a87f47d78b764d45b4a54ac9403cd9b7b951b6",
+      "content_sha256": "61ab3c8b2c5135f5a425084022a87f47d78b764d45b4a54ac9403cd9b7b951b6",
+      "transformation": "absolute path placeholders"
+    },
+    {
+      "source": "installed-components-r1/import-proof.json",
+      "published": "installed/import-proof.json",
+      "source_bytes": 1233,
+      "source_sha256": "57b72e954c6e5e6da8d5892522794084f4ece5e745f9916bc8a7c2e0d7b17f46",
+      "published_bytes": 868,
+      "published_sha256": "038d8e1c5550e3a99a1ae56bfec24f5c04f65082e2608ca217103c08790551bc",
+      "content_sha256": "038d8e1c5550e3a99a1ae56bfec24f5c04f65082e2608ca217103c08790551bc",
+      "transformation": "absolute path placeholders"
+    },
+    {
+      "source": "installed-components-r1/import-proof.stderr.log",
+      "published": "installed/import-proof.stderr.log",
+      "source_bytes": 0,
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transformation": "absolute path placeholders"
+    },
+    {
+      "source": "installed-components-r1/install.log",
+      "published": "installed/install.log.gz",
+      "source_bytes": 854,
+      "source_sha256": "7409321f26528e7885fef14db92cb3a645537ddfcd1607bc1619204049478549",
+      "published_bytes": 246,
+      "published_sha256": "a090ee89bc0db1b0010322064535932f61253f4291ea6d9cdc23450592c9e74f",
+      "content_sha256": "42fcefd51f02cabb862a59966673e0e6997a440b687d6f24b07ee4c7ed52b6c8",
+      "transformation": "absolute path placeholders; deterministic gzip"
+    },
+    {
+      "source": "installed-components-r1/build.log",
+      "published": "installed/build.log.gz",
+      "source_bytes": 83175,
+      "source_sha256": "59825704cb17be0877056a50a5d8d3cae13d903947f30c183f9730bb89b9f5fe",
+      "published_bytes": 7419,
+      "published_sha256": "b0f1b50565e26f63e239171e028dd9cc2b9f3d8f1236859dced6dfbb3686e4ad",
+      "content_sha256": "8915401cf05b7cca66cccda56caf89268663585c54995167c4e0d2c967271798",
+      "transformation": "absolute path placeholders; deterministic gzip"
+    },
+    {
+      "source": "prefix-review/README.md",
+      "published": "prefix-review/README.md",
+      "source_bytes": 2166,
+      "source_sha256": "e152e9d8b6bb9db59d8439ee359f82f6768c5a591bf43d7f21abf9b6621e7b3a",
+      "published_bytes": 2166,
+      "published_sha256": "e152e9d8b6bb9db59d8439ee359f82f6768c5a591bf43d7f21abf9b6621e7b3a",
+      "content_sha256": "e152e9d8b6bb9db59d8439ee359f82f6768c5a591bf43d7f21abf9b6621e7b3a",
+      "transformation": "absolute path placeholders"
+    },
+    {
+      "source": "prefix-review/probe-tool-output.transcript.txt",
+      "published": "prefix-review/probe-tool-output.transcript.txt",
+      "source_bytes": 297,
+      "source_sha256": "b8795ce0a4ec34d4d241343abcf76de1defb654d3c95e2fdca78dde576cd48f7",
+      "published_bytes": 297,
+      "published_sha256": "b8795ce0a4ec34d4d241343abcf76de1defb654d3c95e2fdca78dde576cd48f7",
+      "content_sha256": "b8795ce0a4ec34d4d241343abcf76de1defb654d3c95e2fdca78dde576cd48f7",
+      "transformation": "absolute path placeholders"
+    },
+    {
+      "source": "prefix-review/probe.py",
+      "published": "prefix-review/probe.py",
+      "source_bytes": 1471,
+      "source_sha256": "d4247592f79f6a23b6c6dbb9c2c34809ef5301cc20cf75526c7c09485c6b2e62",
+      "published_bytes": 1471,
+      "published_sha256": "d4247592f79f6a23b6c6dbb9c2c34809ef5301cc20cf75526c7c09485c6b2e62",
+      "content_sha256": "d4247592f79f6a23b6c6dbb9c2c34809ef5301cc20cf75526c7c09485c6b2e62",
+      "transformation": "absolute path placeholders"
+    },
+    {
+      "source": "prefix-review/test-command.txt",
+      "published": "prefix-review/test-command.txt",
+      "source_bytes": 129,
+      "source_sha256": "3cc9e4d8ed0256103da7dc47d1ad3308cbf51acbaec7aead727148f53ff7d380",
+      "published_bytes": 129,
+      "published_sha256": "3cc9e4d8ed0256103da7dc47d1ad3308cbf51acbaec7aead727148f53ff7d380",
+      "content_sha256": "3cc9e4d8ed0256103da7dc47d1ad3308cbf51acbaec7aead727148f53ff7d380",
+      "transformation": "absolute path placeholders"
+    }
+  ]
+}

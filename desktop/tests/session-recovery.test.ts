@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { restoredConversation } from "../src/hooks/useSessionRecovery";
+import {
+  isMissingSession,
+  restoredConversation,
+} from "../src/hooks/useSessionRecovery";
 import { initialPreferences } from "../src/preferences";
 import type { Task } from "../src/domain";
 
@@ -14,6 +17,24 @@ const task = (id: string, created_at: number, changes: Partial<Task> = {}) =>
     result: { output_text: id + " answer" },
     ...changes,
   }) as Task;
+
+describe("confirmed Session absence", () => {
+  it("requires the native HTTP status and structured service error code", () => {
+    const missing =
+      'HTTP 404 · {"error":{"code":"session_not_found","message":"Session not found"}}';
+    expect(isMissingSession(missing)).toBe(true);
+    expect(isMissingSession(new Error(missing))).toBe(true);
+    for (const error of [
+      'HTTP 404 · {"error":{"code":"task_not_found"}}',
+      'HTTP 403 · {"error":{"code":"session_not_found"}}',
+      'HTTP 503 · {"error":{"code":"session_not_found"}}',
+      "HTTP 404: Session not found",
+      "HTTP 404 · <html>not found</html>",
+      "服务不可达；请检查连接或启动服务",
+    ])
+      expect(isMissingSession(error)).toBe(false);
+  });
+});
 
 describe("restored conversation projection", () => {
   it("retains each real task once in order and selects the current Session model", () => {

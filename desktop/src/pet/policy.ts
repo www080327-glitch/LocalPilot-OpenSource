@@ -1,8 +1,11 @@
+import type { PetAsset } from "./types";
+
 export interface PetSettings {
   version: number;
   topmost: boolean;
   size: number;
   animation: boolean;
+  basic_appearance: boolean;
   quiet: boolean;
   focus: boolean;
   proactive: boolean;
@@ -18,6 +21,7 @@ export const defaults: PetSettings = {
   topmost: true,
   size: 1,
   animation: true,
+  basic_appearance: false,
   quiet: false,
   focus: true,
   proactive: false,
@@ -57,4 +61,16 @@ export function eligible(
     (!deliveries.length ||
       now.getTime() - deliveries.at(-1)! >= settings.cooldown_minutes * 60000)
   );
+}
+
+export function edgeImportHint(
+  asset: PetAsset | null,
+  status = asset?.edge?.status,
+) {
+  if (!asset) return "正在读取本机角色";
+  if (asset.status === "asset_pending")
+    return "在宠物设置的“换个形象”中选择角色";
+  if (!asset.id) return "图集已导入。请在“换个形象”中选择对应角色";
+  if (status === "invalid") return "姿态包无法加载，请在宠物设置中重新导入";
+  return "请在宠物设置中导入当前角色的探头姿态包";
 }

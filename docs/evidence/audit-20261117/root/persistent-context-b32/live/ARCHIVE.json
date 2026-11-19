@@ -1,0 +1,109 @@
+{
+  "archive": "evidence.tar.gz",
+  "bytes": 23886,
+  "sha256": "70cae2cf29d7d833c5c4ea1dde6825338b8d515c7e3ea857cd5f737b21bd820d",
+  "payload_count": 20,
+  "payloads": [
+    {
+      "path": "live-luna-r1/RESULTS.json",
+      "bytes": 935,
+      "sha256": "111fdccdcd388ce55d927b345b722a30196b3a7622a9f3e7311dd963f430f3ce"
+    },
+    {
+      "path": "live-luna-r1/fixtures.json",
+      "bytes": 115,
+      "sha256": "edb925de7048faeac1a00e701f9f85d72484f37c3eaa5c300b7f20963270aaaf"
+    },
+    {
+      "path": "live-luna-r1/prefix-comparisons.json",
+      "bytes": 617,
+      "sha256": "39ba510456e33da012957e2b7af77eddc6caf1c9987d6f77d3002ed29f5a8be3"
+    },
+    {
+      "path": "live-luna-r1/prompts.json",
+      "bytes": 388,
+      "sha256": "ad1724a1135b1e3bd9c98eeab0c651750246694ad1a3a88da605f6a73e979c69"
+    },
+    {
+      "path": "live-luna-r1/request-01.json",
+      "bytes": 7574,
+      "sha256": "9677cca1d9687265a7af3f2ece0c6de53587c7b885e78c55c0a180658a7bef6b"
+    },
+    {
+      "path": "live-luna-r1/request-02.json",
+      "bytes": 10423,
+      "sha256": "1e6cbd90ed4d06ea1a0e63e6129c739f82dbeae4bac6c455a0bb5267ae690651"
+    },
+    {
+      "path": "live-luna-r1/request-03.json",
+      "bytes": 14246,
+      "sha256": "44c585d18fc46963791fbabba29455c4dc99bc7881090ad44ed80ccac6522527"
+    },
+    {
+      "path": "live-luna-r1/request-04.json",
+      "bytes": 16509,
+      "sha256": "18836b1b9a3b967149046176f6d27a3c4161e1f114e13a9c986f9502d9567247"
+    },
+    {
+      "path": "live-luna-r1/request-05.json",
+      "bytes": 19629,
+      "sha256": "cb21d74044c5d5faf16720831bb0f6975346cde286f8375fe7446da8ac8a18ac"
+    },
+    {
+      "path": "live-luna-r1/responses.json",
+      "bytes": 5948,
+      "sha256": "79fbbc01a1463908e0ea58410960d7f6af9c664f50462fbd0f02321403bcf543"
+    },
+    {
+      "path": "live-luna-r1/source-hashes.json",
+      "bytes": 11104,
+      "sha256": "36d721d0efbcbab8a1b73770ea5addc02e37a69988fe9c22aeb6c7f1cc7523c8"
+    },
+    {
+      "path": "live-luna-r1/task-first.json",
+      "bytes": 9462,
+      "sha256": "35e46a72329d46a8d37b0133a4055f287918bcd09d1a8a066609b4c3bb2d35cf"
+    },
+    {
+      "path": "live-luna-r1/task-next.json",
+      "bytes": 7253,
+      "sha256": "3a99f16656ad178d4d863fd1d58e9d28fb16633a25f30b7f4e74358a0b31bcd0"
+    },
+    {
+      "path": "live-luna-r1/workspace/first.txt",
+      "bytes": 54,
+      "sha256": "c85f91605c50c05e9c02f5d2f61855150a182b572de5a5ead52ba3382afc03cc"
+    },
+    {
+      "path": "live-luna-r1/workspace/second.txt",
+      "bytes": 32,
+      "sha256": "df65291407b780ae87648e8b9161ba33730e769eee413b4577099d0df44c43db"
+    },
+    {
+      "path": "live-luna-r1/workspace/third.txt",
+      "bytes": 32,
+      "sha256": "e98359752f02400ca16fff2e4ee613b5ab5c7ce0c372df7af057422e1b939534"
+    },
+    {
+      "path": "live-luna-r1.log",
+      "bytes": 887,
+      "sha256": "fee4ad82bd53e5ef9825aa5304383fa816baceaf15444faf8a908ffdb451f934"
+    },
+    {
+      "path": "live-review.json",
+      "bytes": 18474,
+      "sha256": "e0a2bda254d39309a4aab73d46c1c5f1c2918dc2e7014b54b306143d4b7909e5"
+    },
+    {
+      "path": "live-source-continuity.json",
+      "bytes": 686,
+      "sha256": "5775d07ce7f5b068faec0f28cfe20d5c4ea90d0c59a96444a838021ae97c3879"
+    },
+    {
+      "path": "live_runner.py",
+      "bytes": 9557,
+      "sha256": "3786f5961c20912d89536a56d59035f1cb42264b15aed119e5b559a8f9f96a72"
+    }
+  ],
+  "transformations": "Archive payloads are byte-identical to selected run files. Provider request files were already sanitized by their runner; runtime databases and credentials are excluded."
+}

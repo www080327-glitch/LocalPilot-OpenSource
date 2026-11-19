@@ -1,0 +1,193 @@
+{
+  "index": 37,
+  "scenario": "Scenario-83",
+  "fingerprint": "d65999360b28bd1751f6b7519b4c8ede4581b5d8c467c8b1c9578e2d5dccb42e",
+  "candidate_status": "completed",
+  "prediction_sha256": "b88f379dafbbb0bf880bcd6fc28418cb9defd9302558ea78018f3992eaa9b227",
+  "prediction_count": 1,
+  "response": {
+    "message": {
+      "role": "assistant",
+      "content": "{\"contributing_factor_entities\":[{\"submitted_entity_name\":\"chaos-mesh/Schedule/otel-demo-email-checkout-network-partition\",\"normalized_gt_entity_id\":\"otel-demo-email-checkout-network-partition\",\"reasoning\":\"Submitted resource is a chaos-mesh Schedule named otel-demo-email-checkout-network-partition; the ground truth has a NetworkChaos entity with the same namespace and resource name, which is supported for Schedule-generated chaos matching.\"}]}",
+      "native_replay": {
+        "kind": "openai_responses_v1",
+        "model": "gpt-5.5",
+        "base_url": "https://api.openai.com/v1",
+        "sha256": "0fc0a7e3ff609fb9a9a3be2bce4e48a966ba1a05afcaa8565c96805080afcc6d",
+        "items": [
+          {
+            "type": "reasoning",
+            "id": "rs_060a9486b30af2fd016afb6f571ba087d0ad403e7867afdcca",
+            "summary": [],
+            "encrypted_content": "gAAAAABq-29Zrq--Xx1EXTKdKaAGbROdiXIOdpOp6qLDpD4nWtMl7vYpzQi_84ZgsIDnQPsKeYrawPk8pjYr-56xPNJWFazZEaIMsCXWQVK5s9gf1xhpCjUKn5fF1TFUR0-B0_RkcTIGACMm0k9AzaV0rqT8gMp6IjHb4pwR5NZ_h2TsGJhg_bmYwW8LcZZQG4uoShJB6Bg11wtmVTvs2JR2SzNAC_ifVAhE02NgQiWcVVE34gRyj0-BO3e002UWkIQ-Obah5spqnW-BOtLMJp747GQ8rIJa6KvNuyEevUGvL5ffBKLoD9qWW13Mn3tJyKo2PsBnnW4T2mxUAe0gcnp0qQ6bSZVd80orF_uqtT0QTLNehjnpORn_390fuEaZ_JoNV79le7m-4YJID_rIfVFTplwYu01zh2ue5tk0IL_4tnla-uLHp0NXIIeQxFcZjf-8SSmRTpcDycpb4YvSEoDvy4lLMF3I-2Hvl-HckhP6TxtAu5lfl-m7BhGMDD8Po7Yss1Du4kZEqYrrEYTn71aMAd3HGerT7m9YOCVRq3YK9U4Colj2s5Sb3LjzKbBeSEN59MNotqjcYz2BTg4r3idA7xdXV7tUI9AtgWsH24xZKzIx0t5szscexrp5gKMaTX0McAauhNaZDUAMi48NmSF1eVI9OjqtCd2B7ueVU0HcuhqopGbgotodYQuIwkAAlfOi8j03YvWC49DsjCJVVK9qweTBmtb1oGzs9xw2MBjHJL3fQNrCs4B0-Jl5H1rKdJPIe8pz0q9iNzlEC7WKwhIauASZK3n-xuX1EmDGptkAoXiMtDpmWYYn4HUfg6jUp3pc8jA6lrPaY3V4dLhD9aK9oaxdfpuzK6p6EFag6M5DRC8Q8XKADPiDlI1h95AHV1jXGAbw4MJbu9PlK1XeEZlqOXOQTXxPp0W0hinomLisDEoQhlOl2kyQULNGRtTuxJXd9Av1PjSWA0gspAoGnyKTmL-evKK590XNd2S8Y9HCh9YwQit7GdoerR1pAKt37FO0QSs6jaPK4zzrs90ykqPhtHWSI9gJKgNtF5FCxTizCYAMYrYiLgcIeY-iPrDU4N1t4cJH1INcvJDfJl7yqEOcLpK6XYQZJ7Dzgdqqxyj6j0ovFtNj3-04FVESnYWIc7c7oTHbCUVntFmgpRjIt-jMeuZg4ZGzhtbhai7uvnSHnfm9IT_i7gm-ze3IwE_WCJJbUP3Y37hIvtcLz1K3YAYUFTzEvA4u7mZXIvuG43w1kpFypMXbF_NOyFPQbPfEfNhLquFPmChHI8fubDfknQnDbotgOuNed3BJkmbnUmRCba0By16JsBuKXw7emB3Zvdq6hww10Q005t_n4ZbDfj8WzhiaPSJz1iUb_yXIGF6oLs_fJGz-WTWIwh0RlH13u-ZlQ7sOXkc-k5pUjdz4dH7w1Dy4VLS0DmnbaXKIXYvJZ_C3EAUQpu1vi-ud0k6QS3HszXfTrTsiQyPlUPBoYzEyzKCyDW7KO3JCS9n9CYz9QaLfpRuVTIrnTHTFmiztqgm57PNQiqBA5pPvhtw575-6lzghm_3ntdCbNLcIuG63jtvdXpQd13CuYHpVdpX7LeWtrWjyTZEb0YYz3qYdiOzQGnTTe1Fpi1yF1_RO44hrTR_hRTWOsGsip3pd04ZSd5yCbP431fN54Iq57eXgNEuqH-_2xt12tIBQPeGm6tFd2mNpm62Z69q5rJMYC_9sGwDQGhzPd8ELZW_1GTSZrdc8dPVScHN2Fiflz3dbTpuF0ACEXDcokXZjWUJxcdFa2YJ2i6PAg1-NfDKn3rS1m8IKHPHxn2pwbBL5TZWglyeo2H-oCZxXlzvSl9J8z7Rupldb63vHEmVnNP77LvMjaFQKAWrlzMvKKNZSmeK_R59p1ogdLGlO1hvv2iPkV6pdhNaWcoefcVV5nRFXuRYKH5vSWplQhLSTj-HShyBkUfrgvJLVJTcCXt-RczYl8rezX7RdLARfApynnOvR2ebNNCwBKaOZyQU6lyL7Ob9EJd5txuNQ2gzftHbmYxyi8hX_FPLPPeEpn5S1JbrFi6vqT65Db_FDrB_chU3WRKxIYlqclbs3fUx7euHYgqrFPdep8Vapt0WGBqtd86WUE-jSAJ25mKKo1K9dM4MKJfcBoulVFRvWqp3zMe9iNAZlMZGXIUQT160Pk6mahzjPoz7386_Ax4jEH3fLu7au48McAHBeb_gagFP80ser2afn_lp7oNxh5nV1LXVlEC1xC7tEEr2E2ln0ZKfh3avK3ipKsNoHE86mBsodvi9CYLd3qPF-R1-eBFseiC305_hJMqNxnvL6XJXlgnHU-rEpNzr_atuvHhFJIHCYHUvAArJoh7R4hvOl5QYNqsGjAIyPOri7w_JjmQ9nR1GKfp4e3HUtPDFS5cOdhAqiZguByfgFOPj-LdaR665XGvuA3bHqRO8_R54ybHlAtXvsBdcHgE4FuCzJn19mRIT1bvg5-K0hT9zOS5rP_P3PCfvyKoQ6inRooEpm4OO4x1zHuCJt_l2z8WpqlGgsuAyeNH-y42GygarUYFLj0tGori08-6sIfaffPJpqZEoXnZZVNC4fjwtTxyum1Ij9EhqhSt-PdyoRGcbHZ1XIdimudBuuqfSInshRY6_x4nlKwS-sHN9BSrWhn3R4lyAkZKJrlVE10-ROKYPeTpM7YS0G_HwdEDg-2hsKYWzfoBhuq8AXY7cDxPMI_gTFOjL3-wQRB2yCBw5tZ9XZY0LtrF2qbtUhmWXu33EMnXq_0lsbMAKzfFPm1DrNo5M7J8J_kfL9KTSKZpqfQFoNsk44G7HDWXDEvUtdsyYud69K1yOdu-i1MV3cEXbroyVCJLJ371S52QhGglDVahMQKjVgO8uWgZCJGoO0mrU6Uybzn0HkmH0nYTWpirTL6A_O33hYaJt6jWOutKLaLy69z6pEJYEwjqRXcs5r8nd38QEROBlxAfvIZGfyCTy7oyyNqTh93Z2cNgSjgY-2W4vi9Uf2642aDynR1NvjXPY34hHJmv0ZbWIq3F7ivp9334TpaFPGvL28s7IUrtGySXVl2c9vvmIf6G3E3SHtGz9uI2dTuQddBk-jk89awFTc_jUyRgzUkWS9YbM="
+          },
+          {
+            "type": "message",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "{\"contributing_factor_entities\":[{\"submitted_entity_name\":\"chaos-mesh/Schedule/otel-demo-email-checkout-network-partition\",\"normalized_gt_entity_id\":\"otel-demo-email-checkout-network-partition\",\"reasoning\":\"Submitted resource is a chaos-mesh Schedule named otel-demo-email-checkout-network-partition; the ground truth has a NetworkChaos entity with the same namespace and resource name, which is supported for Schedule-generated chaos matching.\"}]}"
+              }
+            ],
+            "phase": "final_answer"
+          }
+        ]
+      }
+    },
+    "usage": {
+      "prompt_tokens": 787,
+      "completion_tokens": 208,
+      "total_tokens": 995,
+      "provider_usage": {
+        "input_tokens": 787,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 0
+          },
+          "cached_tokens": 0
+        },
+        "output_tokens": 208,
+        "output_tokens_details": {
+          "reasoning_tokens": 112
+        },
+        "total_tokens": 995
+      },
+      "prompt_tokens_details": {
+        "cache_write_tokens": 0,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 0
+        },
+        "cached_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 112
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 787
+    },
+    "reported_model": "gpt-5.5-2026-04-23",
+    "finish_reason": "stop"
+  },
+  "status": "graded",
+  "score": 1.0,
+  "true_positive_groups": 1,
+  "false_positive_groups": 0,
+  "unmatched_predictions": 0,
+  "missed_root_groups": 0,
+  "root_groups": 1,
+  "provider_response": {
+    "id": "resp_060a9486b30af2fd016afb6f56608c87d0a0954f549fadfc4d",
+    "object": "response",
+    "created_at": 1794862934,
+    "status": "completed",
+    "access_programs": null,
+    "background": false,
+    "billing": {
+      "payer": "developer"
+    },
+    "completed_at": 1794862937,
+    "error": null,
+    "frequency_penalty": 0.0,
+    "image": {
+      "context_compression": "disabled"
+    },
+    "incomplete_details": null,
+    "input_transformations": [],
+    "instructions": null,
+    "max_output_tokens": 16384,
+    "max_tool_calls": null,
+    "model": "gpt-5.5-2026-04-23",
+    "moderation": null,
+    "output": [
+      {
+        "id": "rs_060a9486b30af2fd016afb6f571ba087d0ad403e7867afdcca",
+        "type": "reasoning",
+        "content": [],
+        "encrypted_content": "gAAAAABq-29Zrq--Xx1EXTKdKaAGbROdiXIOdpOp6qLDpD4nWtMl7vYpzQi_84ZgsIDnQPsKeYrawPk8pjYr-56xPNJWFazZEaIMsCXWQVK5s9gf1xhpCjUKn5fF1TFUR0-B0_RkcTIGACMm0k9AzaV0rqT8gMp6IjHb4pwR5NZ_h2TsGJhg_bmYwW8LcZZQG4uoShJB6Bg11wtmVTvs2JR2SzNAC_ifVAhE02NgQiWcVVE34gRyj0-BO3e002UWkIQ-Obah5spqnW-BOtLMJp747GQ8rIJa6KvNuyEevUGvL5ffBKLoD9qWW13Mn3tJyKo2PsBnnW4T2mxUAe0gcnp0qQ6bSZVd80orF_uqtT0QTLNehjnpORn_390fuEaZ_JoNV79le7m-4YJID_rIfVFTplwYu01zh2ue5tk0IL_4tnla-uLHp0NXIIeQxFcZjf-8SSmRTpcDycpb4YvSEoDvy4lLMF3I-2Hvl-HckhP6TxtAu5lfl-m7BhGMDD8Po7Yss1Du4kZEqYrrEYTn71aMAd3HGerT7m9YOCVRq3YK9U4Colj2s5Sb3LjzKbBeSEN59MNotqjcYz2BTg4r3idA7xdXV7tUI9AtgWsH24xZKzIx0t5szscexrp5gKMaTX0McAauhNaZDUAMi48NmSF1eVI9OjqtCd2B7ueVU0HcuhqopGbgotodYQuIwkAAlfOi8j03YvWC49DsjCJVVK9qweTBmtb1oGzs9xw2MBjHJL3fQNrCs4B0-Jl5H1rKdJPIe8pz0q9iNzlEC7WKwhIauASZK3n-xuX1EmDGptkAoXiMtDpmWYYn4HUfg6jUp3pc8jA6lrPaY3V4dLhD9aK9oaxdfpuzK6p6EFag6M5DRC8Q8XKADPiDlI1h95AHV1jXGAbw4MJbu9PlK1XeEZlqOXOQTXxPp0W0hinomLisDEoQhlOl2kyQULNGRtTuxJXd9Av1PjSWA0gspAoGnyKTmL-evKK590XNd2S8Y9HCh9YwQit7GdoerR1pAKt37FO0QSs6jaPK4zzrs90ykqPhtHWSI9gJKgNtF5FCxTizCYAMYrYiLgcIeY-iPrDU4N1t4cJH1INcvJDfJl7yqEOcLpK6XYQZJ7Dzgdqqxyj6j0ovFtNj3-04FVESnYWIc7c7oTHbCUVntFmgpRjIt-jMeuZg4ZGzhtbhai7uvnSHnfm9IT_i7gm-ze3IwE_WCJJbUP3Y37hIvtcLz1K3YAYUFTzEvA4u7mZXIvuG43w1kpFypMXbF_NOyFPQbPfEfNhLquFPmChHI8fubDfknQnDbotgOuNed3BJkmbnUmRCba0By16JsBuKXw7emB3Zvdq6hww10Q005t_n4ZbDfj8WzhiaPSJz1iUb_yXIGF6oLs_fJGz-WTWIwh0RlH13u-ZlQ7sOXkc-k5pUjdz4dH7w1Dy4VLS0DmnbaXKIXYvJZ_C3EAUQpu1vi-ud0k6QS3HszXfTrTsiQyPlUPBoYzEyzKCyDW7KO3JCS9n9CYz9QaLfpRuVTIrnTHTFmiztqgm57PNQiqBA5pPvhtw575-6lzghm_3ntdCbNLcIuG63jtvdXpQd13CuYHpVdpX7LeWtrWjyTZEb0YYz3qYdiOzQGnTTe1Fpi1yF1_RO44hrTR_hRTWOsGsip3pd04ZSd5yCbP431fN54Iq57eXgNEuqH-_2xt12tIBQPeGm6tFd2mNpm62Z69q5rJMYC_9sGwDQGhzPd8ELZW_1GTSZrdc8dPVScHN2Fiflz3dbTpuF0ACEXDcokXZjWUJxcdFa2YJ2i6PAg1-NfDKn3rS1m8IKHPHxn2pwbBL5TZWglyeo2H-oCZxXlzvSl9J8z7Rupldb63vHEmVnNP77LvMjaFQKAWrlzMvKKNZSmeK_R59p1ogdLGlO1hvv2iPkV6pdhNaWcoefcVV5nRFXuRYKH5vSWplQhLSTj-HShyBkUfrgvJLVJTcCXt-RczYl8rezX7RdLARfApynnOvR2ebNNCwBKaOZyQU6lyL7Ob9EJd5txuNQ2gzftHbmYxyi8hX_FPLPPeEpn5S1JbrFi6vqT65Db_FDrB_chU3WRKxIYlqclbs3fUx7euHYgqrFPdep8Vapt0WGBqtd86WUE-jSAJ25mKKo1K9dM4MKJfcBoulVFRvWqp3zMe9iNAZlMZGXIUQT160Pk6mahzjPoz7386_Ax4jEH3fLu7au48McAHBeb_gagFP80ser2afn_lp7oNxh5nV1LXVlEC1xC7tEEr2E2ln0ZKfh3avK3ipKsNoHE86mBsodvi9CYLd3qPF-R1-eBFseiC305_hJMqNxnvL6XJXlgnHU-rEpNzr_atuvHhFJIHCYHUvAArJoh7R4hvOl5QYNqsGjAIyPOri7w_JjmQ9nR1GKfp4e3HUtPDFS5cOdhAqiZguByfgFOPj-LdaR665XGvuA3bHqRO8_R54ybHlAtXvsBdcHgE4FuCzJn19mRIT1bvg5-K0hT9zOS5rP_P3PCfvyKoQ6inRooEpm4OO4x1zHuCJt_l2z8WpqlGgsuAyeNH-y42GygarUYFLj0tGori08-6sIfaffPJpqZEoXnZZVNC4fjwtTxyum1Ij9EhqhSt-PdyoRGcbHZ1XIdimudBuuqfSInshRY6_x4nlKwS-sHN9BSrWhn3R4lyAkZKJrlVE10-ROKYPeTpM7YS0G_HwdEDg-2hsKYWzfoBhuq8AXY7cDxPMI_gTFOjL3-wQRB2yCBw5tZ9XZY0LtrF2qbtUhmWXu33EMnXq_0lsbMAKzfFPm1DrNo5M7J8J_kfL9KTSKZpqfQFoNsk44G7HDWXDEvUtdsyYud69K1yOdu-i1MV3cEXbroyVCJLJ371S52QhGglDVahMQKjVgO8uWgZCJGoO0mrU6Uybzn0HkmH0nYTWpirTL6A_O33hYaJt6jWOutKLaLy69z6pEJYEwjqRXcs5r8nd38QEROBlxAfvIZGfyCTy7oyyNqTh93Z2cNgSjgY-2W4vi9Uf2642aDynR1NvjXPY34hHJmv0ZbWIq3F7ivp9334TpaFPGvL28s7IUrtGySXVl2c9vvmIf6G3E3SHtGz9uI2dTuQddBk-jk89awFTc_jUyRgzUkWS9YbM=",
+        "summary": []
+      },
+      {
+        "id": "msg_060a9486b30af2fd016afb6f58895c87d08daafcc938c9baf0",
+        "type": "message",
+        "status": "completed",
+        "content": [
+          {
+            "type": "output_text",
+            "annotations": [],
+            "logprobs": [],
+            "text": "{\"contributing_factor_entities\":[{\"submitted_entity_name\":\"chaos-mesh/Schedule/otel-demo-email-checkout-network-partition\",\"normalized_gt_entity_id\":\"otel-demo-email-checkout-network-partition\",\"reasoning\":\"Submitted resource is a chaos-mesh Schedule named otel-demo-email-checkout-network-partition; the ground truth has a NetworkChaos entity with the same namespace and resource name, which is supported for Schedule-generated chaos matching.\"}]}"
+          }
+        ],
+        "phase": "final_answer",
+        "role": "assistant"
+      }
+    ],
+    "parallel_tool_calls": true,
+    "presence_penalty": 0.0,
+    "previous_response_id": null,
+    "prompt_cache_key": null,
+    "prompt_cache_retention": "24h",
+    "reasoning": {
+      "context": "current_turn",
+      "effort": "medium",
+      "mode": "standard",
+      "summary": null
+    },
+    "safety_identifier": null,
+    "service_tier": "default",
+    "store": false,
+    "temperature": 1.0,
+    "text": {
+      "format": {
+        "type": "text"
+      },
+      "verbosity": "medium"
+    },
+    "tool_choice": "auto",
+    "tool_usage": {
+      "image_gen": {
+        "input_tokens": 0,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 0
+        },
+        "output_tokens": 0,
+        "output_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 0
+        },
+        "total_tokens": 0
+      },
+      "web_search": {
+        "num_requests": 0
+      }
+    },
+    "tools": [],
+    "top_logprobs": 0,
+    "top_p": 0.98,
+    "truncation": "disabled",
+    "usage": {
+      "input_tokens": 787,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 0
+        },
+        "cached_tokens": 0
+      },
+      "output_tokens": 208,
+      "output_tokens_details": {
+        "reasoning_tokens": 112
+      },
+      "total_tokens": 995
+    },
+    "user": null,
+    "metadata": {}
+  },
+  "elapsed_seconds": 3.604671764995146
+}

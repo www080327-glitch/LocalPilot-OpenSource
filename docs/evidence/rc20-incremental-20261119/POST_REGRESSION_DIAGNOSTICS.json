@@ -1,0 +1,64 @@
+{
+  "scope": "Post-regression diagnosis with a test-only fixture correction and a separate reproduced product defect. These checks supply no new full run.",
+  "fixture_cleanup": {
+    "local_commit": "2e7d2e61eba5efc7e3bc1fc3cec85c55323323d9",
+    "local_parent": "5a2dafd0780646171e4453d2cebff27749484391",
+    "local_tree": "97d4fb04af3bd3d424c9cb1c2a3f296e0fbe7182",
+    "changed_paths": [
+      "tests/test_plugin_http.py"
+    ],
+    "changed_file_sha256": "3cd32d8524b52859e50343267ba1de444cc3670b74b96c5292399508d82f00d5",
+    "test_module": {
+      "run": 4,
+      "passed": 4,
+      "exit_code": 0,
+      "log": {
+        "path": "rc20-runtime/http-cleanup-module.log",
+        "bytes": 665,
+        "sha256": "1968f1b885fac2c5ac7c7fca32d228a8a68a4a61317bb29dd9295abbf17e9d2d"
+      }
+    },
+    "injected_setup_failure": {
+      "exit_code": 0,
+      "script": {
+        "path": "rc20-runtime/check_http_cleanup_setup_failure.py",
+        "bytes": 1420,
+        "sha256": "ee43d20037bcd279845618136544510df1e47c125b94e4d4cf9e8f229fc23736"
+      },
+      "log": {
+        "path": "rc20-runtime/check_http_cleanup_setup_failure.log",
+        "bytes": 247,
+        "sha256": "88619dcfec81b6398d8790308b72f9dcb62d4a5750151e823f727f5f1c6de77f"
+      }
+    }
+  },
+  "late_timer_after_normal_suspend": {
+    "status": "REPRODUCED_PRODUCT_DEFECT",
+    "frozen_product_commit": "8eb042cf57508de59179b4aa2fdd5ae41e9a9eec",
+    "frozen_product_tree": "853f2dece1506f00e462be8b033ec12fcc892dab",
+    "current_fixture_sha256": {
+      "path": "rc20-runtime/reproduce_timer_after_clean_suspend.py",
+      "bytes": 5282,
+      "sha256": "3fb6690a7b8bc0be9c02afb44c7b4fb5c471ec13329480f0b23ffa2a8bb95101"
+    },
+    "initial_attempt": {
+      "status": "HARNESS_ASSERTION_ERROR",
+      "exit_code": 1,
+      "log": {
+        "path": "rc20-runtime/reproduce_timer_after_clean_suspend.log",
+        "bytes": 435,
+        "sha256": "49fb824cb37c4c7bfa81f08977886e7afa43472356df311c2b13479ae53c9510"
+      }
+    },
+    "corrected_attempt": {
+      "exit_code": 0,
+      "log": {
+        "path": "rc20-runtime/reproduce_timer_after_clean_suspend-r2.log",
+        "bytes": 2241,
+        "sha256": "4d3334676b02547d21962e290633f3f515ffc0d75ce532e0807f8cc79a67b762"
+      }
+    },
+    "observed_effect": "Callback changed in-memory state and emitted PersistenceError after successful normal quiescent suspend. Durable approval, checkpoint and journal remained unchanged and no write tool was dispatched.",
+    "attribution": "The reproduced timer defect does not establish why the full-run HTTP fixture errors occurred."
+  }
+}

@@ -88,6 +88,19 @@ class SuiteCLITests(unittest.TestCase):
             rc=cli.main(['--home',str(home),'--json','task','approve',a['id'],'--action-id',a['required_action']['id'],'--operator-token-env','TEST_CLI_TOKEN'])
         self.assertEqual(rc,3);self.assertFalse((self.workspace/'never.txt').exists())
 
+    def test_human_event_output_retains_stream_and_status_without_repeating_final_text(self):
+        from tests.test_runtime_api import StreamBackend
+        self.backend = StreamBackend()
+        self.backend.release.set()
+        home = self.home()
+        task = self.codex.submit('Stream the answer.', idempotency_key='human-stream')
+        with contextlib.redirect_stdout(io.StringIO()) as output, contextlib.redirect_stderr(io.StringIO()) as progress:
+            finished = cli.follow(self.codex, task['id'], home)
+            cli.output(finished, False)
+        self.assertEqual(output.getvalue().count('hello 世界'), 1)
+        self.assertIn('[Thinking', progress.getvalue())
+        self.assertEqual(len(self.backend.requests), 1)
+
     def test_credentials_are_parsed_never_executed_and_not_printed(self):
         home=self.home();path=home/'clients.env'
         path.write_text('export TEST_CLI_TOKEN=$(touch unsafe)\n');path.chmod(0o600)
@@ -112,6 +125,23 @@ class SuiteCLITests(unittest.TestCase):
         with patch.object(protocol,'manifest',return_value={**manifest(),'agent_service_api':'2.0'}):
             with self.assertRaises(ValueError):cli.submit(args,home,self.codex,args.text)
         self.assertEqual(self.backend.requests,[])
+
+    def test_explicit_day_timeout_uses_real_http_without_changing_default(self):
+        from localpilot_api.service import MAX_TASK_TIMEOUT
+        home = self.home()
+        self.server.catalog['localpilot'] = {'prompt_profile': 'standard', 'capabilities': ['tool_calling'],
+            'deployment_status': 'ready', 'cloud_egress': 'LOCAL_ONLY'}
+        args = cli.parser().parse_args(['--json', 'agent', 'Finish when ready.', '--detach',
+                                       '--timeout', str(MAX_TASK_TIMEOUT)])
+        task = cli.submit(args, home, self.codex, args.text)
+        self.service.wait(task['id'])
+        self.assertEqual(self.codex.status(task['id'])['timeout_seconds'], MAX_TASK_TIMEOUT)
+        self.assertIn('desktop_execution_budget_v1', manifest()['capabilities'])
+        self.assertEqual(manifest()['limits']['task_timeout_seconds'], MAX_TASK_TIMEOUT)
+        args.timeout = MAX_TASK_TIMEOUT + 1
+        with self.assertRaisesRegex(ValueError, 'timeout'):
+            cli.submit(args, home, self.codex, args.text)
+        self.assertEqual(len(self.backend.requests), 1)
 
     def test_oversized_new_task_is_rejected_before_runtime_and_preserves_prior_receipts(self):
         first=self.done(self.codex.submit('first',idempotency_key='size-prior'))

@@ -1,0 +1,138 @@
+{
+  "scope": "Reviewed publication copies; RAW_MANIFEST files describe private originals.",
+  "transform": "Only explicit absolute path prefixes and temporary directory aliases. No outcomes or fixture values changed.",
+  "archive": {
+    "file": "evidence.tar.gz",
+    "bytes": 35617,
+    "sha256": "02a77b7e2777503139a938b1d952cb5e18ed0f1c00926ab62d35a30b9aa96f60"
+  },
+  "files": [
+    {
+      "path": "frontend/RAW_MANIFEST.json",
+      "raw_bytes": 1850,
+      "raw_sha256": "72c9a9b5d634cde6aeb9fa1552a4dbeee3ee764661da8a577495e102bae9fc64",
+      "published_bytes": 1850,
+      "published_sha256": "72c9a9b5d634cde6aeb9fa1552a4dbeee3ee764661da8a577495e102bae9fc64",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "frontend/RESULTS.json",
+      "raw_bytes": 91127,
+      "raw_sha256": "2b50b898e9092154941d6a0e6efa198fd8dec9e6fc92be59afb2326c64c00231",
+      "published_bytes": 90477,
+      "published_sha256": "0b906964a16da2ea7a459aa5bd8e9d2481be97a9d7d407ad0f6023d8300bce71",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 5,
+        "<BASELINE_SOURCE_ROOT>": 1,
+        "<VALIDATION_ROOT>": 4,
+        "<PREVIOUS_VALIDATION_ROOT>": 2,
+        "<PINNED_TEST_ENVIRONMENT>": 5
+      }
+    },
+    {
+      "path": "frontend/SUMMARY.json",
+      "raw_bytes": 1871,
+      "raw_sha256": "9632af5fdb778bdf62731c26c3e1c27dd927a591ad6dc86854f563e6e87aaeb1",
+      "published_bytes": 1871,
+      "published_sha256": "9632af5fdb778bdf62731c26c3e1c27dd927a591ad6dc86854f563e6e87aaeb1",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "frontend/candidate-versions.log",
+      "raw_bytes": 113,
+      "raw_sha256": "84a95128a1295c24d27ee59dd7bc9fe4706c11e836ad4c29f877a541cf38388d",
+      "published_bytes": 113,
+      "published_sha256": "84a95128a1295c24d27ee59dd7bc9fe4706c11e836ad4c29f877a541cf38388d",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "frontend/cargo-fmt-check.log",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "frontend/companion-runtime-mismatch-copy-baseline.log",
+      "raw_bytes": 113,
+      "raw_sha256": "84a95128a1295c24d27ee59dd7bc9fe4706c11e836ad4c29f877a541cf38388d",
+      "published_bytes": 113,
+      "published_sha256": "84a95128a1295c24d27ee59dd7bc9fe4706c11e836ad4c29f877a541cf38388d",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "frontend/companion-runtime-mismatch.log",
+      "raw_bytes": 520,
+      "raw_sha256": "36c81eff6f7a18d052758988b9356ccc838463e51d358bac62033e485c0d0b0d",
+      "published_bytes": 477,
+      "published_sha256": "b090d910fd5261471844333a3b4b4473b8d57b0aa0b715bdc830db304e570cbe",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 1
+      }
+    },
+    {
+      "path": "frontend/npm-build.log",
+      "raw_bytes": 889,
+      "raw_sha256": "effa8cddf41198590bfeba8d0614d31f1010f00263ca3f2900fa17864bfe48ac",
+      "published_bytes": 889,
+      "published_sha256": "effa8cddf41198590bfeba8d0614d31f1010f00263ca3f2900fa17864bfe48ac",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "frontend/npm-test.log",
+      "raw_bytes": 408,
+      "raw_sha256": "86cf41d8efbab86b73a21b048e052037f3b6a2b2c7885917f69a0a0a5bd92d66",
+      "published_bytes": 361,
+      "published_sha256": "571bb004c61df3cc356b8647e40ef9c82ae3fb7a605296b5c4a3bad9485b9cd2",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 1
+      }
+    },
+    {
+      "path": "frontend/run.log",
+      "raw_bytes": 896,
+      "raw_sha256": "cc978f2864adcf395641ae18750c3aebe6b3ae91db32ae01f000a5e8138c8697",
+      "published_bytes": 896,
+      "published_sha256": "cc978f2864adcf395641ae18750c3aebe6b3ae91db32ae01f000a5e8138c8697",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "frontend/run_checks.py",
+      "raw_bytes": 7387,
+      "raw_sha256": "b1e030a4dddf5cd94dc0076648b67d13443b259fe4ecb9454c4051949ba7f5e2",
+      "published_bytes": 7307,
+      "published_sha256": "315b95ae28e9cc343c17b4e3ae1043da2d4f5d0677f762655c444ccc139deb6f",
+      "path_prefix_replacements": {
+        "<SOURCE_ROOT>": 1,
+        "<PREVIOUS_VALIDATION_ROOT>": 1
+      }
+    },
+    {
+      "path": "frontend/rustfmt-version.log",
+      "raw_bytes": 46,
+      "raw_sha256": "3db4b244e4ba9d20ded3488fb3be0c2163fbd7c81d64b4b0348f5ad9c3da3b5d",
+      "published_bytes": 46,
+      "published_sha256": "3db4b244e4ba9d20ded3488fb3be0c2163fbd7c81d64b4b0348f5ad9c3da3b5d",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "frontend/suite-runtime-mismatch-copy-baseline.log",
+      "raw_bytes": 113,
+      "raw_sha256": "84a95128a1295c24d27ee59dd7bc9fe4706c11e836ad4c29f877a541cf38388d",
+      "published_bytes": 113,
+      "published_sha256": "84a95128a1295c24d27ee59dd7bc9fe4706c11e836ad4c29f877a541cf38388d",
+      "path_prefix_replacements": {}
+    },
+    {
+      "path": "frontend/suite-runtime-mismatch.log",
+      "raw_bytes": 523,
+      "raw_sha256": "1e8cbf7b231eb7c9ab71d8644bf03044614ff44ee605b1818f058b4f314706a4",
+      "published_bytes": 480,
+      "published_sha256": "2c09affdb41fbc576f7e4d785664c46b08dc57a93fe7c1a4d65ba843111997b0",
+      "path_prefix_replacements": {
+        "<VALIDATION_ROOT>": 1
+      }
+    }
+  ]
+}

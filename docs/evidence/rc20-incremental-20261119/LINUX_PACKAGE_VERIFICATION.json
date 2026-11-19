@@ -1,0 +1,124 @@
+{
+  "artifact": "LocalPilot-Test-5.0.1-rc.20-linux-x86_64.deb",
+  "sha256": "94d4ea4aea4f5db5b852d0b928bad055ffa5b4ae645ceba5364d5c2cc503efe0",
+  "bytes": 114679282,
+  "package": {
+    "Package": "local-pilot-test",
+    "Version": "5.0.1-rc.20",
+    "Architecture": "amd64",
+    "Depends": "python3, xdg-utils, zenity, bubblewrap, python3.13, libayatana-appindicator3-1, libwebkit2gtk-4.1-0, libgtk-3-0"
+  },
+  "bundle_self_check": {
+    "architecture": "x86_64",
+    "bundle_id": "io.localpilot.desktop.test",
+    "modules": {
+      "localpilot-agent-service": "5.0.0b37",
+      "localpilot-channels": "0.1.0a4",
+      "localpilot-companion": "0.5.7b12",
+      "suite": "0.2.0b36"
+    },
+    "services_started": false,
+    "status": "bundle_self_check_passed",
+    "user_data_opened": false,
+    "verified_wheels": 40,
+    "version": "5.0.1-rc.20"
+  },
+  "installed": false,
+  "tauri_input": {
+    "artifact": "LocalPilot Test_5.0.1-rc.20_amd64.deb",
+    "sha256": "67ccff0057fe6a41a9b825fa48bc747735b23fc3e5759cfe446044dccdf1fb04",
+    "bytes": 124375232
+  },
+  "normalization": {
+    "distribution_python": "/usr/bin/python3.13",
+    "interpreter_symlinks": 3,
+    "installed_size_kib": 201464
+  },
+  "extracted_runtime": {
+    "status": "PASS",
+    "modules": [
+      "agent",
+      "companion",
+      "localpilot_suite",
+      "localpilot_channels",
+      "pydantic_core",
+      "PIL._imaging",
+      "cryptography.hazmat.bindings._rust"
+    ],
+    "module_versions": {
+      "suite": "0.2.0b36",
+      "localpilot-agent-service": "5.0.0b37",
+      "localpilot-companion": "0.5.7b12",
+      "localpilot-channels": "0.1.0a4"
+    },
+    "pip_check": "No broken requirements found.",
+    "node": {
+      "status": "PASS",
+      "version": "v22.23.4",
+      "sha256": "b8492284c76a54baf58d61668dd0e41ee0fc98adabf9503d30f05d08f55b4406"
+    }
+  },
+  "git_commit": "8eb042cf57508de59179b4aa2fdd5ae41e9a9eec",
+  "source_dirty": false,
+  "host": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "python_runtime": {
+    "kind": "OFFLINE_INDEPENDENT_MODULES",
+    "system": "Linux",
+    "architecture": "x86_64",
+    "python": "3.13",
+    "python_runtime": "distribution",
+    "python_executable": "/usr/bin/python3.13",
+    "python_debian_dependency": "python3.13",
+    "python_version_at_build": "3.13.5",
+    "weights_bundled": false,
+    "credentials_bundled": false,
+    "wheels": [
+      "annotated_types-0.8.0-py3-none-any.whl",
+      "anyio-4.15.1-py3-none-any.whl",
+      "attrs-26.1.0-py3-none-any.whl",
+      "certifi-2026.10.23-py3-none-any.whl",
+      "cffi-2.1.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "click-8.5.0-py3-none-any.whl",
+      "cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl",
+      "defusedxml-0.7.1-py2.py3-none-any.whl",
+      "h11-0.16.0-py3-none-any.whl",
+      "httpcore-1.0.9-py3-none-any.whl",
+      "httpx-0.28.1-py3-none-any.whl",
+      "httpx_sse-0.4.3-py3-none-any.whl",
+      "idna-3.20-py3-none-any.whl",
+      "jsonschema-4.26.0-py3-none-any.whl",
+      "jsonschema_specifications-2025.9.1-py3-none-any.whl",
+      "localpilot_agent_service-5.0.0b37-py3-none-any.whl",
+      "localpilot_channels-0.1.0a4-py3-none-any.whl",
+      "localpilot_companion-0.5.7b12-py3-none-any.whl",
+      "localpilot_suite-0.2.0b36-py3-none-any.whl",
+      "mcp-1.26.0-py3-none-any.whl",
+      "packaging-26.0-py3-none-any.whl",
+      "pillow-12.3.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "pip-25.0.1-py3-none-any.whl",
+      "psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl",
+      "pycparser-3.12-py3-none-any.whl",
+      "pydantic-2.14.1-py3-none-any.whl",
+      "pydantic_core-2.50.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "pydantic_settings-2.16.1-py3-none-any.whl",
+      "pyjwt-2.15.1-py3-none-any.whl",
+      "pypdf-6.21.2-py3-none-any.whl",
+      "python_dotenv-1.2.4-py3-none-any.whl",
+      "python_multipart-0.0.32-py3-none-any.whl",
+      "referencing-0.37.0-py3-none-any.whl",
+      "rpds_py-2026.9.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "sse_starlette-3.5.1-py3-none-any.whl",
+      "starlette-1.10.0-py3-none-any.whl",
+      "typing_extensions-4.16.0-py3-none-any.whl",
+      "typing_inspection-0.4.4-py3-none-any.whl",
+      "uvicorn-0.54.0-py3-none-any.whl",
+      "watchdog-6.0.0-py3-none-manylinux2014_x86_64.whl"
+    ],
+    "channel_runtime": {
+      "filename": "node-v22.23.4-linux-x64.tar.gz",
+      "sha256": "b8492284c76a54baf58d61668dd0e41ee0fc98adabf9503d30f05d08f55b4406"
+    },
+    "dependency_lock_sha256": "659f1b9b255a2ec03bda7d8d79ded0eba4efbba7bd449acdaeb107bda2e62a60"
+  },
+  "local_artifact": "/workspace/scratch/b0df9966d470/nov19-validation/rc20-install/linux/final-source/desktop/release/linux-test-v5.0.1-rc.20/20261119-111359-22/LocalPilot-Test-5.0.1-rc.20-linux-x86_64.deb"
+}

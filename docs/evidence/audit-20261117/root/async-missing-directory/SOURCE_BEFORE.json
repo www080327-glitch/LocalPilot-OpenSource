@@ -1,0 +1,14 @@
+{
+  "stage": "Before production change, with two real regression controls added",
+  "git_head": "5a0a77b7486e412e2ed9f29c9fab8295e7a81d6a",
+  "files": [
+    {
+      "file": "agent/session_workers.py",
+      "sha256": "68466835bc45eba1fd3668993868b116ee3911fdc13fa54470871b34fc2ab52e"
+    },
+    {
+      "file": "tests/test_async_runtime.py",
+      "sha256": "3c2a3207302a4189a00be077b36df2160d9522e236f8882a79807ce4d03f9b2b"
+    }
+  ]
+}

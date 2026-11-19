@@ -45,6 +45,16 @@ def runtime_lock(path, arch):
     return lock
 
 
+def bundled_runtime_lock(root, arch, override=None):
+    bundled = root / 'runtime-dependencies.json'
+    path = root.parents[1] / 'runtime-dependencies.json'
+    if override is not None:
+        path = Path(override)
+    elif bundled.exists():
+        path = bundled
+    return runtime_lock(path, arch)
+
+
 def verify_macho(path, arch):
     supported = subprocess.check_output(['/usr/bin/lipo', '-archs', str(path)], text=True).split()
     if arch not in supported:

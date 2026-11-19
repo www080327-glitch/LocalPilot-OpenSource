@@ -1,0 +1,138 @@
+{
+  "archive_bytes_excluding_manifest": 53560,
+  "archive_file_count_excluding_manifest": 12,
+  "cause": "UNKNOWN",
+  "excluded": "private Core, service configuration, credential files, raw SQLite, downloaded inputs, candidate answers, labels and all paths not explicitly listed",
+  "files": [
+    {
+      "archive_bytes": 4784,
+      "archive_path": "RESULTS.md",
+      "archive_sha256": "6231a85a84d1ba5a65b301a5894d14065b0329eaa7a35652f8747661810b6615",
+      "original_bytes": null,
+      "original_path": null,
+      "original_sha256": null,
+      "transformation": "Authored read-only interruption review"
+    },
+    {
+      "archive_bytes": 41067,
+      "archive_path": "SOURCE_IDENTITY.json",
+      "archive_sha256": "ff2b8c6034ce1e75c33689cdc3b142bb27a1bbef149fb9bd92c482a9440f3433",
+      "original_bytes": null,
+      "original_path": null,
+      "original_sha256": null,
+      "transformation": "Generated post-interruption source identity and Git-byte comparison"
+    },
+    {
+      "archive_bytes": 942,
+      "archive_path": "cloud-soak-2h-r3-final-job.json",
+      "archive_sha256": "d54dcbb4e0e665c9be9753ad040e6e569a97e14d641c3fe79399086cf7b5d098",
+      "original_bytes": 978,
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r3-final-job.json",
+      "original_sha256": "002ca5f2c206f155044c58caccfa0e4b5f5cdb7b6588acc7c2ea3bca758ce031",
+      "transformation": "Replace only the JSON string value immediately following --key-file with <private_key_file>; all other bytes unchanged."
+    },
+    {
+      "archive_bytes": 0,
+      "archive_path": "cloud-soak-2h-r3-final.log",
+      "archive_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r3-final.log",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transformation": "identity"
+    },
+    {
+      "archive_bytes": 109,
+      "archive_path": "core.log",
+      "archive_sha256": "cff7e866398ee46d6ceafaa1386f53b0c98b45f467a1090f26c9495bf61e2049",
+      "original_bytes": 109,
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r3-final/core.log",
+      "original_sha256": "cff7e866398ee46d6ceafaa1386f53b0c98b45f467a1090f26c9495bf61e2049",
+      "transformation": "identity"
+    },
+    {
+      "archive_bytes": 1273,
+      "archive_path": "executor-interruption-20261116-second.json",
+      "archive_sha256": "13d01ef2226098d1154a6734726046ff998f0d0e3e42d986d2c52ce183566841",
+      "original_bytes": 1273,
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/executor-interruption-20261116-second.json",
+      "original_sha256": "13d01ef2226098d1154a6734726046ff998f0d0e3e42d986d2c52ce183566841",
+      "transformation": "identity"
+    },
+    {
+      "archive_bytes": 1238,
+      "archive_path": "resolved-runtime-budgets.json",
+      "archive_sha256": "603b4a44b1de4ac5bf6159d496350670ecdebffe64db9e461e10bf7130580dd8",
+      "original_bytes": 1238,
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r3-final/resolved-runtime-budgets.json",
+      "original_sha256": "603b4a44b1de4ac5bf6159d496350670ecdebffe64db9e461e10bf7130580dd8",
+      "transformation": "identity"
+    },
+    {
+      "archive_bytes": 158,
+      "archive_path": "soak-progress.json",
+      "archive_sha256": "c0f3359452865dae0504283ae59a9ad8736ad589827c415cbe4a7c5c7784607e",
+      "original_bytes": 158,
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r3-final/soak-progress.json",
+      "original_sha256": "c0f3359452865dae0504283ae59a9ad8736ad589827c415cbe4a7c5c7784607e",
+      "transformation": "identity"
+    },
+    {
+      "archive_bytes": 140,
+      "archive_path": "transport-case-025/candidate-started.json",
+      "archive_sha256": "140f14b276b42cc0a969cead355463dbb66baa119bdf6fc743c50a3e4a651dda",
+      "original_bytes": 140,
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-025/candidate-started.json",
+      "original_sha256": "140f14b276b42cc0a969cead355463dbb66baa119bdf6fc743c50a3e4a651dda",
+      "transformation": "identity"
+    },
+    {
+      "archive_bytes": 376,
+      "archive_path": "transport-case-025/case-result.json",
+      "archive_sha256": "83a0aadd8e06115b2d7c91579081a15b06dc5811a249a51414dd8cfa4ce7a4e6",
+      "original_bytes": 376,
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-025/case-result.json",
+      "original_sha256": "83a0aadd8e06115b2d7c91579081a15b06dc5811a249a51414dd8cfa4ce7a4e6",
+      "transformation": "identity"
+    },
+    {
+      "archive_bytes": 3045,
+      "archive_path": "workspace/heartbeat.jsonl",
+      "archive_sha256": "ad2dadb1de5dc402c23a8430c8d85d5f2d05e253b7b238f1d693a9e1138718ba",
+      "original_bytes": 3045,
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r3-final/workspace/heartbeat.jsonl",
+      "original_sha256": "ad2dadb1de5dc402c23a8430c8d85d5f2d05e253b7b238f1d693a9e1138718ba",
+      "transformation": "identity"
+    },
+    {
+      "archive_bytes": 428,
+      "archive_path": "workspace/heartbeat.py",
+      "archive_sha256": "4e9f4268aac5734a99a5f5e641c40c78929d6675a954b281a19d48e4cd61da0e",
+      "original_bytes": 428,
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/cloud-soak-2h-r3-final/workspace/heartbeat.py",
+      "original_sha256": "4e9f4268aac5734a99a5f5e641c40c78929d6675a954b281a19d48e4cd61da0e",
+      "transformation": "identity"
+    }
+  ],
+  "heartbeat_count": 97,
+  "heartbeat_elapsed_strictly_increasing": true,
+  "interruption_record_observed_utc": "2026-11-16T19:47:17.380026+00:00",
+  "last_heartbeat_elapsed_seconds": 2880.0511786159987,
+  "last_progress_elapsed_seconds": 2920.2362048180003,
+  "last_progress_quiescent": false,
+  "last_progress_status": "running",
+  "manifest_self_excluded": true,
+  "missing_completion_evidence": {
+    "finished_marker_exists": false,
+    "outer_exit_receipt_exists": false,
+    "qualification_RESULT_exists": false,
+    "terminal_soak_task_exists": false
+  },
+  "model_readback_proof_available": false,
+  "owned_core_normal_stop_proof_available": false,
+  "qualification": "NOT_PASS",
+  "schema_version": 1,
+  "scope": "Second executor interruption; original R3 only. No addition of R1 or R4 time and no synthesized terminal receipt.",
+  "source_input_bytes": 7745,
+  "source_input_file_count": 10,
+  "status": "INCOMPLETE_EXECUTION_SESSION_LOSS"
+}

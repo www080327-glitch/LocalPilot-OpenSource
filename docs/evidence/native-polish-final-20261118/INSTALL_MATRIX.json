@@ -1,0 +1,84 @@
+{
+  "test_identity": "io.localpilot.desktop.test",
+  "test_app": "LocalPilot Test",
+  "installed_target": "~/Applications/LocalPilot Test.app",
+  "version_sequence": [
+    "5.0.1-rc.7",
+    "5.0.1-rc.17",
+    "5.0.1-rc.7",
+    "5.0.1-rc.17"
+  ],
+  "candidate_tree_sha256": "197cfb69b3836ee50e82a0ba3eea34a84591152c43c95a3ac54ec9df5a84c446",
+  "final_executable_sha256": "b713d15ac5e2dfd0a4f27c8df0572ba301c3f819a3c02449f2978e00c6e15d75",
+  "final_installed_tree_sha256": "197cfb69b3836ee50e82a0ba3eea34a84591152c43c95a3ac54ec9df5a84c446",
+  "test_root_sha256": "73ae10a01c60b89c614b4425456be594856593663d82d133e1117b9fd144b11e",
+  "test_root_purpose": "LocalPilot installation E2E",
+  "test_root_mode": "0o700",
+  "other_acceptance_test_root_preserved": true,
+  "all_transactions_completed": true,
+  "transactions": {
+    "upgrade_rc7_to_rc17": {
+      "status": "installed",
+      "executed": true,
+      "old_version": "5.0.1-rc.7",
+      "new_version": "5.0.1-rc.17",
+      "bundle_id": "io.localpilot.desktop.test",
+      "source_tree_sha256": "197cfb69b3836ee50e82a0ba3eea34a84591152c43c95a3ac54ec9df5a84c446",
+      "old_tree_sha256": "3577f8a67e27cc9ff1f631220c9af6694ed2f51e5647b4d39aeb822979e08550",
+      "user_data_modified": false,
+      "rollback_zip_sha256": "90ba9a610f9198c0230f7dbba144136a24c599d92b50d910555d10b34a373131",
+      "rollback_tree_sha256": "3577f8a67e27cc9ff1f631220c9af6694ed2f51e5647b4d39aeb822979e08550",
+      "rollback_signature_code": 0,
+      "retired_app_trashed": true,
+      "private_receipt_sha256": "a35e83dac95bcc190f698f6aa0642caa089ff671864d30832931751c7a126cbb"
+    },
+    "rollback_rc17_to_rc7": {
+      "status": "installed",
+      "executed": true,
+      "old_version": "5.0.1-rc.17",
+      "new_version": "5.0.1-rc.7",
+      "bundle_id": "io.localpilot.desktop.test",
+      "source_tree_sha256": "3577f8a67e27cc9ff1f631220c9af6694ed2f51e5647b4d39aeb822979e08550",
+      "old_tree_sha256": "197cfb69b3836ee50e82a0ba3eea34a84591152c43c95a3ac54ec9df5a84c446",
+      "user_data_modified": false,
+      "rollback_zip_sha256": "cb81ca4c13463d40dfded0e3bac043aaf90b92c3f220b5f866150fc625c44aa8",
+      "rollback_tree_sha256": "197cfb69b3836ee50e82a0ba3eea34a84591152c43c95a3ac54ec9df5a84c446",
+      "rollback_signature_code": 0,
+      "retired_app_trashed": true,
+      "private_receipt_sha256": "6382b65ad7ddac58dfea0d8cafee85767e473e77e9bb60b94ff0d2c059d54ad3"
+    },
+    "restore_rc7_to_rc17": {
+      "status": "installed",
+      "executed": true,
+      "old_version": "5.0.1-rc.7",
+      "new_version": "5.0.1-rc.17",
+      "bundle_id": "io.localpilot.desktop.test",
+      "source_tree_sha256": "197cfb69b3836ee50e82a0ba3eea34a84591152c43c95a3ac54ec9df5a84c446",
+      "old_tree_sha256": "3577f8a67e27cc9ff1f631220c9af6694ed2f51e5647b4d39aeb822979e08550",
+      "user_data_modified": false,
+      "rollback_zip_sha256": "d90828a2f2111ee79557739b9a4b106a0d5e81406e4135a09574c27bf88ef184",
+      "rollback_tree_sha256": "3577f8a67e27cc9ff1f631220c9af6694ed2f51e5647b4d39aeb822979e08550",
+      "rollback_signature_code": 0,
+      "retired_app_trashed": true,
+      "private_receipt_sha256": "b32730738f40d462d9a0ace04e4058c5db21fb2c0ebfb3e9b333eaf42a8ec4b0"
+    }
+  },
+  "initial_rollback_archive": {
+    "sha256": "90ba9a610f9198c0230f7dbba144136a24c599d92b50d910555d10b34a373131",
+    "restored_tree_sha256": "3577f8a67e27cc9ff1f631220c9af6694ed2f51e5647b4d39aeb822979e08550",
+    "signature_exit": 0
+  },
+  "rollback_extraction": {
+    "workspace_location_first_attempt": "FAIL: code-sign verification rejected FinderInfo/File Provider metadata on the extracted copy",
+    "local_cache_retry": "PASS: ditto -x -k extraction outside the workspace verified signature and exact tree SHA",
+    "xattrs_removed": false
+  },
+  "runtime_checks": {
+    "final_version": "5.0.1-rc.17",
+    "bundle_id": "io.localpilot.desktop.test",
+    "codesign": "PASS",
+    "arm64": "PASS",
+    "core_version": "5.0.0b35",
+    "test_root_bound_on_launch": true
+  }
+}

@@ -90,7 +90,14 @@ class ToolRegistry:
         with dispatch_access(self.gateway.mode == "full-permission"):
             return self._call(name, arguments, approved=approved, receipt_id=receipt_id, scope_approval=scope_approval)
 
-    def _call(self, name, arguments, *, approved=False, receipt_id=None, scope_approval=None):
+    def _call_prevalidated(self, name, arguments, *, approved=False, receipt_id=None, scope_approval=None):
+        """AgentSession already validated this proposal before its durable intent."""
+        from .permission_context import dispatch_access
+        with dispatch_access(self.gateway.mode == 'full-permission'):
+            return self._call(name, arguments, approved=approved, receipt_id=receipt_id,
+                              scope_approval=scope_approval, validated=True)
+
+    def _call(self, name, arguments, *, approved=False, receipt_id=None, scope_approval=None, validated=False):
         """Dispatch only host-registered tools; model arguments cannot change policy."""
         self.last_dispatch_started = False
         self.last_read_receipt = None
@@ -109,9 +116,10 @@ class ToolRegistry:
             raise ValueError("Tool arguments cannot override workspace or permission policy.")
         from .scope_permissions import workspace_arguments
         arguments = workspace_arguments(self, name, arguments)
-        validate_arguments(name, arguments, self.schemas())
-        self.validate_extension_arguments(name, arguments)
-        inspect.signature(function).bind(workspace_root=self.workspace_root, **arguments)
+        if not validated:
+            validate_arguments(name, arguments, self.schemas())
+            self.validate_extension_arguments(name, arguments)
+            inspect.signature(function).bind(workspace_root=self.workspace_root, **arguments)
         from .scope_permissions import proposal, execute as scoped_execute
         request = proposal(self, name, arguments)
         if request:
@@ -222,9 +230,17 @@ class ToolRegistry:
                 bounded["risk_summary"]["reasons"] = ["Result exceeded output limit; obtain focused evidence."]
         return bounded
 
-    def schemas(self):
+    def schemas(self, *, for_model=False):
         schemas = deepcopy([schema for schema in TOOL_SCHEMAS + FILE_SCHEMAS if schema["function"]["name"] in self._tools] + self._extension_schemas)
         if self.tool_profile == "compact":
+            if for_model:
+                # Parameter prose carries path/units semantics. Keep the stored
+                # contract unchanged so existing Sessions and children restore.
+                for schema in schemas:
+                    # Skill purposes live in this catalog; bodies stay on demand.
+                    if schema["function"]["name"] != "load_skill":
+                        schema["function"].pop("description", None)
+                return schemas
             # Remove prose only: names, types, required fields and constraints stay identical.
             def strip_descriptions(value):
                 if isinstance(value, dict):

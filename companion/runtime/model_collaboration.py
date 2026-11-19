@@ -26,15 +26,15 @@ class ModelCollaboration:
         return self.app.controls.prepare("cloud","reasoning",force_cloud_confirmation=force_confirmation,fallback=fallback)
 
     def consider(self, task_id, result):
-        tasks=self.app.store.get("localpilot_tasks",{});record=tasks.get(task_id)
-        if not record or record.get("cloud_fallback"):return None
-        transport=record.get("transport",{})
-        if transport.get("provider_kind","local")!="local" or transport.get("mode")!="reasoning":return None
         current=self.app.controls.current
         if (not current or current.get("task_id")!=task_id or current.get("phase")!="finished"
                 or self.app.controls.stop_event.is_set()):return None
-        if record.get("endpoint")!=self.app.config.localpilot_endpoint or transport.get("scope")!=self.app.privacy.consent_id():return None
         if result.get("quiescent") is not True or result.get("status") in {"cancelled","requires_approval","requires_human"}:return None
+        record=self.app.store.tasks.get(task_id)
+        if not record or record.get("cloud_fallback"):return None
+        transport=record.get("transport",{})
+        if transport.get("provider_kind","local")!="local" or transport.get("mode")!="reasoning":return None
+        if record.get("endpoint")!=self.app.config.localpilot_endpoint or transport.get("scope")!=self.app.privacy.consent_id():return None
         resource=result.get("model_resource") or {}
         if resource.get("managed") is True and resource.get("model_process_alive") is not False:return None
         task=result.get("task") or {}
@@ -51,10 +51,10 @@ class ModelCollaboration:
         # Persist before notification/network preflight so duplicate terminal SSE
         # events cannot open repeated cloud requests or prompts.
         record["cloud_fallback"]={"status":"offered","at":time.time(),**fallback}
-        self.app.store.set("localpilot_tasks",tasks)
+        self.app.store.tasks.put(task_id,record)
         prepared=self.prepare_question(record.get("request"),fallback=fallback,
             force_confirmation=capability_hint)
-        tasks=self.app.store.get("localpilot_tasks",{})
-        tasks[task_id]["cloud_fallback"].update(status=prepared.get("status"),control_id=(prepared.get("control") or {}).get("id"))
-        self.app.store.set("localpilot_tasks",tasks)
+        record=self.app.store.tasks.get(task_id)
+        record["cloud_fallback"].update(status=prepared.get("status"),control_id=(prepared.get("control") or {}).get("id"))
+        self.app.store.tasks.put(task_id,record)
         return prepared

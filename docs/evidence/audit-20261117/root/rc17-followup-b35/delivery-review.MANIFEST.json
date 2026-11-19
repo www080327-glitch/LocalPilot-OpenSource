@@ -1,0 +1,35 @@
+{
+  "name": "delivery-review",
+  "description": "旧交付审计、源码映射与本轮归档生成输入",
+  "archive": "delivery-review.tar.gz",
+  "sha256": "e5e10db0cd2ba53fd8b1e8c6e6d32b6b53ac11366d75134188534ec41603b762",
+  "bytes": 6121,
+  "manifest": "delivery-review.MANIFEST.json",
+  "files_count": 4,
+  "files": [
+    {
+      "path": "SOURCE_FOLLOWUP.json",
+      "bytes": 2663,
+      "original_sha256": "d33d24750925e38aa68f035893d21690c2a2c60c7fd9cbc34931be505e9293a1",
+      "public_sha256": "d33d24750925e38aa68f035893d21690c2a2c60c7fd9cbc34931be505e9293a1"
+    },
+    {
+      "path": "evidence-review.json",
+      "bytes": 1947,
+      "original_sha256": "754df732e6be036cf35ca3d7edcc21d08c2f371aa295cb40582736df53d7ffdd",
+      "public_sha256": "754df732e6be036cf35ca3d7edcc21d08c2f371aa295cb40582736df53d7ffdd"
+    },
+    {
+      "path": "package_followup.py",
+      "bytes": 4391,
+      "original_sha256": "0fe3f75adc66af6c7b2a4a532fd67e39522732b92619d864b058dcb125e3d1b6",
+      "public_sha256": "0fe3f75adc66af6c7b2a4a532fd67e39522732b92619d864b058dcb125e3d1b6"
+    },
+    {
+      "path": "public_followup_plan.json",
+      "bytes": 8683,
+      "original_sha256": "17def2839ea8b25b6f4d3ebce41ac7693ecfc4c7f41124682964fd03cc306b73",
+      "public_sha256": "17def2839ea8b25b6f4d3ebce41ac7693ecfc4c7f41124682964fd03cc306b73"
+    }
+  ]
+}

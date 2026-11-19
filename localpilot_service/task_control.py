@@ -4,6 +4,7 @@ from pathlib import Path
 from urllib.error import HTTPError,URLError
 from .sdk import Client
 from .security import private_json
+from localpilot_api.service import MAX_TASK_TIMEOUT
 
 
 def run(home, record_path):
@@ -16,7 +17,7 @@ def run(home, record_path):
         client=Client(record['url'],token=token,timeout=10)
         record.update(pid=os.getpid(),created=psutil.Process().create_time(),state='monitoring')
         save(record_path,record)
-        deadline=time.monotonic()+max(0,min(3630,record['expires_at']-time.time()))
+        deadline=time.monotonic()+max(0,min(MAX_TASK_TIMEOUT+30,record['expires_at']-time.time()))
         failures=0;next_status=0
         while time.monotonic()<deadline:
             try:

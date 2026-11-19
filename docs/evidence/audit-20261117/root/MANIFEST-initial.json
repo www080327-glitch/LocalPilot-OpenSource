@@ -1,0 +1,251 @@
+{
+  "files": [
+    {
+      "path": "openai-preflight.json",
+      "bytes": 482,
+      "sha256": "f9871439ebe7ccc366dd7e817f18eb7d1c3e6f8b4d24ad876d375a7a34c1f50f"
+    },
+    {
+      "path": "openai-chat-before.json",
+      "bytes": 315,
+      "sha256": "9baf57d106ea9d05fa4278d3e6052411578878b6223a9066c6f66d92642ec758"
+    },
+    {
+      "path": "openai-responses-live-r1.json",
+      "bytes": 2471,
+      "sha256": "826acefec50001cd5b2324aa434158be226468cf5f194dc2d99312dc727f4d19"
+    },
+    {
+      "path": "openai-protocol-r1.log",
+      "bytes": 2792,
+      "sha256": "0a772be22c8eae022dd69e96715c8ae22c15be64ba62c72af6dce880a89c141c"
+    },
+    {
+      "path": "core-regression-r1.log",
+      "bytes": 275134,
+      "sha256": "2294d02e4e86c94e2f4ca581eb17424655766bfb9c19a550652f1f05cd64f537"
+    },
+    {
+      "path": "core-regression-r2.log",
+      "bytes": 267274,
+      "sha256": "c8721da9aba8ef4e3f085fbc50cf48b3606605d919819607250ae7a27b3ea914"
+    },
+    {
+      "path": "companion-regression-r2.log",
+      "bytes": 113240,
+      "sha256": "fec102b89ef3b14cef895cfd4350c97d9fba009f4259fd93118d7b263c2d7a04"
+    },
+    {
+      "path": "companion-long-task-r1.log",
+      "bytes": 144,
+      "sha256": "ef6e27cc9544f4cfd741cb397465596e4cd638bd9a6d05e75e4a7ed3476b0269"
+    },
+    {
+      "path": "cloud-budget-r1.log",
+      "bytes": 98,
+      "sha256": "051fb1fa6f616290199c320715053e144aa58c1fa22304c5f01607831fb3c2d1"
+    },
+    {
+      "path": "cloud-budget-r2.log",
+      "bytes": 98,
+      "sha256": "00b2188f3e78e423abcd8f2b07b5c94b3438bae9501955748517f973969b346d"
+    },
+    {
+      "path": "cloud-smoke-r1/shell-read-task.json",
+      "bytes": 13728,
+      "sha256": "3f76c6989868679882fd75106bc0414b533850e822292e58816cc9551473c71f"
+    },
+    {
+      "path": "cloud-smoke-r1/resolved-runtime-budgets.json",
+      "bytes": 1238,
+      "sha256": "603b4a44b1de4ac5bf6159d496350670ecdebffe64db9e461e10bf7130580dd8"
+    },
+    {
+      "path": "cloud-smoke-r1/shell-read-progress.json",
+      "bytes": 158,
+      "sha256": "820fcb9114060c3649a82e75418d5ffa9ae005a636985204cfa814a35972b0cb"
+    },
+    {
+      "path": "cloud-smoke-r1/delegate-progress.json",
+      "bytes": 157,
+      "sha256": "531c10f3e38b59987d9cd9da1a41bbeb93abaf0df4f8a08115946e78d530a4f9"
+    },
+    {
+      "path": "cloud-smoke-r1/core.log",
+      "bytes": 218,
+      "sha256": "e12ee1d6954d4c4024c157415cc76c71931ca50eb467a1159411004aa1ac1322"
+    },
+    {
+      "path": "cloud-smoke-r1/delegate-task.json",
+      "bytes": 18882,
+      "sha256": "29175f40a85782a906e531c6293a2f25d810544aabdeb9fa861885442d8958bd"
+    },
+    {
+      "path": "cloud-smoke-r1/RESULTS.json",
+      "bytes": 25339,
+      "sha256": "f2ef1547842a0a3f6ade5a2a9dbbfce5406b327ce74e93f2ba9b841e07488d8e"
+    },
+    {
+      "path": "cloud-smoke-r1.log",
+      "bytes": 20061,
+      "sha256": "019b4594dbd9b000250797db752ec32269909b4effa037f90680caef371cf97a"
+    },
+    {
+      "path": "cloud-superagent-r1/parallel-children-task.json",
+      "bytes": 38466,
+      "sha256": "fbdb77712c967ec4f91b7c1222bc88bab088ad97eb6bda3b7de26541ef4ec574"
+    },
+    {
+      "path": "cloud-superagent-r1/resolved-runtime-budgets.json",
+      "bytes": 1238,
+      "sha256": "603b4a44b1de4ac5bf6159d496350670ecdebffe64db9e461e10bf7130580dd8"
+    },
+    {
+      "path": "cloud-superagent-r1/parallel-children-progress.json",
+      "bytes": 156,
+      "sha256": "18493b1eb31700fcd2a8e1531c96db8c6b7e32dc5fe33eb9a266c4621158d882"
+    },
+    {
+      "path": "cloud-superagent-r1/core.log",
+      "bytes": 109,
+      "sha256": "4aa9086be42f6753116ec5b18e8a3cc232fe7aee4b6cca52f0855f735661ade2"
+    },
+    {
+      "path": "cloud-superagent-r1/companion-execution-submission.json",
+      "bytes": 3617,
+      "sha256": "0abca87815f7c97570c9477df46b3d60f50ff7a1f7c328652362ad200c47d88b"
+    },
+    {
+      "path": "cloud-superagent-r1/companion-execution-view.json",
+      "bytes": 12571,
+      "sha256": "859a25d83324362ce27f7ffbae21d03b80d827bb43f56d90df54f5c9d545f492"
+    },
+    {
+      "path": "cloud-superagent-r1/companion-reasoning-submission.json",
+      "bytes": 3520,
+      "sha256": "62fc253242cc637035efc1bdc874227a812cdc3807b9ae36a7dc71f7cd16de3d"
+    },
+    {
+      "path": "cloud-superagent-r1/companion-reasoning-view.json",
+      "bytes": 10263,
+      "sha256": "f14f0ac69cf880689757cf42643910139c8e34f16e5a97f8699ba92a8c8e0daa"
+    },
+    {
+      "path": "cloud-superagent-r1/RESULTS.json",
+      "bytes": 36880,
+      "sha256": "692cfd37b6607dd03bdfd027b6b4202bced87f66dd56c18666b5ea8f5a6a8b7c"
+    },
+    {
+      "path": "cloud-superagent-r1.log",
+      "bytes": 17242,
+      "sha256": "afebe7dce4ada5495f0ae7a3959090a70bd47823e5049fa746d6b2c6ed0e870f"
+    },
+    {
+      "path": "cloud-superagent-r2/cancel-stream-task.json",
+      "bytes": 6812,
+      "sha256": "672d507dd83897b2ddc413247bc5cf56401b353d534191b39ad235a8fa5db299"
+    },
+    {
+      "path": "cloud-superagent-r2/cancel-child-task.json",
+      "bytes": 20302,
+      "sha256": "8baa50997fec841fd299d2e245c5722cb389b842b2cf6fbc3fe857623f5d4881"
+    },
+    {
+      "path": "cloud-superagent-r2/resolved-runtime-budgets.json",
+      "bytes": 1238,
+      "sha256": "603b4a44b1de4ac5bf6159d496350670ecdebffe64db9e461e10bf7130580dd8"
+    },
+    {
+      "path": "cloud-superagent-r2/cancel-stream-progress.json",
+      "bytes": 161,
+      "sha256": "6f2e2a611146c0e7e7299b320de6ef59501da4e639bbc17e472e333098223733"
+    },
+    {
+      "path": "cloud-superagent-r2/core.log",
+      "bytes": 218,
+      "sha256": "98562c688c82d6f47a7245158014703a7a56c587067d98346192ab9061356689"
+    },
+    {
+      "path": "cloud-superagent-r2/cancel-child-progress.json",
+      "bytes": 163,
+      "sha256": "f801ada04cad05c0e20c8f516dcee5cf293339aee379d6391e1aded358c6757b"
+    },
+    {
+      "path": "cloud-superagent-r2/RESULTS.json",
+      "bytes": 26659,
+      "sha256": "de6f6b43138928d3d7c04222ce01f39d7fec9ecf968ee57604b79960ef9f80b2"
+    },
+    {
+      "path": "cloud-superagent-r2/cancel-stream-sse.json",
+      "bytes": 9165,
+      "sha256": "a7dfab4c210b4b8b2536160cd53e1b25dd50ab758bc963936889c85eaacfc174"
+    },
+    {
+      "path": "cloud-superagent-r2.log",
+      "bytes": 10071,
+      "sha256": "a184d02e627eed6f4a59bb370369301b58fb935e24f19b39768e076fbcaaee90"
+    },
+    {
+      "path": "heterogeneous-cloud-parent-r1/resolved-runtime-budgets.json",
+      "bytes": 1238,
+      "sha256": "603b4a44b1de4ac5bf6159d496350670ecdebffe64db9e461e10bf7130580dd8"
+    },
+    {
+      "path": "heterogeneous-cloud-parent-r1/heterogeneous-progress.json",
+      "bytes": 156,
+      "sha256": "e8a745ead924c9abc19ffba545ff0a44446505d2f3608810e987eb2375cd4970"
+    },
+    {
+      "path": "heterogeneous-cloud-parent-r1/core.log",
+      "bytes": 109,
+      "sha256": "2123bf22fe242277a18041ba875a213bd7baeca171d8c1862b25be39836ce1b0"
+    },
+    {
+      "path": "heterogeneous-cloud-parent-r1/heterogeneous-task.json",
+      "bytes": 20420,
+      "sha256": "a5444e42c34a1286ca6765a4b33d2a28679fc1900b0019cbee97c0ff19fca076"
+    },
+    {
+      "path": "heterogeneous-cloud-parent-r1/RESULTS.json",
+      "bytes": 21542,
+      "sha256": "62791d284fc403b51ea8daf342f5baf1cacf240ffbd3569addf084e15967bd74"
+    },
+    {
+      "path": "heterogeneous-cloud-parent-r1.log",
+      "bytes": 821,
+      "sha256": "b896144428439aac4f3fd3eeaa432ac7334223a02f42eadfa6971d496d27a027"
+    },
+    {
+      "path": "heterogeneous-local-parent-r1/resolved-runtime-budgets.json",
+      "bytes": 1238,
+      "sha256": "603b4a44b1de4ac5bf6159d496350670ecdebffe64db9e461e10bf7130580dd8"
+    },
+    {
+      "path": "heterogeneous-local-parent-r1/heterogeneous-progress.json",
+      "bytes": 157,
+      "sha256": "0c6b4584f9675444d32c90ea64d6d6c750cc81e113cef4104f7ca520146944ae"
+    },
+    {
+      "path": "heterogeneous-local-parent-r1/core.log",
+      "bytes": 109,
+      "sha256": "39f41ae000eb83d875c338aebaaa4a2555f8a50ae350f49616d3d0703bdaa46f"
+    },
+    {
+      "path": "heterogeneous-local-parent-r1/heterogeneous-task.json",
+      "bytes": 21900,
+      "sha256": "94f9e1cca25b735b04bb92bb9e57455783bee9b8c78640c4dbed731f11e35057"
+    },
+    {
+      "path": "heterogeneous-local-parent-r1/RESULTS.json",
+      "bytes": 21811,
+      "sha256": "d1ff112251e7e04313697cd777088be8f8b0d8f05aa95b23e0c4dbd4bf358e98"
+    },
+    {
+      "path": "heterogeneous-local-parent-r1.log",
+      "bytes": 864,
+      "sha256": "88c78f5caa615a9b784a7a791a6dd41eb44e6ad7281ee807f14c73a62d400644"
+    }
+  ],
+  "credential_value_found": false,
+  "scope": "Completed API, Super Agent, heterogeneous and regression evidence; running soak/ITBench excluded"
+}

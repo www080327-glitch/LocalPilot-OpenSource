@@ -146,6 +146,23 @@ class HybridRuntimeTests(unittest.TestCase):
         self.assertIn('request_model_switch',{s['function']['name'] for s in r._schemas()})
         with self.assertRaises(ValueError):
             AgentSession(create_default_registry(self.workspace), hybrid_primary='local')
+
+    def test_local_only_model_is_not_offered_cloud_worker_tiers(self):
+        for policy in ('local-only', 'balanced'):
+            local = Local(answer('ready'))
+            runtime = AgentSession(create_default_registry(self.workspace), local_backend=local,
+                cloud_backend=self.cloud, policy=policy, streaming=False,
+                cloud_worker_backends={'LIGHT': self.cloud},
+                hybrid_policy=self.policy, hybrid_primary='local',
+                hybrid_backends={'local': local, 'cloud': self.cloud})
+            self.runtimes.append(runtime)
+            self.assertEqual(runtime.run_turn('Ready?').status, 'completed')
+            delegate = next(s['function'] for s in local.requests[0]['tools']
+                            if s['function']['name'] == 'delegate')
+            self.assertEqual('tier' in delegate['parameters']['properties'], policy == 'balanced')
+            if policy == 'local-only':
+                with self.assertRaises(CloudEgressDenied):
+                    runtime.hybrid.check_target('cloud')
     def test_cloud_parent_local_child_fixed_route(self):
         self.primary = 'cloud'
         self.cloud = Backend(answer(None, spawn('local')), answer('aggregated'))

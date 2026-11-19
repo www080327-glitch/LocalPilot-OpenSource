@@ -63,17 +63,25 @@ pub fn load(root: &Path) -> Result<Global, String> {
     Ok(g)
 }
 pub fn is_cloud(route: &Value) -> bool {
-    ["deepseek", "deepseek-native", "remote-openai"]
-        .iter()
-        .any(|a| route["adapter"] == *a)
-        || route["cloud_egress"] != "LOCAL_ONLY"
+    has_cloud_adapter(route) || route["cloud_egress"] != "LOCAL_ONLY"
 }
 pub fn source_allows(p: &Preferences, route: &Value) -> bool {
     match p.source {
         Source::LocalOnly => !is_cloud(route),
-        Source::CloudOnly => is_cloud(route),
+        Source::CloudOnly => has_cloud_adapter(route),
         _ => true,
     }
+}
+fn has_cloud_adapter(route: &Value) -> bool {
+    [
+        "deepseek",
+        "deepseek-native",
+        "openai",
+        "remote-openai",
+        "remote-vllm",
+    ]
+    .iter()
+    .any(|adapter| route["adapter"] == *adapter)
 }
 pub fn routing_supported(health: &Value, cap: &Value) -> bool {
     health["compatibility"]["capabilities"]
@@ -142,6 +150,32 @@ mod tests {
         assert!(!source_allows(
             &p,
             &json!({"adapter":"deepseek","cloud_egress":"LOCAL_ONLY"})
+        ));
+    }
+    #[test]
+    fn cloud_only_selects_explicit_cloud_adapters_not_local_cloud_permission() {
+        let cloud = Preferences {
+            source: Source::CloudOnly,
+            ..Preferences::default()
+        };
+        let local = Preferences {
+            source: Source::LocalOnly,
+            ..Preferences::default()
+        };
+        for adapter in [
+            "deepseek",
+            "deepseek-native",
+            "openai",
+            "remote-openai",
+            "remote-vllm",
+        ] {
+            let route = json!({"adapter":adapter,"cloud_egress":"LOCAL_ONLY"});
+            assert!(source_allows(&cloud, &route));
+            assert!(!source_allows(&local, &route));
+        }
+        assert!(!source_allows(
+            &cloud,
+            &json!({"adapter":"local-openai","cloud_egress":"REQUIRES_APPROVAL"})
         ));
     }
     #[test]

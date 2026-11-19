@@ -1,0 +1,75 @@
+{
+  "at": "2026-11-18T14:34:22.386378+00:00",
+  "source_commit": "bef2c90ac7c155c74a55dd33cb1244ad7f90b44f",
+  "source_tree": "782495e61a2fe49b2620ef3b8ae6b3cfb558321d",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "distro": "Debian GNU/Linux 13 (trixie)",
+  "system_python": {
+    "argv": [
+      "/usr/bin/python3",
+      "-V"
+    ],
+    "exit": 0,
+    "stdout": "Python 3.13.5",
+    "stderr": ""
+  },
+  "uid": 1000,
+  "helper": false,
+  "docker_path": null,
+  "docker_socket": false,
+  "managed_rootless_socket": false,
+  "sudo": null,
+  "system_dpkg_database": false,
+  "display_env_set": false,
+  "stage_git_clean": true,
+  "native_node_sha256": "b8492284c76a54baf58d61668dd0e41ee0fc98adabf9503d30f05d08f55b4406",
+  "native_rustc": {
+    "argv": [
+      "/workspace/scratch/c0f3ec78c621/validation/context-20261117/toolchain/rustup/toolchains/1.100.0-x86_64-unknown-linux-gnu/bin/rustc",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "rustc 1.100.0 (0ef1bc386 2026-11-09)",
+    "stderr": ""
+  },
+  "native_cargo": {
+    "argv": [
+      "/workspace/scratch/c0f3ec78c621/validation/context-20261117/toolchain/rustup/toolchains/1.100.0-x86_64-unknown-linux-gnu/bin/cargo",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "cargo 1.100.0 (3acc79c0c 2026-11-05)",
+    "stderr": ""
+  },
+  "sysroot_archive_count": 462,
+  "sysroot_archive_manifest_sha256": "d07cbc7ea246832c74ce7a0b0332370c1960ce2af8eb4c58e3b1c2a1fa254ce6",
+  "verified_linux_backend": {
+    "status": true,
+    "reviewed_wheels": 40,
+    "verified_component_sources": 288,
+    "versions": {
+      "suite": "0.2.0b34",
+      "localpilot-agent-service": "5.0.0b35",
+      "localpilot-companion": "0.5.7b12",
+      "localpilot-channels": "0.1.0a4"
+    },
+    "python": "3.13",
+    "node": {
+      "filename": "node-v22.23.4-linux-x64.tar.gz",
+      "sha256": "b8492284c76a54baf58d61668dd0e41ee0fc98adabf9503d30f05d08f55b4406"
+    }
+  },
+  "github_pr_workflow_runs": {
+    "scope": "PR workflows, first page, via connector",
+    "sha": "bef2c90ac7c155c74a55dd33cb1244ad7f90b44f",
+    "runs": []
+  },
+  "surface_observation": {
+    "method": "Independent desktop observer using XFCE Display and running apps",
+    "monitor": "DUMMY0",
+    "resolution": "1364x1024",
+    "hz": 60.01,
+    "outputs": 1,
+    "installed_localpilot_test_found": false
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "kind": "ENGINEERING_R7_POSTRUN_RECEIPT_CHECK",
+  "reviewed_at_utc": "2026-11-17T04:23:50.066372+00:00",
+  "status": "PASS",
+  "new_model_requests": 0,
+  "new_tests_run": 0,
+  "checks": {
+    "orchestration_recomputed_exactly": true,
+    "protocol_except_source_matches_r6": true,
+    "runner_bytes_match_r6": true,
+    "prompt_hash_matches_protocol": true,
+    "twelve_original_fixture_hashes_match_runner": true,
+    "original_acceptance_files_exact": true,
+    "only_three_expected_original_modules_changed": true,
+    "four_deliverable_hashes_match_all_copies": true,
+    "workspace_spec_tests_fixtures_unchanged": true,
+    "source_clean_before_after": true,
+    "source_identity_stable": true,
+    "published_source_has_identical_git_tree": true,
+    "owned_core_stopped_recorded": true,
+    "task_completed_and_quiescent": true,
+    "no_unknown_effect_receipts": true,
+    "original_runner_external_acceptance_passed": true
+  },
+  "source_publication_mapping": {
+    "executed_local_commit": "2f1d678be4e24b787f443f123391f273a177c1ef",
+    "executed_tree": "d2ef57414647fb2f71ad53447790242ad2adf02b",
+    "published_github_commit": "06f59e913484cf14d92c9811f2137e4e777db163",
+    "published_tree": "d2ef57414647fb2f71ad53447790242ad2adf02b",
+    "same_tree_verified_from_fetched_git_object": true,
+    "github_commit_url": "https://github.com/www080327-glitch/LocalPilot-OpenSource/commit/06f59e913484cf14d92c9811f2137e4e777db163",
+    "raw_source_fields_preserved": true,
+    "note": "Local and GitHub commit metadata differ; complete Git tree is identical. Later evidence/document commits do not replace the executed source identity."
+  },
+  "product_result": {
+    "runtime_status": "completed",
+    "deliverable_status": "present",
+    "verification_status": "not_run",
+    "engineering_status": "unverified",
+    "task_outcome": "unverified",
+    "task_succeeded": false
+  },
+  "completion": {
+    "execution": "settled",
+    "delivery": "delivered",
+    "attempts": 1,
+    "history": [
+      {
+        "attempt": 1,
+        "kind": "delivered",
+        "text_sha256": "fc964ee5aac94e8855fcd67d15b8be79e7bdee6b7fc441609634ad8014256eff",
+        "ledger_sha256": "1a2bfcf984c43aa0bcf07e9ba71b1fabe9dc4f31b6e10b90b2d75b00334eb9f3"
+      }
+    ],
+    "readiness": null,
+    "ledger_sha256": "1a2bfcf984c43aa0bcf07e9ba71b1fabe9dc4f31b6e10b90b2d75b00334eb9f3",
+    "receipt_count": 53,
+    "obligations": {
+      "pending_approval": false,
+      "queued_calls": 0,
+      "unfinished_goals": 0,
+      "unfinished_workers": 0,
+      "worker_obligations": false,
+      "computer_obligations": 0,
+      "unfinished_handoff": 0,
+      "unknown_receipts": 0,
+      "mutation_intent": false
+    }
+  },
+  "failed_tool_receipts": [
+    {
+      "name": "list_directory",
+      "status": "failed",
+      "arguments": "{\"path\":\"tests/fixtures\"}",
+      "worker_id": "1.1",
+      "receipt_id": "worker:1.1/turn:1/call:call_KObZl4uYXOqEUbk6KKUHd0s7/entry:3",
+      "side_effect_status": "not_completed",
+      "payload": {
+        "ok": false,
+        "error": {
+          "type": "FileNotFoundError",
+          "message": "[Errno 2] No such file or directory: '<validation_root>/engineering-luna-r7-b32/workspace/tests/fixtures'"
+        }
+      }
+    },
+    {
+      "name": "manage_goal",
+      "status": "failed",
+      "arguments": "{\"action\":\"complete\",\"id\":\"deliver-logstats\",\"status\":\"done\"}",
+      "worker_id": null,
+      "receipt_id": "turn:1/call:call_5RAUGJONLtBjS33Mgd2Qx06i/entry:51",
+      "side_effect_status": "not_completed",
+      "payload": {
+        "ok": false,
+        "error": {
+          "type": "KeyError",
+          "message": "'Unknown goal id: deliver-logstats'"
+        }
+      }
+    }
+  ],
+  "aggregate_usage": {
+    "model_calls": 27,
+    "input_tokens": 899356,
+    "output_tokens": 9969,
+    "cache_hit_tokens": 736922,
+    "cache_miss_tokens": 162434,
+    "tool_receipts": 53,
+    "failed_model_attempts": 0,
+    "children_already_included": true,
+    "actual_cost": "UNKNOWN"
+  },
+  "provider_diagnostics": {
+    "calls_with_diagnostics": 27,
+    "calls_with_nonempty_input_transformations": 0,
+    "note": "Receipt field presence or emptiness is not proof of provider internal reasoning reuse."
+  },
+  "limits": [
+    "External engineering criteria PASS does not overwrite product task_outcome=unverified or verification_status=not_run.",
+    "This is a single finite synthetic project and one b32 attempt, not an AA score, a success-rate estimate, or hours-long qualification.",
+    "Recorded overlap is asynchronous child lifecycle overlap, not measured simultaneous CPU execution.",
+    "The original runner and model task were not changed or rerun; post-run checks only compare saved receipts and bytes."
+  ]
+}

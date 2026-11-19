@@ -1,0 +1,56 @@
+{
+  "source_commit": "02838a5db0b342647fc0f7904738bee87f167cf0",
+  "source_tree": "3983bab60b25a6e60515e4baaaf221b6f27f9f7a",
+  "product_source_unchanged": true,
+  "package": {
+    "artifact": "LocalPilot-Test-5.0.1-rc.19-linux-x86_64.deb",
+    "sha256": "f9dc2361e767533d31ad1f80acec14423a402ad34e4c0ec16bc550ab71c2b8fc",
+    "bytes": 114653166,
+    "bundle_id": "io.localpilot.desktop.test",
+    "system_installed": false,
+    "normal_build_pipeline_exit": 0
+  },
+  "rust_checks": {
+    "rust-default-r2": {
+      "passed": 63,
+      "failed": 0,
+      "ignored": 3,
+      "measured": 0,
+      "filtered": 0
+    },
+    "rust-core-recovery-r2": {
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 65
+    },
+    "rust-offline-release-r2": {
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0,
+      "filtered": 65
+    }
+  },
+  "packaged_python": {
+    "python": "3.13.5 (main, Aug 10 2026, 12:06:59) [GCC 14.2.0]",
+    "isolated": true,
+    "run": 27,
+    "passed": 27,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "product_modules_loaded_only_from_extracted_runtime": 127,
+  "source_files_verified_in_extracted_runtime": 289,
+  "wheel_count": 40,
+  "module_versions": {
+    "suite": "0.2.0b35",
+    "localpilot-agent-service": "5.0.0b36",
+    "localpilot-companion": "0.5.7b12",
+    "localpilot-channels": "0.1.0a4"
+  },
+  "scope": "Build, package extraction, actual native unit/recovery checks and isolated installed-module tests. Physical GUI and system installation are separate gates.",
+  "retained_prior_record": "RUST_SNAPSHOT_R1 and05a5 prepared runtime are retained, not substituted for the final02838a5 checks."
+}

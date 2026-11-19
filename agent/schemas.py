@@ -94,7 +94,7 @@ TOOL_SCHEMAS.extend([
         "type": "function",
         "function": {
             "name": "apply_patch",
-            "description": "UTF-8 files. JSON: {\"changes\":[{\"path\":\"file.txt\",\"operation\":\"create\",\"content\":\"text\"}]}. operation belongs inside EVERY change. Inspect first; update old_text matches once. Delete requires expected_sha256. Parents must exist; no symlink writes.",
+            "description": "UTF-8 files. JSON: {\"changes\":[{\"path\":\"file.txt\",\"operation\":\"create\",\"content\":\"text\"}]}. operation belongs inside EVERY change. Inspect first; update old_text matches once. Same-file updates apply in input order; expected_sha256 always refers to the original inspected version. Delete requires expected_sha256. Parents must exist; no symlink writes.",
             "parameters": {
                 "type": "object",
                 "properties": {

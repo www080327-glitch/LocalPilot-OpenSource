@@ -1,0 +1,28 @@
+{
+  "status": "PASS_SOURCE_CONTRACT_REVIEW",
+  "source_head": "bef2c90ac7c155c74a55dd33cb1244ad7f90b44f",
+  "source_hashes": {
+    "desktop/scripts/pet-control.py": "8f3be926d69190cb33394774f2824e398ebaf2805b9652cfe7f592a4ced53fa8",
+    "desktop/tests/test_pet_control.py": "23aa958bf33b1b83fdbea958e4bc2618946406d60413de5cc0309fbb8379ae6c",
+    "desktop/src-tauri/src/test_profile.rs": "92d5d8ed9b3e22786f5412e87ce42e3709e64bbdf3a1c0fde37274f58fc17074",
+    "desktop/src-tauri/src/main.rs": "c1f6bb8a8d388c0a99f5147e29a70371bd046429137524067373c943175bf19b",
+    "desktop/src-tauri/src/pet_native.rs": "9b354deaaf30be02f3d518eea2250017f6af47b4eec089eeb2c299a3ba6f8c93",
+    "desktop/src-tauri/src/pet_portable.rs": "a99c1d42cce3c1e640579146552a53b17bbae488780c4e23efa391616359deae",
+    "desktop/src/pet/animationProbe.ts": "2924a32c120ea86bdcea088ca5485918e1e1005407e80956e23f9c4bd84521d8"
+  },
+  "test_profile_identifiers": [
+    "io.localpilot.desktop.test",
+    "io.localpilot.desktop.channels.test"
+  ],
+  "test_root": "Absolute LP_INSTALL_TEST_ROOT; Rust private_json and Python lstat accept current-euid regular test-owner.json with no group/other mode and purpose LocalPilot installation E2E. Both canonicalize the directory and use client/.",
+  "transport": "Both OS test targets use client/pet-control.sock through test_profile::TestProfile and data(app). The native server is started only in standalone pet mode (--companion-pet on the Test APP), not by opening the main window alone.",
+  "reports": {
+    "inspect": "client/pet-window-diagnostics.json, atomic fsync/rename, CLI checks new inode or mtime",
+    "measure_animation": "Test profile only, 6000 ms renderer sampling then client/pet-animation-probe.json, CLI timeout 12 seconds. Visible frames require separate actual recording/observation.",
+    "other_actions": "requested indicates command sent; action effect requires subsequent observable state."
+  },
+  "compatibility": "Existing macOS default and three allowed explicit bundle identifiers select ~/Library/Application Support/<id>. Existing show/hide/quit/center/inspect/anchor/character commands and command-string encoding preserved.",
+  "tests_reviewed": "Existing new Python tests exercise exact client directory, ownership purpose mismatch and timeout/fresh-file replacement via real filesystem. This read-only review did not launch a native process or repeat GUI actions.",
+  "concrete_code_defects": [],
+  "platform_limits": "macOS diagnostics include monitor and native pointer counters. Linux portable diagnostics expose window visibility and position/size, edge and webview pointer input; collect display inventory separately."
+}

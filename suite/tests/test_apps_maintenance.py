@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+import plistlib
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -7,6 +8,22 @@ from localpilot_suite.apps import cleanup,digest
 
 
 class CleanupSafetyTests(unittest.TestCase):
+    def test_invalid_restored_signature_retains_the_application(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            app = root / 'LocalPilot.app'
+            (app / 'Contents').mkdir(parents=True)
+            (app / 'Contents/Info.plist').write_bytes(plistlib.dumps({'CFBundleIdentifier': 'io.localpilot.desktop'}))
+            original = digest(app)
+            plan = root / 'plan.json'
+            plan.write_text(json.dumps({'apps': [{'path': str(app), 'sha256': original, 'eligible': True}]}))
+            with patch('localpilot_suite.apps.processes', return_value=[]), \
+                 patch('localpilot_suite.apps.current_references', return_value={}), \
+                 patch('localpilot_suite.apps.archive', return_value={'signature': {'code': 1}}):
+                with self.assertRaisesRegex(ValueError, 'signature verification'):
+                    cleanup(plan, root / 'archives')
+            self.assertEqual(digest(app), original)
+
     def test_changed_bundle_refuses_cleanup_before_archiving(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp);app=root/'LocalPilot.app';app.mkdir();(app/'file').write_text('before')

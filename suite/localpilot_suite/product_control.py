@@ -261,11 +261,16 @@ def dispatch(home,body):
         client,health=operator(home)
         return client.request('/localpilot/v1/workspace-grants',{'client_subject':health['client_subject'],**args})
     if op=='desktop_session':
-        if set(args)-{'model','permission_mode','agent_profile','source','key','workspace_grant'} or not {'model','permission_mode','agent_profile','source','key'}<=set(args):raise ValueError('Exact session settings required')
+        if set(args)-{'model','permission_mode','agent_profile','execution_budget','source','key','workspace_grant'} or not {'model','permission_mode','agent_profile','source','key'}<=set(args):raise ValueError('Exact session settings required')
         client,health=operator(home)
-        return client.request('/localpilot/v1/desktop-sessions',{'client_subject':health['client_subject'],'model':args['model'],'options':{k:args[k] for k in ['permission_mode','agent_profile','workspace_grant'] if k in args},'source':args['source']},key=__import__('hashlib').sha256(str(args['key']).encode()).hexdigest())
+        return client.request('/localpilot/v1/desktop-sessions',{'client_subject':health['client_subject'],'model':args['model'],'options':{k:args[k] for k in ['permission_mode','agent_profile','execution_budget','workspace_grant'] if k in args},'source':args['source']},key=__import__('hashlib').sha256(str(args['key']).encode()).hexdigest())
     if op=='desktop_profile':
-        if set(args) not in ({'session_id','agent_profile','expected_profile'},{'session_id','agent_profile','expected_profile','permission_mode','expected_permission_mode'}) or not isinstance(args['session_id'],str) or not re.fullmatch(r'sess_[A-Za-z0-9_-]{1,128}',args['session_id']):raise ValueError('Exact Desktop session required')
+        required = {'session_id', 'agent_profile', 'expected_profile'}
+        permissions = {'permission_mode', 'expected_permission_mode'}
+        budgets = {'execution_budget', 'expected_execution_budget'}
+        if (not required <= set(args) or set(args) - required not in (set(), permissions, budgets, permissions | budgets)
+                or not isinstance(args['session_id'],str) or not re.fullmatch(r'sess_[A-Za-z0-9_-]{1,128}',args['session_id'])):
+            raise ValueError('Exact Desktop session required')
         client,health=operator(home)
         return client.request('/localpilot/v1/desktop-sessions/'+args['session_id']+'/profile',{'client_subject':health['client_subject'],**{k:v for k,v in args.items() if k!='session_id'}})
     if op=='desktop_model':

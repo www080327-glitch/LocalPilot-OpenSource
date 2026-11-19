@@ -2,6 +2,8 @@
 from dataclasses import replace
 import json
 from pathlib import Path
+import shlex
+import sys
 import tempfile
 import threading
 import time
@@ -73,6 +75,102 @@ class AsyncRuntimeTests(unittest.TestCase):
                             persistence=self.root/'runtime.db' if persistent else None)
         self.services.append(service);return service
     def run_task(self, s): return s.wait(s.create_task(TaskRequest('parent task'))['id'])
+
+    def directory_probe_backend(self):
+        (self.workspace/'fixtures').mkdir()
+        return Backend(
+            answer(None,call('list_directory',{'path':'tests/fixtures'},'missing')),
+            answer(None,call('list_directory',{'path':'fixtures'},'found')),
+            answer(None,call('apply_patch',{'changes':[{'operation':'create','path':'delivered.txt','content':'fixture located'}]},'write')),
+            answer('Located fixtures and delivered the file.'))
+
+    def test_root_missing_directory_observation_keeps_failed_receipt_and_completes(self):
+        self.parent=self.directory_probe_backend()
+        s=self.service();t=self.run_task(s)
+        self.assertEqual(t['status'],'completed')
+        self.assertEqual((self.workspace/'delivered.txt').read_text(),'fixture located')
+        self.assertEqual(t['tools'][0]['payload']['error']['type'],'FileNotFoundError')
+        self.assertFalse(t['tools'][0]['payload']['ok'])
+        self.assertEqual(t['tools'][0]['side_effect_status'],'not_completed')
+        self.assertTrue(t['tools'][1]['payload']['ok'])
+        self.assertTrue((self.root/'runtime.db').is_file())
+
+    def test_async_child_missing_directory_observation_does_not_block_delivery(self):
+        self.worker.request=self.directory_probe_backend().request
+        self.parent=Backend(delegates(1),answer(None,call('wait_children',{},'join')),answer('Collected delivery.'))
+        s=self.service();t=self.run_task(s)
+        self.assertEqual(t['status'],'completed')
+        self.assertEqual((self.workspace/'delivered.txt').read_text(),'fixture located')
+        child=t['subagents'][0]
+        self.assertTrue(child['async']);self.assertTrue(child['collected'])
+        self.assertEqual(child['status'],'completed')
+        self.assertEqual(child['obligation_status'],'resolved')
+        self.assertEqual(child['unfinished_calls'],[])
+        failed=child['receipts'][0]
+        self.assertEqual(failed['payload']['error']['type'],'FileNotFoundError')
+        self.assertFalse(failed['payload']['ok'])
+        self.assertEqual(failed['side_effect_status'],'not_completed')
+        self.assertTrue(child['receipts'][1]['payload']['ok'])
+        self.assertTrue((self.root/'runtime.db').is_file())
+
+    def full_desktop_service(self):
+        from localpilot_service.desktop_sessions import apply_options
+        factory=self.factory
+        def full_runtime(cb):
+            runtime=factory(cb)
+            apply_options(runtime,{'permission_mode':'full','agent_profile':'standard','prompt_revision':2,
+                'scope_revision':3,'execution_budget':'standard'})
+            return runtime
+        self.factory=full_runtime
+        return self.service()
+
+    def shell_recovery_backend(self):
+        (self.workspace/'test_delivery.py').write_text(
+            'from pathlib import Path\nimport unittest\nclass DeliveryTests(unittest.TestCase):\n'
+            '    def test_delivered(self):\n'
+            '        self.assertEqual(Path("delivered.txt").read_text(), "verified delivery")\n')
+        test_args=' -S -m unittest discover -s . -p test_delivery.py -v'
+        return Backend(
+            answer(None,call('shell',{'command':shlex.quote(str(self.workspace/'.venv/bin/python'))+test_args,'timeout':60},'missing-python')),
+            answer(None,call('apply_patch',{'changes':[{'operation':'create','path':'delivered.txt','content':'verified delivery'}]},'deliver')),
+            answer(None,call('shell',{'command':shlex.quote(sys.executable)+test_args,'timeout':60},'verify')),
+            answer('Delivered file and passed the actual test.'))
+
+    @unittest.skipUnless(sys.platform in {'darwin','linux'},'Requires native POSIX host Shell')
+    def test_root_settled_shell_failure_allows_actual_recovery(self):
+        self.parent=self.shell_recovery_backend()
+        t=self.run_task(self.full_desktop_service())
+        self.assertEqual(t['status'],'completed')
+        self.assertEqual((self.workspace/'delivered.txt').read_text(),'verified delivery')
+        failed=t['tools'][0]
+        self.assertEqual(failed['payload']['result']['exit_code'],127)
+        self.assertTrue(failed['payload']['result']['process_completed'])
+        self.assertEqual(failed['side_effect_status'],'failed_process')
+        self.assertEqual(t['tools'][2]['payload']['result']['exit_code'],0)
+        self.assertIn('Ran 1 test',t['tools'][2]['payload']['result']['stderr'])
+        self.assertTrue((self.root/'runtime.db').is_file())
+
+    @unittest.skipUnless(sys.platform in {'darwin','linux'},'Requires native POSIX host Shell')
+    def test_async_child_settled_shell_failure_allows_actual_recovery(self):
+        self.worker.request=self.shell_recovery_backend().request
+        self.parent=Backend(delegates(1),answer(None,call('wait_children',{},'join')),answer('Collected verified delivery.'))
+        t=self.run_task(self.full_desktop_service())
+        self.assertEqual(t['status'],'completed')
+        self.assertEqual((self.workspace/'delivered.txt').read_text(),'verified delivery')
+        child=t['subagents'][0]
+        self.assertTrue(child['async']);self.assertTrue(child['collected'])
+        self.assertEqual(child['status'],'completed')
+        self.assertEqual(child['obligation_status'],'resolved')
+        self.assertEqual(child['unfinished_calls'],[])
+        failed=child['receipts'][0]
+        self.assertEqual(failed['payload']['result']['exit_code'],127)
+        self.assertTrue(failed['payload']['result']['process_completed'])
+        self.assertFalse(failed['payload']['result']['action_may_have_applied'])
+        self.assertEqual(failed['side_effect_status'],'failed_process')
+        self.assertEqual(child['receipts'][2]['payload']['result']['exit_code'],0)
+        self.assertIn('Ran 1 test',child['receipts'][2]['payload']['result']['stderr'])
+        self.assertTrue((self.root/'runtime.db').is_file())
+
     def test_two_children_overlap_and_account_once(self):
         s=self.service();t=self.run_task(s)
         self.assertEqual(t['status'],'completed',t.get('error'))

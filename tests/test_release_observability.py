@@ -64,3 +64,50 @@ class ModelInterpreterIsolationTests(unittest.TestCase):
         self.assertNotIn('PYTHONPATH',env);self.assertNotIn('PYTHONHOME',env);self.assertNotIn('VIRTUAL_ENV',env)
         self.assertNotIn('DEEPSEEK_API_KEY',env);self.assertEqual(env['OMLX_API_KEY'],'local-model-fixture')
         self.assertEqual(env['HF_HUB_OFFLINE'],'1')
+
+
+class CandidateVersionGateTests(unittest.TestCase):
+    def setUp(self):
+        import shutil,tempfile
+        from pathlib import Path
+        self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
+        self.root=Path(self.temp.name);source=Path(__file__).resolve().parents[1]
+        for relative in ('scripts/check-candidate-versions.py','pyproject.toml','suite/pyproject.toml',
+                         'companion/pyproject.toml','localpilot_service/__init__.py',
+                         'suite/localpilot_suite/__init__.py','companion/__init__.py',
+                         'desktop/package.json','desktop/package-lock.json',
+                         'desktop/src-tauri/tauri.conf.json','desktop/src-tauri/Cargo.toml',
+                         'MODULE_RELEASE.json','suite/MODULE_RELEASE.json','companion/MODULE_RELEASE.json',
+                         'README.md','desktop/README.md','suite/README.md','companion/README.md'):
+            target=self.root/relative;target.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copyfile(source/relative,target)
+        self.module=self.root/'localpilot_service/__init__.py'
+
+    def run_checker(self):
+        import subprocess,sys
+        return subprocess.run([sys.executable,'-B',str(self.root/'scripts/check-candidate-versions.py')],
+                              cwd=self.root,capture_output=True,text=True)
+
+    def test_candidate_gate_accepts_matching_runtime_source(self):
+        import json
+        result=self.run_checker()
+        self.assertEqual(result.returncode,0,result.stderr)
+        self.assertTrue(json.loads(result.stdout)['consistent'])
+
+    def test_candidate_gate_rejects_stale_runtime_source(self):
+        self.module.write_text("VERSION = '0.0.0'\n")
+        result=self.run_checker()
+        self.assertNotEqual(result.returncode,0)
+        self.assertIn('localpilot_service.VERSION differs from pyproject.toml',result.stderr)
+
+    def test_candidate_gate_rejects_stale_companion_runtime(self):
+        (self.root/'companion/__init__.py').write_text("__version__ = '0.0.0'\n")
+        result=self.run_checker()
+        self.assertNotEqual(result.returncode,0)
+        self.assertIn('companion.__version__ differs from companion/pyproject.toml',result.stderr)
+
+    def test_candidate_gate_rejects_stale_suite_runtime(self):
+        (self.root/'suite/localpilot_suite/__init__.py').write_text("VERSION = '0.0.0'\n")
+        result=self.run_checker()
+        self.assertNotEqual(result.returncode,0)
+        self.assertIn('localpilot_suite.VERSION differs from suite/pyproject.toml',result.stderr)

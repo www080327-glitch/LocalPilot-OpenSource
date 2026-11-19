@@ -74,6 +74,7 @@ class ModelConfigurationTests(unittest.TestCase):
         saved = private_json(self.home / 'service.json')
         self.assertEqual(saved['routes']['route-a'], dict(self.config['routes']['route-a'], orchestration_mode='sync'))
         self.assertEqual(saved['routes']['personal-agent']['cooperation']['routes'], ['route-b'])
+        self.assertNotIn('roles', saved['routes']['personal-agent']['cooperation'])
         self.assertEqual(saved['routes']['personal-agent']['budgets']['max_worker_token_units'], 524288)
         self.assertNotIn('personal-agent', saved['clients'][1]['routes'])
         initial.service.suspend()
@@ -84,6 +85,61 @@ class ModelConfigurationTests(unittest.TestCase):
         self.assertTrue(runtime._async_enabled)
         self.assertEqual(set(runtime.hybrid.catalog), {'selected', 'route:route-b'})
         self.assertEqual(private_json(Path(result['backup'])), self.config)
+
+    def test_worker_roles_use_registered_partners_and_preserve_models_and_effort(self):
+        self.config['routes']['route-a']['backend'].update(
+            capabilities={'reasoning': True}, reasoning_efforts=['low', 'medium', 'high'])
+        self.config['routes']['route-a']['thinking'] = 'high'
+        self.config['routes']['route-b']['backend'].update(
+            capabilities={'reasoning': True}, reasoning_efforts=['low', 'medium', 'high'])
+        self.config['routes']['route-b']['thinking'] = 'medium'
+        save(self.home / 'service.json', self.config)
+        initial = self.service()
+        old_session = initial.service.create_session(model='route-a')
+        original = initial.service.sessions[old_session['id']].runtime._persistence_config
+        self.cooperate(roles={'search': 'worker', 'review': 'worker'})
+        saved = private_json(self.home / 'service.json')
+        new_route = saved['routes']['personal-agent']
+        self.assertEqual(new_route['cooperation']['roles'], {'search': 'route-b', 'review': 'route-b'})
+        self.assertEqual(new_route['backend'], self.config['routes']['route-a']['backend'])
+        self.assertEqual(new_route['thinking'], 'high')
+        self.assertEqual(saved['routes']['route-b']['thinking'], 'medium')
+        initial.service.suspend()
+        restored = self.service()
+        self.assertEqual(restored.service.sessions[old_session['id']].runtime._persistence_config, original)
+        new_session = restored.service.create_session(model='personal-agent')
+        runtime = restored.service.sessions[new_session['id']].runtime
+        self.assertEqual(runtime.worker_roles, {'search': 'route:route-b', 'review': 'route:route-b'})
+        self.assertEqual(runtime.hybrid.state['backend_id'], 'selected')
+        self.assertEqual(runtime.current_primary_model, 'fixture-a')
+        self.assertEqual(runtime.hybrid.catalog['route:route-b'].capabilities.default_thinking_effort, 'medium')
+        self.assertEqual(restored.catalog['personal-agent']['worker_roles'], runtime.worker_roles)
+        models = self.dispatch('model_configuration', {})['models']
+        self.assertEqual(next(row for row in models if row['id'] == 'worker')['thinking'], 'medium')
+
+    def test_worker_roles_reject_unknown_or_unselected_models_before_saving(self):
+        cases = [None, [], {'audit': 'worker'}, {'search': 'primary'},
+                 {'review': 'missing'}, {'search': ['worker']}, {'review': 1}]
+        for roles in cases:
+            with self.subTest(roles=roles), self.assertRaisesRegex(ValueError, '已勾选'):
+                self.cooperate(roles=roles)
+            self.assertEqual(private_json(self.home / 'service.json'), self.config)
+            self.assertFalse(list(self.home.glob('service.before-model-*.json')))
+
+    def test_older_core_rejects_roles_before_saving_but_keeps_plain_cooperation(self):
+        with patch('localpilot_service.protocol.manifest', return_value={'capabilities': ['route_orchestration_v1']}):
+            with self.assertRaisesRegex(ValueError, 'worker_roles_v1'):
+                self.cooperate(roles={'search': 'worker'})
+            self.assertEqual(private_json(self.home / 'service.json'), self.config)
+            self.assertFalse(list(self.home.glob('service.before-model-*.json')))
+            result = self.cooperate()
+        self.assertEqual(result['status'], 'configured')
+        self.assertNotIn('roles', private_json(self.home / 'service.json')['routes']['personal-agent']['cooperation'])
+
+    def test_empty_roles_keep_the_legacy_cooperation_shape(self):
+        self.cooperate(roles={})
+        saved = private_json(self.home / 'service.json')['routes']['personal-agent']['cooperation']
+        self.assertEqual(saved, {'routes': ['route-b'], 'optimizer': {'mode': 'local-first'}})
 
     def test_local_endpoint_and_companion_config_do_not_start_or_modify_privacy_scope(self):
         result = self.dispatch('configure_local_endpoint', {'name': 'cpu-agent', 'model': 'local-model',
@@ -209,6 +265,35 @@ class ModelConfigurationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'already exists'):
             self.cooperate()
         self.assertEqual((self.home / 'service.json').read_bytes(), after)
+
+    def test_explicit_openai_route_participates_in_five_modes_as_cloud(self):
+        self.config['routes']['route-b'].update(cloud_egress='REQUIRES_APPROVAL',
+            backend={'kind': 'openai', 'model': 'operator-selected-model',
+                     'api_key_env': 'LOCALPILOT_OPENAI_FIXTURE', 'context_budget': 32768})
+        save(self.home / 'service.json', self.config)
+        catalog = self.dispatch('model_configuration', {})['models']
+        worker = next(row for row in catalog if row['id'] == 'worker')
+        self.assertTrue(worker['cooperation_supported'])
+        self.assertEqual(worker['adapter'], 'openai')
+        modes = ('local-only', 'local-first', 'balanced', 'cloud-first', 'cloud-only')
+        for mode in modes:
+            primary, partner = ('worker', 'primary') if mode == 'cloud-only' else ('primary', 'worker')
+            self.dispatch('configure_cooperation', {'name': 'agent-' + mode, 'primary': primary,
+                'partners': [partner], 'mode': mode, 'async_enabled': True})
+        with patch.dict(os.environ, LOCALPILOT_OPENAI_FIXTURE='synthetic-openai-' + 'z' * 32):
+            server = self.service()
+            for mode in modes:
+                name = 'agent-' + mode
+                session = server.service.create_session(model=name)
+                runtime = server.service.sessions[session['id']].runtime
+                backends = list(runtime.hybrid.catalog.values())
+                self.assertEqual(sum(not backend.is_local for backend in backends), 1)
+                saved = private_json(self.home / 'service.json')['routes'][name]
+                self.assertEqual(saved['cloud_egress'],
+                    'LOCAL_ONLY' if mode == 'local-only' else 'REQUIRES_APPROVAL')
+        self.assertEqual(private_json(self.home / 'service.json')['routes']['route-b']['backend'],
+                         self.config['routes']['route-b']['backend'])
+        self.assertNotIn('synthetic-openai-', json.dumps(self.dispatch('model_configuration', {})))
 
 
 if __name__ == '__main__':

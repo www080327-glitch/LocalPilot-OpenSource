@@ -19,7 +19,8 @@ from agent.policy import DataPolicy
 from agent.registry import ToolRegistry
 from agent.retry import RetryPolicy
 from agent.session import AgentSession, SessionBudgets
-from localpilot_service.backend_contract import ServiceDeepSeekNativeBackend, ServiceOpenAIBackend
+from localpilot_service.backend_contract import (ServiceDeepSeekNativeBackend,
+    ServiceOpenAIBackend, ServiceOpenAICloudBackend)
 from scripts.harbor_orchestration import orchestration_contract
 
 
@@ -77,8 +78,10 @@ class LocalPilotHarborAgent(BaseAgent):
             'max_worker_steps':max_worker_steps, 'max_worker_tool_calls':max_worker_tool_calls,
             'max_worker_token_units':max_worker_token_units, 'max_worker_output_tokens':max_worker_output_tokens,
             'max_output_tokens':max_output_tokens})
-        if provider_kind not in {"local-openai", "remote-openai", "deepseek-native"}:
-            raise ValueError("Use an explicit local-openai, remote-openai or deepseek-native provider")
+        if provider_kind not in {"local-openai", "remote-openai", "deepseek-native", "openai"}:
+            raise ValueError("Use an explicit local-openai, remote-openai, deepseek-native or openai provider")
+        if provider_kind == "openai" and api_key_env is None:
+            api_key_env = "OPENAI_API_KEY"
         if api_key_env is not None and (not isinstance(api_key_env, str) or not api_key_env.isidentifier()):
             raise ValueError("api_key_env must name an environment variable")
         key = os.environ.get(api_key_env) if api_key_env else None
@@ -104,7 +107,7 @@ class LocalPilotHarborAgent(BaseAgent):
                 api_key=key, data_policy=self.data_policy, effective_context=context_tokens,
                 timeout=model_timeout, generation_parameters={"temperature": 0})
         else:
-            backend_type = ServiceOpenAIBackend
+            backend_type = ServiceOpenAICloudBackend if provider_kind == "openai" else ServiceOpenAIBackend
             extra = {}
             if model_budget is not None:
                 if provider_kind != 'local-openai':
@@ -116,7 +119,8 @@ class LocalPilotHarborAgent(BaseAgent):
             self.backend = backend_type(base_url=endpoint, model=model_name,
                 api_key=key, allow_remote=cloud, effective_context=context_tokens,
                 timeout=model_timeout, supports_streaming=True, include_stream_usage=True,
-                chat_template_kwargs=chat_template_kwargs, generation_parameters={"temperature": 0}, **extra)
+                chat_template_kwargs=chat_template_kwargs,
+                generation_parameters={} if provider_kind == "openai" else {"temperature": 0}, **extra)
         self.backend.is_local = not cloud
         self.cloud = cloud
         self.measured_local = model_budget is not None and not cloud

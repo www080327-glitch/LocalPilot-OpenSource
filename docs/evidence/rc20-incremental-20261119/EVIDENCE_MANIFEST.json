@@ -1,0 +1,1225 @@
+{
+  "format": "localpilot-rc20-public-evidence-v1",
+  "phase": "final",
+  "source_map": {
+    "local_commit": "8eb042cf57508de59179b4aa2fdd5ae41e9a9eec",
+    "public_commit": "655aed8809eac20f0e89465056e20a1d0bd5f30c",
+    "tree": "853f2dece1506f00e462be8b033ec12fcc892dab",
+    "remote_tree": "853f2dece1506f00e462be8b033ec12fcc892dab",
+    "all_tracked_files_identical": true,
+    "changed_paths": []
+  },
+  "raw_member_count": 173,
+  "raw_member_bytes": 3300829,
+  "archive_count": 4,
+  "archive_bytes": 858967,
+  "selection": {
+    "explicit_files": {
+      "provenance": [
+        "PUBLIC_RC20_FIXTURE_MAP.json",
+        "PUBLIC_RC20_SOURCE_MAP.json",
+        "PUBLIC_RC20_TEST_MAP.json",
+        "RC20_EVIDENCE_SELECTION.json",
+        "RC20_PRODUCT_FREEZE.json",
+        "RC20_SOURCE_PUBLISH.json",
+        "rc20-runtime/FINAL_SOURCE_BEFORE.json",
+        "stage_rc20_evidence.py"
+      ],
+      "runtime": [
+        "rc20-runtime/FINAL_REGRESSION_RESULTS.json",
+        "rc20-runtime/RECEIPT_SHA256.json",
+        "rc20-runtime/RESULTS.json",
+        "rc20-runtime/blocks-tests-r1.log",
+        "rc20-runtime/check_crash_compatibility.py",
+        "rc20-runtime/check_http_cleanup_setup_failure.exit",
+        "rc20-runtime/check_http_cleanup_setup_failure.log",
+        "rc20-runtime/check_http_cleanup_setup_failure.py",
+        "rc20-runtime/check_rollback.py",
+        "rc20-runtime/companion-full-final-r2.exit",
+        "rc20-runtime/companion-full-final-r2/MODULE_ORIGINS.json",
+        "rc20-runtime/companion-full-final-r2/RESULTS.json",
+        "rc20-runtime/companion-full-final-r2/runner.py",
+        "rc20-runtime/companion-full-final-r2/source-after.json",
+        "rc20-runtime/companion-full-final-r2/source-before.json",
+        "rc20-runtime/companion-full-final-r2/tests.log",
+        "rc20-runtime/core-full-final-r2-focused.exit",
+        "rc20-runtime/core-full-final-r2-focused.log",
+        "rc20-runtime/core-full-final-r2.exit",
+        "rc20-runtime/core-full-final-r2.launch.log",
+        "rc20-runtime/core-full-final-r2/MODULE_ORIGINS.json",
+        "rc20-runtime/core-full-final-r2/RESULTS.json",
+        "rc20-runtime/core-full-final-r2/runner.py",
+        "rc20-runtime/core-full-final-r2/source-after.json",
+        "rc20-runtime/core-full-final-r2/source-before.json",
+        "rc20-runtime/core-full-final-r2/tests.log",
+        "rc20-runtime/core-full-final-r3-focused.exit",
+        "rc20-runtime/core-full-final-r3-focused.log",
+        "rc20-runtime/core-full-final-r3.exit",
+        "rc20-runtime/core-full-final-r3.launch.log",
+        "rc20-runtime/core-full-final-r3/MODULE_ORIGINS.json",
+        "rc20-runtime/core-full-final-r3/RESULTS.json",
+        "rc20-runtime/core-full-final-r3/runner.py",
+        "rc20-runtime/core-full-final-r3/source-after.json",
+        "rc20-runtime/core-full-final-r3/source-before.json",
+        "rc20-runtime/core-full-final-r3/tests.log",
+        "rc20-runtime/core-full-final-r4.exit",
+        "rc20-runtime/core-full-final-r4.launch.log",
+        "rc20-runtime/core-full-final-r4/MODULE_ORIGINS.json",
+        "rc20-runtime/core-full-final-r4/RESULTS.json",
+        "rc20-runtime/core-full-final-r4/runner.py",
+        "rc20-runtime/core-full-final-r4/source-after.json",
+        "rc20-runtime/core-full-final-r4/source-before.json",
+        "rc20-runtime/core-full-final-r4/tests.log",
+        "rc20-runtime/core-full-final.log",
+        "rc20-runtime/crash-case/old-refuses.json",
+        "rc20-runtime/crash-case/old-unknown.json",
+        "rc20-runtime/crash-case/original.json",
+        "rc20-runtime/crash-case/unreceipted-write.json",
+        "rc20-runtime/crash-materialize.log",
+        "rc20-runtime/crash-old-refusal.log",
+        "rc20-runtime/crash-old-unknown-r1.log",
+        "rc20-runtime/crash-old-unknown-r2.log",
+        "rc20-runtime/crash-write.log",
+        "rc20-runtime/http-cleanup-module.exit",
+        "rc20-runtime/http-cleanup-module.log",
+        "rc20-runtime/incremental-r1.log",
+        "rc20-runtime/incremental-r2.log",
+        "rc20-runtime/incremental-r3.log",
+        "rc20-runtime/long-turn-case-r1/measurements.json",
+        "rc20-runtime/long-turn-case-r2/measurements.json",
+        "rc20-runtime/long-turn-r1.log",
+        "rc20-runtime/long-turn-r2.log",
+        "rc20-runtime/measure_long_turn.py",
+        "rc20-runtime/measure_long_turn_final.py",
+        "rc20-runtime/reproduce_timer_after_clean_suspend-r2.exit",
+        "rc20-runtime/reproduce_timer_after_clean_suspend-r2.log",
+        "rc20-runtime/reproduce_timer_after_clean_suspend.exit",
+        "rc20-runtime/reproduce_timer_after_clean_suspend.log",
+        "rc20-runtime/reproduce_timer_after_clean_suspend.py",
+        "rc20-runtime/rollback-candidate-create.log",
+        "rc20-runtime/rollback-candidate-reopen.log",
+        "rc20-runtime/rollback-case/candidate-create.json",
+        "rc20-runtime/rollback-case/candidate-reopen.json",
+        "rc20-runtime/rollback-case/rc18-write.json",
+        "rc20-runtime/rollback-case/tasks.json",
+        "rc20-runtime/rollback-rc18-write.log",
+        "rc20-runtime/run_with_loaded_origins.py"
+      ],
+      "install": [
+        "rc20-install/PACKAGE_SOURCE_EQUIVALENCE.json",
+        "rc20-install/SUITE_ATTEMPTS.json",
+        "rc20-install/SUITE_FINAL_R2.json",
+        "rc20-install/SUITE_FINAL_R3.json",
+        "rc20-install/SUITE_FULL_R1.json",
+        "rc20-install/SUITE_NORMAL_STOP_R1.json",
+        "rc20-install/SUITE_REVIEWED_STOP_R1.json",
+        "rc20-install/SUITE_TEST_DEVELOPMENT.json",
+        "rc20-install/SUITE_UPGRADE_R3.json",
+        "rc20-install/linux/EXTRACTED_SOURCE_CHECK.json",
+        "rc20-install/linux/FINAL_SOURCE.json",
+        "rc20-install/linux/FINAL_SOURCE_POSTRUN.json",
+        "rc20-install/linux/INSTALLED_HARNESS_SOURCE.json",
+        "rc20-install/linux/INSTALL_FINAL_RESULTS.json",
+        "rc20-install/linux/LEGACY_WHEEL.json",
+        "rc20-install/linux/PACKAGED_ROLLBACK.json",
+        "rc20-install/linux/PACKAGED_ROLLBACK_RAW_SHA256.json",
+        "rc20-install/linux/PACKAGED_RUNTIME_TESTS.json",
+        "rc20-install/linux/PACKAGE_VERIFICATION.json",
+        "rc20-install/linux/PRODUCT_WHEELS.json",
+        "rc20-install/linux/deb-extract.json",
+        "rc20-install/linux/deb-extract.log",
+        "rc20-install/linux/extracted-runtime-check.json",
+        "rc20-install/linux/extracted-runtime-check.log",
+        "rc20-install/linux/legacy-core-wheel.json",
+        "rc20-install/linux/legacy-core-wheel.log",
+        "rc20-install/linux/legacy-worktree.json",
+        "rc20-install/linux/legacy-worktree.log",
+        "rc20-install/linux/native-build.json",
+        "rc20-install/linux/native-build.log",
+        "rc20-install/linux/npm-ci.json",
+        "rc20-install/linux/npm-ci.log",
+        "rc20-install/linux/offline-release/offline-check.json",
+        "rc20-install/linux/packaged-rollback-conversion.log",
+        "rc20-install/linux/packaged-rollback-fixture.py",
+        "rc20-install/linux/packaged-runtime-tests.json",
+        "rc20-install/linux/packaged-runtime-tests.log",
+        "rc20-install/linux/prepare.json",
+        "rc20-install/linux/prepare.log",
+        "rc20-install/linux/roundtrip-candidate-create.json",
+        "rc20-install/linux/roundtrip-candidate-create.log",
+        "rc20-install/linux/roundtrip-downgrade-plan.json",
+        "rc20-install/linux/roundtrip-downgrade-plan.log",
+        "rc20-install/linux/roundtrip-r2-candidate-create.json",
+        "rc20-install/linux/roundtrip-r2-candidate-create.log",
+        "rc20-install/linux/roundtrip-r2-candidate-reopen.json",
+        "rc20-install/linux/roundtrip-r2-candidate-reopen.log",
+        "rc20-install/linux/roundtrip-r2-downgrade-execute.json",
+        "rc20-install/linux/roundtrip-r2-downgrade-execute.log",
+        "rc20-install/linux/roundtrip-r2-downgrade-plan.json",
+        "rc20-install/linux/roundtrip-r2-downgrade-plan.log",
+        "rc20-install/linux/roundtrip-r2-rc18-write.json",
+        "rc20-install/linux/roundtrip-r2-rc18-write.log",
+        "rc20-install/linux/roundtrip-r2-reupgrade-execute.json",
+        "rc20-install/linux/roundtrip-r2-reupgrade-execute.log",
+        "rc20-install/linux/roundtrip-r2-reupgrade-plan.json",
+        "rc20-install/linux/roundtrip-r2-reupgrade-plan.log",
+        "rc20-install/linux/run_acceptance.py",
+        "rc20-install/linux/run_packaged_rollback-r1.py",
+        "rc20-install/linux/run_packaged_rollback.py",
+        "rc20-install/linux/rust-core-recovery.json",
+        "rc20-install/linux/rust-core-recovery.log",
+        "rc20-install/linux/rust-default.json",
+        "rc20-install/linux/rust-default.log",
+        "rc20-install/linux/rust-offline-release.json",
+        "rc20-install/linux/rust-offline-release.log",
+        "rc20-install/linux/wheel-channels.json",
+        "rc20-install/linux/wheel-channels.log",
+        "rc20-install/linux/wheel-companion.json",
+        "rc20-install/linux/wheel-companion.log",
+        "rc20-install/linux/wheel-core.json",
+        "rc20-install/linux/wheel-core.log",
+        "rc20-install/linux/wheel-suite.json",
+        "rc20-install/linux/wheel-suite.log",
+        "rc20-install/run_suite.py",
+        "rc20-install/suite-full-final-r2.log",
+        "rc20-install/suite-full-final-r3.log",
+        "rc20-install/suite-full-final.log",
+        "rc20-install/suite-full-r1.log",
+        "rc20-install/suite-normal-stop-r1.log",
+        "rc20-install/suite-reviewed-stop-r1.log",
+        "rc20-install/suite-upgrade-r3.log"
+      ],
+      "reviews": [
+        "rc20-install/SUITE_COMPATIBILITY_REVIEW.json",
+        "rc20-review/BROWSER_CONNECTION_ATTEMPT.json",
+        "rc20-review/INDEPENDENT_REVIEW.json",
+        "rc20-review/POST_REGRESSION_DIAGNOSTICS.json",
+        "rc20-review/RC19_INHERITED_SCOPE.json"
+      ]
+    },
+    "excluded": [
+      "Repository clones and source snapshots (selected SHA-256 manifests are included)",
+      "Virtual environments, node_modules, toolchains, sysroots, packages and models",
+      "Databases, journals, locks, workspace files and generated bulk fixtures",
+      "Artwork, images, screenshots, built applications and other binary artifacts",
+      "Private Library identifiers, URLs, upload helpers and download receipts",
+      "All files outside the explicit list, including previous-phase raw results"
+    ]
+  },
+  "transformations": [],
+  "archives": [
+    {
+      "path": "install.tar.gz",
+      "bytes": 236259,
+      "sha256": "44af53b592c8b15350e58ea9a326a84bcd99f978d3d6c935cb1e22b738298c0a",
+      "member_count": 82,
+      "members": [
+        {
+          "path": "rc20-install/PACKAGE_SOURCE_EQUIVALENCE.json",
+          "bytes": 616,
+          "sha256": "af7e7ac0cf8fac507bd6b5169f48fc6ed705db0db08d13a92cbdf0f29b0b56fe"
+        },
+        {
+          "path": "rc20-install/SUITE_ATTEMPTS.json",
+          "bytes": 1207,
+          "sha256": "a187db90529fcfe32e082ee9f366a7c294e65ccb62c32aa586435ac3b8107df0"
+        },
+        {
+          "path": "rc20-install/SUITE_FINAL_R2.json",
+          "bytes": 691,
+          "sha256": "033cfba9f5c423aca63a99bfc6752c11ab4e028eddbc04ebb93db2196546a24d"
+        },
+        {
+          "path": "rc20-install/SUITE_FINAL_R3.json",
+          "bytes": 1077,
+          "sha256": "0a17a1a983852eaa7b594c61c225b6141b11ab5f26fb966b125856937ea49fc4"
+        },
+        {
+          "path": "rc20-install/SUITE_FULL_R1.json",
+          "bytes": 856,
+          "sha256": "cec8e1f70a22aa25d2bcef53ee2b6206bce4a7d4a08d5578c1eea484611ddc58"
+        },
+        {
+          "path": "rc20-install/SUITE_NORMAL_STOP_R1.json",
+          "bytes": 414,
+          "sha256": "407d3d2cf5cb42d3da92163501f5242b736043ff2ad2257364b300f6716b397b"
+        },
+        {
+          "path": "rc20-install/SUITE_REVIEWED_STOP_R1.json",
+          "bytes": 407,
+          "sha256": "74b8ae74636324238564ac7a6ca89de478b06c5e414daf875ce89785f632c409"
+        },
+        {
+          "path": "rc20-install/SUITE_TEST_DEVELOPMENT.json",
+          "bytes": 1123,
+          "sha256": "a141a31edcabaa44eeedd3d69f4694f0b426988d1ce6da9f9552dd548f1a8628"
+        },
+        {
+          "path": "rc20-install/SUITE_UPGRADE_R3.json",
+          "bytes": 362,
+          "sha256": "27b941e3848e1374d243f0819ff1fb2539faad7f1e6badd989e8410574e52b30"
+        },
+        {
+          "path": "rc20-install/linux/EXTRACTED_SOURCE_CHECK.json",
+          "bytes": 7754,
+          "sha256": "e66cbaf9774d1ab2235e3651e600595d069c983d5b38af0312c863d62e58d727"
+        },
+        {
+          "path": "rc20-install/linux/FINAL_SOURCE.json",
+          "bytes": 575301,
+          "sha256": "b5f684b2788499b347978d6bcdd6fede70b25ccfd74da28f172409766a7428f8"
+        },
+        {
+          "path": "rc20-install/linux/FINAL_SOURCE_POSTRUN.json",
+          "bytes": 151,
+          "sha256": "400fa15098b6db40d231b281b73b0817380209b2c8925cd035eb1b6f0ac6949a"
+        },
+        {
+          "path": "rc20-install/linux/INSTALLED_HARNESS_SOURCE.json",
+          "bytes": 17294,
+          "sha256": "3da9cffeb24495313861043dd192bfbc51672f085a349272cf99d09661f4f064"
+        },
+        {
+          "path": "rc20-install/linux/INSTALL_FINAL_RESULTS.json",
+          "bytes": 2860,
+          "sha256": "207da4a8554b1952a360139fc26d280d3f005d1c7262ed85e3aefac6ec77c39a"
+        },
+        {
+          "path": "rc20-install/linux/LEGACY_WHEEL.json",
+          "bytes": 211,
+          "sha256": "ba27faed1c58f7ca62205e867fe177fe2826066c462a7a09c8354bcf00b13caf"
+        },
+        {
+          "path": "rc20-install/linux/PACKAGED_ROLLBACK.json",
+          "bytes": 1859,
+          "sha256": "53ece960ae31f101a39d0a9f93c5a57eeeadfae45f0726620af36541afcddac4"
+        },
+        {
+          "path": "rc20-install/linux/PACKAGED_ROLLBACK_RAW_SHA256.json",
+          "bytes": 211,
+          "sha256": "77f0519fa4e0c0167655762905f07681af7045b253a427e11f43a52daa768fc7"
+        },
+        {
+          "path": "rc20-install/linux/PACKAGED_RUNTIME_TESTS.json",
+          "bytes": 11778,
+          "sha256": "1b95dd38651dae93f0178d08b4f9e97799eb228f57424c4a8e50e8717264517d"
+        },
+        {
+          "path": "rc20-install/linux/PACKAGE_VERIFICATION.json",
+          "bytes": 4896,
+          "sha256": "d639931cc7e116de8e0e75622a417141d12a7a4e98b574874d1be242ee86ccba"
+        },
+        {
+          "path": "rc20-install/linux/PRODUCT_WHEELS.json",
+          "bytes": 481,
+          "sha256": "bb154c926a6c2e79bdafdb5368546033d024ba3467b294d096106ff6b173f53a"
+        },
+        {
+          "path": "rc20-install/linux/deb-extract.json",
+          "bytes": 569,
+          "sha256": "e0ccd3853a62a39f376669bc1de92710cf9f84fa35d8a1504e877134dea62495"
+        },
+        {
+          "path": "rc20-install/linux/deb-extract.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "rc20-install/linux/extracted-runtime-check.json",
+          "bytes": 498,
+          "sha256": "e5debde2d4613e4b53c7c50f99db691da0505aa2ce7da4ceb6006d3da6bbf670"
+        },
+        {
+          "path": "rc20-install/linux/extracted-runtime-check.log",
+          "bytes": 6938,
+          "sha256": "a77376b8f1aefa4adbc8a53f937075d775f6af06e17eb489a79cdf6bb9418115"
+        },
+        {
+          "path": "rc20-install/linux/legacy-core-wheel.json",
+          "bytes": 532,
+          "sha256": "6fa9128a831e65ad811615706e62964f0bc9ff962583888cb1bd9f4be1fa8685"
+        },
+        {
+          "path": "rc20-install/linux/legacy-core-wheel.log",
+          "bytes": 39412,
+          "sha256": "10fed01bafa2755fe3b0909b59cab2d4fee8f34f8127cd5d030a381712252ebf"
+        },
+        {
+          "path": "rc20-install/linux/legacy-worktree.json",
+          "bytes": 460,
+          "sha256": "d07f5781bdd8cc803c453f0408bf31e4db28f7855a8528ab716a2c10c98823a4"
+        },
+        {
+          "path": "rc20-install/linux/legacy-worktree.log",
+          "bytes": 118,
+          "sha256": "4ea4151a16e904e41fe8b078a9cf978b9c8bfdc0f6085ad542a8ccd605219ef1"
+        },
+        {
+          "path": "rc20-install/linux/native-build.json",
+          "bytes": 315,
+          "sha256": "33ca5cde191f8bf712e8cf53515f8d3135ce92033210717d4a7d116d8374a606"
+        },
+        {
+          "path": "rc20-install/linux/native-build.log",
+          "bytes": 17971,
+          "sha256": "3a5060550e183921d302dbcb63ee8359017736e90160f0c467688671ddbe5eec"
+        },
+        {
+          "path": "rc20-install/linux/npm-ci.json",
+          "bytes": 286,
+          "sha256": "f665456d93ca1262de137da1c64a9847d66f7ecd6dd0080a2d782a883287b172"
+        },
+        {
+          "path": "rc20-install/linux/npm-ci.log",
+          "bytes": 202,
+          "sha256": "21a35f515fdfb861c0afb4d7947a393adb2a1d9634ce12ca157b5f45f3b73b66"
+        },
+        {
+          "path": "rc20-install/linux/offline-release/offline-check.json",
+          "bytes": 224,
+          "sha256": "d0465a4e60f92728d558cb10d5e8cd2056b0ae5d9995ea32c37cf30e3126bd38"
+        },
+        {
+          "path": "rc20-install/linux/packaged-rollback-conversion.log",
+          "bytes": 318,
+          "sha256": "cae18c5e5932d51c539a7dfc2fe4511b9e99bfb37e5a23b9997010c572be6259"
+        },
+        {
+          "path": "rc20-install/linux/packaged-rollback-fixture.py",
+          "bytes": 4109,
+          "sha256": "ab13537ceab8844fda895125c925e3e1464b0f2f6249d76867f271c7eb2d6f67"
+        },
+        {
+          "path": "rc20-install/linux/packaged-runtime-tests.json",
+          "bytes": 539,
+          "sha256": "03f590902edfe07aed8450f0fd30adbdfa2e1542bfff7a08fccff403f175f71d"
+        },
+        {
+          "path": "rc20-install/linux/packaged-runtime-tests.log",
+          "bytes": 5585,
+          "sha256": "98fc721a9f2137382d6ee46e177cdcc2adfad44b493809b163ada5aaed22cf7e"
+        },
+        {
+          "path": "rc20-install/linux/prepare.json",
+          "bytes": 871,
+          "sha256": "5a152232a6b44dbd03ddb32e8fe50dfaf6f694cd684c188b15976f390da4e8a3"
+        },
+        {
+          "path": "rc20-install/linux/prepare.log",
+          "bytes": 11936,
+          "sha256": "98828cc7a6e3c9cc75f4a0d57869808b748710f313544b8f152890576b4f58bf"
+        },
+        {
+          "path": "rc20-install/linux/roundtrip-candidate-create.json",
+          "bytes": 651,
+          "sha256": "6eeb88fb247f1da8af218b43580c70441acb45bc7cb50d4b5b23366ba2ff278f"
+        },
+        {
+          "path": "rc20-install/linux/roundtrip-candidate-create.log",
+          "bytes": 831,
+          "sha256": "3cebc257b1f2a72c77a21502973d27d381ecf6ed73dd660fd2acb843eac4abb6"
+        },
+        {
+          "path": "rc20-install/linux/roundtrip-downgrade-plan.json",
+          "bytes": 970,
+          "sha256": "8016772ffb436e5a2d26768e25053315a5cb780da546a765c96fdf01604f6028"
+        },
+        {
+          "path": "rc20-install/linux/roundtrip-downgrade-plan.log",
+          "bytes": 35,
+          "sha256": "b275c4cf8e92600c593244cab64e2fdd06efe50ec641cf25a99a80f29b9de786"
+        },
+        {
+          "path": "rc20-install/linux/roundtrip-r2-candidate-create.json",
+          "bytes": 470,
+          "sha256": "af6df28f248147252c33051ef201254bdf0d619df6b70ce6f037e6295770bdab"
+        },
+        {
+          "path": "rc20-install/linux/roundtrip-r2-candidate-create.log",
+          "bytes": 785,
+          "sha256": "76280d7108e4890803d6e8a0f7aaa69508409e0478a9bce388b47a24f3e4b553"
+        },
+        {
+          "path": "rc20-install/linux/roundtrip-r2-candidate-reopen.json",
+          "bytes": 470,
+          "sha256": "7b14a28f13476514a694889f75a6dd5b3fc834336ea0ac9301fd1c44445720dc"
+        },
+        {
+          "path": "rc20-install/linux/roundtrip-r2-candidate-reopen.log",
+          "bytes": 1329,
+          "sha256": "08396df0b2d851c8b22fa81ef1ad3fb0580f605a8ebcccdff98470c0f8fe9d6d"
+        },
+        {
+          "path": "rc20-install/linux/roundtrip-r2-downgrade-execute.json",
+          "bytes": 642,
+          "sha256": "30f799a8f69cfdae693205f3f5f682a764a55e1d4517544eef0c7dae17a6482e"
+        },
+        {
+          "path": "rc20-install/linux/roundtrip-r2-downgrade-execute.log",
+          "bytes": 818,
+          "sha256": "e0c558291b239e7e366194ef92fb32d9f6b2458f8a11a2b32d25bb4082d9bf8c"
+        },
+        {
+          "path": "rc20-install/linux/roundtrip-r2-downgrade-plan.json",
+          "bytes": 835,
+          "sha256": "79f0d5d817a716ccff53b58f730da83d9dd56265e10a12ad8a1a40591fd8e162"
+        },
+        {
+          "path": "rc20-install/linux/roundtrip-r2-downgrade-plan.log",
+          "bytes": 3971,
+          "sha256": "45442ae5d243a0835f5be597d2c92f7adcf073b0718d4a4fd7672c2cef0670db"
+        },
+        {
+          "path": "rc20-install/linux/roundtrip-r2-rc18-write.json",
+          "bytes": 458,
+          "sha256": "fb7be838557bf29ff8ab3bb70991d9296050c6ed6a78957ddef4948033440c12"
+        },
+        {
+          "path": "rc20-install/linux/roundtrip-r2-rc18-write.log",
+          "bytes": 1187,
+          "sha256": "411facf1212ca580c387b38b89815d9523f4c291812b447bb814b92f5cce07e1"
+        },
+        {
+          "path": "rc20-install/linux/roundtrip-r2-reupgrade-execute.json",
+          "bytes": 642,
+          "sha256": "4d7ad6b4a1259d46949f1efffd50fa8fdf797dcacbe31109aa901d1836b53f4d"
+        },
+        {
+          "path": "rc20-install/linux/roundtrip-r2-reupgrade-execute.log",
+          "bytes": 730,
+          "sha256": "6858cb8a3b9b82812a2a365fdb9663d724b3bcf2f868349e4ba4fcd64592ce35"
+        },
+        {
+          "path": "rc20-install/linux/roundtrip-r2-reupgrade-plan.json",
+          "bytes": 835,
+          "sha256": "3fa48055553a40b55f8e873f46fb681cf48c4d5a1e951bbf51d8ebdf449b2a3f"
+        },
+        {
+          "path": "rc20-install/linux/roundtrip-r2-reupgrade-plan.log",
+          "bytes": 3961,
+          "sha256": "10b54b7afca890b821d650a0a79b573b4f5710cc2d6caab1a55b2fc19aa1f579"
+        },
+        {
+          "path": "rc20-install/linux/run_acceptance.py",
+          "bytes": 10412,
+          "sha256": "837e24ad9b47e1342876890b453f5dade125c74bed67ecbb234f9e18027e37a5"
+        },
+        {
+          "path": "rc20-install/linux/run_packaged_rollback-r1.py",
+          "bytes": 6854,
+          "sha256": "646bcd7e80833deb225ec7877384228d258cd8aa2751237a7e8ce61e32e05ad1"
+        },
+        {
+          "path": "rc20-install/linux/run_packaged_rollback.py",
+          "bytes": 7108,
+          "sha256": "ae871870393b49bf651c37e012c95939b94dd36c0b0fc75c9f9f677a03593249"
+        },
+        {
+          "path": "rc20-install/linux/rust-core-recovery.json",
+          "bytes": 555,
+          "sha256": "8a9887cdd69818309160e0329e6ee1b1077e73fb11239b4ace4433f13d86a785"
+        },
+        {
+          "path": "rc20-install/linux/rust-core-recovery.log",
+          "bytes": 666,
+          "sha256": "533c21b23b2be5ed4009d1aeb5a35b576c80a8d85a3b5f3b7b45c1e95b1ef0f3"
+        },
+        {
+          "path": "rc20-install/linux/rust-default.json",
+          "bytes": 414,
+          "sha256": "239b1a0f5eca33d8331588e761da93310e8e05aecdc346cb951eac6cbd0ab915"
+        },
+        {
+          "path": "rc20-install/linux/rust-default.log",
+          "bytes": 5812,
+          "sha256": "e19d42db4ac7cef301245e5e666936960756599e34777eb85a9fe340c8872b5f"
+        },
+        {
+          "path": "rc20-install/linux/rust-offline-release.json",
+          "bytes": 499,
+          "sha256": "2b0fe71b5c9cad2f5978c349a5d9ee8e1ccb68f64bb5837d4956db3813f133e3"
+        },
+        {
+          "path": "rc20-install/linux/rust-offline-release.log",
+          "bytes": 439,
+          "sha256": "dff101a381f1673077b71bed121d4ece4111faf3cba93866cad7f646041fb8d0"
+        },
+        {
+          "path": "rc20-install/linux/wheel-channels.json",
+          "bytes": 505,
+          "sha256": "b12e30696da631c23fff0be0531269ff352a9addaed70fb1fb746caaa74cc1b5"
+        },
+        {
+          "path": "rc20-install/linux/wheel-channels.log",
+          "bytes": 7459,
+          "sha256": "cfd09fbe75c10fb11b7363193bc8b2f8d4e6f36f116de5e2e66df0c307c0ac96"
+        },
+        {
+          "path": "rc20-install/linux/wheel-companion.json",
+          "bytes": 524,
+          "sha256": "66dcd5ee2b2a82d2ac182e9af6e8e4e576c0009eeb351018fa2a57884652d89e"
+        },
+        {
+          "path": "rc20-install/linux/wheel-companion.log",
+          "bytes": 28049,
+          "sha256": "a4f46eee7275f54f33df2036957b406a3ca909c12b1c5192e044b0e5ee7d8c96"
+        },
+        {
+          "path": "rc20-install/linux/wheel-core.json",
+          "bytes": 513,
+          "sha256": "feae3dd16f6ef67f0c08a0fdfc75968ddd840fa644ae981ec0b7b7a1ab215b57"
+        },
+        {
+          "path": "rc20-install/linux/wheel-core.log",
+          "bytes": 39750,
+          "sha256": "3c3d800d108b840a10c8ec88bde2e61d3128473d8bf69bfb17ce547ee1f6de19"
+        },
+        {
+          "path": "rc20-install/linux/wheel-suite.json",
+          "bytes": 517,
+          "sha256": "f6f0f1d3b5b391e5fbc94b083c8d62a6e31cb775ed938e1906ce3bd205eb1b16"
+        },
+        {
+          "path": "rc20-install/linux/wheel-suite.log",
+          "bytes": 8117,
+          "sha256": "8f9a54ced4b52783620d99adc9e365434426def4291db8d1cb9be1b98c4233bb"
+        },
+        {
+          "path": "rc20-install/run_suite.py",
+          "bytes": 1938,
+          "sha256": "b91cb1d7df86a0be0488e4ef320af67c85776b7041c0952699cbcf4a4fe885b9"
+        },
+        {
+          "path": "rc20-install/suite-full-final-r2.log",
+          "bytes": 31287,
+          "sha256": "14cd7126b9933c2224a4c0f3e35ab043b4fe286f3f3eb5653ddbd1a336948bd1"
+        },
+        {
+          "path": "rc20-install/suite-full-final-r3.log",
+          "bytes": 25358,
+          "sha256": "1f2fde6b9a2f35c1e15f7d45bd82b5ca4bf42b13f61b939208c96ab22833be6a"
+        },
+        {
+          "path": "rc20-install/suite-full-final.log",
+          "bytes": 16263,
+          "sha256": "351c783b393927d466fce48de48c4bd8d046a7fbbbb55a163b517dbe2e0e98dd"
+        },
+        {
+          "path": "rc20-install/suite-full-r1.log",
+          "bytes": 25166,
+          "sha256": "1d73bdcbc772ee585765c9914ba2c38ecc5e606b73599b980189847cabfdb917"
+        },
+        {
+          "path": "rc20-install/suite-normal-stop-r1.log",
+          "bytes": 318,
+          "sha256": "b7cea7b74ef7722275df86202cee3f23692a9d9af84d6690cfdbc050b09aab86"
+        },
+        {
+          "path": "rc20-install/suite-reviewed-stop-r1.log",
+          "bytes": 289,
+          "sha256": "6147cc64ab8574c01bc8dc273de8ac04d0cc3e55e7ab7639e753229f06245d3c"
+        },
+        {
+          "path": "rc20-install/suite-upgrade-r3.log",
+          "bytes": 3526,
+          "sha256": "ccedbf52bafc081722d20fed1614e4e2d67c288edf3cef2e8853eff3bc4b6405"
+        }
+      ]
+    },
+    {
+      "path": "provenance.tar.gz",
+      "bytes": 40614,
+      "sha256": "3270c49d53481be20fb6944ef8b20def6dad989c5394076f5109b2ea990c463f",
+      "member_count": 8,
+      "members": [
+        {
+          "path": "PUBLIC_RC20_FIXTURE_MAP.json",
+          "bytes": 624,
+          "sha256": "18124968309173b5097f9a9e82bb796158fa64c646eb1bc5d9772cdae10411c2"
+        },
+        {
+          "path": "PUBLIC_RC20_SOURCE_MAP.json",
+          "bytes": 305,
+          "sha256": "d7dcfa20a10d1815e080b0cd8a1e1ad077ceaa1666cdf26255171a6de37aac6f"
+        },
+        {
+          "path": "PUBLIC_RC20_TEST_MAP.json",
+          "bytes": 534,
+          "sha256": "ae994d2a9b92ce071e36987c3a2d884376f9f470e963b4078f014a5bee5e4d8d"
+        },
+        {
+          "path": "RC20_EVIDENCE_SELECTION.json",
+          "bytes": 8562,
+          "sha256": "f7313d0c6364552590a8d6709b14313653fe2e49a18fc91537f14a2b4311741c"
+        },
+        {
+          "path": "RC20_PRODUCT_FREEZE.json",
+          "bytes": 1038,
+          "sha256": "3637fc27e773f142f201a4168e08c6acc3415884169ecd54ca518e17eda503c8"
+        },
+        {
+          "path": "RC20_SOURCE_PUBLISH.json",
+          "bytes": 5053,
+          "sha256": "95301adfec6d107329bdbbb8fa495dd3c832b21bb5aee1094d67fc24526aa7e7"
+        },
+        {
+          "path": "rc20-runtime/FINAL_SOURCE_BEFORE.json",
+          "bytes": 69906,
+          "sha256": "70ded693a7ef774b74994b8ae01ca1a66c83a8af85ade8356fbab714e2e9799c"
+        },
+        {
+          "path": "stage_rc20_evidence.py",
+          "bytes": 12303,
+          "sha256": "ea6a86be5c67e0b8caa2d516f5a9d7906f5168551b2bf9540c22e571670d2d18"
+        }
+      ]
+    },
+    {
+      "path": "reviews.tar.gz",
+      "bytes": 6259,
+      "sha256": "44601e0971b29fc66807c00f3dee00994f40b92ca386d9ba60c9c01ae1647709",
+      "member_count": 5,
+      "members": [
+        {
+          "path": "rc20-install/SUITE_COMPATIBILITY_REVIEW.json",
+          "bytes": 2975,
+          "sha256": "5fb0b2e9a31cc4f395fbc9b14a03f379ba47045ff3ea0af063982348f61232a4"
+        },
+        {
+          "path": "rc20-review/BROWSER_CONNECTION_ATTEMPT.json",
+          "bytes": 620,
+          "sha256": "c1e3f21e9fcfc7a551a5b5cf2766cbf94d178825e88dac30e088e65976857d0d"
+        },
+        {
+          "path": "rc20-review/INDEPENDENT_REVIEW.json",
+          "bytes": 5453,
+          "sha256": "cfcb22a02a2024ca2a7aadacc3112ee78c4c331bc10db51478fd8f780f4c8890"
+        },
+        {
+          "path": "rc20-review/POST_REGRESSION_DIAGNOSTICS.json",
+          "bytes": 2612,
+          "sha256": "b09656e03c27ab00a7079d44544659c65c012b79324680d2b05fc0bc58f19eb9"
+        },
+        {
+          "path": "rc20-review/RC19_INHERITED_SCOPE.json",
+          "bytes": 2085,
+          "sha256": "1bcc9c440f5c69a21a47eb8d5a7d5b3235a1f1959d068d48d87c82e15ac4e424"
+        }
+      ]
+    },
+    {
+      "path": "runtime.tar.gz",
+      "bytes": 575835,
+      "sha256": "af3c4a6a326f55dc9ce4d71c92995be1e5b8225e06f282b6cc97d7906719a8c7",
+      "member_count": 78,
+      "members": [
+        {
+          "path": "rc20-runtime/FINAL_REGRESSION_RESULTS.json",
+          "bytes": 10957,
+          "sha256": "f8773295155686b51c31ea567fd9043f43def3b77404791e072949c18b2d587f"
+        },
+        {
+          "path": "rc20-runtime/RECEIPT_SHA256.json",
+          "bytes": 2644,
+          "sha256": "7b4e2552303376451649940cdac0a3cf2079458d61f9b3e0670af41c50d692de"
+        },
+        {
+          "path": "rc20-runtime/RESULTS.json",
+          "bytes": 5512,
+          "sha256": "74fd7ce63723dd31f90e12a62db853f866e78e4a55cfbdde368fe23c8a2e4c72"
+        },
+        {
+          "path": "rc20-runtime/blocks-tests-r1.log",
+          "bytes": 1396,
+          "sha256": "a5df66baa01f10584bc2695a2f78dc8a9de9f1ee4bda6b55b2accdcf796d9a7b"
+        },
+        {
+          "path": "rc20-runtime/check_crash_compatibility.py",
+          "bytes": 4315,
+          "sha256": "a7d5df0dc9bb0aca249c841710afccade9e32b2e8d5ec22978f2f79200bc9695"
+        },
+        {
+          "path": "rc20-runtime/check_http_cleanup_setup_failure.exit",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "rc20-runtime/check_http_cleanup_setup_failure.log",
+          "bytes": 247,
+          "sha256": "88619dcfec81b6398d8790308b72f9dcb62d4a5750151e823f727f5f1c6de77f"
+        },
+        {
+          "path": "rc20-runtime/check_http_cleanup_setup_failure.py",
+          "bytes": 1420,
+          "sha256": "ee43d20037bcd279845618136544510df1e47c125b94e4d4cf9e8f229fc23736"
+        },
+        {
+          "path": "rc20-runtime/check_rollback.py",
+          "bytes": 3892,
+          "sha256": "f57ebbb1787ec3fd37afe72d01dd79c29e64795c407c8530453c0d91bb35e0bd"
+        },
+        {
+          "path": "rc20-runtime/companion-full-final-r2.exit",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "rc20-runtime/companion-full-final-r2/MODULE_ORIGINS.json",
+          "bytes": 36843,
+          "sha256": "2dea687a0eac542ea58e07cb8d206786e3bc667151d4333a2fb634e864816bff"
+        },
+        {
+          "path": "rc20-runtime/companion-full-final-r2/RESULTS.json",
+          "bytes": 8877,
+          "sha256": "a49b738f831fb37e0a063f857931bdde9c43a8078b1d147aaa441b470a4145c8"
+        },
+        {
+          "path": "rc20-runtime/companion-full-final-r2/runner.py",
+          "bytes": 3110,
+          "sha256": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533"
+        },
+        {
+          "path": "rc20-runtime/companion-full-final-r2/source-after.json",
+          "bytes": 89957,
+          "sha256": "b52dffae92b1bbfe91f12376fcaae619e9a744fd9f6a6344c0c2bcb5dbf1641f"
+        },
+        {
+          "path": "rc20-runtime/companion-full-final-r2/source-before.json",
+          "bytes": 89957,
+          "sha256": "b52dffae92b1bbfe91f12376fcaae619e9a744fd9f6a6344c0c2bcb5dbf1641f"
+        },
+        {
+          "path": "rc20-runtime/companion-full-final-r2/tests.log",
+          "bytes": 119653,
+          "sha256": "2af83c3985342862c6516970a307b8a1d9720420b56a837ef285d21bceaa4dd5"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r2-focused.exit",
+          "bytes": 2,
+          "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r2-focused.log",
+          "bytes": 1472,
+          "sha256": "d42b9bde14d236a28f67afe28fadea85e1c864959868a921a23e12d94024925c"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r2.exit",
+          "bytes": 2,
+          "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r2.launch.log",
+          "bytes": 10035,
+          "sha256": "dba6ce6d18eacb21ee74e477e6ce25506a88a663f73e5f88303e440401bdc3d2"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r2/MODULE_ORIGINS.json",
+          "bytes": 31688,
+          "sha256": "c1e180d26a42154a23879a7df1227bf65dd53d0b4be022fa57f79739643e0955"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r2/RESULTS.json",
+          "bytes": 30036,
+          "sha256": "a3336cde8f1c85068732af1b9fcfe77cdb8c97073d37f00de603b1997715498a"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r2/runner.py",
+          "bytes": 3110,
+          "sha256": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r2/source-after.json",
+          "bytes": 89957,
+          "sha256": "b52dffae92b1bbfe91f12376fcaae619e9a744fd9f6a6344c0c2bcb5dbf1641f"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r2/source-before.json",
+          "bytes": 89957,
+          "sha256": "b52dffae92b1bbfe91f12376fcaae619e9a744fd9f6a6344c0c2bcb5dbf1641f"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r2/tests.log",
+          "bytes": 293852,
+          "sha256": "57e131f440cb1ffdc17377ee30e54cdf546eb4313128d2b1c6b0fd26615b2e1f"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r3-focused.exit",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r3-focused.log",
+          "bytes": 409,
+          "sha256": "545e55f8c537423e47ba88c95b7c852741bc2635727c249c2a705139a8064397"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r3.exit",
+          "bytes": 2,
+          "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r3.launch.log",
+          "bytes": 4590,
+          "sha256": "d02b3d765c63c03cf7e9366c5911b183e7018518c3c73c48cb3c38cc8efcac66"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r3/MODULE_ORIGINS.json",
+          "bytes": 34320,
+          "sha256": "2587ec35827f4d845bc4f56d582b1fddbd6cc9eb639496e02c3b3e4001ea8d6c"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r3/RESULTS.json",
+          "bytes": 27881,
+          "sha256": "ca33b5be167df6421cd17f4bf5bb737e7089b624ba236cb492e71c34f4e10dba"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r3/runner.py",
+          "bytes": 3110,
+          "sha256": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r3/source-after.json",
+          "bytes": 89957,
+          "sha256": "8f85231d0152348b6ddfd2ad391566ce817951177397d4bfd5c08f47eece8a53"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r3/source-before.json",
+          "bytes": 89957,
+          "sha256": "8f85231d0152348b6ddfd2ad391566ce817951177397d4bfd5c08f47eece8a53"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r3/tests.log",
+          "bytes": 291541,
+          "sha256": "494ef7e21db6adb0ffcb11c5431062b035bcc9faefdc9aff5a03b2c70b5c9071"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r4.exit",
+          "bytes": 2,
+          "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r4.launch.log",
+          "bytes": 4582,
+          "sha256": "fb9b5200d9baaf5c97d7ed721829f4403ae6dd7826faadce223e349e9ef8c0c6"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r4/MODULE_ORIGINS.json",
+          "bytes": 34320,
+          "sha256": "2587ec35827f4d845bc4f56d582b1fddbd6cc9eb639496e02c3b3e4001ea8d6c"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r4/RESULTS.json",
+          "bytes": 27695,
+          "sha256": "40c2dd0f792b1126bae12f06c33d3c73f4fcc886959c35526899d910c75efaa7"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r4/runner.py",
+          "bytes": 3110,
+          "sha256": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r4/source-after.json",
+          "bytes": 89957,
+          "sha256": "8f85231d0152348b6ddfd2ad391566ce817951177397d4bfd5c08f47eece8a53"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r4/source-before.json",
+          "bytes": 89957,
+          "sha256": "8f85231d0152348b6ddfd2ad391566ce817951177397d4bfd5c08f47eece8a53"
+        },
+        {
+          "path": "rc20-runtime/core-full-final-r4/tests.log",
+          "bytes": 291364,
+          "sha256": "0988704effd39068ed7683bfed9ed1de8ee891edc93a619ac1e9b1682f5f6eac"
+        },
+        {
+          "path": "rc20-runtime/core-full-final.log",
+          "bytes": 56721,
+          "sha256": "c58680c3162766b175e42b06ae48e90263ec2dfeb88f909cd715db00b6b1158b"
+        },
+        {
+          "path": "rc20-runtime/crash-case/old-refuses.json",
+          "bytes": 180,
+          "sha256": "e3606493ecb7a9c0c515e813b5dae982f1373bfb167fcf59e4fe0c5e98d04871"
+        },
+        {
+          "path": "rc20-runtime/crash-case/old-unknown.json",
+          "bytes": 943,
+          "sha256": "f0b16fdac7c70eb73cd45a210b97ae02af98f5593fb22d673964df04bcdd7154"
+        },
+        {
+          "path": "rc20-runtime/crash-case/original.json",
+          "bytes": 1151,
+          "sha256": "ce690d45af7b6719f8cbd5aaf5bc410d27260f7df8bd71a8da5e2931aa6728ff"
+        },
+        {
+          "path": "rc20-runtime/crash-case/unreceipted-write.json",
+          "bytes": 296,
+          "sha256": "fe9fd5a0bffea747b71c22b1f1a76dc28e6c7d0ae1b5e67bc15f9c89bef8762d"
+        },
+        {
+          "path": "rc20-runtime/crash-materialize.log",
+          "bytes": 318,
+          "sha256": "2923c486df6a6341965f149a4f41245196185dd9fb450dd1e88cd584c4fc057f"
+        },
+        {
+          "path": "rc20-runtime/crash-old-refusal.log",
+          "bytes": 171,
+          "sha256": "8cadb471bcfc30b30af4020cec953702ded13e4c0f66735fbdaac047dcc39d78"
+        },
+        {
+          "path": "rc20-runtime/crash-old-unknown-r1.log",
+          "bytes": 907,
+          "sha256": "74e4423b6459ea3117e251d0f0eb5e5f561c959e1bac35d9f7ca150cb74aac91"
+        },
+        {
+          "path": "rc20-runtime/crash-old-unknown-r2.log",
+          "bytes": 760,
+          "sha256": "290c202e10016574f58e849481bd4c9a83f46218aa53d5f20c24e25fd7268b82"
+        },
+        {
+          "path": "rc20-runtime/crash-write.log",
+          "bytes": 265,
+          "sha256": "6248169aab58327a1227c8211e97bd3e933defddf257e94058fdbc34eac5fdcc"
+        },
+        {
+          "path": "rc20-runtime/http-cleanup-module.exit",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "rc20-runtime/http-cleanup-module.log",
+          "bytes": 665,
+          "sha256": "1968f1b885fac2c5ac7c7fca32d228a8a68a4a61317bb29dd9295abbf17e9d2d"
+        },
+        {
+          "path": "rc20-runtime/incremental-r1.log",
+          "bytes": 11481,
+          "sha256": "c82897749163e395772d366335b300677d85ffaa5fd0a8b07b3de8f365bb7a04"
+        },
+        {
+          "path": "rc20-runtime/incremental-r2.log",
+          "bytes": 10536,
+          "sha256": "2a82325c608f9feab3f20e3245fcc9a6df0f1aa2b027d69a7de24f4cf69bcde2"
+        },
+        {
+          "path": "rc20-runtime/incremental-r3.log",
+          "bytes": 22603,
+          "sha256": "726a285cf052b1c2b95d9bc50ea104bacd02165362b11bb90cc304035e1441a3"
+        },
+        {
+          "path": "rc20-runtime/long-turn-case-r1/measurements.json",
+          "bytes": 12352,
+          "sha256": "51a5e38ff62761f2b1b53e7d347c69c883ec807fbe8d7764cc942e28a3ff9d4c"
+        },
+        {
+          "path": "rc20-runtime/long-turn-case-r2/measurements.json",
+          "bytes": 12605,
+          "sha256": "c23860bd233cb04af03ae3090128f74cc4683c17117cc699de3b2e007683359e"
+        },
+        {
+          "path": "rc20-runtime/long-turn-r1.log",
+          "bytes": 9225,
+          "sha256": "b9f5493aec2954223ebe530c0ff60bf205ea0625e8fb30b6a3acde0a448dcfd8"
+        },
+        {
+          "path": "rc20-runtime/long-turn-r2.log",
+          "bytes": 9442,
+          "sha256": "114ef7ea703fc18e22ae08fa083a6ea24aa1b69a8994c1ec479a2db32490fef3"
+        },
+        {
+          "path": "rc20-runtime/measure_long_turn.py",
+          "bytes": 2889,
+          "sha256": "7d5e1e4032ed1eb098396a144217a3c447cda4aacbe0d3d9d026d73474ba8ea5"
+        },
+        {
+          "path": "rc20-runtime/measure_long_turn_final.py",
+          "bytes": 3313,
+          "sha256": "55fb6f12121805d779b01029d09f307fe36bc1e295c651377b308273e29a5207"
+        },
+        {
+          "path": "rc20-runtime/reproduce_timer_after_clean_suspend-r2.exit",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "rc20-runtime/reproduce_timer_after_clean_suspend-r2.log",
+          "bytes": 2241,
+          "sha256": "4d3334676b02547d21962e290633f3f515ffc0d75ce532e0807f8cc79a67b762"
+        },
+        {
+          "path": "rc20-runtime/reproduce_timer_after_clean_suspend.exit",
+          "bytes": 2,
+          "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+        },
+        {
+          "path": "rc20-runtime/reproduce_timer_after_clean_suspend.log",
+          "bytes": 435,
+          "sha256": "49fb824cb37c4c7bfa81f08977886e7afa43472356df311c2b13479ae53c9510"
+        },
+        {
+          "path": "rc20-runtime/reproduce_timer_after_clean_suspend.py",
+          "bytes": 5282,
+          "sha256": "3fb6690a7b8bc0be9c02afb44c7b4fb5c471ec13329480f0b23ffa2a8bb95101"
+        },
+        {
+          "path": "rc20-runtime/rollback-candidate-create.log",
+          "bytes": 753,
+          "sha256": "4aefa69336e3212717c8fae9ba82ae7ae773fc4c2a0e755e0abc8bbf52ba93ce"
+        },
+        {
+          "path": "rc20-runtime/rollback-candidate-reopen.log",
+          "bytes": 1297,
+          "sha256": "a82ba017a417b927a2c058ca9d7e399a7af65e61ce22b3c3bb081e8bb3e93435"
+        },
+        {
+          "path": "rc20-runtime/rollback-case/candidate-create.json",
+          "bytes": 810,
+          "sha256": "3bcb5d206bad4bc27a574a0a8a83edd9344a21d2474b5dc9fb7aa051c07c1d37"
+        },
+        {
+          "path": "rc20-runtime/rollback-case/candidate-reopen.json",
+          "bytes": 1386,
+          "sha256": "6ff9d8f33cf118fe64a741e78f0d2b44321a304a332d14a26791f8b90df5a259"
+        },
+        {
+          "path": "rc20-runtime/rollback-case/rc18-write.json",
+          "bytes": 1260,
+          "sha256": "4fd004b70731b5109750644aa3dff311002672b124507d180416347874267e69"
+        },
+        {
+          "path": "rc20-runtime/rollback-case/tasks.json",
+          "bytes": 41015,
+          "sha256": "29ca9474bfff75828a7b0d867b29bec7a6806087741358347174c379f6a017f9"
+        },
+        {
+          "path": "rc20-runtime/rollback-rc18-write.log",
+          "bytes": 1179,
+          "sha256": "1ee6e07be1dfd42f5e4f6f3786ada321a5ee30b4d8529e34c31c45ae7f80e15e"
+        },
+        {
+          "path": "rc20-runtime/run_with_loaded_origins.py",
+          "bytes": 2231,
+          "sha256": "042533810f408150fc1b806e8ff3ff3a9e19a0dde4b5c22fcf34f82e1c906a4f"
+        }
+      ]
+    }
+  ],
+  "standalone": [
+    {
+      "path": "PRODUCT_FREEZE.json",
+      "bytes": 1038,
+      "sha256": "3637fc27e773f142f201a4168e08c6acc3415884169ecd54ca518e17eda503c8",
+      "source": "RC20_PRODUCT_FREEZE.json"
+    },
+    {
+      "path": "PUBLIC_SOURCE_MAP.json",
+      "bytes": 305,
+      "sha256": "d7dcfa20a10d1815e080b0cd8a1e1ad077ceaa1666cdf26255171a6de37aac6f",
+      "source": "PUBLIC_RC20_SOURCE_MAP.json"
+    },
+    {
+      "path": "PUBLIC_TEST_SOURCE_MAP.json",
+      "bytes": 534,
+      "sha256": "ae994d2a9b92ce071e36987c3a2d884376f9f470e963b4078f014a5bee5e4d8d",
+      "source": "PUBLIC_RC20_TEST_MAP.json"
+    },
+    {
+      "path": "PUBLIC_FIXTURE_SOURCE_MAP.json",
+      "bytes": 624,
+      "sha256": "18124968309173b5097f9a9e82bb796158fa64c646eb1bc5d9772cdae10411c2",
+      "source": "PUBLIC_RC20_FIXTURE_MAP.json"
+    },
+    {
+      "path": "RUNTIME_RESULTS.json",
+      "bytes": 5512,
+      "sha256": "74fd7ce63723dd31f90e12a62db853f866e78e4a55cfbdde368fe23c8a2e4c72",
+      "source": "rc20-runtime/RESULTS.json"
+    },
+    {
+      "path": "COMPANION_FINAL_RESULTS.json",
+      "bytes": 8877,
+      "sha256": "a49b738f831fb37e0a063f857931bdde9c43a8078b1d147aaa441b470a4145c8",
+      "source": "rc20-runtime/companion-full-final-r2/RESULTS.json"
+    },
+    {
+      "path": "CORE_FINAL_R2_RESULTS.json",
+      "bytes": 30036,
+      "sha256": "a3336cde8f1c85068732af1b9fcfe77cdb8c97073d37f00de603b1997715498a",
+      "source": "rc20-runtime/core-full-final-r2/RESULTS.json"
+    },
+    {
+      "path": "CORE_FINAL_R4_RESULTS.json",
+      "bytes": 27695,
+      "sha256": "40c2dd0f792b1126bae12f06c33d3c73f4fcc886959c35526899d910c75efaa7",
+      "source": "rc20-runtime/core-full-final-r4/RESULTS.json"
+    },
+    {
+      "path": "FINAL_REGRESSION_RESULTS.json",
+      "bytes": 10957,
+      "sha256": "f8773295155686b51c31ea567fd9043f43def3b77404791e072949c18b2d587f",
+      "source": "rc20-runtime/FINAL_REGRESSION_RESULTS.json"
+    },
+    {
+      "path": "SUITE_FINAL_R3_RESULTS.json",
+      "bytes": 1077,
+      "sha256": "0a17a1a983852eaa7b594c61c225b6141b11ab5f26fb966b125856937ea49fc4",
+      "source": "rc20-install/SUITE_FINAL_R3.json"
+    },
+    {
+      "path": "LINUX_INSTALL_RESULTS.json",
+      "bytes": 2860,
+      "sha256": "207da4a8554b1952a360139fc26d280d3f005d1c7262ed85e3aefac6ec77c39a",
+      "source": "rc20-install/linux/INSTALL_FINAL_RESULTS.json"
+    },
+    {
+      "path": "LINUX_PACKAGE_VERIFICATION.json",
+      "bytes": 4896,
+      "sha256": "d639931cc7e116de8e0e75622a417141d12a7a4e98b574874d1be242ee86ccba",
+      "source": "rc20-install/linux/PACKAGE_VERIFICATION.json"
+    },
+    {
+      "path": "LINUX_PACKAGED_ROLLBACK.json",
+      "bytes": 1859,
+      "sha256": "53ece960ae31f101a39d0a9f93c5a57eeeadfae45f0726620af36541afcddac4",
+      "source": "rc20-install/linux/PACKAGED_ROLLBACK.json"
+    },
+    {
+      "path": "INDEPENDENT_REVIEW.json",
+      "bytes": 5453,
+      "sha256": "cfcb22a02a2024ca2a7aadacc3112ee78c4c331bc10db51478fd8f780f4c8890",
+      "source": "rc20-review/INDEPENDENT_REVIEW.json"
+    },
+    {
+      "path": "BROWSER_CONNECTION_ATTEMPT.json",
+      "bytes": 620,
+      "sha256": "c1e3f21e9fcfc7a551a5b5cf2766cbf94d178825e88dac30e088e65976857d0d",
+      "source": "rc20-review/BROWSER_CONNECTION_ATTEMPT.json"
+    },
+    {
+      "path": "POST_REGRESSION_DIAGNOSTICS.json",
+      "bytes": 2612,
+      "sha256": "b09656e03c27ab00a7079d44544659c65c012b79324680d2b05fc0bc58f19eb9",
+      "source": "rc20-review/POST_REGRESSION_DIAGNOSTICS.json"
+    },
+    {
+      "path": "LOG_SUMMARY.json",
+      "bytes": 20169,
+      "sha256": "42ce72d97822252bd7ed7ba215f1e8699dc008be26e1d4dc7c14405ae860349c",
+      "generated": true
+    },
+    {
+      "path": "SANITIZATION.json",
+      "bytes": 413,
+      "sha256": "3728eab78584fc8a1dd35ca5cd720afb7dd69d4e1657cfe1b5e9a9996dc3ab0d",
+      "generated": true
+    },
+    {
+      "path": "EVIDENCE_README.md",
+      "bytes": 1438,
+      "sha256": "5b9cc77b5d0480610fccdc0d29dc39e0c1023ee0ab5d10e792b6b6e20ff94400",
+      "generated": true
+    }
+  ]
+}

@@ -1,0 +1,267 @@
+{
+  "format": 1,
+  "public_transform": "Strip ANSI and replace workspace prefix with <WORKSPACE>; no test result changes. Gzip mtime is zero.",
+  "files": [
+    {
+      "original": "validation/polish-20261116/desktop/linux-native-r1.log",
+      "archive": "logs/initial-native-r1.log.gz",
+      "original_sha256": "cb8cd81bf84f90ca4a20946d8b0149919e2fd6e44fe4a5436beef1808bbf33a9",
+      "public_sha256": "58b2e51943b996e5ec3090976b22b04c1a2f4c0030d1c5a7a0865078e053ad3f",
+      "gzip_sha256": "a796d06ada729dda0512d4c216397f76ba2378095394dbab0f9f7cfe7c9523eb",
+      "original_bytes": 3997,
+      "public_bytes": 3917
+    },
+    {
+      "original": "validation/polish-20261116/desktop/linux-native-diagnostic-r1/run.log",
+      "archive": "logs/diagnostic-r1.log.gz",
+      "original_sha256": "b1516cef55d90e0e7a8e27ea9259413969067f52e987b6509821177cf83a179d",
+      "public_sha256": "17284708de6504f3698789d37ce645f2b811c2219d08060d94567b387e4666da",
+      "gzip_sha256": "b6c0f679c219c593f2182d61043126ce4a8b2af9b5b64992519db586d94c558f",
+      "original_bytes": 5367,
+      "public_bytes": 5287
+    },
+    {
+      "original": "validation/polish-20261116/desktop/linux-native-diagnostic-r2/run.log",
+      "archive": "logs/diagnostic-r2.log.gz",
+      "original_sha256": "f0b06f795f9d04cecba9abd4606cab70093be79b17595ee21c66edc4d32c15e9",
+      "public_sha256": "c8611ef349f9dfdf831c33185cae18c83e883c4bf50b51d489530a634ae76e37",
+      "gzip_sha256": "10a1d9163c82b6474d621b2f30f2d86d8b6a7f5af095f55db46bb6496be3ab9b",
+      "original_bytes": 8208,
+      "public_bytes": 8148
+    },
+    {
+      "original": "validation/polish-20261116/desktop/linux-native-diagnostic-r3/run.log",
+      "archive": "logs/diagnostic-r3.log.gz",
+      "original_sha256": "60953367426dbd63e7a64e3d69f2634443c2dce9a69ce1054287c1612aa601aa",
+      "public_sha256": "ef6e88f11b28be89d8c1918bb612697d0f15fffb227da5ad45563f027676a534",
+      "gzip_sha256": "66f8e3af702c394f399c6ea6d86d63f3387295ba8ef8d40921caf7868935782b",
+      "original_bytes": 8493,
+      "public_bytes": 8433
+    },
+    {
+      "original": "validation/polish-20261116/desktop/linux-native-candidate-r4/run.log",
+      "archive": "logs/snapshot-candidate-r4.log.gz",
+      "original_sha256": "7884b01314b95bade8f0f110caab001b224f1797df642662277431b6c71d80b2",
+      "public_sha256": "7884b01314b95bade8f0f110caab001b224f1797df642662277431b6c71d80b2",
+      "gzip_sha256": "b83bb92016ea786fc89352bd07741bd2e184e9cf129b8ec239d44cf877422aa9",
+      "original_bytes": 1517,
+      "public_bytes": 1517
+    },
+    {
+      "original": "validation/polish-20261116/desktop/linux-native-final-r5/run.log",
+      "archive": "logs/final-native-r5.log.gz",
+      "original_sha256": "5e697fc6c7dd5e9e62caa2a808cea6c06e97a69c1d96309e083f32ed567c5532",
+      "public_sha256": "5e697fc6c7dd5e9e62caa2a808cea6c06e97a69c1d96309e083f32ed567c5532",
+      "gzip_sha256": "940c5a6907726bf91627c2f17aae59436d0ea2beda0956b209d44978756fb50a",
+      "original_bytes": 1517,
+      "public_bytes": 1517
+    },
+    {
+      "original": "validation/polish-20261116/desktop/linux-native-final-r5/run.sh",
+      "archive": "logs/final-native-r5.sh.gz",
+      "original_sha256": "7489d3431627889a0e1d550344d55cd0505f156577cf7e67a0b9d79cd926f727",
+      "public_sha256": "f0daba7918918df8d109cfe76e109755dbf6e2a8a83dcd636a0906434d6b17f5",
+      "gzip_sha256": "b54d245d69cb611d731059e07c99281d3774c620b09419ebf015e0a7dede75ad",
+      "original_bytes": 708,
+      "public_bytes": 588
+    },
+    {
+      "original": "validation/polish-20261116/companion/final-full-r1/run.log",
+      "archive": "logs/companion-final-full-r1.log.gz",
+      "original_sha256": "54665ae42eff917cea430f359c95ab48720b76321adda042ccf02ef0154bdaf8",
+      "public_sha256": "54665ae42eff917cea430f359c95ab48720b76321adda042ccf02ef0154bdaf8",
+      "gzip_sha256": "cbedc9dfea15b460b083c7f90178ebaebb9bd4df4273bc5e09865560ed554c47",
+      "original_bytes": 123528,
+      "public_bytes": 123528
+    },
+    {
+      "original": "validation/polish-20261116/companion/final-full-r1/run.sh",
+      "archive": "logs/companion-final-full-r1.sh.gz",
+      "original_sha256": "a640864de86837f32096e83e646bafc31ba1fcb2ced382473acea9944ff1edcd",
+      "public_sha256": "e4ce70a6536393ad9cb3f7d6c1726608bcf926dbeacdd40f880e43e227aa191b",
+      "gzip_sha256": "22b94a40b0d4dea2c855581fdd7be6191813963555a43ed5ab299a52b031b5b2",
+      "original_bytes": 728,
+      "public_bytes": 608
+    },
+    {
+      "original": "validation/polish-20261116/companion/final-full-r1/summary.json",
+      "archive": "logs/companion-final-full-r1.summary.json.gz",
+      "original_sha256": "47e37a4760c41fd6ea9dfa53a48ba03b7a83e71a22ee3a060519f481d88caef4",
+      "public_sha256": "67b40702d4eb734d3e3ca618c94bf2ff690af1aac59b5f3fda9e7a209b560e9f",
+      "gzip_sha256": "a7a19073c990b6a34d0dcec5ac0655f80b190182adb635f66cf68e8c9b3083c6",
+      "original_bytes": 925,
+      "public_bytes": 885
+    },
+    {
+      "original": "validation/polish-20261116/desktop/linux-native-candidate-r4/candidate.patch",
+      "archive": "logs/snapshot-candidate.patch.gz",
+      "original_sha256": "5832d7a510dc1967329c50dedde9c3bab5741a415dbe582313cbc121fc957e3c",
+      "public_sha256": "5832d7a510dc1967329c50dedde9c3bab5741a415dbe582313cbc121fc957e3c",
+      "gzip_sha256": "9a065b71df0918aeff9b8f4ad2bdf2f59f68d992a35ff9d9fbc0aa29c21b7d9a",
+      "original_bytes": 4644,
+      "public_bytes": 4644
+    },
+    {
+      "original": "validation/polish-20261116/desktop/linux-native-candidate-r4/CANDIDATE_SHA256.json",
+      "archive": "logs/snapshot-candidate.sha256.json.gz",
+      "original_sha256": "9c585bd9cfc00a05b11669864691eb8ad46a55f4db3353ab944ce2c19fd19aa0",
+      "public_sha256": "9c585bd9cfc00a05b11669864691eb8ad46a55f4db3353ab944ce2c19fd19aa0",
+      "gzip_sha256": "c20f0faf6e464de43cd05b0fa0fe306af436fc849c1d19b946ed71e2e4a1d662",
+      "original_bytes": 925,
+      "public_bytes": 925
+    },
+    {
+      "original": "validation/polish-20261116/desktop/linux-native-candidate-r4/PRE_FIX_DIAGNOSTICS_SHA256.json",
+      "archive": "logs/pre-fix-diagnostics.sha256.json.gz",
+      "original_sha256": "d8b92d70dd2bad53c7268239fa152095fc51e3b5de071384067828d3856ebbc4",
+      "public_sha256": "d8b92d70dd2bad53c7268239fa152095fc51e3b5de071384067828d3856ebbc4",
+      "gzip_sha256": "2ba8f6cb7ed119f80c89b4e5a8012384a0f109c224d69c6c5a8338d44b8c82e9",
+      "original_bytes": 1458,
+      "public_bytes": 1458
+    },
+    {
+      "original": "validation/polish-20261116/desktop/linux-native-diagnostic-r1/fixture_diagnostic.py",
+      "archive": "logs/diagnostic-r1.fixture_diagnostic.py.gz",
+      "original_sha256": "958415c6c0f0d4a45153819ec492429ae18eca404b1ae689e5dd3273f1266f9c",
+      "public_sha256": "7295bc2688b069f03f7fc6df4a06084d4eea869e4620b5d3dc3d876e4705ecd7",
+      "gzip_sha256": "502b72e937850ce4bdad91f72d86fec895409669dca4cc49baba47965fa337b5",
+      "original_bytes": 7507,
+      "public_bytes": 7487
+    },
+    {
+      "original": "validation/polish-20261116/desktop/linux-native-diagnostic-r1/inspect_owned.py",
+      "archive": "logs/diagnostic-r1.inspect_owned.py.gz",
+      "original_sha256": "c044d591124d57c43b508ae42f4d117938149c0c6400a42e86037a7e94db5b36",
+      "public_sha256": "325fc84940c0e2f05f7760dc632ee38a6c4ff716aeb7c5666acba67e38456272",
+      "gzip_sha256": "14c3ffc3ae36524f19d8eb9655c7f9a7cd8316ab471a2f9c3877839c4a761df4",
+      "original_bytes": 1288,
+      "public_bytes": 1268
+    },
+    {
+      "original": "validation/polish-20261116/desktop/linux-native-diagnostic-r1/run.sh",
+      "archive": "logs/diagnostic-r1.run.sh.gz",
+      "original_sha256": "16fd1511ed8edd7b929d771aa12d9e0f89234e830b73edd315f120748f0c935f",
+      "public_sha256": "2e1edede9ea9af26ecb0f6629922b69d6bd3488d468345d001be76fbc2b131ab",
+      "gzip_sha256": "bff2148e26b3831b3dd9918a4147cdd4ae39a7f33b1c802b087212afbac4c7f3",
+      "original_bytes": 434,
+      "public_bytes": 354
+    },
+    {
+      "original": "validation/polish-20261116/desktop/linux-native-diagnostic-r2/fixture_diagnostic.py",
+      "archive": "logs/diagnostic-r2.fixture_diagnostic.py.gz",
+      "original_sha256": "4794ec308bce76bee35487a2d3261c3dc3bc24fec7d3a8855fd22160519940a3",
+      "public_sha256": "f529691e901d941c44910f5ef7bfc0af7fc9d69956cda6f1c4359f9aa66cd080",
+      "gzip_sha256": "ed199d4cc334f22875207f16f388d8b90d1fe1ddb302e8a736f9a536c36ea1f0",
+      "original_bytes": 7810,
+      "public_bytes": 7790
+    },
+    {
+      "original": "validation/polish-20261116/desktop/linux-native-diagnostic-r2/inspect_owned.py",
+      "archive": "logs/diagnostic-r2.inspect_owned.py.gz",
+      "original_sha256": "c044d591124d57c43b508ae42f4d117938149c0c6400a42e86037a7e94db5b36",
+      "public_sha256": "325fc84940c0e2f05f7760dc632ee38a6c4ff716aeb7c5666acba67e38456272",
+      "gzip_sha256": "14c3ffc3ae36524f19d8eb9655c7f9a7cd8316ab471a2f9c3877839c4a761df4",
+      "original_bytes": 1288,
+      "public_bytes": 1268
+    },
+    {
+      "original": "validation/polish-20261116/desktop/linux-native-diagnostic-r2/run.sh",
+      "archive": "logs/diagnostic-r2.run.sh.gz",
+      "original_sha256": "714b11817f5820ce1c7dc1488eab49209f5bb6a91012a922782ab403465b5c64",
+      "public_sha256": "7bb1374f31bb5b982680c5dfb510e077b4f13ac7425f60fee7d0ca9914f03ec5",
+      "gzip_sha256": "c976616217d264e10e286372692c349e0f260b59f58325c063f997ab1f647059",
+      "original_bytes": 748,
+      "public_bytes": 648
+    },
+    {
+      "original": "validation/polish-20261116/desktop/linux-native-diagnostic-r3/fixture_diagnostic.py",
+      "archive": "logs/diagnostic-r3.fixture_diagnostic.py.gz",
+      "original_sha256": "ae9ec14b9043f1d11aec8c2a127a127c56544649320ba433af43967918fa294b",
+      "public_sha256": "801303cc0e81776dd4c55de00d2b71e3f6f43f3bd1c8a72e3a2433536d812ddb",
+      "gzip_sha256": "db0b7c2a99491901f2ec7e4e69ab1385fc127e5b9d6f9dd4edcf7e894fab8679",
+      "original_bytes": 7809,
+      "public_bytes": 7789
+    },
+    {
+      "original": "validation/polish-20261116/desktop/linux-native-diagnostic-r3/inspect_owned.py",
+      "archive": "logs/diagnostic-r3.inspect_owned.py.gz",
+      "original_sha256": "2af16932dd45d4cfb045ffe0adffd2665ce7f334def0c4dfad2251299690ae84",
+      "public_sha256": "b485e8d0c28c583bfc9f6f6d4c2d8e9f339d5d9394edcb44f19cc58927c41f30",
+      "gzip_sha256": "f26294001c0fba4a69f3fc813d2f8d2e24890b590ecabc6930024d9f62c66496",
+      "original_bytes": 2056,
+      "public_bytes": 2036
+    },
+    {
+      "original": "validation/polish-20261116/desktop/linux-native-diagnostic-r3/run.sh",
+      "archive": "logs/diagnostic-r3.run.sh.gz",
+      "original_sha256": "ef52d706be2700c114bf99d2a41a438e3f33ba5b7ff4bb5a546461080e105d74",
+      "public_sha256": "54c6ccefdee1b124e6211452795a1c3d54d9feaa8663e6bdbbd908b4173c972d",
+      "gzip_sha256": "4ab696fee0b2eb0b6b11f9ed32a1a08bc44bf188fba323b77c75334dd8297278",
+      "original_bytes": 748,
+      "public_bytes": 648
+    },
+    {
+      "original": "validation/polish-20261116/companion/final-optional-r1/run.log",
+      "archive": "logs/final-optional-r1.run.log.gz",
+      "original_sha256": "14c570e5481830afb77163fe86e5a8e01f76f616036432550fda60eeb4f61954",
+      "public_sha256": "14c570e5481830afb77163fe86e5a8e01f76f616036432550fda60eeb4f61954",
+      "gzip_sha256": "27854f18ad26a0a41cba65200e35eda121b149916167ff61d9a53b74f2d15190",
+      "original_bytes": 1421,
+      "public_bytes": 1421
+    },
+    {
+      "original": "validation/polish-20261116/companion/final-optional-r1/run.sh",
+      "archive": "logs/final-optional-r1.run.sh.gz",
+      "original_sha256": "a0daf8ef29a156094490dbeb33f44c89335fc2364c8948976a276f452e14caab",
+      "public_sha256": "33a93cc95a8522834ce678414d13511478a7463eafd8d0a923d95449ee1091d4",
+      "gzip_sha256": "b392ae83c6a2adf2ca13ea43fda2c07d1828c8c4ac3e7b2d8671c4d7a53bb48a",
+      "original_bytes": 2204,
+      "public_bytes": 1984
+    },
+    {
+      "original": "validation/polish-20261116/companion/final-optional-r1/preflight-identity.json",
+      "archive": "logs/final-optional-r1.preflight-identity.json.gz",
+      "original_sha256": "783eafd72056a8f6cf73ddb85b7926a34796f7636a946704f2da33f5cfeb1315",
+      "public_sha256": "375e228bf9d097d0dad7253c5520bfe661cf415c3fe9082c2b11717d43901cbe",
+      "gzip_sha256": "589450c1fa70bf8fba52a69e053c6ded1d11ad5f0b5fbf209071e490f50b9dd1",
+      "original_bytes": 2045,
+      "public_bytes": 1945
+    },
+    {
+      "original": "validation/polish-20261116/companion/final-optional-r1/summary.json",
+      "archive": "logs/final-optional-r1.summary.json.gz",
+      "original_sha256": "3cd425f9f0804e82ba3c5a9d722b0e2c7f70b37ca90d9a632cfb566a48f0bece",
+      "public_sha256": "0f84efd459abdb6f99280b37b715996fc02294ddd3efbd54fa7d8ef4309397c3",
+      "gzip_sha256": "8fec74d6b5729228ad23eb2ea86993180bc8891a8618866e8c8c4f6ec7f80a1a",
+      "original_bytes": 2279,
+      "public_bytes": 2179
+    },
+    {
+      "original": "validation/polish-20261116/companion/final-optional-r1/source-comparison.json",
+      "archive": "logs/final-optional-r1.source-comparison.json.gz",
+      "original_sha256": "ca080f2a9837c4fcfe818291ddf81c1974b04da9ec8f138f0e0c9d309126ff66",
+      "public_sha256": "ca080f2a9837c4fcfe818291ddf81c1974b04da9ec8f138f0e0c9d309126ff66",
+      "gzip_sha256": "0ec00283c8c0e91b58119e1c497054f890cd0d2b2f8d4ca2b8ca17e6ae2984e4",
+      "original_bytes": 642,
+      "public_bytes": 642
+    },
+    {
+      "original": "validation/polish-20261116/companion/final-optional-r1/source-before.json",
+      "archive": "logs/final-optional-r1.source-before.json.gz",
+      "original_sha256": "fd3f41679463ee2079036b1bffa48d2e89186de682d5b753b948386885bbdb65",
+      "public_sha256": "fd3f41679463ee2079036b1bffa48d2e89186de682d5b753b948386885bbdb65",
+      "gzip_sha256": "9566ce67ae937156e74f6f6a7fa6a21ad6a1c2c8e05e6634ba0ab05be8efb8a5",
+      "original_bytes": 28478,
+      "public_bytes": 28478
+    },
+    {
+      "original": "validation/polish-20261116/companion/final-optional-r1/source-after.json",
+      "archive": "logs/final-optional-r1.source-after.json.gz",
+      "original_sha256": "fd3f41679463ee2079036b1bffa48d2e89186de682d5b753b948386885bbdb65",
+      "public_sha256": "fd3f41679463ee2079036b1bffa48d2e89186de682d5b753b948386885bbdb65",
+      "gzip_sha256": "9566ce67ae937156e74f6f6a7fa6a21ad6a1c2c8e05e6634ba0ab05be8efb8a5",
+      "original_bytes": 28478,
+      "public_bytes": 28478
+    }
+  ]
+}

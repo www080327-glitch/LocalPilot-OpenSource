@@ -1,0 +1,76 @@
+{
+  "scope": "Structure and types only; no entity IDs, names, root values, reference text, candidate answers, or judge requests are emitted or saved.",
+  "grader_sha256": "26ca645748a5272409bbc74f92e366a7d2b95138a86e92fec2d94db86733f8f0",
+  "reference_sha256": "6073f64edc4e011fbf4d4677ca04f5b4ff84d2041d1786c0f54b3e3e7392a745",
+  "reference_bytes": 185557,
+  "candidate_receipts_verified": 40,
+  "candidate_active_core_count": 0,
+  "grading_directory_before": false,
+  "jsonl_row_count": 40,
+  "outer_rows_matching_public_sre": 40,
+  "scenario_set_matches_frozen_40": true,
+  "duplicate_scenario_count": 0,
+  "yaml_document_types": {
+    "dict": 40
+  },
+  "effective_document_types": {
+    "dict": 40
+  },
+  "group_container_types": {
+    "list": 40
+  },
+  "entity_types": {
+    "dict": 278
+  },
+  "alias_container_types": {
+    "list": 40
+  },
+  "alias_entry_types": {
+    "list": 98
+  },
+  "alias_member_types": {
+    "str": 202
+  },
+  "filter_member_types": {
+    "str": 266
+  },
+  "strict_ground_truth_errors": {
+    "Invalid or duplicate ground-truth entity": 39
+  },
+  "entity_field_types": {
+    "id": {
+      "str": 278
+    },
+    "root_cause": {
+      "bool": 40,
+      "missing": 238
+    },
+    "name": {
+      "missing": 266,
+      "str": 12
+    },
+    "namespace": {
+      "str": 275,
+      "missing": 2,
+      "NoneType": 1
+    },
+    "kind": {
+      "str": 278
+    },
+    "filter": {
+      "list": 266,
+      "missing": 12
+    }
+  },
+  "strict_ground_truth_cases_passed": 1,
+  "spec_wrapper_cases": 9,
+  "empty_string_id_count": 0,
+  "duplicate_id_count": 1,
+  "unknown_alias_member_count": 0,
+  "strict_parse_labels": "ValueError",
+  "grading_directory_after": false,
+  "judge_backend_constructed": false,
+  "external_model_api_calls": 0,
+  "raw_reference_written": false,
+  "candidate_answers_read": false
+}

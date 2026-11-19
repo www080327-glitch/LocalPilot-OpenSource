@@ -1,0 +1,232 @@
+{
+  "scope": "Framework summaries extracted from the raw logs. The runs have separate source receipts and scopes.",
+  "limits": "An absent footer provides no test result. Some logs are interrupted attempts; consult the run receipts. A footer alone cannot establish the tested source, process exit code or installed environment. A class setup error can count as an error without admitting a test method to the run count, so unittest pass counts are not inferred from footers.",
+  "logs": [
+    {
+      "path": "rc21-install/linux/build-worktree.log",
+      "bytes": 120,
+      "sha256": "381da029905a94784320cde60742af39749c81d29ba282a4888613de177aea55",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc21-install/linux/deb-extract.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc21-install/linux/extracted-runtime-check.log",
+      "bytes": 6938,
+      "sha256": "d9c431ddf51ffe9a7986a71f255def056099c59a6ddaf24266041288b390e10f",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc21-install/linux/native-build.log",
+      "bytes": 17977,
+      "sha256": "d28a4685a2b522412bb6adc94de519d8c536181fd9a8cfe7cde5e27b0ed4b0ce",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc21-install/linux/npm-ci.log",
+      "bytes": 201,
+      "sha256": "eb1b36507cc45078e426b035cba45e859350516452e9b83618e2331b996d4daa",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc21-install/linux/packaged-rollback-conversion.log",
+      "bytes": 318,
+      "sha256": "cae18c5e5932d51c539a7dfc2fe4511b9e99bfb37e5a23b9997010c572be6259",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc21-install/linux/packaged-runtime-tests.log",
+      "bytes": 5899,
+      "sha256": "3326b44f1cc0b3d226a752fb4a1917213092d81e11757ec0e640a676d908df9f",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 28,
+          "result": "OK",
+          "seconds": 4.917,
+          "footer": "Ran 28 tests in 4.917s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc21-install/linux/prepare.log",
+      "bytes": 11936,
+      "sha256": "93df9f4a7987eb7fa25e78ed52bb51ce6cabd3eadfd8146a9733943b7fc2875d",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc21-install/linux/roundtrip-candidate-create.log",
+      "bytes": 785,
+      "sha256": "f2cc3e48355dc84a5a84d262b7d63502751da36c27af51c617ff5b5a7675a9d7",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc21-install/linux/roundtrip-candidate-reopen.log",
+      "bytes": 1329,
+      "sha256": "9273b55ed724392619f37a63955c01dc3a9dd0f7dfe5fc4e26364ae63d833a1b",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc21-install/linux/roundtrip-downgrade-execute.log",
+      "bytes": 817,
+      "sha256": "798844ad9ea1866b7868d7dff7b1053eaa3bb6800c6c1b9a9c91d908652e0177",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc21-install/linux/roundtrip-downgrade-plan.log",
+      "bytes": 3971,
+      "sha256": "d5f84bc44d0e9652febe5fa6ea0402915d6ee3964e8136c3736408bdd630b500",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc21-install/linux/roundtrip-rc18-write.log",
+      "bytes": 1187,
+      "sha256": "81a6cb6b466da4eb866929db62f3a6b118cfddf12a449a8fa6082b157b1ddaae",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc21-install/linux/roundtrip-reupgrade-execute.log",
+      "bytes": 729,
+      "sha256": "d44f5a581f571707eb61cde145b18a5fe395f3f31b70547f610278339f04869a",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc21-install/linux/roundtrip-reupgrade-plan.log",
+      "bytes": 3960,
+      "sha256": "a750c97aedbea3d8446561820c81288fa8375b461de067329f77b49377c9995f",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc21-install/linux/rust-core-recovery.log",
+      "bytes": 813,
+      "sha256": "e18e62783bcdca60c4213e12b2b59dc7ff2ac0d26319d9df6dd437bd06ec8657",
+      "footers": [
+        {
+          "framework": "rust",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "footer": "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 65 filtered out; finished in 1.53s"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc21-install/linux/wheel-channels.log",
+      "bytes": 7459,
+      "sha256": "fdcc7701a6b478402b2604b214482f12583852e9132e7497da0a2f5aab23d6c6",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc21-install/linux/wheel-companion.log",
+      "bytes": 28049,
+      "sha256": "14b14a9b93387ccebe9f8bfe13e550072f6e1af81cca6b73e7c8f3d92e1ab734",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc21-install/linux/wheel-core.log",
+      "bytes": 39750,
+      "sha256": "871434a4529a58dbe33230c09277c6f0051218c216a1cc97cd570b4edbed0b61",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc21-install/linux/wheel-suite.log",
+      "bytes": 8117,
+      "sha256": "c992594420514d5f9be2a46d7ec9d4189634466b0b5ffd8e9083aa6850db056a",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc21-runtime/core-full-final.launch.log",
+      "bytes": 3086,
+      "sha256": "579727fbf9c638663184eeeedcdfccd062985f6f6682f1f34f5e7cfe000d514f",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc21-runtime/core-full-final/tests.log",
+      "bytes": 286093,
+      "sha256": "8d5d066cf89fbd541d64210ad5e991fbfa04d8a5b162a41ff5e6d4ccadf885af",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 1719,
+          "errors": 1,
+          "skipped": 99,
+          "result": "FAILED",
+          "seconds": 224.834,
+          "footer": "Ran 1719 tests in 224.834s\n\nFAILED (errors=1, skipped=99)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc21-runtime/timer-regression-after.log",
+      "bytes": 880,
+      "sha256": "0a9d66c0cfcb38df9937ccfe3aa97a08d02f41bfb5c21cdae7811f102ee9435a",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 5,
+          "result": "OK",
+          "seconds": 3.528,
+          "footer": "Ran 5 tests in 3.528s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc21-runtime/timer-regression-before.log",
+      "bytes": 1591,
+      "sha256": "22d3dbd26fb28fd11a90998246c470ded926890b856941dea2c8669450b4974f",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 1,
+          "failures": 1,
+          "result": "FAILED",
+          "seconds": 3.03,
+          "footer": "Ran 1 test in 3.030s\n\nFAILED (failures=1)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "rc21-runtime/timer-suspend-probe-after.log",
+      "bytes": 824,
+      "sha256": "9753a2a5627c6b13d302f817be6546743a1eadbebef4bddba99f0eeef5004ccd",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "rc21-runtime/timer-suspend-probe-before.log",
+      "bytes": 2451,
+      "sha256": "79ad30fc65e1363aa9c7510f342200d4614f5fc203b440ad6449eb9139ba0953",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    }
+  ]
+}

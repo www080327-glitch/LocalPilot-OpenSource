@@ -1,0 +1,131 @@
+{
+  "base_commit": "d846fef0f4b442d57e6e37f856a59c5a1a1337de",
+  "runs": [
+    {
+      "log": "harbor-runner-r1.log",
+      "tests_run": 13,
+      "passed": 11,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 2,
+      "seconds": 0.612,
+      "resource_warning_present": false
+    },
+    {
+      "log": "openai-contract-r1.log",
+      "tests_run": 7,
+      "passed": 6,
+      "failed": 0,
+      "errors": 1,
+      "skipped": 0,
+      "seconds": 4.64,
+      "resource_warning_present": false
+    },
+    {
+      "log": "openai-contract-r2.log",
+      "tests_run": 28,
+      "passed": 25,
+      "failed": 0,
+      "errors": 1,
+      "skipped": 2,
+      "seconds": 7.039,
+      "resource_warning_present": false
+    },
+    {
+      "log": "openai-contract-r3.log",
+      "tests_run": 28,
+      "passed": 25,
+      "failed": 0,
+      "errors": 1,
+      "skipped": 2,
+      "seconds": 7.929,
+      "resource_warning_present": true
+    },
+    {
+      "log": "openai-contract-r4.log",
+      "tests_run": 28,
+      "passed": 26,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 2,
+      "seconds": 8.16,
+      "resource_warning_present": false
+    },
+    {
+      "log": "harbor-official-r1.log",
+      "tests_run": 52,
+      "passed": 51,
+      "failed": 0,
+      "errors": 1,
+      "skipped": 0,
+      "seconds": 11.262,
+      "resource_warning_present": false
+    },
+    {
+      "log": "harbor-official-r2.log",
+      "tests_run": 68,
+      "passed": 68,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 18.198,
+      "resource_warning_present": false
+    },
+    {
+      "log": "harbor-official-r3.log",
+      "tests_run": 69,
+      "passed": 69,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 18.347,
+      "resource_warning_present": false
+    },
+    {
+      "log": "mmlu-runner-fixtures-r1.log",
+      "tests_run": 4,
+      "passed": 4,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.548,
+      "resource_warning_present": false
+    }
+  ],
+  "limits": [
+    "Focused runs overlap; do not sum as unique full-regression test count",
+    "HTTP/TLS/Harbor contract fixtures are not model or Docker benchmark results",
+    "MMLU selection is frozen but results are recorded by the separate owned-model qualification run"
+  ],
+  "source_files": {
+    "localpilot_service/backend_contract.py": "ee26c1ba500ef3083c3ffdcc95f82426cdf53bbcf0e7380c81cd34a67f2e053e",
+    "localpilot_service/route_backends.py": "167cb4538fa73fbb29f030a11612f1f0ed9de3d8943f45f55312269761f7f2fc",
+    "localpilot_service/deployment.py": "e9c72303a99c777d8b89eca6dd05f07b1a6459f2b0d4d131f557417c359e23ce",
+    "localpilot_service/routing.py": "da00c643487dad5c0c499c50509d1c16329410ca95c2ca9fbdb8cb6ac1e455ef",
+    "scripts/localpilot_harbor.py": "ca7777499b058081167d8f224f94666c3d671fa14eef0dd5c2b531b001a1da61",
+    "scripts/harbor_study_runner.py": "f558d5e6c63d7ae93a13439a78e34f8cddb75b9b46b15c81447a719e343603da",
+    "scripts/public_model_eval.py": "60f10f2fc22918f2aec0b79da36a48a68a13b359bacb56c1a7888df8920c3a57",
+    "tests/test_openai_cloud_backend.py": "9a5cf5cbf4b0fee1c3ae8362e61b3b0106bd42304d5d31be1a7e2deca6ae7039",
+    "tests/test_harbor_adapter.py": "252e7773ec1568bc4c42a16025269764d1fee9849f6a6d218756667781c93279",
+    "tests/test_harbor_study_runner.py": "46dd671343e27300aaa1cc9b2d7c20c0a123364cd16a8fa69e0f02ae9069f1ed",
+    "tests/test_harbor_budget_audit.py": "526d5ca5bbf8f84c80afccb9afc38a6299f1913077876bf2b720bbf6f2aaed94",
+    "tests/test_public_model_eval.py": "970016025f293f7b1e053d4274e9fe003b886fe65a8424a9e4403f0de613c5af"
+  },
+  "evidence_files": {
+    "RESULTS.md": "be47605633a1c18684870163be6b064ecb742c40b8e31fc6e558b553cc1f0ad2",
+    "harbor-official-r1.log": "786cd5eadc7c6e54b121e235818c07e7533645e760ac902d233ffbe6742722d8",
+    "harbor-official-r2.log": "f1b2edf945e59c3c49833343ffb211541017a08ecfce7cd4396b407fb552956f",
+    "harbor-official-r3.log": "839e819c883edb9aa01e59e47c75f2221d8519f2bc3a160946990a80bdacff89",
+    "harbor-runner-r1.log": "7c0b628a44fadcd3412268c0ad890f83ac4eba254ec4b27f3323d7a797ef7b09",
+    "mmlu-SELECTION.json": "5eae7f7e50f19d4b6dfc3e0919023243d81115b391e8a36006f832f247476407",
+    "mmlu-SOURCE.json": "d259261bc63e0c78420b8c7ffd11ae461133c0bbf9854152b7adc604a60ea375",
+    "mmlu-runner-fixtures-r1.log": "283b8d5aa1ac684575c1be63d0c13a975f92a32da35c3eae177a349cdbaded03",
+    "openai-contract-r1.log": "ce01a6ba7f7b83d76df8592c0113341f3911b999932eb51b853fe2cb2439647e",
+    "openai-contract-r2.log": "91ff21b8a353240efe15e1175b26be50322c60731acbd8931ac1677f6958daab",
+    "openai-contract-r3.log": "aaa27be9b8fc5337244fa280d0eaea5dda7346661a8fe0acc3765a2fd5eed50c",
+    "openai-contract-r4.log": "af458b652ef087efc7b8cce169da55511097a2435084eba2ee502774f608f0c9",
+    "public-evaluation-probe.json": "1169e88d133f85036a223a0ec48d7021db63c18895f2b42caeba02c2408b68ad",
+    "pyarrow-install.log": "e06d58575936756a61a31b120daa024f1c8ccc51f0fe8abc8bfb22955e31dd7f"
+  },
+  "manifest_scope": "Every file in this directory except MANIFEST.json itself; no real model responses or benchmark answer keys are stored here."
+}

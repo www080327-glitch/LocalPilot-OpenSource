@@ -1,10 +1,12 @@
 """Host generation options on existing Chat Completions adapters, without fallback."""
 import math
+from urllib.request import build_opener
 from agent.deepseek import DeepSeekBackend
 from agent.deepseek_optimized import DeepSeekOptimizedBackend
 from agent.deepseek_native import DeepSeekNativeBackend
-from agent.local_http import LocalHTTPBackend
+from agent.local_http import LocalHTTPBackend, _NoRedirect
 from agent.omlx import OMLXBackend
+from agent.openai_responses import OpenAIResponsesBackend
 
 
 def generation_options(value):
@@ -23,7 +25,7 @@ def generation_options(value):
 
 class HostGenerationMixin:
     def __init__(self, *args, generation_parameters=None, **kwargs):
-        self.generation_parameters = generation_options(generation_parameters or {})
+        self.generation_parameters = generation_options({} if generation_parameters is None else generation_parameters)
         super().__init__(*args, **kwargs)
         self.service_contract = {"generation_parameters": dict(self.generation_parameters), "timeout": self.timeout}
 
@@ -50,7 +52,7 @@ class ServiceDeepSeekOptimizedBackend(HostGenerationMixin, DeepSeekOptimizedBack
 
 class ServiceDeepSeekNativeBackend(DeepSeekNativeBackend):
     def __init__(self, *args, generation_parameters=None, **kwargs):
-        self.generation_parameters = generation_options(generation_parameters or {})
+        self.generation_parameters = generation_options({} if generation_parameters is None else generation_parameters)
         if set(self.generation_parameters) - {'temperature', 'stop'}:
             raise ValueError('Unsupported Messages generation parameter')
         super().__init__(*args, **kwargs)
@@ -73,6 +75,50 @@ class ServiceOpenAIBackend(HostGenerationMixin, LocalHTTPBackend):
         super().__init__(*args, **kwargs)
         if self.include_stream_usage:
             self.service_contract["include_stream_usage"] = True
+
+
+class ServiceOpenAICloudBackend(ServiceOpenAIBackend):
+    """Explicit OpenAI Chat Completions contract; existing compatible routes stay unchanged."""
+
+    is_local = False
+    provider = "openai"
+
+    def __init__(self, *, base_url="https://api.openai.com/v1", api_key=None,
+                 include_stream_usage=True, **kwargs):
+        if not isinstance(base_url, str) or not base_url.startswith("https://") or not api_key:
+            raise ValueError("OpenAI requires HTTPS and an explicit API token")
+        if kwargs.get("chat_template_kwargs"):
+            raise ValueError("OpenAI does not accept local chat template overrides")
+        kwargs.setdefault("allow_remote", True)
+        kwargs.setdefault("service_location", "remote")
+        super().__init__(base_url=base_url, api_key=api_key,
+                         include_stream_usage=include_stream_usage, **kwargs)
+        self._opener = build_opener(_NoRedirect())
+        self.service_contract.update(protocol="openai_chat_completions_v1",
+            max_output_parameter="max_completion_tokens", proxy="environment")
+
+    def _payload(self, *args, **kwargs):
+        payload = super()._payload(*args, **kwargs)
+        if "max_tokens" in payload:
+            payload["max_completion_tokens"] = payload.pop("max_tokens")
+        return payload
+
+
+class ServiceOpenAIResponsesBackend(HostGenerationMixin, OpenAIResponsesBackend):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if set(self.generation_parameters) - {'temperature', 'top_p'}:
+            raise ValueError('OpenAI Responses accepts only temperature/top_p generation overrides')
+        self.service_contract.update(protocol='openai_responses_v1',
+            max_output_parameter='max_output_tokens', proxy='environment', store=False,
+            reasoning_replay='same_model_egress_scope_full_message_sha256_v2')
+
+    def _payload(self, *args, **kwargs):
+        payload = super()._payload(*args, **kwargs)
+        effort = payload.get('reasoning', {}).get('effort')
+        if self.generation_parameters and effort != 'none':
+            raise ValueError('OpenAI sampling overrides require explicit reasoning effort none')
+        return payload
 
 
 class ServiceOMLXBackend(HostGenerationMixin, OMLXBackend):

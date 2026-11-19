@@ -1,0 +1,9 @@
+{
+  "contributing_factors": [
+    {
+      "name": "chaos-mesh/Schedule/otel-demo-valkey-memory-stress",
+      "reasoning": "This recurring Chaos Mesh schedule is the upstream fault driving the incident: it repeatedly creates 55-second StressChaos experiments against the valkey-cart container. The repeated memory-stress injections destabilize the Redis-compatible backend; valkey-cart enters restart backoff, so cart cannot connect to Redis and the resulting dependency failure propagates as checkout/cart timeouts and elevated errors in cart, frontend, and frontend-proxy. The pod, cart, and front-end symptoms are downstream of this schedule and are not separate contributing factors.",
+      "evidence": "In k8s_events_raw.tsv, Schedule/otel-demo-valkey-memory-stress spawned StressChaos objects at 17:53, 17:54, 17:55, 17:56, and 17:57; each corresponding experiment reports Started and Applied successfully to otel-demo/valkey-cart-58df56c79c-4cvft/valkey-cart, then TimeUp/Recovered after about 55 seconds. The valkey-cart pod has BackOff warning events from 17:54:04 through 18:01:22 and repeated container starts. The otel-demo cart logs report ‘Wasn't able to connect to redis’ from 17:54 onward. The 17:58:52 firing-alert snapshot has RequestLatency alerts for cart, frontend-proxy, and frontend at 1.5e+04 and RequestErrorRate alerts for those same services (cart 0.843, frontend-proxy 1.433, frontend 3.022). In the valkey-cart pod metrics, container_memory_max_usage_bytes reaches 10,493,952 bytes at 18:01:44, near/slightly above the Deployment's 10 MiB container memory limit."
+    }
+  ]
+}

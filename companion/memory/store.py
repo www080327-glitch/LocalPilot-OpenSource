@@ -3,6 +3,7 @@ import sqlite3
 import time
 import uuid
 from .reliability import explicit_claims, scalar
+from .task_store import TaskStore
 
 TYPES = {"user_fact", "preference", "conversation", "computer_event", "document", "project", "topic", "summary", "reflection"}
 
@@ -19,6 +20,7 @@ class MemoryStore:
           source TEXT NOT NULL, source_reference TEXT NOT NULL, summary TEXT NOT NULL,
           confidence REAL NOT NULL, epistemic TEXT NOT NULL, metadata TEXT NOT NULL);
         CREATE INDEX IF NOT EXISTS memory_time ON memories(timestamp);
+        CREATE INDEX IF NOT EXISTS memory_kind_time ON memories(type,timestamp,id);
         CREATE TABLE IF NOT EXISTS files(path TEXT PRIMARY KEY, digest TEXT NOT NULL, mtime_ns INTEGER NOT NULL);
         CREATE TABLE IF NOT EXISTS state(key TEXT PRIMARY KEY, value TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS notices(id TEXT PRIMARY KEY, type TEXT NOT NULL, event_key TEXT NOT NULL UNIQUE,
@@ -61,6 +63,11 @@ class MemoryStore:
                 meta.update(version_id=vid, extraction_timestamp=row["timestamp"])
                 self.db.execute("UPDATE memories SET metadata=? WHERE id=?", (json.dumps(meta,ensure_ascii=False),row["id"]))
         self.db.commit()
+        try:
+            self.tasks = TaskStore(self.db)
+        except BaseException:
+            self.db.close()
+            raise
 
     @staticmethod
     def _search_text(text):
@@ -147,9 +154,36 @@ class MemoryStore:
             rows = self.db.execute(q, (*kinds, limit))
         else:
             rows = self.db.execute("SELECT * FROM memories ORDER BY timestamp DESC LIMIT ?", (limit,))
+        return [self._record(row) for row in rows]
+
+    def record(self, memory_id):
+        row = self.db.execute("SELECT * FROM memories WHERE id=?", (memory_id,)).fetchone()
+        return self._record(row) if row is not None else None
+
+    def search_conversations(self, query, limit=10):
+        tokens = sorted(set(self._search_text(query).split()))[:64]
+        if not tokens:
+            return []
+        expression = " OR ".join('"' + token + '"' for token in tokens)
+        rows = self.db.execute("SELECT m.* FROM memory_fts JOIN memories m ON m.id=memory_fts.id "
+            "WHERE memory_fts MATCH ? AND m.type='conversation' "
+            "ORDER BY bm25(memory_fts),m.timestamp DESC LIMIT ?", (expression, limit))
+        return [self._record(row) for row in rows]
+
+    def conversation_page(self, limit, before=None):
+        query = "SELECT * FROM memories WHERE type='conversation'"
+        values = []
+        if before is not None:
+            query += " AND (timestamp,id) < (?,?)"
+            values.extend((before["timestamp"], before["id"]))
+        rows = self.db.execute(query + " ORDER BY timestamp DESC,id DESC LIMIT ?", (*values, limit))
+        return [self._record(row) for row in rows]
+
+    @staticmethod
+    def _record(row):
         from .evidence import describe
-        records = [dict(row) | {"metadata": json.loads(row["metadata"])} for row in rows]
-        return [row | {"evidence_type": describe(row)} for row in records]
+        record = dict(row) | {"metadata": json.loads(row["metadata"])}
+        return record | {"evidence_type": describe(record)}
 
     def candidates(self, tokens, limit=2000):
         """Search across history on demand, rather than dropping older facts by age."""
@@ -192,12 +226,13 @@ class MemoryStore:
         if set(extra_tables) - allowed:
             raise ValueError("Unknown memory tables")
         with self.db:
-            for table in (*extra_tables, "memories", "files", "notices", "state", "source_versions", "claims", "conflicts", "memory_fts"):
+            for table in (*extra_tables, "memories", "files", "notices", "state", "source_versions", "claims", "conflicts", "memory_fts", "localpilot_tasks"):
                 self.db.execute(f"DELETE FROM {table}")
             for key, value in (state or {}).items():
                 self.db.execute("INSERT INTO state VALUES(?,?)", (key, json.dumps(value)))
         self.db.execute("PRAGMA wal_checkpoint(TRUNCATE)")
         self.db.execute("VACUUM")
+        self.tasks.forget_backups()
 
     def close(self):
         self.db.execute("PRAGMA wal_checkpoint(TRUNCATE)")

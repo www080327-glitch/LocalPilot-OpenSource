@@ -1,0 +1,17 @@
+{
+  "stage": "After four-line production change; targeted regression complete; source and test writes frozen",
+  "baseline_git_head": "5a0a77b7486e412e2ed9f29c9fab8295e7a81d6a",
+  "observed_git_head": "5a0a77b7486e412e2ed9f29c9fab8295e7a81d6a",
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "python_executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+  "files": [
+    {
+      "file": "agent/session_workers.py",
+      "sha256": "21abc2e0e927fedd4fc1f80c39e18be3d9a9c94295d00972dbf7261484b998fe"
+    },
+    {
+      "file": "tests/test_async_runtime.py",
+      "sha256": "3c2a3207302a4189a00be077b36df2160d9522e236f8882a79807ce4d03f9b2b"
+    }
+  ]
+}

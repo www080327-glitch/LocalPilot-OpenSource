@@ -1,0 +1,73 @@
+{
+  "type": "asset_and_animation_source_audit",
+  "inspected_source_commit": "bef2c90ac7c155c74a55dd33cb1244ad7f90b44f",
+  "source_paths": [
+    "docs/design/edge-pet-20261026.md",
+    "docs/design/edge-pet-v23-visual-revision.md",
+    "docs/design/deepseek-pet-20261026.md",
+    "desktop/src-tauri/src/pet_assets.rs",
+    "desktop/src-tauri/src/pet_edge.rs",
+    "desktop/src/pet/EdgeCharacter.tsx"
+  ],
+  "installed_arm64_R17_observation": {
+    "edge_pose_pack_present": false,
+    "render_source": "pending",
+    "render_opacity": 0.0,
+    "pending_label": "新版角色姿态待导入"
+  },
+  "recorded_segments": [
+    {
+      "mode": "RETRACTING",
+      "raf_samples": 34,
+      "visible_changes": 0,
+      "observed_fps": 0,
+      "duration_ms": 1100
+    },
+    {
+      "mode": "PEEKING",
+      "raf_samples": 41,
+      "visible_changes": 0,
+      "observed_fps": 0,
+      "duration_ms": 1333
+    }
+  ],
+  "repo_personal_sprite_or_edge_art_paths": [],
+  "documented_private_art_supplied_here": false,
+  "documented_third_party_public_base": {
+    "repository": "fywdy/chatgpt-chibi-pets",
+    "commit": "d5bbb27c79e5c08e8b8ab44d4023cd35a67418e2",
+    "tree": "8e1f97370abc4cc385fe1d73c24592f7c647941d",
+    "notice_blob": "5f4b146a0c9f0bf651f85dbb19e118a01c0351f2",
+    "notice_url": "https://github.com/fywdy/chatgpt-chibi-pets/blob/d5bbb27c79e5c08e8b8ab44d4023cd35a67418e2/NOTICE.md",
+    "art_license": "CC BY-NC 4.0; attribution and upstream notice required; upstream disclaims trademark affiliation",
+    "scripts_and_tool_json_license": "MIT (per NOTICE)",
+    "deepseek_atlas_blob": "26559a0cf17133649820f6d2245d9b2149e52402",
+    "upstream_deepseek_validation": {
+      "rows": 11,
+      "columns": 8,
+      "width": 1536,
+      "height": 2288,
+      "format": "WEBP",
+      "mode": "RGBA"
+    },
+    "git_tree_entries": 503,
+    "upstream_matching_edge_pack_json_or_poses_png": [],
+    "art_redistributed_by_this_change": false,
+    "old_Mac_private_art_byte_identity": "NOT_VERIFIED"
+  },
+  "operator_paths": {
+    "select_character": "Pet bubble > pet settings > 换个形象 > matching locally registered character",
+    "import_edge": "导入当前角色探头姿态包 > select directory containing pack.json + poses.png + declared comic.png/tail.png",
+    "documented_authorized_source": "The original Mac test identity Application Support/edge-packs/<id>/ and private-visuals described in docs/design/edge-pet-20261026.md",
+    "public_base_assumption": "Installed package has pet.json matching registered ID and spriteVersionNumber=2 + spritesheet.webp"
+  },
+  "candidate_source_sha256": {
+    "desktop/src-tauri/src/pet_assets.rs": "f5717a8fb1a9e16ec73e699b5a6baca74eb9ddbae73ca8ebc59c4cb89a6f0446",
+    "desktop/src-tauri/src/pet_edge.rs": "5c41d3b0fc8d724be2064e8a1c95e5546b67234a1dd714a420c1c5a51faf0725",
+    "desktop/src/Pet.tsx": "3177c57ea469dbf90ad53120b81d55e443af74a792ad6cd5fa7bc2b41dd54afd",
+    "desktop/src/pet/EdgeCharacter.tsx": "165fc4d422ba40dc0251a46f2c362b9b3742130e916e86c5ecefd03faa8f4369",
+    "desktop/src/pet/policy.ts": "c74a05c1399cc460e0836e4ac00f9d0174fb9bfce1435d1507eab74135a4553e",
+    "desktop/src/pet/types.ts": "5e52569ea886510921a74e2e3571db991eb19c0d66506c16264002724525e177",
+    "desktop/tests/ui/pet-window.spec.ts": "d335b65fd52e2e6fa69d1fb341f1ba1c5aec8f612107a8314e527fa553c0bd2d"
+  }
+}

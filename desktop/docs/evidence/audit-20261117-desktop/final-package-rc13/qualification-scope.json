@@ -1,0 +1,32 @@
+{
+  "source_commit": "1dca93c5a6a2d0c557a9507ca020c07458dd92d1",
+  "source_tree": "1457ce75f9134196c0c489f69bc4ee5b03467d4b",
+  "build": "PASS",
+  "native_version_gate": "FAIL",
+  "native_overall": "NOT_PASSED",
+  "observed": [
+    "RC13 real WebKit welcome",
+    "Bundled component preparation and connection",
+    "OpenAI selection default gpt-6-luna with empty key",
+    "Reached first-setup final review",
+    "Actual service metadata b30 versus health b28 mismatch",
+    "Read-only actual long-task capability and empty task list",
+    "Owned process shutdown"
+  ],
+  "not_run": [
+    "Final completion click and main UI",
+    "Long-task UI selection",
+    "Pet launch and animation sampling",
+    "Task or model submission",
+    "System-wide DEB install",
+    "macOS qualification",
+    "GitHub binary upload"
+  ],
+  "reason": "Root requested stopping after the observed service version mismatch and independent engineering failure; archive the first native failure and await a new frozen candidate.",
+  "native_terminal_tabs": {
+    "build": 21,
+    "launch": 23,
+    "inspection_and_owned_stop": 24
+  },
+  "preserved_running_jobs": "Native Terminal tab 8 and other validation jobs were not operated."
+}

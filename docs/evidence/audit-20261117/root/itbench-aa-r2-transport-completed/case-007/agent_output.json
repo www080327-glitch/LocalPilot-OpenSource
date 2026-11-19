@@ -1,0 +1,14 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Pod/flagd-869c45cb9d-rsjs7",
+      "reasoning": "This flagd Pod is the common upstream of the failing feature-flag calls. Its EventStream is terminated with a server-side deadline, and dependent services report matching stream/evaluation errors; those downstream alerts and frontend GetAds failures are consequences, not separate resource causes.",
+      "evidence": "otel_traces_raw.tsv records an ad EventStream client span to flagd:8013 at 2025-12-15 17:31:12.606 with gRPC status 4, followed by the flagd EventStream server span at 17:31:12.608 with gRPC status 4 and message 'stream closed due to server-side timeout' after about 600 seconds. Recommendation and fraud-detection also have failing flagd EventStream spans. Alert snapshots show RequestErrorRate firing for recommendation (from 17:30), fraud-detection (from 17:34), and ad (from 17:35); service metrics include ad ResolveBoolean errors and frontend grpc.oteldemo.AdService/GetAds errors. The flagd Service endpoint resolves to this Pod, so there is no separate endpoint-mismatch resource to add."
+    },
+    {
+      "name": "otel-demo/Deployment/payment",
+      "reasoning": "The payment Deployment's generation-2 rollout is the independent origin of the later payment-path failure: it replaces the previously serving ReplicaSet with a new payment Pod, after which Payment Charge errors propagate to Checkout PlaceOrder and the frontend. Checkout and frontend alerts are downstream symptoms, not additional causes.",
+      "evidence": "Object snapshots show payment Deployment generation 1 with the old ReplicaSet ready through 17:43, then generation 2 progressing at 17:48:30; the old ReplicaSet is scaled to zero and the new payment-7b6bfb9fb4-fwlht Pod becomes the payment Service endpoint by 17:48:52. Payment logs show the old Pod's last Charge at 17:48:26 and the new Pod starting at 17:49:41. After the rollout, service_checkout metrics show 59 STATUS_CODE_ERROR calls for both oteldemo.PaymentService/Charge and oteldemo.CheckoutService/PlaceOrder at 17:50:41 (repeated through 18:00); alerts fire for checkout (1.302 at 17:53) and payment (0.044 at 17:54). Checkout logs have 1206 PlaceOrder entries but only 1147 'payment went through' entries, consistent with those failed payment calls."
+    }
+  ]
+}

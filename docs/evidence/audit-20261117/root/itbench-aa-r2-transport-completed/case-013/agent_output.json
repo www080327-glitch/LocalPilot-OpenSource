@@ -1,0 +1,14 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Deployment/ad",
+      "reasoning": "The single-replica ad Deployment was restarted during the incident and has no readiness probe, allowing traffic to reach its replacement while the application listener was not yet available. Frontend requests to the ad dependency then failed, producing /api/data 500s and the frontend/frontend-proxy error alerts. Those frontend and proxy failures are downstream effects, not separate causes.",
+      "evidence": "At 17:50:43 the Deployment snapshot shows generation 2, one replica, and kubectl.kubernetes.io/restartedAt=2025-12-15T17:49:49Z; its pod template has no readinessProbe. Kubernetes events show the new ReplicaSet created at 17:49:49 and the old ad pod terminated at 17:49:52; the new Pod is marked Ready at 17:49:52. Traces contain 67 frontend grpc.oteldemo.AdService/GetAds errors from 17:49:54.611 through 17:50:57.205, with ECONNREFUSED to 100.65.180.246:8080, the ClusterIP of otel-demo/Service/ad. The corresponding frontend /api/data requests return 500; RequestErrorRate alerts for frontend (2.58) and frontend-proxy (1.34) are firing at 17:55."
+    },
+    {
+      "name": "otel-demo/Deployment/payment",
+      "reasoning": "This is a separate failure in the checkout payment branch. The one-replica payment rollout exposed traffic before the replacement payment server had started; checkout's PaymentService calls consequently failed, so PlaceOrder requests errored. The ad failure does not explain this independent payment dependency failure.",
+      "evidence": "At 17:50:43 the Deployment snapshot shows generation 2, one replica, and kubectl.kubernetes.io/restartedAt=2025-12-15T17:49:49Z; its pod template has no readinessProbe. Events show the new ReplicaSet created at 17:49:49 and the old payment pod terminated at 17:49:53. The replacement Pod is marked Ready at 17:49:53, but its log says 'payment gRPC server started on port 8080' only at 17:51:02. Traces show 33 PaymentService/Charge and 33 CheckoutService/PlaceOrder failures from 17:49:56 to 17:50:57 with connection refused to 100.70.188.60:8080, the ClusterIP of otel-demo/Service/payment. The RequestErrorRate alert for checkout fires at 17:53."
+    }
+  ]
+}

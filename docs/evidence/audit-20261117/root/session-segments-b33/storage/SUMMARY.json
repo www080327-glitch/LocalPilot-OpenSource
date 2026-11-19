@@ -1,0 +1,104 @@
+{
+  "scope": "Scripted backend, real AgentSession + Hybrid + read_file + SQLite. Same protocol, 180-turn b32 baseline and 360-turn b33 candidate. No quality or native-performance claim.",
+  "baseline_source": "9253776b55c5e8377948267266ac5c0c4f06b03a",
+  "candidate_source": "b6f95da47f706581a780d6874382be53d99b33c4",
+  "same_180_turns": {
+    "baseline": {
+      "turn": 180,
+      "runtime_bytes": 3052686,
+      "checkpoint_bytes": 9867305,
+      "messages": 721,
+      "receipts": 180,
+      "completed_calls": 180,
+      "hybrid_attempts": 360,
+      "hybrid_egress": 360,
+      "active_tasks": 180,
+      "generation": 0
+    },
+    "candidate": {
+      "turn": 180,
+      "runtime_bytes": 1732540,
+      "checkpoint_bytes": 4538050,
+      "messages": 297,
+      "receipts": 74,
+      "completed_calls": 74,
+      "hybrid_attempts": 148,
+      "hybrid_egress": 148,
+      "active_tasks": 74,
+      "generation": 1
+    }
+  },
+  "candidate_360_turns": {
+    "turn": 360,
+    "runtime_bytes": 1538990,
+    "checkpoint_bytes": 3548851,
+    "messages": 213,
+    "receipts": 53,
+    "completed_calls": 53,
+    "hybrid_attempts": 106,
+    "hybrid_egress": 106,
+    "active_tasks": 53,
+    "generation": 3
+  },
+  "default_threshold_bytes": 2097152,
+  "rotations": [
+    {
+      "turn": 108,
+      "runtime_bytes": 801076,
+      "checkpoint_bytes": 878396,
+      "messages": 9,
+      "receipts": 2,
+      "completed_calls": 2,
+      "hybrid_attempts": 4,
+      "hybrid_egress": 4,
+      "active_tasks": 2,
+      "generation": 1
+    },
+    {
+      "turn": 210,
+      "runtime_bytes": 842857,
+      "checkpoint_bytes": 920184,
+      "messages": 9,
+      "receipts": 2,
+      "completed_calls": 2,
+      "hybrid_attempts": 4,
+      "hybrid_egress": 4,
+      "active_tasks": 2,
+      "generation": 2
+    },
+    {
+      "turn": 309,
+      "runtime_bytes": 880956,
+      "checkpoint_bytes": 958294,
+      "messages": 9,
+      "receipts": 2,
+      "completed_calls": 2,
+      "hybrid_attempts": 4,
+      "hybrid_egress": 4,
+      "active_tasks": 2,
+      "generation": 3
+    }
+  ],
+  "max_runtime_bytes": 2120083,
+  "max_checkpoint_bytes": 6169063,
+  "database_bytes": {
+    "baseline_180": 10350592,
+    "candidate_360": 22589440
+  },
+  "archive_verification": {
+    "archives": 3,
+    "all_archive_hashes_valid": true,
+    "archive_generations": [
+      0,
+      1,
+      2
+    ],
+    "all_360_user_inputs_preserved": true,
+    "all_360_read_receipt_turns_preserved": true,
+    "archived_tasks": 307,
+    "active_tasks": 53,
+    "checkpoint_hash_valid": true
+  },
+  "timing_scope": "Wall-clock and restart measurements are preserved as single-run diagnostics; other tests overlapped, so no speedup ratio is claimed.",
+  "development_candidate_r1": "Retained separately; its source changed during run and it is not final-source qualification."
+}

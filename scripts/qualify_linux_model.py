@@ -22,6 +22,7 @@ sys.path.insert(0, str(ROOT))
 
 from localpilot_service import cli
 from localpilot_service.sdk import Client
+from agent.session_types import SessionBudgets
 
 
 def main():
@@ -30,8 +31,12 @@ def main():
     parser.add_argument('--model', type=Path, required=True)
     parser.add_argument('--model-sha256', required=True)
     parser.add_argument('--model-revision', required=True)
+    parser.add_argument('--model-alias', default='localpilot-qualified')
+    parser.add_argument('--reasoning', choices=('auto', 'on', 'off'), default='auto')
+    parser.add_argument('--sampling-profile', choices=('greedy', 'qwen35-nonthinking'), default='greedy')
     parser.add_argument('--server-commit', required=True)
     parser.add_argument('--evidence', type=Path, required=True)
+    parser.add_argument('--public-study-protocol', type=Path)
     args = parser.parse_args()
     binary, model = args.server_binary.resolve(strict=True), args.model.resolve(strict=True)
     actual = digest(model)
@@ -42,9 +47,18 @@ def main():
     report = {'kind': 'REAL_CPU_MODEL_SYNTHETIC_INPUTS', 'model': model.name,
               'model_sha256': actual, 'model_revision': args.model_revision,
               'server_commit': args.server_commit, 'server_binary_sha256': digest(binary),
+              'model_alias': args.model_alias, 'reasoning': args.reasoning,
+              'sampling_profile': args.sampling_profile,
+              'integration_budget': {'context_tokens': 8192, 'output_tokens': 512,
+                                     'threads': 2, 'max_steps': 6,
+                                     'max_token_units': SessionBudgets().max_token_units,
+                                     'max_worker_token_units': SessionBudgets().max_worker_token_units},
+              'companion_sampling': {'temperature': 0, 'source': 'unchanged production request_chat default'},
               'model_count': 1, 'cloud_calls': 0, 'api_cost_usd': 0,
               'energy_cost': 'UNKNOWN', 'ranking_claim': False, 'cases': {}}
-    provider = Provider(binary, model, out)
+    provider = Provider(binary, model, out, alias=args.model_alias, reasoning=args.reasoning,
+                        sampling_profile=args.sampling_profile)
+    report['main_agent_generation_parameters'] = provider.generation_parameters
     core = None
     try:
         provider.start()
@@ -63,6 +77,15 @@ def main():
         record(report, out, 'real_shell_unknown_restart', lambda: unknown_restart(core))
         record(report, out, 'companion_lightweight', lambda: companion_lightweight(provider, out))
         record(report, out, 'companion_core_delegation', lambda: companion_delegation(core, out))
+        if args.public_study_protocol:
+            from scripts.public_model_eval import run_study
+            report['public_study'] = run_study(args.public_study_protocol,
+                endpoint=provider.origin + '/v1', evidence=out / 'public-study',
+                model_identity={'model_name': provider.alias, 'model_revision': args.model_revision,
+                                'model_sha256': actual, 'server_commit': args.server_commit,
+                                'server_binary_sha256': report['server_binary_sha256'],
+                                'reasoning': args.reasoning, 'context_tokens': 8192},
+                generation_parameters=provider.generation_parameters)
         save(out / 'provider-slots-final.json', provider.request('/slots'))
         (out / 'provider-metrics-final.txt').write_text(provider.request('/metrics', raw=True))
     except Exception as error:
@@ -71,6 +94,7 @@ def main():
         if core is not None:
             core.stop()
         provider.stop()
+        report['provider_processes'] = provider.measurements
         report['owned_processes_stopped'] = (core is None or core.process is None) and provider.process is None
         save(out / 'RESULTS.json', report)
     print(json.dumps(report, ensure_ascii=False), flush=True)
@@ -114,13 +138,18 @@ def record(report, out, name, operation):
 
 
 class Provider:
-    def __init__(self, binary, model, out):
+    def __init__(self, binary, model, out, *, alias='localpilot-qualified', reasoning='auto', sampling_profile='greedy'):
         self.out, self.binary, self.model = out, binary, model
         self.cache = out / 'owned-slot-cache'
         self.cache.mkdir(mode=0o700)
         self.port = port()
         self.origin = f'http://127.0.0.1:{self.port}'
-        self.alias = 'localpilot-qwen25-05b-qualified'
+        self.alias, self.reasoning = alias, reasoning
+        self.sampling_profile = sampling_profile
+        self.generation_parameters = ({'temperature': 1.0, 'top_p': 1.0,
+                                       'presence_penalty': 2.0, 'seed': 42}
+                                      if sampling_profile == 'qwen35-nonthinking' else {'temperature': 0})
+        self.measurements = []
         self.process = self.log = None
         self.opener = build_opener(ProxyHandler({}))
 
@@ -129,10 +158,14 @@ class Provider:
                    '--port', str(self.port), '--alias', self.alias, '--offline', '--no-webui',
                    '--jinja', '--ctx-size', '8192', '--parallel', '1', '--threads', '2',
                    '--threads-batch', '2', '-ngl', '0', '--cache-ram', '256', '--metrics',
-                   '--slots', '--slot-save-path', str(self.cache)]
+                   '--slots', '--slot-save-path', str(self.cache), '--reasoning', self.reasoning]
+        if self.sampling_profile == 'qwen35-nonthinking':
+            command.extend(['--temp', '1.0', '--top-p', '1.0', '--top-k', '20', '--min-p', '0.0',
+                            '--presence-penalty', '2.0', '--repeat-penalty', '1.0', '--seed', '42'])
         save(self.out / 'provider-command.json', command)
         self.log = (self.out / 'provider.log').open('a')
         self.process = subprocess.Popen(command, stdin=subprocess.DEVNULL, stdout=self.log, stderr=self.log)
+        self.started = time.monotonic()
         deadline = time.monotonic() + 90
         while time.monotonic() < deadline:
             if self.process.poll() is not None:
@@ -155,17 +188,28 @@ class Provider:
 
     def chat(self, messages, max_tokens=32):
         return self.request('/v1/chat/completions', {'model': self.alias, 'messages': messages,
-            'temperature': 0, 'max_tokens': max_tokens, 'cache_prompt': True})
+            **self.generation_parameters, 'max_tokens': max_tokens, 'cache_prompt': True})
 
     def stop(self):
         if self.process is not None:
             process, self.process = self.process, None
+            measurement = {'pid': process.pid, 'wall_seconds': time.monotonic() - self.started,
+                           'peak_rss_kib': 'UNKNOWN', 'source': '/proc/PID/status VmHWM before termination'}
+            if process.poll() is None:
+                try:
+                    for line in Path(f'/proc/{process.pid}/status').read_text().splitlines():
+                        if line.startswith('VmHWM:'):
+                            measurement['peak_rss_kib'] = int(line.split()[1])
+                except FileNotFoundError:
+                    pass
             process.terminate()
             try:
                 process.wait(timeout=15)
             except subprocess.TimeoutExpired:
                 process.kill()
                 process.wait()
+            measurement['returncode'] = process.returncode
+            self.measurements.append(measurement)
         if self.log is not None:
             self.log.close()
             self.log = None
@@ -227,11 +271,13 @@ class Core:
         for route in config['routes'].values():
             route.update(engine='v5', tool_profile='compact')
             route['budgets'] = {'max_steps': 6, 'max_tool_calls': 8, 'max_output_tokens': 512,
-                'max_token_units': 100000, 'max_subagents_per_turn': 2,
-                'max_worker_steps': 3, 'max_worker_tool_calls': 4, 'max_worker_token_units': 32768}
-            route['backend']['generation_parameters'] = {'temperature': 0}
+                'max_token_units': SessionBudgets().max_token_units, 'max_subagents_per_turn': 2,
+                'max_worker_steps': 3, 'max_worker_tool_calls': 4,
+                'max_worker_token_units': SessionBudgets().max_worker_token_units}
+            route['backend']['generation_parameters'] = dict(provider.generation_parameters)
         config['routes']['worker'] = deepcopy(config['routes']['default'])
         config['routes']['default']['cooperation'] = {'routes': ['worker'], 'optimizer': {'mode': 'local-only'}}
+        save(out / 'resolved-runtime-budgets.json', {name: route['budgets'] for name, route in config['routes'].items()})
         cli.save(self.home / 'service.json', config)
         self.env = cli.environment(self.home)
         self.env['PYTHONPATH'] = str(ROOT)
@@ -302,7 +348,11 @@ def task_summary(task):
 def file_read(core):
     task = core.finish('read', core.submit('read', 'Read fact.txt with read_file and return its contents exactly.', session=core.session('read-session')))
     summary = task_summary(task)
-    return {'passed': task['status'] == 'completed' and 'read_file' in summary['tools'] and core.marker in (summary['answer'] or ''), **summary}
+    readback = any(row['name'] == 'read_file' and row.get('status') == 'completed'
+        and (row.get('read_receipt') or {}).get('version', {}).get('path') == 'fact.txt'
+        for row in task.get('tools', []))
+    return {'passed': task['status'] == 'completed' and readback and core.marker in (summary['answer'] or ''),
+            'requested_read_observed': readback, **summary}
 
 
 def shell_task(core):
@@ -320,11 +370,18 @@ def shell_task(core):
 def child_task(core):
     task = core.finish('child', core.submit('child', 'Use delegate once with backend_preference local and read_only true. Ask the child to read fact.txt and return the complete contents. Include the child result in your final answer.', session=core.session('child-session')))
     summary = task_summary(task)
-    return {'passed': task['status'] == 'completed' and bool(task.get('subagents')) and core.marker in (summary['answer'] or ''),
+    child_read = any(child.get('status') == 'completed'
+        and any(row['name'] == 'read_file' and row.get('status') == 'completed'
+            and (row.get('read_receipt') or {}).get('version', {}).get('path') == 'fact.txt'
+            for row in child.get('receipts', []))
+        for child in task.get('subagents', []))
+    return {'passed': task['status'] == 'completed' and child_read and core.marker in (summary['answer'] or ''),
+            'requested_child_read_observed': child_read,
             'scope': 'real parent and child requests to one local model, not different-model or cloud qualification', **summary}
 
 
 def stream_cancel(core, provider):
+    started = time.monotonic()
     task = core.submit('stream-cancel', 'Write the integers from 1 to 5000, one per line.', model='companion-reasoning')
     frames, observed = [], False
     events = core.client.events(task['id'])
@@ -333,6 +390,7 @@ def stream_cancel(core, provider):
             frames.append(event)
             if event['data'].get('type') == 'runtime.event' and event['data'].get('data', {}).get('type') == 'TextDelta':
                 observed = True
+                first_text_seconds = time.monotonic() - started
                 core.client.cancel(task['id'])
                 break
     finally:
@@ -347,8 +405,10 @@ def stream_cancel(core, provider):
     except HTTPError as error:
         cursor_status = error.code
         error.close()
-    return {'passed': observed and terminal['status'] == 'cancelled' and terminal['quiescent'],
+    return {'passed': observed and terminal['status'] == 'cancelled' and terminal['quiescent'] and cursor_status == 409,
             'sse_text_observed': observed, 'provider_alive': provider.process.poll() is None,
+            'submit_to_first_text_seconds': first_text_seconds if observed else 'UNKNOWN',
+            'first_text_scope': 'Core submit through first SSE TextDelta, including admission and queue; not provider-only TTFT',
             'invalid_cursor_http_status': cursor_status, 'provider_slots': slots, **task_summary(terminal)}
 
 
@@ -426,7 +486,11 @@ def companion_delegation(core, out):
         save(out / 'companion-delegation.json', result)
         task = result.get('task', {})
         answer = (task.get('result') or {}).get('text', '')
-        return {'passed': result.get('status') == 'completed' and core.marker in answer,
+        readback = any(row['name'] == 'read_file' and row.get('status') == 'completed'
+            and (row.get('read_receipt') or {}).get('version', {}).get('path') == 'fact.txt'
+            for row in task.get('tools', []))
+        return {'passed': result.get('status') == 'completed' and readback and core.marker in answer,
+                'requested_read_observed': readback,
                 'task_status': result.get('status'), 'answer': answer,
                 'scope': 'real Companion Task API adapter plus Core and model; native control window not exercised'}
 

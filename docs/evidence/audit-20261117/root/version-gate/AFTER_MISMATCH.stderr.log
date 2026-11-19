@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/version-gate-r1/b30-mismatch-with-fixed-checker/scripts/check-candidate-versions.py", line 6, in <module>
+    assert runpy.run_path(str(root/'localpilot_service/__init__.py'))['VERSION']==core,'localpilot_service.VERSION differs from pyproject.toml'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: localpilot_service.VERSION differs from pyproject.toml

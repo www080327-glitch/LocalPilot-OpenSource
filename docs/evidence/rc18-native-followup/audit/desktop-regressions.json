@@ -1,0 +1,106 @@
+{
+  "status": "PASS",
+  "source_head": "2071edb96b6a286c0336bea9adfe99710d0439e4",
+  "source_tree": "819741f0607c758521684acc19292770a961c93a",
+  "desktop_version": "5.0.1-rc.18",
+  "start_utc": "2026-11-18T14:40:55.021550+00:00",
+  "end_utc": "2026-11-18T14:41:07.433825+00:00",
+  "source_before_after_files": 118,
+  "source_delta": [],
+  "tracked_input_diff": [],
+  "node": "v24.22.3",
+  "npm": "11.9.0",
+  "python": "3.12.14",
+  "dependency_package_entries_match_prior_rc17_lock": true,
+  "checks": [
+    {
+      "log": "npm-test.log",
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "--maxWorkers=1"
+      ],
+      "cwd": "/workspace/scratch/b0df9966d470/native-followup/desktop",
+      "start_utc": "2026-11-18T14:40:55.050814+00:00",
+      "seconds": 4.004,
+      "exit_code": 0,
+      "sha256": "12d9281678054ccfc8adaf5d2618540847ee22a7a4ab68a64261de54f2774041"
+    },
+    {
+      "log": "npm-build.log",
+      "command": [
+        "npm",
+        "run",
+        "build",
+        "--",
+        "--outDir",
+        "/workspace/scratch/b0df9966d470/nov18-validation/desktop-final/dist"
+      ],
+      "cwd": "/workspace/scratch/b0df9966d470/native-followup/desktop",
+      "start_utc": "2026-11-18T14:40:59.056919+00:00",
+      "seconds": 8.069,
+      "exit_code": 0,
+      "sha256": "522131c14f342d52669f38d58e0c90db978d1e574f49f13ff5cdc38af7d93017"
+    },
+    {
+      "log": "candidate-versions.log",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "scripts/check-candidate-versions.py"
+      ],
+      "cwd": "/workspace/scratch/b0df9966d470/native-followup",
+      "start_utc": "2026-11-18T14:41:07.126593+00:00",
+      "seconds": 0.044,
+      "exit_code": 0,
+      "sha256": "e35901728ebdfba55e12cf805a1954b22cd55267e0ddede0bc84e37962fff25f"
+    },
+    {
+      "log": "desktop-docs.log",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "desktop/scripts/check-docs.py"
+      ],
+      "cwd": "/workspace/scratch/b0df9966d470/native-followup",
+      "start_utc": "2026-11-18T14:41:07.171257+00:00",
+      "seconds": 0.036,
+      "exit_code": 0,
+      "sha256": "28eaa8ee490703878abfee56de33fe9080d733851c655518c6498c033f5fa87c"
+    },
+    {
+      "log": "desktop-python.log",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "desktop/tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "cwd": "/workspace/scratch/b0df9966d470/native-followup",
+      "start_utc": "2026-11-18T14:41:07.207211+00:00",
+      "seconds": 0.208,
+      "exit_code": 0,
+      "sha256": "c0cb612ccab6f90b99de3198fb7fad1889fc099f73f6e61e40d5b78b0e7dee5d"
+    }
+  ],
+  "vitest": {
+    "files_passed": 13,
+    "tests_passed": 75,
+    "exclusions": "desktop package's existing tests/ui/** exclusion; browser tests recorded separately"
+  },
+  "python_tests_passed": 11,
+  "production_build": {
+    "output": "fresh dist/ in validation directory",
+    "files": 9,
+    "modules_transformed": "1896",
+    "manifest": "dist-manifest.json"
+  },
+  "rerun_scope": "Frontend source suite, tsc/Vite production bundle, candidate metadata, desktop documentation and desktop Python tests. No Rust build, native launch or model requests in this run."
+}

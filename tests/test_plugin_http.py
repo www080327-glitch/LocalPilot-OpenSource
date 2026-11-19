@@ -15,6 +15,7 @@ from localpilot_plugins.security import digest
 class HTTPTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name).resolve()
         self.workspace = self.root / 'workspace'
         self.workspace.mkdir()
@@ -71,10 +72,14 @@ class HTTPTests(unittest.TestCase):
                 except (BrokenPipeError, ConnectionResetError):
                     pass
         self.http = ThreadingHTTPServer(('127.0.0.1', 0), Handler)
+        self.addCleanup(self.http.server_close)
         self.http.daemon_threads = True
         self.thread = threading.Thread(target=self.http.serve_forever, daemon=True)
         self.thread.start()
+        self.addCleanup(self.thread.join, 2)
+        self.addCleanup(self.http.shutdown)
         self.manager = PluginManager(self.root / 'plugins')
+        self.addCleanup(self.manager.close)
         self.manager.credential('test-key', self.state['bearer'])
         self.manager.add({'id': 'http', 'transport': 'streamable-http',
             'url': 'http://127.0.0.1:' + str(self.http.server_port) + '/mcp', 'bearer_credential': 'test-key', 'timeout': 3})
@@ -84,14 +89,7 @@ class HTTPTests(unittest.TestCase):
         self.manager.enable('http')
         self.registry = create_default_registry(self.workspace, permission_mode='approve-all')
         attach(self.registry, self.manager.home)
-
-    def tearDown(self):
-        self.registry.plugin_manager.close()
-        self.manager.close()
-        self.http.shutdown()
-        self.http.server_close()
-        self.thread.join(2)
-        self.temp.cleanup()
+        self.addCleanup(self.registry.plugin_manager.close)
 
     def invoke(self):
         return self.registry.call(tool_name('http', 'tool', 'echo'), {'text': 'public'}, approved=True)

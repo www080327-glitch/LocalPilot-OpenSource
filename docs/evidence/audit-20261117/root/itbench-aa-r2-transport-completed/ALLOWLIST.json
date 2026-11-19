@@ -1,0 +1,2215 @@
+{
+  "scope": "Only the explicitly listed public evidence files; no workspace, core-private, key, raw references or SQLite.",
+  "files": [
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/study.json",
+      "target": "study.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/source.json",
+      "target": "source.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/runner.json",
+      "target": "runner.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/CONTINUATION.json",
+      "target": "CONTINUATION.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/RESUME_AFTER_SESSION_LOSS.json",
+      "target": "RESUME_AFTER_SESSION_LOSS.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/transport-continuation-protocol.json",
+      "target": "transport-continuation-protocol.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/RUN_SUMMARY.json",
+      "target": "RUN_SUMMARY.json.gz",
+      "transform": "gzip_mtime_0"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/original-RUN_SUMMARY.json",
+      "target": "original-RUN_SUMMARY.json.gz",
+      "transform": "gzip_mtime_0"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-001/agent_output.json",
+      "target": "case-001/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-001/candidate-progress.json",
+      "target": "case-001/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-001/candidate-started.json",
+      "target": "case-001/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-001/candidate-task.json.gz",
+      "target": "case-001/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-001/case-result.json",
+      "target": "case-001/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-001/core.log",
+      "target": "case-001/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-001/input-manifest.json",
+      "target": "case-001/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-001/prompt.txt",
+      "target": "case-001/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-001/resolved-runtime-budgets.json",
+      "target": "case-001/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-002/agent_output.json",
+      "target": "case-002/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-002/candidate-progress.json",
+      "target": "case-002/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-002/candidate-started.json",
+      "target": "case-002/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-002/candidate-task.json.gz",
+      "target": "case-002/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-002/case-result.json",
+      "target": "case-002/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-002/core.log",
+      "target": "case-002/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-002/input-manifest.json",
+      "target": "case-002/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-002/prompt.txt",
+      "target": "case-002/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-002/resolved-runtime-budgets.json",
+      "target": "case-002/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-003/agent_output.json",
+      "target": "case-003/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-003/candidate-progress.json",
+      "target": "case-003/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-003/candidate-started.json",
+      "target": "case-003/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-003/candidate-task.json.gz",
+      "target": "case-003/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-003/case-result.json",
+      "target": "case-003/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-003/core.log",
+      "target": "case-003/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-003/input-manifest.json",
+      "target": "case-003/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-003/prompt.txt",
+      "target": "case-003/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-003/resolved-runtime-budgets.json",
+      "target": "case-003/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-004/candidate-progress.json",
+      "target": "case-004/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-004/candidate-started.json",
+      "target": "case-004/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-004/candidate-task.json.gz",
+      "target": "case-004/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-004/case-result.json",
+      "target": "case-004/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-004/core.log",
+      "target": "case-004/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-004/input-manifest.json",
+      "target": "case-004/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-004/prompt.txt",
+      "target": "case-004/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-004/resolved-runtime-budgets.json",
+      "target": "case-004/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-005/candidate-progress.json",
+      "target": "case-005/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-005/candidate-started.json",
+      "target": "case-005/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-005/candidate-task.json.gz",
+      "target": "case-005/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-005/case-result.json",
+      "target": "case-005/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-005/core.log",
+      "target": "case-005/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-005/input-manifest.json",
+      "target": "case-005/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-005/prompt.txt",
+      "target": "case-005/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-005/resolved-runtime-budgets.json",
+      "target": "case-005/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-006/agent_output.json",
+      "target": "case-006/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-006/candidate-progress.json",
+      "target": "case-006/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-006/candidate-started.json",
+      "target": "case-006/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-006/candidate-task.json.gz",
+      "target": "case-006/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-006/case-result.json",
+      "target": "case-006/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-006/core.log",
+      "target": "case-006/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-006/input-manifest.json",
+      "target": "case-006/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-006/prompt.txt",
+      "target": "case-006/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-006/resolved-runtime-budgets.json",
+      "target": "case-006/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-007/agent_output.json",
+      "target": "case-007/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-007/candidate-progress.json",
+      "target": "case-007/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-007/candidate-started.json",
+      "target": "case-007/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-007/candidate-task.json.gz",
+      "target": "case-007/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-007/case-result.json",
+      "target": "case-007/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-007/core.log",
+      "target": "case-007/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-007/input-manifest.json",
+      "target": "case-007/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-007/prompt.txt",
+      "target": "case-007/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-007/resolved-runtime-budgets.json",
+      "target": "case-007/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-008/agent_output.json",
+      "target": "case-008/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-008/candidate-progress.json",
+      "target": "case-008/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-008/candidate-started.json",
+      "target": "case-008/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-008/candidate-task.json.gz",
+      "target": "case-008/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-008/case-result.json",
+      "target": "case-008/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-008/core.log",
+      "target": "case-008/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-008/input-manifest.json",
+      "target": "case-008/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-008/prompt.txt",
+      "target": "case-008/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-008/resolved-runtime-budgets.json",
+      "target": "case-008/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-009/agent_output.json",
+      "target": "case-009/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-009/candidate-progress.json",
+      "target": "case-009/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-009/candidate-started.json",
+      "target": "case-009/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-009/candidate-task.json.gz",
+      "target": "case-009/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-009/case-result.json",
+      "target": "case-009/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-009/core.log",
+      "target": "case-009/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-009/input-manifest.json",
+      "target": "case-009/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-009/prompt.txt",
+      "target": "case-009/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-009/resolved-runtime-budgets.json",
+      "target": "case-009/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-010/agent_output.json",
+      "target": "case-010/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-010/candidate-progress.json",
+      "target": "case-010/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-010/candidate-started.json",
+      "target": "case-010/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-010/candidate-task.json.gz",
+      "target": "case-010/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-010/case-result.json",
+      "target": "case-010/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-010/core.log",
+      "target": "case-010/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-010/input-manifest.json",
+      "target": "case-010/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-010/prompt.txt",
+      "target": "case-010/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-010/resolved-runtime-budgets.json",
+      "target": "case-010/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-011/agent_output.json",
+      "target": "case-011/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-011/candidate-progress.json",
+      "target": "case-011/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-011/candidate-started.json",
+      "target": "case-011/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-011/candidate-task.json.gz",
+      "target": "case-011/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-011/case-result.json",
+      "target": "case-011/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-011/core.log",
+      "target": "case-011/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-011/input-manifest.json",
+      "target": "case-011/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-011/prompt.txt",
+      "target": "case-011/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-011/resolved-runtime-budgets.json",
+      "target": "case-011/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-012/agent_output.json",
+      "target": "case-012/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-012/candidate-progress.json",
+      "target": "case-012/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-012/candidate-started.json",
+      "target": "case-012/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-012/candidate-task.json.gz",
+      "target": "case-012/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-012/case-result.json",
+      "target": "case-012/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-012/core.log",
+      "target": "case-012/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-012/input-manifest.json",
+      "target": "case-012/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-012/prompt.txt",
+      "target": "case-012/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-012/resolved-runtime-budgets.json",
+      "target": "case-012/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-013/agent_output.json",
+      "target": "case-013/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-013/candidate-progress.json",
+      "target": "case-013/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-013/candidate-started.json",
+      "target": "case-013/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-013/candidate-task.json.gz",
+      "target": "case-013/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-013/case-result.json",
+      "target": "case-013/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-013/core.log",
+      "target": "case-013/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-013/input-manifest.json",
+      "target": "case-013/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-013/prompt.txt",
+      "target": "case-013/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-013/resolved-runtime-budgets.json",
+      "target": "case-013/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-014/agent_output.json",
+      "target": "case-014/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-014/candidate-progress.json",
+      "target": "case-014/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-014/candidate-started.json",
+      "target": "case-014/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-014/candidate-task.json.gz",
+      "target": "case-014/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-014/case-result.json",
+      "target": "case-014/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-014/core.log",
+      "target": "case-014/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-014/input-manifest.json",
+      "target": "case-014/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-014/prompt.txt",
+      "target": "case-014/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-014/resolved-runtime-budgets.json",
+      "target": "case-014/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-015/agent_output.json",
+      "target": "case-015/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-015/candidate-progress.json",
+      "target": "case-015/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-015/candidate-started.json",
+      "target": "case-015/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-015/candidate-task.json.gz",
+      "target": "case-015/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-015/case-result.json",
+      "target": "case-015/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-015/core.log",
+      "target": "case-015/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-015/input-manifest.json",
+      "target": "case-015/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-015/prompt.txt",
+      "target": "case-015/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-015/resolved-runtime-budgets.json",
+      "target": "case-015/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-016/agent_output.json",
+      "target": "case-016/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-016/candidate-progress.json",
+      "target": "case-016/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-016/candidate-started.json",
+      "target": "case-016/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-016/candidate-task.json.gz",
+      "target": "case-016/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-016/case-result.json",
+      "target": "case-016/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-016/core.log",
+      "target": "case-016/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-016/input-manifest.json",
+      "target": "case-016/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-016/prompt.txt",
+      "target": "case-016/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-016/resolved-runtime-budgets.json",
+      "target": "case-016/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-017/agent_output.json",
+      "target": "case-017/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-017/candidate-progress.json",
+      "target": "case-017/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-017/candidate-started.json",
+      "target": "case-017/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-017/candidate-task.json.gz",
+      "target": "case-017/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-017/case-result.json",
+      "target": "case-017/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-017/core.log",
+      "target": "case-017/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-017/input-manifest.json",
+      "target": "case-017/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-017/prompt.txt",
+      "target": "case-017/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-017/resolved-runtime-budgets.json",
+      "target": "case-017/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-018/agent_output.json",
+      "target": "case-018/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-018/candidate-progress.json",
+      "target": "case-018/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-018/candidate-started.json",
+      "target": "case-018/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-018/candidate-task.json.gz",
+      "target": "case-018/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-018/case-result.json",
+      "target": "case-018/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-018/core.log",
+      "target": "case-018/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-018/input-manifest.json",
+      "target": "case-018/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-018/prompt.txt",
+      "target": "case-018/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-018/resolved-runtime-budgets.json",
+      "target": "case-018/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-019/agent_output.json",
+      "target": "case-019/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-019/candidate-progress.json",
+      "target": "case-019/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-019/candidate-started.json",
+      "target": "case-019/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-019/candidate-task.json.gz",
+      "target": "case-019/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-019/case-result.json",
+      "target": "case-019/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-019/core.log",
+      "target": "case-019/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-019/input-manifest.json",
+      "target": "case-019/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-019/prompt.txt",
+      "target": "case-019/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-019/resolved-runtime-budgets.json",
+      "target": "case-019/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-020/agent_output.json",
+      "target": "case-020/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-020/candidate-progress.json",
+      "target": "case-020/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-020/candidate-started.json",
+      "target": "case-020/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-020/candidate-task.json.gz",
+      "target": "case-020/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-020/case-result.json",
+      "target": "case-020/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-020/core.log",
+      "target": "case-020/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-020/input-manifest.json",
+      "target": "case-020/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-020/prompt.txt",
+      "target": "case-020/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-020/resolved-runtime-budgets.json",
+      "target": "case-020/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-021/agent_output.json",
+      "target": "case-021/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-021/candidate-progress.json",
+      "target": "case-021/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-021/candidate-started.json",
+      "target": "case-021/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-021/candidate-task.json.gz",
+      "target": "case-021/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-021/case-result.json",
+      "target": "case-021/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-021/core.log",
+      "target": "case-021/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-021/input-manifest.json",
+      "target": "case-021/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-021/prompt.txt",
+      "target": "case-021/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-021/resolved-runtime-budgets.json",
+      "target": "case-021/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-022/agent_output.json",
+      "target": "case-022/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-022/candidate-progress.json",
+      "target": "case-022/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-022/candidate-started.json",
+      "target": "case-022/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-022/candidate-task.json.gz",
+      "target": "case-022/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-022/case-result.json",
+      "target": "case-022/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-022/core.log",
+      "target": "case-022/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-022/input-manifest.json",
+      "target": "case-022/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-022/prompt.txt",
+      "target": "case-022/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-022/resolved-runtime-budgets.json",
+      "target": "case-022/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-023/candidate-progress.json",
+      "target": "case-023/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-023/candidate-started.json",
+      "target": "case-023/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-023/candidate-task.json.gz",
+      "target": "case-023/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-023/case-result.json",
+      "target": "case-023/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-023/core.log",
+      "target": "case-023/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-023/input-manifest.json",
+      "target": "case-023/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-023/prompt.txt",
+      "target": "case-023/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-023/resolved-runtime-budgets.json",
+      "target": "case-023/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-024/candidate-progress.json",
+      "target": "case-024/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-024/candidate-started.json",
+      "target": "case-024/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-024/candidate-task.json.gz",
+      "target": "case-024/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-024/case-result.json",
+      "target": "case-024/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-024/core.log",
+      "target": "case-024/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-024/input-manifest.json",
+      "target": "case-024/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-024/prompt.txt",
+      "target": "case-024/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-024/resolved-runtime-budgets.json",
+      "target": "case-024/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-025/candidate-progress.json",
+      "target": "case-025/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-025/candidate-started.json",
+      "target": "case-025/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-025/case-result.json",
+      "target": "case-025/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-025/core.log",
+      "target": "case-025/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-025/input-manifest.json",
+      "target": "case-025/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-025/prompt.txt",
+      "target": "case-025/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-025/resolved-runtime-budgets.json",
+      "target": "case-025/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-026/agent_output.json",
+      "target": "case-026/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-026/candidate-progress.json",
+      "target": "case-026/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-026/candidate-started.json",
+      "target": "case-026/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-026/candidate-task.json.gz",
+      "target": "case-026/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-026/case-result.json",
+      "target": "case-026/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-026/core.log",
+      "target": "case-026/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-026/input-manifest.json",
+      "target": "case-026/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-026/prompt.txt",
+      "target": "case-026/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-026/resolved-runtime-budgets.json",
+      "target": "case-026/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-027/agent_output.json",
+      "target": "case-027/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-027/candidate-progress.json",
+      "target": "case-027/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-027/candidate-started.json",
+      "target": "case-027/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-027/candidate-task.json.gz",
+      "target": "case-027/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-027/case-result.json",
+      "target": "case-027/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-027/core.log",
+      "target": "case-027/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-027/input-manifest.json",
+      "target": "case-027/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-027/prompt.txt",
+      "target": "case-027/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-027/resolved-runtime-budgets.json",
+      "target": "case-027/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-028/agent_output.json",
+      "target": "case-028/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-028/candidate-progress.json",
+      "target": "case-028/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-028/candidate-started.json",
+      "target": "case-028/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-028/candidate-task.json.gz",
+      "target": "case-028/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-028/case-result.json",
+      "target": "case-028/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-028/core.log",
+      "target": "case-028/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-028/input-manifest.json",
+      "target": "case-028/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-028/prompt.txt",
+      "target": "case-028/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-028/resolved-runtime-budgets.json",
+      "target": "case-028/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-029/agent_output.json",
+      "target": "case-029/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-029/candidate-progress.json",
+      "target": "case-029/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-029/candidate-started.json",
+      "target": "case-029/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-029/candidate-task.json.gz",
+      "target": "case-029/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-029/case-result.json",
+      "target": "case-029/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-029/core.log",
+      "target": "case-029/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-029/input-manifest.json",
+      "target": "case-029/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-029/prompt.txt",
+      "target": "case-029/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-029/resolved-runtime-budgets.json",
+      "target": "case-029/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-030/candidate-progress.json",
+      "target": "case-030/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-030/candidate-started.json",
+      "target": "case-030/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-030/candidate-task.json.gz",
+      "target": "case-030/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-030/case-result.json",
+      "target": "case-030/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-030/core.log",
+      "target": "case-030/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-030/input-manifest.json",
+      "target": "case-030/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-030/prompt.txt",
+      "target": "case-030/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-030/resolved-runtime-budgets.json",
+      "target": "case-030/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-031/agent_output.json",
+      "target": "case-031/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-031/candidate-progress.json",
+      "target": "case-031/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-031/candidate-started.json",
+      "target": "case-031/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-031/candidate-task.json.gz",
+      "target": "case-031/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-031/case-result.json",
+      "target": "case-031/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-031/core.log",
+      "target": "case-031/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-031/input-manifest.json",
+      "target": "case-031/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-031/prompt.txt",
+      "target": "case-031/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-031/resolved-runtime-budgets.json",
+      "target": "case-031/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-032/agent_output.json",
+      "target": "case-032/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-032/candidate-progress.json",
+      "target": "case-032/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-032/candidate-started.json",
+      "target": "case-032/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-032/candidate-task.json.gz",
+      "target": "case-032/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-032/case-result.json",
+      "target": "case-032/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-032/core.log",
+      "target": "case-032/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-032/input-manifest.json",
+      "target": "case-032/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-032/prompt.txt",
+      "target": "case-032/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-032/resolved-runtime-budgets.json",
+      "target": "case-032/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-033/candidate-progress.json",
+      "target": "case-033/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-033/candidate-started.json",
+      "target": "case-033/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-033/case-result.json",
+      "target": "case-033/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-033/core.log",
+      "target": "case-033/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-033/input-manifest.json",
+      "target": "case-033/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-033/prompt.txt",
+      "target": "case-033/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-033/resolved-runtime-budgets.json",
+      "target": "case-033/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-034/agent_output.json",
+      "target": "case-034/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-034/candidate-progress.json",
+      "target": "case-034/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-034/candidate-started.json",
+      "target": "case-034/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-034/candidate-task.json.gz",
+      "target": "case-034/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-034/case-result.json",
+      "target": "case-034/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-034/core.log",
+      "target": "case-034/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-034/input-manifest.json",
+      "target": "case-034/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-034/prompt.txt",
+      "target": "case-034/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-034/resolved-runtime-budgets.json",
+      "target": "case-034/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-035/candidate-progress.json",
+      "target": "case-035/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-035/candidate-started.json",
+      "target": "case-035/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-035/case-result.json",
+      "target": "case-035/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-035/core.log",
+      "target": "case-035/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-035/input-manifest.json",
+      "target": "case-035/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-035/prompt.txt",
+      "target": "case-035/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-035/resolved-runtime-budgets.json",
+      "target": "case-035/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-036/agent_output.json",
+      "target": "case-036/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-036/candidate-progress.json",
+      "target": "case-036/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-036/candidate-started.json",
+      "target": "case-036/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-036/candidate-task.json.gz",
+      "target": "case-036/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-036/case-result.json",
+      "target": "case-036/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-036/core.log",
+      "target": "case-036/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-036/input-manifest.json",
+      "target": "case-036/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-036/prompt.txt",
+      "target": "case-036/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-036/resolved-runtime-budgets.json",
+      "target": "case-036/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-037/agent_output.json",
+      "target": "case-037/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-037/candidate-progress.json",
+      "target": "case-037/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-037/candidate-started.json",
+      "target": "case-037/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-037/candidate-task.json.gz",
+      "target": "case-037/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-037/case-result.json",
+      "target": "case-037/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-037/core.log",
+      "target": "case-037/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-037/input-manifest.json",
+      "target": "case-037/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-037/prompt.txt",
+      "target": "case-037/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-037/resolved-runtime-budgets.json",
+      "target": "case-037/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-038/agent_output.json",
+      "target": "case-038/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-038/candidate-progress.json",
+      "target": "case-038/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-038/candidate-started.json",
+      "target": "case-038/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-038/candidate-task.json.gz",
+      "target": "case-038/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-038/case-result.json",
+      "target": "case-038/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-038/core.log",
+      "target": "case-038/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-038/input-manifest.json",
+      "target": "case-038/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-038/prompt.txt",
+      "target": "case-038/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-038/resolved-runtime-budgets.json",
+      "target": "case-038/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-039/agent_output.json",
+      "target": "case-039/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-039/candidate-progress.json",
+      "target": "case-039/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-039/candidate-started.json",
+      "target": "case-039/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-039/candidate-task.json.gz",
+      "target": "case-039/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-039/case-result.json",
+      "target": "case-039/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-039/core.log",
+      "target": "case-039/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-039/input-manifest.json",
+      "target": "case-039/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-039/prompt.txt",
+      "target": "case-039/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-039/resolved-runtime-budgets.json",
+      "target": "case-039/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-040/agent_output.json",
+      "target": "case-040/agent_output.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-040/candidate-progress.json",
+      "target": "case-040/candidate-progress.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-040/candidate-started.json",
+      "target": "case-040/candidate-started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-040/candidate-task.json.gz",
+      "target": "case-040/candidate-task.json.gz",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-040/case-result.json",
+      "target": "case-040/case-result.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-040/core.log",
+      "target": "case-040/core.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-040/input-manifest.json",
+      "target": "case-040/input-manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-040/prompt.txt",
+      "target": "case-040/prompt.txt",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/case-040/resolved-runtime-budgets.json",
+      "target": "case-040/resolved-runtime-budgets.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/manifest.json",
+      "target": "grading/manifest.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-001.json",
+      "target": "grading/case-001.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-001.started.json",
+      "target": "grading/case-001.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-002.json",
+      "target": "grading/case-002.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-002.started.json",
+      "target": "grading/case-002.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-003.json",
+      "target": "grading/case-003.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-003.started.json",
+      "target": "grading/case-003.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-004.json",
+      "target": "grading/case-004.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-005.json",
+      "target": "grading/case-005.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-006.json",
+      "target": "grading/case-006.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-006.started.json",
+      "target": "grading/case-006.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-007.json",
+      "target": "grading/case-007.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-007.started.json",
+      "target": "grading/case-007.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-008.json",
+      "target": "grading/case-008.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-008.started.json",
+      "target": "grading/case-008.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-009.json",
+      "target": "grading/case-009.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-009.started.json",
+      "target": "grading/case-009.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-010.json",
+      "target": "grading/case-010.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-010.started.json",
+      "target": "grading/case-010.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-011.json",
+      "target": "grading/case-011.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-011.started.json",
+      "target": "grading/case-011.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-012.json",
+      "target": "grading/case-012.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-012.started.json",
+      "target": "grading/case-012.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-013.json",
+      "target": "grading/case-013.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-013.started.json",
+      "target": "grading/case-013.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-014.json",
+      "target": "grading/case-014.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-014.started.json",
+      "target": "grading/case-014.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-015.json",
+      "target": "grading/case-015.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-015.started.json",
+      "target": "grading/case-015.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-016.json",
+      "target": "grading/case-016.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-016.started.json",
+      "target": "grading/case-016.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-017.json",
+      "target": "grading/case-017.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-017.started.json",
+      "target": "grading/case-017.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-018.json",
+      "target": "grading/case-018.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-018.started.json",
+      "target": "grading/case-018.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-019.json",
+      "target": "grading/case-019.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-020.json",
+      "target": "grading/case-020.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-021.json",
+      "target": "grading/case-021.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-021.started.json",
+      "target": "grading/case-021.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-022.json",
+      "target": "grading/case-022.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-022.started.json",
+      "target": "grading/case-022.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-023.json",
+      "target": "grading/case-023.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-024.json",
+      "target": "grading/case-024.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-025.json",
+      "target": "grading/case-025.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-026.json",
+      "target": "grading/case-026.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-026.started.json",
+      "target": "grading/case-026.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-027.json",
+      "target": "grading/case-027.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-027.started.json",
+      "target": "grading/case-027.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-028.json",
+      "target": "grading/case-028.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-028.started.json",
+      "target": "grading/case-028.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-029.json",
+      "target": "grading/case-029.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-029.started.json",
+      "target": "grading/case-029.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-030.json",
+      "target": "grading/case-030.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-031.json",
+      "target": "grading/case-031.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-031.started.json",
+      "target": "grading/case-031.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-032.json",
+      "target": "grading/case-032.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-032.started.json",
+      "target": "grading/case-032.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-033.json",
+      "target": "grading/case-033.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-034.json",
+      "target": "grading/case-034.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-034.started.json",
+      "target": "grading/case-034.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-035.json",
+      "target": "grading/case-035.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-036.json",
+      "target": "grading/case-036.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-036.started.json",
+      "target": "grading/case-036.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-037.json",
+      "target": "grading/case-037.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-037.started.json",
+      "target": "grading/case-037.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-038.json",
+      "target": "grading/case-038.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-038.started.json",
+      "target": "grading/case-038.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-039.json",
+      "target": "grading/case-039.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-039.started.json",
+      "target": "grading/case-039.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-040.json",
+      "target": "grading/case-040.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/case-040.started.json",
+      "target": "grading/case-040.started.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-completed/grading/SUMMARY.json",
+      "target": "grading/SUMMARY.json.gz",
+      "transform": "gzip_mtime_0"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-transport-continuation-job.json",
+      "target": "transport/initial-job.json",
+      "transform": "redact_private_key_filepath"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-transport-continuation.log",
+      "target": "transport/initial.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/resume_transport_after_session_loss.py",
+      "target": "transport/resume_driver.py",
+      "transform": "redact_private_key_filepath"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-transport-native-resume-job.json",
+      "target": "transport/resume-job.json",
+      "transform": "redact_private_key_filepath"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-transport-native-resume.log",
+      "target": "transport/resume.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-transport-native-resume-exit.json",
+      "target": "transport/resume-exit.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-native-grading-r2-job.json",
+      "target": "grading-run/job.json",
+      "transform": "redact_private_key_filepath"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-native-grading-r2.log",
+      "target": "grading-run/grading.log",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-native-grading-r2-exit.json",
+      "target": "grading-run/exit.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/launch-itbench-native-grading-r2.sh",
+      "target": "grading-run/launcher.sh",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/run_qualification_job.py",
+      "target": "grading-run/supervisor.py",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-native-grading-r2-ready.json",
+      "target": "grading-run/READY.json",
+      "transform": "copy"
+    },
+    {
+      "source": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-grading-verification.json",
+      "target": "grading-run/VERIFICATION.json",
+      "transform": "copy"
+    }
+  ]
+}

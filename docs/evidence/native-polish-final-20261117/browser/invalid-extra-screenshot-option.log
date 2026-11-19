@@ -1,0 +1,9 @@
+Attempted command (additional flags beyond the prescribed command):
+LP_UI_EVIDENCE_DIR=<run>/browser npm run test:ui -- tests/ui/model-configuration.spec.ts --output=<run>/browser/test-results --trace on --screenshot on
+
+Observed output:
+> localpilot-desktop@5.0.1-rc.17 test:ui
+> playwright test tests/ui/model-configuration.spec.ts --output=<run>/browser/test-results --trace on --screenshot on
+error: unknown option '--screenshot'
+
+The unsupported option was removed. The exact requested command then passed both page tests; a separate trace-enabled run also passed and retained screencast frames inside each trace.zip.

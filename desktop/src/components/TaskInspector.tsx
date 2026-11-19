@@ -96,7 +96,7 @@ export function TaskInspector({
       <div className="inspector-body">
         <div className="task-overview">
           <div className="section-eyebrow">
-            {preview ? "SIMULATED TASK" : "LIVE WORKSPACE"}
+            {preview ? "预览任务" : "实时任务"}
           </div>
           <div className="overview-heading">
             <h2>{currentTask ? "每一步，都有依据。" : "准备好开始"}</h2>
@@ -174,7 +174,7 @@ export function TaskInspector({
                 任务计划
                 <span>
                   {plans.length
-                    ? `${plans.filter((p) => p.status === "completed").length}/${plans.length}`
+                    ? `${plans.filter(goalDone).length}/${plans.length}`
                     : ""}
                 </span>
               </h3>
@@ -183,9 +183,9 @@ export function TaskInspector({
                   {plans.map((p, i) => (
                     <li key={i}>
                       <span
-                        className={`plan-number ${p.status === "completed" ? "done" : ""}`}
+                        className={`plan-number ${goalDone(p) ? "done" : ""}`}
                       >
-                        {p.status === "completed" ? <Check size={11} /> : i + 1}
+                        {goalDone(p) ? <Check size={11} /> : i + 1}
                       </span>
                       <span>
                         {p.title ||
@@ -606,4 +606,8 @@ export function TaskInspector({
       </footer>
     </aside>
   );
+}
+
+function goalDone(goal: Json) {
+  return goal.status === "done" || goal.status === "completed";
 }

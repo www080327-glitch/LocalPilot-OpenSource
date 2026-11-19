@@ -1,14 +1,53 @@
-"""Explicit restore of private paths and the reviewed pre-catalog Skill schema.
+"""Restore declared paths/Skills changes and retain a prior default worker budget.
 
 Full configuration hashes still match after reversing the declared changes.
 Historical checkpoints, tool receipts and UNKNOWN effects are never rewritten.
 """
 from copy import deepcopy
+from dataclasses import replace
 import json
 from pathlib import Path
 import re
 from agent.persistence import configuration, digest, dumps
 from localpilot_plugins.security import digest as skill_digest
+
+
+def worker_budget_compatibility(prior_migration=None):
+    """Keep an existing Session's former default; new Sessions use the new ceiling."""
+    def preserve(runtime, payload, migration=None, host_configuration=None):
+        if (not getattr(runtime, '_worker_budget_defaulted', False)
+                or runtime.budgets.max_worker_token_units != 131072):
+            return False
+        if 'runtime' in payload and payload['runtime']['budgets']['max_worker_token_units'] != 32768:
+            return False
+        previous = deepcopy(configuration(runtime) if host_configuration is None else host_configuration)
+        previous['budgets']['max_worker_token_units'] = 32768
+        current_budget = runtime.budgets
+        runtime.budgets = replace(current_budget, max_worker_token_units=32768)
+        accepted = False
+        try:
+            options = {} if host_configuration is None else {'host_configuration': previous}
+            accepted = digest(dumps(previous)) == payload['configuration'] or bool(
+                migration and migration(runtime, payload, **options))
+        finally:
+            if not accepted:
+                runtime.budgets = current_budget
+        if accepted:
+            runtime._legacy_worker_budget_preserved = True
+        return accepted
+
+    def matches(runtime, payload):
+        return preserve(runtime, payload, prior_migration) or bool(prior_migration and prior_migration(runtime, payload))
+
+    def historical(runtime, payload, *, host_configuration):
+        prior = getattr(prior_migration, 'historical_child_paths', None)
+        return preserve(runtime, payload, prior, host_configuration) or bool(
+            prior and prior(runtime, payload, host_configuration=host_configuration))
+
+    matches.checkpoint_point = ('host_restore_configuration_migrated' if prior_migration
+                               else 'host_restore_worker_default_preserved')
+    matches.historical_child_paths = historical
+    return matches
 
 
 def path_migration(spec):

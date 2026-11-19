@@ -1,8 +1,13 @@
 """Desktop controls: real private files, scripted process/platform observations."""
 import hashlib
+import io
 import json
+import os
+import platform
+import tarfile
 import tempfile
 import sys
+import zipfile
 from pathlib import Path
 import unittest
 from unittest.mock import patch
@@ -24,6 +29,46 @@ class ChannelProductTests(unittest.TestCase):
                 self.assertFalse(result['connected'])
             launch.assert_not_called(); install.assert_not_called()
         self.assertFalse((self.home / 'message-platforms').exists())
+
+    def test_confirmed_component_preparation_uses_bundled_runtime_and_wheel_in_one_step(self):
+        bundle = self.home.parent / 'bundle with spaces'
+        (bundle / 'runtime').mkdir(parents=True)
+        (bundle / 'channel-runtime').mkdir()
+        (bundle / 'wheels').mkdir()
+        runtime = gui.channel_runtime
+        name, _ = runtime.runtime_archive()
+        node_archive = bundle / 'channel-runtime' / name
+        node = (f'#!{sys.executable}\n'
+                'print(\'{"version":"22.23.4","ok":true}\')\n').encode()
+        with tarfile.open(node_archive, 'w:gz') as archive:
+            for relative, data in [('bin/node', node), ('LICENSE', b'synthetic runtime fixture')]:
+                entry = tarfile.TarInfo(name.removesuffix('.tar.gz') + '/' + relative)
+                entry.size = len(data)
+                archive.addfile(entry, io.BytesIO(data))
+        source = Path(__file__).resolve().parents[2]
+        wheel = bundle / 'wheels/localpilot_channels-0.1.0a3-py3-none-any.whl'
+        with zipfile.ZipFile(wheel, 'w') as archive:
+            archive.writestr('localpilot_channels-0.1.0a3.dist-info/METADATA',
+                'Metadata-Version: 2.1\nName: localpilot-channels\nVersion: 0.1.0a3\n')
+            for path in (source / 'localpilot_channels').glob('*.py'):
+                archive.write(path, 'localpilot_channels/' + path.name)
+            for directory in ('channel-common', 'qq-bridge', 'wechat-ilink-bridge'):
+                for path in (source / 'integrations' / directory).glob('*.mjs'):
+                    archive.write(path, 'localpilot_channels-0.1.0a3.data/data/share/localpilot/channels/' + directory + '/' + path.name)
+        (bundle / 'verified-modules.json').write_text(json.dumps({
+            'wheel_hashes': {wheel.name: runtime.digest(wheel)}}))
+        archives = runtime.ARCHIVES if platform.system() == 'Darwin' else runtime.LINUX_ARCHIVES
+        hub, _ = gui.roots(self.home, 'wechat', True)
+        with patch.object(sys, 'prefix', str(bundle / 'runtime')), patch.dict(
+                archives, {platform.machine(): (name, runtime.digest(node_archive))}):
+            installed_node = gui.install_component(self.home, hub, {})
+            self.assertEqual(installed_node, self.home / 'channel-node/node')
+            root = gui.runtime_root(hub, {})
+            self.assertTrue(channels.installed(root))
+            self.assertTrue(gui.component_compatible(root, self.home))
+        self.assertIn('LP_CHANNEL_INGRESS', gui.credentials(hub))
+        self.assertEqual((hub / 'credentials.json').stat().st_mode & 0o777, 0o600)
+        self.assertFalse((root / 'configuration.json').exists())
     @unittest.skipUnless(sys.platform=='darwin','macOS fixed system alias')
     def test_private_channel_state_under_system_tmp_preserves_owner_only_files(self):
         with tempfile.TemporaryDirectory(dir='/tmp') as directory:
@@ -136,6 +181,18 @@ class ChannelProductTests(unittest.TestCase):
         hub,_=gui.roots(self.home,'qq',True)
         channels.save(hub/'settings.json',{'generation':'/tmp/outside'})
         with self.assertRaisesRegex(ValueError,'GENERATION_INVALID'):self.call('status')
+
+    def test_private_json_validates_permissions_and_hardlinks_at_read_boundary(self):
+        path = self.home / 'settings.json'
+        channels.save(path, {'fixture': True})
+        self.assertEqual(gui.private_json(path), {'fixture': True})
+        path.chmod(0o644)
+        with self.assertRaises(ValueError):
+            gui.private_json(path)
+        path.chmod(0o600)
+        os.link(path, self.home / 'linked.json')
+        with self.assertRaises(ValueError):
+            gui.private_json(path)
     def test_carry_transport_keeps_tombstones_and_unknown_without_replaying(self):
         sender='q_'+'a'*64;mid='q_m_'+'b'*64
         data={'version':1,'appId':'12345','peers':[sender],'blocked':{},'messages':{mid:{'sender':sender,'status':'unknown','delivery':'unknown'}}}
@@ -180,6 +237,24 @@ class ChannelProductTests(unittest.TestCase):
             self.call('configure',{**args,'allow_cloud':True})
             route=next(v for k,v in change.call_args.args[2]['routes'].items() if k.startswith('channel-'))
             self.assertEqual(route['cloud_egress'],'REQUIRES_APPROVAL');self.assertEqual(route['cloud_egress_paths'],[])
+
+    def test_openai_channel_is_cloud_and_keeps_explicit_egress_consent(self):
+        hub,state,sender=self.prepare_binding()
+        config=gui.private_json(self.home/'service.json')
+        config['routes']['openai-worker']={'backend':{'kind':'openai','model':'operator-selected-model',
+            'api_key_env':'LOCALPILOT_OPENAI_KEY'},'workspace':'/unused'}
+        channels.save(self.home/'service.json',config)
+        selected=next(row for row in gui.core_models(self.home) if row['id']=='openai-worker')
+        self.assertTrue(selected['cloud'])
+        args={'senders':[sender],'model':'openai-worker','allow_write':False,'confirmed':True}
+        with patch.object(channels,'main',return_value={'status':'stopped'}),patch.object(gui,'change_core') as change:
+            with self.assertRaisesRegex(ValueError,'CLOUD_REQUIRES'):self.call('configure',args)
+            change.assert_not_called()
+            self.call('configure',{**args,'allow_cloud':True})
+            route=next(v for k,v in change.call_args.args[2]['routes'].items() if k.startswith('channel-'))
+        self.assertEqual(route['backend'],config['routes']['openai-worker']['backend'])
+        self.assertEqual(route['cloud_egress'],'REQUIRES_APPROVAL')
+        self.assertEqual(route['cloud_egress_paths'],[])
     def test_disconnect_rotates_to_read_only_and_keeps_host_history_scope(self):
         hub,state_dir,sender=self.prepare_binding()
         captures=[]

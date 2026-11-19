@@ -1,0 +1,66 @@
+{
+  "status": "PASS_BOUNDED_SOURCE_AND_EVIDENCE_REVIEW",
+  "worktree": "/workspace/scratch/b0df9966d470/rc20-runtime",
+  "head_at_review": "afac10dea10544abe03a63669f7dd9a3d55cbc7f",
+  "source_sha256": {
+    "agent/checkpoint_blocks.py": "0571d35ea4fa3fbb328dc29fcb315121e31d6b50cf1306430778286fe487971b",
+    "agent/persistence.py": "03fd127119c52b528dc8b7080a1ea51aa90b6e050f528b774be30c8de4d0446d",
+    "agent/session_workers.py": "09230fc56d03b3443ea52c510d53d5a19598427e2dd17381ce4f21efb98c840c",
+    "localpilot_api/service.py": "cc24cfebc4b68840652a06c9aa5a0917671cd3d59f5b864285ce8fdc12719c9d",
+    "tests/test_incremental_checkpoints.py": "4f8b29287eb7b9e3077d65c641d251afde581c7041fe2a9b8d9ea172cdea11bf",
+    "suite/localpilot_suite/upgrades.py": "a07690940d1e09cf00228622b996ba24fd70b093ca6cf415674aa0681ea2db69"
+  },
+  "source_scope": "Incremental checkpoint save/load, real mutation sites, transactional legacy materialization and Suite switch ordering; no source edits by this reviewer.",
+  "findings_addressed": [
+    {
+      "issue": "Parent subagent receipts hid a full deep-copy/serialization of child history at each boundary.",
+      "resolution": "Internal subagent receipts share canonical child history; persistence shallow-copies small record state and blocks large receipt fields. The actual 32-read synchronous-child regression checks source identity, row counts and the exact reconstructed snapshot."
+    },
+    {
+      "issue": "Retired streams/sessions were retained by strong-reference cache and stale block rows.",
+      "resolution": "Each committed batch prunes unused current-session streams; successful session archiving releases that session memory cache; store close clears caches. The actual max_sessions=1 test creates and closes 4 sessions and reads archived history."
+    },
+    {
+      "issue": "Initial DDL committed before schema marker update, leaving new version0 database unreopenable after an intervening failure.",
+      "resolution": "Schema3/4 assignment now commits inside the existing DDL transaction."
+    },
+    {
+      "issue": "Legacy conversion materialized all historical session trees at once and rewrote already-full checkpoints.",
+      "resolution": "Verified rows are processed one at a time; only block-manifest heads convert; existing full heads/journal remain unchanged. Schema3 exit is a no-op. Mixed-format actual SQLite test verifies exact old head/journal preservation."
+    },
+    {
+      "issue": "Negative-step list assignment marked the wrong suffix.",
+      "resolution": "Dirty position uses minimum affected index; real materialize roundtrip test includes reverse slice assignment."
+    }
+  ],
+  "checks": [
+    "Only host BlockReference instances become manifest leaves; arbitrary user JSON keys cannot become references.",
+    "Changed suffix items are encoded before envelope serialization; unchanged canonical message/receipt bodies are not fully snapshotted before splitting.",
+    "Actual message/receipt entries are stable after append: backend construction and Hybrid projection copies receive mutations; canonical originals are read-only in inspected paths.",
+    "Queue handling at recorded-receipt boundary and existing restore_runtime semantic/recovery paths remain intact.",
+    "Manifest, changed block rows, intent/receipt state, journal revision and schema4 commit in one existing transaction.",
+    "Legacy conversion verifies block order, item digests, chained heads and counts; appends legacy_materialized revision instead of overwriting old journal evidence; sets3 and removes blocks atomically.",
+    "Suite executes current Core helper only after services stop, before applicable wheel/Channels/APP switching; failed conversion prevents switching and never restores an old backup."
+  ],
+  "reviewed_executed_evidence": {
+    "targeted": "rc20-runtime/incremental-r3.log: 121 run, 121 passed, 20.082 seconds; includes 7 new incremental tests.",
+    "crash": "Actual apply_patch writes ONCE, then receipt commit fails; actual RC18 rejects schema 4; candidate helper converts; actual RC18 preserves UNKNOWN_BLOCKED and denies continue with 0 provider requests, unchanged file mtime and original journal rows.",
+    "crash_logs": [
+      "rc20-runtime/crash-write.log",
+      "rc20-runtime/crash-old-refusal.log",
+      "rc20-runtime/crash-materialize.log",
+      "rc20-runtime/crash-old-unknown-r1.log",
+      "rc20-runtime/crash-old-unknown-r2.log"
+    ],
+    "measurement_harness": "The exact RC19 96-read input, budgets, fixture contents and model configuration are preserved. The diff adds only write counters and normal-stop/export timing.",
+    "measurement": "rc20-runtime/long-turn-case-r2/measurements.json"
+  },
+  "remaining_scope_limits": [
+    "No new paid model calls, physical GUI acceptance or full-suite claim from this review.",
+    "serialized_bytes counts JSON payload bytes submitted to checkpoint/block rows, not physical WAL or disk bytes.",
+    "Cold restore still materializes complete active session state before existing restore_runtime; this does not establish bounded startup RAM.",
+    "Public snapshots, archive creation and explicit old-format conversion intentionally materialize full session data; TaskRecord final result capture still has a real completion-boundary cost.",
+    "The 96-read timing is one observed run, not a statistical performance or 1,000-receipt guarantee."
+  ],
+  "remaining_concrete_blockers": []
+}

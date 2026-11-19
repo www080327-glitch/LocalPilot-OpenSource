@@ -1,0 +1,113 @@
+{
+  "name": "regressions",
+  "description": "Core、Companion、Suite 全量原始结果与源码前后清单",
+  "archive": "regressions.tar.gz",
+  "sha256": "120d0efb1cf6c095926f25fadfbcc6209e31b34a0ce63b951ff02879fa686f7c",
+  "bytes": 318720,
+  "manifest": "regressions.MANIFEST.json",
+  "files_count": 17,
+  "files": [
+    {
+      "path": "REGRESSION_SUMMARY.json",
+      "bytes": 1026,
+      "original_sha256": "001184390a8872a4f9df4aac3a949669d32de3853707608b3d79acebb9191dab",
+      "public_sha256": "001184390a8872a4f9df4aac3a949669d32de3853707608b3d79acebb9191dab"
+    },
+    {
+      "path": "regressions/companion-r1/RESULTS.json",
+      "bytes": 8863,
+      "original_sha256": "e4b612cb0a29b935ee6aa67dfa65229c41b4b5b6a59470b5e3af9ece3b4ddd1a",
+      "public_sha256": "e4b612cb0a29b935ee6aa67dfa65229c41b4b5b6a59470b5e3af9ece3b4ddd1a"
+    },
+    {
+      "path": "regressions/companion-r1/runner.py",
+      "bytes": 3110,
+      "original_sha256": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533",
+      "public_sha256": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533"
+    },
+    {
+      "path": "regressions/companion-r1/source-after.json",
+      "bytes": 88880,
+      "original_sha256": "3f899764c5f9eaa51bbf036ca9e754c857eab738f0978c8c39bf666122874abc",
+      "public_sha256": "3f899764c5f9eaa51bbf036ca9e754c857eab738f0978c8c39bf666122874abc"
+    },
+    {
+      "path": "regressions/companion-r1/source-before.json",
+      "bytes": 88880,
+      "original_sha256": "3f899764c5f9eaa51bbf036ca9e754c857eab738f0978c8c39bf666122874abc",
+      "public_sha256": "3f899764c5f9eaa51bbf036ca9e754c857eab738f0978c8c39bf666122874abc"
+    },
+    {
+      "path": "regressions/companion-r1/tests.log",
+      "bytes": 119652,
+      "original_sha256": "46eb9236529fabbbfefdfd0a28a8ba134c37a9152dbbba382e0541f13551f8e5",
+      "public_sha256": "46eb9236529fabbbfefdfd0a28a8ba134c37a9152dbbba382e0541f13551f8e5"
+    },
+    {
+      "path": "regressions/core-r1/RESULTS.json",
+      "bytes": 22962,
+      "original_sha256": "4a8adb795b3e8fe5df6b4589e046b2445993482dad27449d5ef1b85a6c19c0aa",
+      "public_sha256": "4a8adb795b3e8fe5df6b4589e046b2445993482dad27449d5ef1b85a6c19c0aa"
+    },
+    {
+      "path": "regressions/core-r1/runner.py",
+      "bytes": 3110,
+      "original_sha256": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533",
+      "public_sha256": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533"
+    },
+    {
+      "path": "regressions/core-r1/source-after.json",
+      "bytes": 88880,
+      "original_sha256": "3f899764c5f9eaa51bbf036ca9e754c857eab738f0978c8c39bf666122874abc",
+      "public_sha256": "3f899764c5f9eaa51bbf036ca9e754c857eab738f0978c8c39bf666122874abc"
+    },
+    {
+      "path": "regressions/core-r1/source-before.json",
+      "bytes": 88880,
+      "original_sha256": "3f899764c5f9eaa51bbf036ca9e754c857eab738f0978c8c39bf666122874abc",
+      "public_sha256": "3f899764c5f9eaa51bbf036ca9e754c857eab738f0978c8c39bf666122874abc"
+    },
+    {
+      "path": "regressions/core-r1/tests.log",
+      "bytes": 283405,
+      "original_sha256": "f6e89ad454231277018b6ba0330d3a35bf609708e3962971f178cdbdc85038af",
+      "public_sha256": "f6e89ad454231277018b6ba0330d3a35bf609708e3962971f178cdbdc85038af"
+    },
+    {
+      "path": "regressions/suite-r1/RESULTS.json",
+      "bytes": 764,
+      "original_sha256": "1b5ea28a36fb40d56a8b35426f10919fe8045d3dd196bacf958bd4d875b47835",
+      "public_sha256": "1b5ea28a36fb40d56a8b35426f10919fe8045d3dd196bacf958bd4d875b47835"
+    },
+    {
+      "path": "regressions/suite-r1/runner.py",
+      "bytes": 3110,
+      "original_sha256": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533",
+      "public_sha256": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533"
+    },
+    {
+      "path": "regressions/suite-r1/source-after.json",
+      "bytes": 88880,
+      "original_sha256": "3f899764c5f9eaa51bbf036ca9e754c857eab738f0978c8c39bf666122874abc",
+      "public_sha256": "3f899764c5f9eaa51bbf036ca9e754c857eab738f0978c8c39bf666122874abc"
+    },
+    {
+      "path": "regressions/suite-r1/source-before.json",
+      "bytes": 88880,
+      "original_sha256": "3f899764c5f9eaa51bbf036ca9e754c857eab738f0978c8c39bf666122874abc",
+      "public_sha256": "3f899764c5f9eaa51bbf036ca9e754c857eab738f0978c8c39bf666122874abc"
+    },
+    {
+      "path": "regressions/suite-r1/tests.log",
+      "bytes": 22616,
+      "original_sha256": "258a1319902a89886fc209d30bc2a5a3e0e2340b66faafb65f74a5792608b7d2",
+      "public_sha256": "258a1319902a89886fc209d30bc2a5a3e0e2340b66faafb65f74a5792608b7d2"
+    },
+    {
+      "path": "run_regressions.py",
+      "bytes": 3110,
+      "original_sha256": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533",
+      "public_sha256": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533"
+    }
+  ]
+}

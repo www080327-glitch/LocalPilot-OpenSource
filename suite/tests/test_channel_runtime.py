@@ -3,7 +3,12 @@ import tempfile
 import tarfile
 import io
 import hashlib
+import json
+import os
 import ssl
+import subprocess
+import sys
+import venv
 from urllib.error import URLError
 from pathlib import Path
 import unittest
@@ -56,5 +61,37 @@ class ChannelRuntimeTests(unittest.TestCase):
         self.assertEqual(set(runtime.ARCHIVES),{'arm64','x86_64'})
         for name,checksum in runtime.ARCHIVES.values():
             self.assertIn(runtime.VERSION,name);self.assertEqual(len(checksum),64)
+
+    def test_bundled_archive_uses_virtual_environment_prefix_with_symlinked_python(self):
+        bundle = self.home / 'bundle with spaces'
+        environment = bundle / 'runtime'
+        venv.EnvBuilder(with_pip=False, symlinks=True).create(environment)
+        archive_dir = bundle / 'channel-runtime'
+        archive_dir.mkdir()
+        name, _ = runtime.runtime_archive()
+        archive_path = archive_dir / name
+        with tarfile.open(archive_path, 'w:gz') as archive:
+            for relative, data in [('bin/node', b'fixture binary'), ('LICENSE', b'fixture license')]:
+                member = tarfile.TarInfo(name.removesuffix('.tar.gz') + '/' + relative)
+                member.size = len(data)
+                archive.addfile(member, io.BytesIO(data))
+        script = '''
+import json, platform, sys
+from pathlib import Path
+from localpilot_suite import channel_runtime as runtime
+archives = runtime.ARCHIVES if platform.system() == 'Darwin' else runtime.LINUX_ARCHIVES
+archives[platform.machine()] = (sys.argv[2], sys.argv[3])
+runtime.SOURCE = 'http://127.0.0.1:1/'
+print(json.dumps(runtime.install(Path(sys.argv[1]))))
+'''
+        run = subprocess.run([str(environment / 'bin/python'), '-c', script,
+            str(self.home / 'user-data'), name, runtime.digest(archive_path)],
+            env={**os.environ, 'PYTHONPATH': str(Path(runtime.__file__).resolve().parents[1])},
+            capture_output=True, text=True, timeout=30)
+        self.assertEqual(run.returncode, 0, run.stderr)
+        result = json.loads(run.stdout)
+        self.assertTrue(result['bundled_runtime'])
+        self.assertFalse(result['downloaded'])
+        self.assertEqual((self.home / 'user-data/channel-node/node').read_bytes(), b'fixture binary')
 
 if __name__=='__main__':unittest.main()

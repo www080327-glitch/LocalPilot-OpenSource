@@ -1,0 +1,826 @@
+{
+  "kind": "REAL_CPU_MODEL_SYNTHETIC_INPUTS",
+  "model": "Qwen3.5-2B-text-Q8_0.gguf",
+  "model_sha256": "a7b660a8c7a4de32753adbebf4815119995738f1426f4ec07e84763a1255d718",
+  "model_revision": "15852e8c16360a2fea060d615a32b45270f8a8fc",
+  "server_commit": "b1b770d90d94cad9e9ea5b993bdbc383a522fb28",
+  "server_binary_sha256": "cf07a7d6b6d2c61064105cc0a81360cb5830aacd3d1a949b80eaea3a96fa409f",
+  "model_alias": "localpilot-qwen35-2b-q8_0-qualified",
+  "reasoning": "off",
+  "sampling_profile": "qwen35-nonthinking",
+  "integration_budget": {
+    "context_tokens": 8192,
+    "output_tokens": 512,
+    "threads": 2,
+    "max_steps": 6
+  },
+  "companion_sampling": {
+    "temperature": 0,
+    "source": "unchanged production request_chat default"
+  },
+  "model_count": 1,
+  "cloud_calls": 0,
+  "api_cost_usd": 0,
+  "energy_cost": "UNKNOWN",
+  "ranking_claim": false,
+  "cases": {
+    "kv_cold_hot_restart": {
+      "prefix_sha256": "aff097d8a1a07d05ed4c5e2dee5e35ee590c68556f00e9e8c81ccbf3058648b4",
+      "cached_tokens": {
+        "cold": 0,
+        "hot": 1276,
+        "restart": 1276
+      },
+      "usage": {
+        "cold": {
+          "completion_tokens": 2,
+          "prompt_tokens": 1280,
+          "total_tokens": 1282,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "hot": {
+          "completion_tokens": 2,
+          "prompt_tokens": 1280,
+          "total_tokens": 1282,
+          "prompt_tokens_details": {
+            "cached_tokens": 1276
+          }
+        },
+        "restart": {
+          "completion_tokens": 2,
+          "prompt_tokens": 1280,
+          "total_tokens": 1282,
+          "prompt_tokens_details": {
+            "cached_tokens": 1276
+          }
+        }
+      },
+      "timings": {
+        "cold": {
+          "cache_n": 0,
+          "prompt_n": 1280,
+          "prompt_ms": 17561.59,
+          "prompt_per_token_ms": 13.7199921875,
+          "prompt_per_second": 72.88633887933838,
+          "predicted_n": 2,
+          "predicted_ms": 71.979,
+          "predicted_per_token_ms": 71.979,
+          "predicted_per_second": 13.892940996679588
+        },
+        "hot": {
+          "cache_n": 1276,
+          "prompt_n": 4,
+          "prompt_ms": 180.542,
+          "prompt_per_token_ms": 45.1355,
+          "prompt_per_second": 22.155509521330217,
+          "predicted_n": 2,
+          "predicted_ms": 136.558,
+          "predicted_per_token_ms": 136.558,
+          "predicted_per_second": 7.322895765901668
+        },
+        "restart": {
+          "cache_n": 1276,
+          "prompt_n": 4,
+          "prompt_ms": 346.969,
+          "prompt_per_token_ms": 86.74225,
+          "prompt_per_second": 11.528407436975638,
+          "predicted_n": 2,
+          "predicted_ms": 94.965,
+          "predicted_per_token_ms": 94.965,
+          "predicted_per_second": 10.530195335123466
+        }
+      },
+      "saved_tokens": 1281,
+      "restored_tokens": 1281,
+      "cache_sha256": "1ccc616efcaf5c3590223b2fc5a7df2f620a0b568ce40ba25e9f691e8b4034c9",
+      "provider_pid_changed": true,
+      "scope": "owned llama.cpp slot with fixed actual prompt and Skill; not all providers or permanent cache",
+      "status": "PASS",
+      "seconds": 19.869332435000615
+    },
+    "direct_arithmetic": {
+      "answer": "56",
+      "usage": {
+        "completion_tokens": 3,
+        "prompt_tokens": 26,
+        "total_tokens": 29,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "status": "PASS",
+      "seconds": 0.7937053230016318
+    },
+    "real_file_read": {
+      "requested_read_observed": true,
+      "task_id": "resp_e6408f251e0c43a3b810c32d49d5680e",
+      "task_status": "completed",
+      "answer": "The file `fact.txt` exists in the workspace at `/workspace/scratch/2a488f6eabf5/validation/polish-20261116/model/qualification-r1/workspace/fact.txt`. I read its contents:\n\n```\nLP-LINUX-REAL-7319\n```",
+      "tools": [
+        "file_info",
+        "read_file"
+      ],
+      "subagents": [],
+      "model_calls": [
+        {
+          "latency_seconds": 64.80435578499964,
+          "tool_call_count": 1,
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 3860,
+          "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "input_tokens": 3860,
+          "output_tokens": 127,
+          "finish_reason": "tool_calls"
+        },
+        {
+          "latency_seconds": 36.06418767800096,
+          "tool_call_count": 1,
+          "prompt_cache_hit_tokens": 2555,
+          "prompt_cache_miss_tokens": 1803,
+          "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "input_tokens": 4358,
+          "output_tokens": 116,
+          "finish_reason": "tool_calls"
+        },
+        {
+          "latency_seconds": 41.14473261999956,
+          "tool_call_count": 0,
+          "prompt_cache_hit_tokens": 2724,
+          "prompt_cache_miss_tokens": 2618,
+          "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "input_tokens": 5342,
+          "output_tokens": 69,
+          "finish_reason": "stop"
+        }
+      ],
+      "runtime_metrics": {
+        "model_attempts": 3,
+        "request_utf8_bytes": 49988,
+        "response_bytes": 1222,
+        "response_bytes_source": "complete_responses_only",
+        "failed_attempts": 0,
+        "failed_attempt_provider_usage": null,
+        "admission_units": 51210,
+        "finalization_reason": null,
+        "final_reserve_units": 38520,
+        "state_bytes": 2404,
+        "cache_bytes": 482,
+        "hybrid": {
+          "calls": 3,
+          "actual_api_cost": "UNKNOWN",
+          "local_resource_cost": "adapter_wall_seconds_only",
+          "backend_id": "selected",
+          "generation": 0,
+          "switching_overhead_seconds": 0,
+          "by_backend": {
+            "selected": {
+              "kind": "local",
+              "calls": 3,
+              "known_input_tokens": 13560,
+              "known_output_tokens": 312,
+              "unknown_usage_calls": 0,
+              "known_request_wall_seconds": 142.01246857643127,
+              "known_inference_seconds": 142.0040602684021,
+              "known_queue_seconds": 0.00842428207397461,
+              "unknown_inference_time_calls": 0,
+              "unknown_latency_calls": 0,
+              "estimated_api_cost_usd": null,
+              "cost_source": "host_rate_estimate_only",
+              "configured_models": [
+                "localpilot-qwen35-2b-q8_0-qualified"
+              ],
+              "prompt_cache_hit_tokens": 5279,
+              "prompt_cache_miss_tokens": 8281,
+              "cache_hit_ratio": 0.38930678466076696,
+              "cache_usage_unknown_calls": 0,
+              "wall_output_tokens_per_second": 2.197120275365988,
+              "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+            }
+          },
+          "source_mix": {
+            "scope": "current_task_including_children",
+            "by_source": {
+              "local": {
+                "admitted_requests": 3,
+                "dispatched_requests": 3,
+                "request_share": 1.0,
+                "known_input_output_tokens": 13872,
+                "token_share": 1.0,
+                "unknown_usage_requests": 0
+              },
+              "cloud": {
+                "admitted_requests": 0,
+                "dispatched_requests": 0,
+                "request_share": 0.0,
+                "known_input_output_tokens": 0,
+                "token_share": 0.0,
+                "unknown_usage_requests": 0
+              }
+            },
+            "requests_without_dispatch_evidence": 0,
+            "token_share_status": "PROVIDER_REPORTED",
+            "actual_cost_status": "UNKNOWN"
+          }
+        }
+      },
+      "receipt_summary": {
+        "count": 2,
+        "unknown_effects": 0
+      },
+      "quiescent": true,
+      "status": "PASS",
+      "seconds": 142.70346595499905
+    },
+    "real_shell": {
+      "requested_readback_observed": true,
+      "task_id": "resp_a16fa2fd0fa548e5b3433fc4ba6a482a",
+      "task_status": "completed",
+      "answer": "I've executed the shell command and read the file. The computation was done exactly as requested:\n\n**Command result:** `printf 7319 > computed.txt` - Successfully created a file named \"computed.txt\" with the content `7319` in it.\n\nThe report confirms the contents via `read_file`:\n- **File path:** computed.txt\n- **File SHA256:** cd91c5876cd288087223b6e1b844a78dfeb0d2298d56814e3388934274fb9277\n\nThe `read_file` tool shows the file has a size of 4 bytes containing just the content \"7319\".",
+      "tools": [
+        "shell",
+        "read_file"
+      ],
+      "subagents": [],
+      "model_calls": [
+        {
+          "latency_seconds": 21.02355727900067,
+          "tool_call_count": 1,
+          "prompt_cache_hit_tokens": 2538,
+          "prompt_cache_miss_tokens": 1382,
+          "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "input_tokens": 3920,
+          "output_tokens": 34,
+          "finish_reason": "tool_calls"
+        },
+        {
+          "latency_seconds": 25.129298632999053,
+          "tool_call_count": 1,
+          "prompt_cache_hit_tokens": 2572,
+          "prompt_cache_miss_tokens": 1813,
+          "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "input_tokens": 4385,
+          "output_tokens": 26,
+          "finish_reason": "tool_calls"
+        },
+        {
+          "latency_seconds": 49.8514303439988,
+          "tool_call_count": 0,
+          "prompt_cache_hit_tokens": 2710,
+          "prompt_cache_miss_tokens": 2506,
+          "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "input_tokens": 5216,
+          "output_tokens": 172,
+          "finish_reason": "stop"
+        }
+      ],
+      "runtime_metrics": {
+        "model_attempts": 3,
+        "request_utf8_bytes": 50306,
+        "response_bytes": 944,
+        "response_bytes_source": "complete_responses_only",
+        "failed_attempts": 0,
+        "failed_attempt_provider_usage": null,
+        "admission_units": 51250,
+        "finalization_reason": null,
+        "final_reserve_units": 38520,
+        "state_bytes": 2584,
+        "cache_bytes": 468,
+        "hybrid": {
+          "calls": 3,
+          "actual_api_cost": "UNKNOWN",
+          "local_resource_cost": "adapter_wall_seconds_only",
+          "backend_id": "selected",
+          "generation": 0,
+          "switching_overhead_seconds": 0,
+          "by_backend": {
+            "selected": {
+              "kind": "local",
+              "calls": 3,
+              "known_input_tokens": 13521,
+              "known_output_tokens": 232,
+              "unknown_usage_calls": 0,
+              "known_request_wall_seconds": 96.00370144844055,
+              "known_inference_seconds": 95.99921822547913,
+              "known_queue_seconds": 0.004500627517700195,
+              "unknown_inference_time_calls": 0,
+              "unknown_latency_calls": 0,
+              "estimated_api_cost_usd": null,
+              "cost_source": "host_rate_estimate_only",
+              "configured_models": [
+                "localpilot-qwen35-2b-q8_0-qualified"
+              ],
+              "prompt_cache_hit_tokens": 7820,
+              "prompt_cache_miss_tokens": 5701,
+              "cache_hit_ratio": 0.5783595887878116,
+              "cache_usage_unknown_calls": 0,
+              "wall_output_tokens_per_second": 2.4166863469146973,
+              "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+            }
+          },
+          "source_mix": {
+            "scope": "current_task_including_children",
+            "by_source": {
+              "local": {
+                "admitted_requests": 3,
+                "dispatched_requests": 3,
+                "request_share": 1.0,
+                "known_input_output_tokens": 13753,
+                "token_share": 1.0,
+                "unknown_usage_requests": 0
+              },
+              "cloud": {
+                "admitted_requests": 0,
+                "dispatched_requests": 0,
+                "request_share": 0.0,
+                "known_input_output_tokens": 0,
+                "token_share": 0.0,
+                "unknown_usage_requests": 0
+              }
+            },
+            "requests_without_dispatch_evidence": 0,
+            "token_share_status": "PROVIDER_REPORTED",
+            "actual_cost_status": "UNKNOWN"
+          }
+        }
+      },
+      "receipt_summary": {
+        "count": 2,
+        "unknown_effects": 0
+      },
+      "quiescent": true,
+      "status": "PASS",
+      "seconds": 96.33136384499994
+    },
+    "real_child_agent": {
+      "requested_child_read_observed": false,
+      "scope": "real parent and child requests to one local model, not different-model or cloud qualification",
+      "task_id": "resp_847877e05ec64fcfb49a9acdde671ba5",
+      "task_status": "timed_out",
+      "answer": "Turn stopped by the host.",
+      "tools": [
+        "delegate",
+        "list_directory",
+        "shell"
+      ],
+      "subagents": [],
+      "model_calls": [
+        {
+          "latency_seconds": 25.821004372999596,
+          "tool_call_count": 1,
+          "prompt_cache_hit_tokens": 2538,
+          "prompt_cache_miss_tokens": 1405,
+          "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "input_tokens": 3943,
+          "output_tokens": 86,
+          "finish_reason": "tool_calls"
+        },
+        {
+          "latency_seconds": 36.29945368399967,
+          "tool_call_count": 1,
+          "prompt_cache_hit_tokens": 2577,
+          "prompt_cache_miss_tokens": 1817,
+          "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "input_tokens": 4394,
+          "output_tokens": 139,
+          "finish_reason": "tool_calls"
+        },
+        {
+          "latency_seconds": 39.26820636100092,
+          "tool_call_count": 1,
+          "prompt_cache_hit_tokens": 2706,
+          "prompt_cache_miss_tokens": 2153,
+          "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "input_tokens": 4859,
+          "output_tokens": 139,
+          "finish_reason": "tool_calls"
+        }
+      ],
+      "runtime_metrics": {
+        "model_attempts": 4,
+        "request_utf8_bytes": 65184,
+        "response_bytes": 1492,
+        "response_bytes_source": "complete_responses_only",
+        "failed_attempts": 1,
+        "failed_attempt_provider_usage": null,
+        "admission_units": 71924,
+        "finalization_reason": "token_reserve",
+        "final_reserve_units": 38904,
+        "state_bytes": 3127,
+        "cache_bytes": 0,
+        "hybrid": {
+          "calls": 4,
+          "actual_api_cost": "UNKNOWN",
+          "local_resource_cost": "adapter_wall_seconds_only",
+          "backend_id": "selected",
+          "generation": 0,
+          "switching_overhead_seconds": 0,
+          "by_backend": {
+            "selected": {
+              "kind": "local",
+              "calls": 4,
+              "known_input_tokens": 13196,
+              "known_output_tokens": 364,
+              "unknown_usage_calls": 1,
+              "known_request_wall_seconds": 149.91825246810913,
+              "known_inference_seconds": 149.90674901008606,
+              "known_queue_seconds": 0.011525869369506836,
+              "unknown_inference_time_calls": 0,
+              "unknown_latency_calls": 0,
+              "estimated_api_cost_usd": null,
+              "cost_source": "host_rate_estimate_only",
+              "configured_models": [
+                "localpilot-qwen35-2b-q8_0-qualified"
+              ],
+              "prompt_cache_hit_tokens": null,
+              "prompt_cache_miss_tokens": null,
+              "cache_hit_ratio": null,
+              "cache_usage_unknown_calls": 1,
+              "wall_output_tokens_per_second": 2.428176198894883,
+              "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+            }
+          },
+          "source_mix": {
+            "scope": "current_task_including_children",
+            "by_source": {
+              "local": {
+                "admitted_requests": 4,
+                "dispatched_requests": 4,
+                "request_share": 1.0,
+                "known_input_output_tokens": 13560,
+                "token_share": null,
+                "unknown_usage_requests": 1
+              },
+              "cloud": {
+                "admitted_requests": 0,
+                "dispatched_requests": 0,
+                "request_share": 0.0,
+                "known_input_output_tokens": 0,
+                "token_share": null,
+                "unknown_usage_requests": 0
+              }
+            },
+            "requests_without_dispatch_evidence": 0,
+            "token_share_status": "UNKNOWN",
+            "actual_cost_status": "UNKNOWN"
+          }
+        }
+      },
+      "receipt_summary": {
+        "count": 3,
+        "unknown_effects": 0
+      },
+      "quiescent": true,
+      "status": "FAIL",
+      "seconds": 150.78067429899966
+    },
+    "real_stream_cancellation": {
+      "sse_text_observed": true,
+      "provider_alive": true,
+      "submit_to_first_text_seconds": 12.13341501099967,
+      "first_text_scope": "Core submit through first SSE TextDelta, including admission and queue; not provider-only TTFT",
+      "invalid_cursor_http_status": 409,
+      "provider_slots": [
+        {
+          "id": 0,
+          "n_ctx": 8192,
+          "speculative": false,
+          "is_processing": false,
+          "id_task": 962,
+          "n_prompt_tokens": 531,
+          "n_prompt_tokens_processed": 0,
+          "n_prompt_tokens_cache": 0,
+          "params": {
+            "seed": 42,
+            "temperature": 1.0,
+            "dynatemp_range": 0.0,
+            "dynatemp_exponent": 1.0,
+            "top_k": 20,
+            "top_p": 1.0,
+            "min_p": 0.0,
+            "top_n_sigma": -1.0,
+            "xtc_probability": 0.0,
+            "xtc_threshold": 0.10000000149011612,
+            "typical_p": 1.0,
+            "repeat_last_n": 64,
+            "repeat_penalty": 1.0,
+            "presence_penalty": 2.0,
+            "frequency_penalty": 0.0,
+            "dry_multiplier": 0.0,
+            "dry_base": 1.75,
+            "dry_allowed_length": 2,
+            "dry_penalty_last_n": 64,
+            "mirostat": 0,
+            "mirostat_tau": 5.0,
+            "mirostat_eta": 0.10000000149011612,
+            "adaptive_target": -1.0,
+            "adaptive_decay": 0.8999999761581421,
+            "max_tokens": 512,
+            "n_predict": 512,
+            "n_keep": 0,
+            "n_discard": 0,
+            "ignore_eos": false,
+            "stream": true,
+            "n_probs": 0,
+            "min_keep": 0,
+            "chat_format": "peg-native",
+            "reasoning_format": "deepseek",
+            "reasoning_in_content": false,
+            "generation_prompt": "<|im_start|>assistant\n<think>\n\n</think>\n\n",
+            "samplers": [
+              "penalties",
+              "dry",
+              "top_n_sigma",
+              "top_k",
+              "typ_p",
+              "top_p",
+              "min_p",
+              "xtc",
+              "temperature"
+            ],
+            "speculative.types": "none",
+            "timings_per_token": false,
+            "post_sampling_probs": false,
+            "backend_sampling": false,
+            "lora": []
+          },
+          "next_token": [
+            {
+              "has_next_token": true,
+              "has_new_line": false,
+              "n_remain": -1,
+              "n_decoded": 0
+            }
+          ]
+        }
+      ],
+      "task_id": "resp_73656ba30a714710b6ae1ab66e526eae",
+      "task_status": "cancelled",
+      "answer": "Turn stopped by the host.",
+      "tools": [],
+      "subagents": [],
+      "model_calls": [],
+      "runtime_metrics": {
+        "model_attempts": 1,
+        "request_utf8_bytes": 2385,
+        "response_bytes": 0,
+        "response_bytes_source": "complete_responses_only",
+        "failed_attempts": 1,
+        "failed_attempt_provider_usage": null,
+        "admission_units": 10577,
+        "finalization_reason": null,
+        "final_reserve_units": 33834,
+        "state_bytes": 1198,
+        "cache_bytes": 0,
+        "hybrid": {
+          "calls": 1,
+          "actual_api_cost": "UNKNOWN",
+          "local_resource_cost": "adapter_wall_seconds_only",
+          "backend_id": "selected",
+          "generation": 0,
+          "switching_overhead_seconds": 0,
+          "by_backend": {
+            "selected": {
+              "kind": "local",
+              "calls": 1,
+              "known_input_tokens": 0,
+              "known_output_tokens": 0,
+              "unknown_usage_calls": 1,
+              "known_request_wall_seconds": 12.127401113510132,
+              "known_inference_seconds": 12.1255464553833,
+              "known_queue_seconds": 0.0018587112426757812,
+              "unknown_inference_time_calls": 0,
+              "unknown_latency_calls": 0,
+              "estimated_api_cost_usd": null,
+              "cost_source": "host_rate_estimate_only",
+              "configured_models": [
+                "localpilot-qwen35-2b-q8_0-qualified"
+              ],
+              "prompt_cache_hit_tokens": null,
+              "prompt_cache_miss_tokens": null,
+              "cache_hit_ratio": null,
+              "cache_usage_unknown_calls": 1,
+              "wall_output_tokens_per_second": 0.0,
+              "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps"
+            }
+          },
+          "source_mix": {
+            "scope": "current_task_including_children",
+            "by_source": {
+              "local": {
+                "admitted_requests": 1,
+                "dispatched_requests": 1,
+                "request_share": 1.0,
+                "known_input_output_tokens": 0,
+                "token_share": null,
+                "unknown_usage_requests": 1
+              },
+              "cloud": {
+                "admitted_requests": 0,
+                "dispatched_requests": 0,
+                "request_share": 0.0,
+                "known_input_output_tokens": 0,
+                "token_share": null,
+                "unknown_usage_requests": 0
+              }
+            },
+            "requests_without_dispatch_evidence": 0,
+            "token_share_status": "UNKNOWN",
+            "actual_cost_status": "UNKNOWN"
+          }
+        }
+      },
+      "receipt_summary": {
+        "count": 0,
+        "unknown_effects": 0
+      },
+      "quiescent": true,
+      "status": "PASS",
+      "seconds": 13.152948654998909
+    },
+    "real_shell_unknown_restart": {
+      "core_pid_changed": true,
+      "file_contents": "partial",
+      "same_task_after_resubmit": true,
+      "task_id": "resp_593e7b4a63864048be2ff7618ad657ee",
+      "task_status": "cancelled",
+      "answer": "Turn stopped by the host.",
+      "tools": [
+        "shell"
+      ],
+      "subagents": [],
+      "model_calls": [
+        {
+          "finish_reason": "tool_calls",
+          "input_tokens": 3913,
+          "latency_seconds": 53.56842994199906,
+          "output_tokens": 49,
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 3913,
+          "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+          "tool_call_count": 1
+        }
+      ],
+      "runtime_metrics": {
+        "admission_units": 39943,
+        "cache_bytes": 0,
+        "failed_attempt_provider_usage": null,
+        "failed_attempts": 1,
+        "final_reserve_units": 38136,
+        "finalization_reason": null,
+        "hybrid": {
+          "actual_api_cost": "UNKNOWN",
+          "backend_id": "selected",
+          "by_backend": {
+            "selected": {
+              "cache_hit_ratio": null,
+              "cache_usage_unknown_calls": 1,
+              "calls": 2,
+              "configured_models": [
+                "localpilot-qwen35-2b-q8_0-qualified"
+              ],
+              "cost_source": "host_rate_estimate_only",
+              "estimated_api_cost_usd": null,
+              "kind": "local",
+              "known_inference_seconds": 53.566837310791016,
+              "known_input_tokens": 3913,
+              "known_output_tokens": 49,
+              "known_queue_seconds": 0.0013802051544189453,
+              "known_request_wall_seconds": 53.568217515945435,
+              "prompt_cache_hit_tokens": null,
+              "prompt_cache_miss_tokens": null,
+              "throughput_source": "output_tokens_per_summed_adapter_wall_seconds_including_prefill_not_decode_tps",
+              "unknown_inference_time_calls": 1,
+              "unknown_latency_calls": 0,
+              "unknown_usage_calls": 1,
+              "wall_output_tokens_per_second": 0.9147450635494019
+            }
+          },
+          "calls": 2,
+          "generation": 0,
+          "local_resource_cost": "adapter_wall_seconds_only",
+          "source_mix": {
+            "actual_cost_status": "UNKNOWN",
+            "by_source": {
+              "cloud": {
+                "admitted_requests": 0,
+                "dispatched_requests": 0,
+                "known_input_output_tokens": 0,
+                "request_share": 0.0,
+                "token_share": 0.0,
+                "unknown_usage_requests": 0
+              },
+              "local": {
+                "admitted_requests": 2,
+                "dispatched_requests": 1,
+                "known_input_output_tokens": 3962,
+                "request_share": 1.0,
+                "token_share": 1.0,
+                "unknown_usage_requests": 0
+              }
+            },
+            "requests_without_dispatch_evidence": 1,
+            "scope": "current_task_including_children",
+            "token_share_status": "PROVIDER_REPORTED"
+          },
+          "switching_overhead_seconds": 0
+        },
+        "model_attempts": 2,
+        "request_utf8_bytes": 31512,
+        "response_bytes": 239,
+        "response_bytes_source": "complete_responses_only",
+        "state_bytes": 1947
+      },
+      "receipt_summary": {
+        "count": 1,
+        "unknown_effects": 1
+      },
+      "quiescent": true,
+      "status": "PASS",
+      "seconds": 55.70029042100032
+    },
+    "companion_lightweight": {
+      "response": {
+        "status": "ok",
+        "text": "56",
+        "reported_model": "localpilot-qwen35-2b-q8_0-qualified",
+        "usage": {
+          "completion_tokens": 3,
+          "prompt_tokens": 185,
+          "total_tokens": 188,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "backend": "local-http",
+        "constraint": "none",
+        "latency_seconds": 2.743592469001669
+      },
+      "scope": "actual Companion model backend, explicit test power grant; no native observation claim",
+      "status": "PASS",
+      "seconds": 2.7722081309984787
+    },
+    "companion_core_delegation": {
+      "requested_read_observed": false,
+      "task_status": "timed_out",
+      "answer": "Turn stopped by the host.",
+      "scope": "real Companion Task API adapter plus Core and model; native control window not exercised",
+      "status": "FAIL",
+      "seconds": 150.60557002099995
+    }
+  },
+  "main_agent_generation_parameters": {
+    "temperature": 1.0,
+    "top_p": 1.0,
+    "presence_penalty": 2.0,
+    "seed": 42
+  },
+  "provider_version": "version: 1.0.0-dev (build 12359, commit b1b770d90)\nbuilt with GNU 11.4.0 for Linux x86_64",
+  "provider_processes": [
+    {
+      "pid": 7,
+      "wall_seconds": 20.339419748999717,
+      "peak_rss_kib": 2307852,
+      "source": "/proc/PID/status VmHWM before termination",
+      "returncode": 0
+    },
+    {
+      "pid": 27,
+      "wall_seconds": 1491.249525362,
+      "peak_rss_kib": 2683416,
+      "source": "/proc/PID/status VmHWM before termination",
+      "returncode": 0
+    }
+  ],
+  "owned_processes_stopped": true,
+  "source_raw_report_sha256": "5a933219e6e1ee6e46e81ab056ba9a5324d27069b71119356c113a1bfb91be5e",
+  "source_freeze_sha256": "e6f6bf16864dff9c3f7e9dfc6691129cbbbdc2d4c5693357ce023db089a14316",
+  "tested_component_versions": {
+    "Core": "5.0.0b24",
+    "Companion": "0.5.7b5"
+  },
+  "counts": {
+    "PASS": 7,
+    "FAIL": 2,
+    "ERROR": 0
+  },
+  "public_study_summary": {
+    "benchmark": "MMLU-Pro",
+    "counts": {
+      "FAIL": 22,
+      "PASS": 10
+    },
+    "planned": 32,
+    "complete": true,
+    "accuracy_all_planned": 0.3125,
+    "ranking_claim": false,
+    "scope": "Fixed 32-question zero-shot model subset, separate from Agent integration; question/answer keys omitted here."
+  },
+  "limits": [
+    "Original nine-case autonomy result retained, not replaced by prescribed-argument diagnostics.",
+    "Companion b6 GTK environment fix was not in this frozen inference tree.",
+    "Read-file PASS requires a completed read receipt and complete marker; natural output included explanatory text.",
+    "Single local model only; no cloud API, multi-model qualification, AA ranking or mainstream-agent parity claim."
+  ]
+}

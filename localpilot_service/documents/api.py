@@ -29,11 +29,13 @@ def handle(server, principal, body):
         if op == 'import':
             if set(options) - {'paths','origin','origins','ttl_seconds'} or 'paths' not in options:
                 raise DocumentError('invalid_import_fields')
-            runtime = session.runtime
-            if (getattr(runtime.current_backend,'is_local',None) is not True or not runtime.hybrid
-                    or runtime.hybrid.policy.egress.mode != 'LOCAL_ONLY') and not getattr(runtime,'_desktop_cloud_context',False):
-                raise DocumentError('document_import_requires_local_only_session', 403)
             with server.service.condition:
+                if session.closed:
+                    raise DocumentError('session_closed', 409)
+                runtime = session.runtime
+                if (getattr(runtime.current_backend,'is_local',None) is not True or not runtime.hybrid
+                        or runtime.hybrid.policy.egress.mode != 'LOCAL_ONLY') and not getattr(runtime,'_desktop_cloud_context',False):
+                    raise DocumentError('document_import_requires_local_only_session', 403)
                 if session.active_task:
                     raise DocumentError('finish_active_task_before_import', 409)
                 result = engine.ingest(subject, sid, **options)

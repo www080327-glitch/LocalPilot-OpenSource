@@ -1,0 +1,26 @@
+{
+  "local_sha": "a8f41c42e2a9584a0484a2cd079302d0b63549d3",
+  "remote_sha": "8e92deb8b6a0acbba1d139851b1d805246304c61",
+  "tree": "813a2544f1553d9c6a5e8a01982f2f512eec5e5b",
+  "recorded_at": "2026-11-16T20:59:29.728401+00:00",
+  "baseline_b28_remote_sha": "03535fe943f64f49e9e3d79e7949aca6c9ec9b87",
+  "runtime_source_changes": [
+    "agent/patches.py",
+    "agent/schemas.py"
+  ],
+  "files": {
+    "agent/patches.py": "b6cd298a2f5862948fa98a3195fe0a9cc96573810cf4dd4938d332eec39256d9",
+    "agent/schemas.py": "344646d8fa22b7ff92787f25f5ea8f57e06455abd3cc8cd0c04e1c2afff85394"
+  },
+  "grader_sha256": "4cd3f405f7a4d1c05edb6bf5d5530657c69de6b934bf59c2cdf01df7e2f20b76",
+  "versions": {
+    "desktop": "5.0.1-rc.12",
+    "core": "5.0.0b29",
+    "suite": "0.2.0b32",
+    "companion": "0.5.7b8",
+    "channels": "0.1.0a4"
+  },
+  "generated_lock_dependency_changes": 0,
+  "qualification_scope": "b28 long Shell retains source 03535fe; b29 patch tests and new engineering/package runs use 8e92deb. No previous run is reassigned.",
+  "binary_publication": "No RC12 binary upload or system installation at this source publication."
+}

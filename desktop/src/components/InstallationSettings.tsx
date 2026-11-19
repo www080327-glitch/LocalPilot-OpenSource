@@ -33,8 +33,8 @@ export function InstallationSettings({
           result.next ||
             (result.destination
               ? `备份已保存：${result.destination}`
-              : result.status === "restored"
-                ? "已恢复到独立目录，原安装保留。重新打开应用即可连接。"
+              : result.status === "stopping"
+                ? "服务仍在停止，请稍后再次检查。"
                 : "操作已完成"),
         );
       await inspect();

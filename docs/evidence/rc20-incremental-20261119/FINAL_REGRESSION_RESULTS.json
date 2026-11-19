@@ -1,0 +1,194 @@
+{
+  "final_source": {
+    "commit": "5a2dafd0780646171e4453d2cebff27749484391",
+    "tree": "018da9957f993911346826db239cfdaa7764481e",
+    "clean_after_tests": true,
+    "prior_product_commit": "8eb042cf57508de59179b4aa2fdd5ae41e9a9eec",
+    "changes_since_prior_product_commit": [
+      "M\ttests/test_service_history.py"
+    ],
+    "product_and_companion_test_bytes_unchanged": true
+  },
+  "core_full_gate": "LAST_FULL_NOT_CLEAN",
+  "companion_full_gate": "PASS",
+  "pinned_environment": {
+    "python": "3.12.14",
+    "python_executable": "/workspace/scratch/b0df9966d470/nov19-validation/runtime/venv/bin/python",
+    "runner": "/workspace/scratch/b0df9966d470/validation/regressions/core-r1/runner.py",
+    "actual_origin_wrapper": "run_with_loaded_origins.py",
+    "process_environment": "env -i with pinned venv PATH, unique HOME, C.UTF-8, UTC, no user site or bytecode writes, and loopback NO_PROXY",
+    "r4_concurrency": "Other agents paused heavy validation. Only the runner and lightweight progress reads were requested. Host load was not independently measured.",
+    "live_provider_model_calls": false
+  },
+  "attempts": {
+    "core-full-final.log": {
+      "status": "INTERRUPTED",
+      "unittest_footer_present": false,
+      "sha256": "c58680c3162766b175e42b06ae48e90263ec2dfeb88f909cd715db00b6b1158b"
+    },
+    "core-full-final-r2": {
+      "source_commit": "8eb042cf57508de59179b4aa2fdd5ae41e9a9eec",
+      "source_tree": "853f2dece1506f00e462be8b033ec12fcc892dab",
+      "exit_code": 1,
+      "successful": false,
+      "run": 1742,
+      "passed": 1639,
+      "skipped": 99,
+      "failed": [
+        "test_session_missing_usage_is_unknown (test_inference_backend.InferenceBackendTests.test_session_missing_usage_is_unknown)",
+        "test_verification_disabled_unknown_and_failed_are_distinct (test_inference_backend.InferenceBackendTests.test_verification_disabled_unknown_and_failed_are_distinct)",
+        "test_schema1_migration_keeps_verified_private_nonoverwriting_backup (test_service_history.ServiceHistoryTests.test_schema1_migration_keeps_verified_private_nonoverwriting_backup)"
+      ],
+      "errors": [
+        "test_unknown_usage_stays_null_and_explicit_zero_survives (test_inference_backend.InferenceBackendTests.test_unknown_usage_stays_null_and_explicit_zero_survives)"
+      ],
+      "elapsed_seconds": 398.45523831799983,
+      "source_files_hashed": 830,
+      "source_hashes_unchanged": true,
+      "origin_product_modules": 125,
+      "origin_modules_outside_candidate": [],
+      "origins_measurement": "Same pinned venv, stripped environment and suite discovery prelude as full regression; no tests executed",
+      "evidence": {
+        "RESULTS.json": "a3336cde8f1c85068732af1b9fcfe77cdb8c97073d37f00de603b1997715498a",
+        "tests.log": "57e131f440cb1ffdc17377ee30e54cdf546eb4313128d2b1c6b0fd26615b2e1f",
+        "MODULE_ORIGINS.json": "c1e180d26a42154a23879a7df1227bf65dd53d0b4be022fa57f79739643e0955",
+        "source-before.json": "b52dffae92b1bbfe91f12376fcaae619e9a744fd9f6a6344c0c2bcb5dbf1641f",
+        "source-after.json": "b52dffae92b1bbfe91f12376fcaae619e9a744fd9f6a6344c0c2bcb5dbf1641f",
+        "runner.py": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533"
+      }
+    },
+    "core-full-final-r3": {
+      "source_commit": "5a2dafd0780646171e4453d2cebff27749484391",
+      "source_tree": "018da9957f993911346826db239cfdaa7764481e",
+      "exit_code": 1,
+      "successful": false,
+      "run": 1742,
+      "passed": 1641,
+      "skipped": 99,
+      "failed": [],
+      "errors": [
+        "test_credentials_private_not_inherited_and_echo_redacted (test_plugin_ecosystem.PluginTests.test_credentials_private_not_inherited_and_echo_redacted)",
+        "test_disable_remove_update_revoke_stale_adapters (test_plugin_ecosystem.PluginTests.test_disable_remove_update_revoke_stale_adapters)"
+      ],
+      "elapsed_seconds": 284.8283265609989,
+      "source_files_hashed": 830,
+      "source_hashes_unchanged": true,
+      "origin_product_modules": 136,
+      "origin_modules_outside_candidate": [],
+      "origins_measurement": "actual main test process modules after execution",
+      "evidence": {
+        "RESULTS.json": "ca33b5be167df6421cd17f4bf5bb737e7089b624ba236cb492e71c34f4e10dba",
+        "tests.log": "494ef7e21db6adb0ffcb11c5431062b035bcc9faefdc9aff5a03b2c70b5c9071",
+        "MODULE_ORIGINS.json": "2587ec35827f4d845bc4f56d582b1fddbd6cc9eb639496e02c3b3e4001ea8d6c",
+        "source-before.json": "8f85231d0152348b6ddfd2ad391566ce817951177397d4bfd5c08f47eece8a53",
+        "source-after.json": "8f85231d0152348b6ddfd2ad391566ce817951177397d4bfd5c08f47eece8a53",
+        "runner.py": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533"
+      }
+    },
+    "core-full-final-r4": {
+      "source_commit": "5a2dafd0780646171e4453d2cebff27749484391",
+      "source_tree": "018da9957f993911346826db239cfdaa7764481e",
+      "exit_code": 1,
+      "successful": false,
+      "run": 1742,
+      "passed": 1641,
+      "skipped": 99,
+      "failed": [],
+      "errors": [
+        "test_json_sse_session_and_protocol_headers (test_plugin_http.HTTPTests.test_json_sse_session_and_protocol_headers)",
+        "test_oversized_http_is_contained (test_plugin_http.HTTPTests.test_oversized_http_is_contained)"
+      ],
+      "elapsed_seconds": 292.6753637710008,
+      "source_files_hashed": 830,
+      "source_hashes_unchanged": true,
+      "origin_product_modules": 136,
+      "origin_modules_outside_candidate": [],
+      "origins_measurement": "actual main test process modules after execution",
+      "evidence": {
+        "RESULTS.json": "40c2dd0f792b1126bae12f06c33d3c73f4fcc886959c35526899d910c75efaa7",
+        "tests.log": "0988704effd39068ed7683bfed9ed1de8ee891edc93a619ac1e9b1682f5f6eac",
+        "MODULE_ORIGINS.json": "2587ec35827f4d845bc4f56d582b1fddbd6cc9eb639496e02c3b3e4001ea8d6c",
+        "source-before.json": "8f85231d0152348b6ddfd2ad391566ce817951177397d4bfd5c08f47eece8a53",
+        "source-after.json": "8f85231d0152348b6ddfd2ad391566ce817951177397d4bfd5c08f47eece8a53",
+        "runner.py": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533"
+      }
+    },
+    "companion-full-final-r2": {
+      "source_commit": "8eb042cf57508de59179b4aa2fdd5ae41e9a9eec",
+      "source_tree": "853f2dece1506f00e462be8b033ec12fcc892dab",
+      "exit_code": 0,
+      "successful": true,
+      "run": 763,
+      "passed": 730,
+      "skipped": 33,
+      "failed": [],
+      "errors": [],
+      "elapsed_seconds": 124.04135595099979,
+      "source_files_hashed": 830,
+      "source_hashes_unchanged": true,
+      "origin_product_modules": 146,
+      "origin_modules_outside_candidate": [],
+      "origins_measurement": "Same pinned venv, stripped environment and suite discovery prelude as full regression; no tests executed",
+      "evidence": {
+        "RESULTS.json": "a49b738f831fb37e0a063f857931bdde9c43a8078b1d147aaa441b470a4145c8",
+        "tests.log": "2af83c3985342862c6516970a307b8a1d9720420b56a837ef285d21bceaa4dd5",
+        "MODULE_ORIGINS.json": "2dea687a0eac542ea58e07cb8d206786e3bc667151d4333a2fb634e864816bff",
+        "source-before.json": "b52dffae92b1bbfe91f12376fcaae619e9a744fd9f6a6344c0c2bcb5dbf1641f",
+        "source-after.json": "b52dffae92b1bbfe91f12376fcaae619e9a744fd9f6a6344c0c2bcb5dbf1641f",
+        "runner.py": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533"
+      }
+    }
+  },
+  "focused_rechecks": {
+    "core-full-final-r2-focused.log": {
+      "source_commit": "8eb042cf57508de59179b4aa2fdd5ae41e9a9eec",
+      "exit_code": 1,
+      "run": 4,
+      "passed": 3,
+      "failed": 1,
+      "explanation": "Three unchanged loopback inference checks passed. The migration check reliably expected schema 4 where a fully materialized legacy store must stay schema 3. The single assertion and comment changed; backup and data checks were retained.",
+      "sha256": "d42b9bde14d236a28f67afe28fadea85e1c864959868a921a23e12d94024925c"
+    },
+    "core-full-final-r3-focused.log": {
+      "source_commit": "5a2dafd0780646171e4453d2cebff27749484391",
+      "exit_code": 0,
+      "run": 2,
+      "passed": 2,
+      "explanation": "Unchanged plugin credential and stale-adapter fixtures passed. Both also passed in r4.",
+      "sha256": "545e55f8c537423e47ba88c95b7c852741bc2635727c249c2a705139a8064397"
+    }
+  },
+  "final_core_errors": {
+    "test_json_sse_session_and_protocol_headers": "Local HTTP fixture handshake timed out during setup; passed in r3 on the same final source.",
+    "test_oversized_http_is_contained": "Separate schema worker returned a validation budget/unavailability error; passed in r3 on the same final source.",
+    "classification": "Observed fixture timeout and validator execution errors with differing cases across attempts. A single clean final full run remains unverified. The machine-level cause has not been established."
+  },
+  "background_diagnostics": {
+    "observation": "The three completed Core attempts each printed an uncaught timer-thread PersistenceError during the fenced or closed store path. This is separate from unittest failure counts; causal attribution was not established.",
+    "logs": [
+      "core-full-final-r2.launch.log",
+      "core-full-final-r3.launch.log",
+      "core-full-final-r4.launch.log"
+    ],
+    "prior_evidence": "The same timer-thread store-fencing traceback is present in RC19 runtime/core-full-r2.log:1576-1595, before the RC20 checkpoint changes."
+  },
+  "inventory_comparison": {
+    "core_tests_absent_since_rc19": [],
+    "core_tests_added_since_rc19": [
+      "test_incremental_checkpoints.IncrementalCheckpointTests.test_block_commits_and_legacy_export_are_atomic_at_both_fault_boundaries",
+      "test_incremental_checkpoints.IncrementalCheckpointTests.test_export_streams_only_block_heads_and_never_rewrites_existing_full_history",
+      "test_incremental_checkpoints.IncrementalCheckpointTests.test_long_synchronous_child_does_not_reserialize_parent_receipt_copy",
+      "test_incremental_checkpoints.IncrementalCheckpointTests.test_long_task_writes_only_new_receipts_and_restores_exact_canonical_state",
+      "test_incremental_checkpoints.IncrementalCheckpointTests.test_missing_corrupt_and_reordered_blocks_refuse_restore_and_export",
+      "test_incremental_checkpoints.IncrementalCheckpointTests.test_retired_sessions_release_cached_sources_but_keep_exact_stored_history",
+      "test_incremental_checkpoints.IncrementalCheckpointTests.test_structural_edits_and_tool_controlled_type_tags_survive_materialization"
+    ],
+    "companion_normalized_test_inventory_matches_rc19": true,
+    "r4_error_cases_that_passed_on_identical_r3_source": [
+      "test_plugin_http.HTTPTests.test_json_sse_session_and_protocol_headers",
+      "test_plugin_http.HTTPTests.test_oversized_http_is_contained"
+    ],
+    "core_r3_and_r4_normalized_test_ids_identical": true,
+    "core_r3_and_r4_normalized_test_count": 1742
+  }
+}

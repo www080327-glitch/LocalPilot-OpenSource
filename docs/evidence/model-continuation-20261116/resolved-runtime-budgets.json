@@ -1,0 +1,42 @@
+{
+  "default": {
+    "max_steps": 6,
+    "max_tool_calls": 8,
+    "max_output_tokens": 512,
+    "max_token_units": 262144,
+    "max_subagents_per_turn": 2,
+    "max_worker_steps": 3,
+    "max_worker_tool_calls": 4,
+    "max_worker_token_units": 131072
+  },
+  "companion-execution": {
+    "max_steps": 6,
+    "max_tool_calls": 8,
+    "max_output_tokens": 512,
+    "max_token_units": 262144,
+    "max_subagents_per_turn": 2,
+    "max_worker_steps": 3,
+    "max_worker_tool_calls": 4,
+    "max_worker_token_units": 131072
+  },
+  "companion-reasoning": {
+    "max_steps": 6,
+    "max_tool_calls": 8,
+    "max_output_tokens": 512,
+    "max_token_units": 262144,
+    "max_subagents_per_turn": 2,
+    "max_worker_steps": 3,
+    "max_worker_tool_calls": 4,
+    "max_worker_token_units": 131072
+  },
+  "worker": {
+    "max_steps": 6,
+    "max_tool_calls": 8,
+    "max_output_tokens": 512,
+    "max_token_units": 262144,
+    "max_subagents_per_turn": 2,
+    "max_worker_steps": 3,
+    "max_worker_tool_calls": 4,
+    "max_worker_token_units": 131072
+  }
+}

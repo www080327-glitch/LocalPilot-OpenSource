@@ -1,0 +1,317 @@
+{
+  "summary_version": 2,
+  "model": "gpt-6-luna",
+  "reasoning": "high",
+  "kind": "SYNTHETIC_ENGINEERING_INTEGRATION",
+  "scope": "One public synthetic Python project; not a model-quality benchmark.",
+  "status": "PASS",
+  "status_source": "RESULTS.json.engineering_status (external qualification verdict)",
+  "protocol_status": "PASS",
+  "orchestration_status": "PASS",
+  "semantic_status": "PASS",
+  "source_git_head": "c411dd1f92ad09e3b6e095acc96bc65c12107d5e",
+  "source_manifest_sha256": "eb7719c62117b2ff13f30b550e0b3a7139cee342be1b70053fccbdd4c3d8bc81",
+  "runner_sha256": "1878a177ed32600e9d53490ad518a93ece8d729643f2e2681c7b10d11d4724c4",
+  "configured_inference": {
+    "default": {
+      "model": "gpt-6-luna",
+      "protocol": "responses",
+      "thinking": "high"
+    },
+    "companion-execution": {
+      "model": "gpt-6-luna",
+      "protocol": "responses",
+      "thinking": "high"
+    },
+    "companion-reasoning": {
+      "model": "gpt-6-luna",
+      "protocol": "responses",
+      "thinking": "high"
+    },
+    "worker": {
+      "model": "gpt-6-luna",
+      "protocol": "responses",
+      "thinking": "high"
+    }
+  },
+  "model_run_seconds": 281.0676609669972,
+  "outer_seconds": 281.7144321830019,
+  "model_calls": 28,
+  "model_call_scope": "Aggregate includes children; do not add child lists again.",
+  "parent_model_calls": 17,
+  "model_attempts": 28,
+  "failed_model_attempts": 0,
+  "incomplete_model_calls": [],
+  "tool_receipts": 61,
+  "receipt_counts_by_worker": {
+    "parent": 39,
+    "1.1": 15,
+    "1.2": 7
+  },
+  "tool_proposals": 61,
+  "unreceipted_tool_proposals": 0,
+  "receipt_counts_by_status": {
+    "failed": 3,
+    "completed": 58
+  },
+  "failed_tool_receipt_count": 3,
+  "failed_tool_receipts": [
+    {
+      "receipt_index": 0,
+      "receipt_id": "turn:1/call:call_TxC7Pdkj9UzWOXq6JdLyerbr/entry:0",
+      "call_id": "call_TxC7Pdkj9UzWOXq6JdLyerbr",
+      "name": "delegate",
+      "worker_id": null,
+      "status": "failed",
+      "error_type": "ValueError",
+      "error_message": "Unregistered hybrid backend_id",
+      "side_effect_completed": false
+    },
+    {
+      "receipt_index": 1,
+      "receipt_id": "turn:1/call:call_sbXhDkg0J8ahg7SgBWAKzBv1/entry:1",
+      "call_id": "call_sbXhDkg0J8ahg7SgBWAKzBv1",
+      "name": "delegate",
+      "worker_id": null,
+      "status": "failed",
+      "error_type": "ValueError",
+      "error_message": "Unregistered hybrid backend_id",
+      "side_effect_completed": false
+    },
+    {
+      "receipt_index": 4,
+      "receipt_id": "turn:1/call:call_P9dS0xbHKVTJcXTuVTE4aBm2/entry:4",
+      "call_id": "call_P9dS0xbHKVTJcXTuVTE4aBm2",
+      "name": "manage_goal",
+      "worker_id": null,
+      "status": "failed",
+      "error_type": "schema_validation",
+      "error_message": "$.subgoals[0]: expected string; $.subgoals[1]: expected string; $.subgoals[2]: expected string",
+      "error_fields": [
+        "$.subgoals[0]: expected string",
+        "$.subgoals[1]: expected string",
+        "$.subgoals[2]: expected string"
+      ],
+      "result_status": "invalid_arguments",
+      "stage": "not_dispatched",
+      "action_sent": false,
+      "action_may_have_applied": false,
+      "side_effect_completed": false
+    }
+  ],
+  "input_tokens": 1134660,
+  "output_tokens": 17838,
+  "cached_input_tokens": 951911,
+  "uncached_input_tokens": 182749,
+  "usage_scope": "Provider-reported usage summed over aggregate model calls once; child calls are already included. Not a billing statement.",
+  "usage_reporting_counts": {
+    "input_tokens": 28,
+    "output_tokens": 28,
+    "prompt_cache_hit_tokens": 28,
+    "prompt_cache_miss_tokens": 28
+  },
+  "aggregate_model_latency_seconds": 448.2253264710198,
+  "latency_scope": "Sum over parent and child inference calls; concurrent intervals mean this is not wall-clock duration.",
+  "async_lifecycle_overlap_seconds": 94.86868214607239,
+  "overlap_scope": "Child start-to-completed lifecycles, including inference and tools; not proof of simultaneous CPU execution.",
+  "child_pair_overlaps": [
+    {
+      "children": [
+        "1.1",
+        "1.2"
+      ],
+      "seconds": 94.86868214607239
+    }
+  ],
+  "children": [
+    {
+      "id": "1.1",
+      "status": "completed",
+      "async": true,
+      "collected": true,
+      "configured_model": "gpt-6-luna",
+      "backend_id": "route:worker",
+      "tier": "STRONG",
+      "read_only": false,
+      "model_calls": 6,
+      "receipt_count": 15,
+      "parent_projected_receipt_count": 15,
+      "timeline": [
+        {
+          "event": "start",
+          "at": 1794909318.893766
+        },
+        {
+          "event": "completed",
+          "at": 1794909432.0488305
+        }
+      ],
+      "lifecycle_interval": [
+        1794909318.893766,
+        1794909432.0488305
+      ],
+      "single_assigned_module": true,
+      "changed_paths": [
+        "logstats/parser.py"
+      ],
+      "test_class": "ParserTests",
+      "tests_ran": true,
+      "completed": true,
+      "successful_shells": [
+        {
+          "receipt_id": "turn:1/call:call_haZhTvbpZpkRI64xlwUQsg4J/entry:13",
+          "command": "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-20261117/.venv/bin/python -S -m unittest discover -s tests -p test_acceptance.py -k ParserTests",
+          "tests_run": 9
+        }
+      ]
+    },
+    {
+      "id": "1.2",
+      "status": "completed",
+      "async": true,
+      "collected": true,
+      "configured_model": "gpt-6-luna",
+      "backend_id": "route:worker",
+      "tier": "STRONG",
+      "read_only": false,
+      "model_calls": 5,
+      "receipt_count": 7,
+      "parent_projected_receipt_count": 7,
+      "timeline": [
+        {
+          "event": "start",
+          "at": 1794909318.9318326
+        },
+        {
+          "event": "completed",
+          "at": 1794909413.8005147
+        }
+      ],
+      "lifecycle_interval": [
+        1794909318.9318326,
+        1794909413.8005147
+      ],
+      "single_assigned_module": true,
+      "changed_paths": [
+        "logstats/aggregate.py"
+      ],
+      "test_class": "AggregateTests",
+      "tests_ran": true,
+      "completed": true,
+      "successful_shells": [
+        {
+          "receipt_id": "turn:1/call:call_9sM3h0PnsbdhM6BZtn64yGhN/entry:6",
+          "command": "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-20261117/.venv/bin/python -S -m unittest discover -s tests -p test_acceptance.py -k AggregateTests",
+          "tests_run": 3
+        }
+      ]
+    }
+  ],
+  "parent_successful_shells": [
+    {
+      "receipt_id": "turn:1/call:call_82SLFdJx0resbWBx0EPwB1Au/entry:45",
+      "command": "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-20261117/.venv/bin/python -S -m unittest discover -s tests -p test_acceptance.py -v",
+      "tests_run": 17
+    },
+    {
+      "receipt_id": "turn:1/call:call_3EENayqoztBIXsw25vv1gVIy/entry:46",
+      "command": "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-20261117/.venv/bin/python -S -m logstats fixtures/basic.csv --output result.json",
+      "tests_run": 0
+    },
+    {
+      "receipt_id": "turn:1/call:call_v9QIYXjXPK0HbRggUezWkBPJ/entry:54",
+      "command": "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-20261117/.venv/bin/python -S -m unittest discover -s tests -p test_acceptance.py -v",
+      "tests_run": 17
+    },
+    {
+      "receipt_id": "turn:1/call:call_hP8l4IIte6NUDp12zYbb0IS3/entry:55",
+      "command": "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-20261117/.venv/bin/python -S -m logstats fixtures/basic.csv --output result.json",
+      "tests_run": 0
+    }
+  ],
+  "external_checks": {
+    "unit": {
+      "tests_run": 17,
+      "returncode": 0,
+      "passed": true
+    },
+    "cli_cases": {
+      "basic": {
+        "returncode": 0,
+        "passed": true
+      },
+      "precision": {
+        "returncode": 0,
+        "passed": true
+      },
+      "empty": {
+        "returncode": 0,
+        "passed": true
+      },
+      "invalid": {
+        "returncode": 2,
+        "passed": true
+      }
+    },
+    "cli_case_count": 4,
+    "cli_passed_count": 4,
+    "acceptance_passed": true,
+    "parent_cli_artifact_matches": true,
+    "original_acceptance_unchanged": true
+  },
+  "owned_core_stopped": true,
+  "source_unchanged": true,
+  "result_fields": {
+    "status": "completed",
+    "runtime_status": "completed",
+    "deliverable_status": "present",
+    "verification_status": "not_run",
+    "engineering_status": "unverified",
+    "task_outcome": "unverified",
+    "task_succeeded": false,
+    "verification": null
+  },
+  "product_completion": {
+    "execution": "settled",
+    "delivery": "delivered",
+    "attempts": 1,
+    "receipt_count": 61,
+    "obligations": {
+      "pending_approval": false,
+      "queued_calls": 0,
+      "unfinished_goals": 0,
+      "unfinished_workers": 0,
+      "worker_obligations": false,
+      "computer_obligations": 0,
+      "unfinished_handoff": 0,
+      "unknown_receipts": 0,
+      "mutation_intent": false
+    }
+  },
+  "verification_boundary": "External synthetic engineering acceptance is separate from the product result. This summary preserves product verification/outcome fields and never upgrades not_run/unverified to verified.",
+  "consistency_checks": {
+    "aggregate_call_records_match": true,
+    "receipt_count_matches_product": true,
+    "tool_proposals_cover_receipts": true,
+    "child_projection_counts_match": true,
+    "unit_count_matches_qualification": true,
+    "cli_outcomes_match_qualification": true,
+    "source_execution_fingerprints_match": true,
+    "source_qualification_fingerprints_match": true
+  },
+  "provenance": {
+    "processor": "summarize_engineering_run.py",
+    "processor_sha256": "a46313471952afdd3577588dd9f8cdc9a0a17b03cc5a8766cd909e157adb1554",
+    "raw_inputs_sha256": {
+      "RESULTS.json": "d7ca9c1fbbf3d2772c5b945a83d9c5ff3cbb1870d63762b64903718d403b87f0",
+      "engineering-task.json": "2db1e08c841b3b89d5dc26689da80af25f2fcdc739cbab4f6e23974dcbe66b32",
+      "RUN_EXECUTION.json": "6b8921103879757577afb7f8ad5c8cfa04a6a02c7ae46c5f2d36a0879b206a43",
+      "external-unittest.json": "1880017fad42483ff2c932a716adfa5e8e70176c50e695bc5bcd1c9b1771d6ee",
+      "external-cli.json": "26278fbee29754c1c23a1324434aea284dc1e140fa436e6d4ee01da94929d59b",
+      "PROTOCOL.json": "d90f61fe61e5e008c67c3d08bf31c1d61a1322f811f6b5094925bff615227362",
+      "resolved-inference.json": "4d03609ea2cd0dd9db86366015ddf08b10e16eab2a45df20f7a3d3bab37ee214"
+    },
+    "errors_extracted_from": "engineering-task.json.tools[*].payload.error",
+    "no_model_or_acceptance_execution": true
+  }
+}

@@ -3,6 +3,7 @@ import { Check, RefreshCw, Download, Monitor } from "lucide-react";
 import { call, desktop } from "../bridge";
 import type { Json } from "../domain";
 import { LocalEndpointForm } from "./LocalEndpointForm";
+import { CloudProviderForm } from "./CloudProviderForm";
 import {
   ChannelSettings,
   channelLabels,
@@ -92,10 +93,10 @@ export function SetupAssistant({
     [cache, setCache] = useState(true),
     [status, setStatus] = useState(""),
     [installations, setInstallations] = useState<Json[]>([]),
-    [cloudKey, setCloudKey] = useState("");
+    [cloudBusy, setCloudBusy] = useState(false);
   useEffect(() => {
-    onBusy?.(!!busy && !modelWork);
-  }, [busy, modelWork]);
+    onBusy?.((!!busy && !modelWork) || cloudBusy);
+  }, [busy, modelWork, cloudBusy]);
   const alive = useRef(true);
   useEffect(() => {
     alive.current = true;
@@ -144,8 +145,19 @@ export function SetupAssistant({
       setBusy("");
     }
   }
+  async function skipDownload() {
+    if (state?.core_configured || (await prepare())) setStage(2);
+  }
   const r = state?.recommendation,
     hw = state?.hardware;
+  const usesMLX = hw?.os === "Darwin" && hw?.arch === "arm64";
+  const hasModel = summary.registry?.models?.some(
+    (m: Json) =>
+      m.model &&
+      m.model !== "not-selected" &&
+      m.adapter !== "unavailable" &&
+      m.deployment_status !== "not_deployed",
+  );
   return (
     <section className="setup-assistant">
       <ol className="setup-steps" aria-label="首次设置进度">
@@ -165,11 +177,9 @@ export function SetupAssistant({
       {stage === 0 && (
         <div className="setup-welcome">
           <h3>让 AI 帮你完成电脑上的任务</h3>
-          <p>
-            选择本地模型或填写 DeepSeek 密钥，即可开始。微信连接可以稍后再做。
-          </p>
+          <p>选择本地模型或连接云端模型，即可开始。微信连接可以稍后再做。</p>
           <p className="micro muted">
-            {hw?.system === "Linux"
+            {hw?.os === "Linux"
               ? "请使用与当前 Linux 发行版和处理器匹配的安装包。"
               : "macOS 需要 15 或更新版本。"}
             已有安装、模型和工作区会保留；需要下载时会单独确认。
@@ -194,7 +204,7 @@ export function SetupAssistant({
             <button
               className="icon-btn"
               aria-label="重新检测设备"
-              disabled={!!busy}
+              disabled={!!busy || cloudBusy}
               onClick={inspect}
             >
               <RefreshCw size={14} />
@@ -208,7 +218,7 @@ export function SetupAssistant({
                   <span>{item.label}</span>
                   <button
                     className="secondary"
-                    disabled={!!busy}
+                    disabled={!!busy || cloudBusy}
                     onClick={async () => {
                       setBusy("正在连接已有安装");
                       try {
@@ -251,10 +261,10 @@ export function SetupAssistant({
           )}
           {stage === 1 && (
             <>
-              {hw?.arch === "x86_64" && (
+              {hw && !usesMLX && (
                 <LocalEndpointForm onBeforeSave={prepare} onChanged={onReady} />
               )}
-              {state && !state.omlx_installed && hw?.arch !== "x86_64" && (
+              {state && !state.omlx_installed && usesMLX && (
                 <>
                   <p>
                     本地模型需要 oMLX。下载安装官方 0.7.2（约 0.9
@@ -262,7 +272,7 @@ export function SetupAssistant({
                   </p>
                   <button
                     className="secondary"
-                    disabled={!!busy}
+                    disabled={!!busy || cloudBusy}
                     onClick={async () => {
                       setBusy("正在下载并校验 oMLX…");
                       try {
@@ -287,87 +297,60 @@ export function SetupAssistant({
                   </button>
                 </>
               )}
-              {state?.omlx_installed &&
-                !hw?.backends?.length &&
-                hw?.arch !== "x86_64" && (
-                  <div className="dialog-actions">
-                    <button
-                      className="secondary"
-                      disabled={!!busy}
-                      onClick={async () => {
-                        setBusy("启动本地推理服务");
-                        try {
-                          await call("product_control", {
-                            operation: "initialize_backend",
-                            args: { confirmed: true },
-                          });
-                          await inspect();
-                        } catch (e) {
-                          onError(e);
-                        } finally {
-                          setBusy("");
-                        }
-                      }}
-                    >
-                      启动本地推理服务
-                    </button>
-                    <button
-                      className="text-btn"
-                      disabled={!!busy}
-                      onClick={() => call("open_omlx_setup").catch(onError)}
-                    >
-                      打开 oMLX
-                    </button>
-                  </div>
-                )}
-              <button className="primary" disabled={!!busy} onClick={prepare}>
+              {state?.omlx_installed && !hw?.backends?.length && usesMLX && (
+                <div className="dialog-actions">
+                  <button
+                    className="secondary"
+                    disabled={!!busy || cloudBusy}
+                    onClick={async () => {
+                      setBusy("启动本地推理服务");
+                      try {
+                        await call("product_control", {
+                          operation: "initialize_backend",
+                          args: { confirmed: true },
+                        });
+                        await inspect();
+                      } catch (e) {
+                        onError(e);
+                      } finally {
+                        setBusy("");
+                      }
+                    }}
+                  >
+                    启动本地推理服务
+                  </button>
+                  <button
+                    className="text-btn"
+                    disabled={!!busy || cloudBusy}
+                    onClick={() => call("open_omlx_setup").catch(onError)}
+                  >
+                    打开 oMLX
+                  </button>
+                </div>
+              )}
+              <button
+                className="primary"
+                disabled={!!busy || cloudBusy}
+                onClick={prepare}
+              >
                 {busy ||
                   (state?.core_configured
                     ? "连接 LocalPilot"
                     : "准备 LocalPilot")}
               </button>
               <div className="setup-cloud">
-                <h3>使用 DeepSeek</h3>
-                <input
-                  aria-label="首次设置 DeepSeek API 密钥"
-                  type="password"
-                  autoComplete="off"
-                  placeholder="DeepSeek API 密钥"
-                  value={cloudKey}
-                  onChange={(e) => setCloudKey(e.target.value)}
+                <CloudProviderForm
+                  disabled={!!busy}
+                  onBeforeConnect={prepare}
+                  onConnected={onReady}
+                  onBusy={setCloudBusy}
                 />
-                <button
-                  className="secondary"
-                  disabled={!!busy || !cloudKey}
-                  onClick={async () => {
-                    if (!(await prepare())) return;
-                    setBusy("连接云端配置");
-                    try {
-                      await call("configure_cloud_key", {
-                        key: cloudKey,
-                        confirmed: true,
-                      });
-                      setCloudKey("");
-                      await onReady();
-                      setStatus("云端配置已保存。发送任务时再确认云端授权。");
-                    } catch (e) {
-                      onError(e);
-                    } finally {
-                      setBusy("");
-                    }
-                  }}
-                >
-                  保存并连接
-                </button>
-                <p className="micro muted">
-                  密钥仅保存到本机私有目录，添加配置不会发送任务。
-                </p>
               </div>
               <details className="advanced-settings">
                 <summary>高级 · 工作文件夹</summary>
                 <button
                   className="secondary"
-                  disabled={!!busy}
+                  disabled={!!busy || cloudBusy}
                   onClick={async () => {
                     if (!(await prepare())) return;
                     try {
@@ -425,11 +408,8 @@ export function SetupAssistant({
                   <div className="dialog-actions">
                     <button
                       className="secondary"
-                      onClick={() =>
-                        setStatus(
-                          "已跳过模型下载。完成向导后可使用云端或已有模型。",
-                        )
-                      }
+                      disabled={(!!busy && !modelWork) || cloudBusy}
+                      onClick={() => void skipDownload()}
                     >
                       跳过，稍后自行选择
                     </button>
@@ -593,7 +573,8 @@ export function SetupAssistant({
               {!r && (
                 <button
                   className="secondary"
-                  onClick={() => setStatus("已跳过模型下载。可继续完成设置。")}
+                  disabled={(!!busy && !modelWork) || cloudBusy}
+                  onClick={() => void skipDownload()}
                 >
                   跳过，稍后自行选择
                 </button>
@@ -605,8 +586,21 @@ export function SetupAssistant({
       {stage === 2 && <ChannelSettings onError={onError} onboarding />}
       {stage === 3 && (
         <div className="setup-completion">
-          <h3>准备好了，开始使用</h3>
-          <p>模型和微信都可以稍后在设置中调整。</p>
+          <h3>
+            {hasModel || !desktop
+              ? "设置完成，可以开始使用"
+              : "基础设置完成，还需连接模型"}
+          </h3>
+          <p>
+            {hasModel || !desktop
+              ? "完成设置后，在对话框中输入你想做的事。"
+              : "连接一个本地或云端模型后，LocalPilot 才能回答问题和执行任务。你也可以先完成设置，浏览应用。"}
+          </p>
+          {desktop && !hasModel && (
+            <button className="primary" onClick={() => setStage(1)}>
+              返回连接模型
+            </button>
+          )}
           <details>
             <summary>高级 · 查看组件状态</summary>
             <div className="setup-summary">
@@ -627,13 +621,7 @@ export function SetupAssistant({
                 <strong>
                   {summary.registry?.models === null
                     ? "模型状态尚未确认，请在模型库检查"
-                    : summary.registry?.models?.some(
-                          (m: Json) =>
-                            m.model &&
-                            m.model !== "not-selected" &&
-                            m.adapter !== "unavailable" &&
-                            m.deployment_status !== "not_deployed",
-                        )
+                    : hasModel
                       ? "已配置模型路由，推理可用性仍需测试"
                       : "未配置模型，可稍后设置"}
                 </strong>
@@ -652,16 +640,13 @@ export function SetupAssistant({
               </p>
             </div>
           </details>
-          <p>
-            渠道可选。模型缺失时任务会明确提示配置，平台授权未完成时不会显示已连接。
-          </p>
         </div>
       )}
       <div className="dialog-actions setup-navigation">
         {stage > 0 && (
           <button
             className="secondary"
-            disabled={!!busy && !modelWork}
+            disabled={(!!busy && !modelWork) || cloudBusy}
             onClick={() => setStage(stage - 1)}
           >
             上一步
@@ -672,6 +657,7 @@ export function SetupAssistant({
             className="primary"
             disabled={
               (!!busy && !modelWork) ||
+              cloudBusy ||
               (desktop && stage === 1 && !state?.core_configured)
             }
             onClick={() => setStage(stage + 1)}

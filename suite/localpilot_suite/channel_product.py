@@ -119,7 +119,6 @@ def wheel_source(home=None):
     return path
 
 def component_compatible(root,home=None):
-    if not channels.installed(root):return False
     record=private_json(root/'installation.json')
     return record.get('transport_contract')==2 and record.get('wheel_sha256')==channel_runtime.digest(wheel_source(home))
 
@@ -142,13 +141,21 @@ def update_component(home,hub,state,kind):
 def install_component(home, hub, state):
     node = channel_runtime.installed(home)
     if node is None:
-        raise ValueError('CHANNEL_OPTIONAL_RUNTIME_REQUIRED')
+        result = channel_runtime.install(home)
+        if result['status'] == 'cancelled':
+            raise ValueError('CHANNEL_NODE_DOWNLOAD_CANCELLED')
+        node = channel_runtime.installed(home)
     target = component_home(hub, state)
     private_directory(target, create=True)
     root = target / 'channels'
-    if channels.installed(root) and not component_compatible(root,home):raise ValueError('CHANNEL_COMPONENT_UPDATE_REQUIRED')
-    if not channels.installed(root):
+    installed = channels.installed(root)
+    if installed and not component_compatible(root,home):raise ValueError('CHANNEL_COMPONENT_UPDATE_REQUIRED')
+    if not installed:
         channels.main(['install', '--wheel', str(wheel_source(home))], target, node_path=node)
+    values = credentials(hub)
+    if 'LP_CHANNEL_INGRESS' not in values:
+        values['LP_CHANNEL_INGRESS'] = secrets.token_urlsafe(32)
+        channels.save(hub / 'credentials.json', values)
     return node
 
 def bridge_env(hub, kind, state_dir, config=None):
@@ -174,10 +181,10 @@ def core_models(home):
         return []
     config = private_json(home / 'service.json')
     return [{'id': name, 'name': route['backend'].get('model', name),
-        'cloud':route['backend'].get('kind') in {'deepseek','deepseek-native','remote-openai','remote-vllm'},
+        'cloud':route['backend'].get('kind') in {'deepseek','deepseek-native','openai','remote-openai','remote-vllm'},
         'ready': route['backend'].get('kind') != 'unavailable' and route['backend'].get('model') != 'not-selected'}
         for name, route in config['routes'].items()
-        if route['backend'].get('kind') in {'unavailable', 'omlx', 'local-openai', 'vllm','deepseek','deepseek-native','remote-openai','remote-vllm'}
+        if route['backend'].get('kind') in {'unavailable', 'omlx', 'local-openai', 'vllm','deepseek','deepseek-native','openai','remote-openai','remote-vllm'}
         and not route.get('reasoning_only') and not route.get('managed_local_model') and not name.startswith('channel-')]
 
 def status(home, kind, include_login=False):
@@ -331,7 +338,7 @@ def bind(home, kind, hub, state_dir, state, args):
         raise ValueError('CHANNEL_LOCAL_MODEL_ROUTE_REQUIRED')
     route_name = 'channel-' + kind + '-' + uuid.uuid4().hex[:12]
     template = config['routes'][model]
-    cloud=template['backend']['kind'] in {'deepseek','deepseek-native','remote-openai','remote-vllm'}
+    cloud=template['backend']['kind'] in {'deepseek','deepseek-native','openai','remote-openai','remote-vllm'}
     if type(args.get('allow_cloud',False)) is not bool or (cloud and args.get('allow_cloud') is not True):
         raise ValueError('CHANNEL_CLOUD_REQUIRES_EXPLICIT_HOST_CONFIRMATION')
     workspace = validate_workspace(home,state['workspace']) if state.get('workspace') else default_workspace(home,kind)
@@ -537,8 +544,6 @@ def command(home, kind, action, args):
         return stop_owned(home,kind,action)
     if action in {'status', 'login_status'}:
         return status(home, kind, action == 'login_status')
-    if action == 'exit' and not roots(home, kind)[0].exists():
-        return {'status':'stopped','optional_not_selected':True}
     hub, state_dir = roots(home, kind, create=True)
     if action == 'cancel_download':
         root = private_directory(home / 'channel-node', create=True)
@@ -576,16 +581,13 @@ def command(home, kind, action, args):
             state['background'] = args['enabled']; store_settings(hub, state)
             return {'status': 'saved', 'background': args['enabled'], 'auto_start': False}
         root = runtime_root(hub, state)
-        if action in {'stop', 'cancel_login', 'disconnect', 'exit'}:
-            if action == 'exit' and state.get('background'):
-                return {'status': 'kept_running_by_preference'}
+        if action == 'disconnect':
             if root.exists():
                 for component in (kind, 'adapter'):
                     result = channels.main(['stop', component], component_home(hub, state))
                     if result.get('status') != 'stopped':
                         return result
-            if action == 'disconnect':
-                disconnect(home,hub,state_dir,state,kind)
+            disconnect(home,hub,state_dir,state,kind)
             return {'status': 'stopped', 'state_preserved': True, 'platform_token_revoked': False}
         if action == 'fresh':
             if state.get('binding'):raise ValueError('CHANNEL_DISCONNECT_BEFORE_FRESH_CONNECTION')
@@ -628,9 +630,6 @@ def command(home, kind, action, args):
             result = channel_runtime.install(home)
             if result['status'] == 'cancelled':
                 return result
-            values = credentials(hub)
-            values.setdefault('LP_CHANNEL_INGRESS', secrets.token_urlsafe(32))
-            channels.save(hub / 'credentials.json', values)
             install_component(home, hub, state)
             return {'status': 'installed', 'connected': False, 'node': result}
         if action == 'uninstall':

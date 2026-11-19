@@ -66,7 +66,7 @@ class WorkspaceGrants:
     def guard(self,gid,name,args):
         with self.lock:
             grant=self.validate(gid)
-            if name in {'execute','run_command','shell'} or grant['scope']=='read' and name not in {'read_file','list_directory','list_entries','file_info','search_text','inspect_file'} or grant['scope']=='organize' and name not in {'read_file','list_directory','list_entries','file_info','search_text','inspect_file','make_directory','move_file','copy_file'}:
+            if name in {'execute','run_command','shell'} or grant['scope']=='read' and name not in {'read_file','list_directory','list_entries','file_info','search_text','inspect_file','recall_history'} or grant['scope']=='organize' and name not in {'read_file','list_directory','list_entries','file_info','search_text','inspect_file','recall_history','make_directory','move_file','copy_file'}:
                 raise PermissionError('Tool outside selected folder scope')
             yield
 
@@ -111,7 +111,6 @@ class WorkspaceGrants:
             runtime.completion_check=None
             for backend in ([runtime.current_backend]+list(runtime.hybrid.catalog.values()) if runtime.hybrid else [runtime.current_backend]):
                 if hasattr(backend,"service_contract"):backend.service_contract.pop("host_verification",None)
-        runtime._refresh_prompt()
 
 
 def handle(server,principal,body=None):

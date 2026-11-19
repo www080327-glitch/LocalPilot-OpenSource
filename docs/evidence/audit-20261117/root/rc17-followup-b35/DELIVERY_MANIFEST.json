@@ -1,0 +1,205 @@
+{
+  "kind": "RC17_FOLLOWUP_DELIVERY",
+  "product_commit": "8e27340e3d0cabbb37ace7a652de9b1f2f0d0eee",
+  "role_harness_commit": "b69542583954c49672a636ba43f1ef310238883c",
+  "public_source_map": "PUBLIC_SOURCE_MAP.json",
+  "files_count": 38,
+  "excludes_self": true,
+  "files": [
+    {
+      "path": "BASELINE_EVIDENCE_REVIEW.json",
+      "bytes": 1947,
+      "sha256": "754df732e6be036cf35ca3d7edcc21d08c2f371aa295cb40582736df53d7ffdd"
+    },
+    {
+      "path": "BROWSER_SUMMARY.json",
+      "bytes": 28460,
+      "sha256": "f865e63f8dcb076bbdcad945018803073d111f28daa38935e8a243b7f23a38a7"
+    },
+    {
+      "path": "DELIVERY_CHECKS.json",
+      "bytes": 971,
+      "sha256": "e71ebd6f20bf97c39527abe5689c130a87348fd4b3b83b8af1b29a210398538c"
+    },
+    {
+      "path": "ENGINEERING_R12_BLOCKED.json",
+      "bytes": 937,
+      "sha256": "018a33acf7600414286187194618071698515c24d2e88a86cd0954719dfff6c6"
+    },
+    {
+      "path": "FINAL_EVIDENCE_REVIEW.json",
+      "bytes": 66163,
+      "sha256": "94b706b68f9b7a58cbaf041d31cd43b1f7f3aefb02735e6c1344c0a9827d3b5a"
+    },
+    {
+      "path": "INDEPENDENT_IMPLEMENTATION_REVIEW.json",
+      "bytes": 1704,
+      "sha256": "9d06264bf7b7785b36f3d5410813a6ab82ea18c26bfa9686cb806f5717be4a2a"
+    },
+    {
+      "path": "MANIFEST.json",
+      "bytes": 3718,
+      "sha256": "c573694276f15591e2c1712bf4d5c5e56bfab1a366e0a3c759230488d0a3e038"
+    },
+    {
+      "path": "PACKAGING_SUMMARY.json",
+      "bytes": 4394,
+      "sha256": "e13fa880b5b36486035f2ea8ba9b944c851213bd63c3e1d63daff8b5e92d8781"
+    },
+    {
+      "path": "PERF_COMPARISON.json",
+      "bytes": 5523,
+      "sha256": "09cc9e715c36e7cd8b0c9423bc4e9d26fdff8d4aff0deccde6666b35fb33c908"
+    },
+    {
+      "path": "PUBLICATION_REVIEW.json",
+      "bytes": 18977,
+      "sha256": "9ecdb3712a29aae3c1bbde50346b94238bc5a0809b6de971c35e7b857c48a09b"
+    },
+    {
+      "path": "PUBLIC_COMMIT_READBACK.json",
+      "bytes": 2615,
+      "sha256": "a25e26785ef21c714847313dda72d47bbae15f4a28d9898a6648e6beb4351611"
+    },
+    {
+      "path": "PUBLIC_SOURCE_MAP.json",
+      "bytes": 2069,
+      "sha256": "5081a3fdca9fda5c86862407a7cef39206ea323ee3dbe112c29a89f9a70c5bbf"
+    },
+    {
+      "path": "REGRESSION_SUMMARY.json",
+      "bytes": 1026,
+      "sha256": "001184390a8872a4f9df4aac3a949669d32de3853707608b3d79acebb9191dab"
+    },
+    {
+      "path": "REPOSITORY_VISIBILITY.json",
+      "bytes": 272,
+      "sha256": "0595e9186213184ec6a09e9a7b3c77c218ac9401217161884bb7d4ad3abad5cc"
+    },
+    {
+      "path": "RESULTS.md",
+      "bytes": 13059,
+      "sha256": "4d4860330829b6883d5522109d3b3c72f697480107b677cad6e95b7054c788c4"
+    },
+    {
+      "path": "SHA256SUMS",
+      "bytes": 816,
+      "sha256": "da2397cffbe9cb695453bb0c912e97f9f0e49b53f4fbc7459f7c4cbde4529a28"
+    },
+    {
+      "path": "SOURCE.json",
+      "bytes": 2663,
+      "sha256": "d33d24750925e38aa68f035893d21690c2a2c60c7fd9cbc34931be505e9293a1"
+    },
+    {
+      "path": "SUMMARY.md",
+      "bytes": 2155,
+      "sha256": "ace78556f9b5d4fdf2b4c7be4028521aea21b7374f9a5e2ae04988cb712ed7fa"
+    },
+    {
+      "path": "WORKER_ROLE_INDEPENDENT_REVIEW.json",
+      "bytes": 1321,
+      "sha256": "31f56a65e38cb8487c167ff1b68c3effa9c475167dfdf1e0494774b782d20e64"
+    },
+    {
+      "path": "WORKER_ROLE_SUMMARY.json",
+      "bytes": 4469,
+      "sha256": "364382a07b91a7c2b0d4da067b269ebedabface3ff1898b72dfeb8a42e872fb9"
+    },
+    {
+      "path": "browser-native.MANIFEST.json",
+      "bytes": 3282,
+      "sha256": "5f586422582abaee0c2e7cea889728142ab47746da5a3b6a7159c98af6c92c11"
+    },
+    {
+      "path": "browser-native.tar.gz",
+      "bytes": 22233,
+      "sha256": "62dd0662db4defef338c1dfff6e58f4617599f56ae907bd38d0769c35a0c4662"
+    },
+    {
+      "path": "delivery-review.MANIFEST.json",
+      "bytes": 1354,
+      "sha256": "1cf738cee9a84b8a36bc930fae1c8ef2daad5711cc854baa4fa4294d075024a5"
+    },
+    {
+      "path": "delivery-review.tar.gz",
+      "bytes": 6121,
+      "sha256": "e5e10db0cd2ba53fd8b1e8c6e6d32b6b53ac11366d75134188534ec41603b762"
+    },
+    {
+      "path": "engineering-r12-blocked.MANIFEST.json",
+      "bytes": 7303,
+      "sha256": "28dda07f9bb080a9709974bc92f61be5c8bfff8d09bd7ccfb130c6ca222dc4a2"
+    },
+    {
+      "path": "engineering-r12-blocked.tar.gz",
+      "bytes": 24093,
+      "sha256": "ea466e866f7eafc7c97d8bff56ed1fc3d73954543d900ba5576df2c2a6df8254"
+    },
+    {
+      "path": "installed-packages.MANIFEST.json",
+      "bytes": 7714,
+      "sha256": "917e8f23f4902df1c8115478c28972bcd449ee96a9a17f9c7dd221a60fb982a0"
+    },
+    {
+      "path": "installed-packages.tar.gz",
+      "bytes": 143523,
+      "sha256": "40564951f6511bad4484c1bd1fa99e9a87f61fd0b932de77bc9946bd4366a268"
+    },
+    {
+      "path": "regressions.MANIFEST.json",
+      "bytes": 4900,
+      "sha256": "04ab7b28261e8c0ed7deed66fb8fbca0859ac0fe6b6ff3b9eca5583ba5391852"
+    },
+    {
+      "path": "regressions.tar.gz",
+      "bytes": 318720,
+      "sha256": "120d0efb1cf6c095926f25fadfbcc6209e31b34a0ce63b951ff02879fa686f7c"
+    },
+    {
+      "path": "session-context.MANIFEST.json",
+      "bytes": 2853,
+      "sha256": "b6961d9a6f162b5f3246a32f9be5658156fd36ad8acfee8dbafc34a38e0ab39a"
+    },
+    {
+      "path": "session-context.tar.gz",
+      "bytes": 9063,
+      "sha256": "56e32c970757711f05f219d120a0d95e9ab487a5e01046dda3a17dbcfbbfc5a6"
+    },
+    {
+      "path": "truncation-recovery.MANIFEST.json",
+      "bytes": 1144,
+      "sha256": "ef2bf8d9d620e0557d34bf3da1b4517ad99bf58443f8c0f24d65270d09096d73"
+    },
+    {
+      "path": "truncation-recovery.tar.gz",
+      "bytes": 4180,
+      "sha256": "3e787cd33c39e4fb4da7513bc81b5001f15cd51188357992fdcb402a59cbe2e4"
+    },
+    {
+      "path": "worker-roles-live.MANIFEST.json",
+      "bytes": 4066,
+      "sha256": "46722c5a6be67977f3003fc49e5083555a4b63322812fa2f52ee89772c820759"
+    },
+    {
+      "path": "worker-roles-live.tar.gz",
+      "bytes": 35105,
+      "sha256": "efc97b9fdc4637287aab416aca2116210688216bd3e496f063778551908809a4"
+    },
+    {
+      "path": "worker-roles-local.MANIFEST.json",
+      "bytes": 4931,
+      "sha256": "e19ac52f32254adcd02afd57ee3ce2cb03369d83f03b116c941e3664bb26a449"
+    },
+    {
+      "path": "worker-roles-local.tar.gz",
+      "bytes": 68577,
+      "sha256": "73d98b4b5d59657a8c81374b537cfffae5223df1a5f2a0bdc3897121a5cc8162"
+    }
+  ],
+  "archive_groups": 9,
+  "raw_archive_members": 123,
+  "known_credential_matches": 0,
+  "independent_review": "FINAL_EVIDENCE_REVIEW.json",
+  "publication_review": "PUBLICATION_REVIEW.json"
+}

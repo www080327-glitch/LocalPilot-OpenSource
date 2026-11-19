@@ -1,0 +1,22 @@
+{
+  "logs": [
+    {
+      "file": "after-r1.log",
+      "original_sha256": "67a9cebd6d1a70146fc79959b2ca282b5d79f89e7fd75e6415a5881196df9e13",
+      "published_sha256": "67a9cebd6d1a70146fc79959b2ca282b5d79f89e7fd75e6415a5881196df9e13",
+      "transformation": "replace repository absolute path with <REPOSITORY>; all results and failure details retained"
+    },
+    {
+      "file": "after-r2.log",
+      "original_sha256": "fc4b12853c1eb616967bafb2666f80cab0d9e10e4a8b577da71a5b3015a02265",
+      "published_sha256": "fc4b12853c1eb616967bafb2666f80cab0d9e10e4a8b577da71a5b3015a02265",
+      "transformation": "replace repository absolute path with <REPOSITORY>; all results and failure details retained"
+    },
+    {
+      "file": "before.log",
+      "original_sha256": "6efe4fb8b06e31cd42246658ee266f6fdcee660d67e4627288c823ca8fe0e308",
+      "published_sha256": "7a5d39e1250efaa40fd300d4eca5024c370efd5611df7ad0e1a5224f95f7383b",
+      "transformation": "replace repository absolute path with <REPOSITORY>; all results and failure details retained"
+    }
+  ]
+}

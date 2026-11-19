@@ -1,0 +1,18 @@
+{
+  "artifact_version": "5.0.1-rc.18",
+  "deb_sha256": "ed8bc890b477d54cd12e588853791796bd7c6dfbe3b484c06cf84b7c76a10a43",
+  "executable_sha256": "eb0526b7c23c04ea3264b0c34755b7c8485cb5cdbdda3594e18325fc4d46c9f0",
+  "command": [
+    "localpilot-desktop-test",
+    "--companion-pet"
+  ],
+  "owned_test_root_marker": true,
+  "display_present": false,
+  "wayland_display_present": false,
+  "seconds": 0.243,
+  "exit_code": 101,
+  "stopped_after_timeout": false,
+  "output": "\nthread 'main' (6) panicked at /workspace/scratch/b0df9966d470/nov18-validation/linux/r1/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tao-0.37.1/src/platform_impl/linux/event_loop.rs:217:53:\nFailed to initialize gtk backend!: BoolError { message: \"Failed to initialize GTK\", filename: \"/workspace/scratch/b0df9966d470/nov18-validation/linux/r1/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gtk-0.18.2/src/rt.rs\", function: \"gtk::rt::init\", line: 141 }\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n",
+  "socket_exists_after_exit": false,
+  "observed_gui_frames": 0
+}

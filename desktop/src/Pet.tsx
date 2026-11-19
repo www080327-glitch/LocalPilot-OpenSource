@@ -1,6 +1,5 @@
 import { shouldSubmitEnter } from "./inputBehavior";
 import { useEffect, useRef, useState } from "react";
-import { listen } from "@tauri-apps/api/event";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import {
@@ -13,19 +12,45 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { call } from "./bridge";
-import { defaults, eligible, type PetSettings } from "./pet/policy";
+import {
+  defaults,
+  edgeImportHint,
+  eligible,
+  type PetSettings,
+} from "./pet/policy";
 import "./pet/pet.css";
 import EdgeCharacter from "./pet/EdgeCharacter";
 import { idleLines } from "./pet/personality";
-import { textOf } from "./domain";
+import { petEvents } from "./pet/events";
+import { useReducedMotion } from "./pet/useReducedMotion";
+import type { PetAsset } from "./pet/types";
+import { textOf, terminal, settled, label } from "./domain";
 import { TrainingReview } from "./components/TrainingSamples";
 type Message = {
+  id?: string;
   role: "user" | "assistant";
   text: string;
   profile?: string;
   question?: string;
   answerId?: string;
 };
+type HistoryCursor = { timestamp: number; id: string };
+type HistoryPage = {
+  messages: {
+    id: string;
+    role: "user" | "assistant";
+    text: string;
+    answer_id: string | null;
+  }[];
+  next_before: HistoryCursor | null;
+};
+function uniqueMessages(messages: Message[]) {
+  return [
+    ...new Map(
+      messages.map((message) => [message.id || message, message]),
+    ).values(),
+  ];
+}
 const act = (action: string, value?: unknown) =>
   call<any>("pet_action", { action, value: value ?? null });
 const service = (command: string, values: Record<string, unknown> = {}) =>
@@ -43,7 +68,7 @@ export default function Pet() {
     [view, setView] = useState<"chat" | "settings" | "advanced" | "memory">(
       "chat",
     );
-  const [asset, setAsset] = useState<any>(null);
+  const [asset, setAsset] = useState<PetAsset | null>(null);
   const [characters, setCharacters] = useState<{ id: string; label: string }[]>(
     [],
   );
@@ -51,6 +76,12 @@ export default function Pet() {
   const [reviewingAnswer, setReviewingAnswer] = useState<string | null>(null);
   const [agentTask, setAgentTask] = useState<any>(null);
   const [coreConnected, setCoreConnected] = useState(false);
+  const [serviceConnected, setServiceConnected] = useState<boolean | null>(
+      null,
+    ),
+    [serviceBusy, setServiceBusy] = useState(false),
+    [failedQuestion, setFailedQuestion] = useState(""),
+    [focusRequest, setFocusRequest] = useState(0);
   const delegating = useRef(false);
   const [messages, setMessages] = useState<Message[]>([]),
     [text, setText] = useState(""),
@@ -58,25 +89,116 @@ export default function Pet() {
     [draft, setDraft] = useState(""),
     [acknowledgement, setAcknowledgement] = useState(""),
     [error, setError] = useState(""),
+    [notice, setNotice] = useState(""),
     [snapshot, setSnapshot] = useState<any>(null),
     [memory, setMemory] = useState(true),
     [deletePending, setDeletePending] = useState(false),
     [reminder, setReminder] = useState(""),
+    [reminderBusy, setReminderBusy] = useState(false),
     [due, setDue] = useState("");
+  const [historyBefore, setHistoryBefore] = useState<HistoryCursor | null>(
+      null,
+    ),
+    [historyBusy, setHistoryBusy] = useState(false),
+    [historyError, setHistoryError] = useState("");
+  const historyLoaded = useRef(false),
+    historyLoading = useRef(false),
+    historyGeneration = useRef(0),
+    historyAnchor = useRef<{ height: number; top: number } | null>(null),
+    conversation = useRef<HTMLDivElement>(null);
   const taskId = useRef(""),
     taskStatus = useRef("");
   const current = useRef(""),
     composing = useRef(false),
     lastCompositionEnd = useRef(-Infinity),
     bottom = useRef<HTMLDivElement>(null),
-    lastQuestion = useRef("");
+    composer = useRef<HTMLTextAreaElement>(null);
+  const mediaReduce = useReducedMotion(!bubble, handleError);
+  function handleError(error: unknown) {
+    setError(String(error));
+    setNotice("");
+    setFailedQuestion("");
+  }
   async function refresh() {
-    const [s, m] = await Promise.all([
-      service("ui_snapshot"),
-      service("pet_memory"),
-    ]);
-    setSnapshot(s);
-    setMemory(m.enabled);
+    try {
+      const [s, m] = await Promise.all([
+        service("ui_snapshot"),
+        service("pet_memory"),
+      ]);
+      setSnapshot(s);
+      setMemory(m.enabled);
+      setServiceConnected(true);
+      if (m.enabled && !historyLoaded.current) await loadHistory();
+    } catch (error) {
+      setServiceConnected(false);
+      throw error;
+    }
+  }
+  async function loadHistory(before?: HistoryCursor) {
+    if (historyLoading.current) return;
+    historyLoading.current = true;
+    setHistoryBusy(true);
+    setHistoryError("");
+    const generation = historyGeneration.current;
+    try {
+      const page = (await service("pet_history", {
+        limit: 30,
+        ...(before ? { before } : {}),
+      })) as HistoryPage;
+      if (generation !== historyGeneration.current) return;
+      const restored = page.messages.map((message) => ({
+        id: message.id,
+        role: message.role,
+        text: message.text,
+        answerId: message.answer_id || undefined,
+      }));
+      if (before && conversation.current)
+        historyAnchor.current = {
+          height: conversation.current.scrollHeight,
+          top: conversation.current.scrollTop,
+        };
+      setMessages((current) => uniqueMessages([...restored, ...current]));
+      setHistoryBefore(page.next_before);
+      historyLoaded.current = true;
+    } catch {
+      if (generation === historyGeneration.current)
+        setHistoryError("聊天记录暂未载入。");
+    } finally {
+      historyLoading.current = false;
+      setHistoryBusy(false);
+    }
+  }
+  async function recoverService() {
+    setServiceBusy(true);
+    setError("");
+    setFailedQuestion("");
+    try {
+      await call("pet_runtime", { action: "start" });
+      await refresh();
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setServiceBusy(false);
+    }
+  }
+  async function saveReminder(dueAt: number) {
+    setReminderBusy(true);
+    setError("");
+    try {
+      await service("set_reminder", {
+        text: reminder,
+        due_at: dueAt,
+        confirmed: true,
+      });
+      setReminder("");
+      setDue("");
+      setNotice("提醒已保存。");
+      await refresh();
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setReminderBusy(false);
+    }
   }
   function activity(value: string) {
     setState(value);
@@ -87,14 +209,8 @@ export default function Pet() {
     document.documentElement.dataset.petPart = bubble ? "bubble" : "character";
     let stopped = false;
     if (!bubble) void act("ready").catch((e) => setError(String(e)));
-    const stops: (() => void)[] = [];
-    const sub = async (name: string, fn: (v: any) => void) => {
-      const stop = await listen(name, (e) => {
-        if (!stopped) fn(e.payload);
-      });
-      if (stopped) stop();
-      else stops.push(stop);
-    };
+    const events = petEvents(handleError);
+    const sub = events.on;
     void act("state")
       .then((r) => {
         if (!stopped) {
@@ -120,7 +236,13 @@ export default function Pet() {
     void call<any>("pet_asset", { action: "load" })
       .then(setAsset)
       .catch((e) => setError(String(e)));
-    void sub("pet-state", (v) => setExpanded(v.expanded));
+    void sub("pet-state", (v) => {
+      setExpanded(v.expanded);
+      if (v.expanded && v.focus) {
+        setView("chat");
+        setFocusRequest((request) => request + 1);
+      }
+    });
     void sub("pet-visibility", setVisible);
     void sub("pet-activity", (v) => {
       setState(v.state);
@@ -155,26 +277,19 @@ export default function Pet() {
         setAgentTask(t);
         if (t.status === taskStatus.current) return;
         taskStatus.current = t.status;
-        const terminal = [
-          "completed",
-          "incomplete",
-          "failed",
-          "cancelled",
-          "timed_out",
-        ].includes(t.status);
         activity(
           t.result?.task_outcome === "passed"
             ? "success"
-            : terminal || t.status?.startsWith("requires_")
+            : settled.has(t.status)
               ? "help"
               : "executing",
         );
-        if (terminal || t.status?.startsWith("requires_"))
+        if (settled.has(t.status))
           setMessages((m) => [
             ...m,
             {
               role: "assistant",
-              text: `任务状态：${({ completed: "完成", incomplete: "尚未完成", failed: "失败", cancelled: "已取消", timed_out: "超时", requires_approval: "等待你在任务窗口审批", requires_human: "需要你帮助" } as Record<string, string>)[t.status] || t.status}。\n任务验收：${t.result?.task_outcome || "unverified"}；验证：${t.verification_summary?.verification_status || t.result?.verification_status || "NOT_RUN"}。${textOf(t) ? "\n" + textOf(t).slice(0, 2400) : "请在任务窗口查看实际结果。"}`,
+              text: `任务状态：${label(t.status)}。\n任务验收：${t.result?.task_outcome || "unverified"}；验证：${t.verification_summary?.verification_status || t.result?.verification_status || "NOT_RUN"}。${textOf(t) ? "\n" + textOf(t).slice(0, 2400) : "请在任务窗口查看实际结果。"}`,
             },
           ]);
       });
@@ -195,7 +310,7 @@ export default function Pet() {
             return;
           } catch {
             if (attempt === 19 && !stopped)
-              setError("轻聊服务尚未连接，可在高级设置中启动服务。");
+              handleError("轻聊服务尚未连接，可在这里重新连接。");
             else await new Promise((resolve) => setTimeout(resolve, 500));
           }
         }
@@ -209,12 +324,33 @@ export default function Pet() {
     document.addEventListener("visibilitychange", visibility);
     return () => {
       stopped = true;
-      stops.forEach((f) => f());
+      events.close();
       window.removeEventListener("keydown", key);
       document.removeEventListener("visibilitychange", visibility);
     };
   }, []);
   useEffect(() => {
+    if (!bubble || view !== "chat") return;
+    if (composer.current) {
+      composer.current.style.height = "auto";
+      composer.current.style.height = `${Math.min(100, composer.current.scrollHeight)}px`;
+    }
+  }, [bubble, view, text, expanded, focusRequest]);
+  useEffect(() => {
+    if (!bubble || !focusRequest || view !== "chat") return;
+    const frame = requestAnimationFrame(() =>
+      composer.current?.focus({ preventScroll: true }),
+    );
+    return () => cancelAnimationFrame(frame);
+  }, [bubble, view, focusRequest]);
+  useEffect(() => {
+    if (historyAnchor.current && conversation.current) {
+      const anchor = historyAnchor.current;
+      conversation.current.scrollTop =
+        anchor.top + conversation.current.scrollHeight - anchor.height;
+      historyAnchor.current = null;
+      return;
+    }
     bottom.current?.scrollIntoView({ block: "nearest" });
   }, [messages, draft, busy]);
   // One bounded, non-overlapping refresh per minute, only for opted-in reminders.
@@ -371,34 +507,53 @@ export default function Pet() {
       clearTimeout(timer);
       observer.disconnect();
     };
-  }, [bubble, messages, draft, error, view, agentTask, text]);
+  }, [
+    bubble,
+    messages,
+    draft,
+    error,
+    view,
+    agentTask,
+    text,
+    expanded,
+    focusRequest,
+    serviceConnected,
+  ]);
   async function send(question = text) {
     if (!question.trim() || busy) return;
     const q = question.trim();
-    lastQuestion.current = q;
+    setFailedQuestion("");
     setText("");
     setError("");
     setDraft("");
     setAcknowledgement("");
     setBusy(true);
     setView("chat");
-    setMessages((m) => [...m, { role: "user", text: q }]);
-    activity("thinking");
     const id = crypto.randomUUID();
+    const userId = `pending:${id}`;
+    setMessages((m) => [...m, { id: userId, role: "user", text: q }]);
+    activity("thinking");
     current.current = id;
     try {
       const r = await call<any>("pet_chat", { text: q, requestId: id });
       setDraft("");
-      setMessages((m) => [
-        ...m,
-        {
-          role: "assistant",
-          text: r.text || r.reason || r.error || "暂时无法回答，请稍后重试。",
-          profile: r.agent_profile,
-          question: q,
-          answerId: r.answer_id || undefined,
-        },
-      ]);
+      setMessages((m) =>
+        uniqueMessages([
+          ...m.map((message) =>
+            message.id === userId && r.question_id
+              ? { ...message, id: r.question_id }
+              : message,
+          ),
+          {
+            id: r.answer_id || `reply:${id}`,
+            role: "assistant",
+            text: r.text || r.reason || r.error || "暂时无法回答，请稍后重试。",
+            profile: r.agent_profile,
+            question: q,
+            answerId: r.answer_id || undefined,
+          },
+        ]),
+      );
       activity(
         r.status === "delegation_required"
           ? "waiting"
@@ -408,6 +563,7 @@ export default function Pet() {
       );
     } catch (e) {
       setError(String(e));
+      setFailedQuestion(q);
       activity("help");
     } finally {
       setBusy(false);
@@ -428,13 +584,12 @@ export default function Pet() {
       setError(String(e));
     }
   }
-  const handleError = (e: unknown) => setError(String(e));
   if (!bubble)
     return (
       <EdgeCharacter
         asset={asset}
         settings={settings}
-        systemReduce={systemReduce}
+        systemReduce={systemReduce || mediaReduce}
         nativePointer={nativePointer}
         aside={aside}
       />
@@ -456,7 +611,7 @@ export default function Pet() {
     <section
       className="pet-chat-surface"
       data-material={material}
-      data-reduce={systemReduce || !settings.animation}
+      data-reduce={systemReduce || mediaReduce || !settings.animation}
     >
       <header className="pet-header">
         <div>
@@ -485,6 +640,7 @@ export default function Pet() {
               onClick={() => {
                 setView("chat");
                 setDeletePending(false);
+                setFocusRequest((request) => request + 1);
               }}
             >
               <ChevronLeft size={17} />
@@ -506,15 +662,54 @@ export default function Pet() {
       </header>
       {view === "chat" ? (
         <>
-          <div className="pet-conversation" aria-live="polite">
-            {!messages.length && (
+          <div
+            className="pet-conversation"
+            aria-live="polite"
+            ref={conversation}
+          >
+            {serviceConnected === false && (
+              <div className="pet-error" role="status">
+                轻聊服务未连接。
+                <button
+                  disabled={serviceBusy}
+                  onClick={() => void recoverService()}
+                >
+                  {serviceBusy ? "正在连接…" : "连接轻聊服务"}
+                </button>
+              </div>
+            )}
+            {memory &&
+              (historyBefore ||
+                historyBusy ||
+                historyError ||
+                (serviceConnected && !historyLoaded.current)) && (
+                <div className="pet-history" role="status">
+                  {historyError && <span>{historyError}</span>}
+                  <button
+                    disabled={historyBusy}
+                    onClick={() => void loadHistory(historyBefore || undefined)}
+                  >
+                    {historyBusy
+                      ? "正在读取聊天记录…"
+                      : historyError
+                        ? "重试聊天记录"
+                        : historyLoaded.current
+                          ? "查看更早聊天"
+                          : "加载聊天记录"}
+                  </button>
+                </div>
+              )}
+            {!messages.length && !historyBusy && (
               <div className="pet-welcome">
                 <span>哦鲸鲸…你来啦。</span>
                 <p>本鲸在呢。今天想聊点什么？</p>
               </div>
             )}
             {messages.map((m, i) => (
-              <article className={`pet-message ${m.role}`} key={i}>
+              <article
+                className={`pet-message ${m.role}`}
+                key={m.id || `live:${i}`}
+              >
                 <Markdown
                   remarkPlugins={[remarkGfm]}
                   components={{ a: ({ children }) => <span>{children}</span> }}
@@ -570,13 +765,15 @@ export default function Pet() {
             {error && (
               <div className="pet-error" role="alert">
                 {error}
-                <button
-                  disabled={busy || !lastQuestion.current}
-                  onClick={() => void send(lastQuestion.current)}
-                >
-                  <RotateCcw size={12} />
-                  重试
-                </button>
+                {failedQuestion && (
+                  <button
+                    disabled={busy}
+                    onClick={() => void send(failedQuestion)}
+                  >
+                    <RotateCcw size={12} />
+                    重试这条消息
+                  </button>
+                )}
               </div>
             )}
             <div ref={bottom} />
@@ -593,13 +790,7 @@ export default function Pet() {
               >
                 刷新原任务
               </button>
-              {![
-                "completed",
-                "incomplete",
-                "failed",
-                "cancelled",
-                "timed_out",
-              ].includes(agentTask.status) && (
+              {!terminal.has(agentTask.status) && (
                 <button
                   type="button"
                   onClick={() =>
@@ -633,6 +824,7 @@ export default function Pet() {
             }}
           >
             <textarea
+              ref={composer}
               aria-label="回复 DeepSeek 娘"
               placeholder="和 DeepSeek 娘说句话…"
               rows={1}
@@ -640,8 +832,6 @@ export default function Pet() {
               value={text}
               onChange={(e) => {
                 setText(e.target.value);
-                e.target.style.height = "auto";
-                e.target.style.height = `${Math.min(100, e.target.scrollHeight)}px`;
               }}
               onCompositionStart={() => {
                 composing.current = true;
@@ -692,13 +882,18 @@ export default function Pet() {
               <button
                 className="pet-row-button"
                 onClick={() =>
-                  void call<any>("pet_asset", { action: "import" })
-                    .then(setAsset)
+                  void call<any>("pet_asset", { action: "import_package" })
+                    .then((result) => {
+                      if (!result.cancelled) setAsset(result);
+                    })
                     .catch(handleError)
                 }
               >
-                导入个人角色素材
+                选择角色文件夹
               </button>
+              <p className="pet-explanation">
+                选择下载或保存的角色文件夹，即可在这里使用。文件夹中应有角色说明和图片。
+              </p>
               <h4>本机任务</h4>
               <button
                 className="pet-row-button"
@@ -761,17 +956,6 @@ export default function Pet() {
                   </button>
                 ))}
               </div>
-              <button
-                className="pet-row-button"
-                onClick={() => {
-                  void call<any>("pet_asset", { action: "import_edge" })
-                    .then(() => call<any>("pet_asset", { action: "load" }))
-                    .then(setAsset)
-                    .catch(handleError);
-                }}
-              >
-                导入当前角色探头姿态包
-              </button>
               <h4>换个形象</h4>
               <div className="pet-character-list">
                 {characters.map((c) => (
@@ -791,11 +975,70 @@ export default function Pet() {
                   </button>
                 ))}
               </div>
-              {!characters.length && (
+              {!characters.length && !asset?.id && (
                 <p className="pet-explanation">
-                  可以导入你本机已有的透明角色图集。
+                  还没有选择角色。点击“选择角色文件夹”导入，随后打开“使用基础动作”即可显示。
                 </p>
               )}
+              <label className="pet-setting">
+                <span>使用基础动作</span>
+                <input
+                  type="checkbox"
+                  checked={settings.basic_appearance}
+                  disabled={asset?.status !== "ready"}
+                  onChange={(e) =>
+                    void update({
+                      ...settings,
+                      basic_appearance: e.target.checked,
+                    })
+                  }
+                />
+              </label>
+              <p className="pet-explanation">
+                使用当前角色自带的动作显示和拖动。导入完整探头姿态后，可关闭此选项使用专门的扒边动作。
+              </p>
+              <button
+                className="pet-row-button"
+                disabled={!asset?.id}
+                onClick={() => {
+                  void call<any>("pet_asset", { action: "import_edge" })
+                    .then(() => call<any>("pet_asset", { action: "load" }))
+                    .then(setAsset)
+                    .catch(handleError);
+                }}
+              >
+                导入当前角色探头姿态包
+              </button>
+              {(asset?.id || characters.length > 0) &&
+                asset?.edge?.status !== "ready" && (
+                  <p className="pet-explanation">
+                    {asset?.edge?.error ? `${asset.edge.error}。` : ""}
+                    {asset?.id
+                      ? "可先使用基础动作，也可选择当前角色的完整探头姿态文件夹。"
+                      : characters.length > 0
+                        ? edgeImportHint(asset)
+                        : ""}
+                  </p>
+                )}
+              <details>
+                <summary>高级 · 导入单张角色图集</summary>
+                <button
+                  className="pet-row-button"
+                  onClick={() =>
+                    void call<any>("pet_asset", { action: "import" })
+                      .then((result) => {
+                        if (!result.cancelled) setAsset(result);
+                      })
+                      .catch(handleError)
+                  }
+                >
+                  选择角色图集文件
+                </button>
+                <p className="pet-explanation">
+                  适用于已有 8 列、11 行透明 WebP
+                  图集的用户。导入后可开启基础动作。
+                </p>
+              </details>
               {toggle("banter", "偶尔碎碎念 · 哦鲸鲸")}
               {toggle("topmost", "总在上方")}
               {toggle("animation", "轻柔动画")}
@@ -825,8 +1068,13 @@ export default function Pet() {
                   type="checkbox"
                   checked={memory}
                   onChange={(e) => {
+                    historyGeneration.current += 1;
                     void service("pet_memory", { enabled: e.target.checked })
-                      .then((r) => setMemory(r.enabled))
+                      .then((r) => {
+                        setMemory(r.enabled);
+                        if (r.enabled && !historyLoaded.current)
+                          void loadHistory();
+                      })
                       .catch(handleError);
                   }}
                 />
@@ -854,20 +1102,23 @@ export default function Pet() {
                 value={due}
                 onChange={(e) => setDue(e.target.value)}
               />
+              <div className="pet-button-pair">
+                {[10, 30].map((minutes) => (
+                  <button
+                    key={minutes}
+                    disabled={reminderBusy || !reminder.trim()}
+                    onClick={() =>
+                      void saveReminder(Date.now() / 1000 + minutes * 60)
+                    }
+                  >
+                    {minutes} 分钟后提醒
+                  </button>
+                ))}
+              </div>
               <button
-                disabled={!reminder.trim() || !due}
+                disabled={reminderBusy || !reminder.trim() || !due}
                 onClick={() =>
-                  service("set_reminder", {
-                    text: reminder,
-                    due_at: new Date(due).getTime() / 1000,
-                    confirmed: true,
-                  })
-                    .then(() => {
-                      setReminder("");
-                      setDue("");
-                      return refresh();
-                    })
-                    .catch(handleError)
+                  void saveReminder(new Date(due).getTime() / 1000)
                 }
               >
                 保存提醒
@@ -986,20 +1237,18 @@ export default function Pet() {
               <h4>轻聊服务与本地模型</h4>
               <div className="pet-button-pair">
                 <button
-                  onClick={() =>
-                    call("pet_runtime", { action: "start" })
-                      .then(refresh)
-                      .catch(handleError)
-                  }
+                  disabled={serviceBusy}
+                  onClick={() => void recoverService()}
                 >
                   启动轻聊服务
                 </button>
                 <button
                   onClick={() =>
                     call("pet_runtime", { action: "stop" })
-                      .then(() =>
-                        setError("轻聊服务已停止；Core 任务继续运行。"),
-                      )
+                      .then(() => {
+                        setServiceConnected(false);
+                        setNotice("轻聊服务已停止；Core 任务继续运行。");
+                      })
                       .catch(handleError)
                   }
                 >
@@ -1011,7 +1260,7 @@ export default function Pet() {
                   onClick={() =>
                     call<any>("pet_runtime", { action: "choose_model" })
                       .then((r) => {
-                        if (r.text) setError(r.text);
+                        if (r.text) setNotice(r.text);
                       })
                       .catch(handleError)
                   }
@@ -1024,7 +1273,7 @@ export default function Pet() {
                   onClick={() =>
                     call<any>("pet_runtime", { action: "choose_python" })
                       .then((r) => {
-                        if (r.text) setError(r.text);
+                        if (r.text) setNotice(r.text);
                       })
                       .catch(handleError)
                   }
@@ -1033,10 +1282,13 @@ export default function Pet() {
                 </button>
               )}
               {!mlxSupported && (
-                <p className="pet-explanation">
-                  在主窗口的模型库配置本机 HTTP 模型端点，并选择同时用于
-                  Companion。
-                </p>
+                <button
+                  onClick={() =>
+                    call("pet_core", { action: "models" }).catch(handleError)
+                  }
+                >
+                  打开模型库配置轻聊模型
+                </button>
               )}
               <button
                 onClick={() =>
@@ -1064,7 +1316,7 @@ export default function Pet() {
                   onClick={() =>
                     service("pet_export")
                       .then((r) => {
-                        setError(`已导出：${r.path}`);
+                        if (!r.cancelled) setNotice(`已导出：${r.path}`);
                       })
                       .catch(handleError)
                   }
@@ -1077,11 +1329,14 @@ export default function Pet() {
                       setDeletePending(true);
                       return;
                     }
+                    historyGeneration.current += 1;
                     void service("clear", {
                       confirmation: "DELETE_COMPANION_MEMORY",
                     })
                       .then(() => {
                         setMessages([]);
+                        setHistoryBefore(null);
+                        historyLoaded.current = false;
                         setDeletePending(false);
                         return refresh();
                       })
@@ -1103,6 +1358,7 @@ export default function Pet() {
               {error}
             </p>
           )}
+          {notice && <p role="status">{notice}</p>}
         </div>
       )}
     </section>

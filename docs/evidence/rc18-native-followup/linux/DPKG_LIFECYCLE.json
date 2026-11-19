@@ -1,0 +1,71 @@
+{
+  "scope": "Debian 13 amd64, normal unprivileged dpkg, fresh private database and root",
+  "product_sha256": "d7c425f50d7fc2e1c9599fbbcd95867e4c3d0ec9c43d730a8fa80711efb9f604",
+  "product": "local-pilot-test 5.0.1-rc.17",
+  "status": "BLOCKED_FIRST_RC17_UNPACK_ARCHIVE_ROOT_OWNERSHIP_UNMAPPED",
+  "private_root": "/workspace/scratch/b0df9966d470/nov18-validation/linux/lifecycle/root",
+  "uid": 1000,
+  "gid_map": "1000          0          1",
+  "uid_map": "1000          0          1",
+  "control_archive_members": [
+    ".",
+    "./control",
+    "./md5sums"
+  ],
+  "maintainer_scripts_and_triggers": [],
+  "archive_ownership": {
+    ".": {
+      "uid": 0,
+      "gid": 0,
+      "user": "root",
+      "group": "root"
+    },
+    "./usr": {
+      "uid": 0,
+      "gid": 0,
+      "user": "root",
+      "group": "root"
+    }
+  },
+  "dpkg_ordinary_install_exit": 2,
+  "dpkg_unprivileged_unpack_exit": 1,
+  "dpkg_unpack_error": "error setting ownership of '/workspace/scratch/b0df9966d470/nov18-validation/linux/lifecycle/root/usr.dpkg-new': Invalid argument",
+  "dpkg_manual": {
+    "deb": "dpkg_1.22.22_amd64.deb",
+    "source": "./usr/share/man/man1/dpkg.1.gz (not-root option)",
+    "text": "Try to (de)install things even when not root."
+  },
+  "dpkg_transaction_log": [
+    "2026-11-18 23:46:37 startup archives unpack",
+    "2026-11-18 23:46:37 install local-pilot-test:amd64 <none> 5.0.1-rc.17",
+    "2026-11-18 23:46:37 status half-installed local-pilot-test:amd64 5.0.1-rc.17",
+    "2026-11-18 23:46:37 status not-installed local-pilot-test:amd64 <none>"
+  ],
+  "final_query": {
+    "argv": [
+      "dpkg-query",
+      "--root=/workspace/scratch/b0df9966d470/nov18-validation/linux/lifecycle/root",
+      "-W",
+      "-f=${Status}\t${Version}\n",
+      "local-pilot-test"
+    ],
+    "code": 0,
+    "stdout": "install ok not-installed\t\n",
+    "stderr": ""
+  },
+  "marker_sha256_before": "9338a7b2eaa52d8f03e6b599e3fcc6db06db14c110a5415264217c57ece5a22d",
+  "marker_sha256_after": "9338a7b2eaa52d8f03e6b599e3fcc6db06db14c110a5415264217c57ece5a22d",
+  "desktop_binary_exists": false,
+  "host_status_file_existed_before": false,
+  "host_status_file_exists_after": false,
+  "configure": "NOT_REACHED",
+  "dependency_resolution": "NOT_REACHED",
+  "upgrade_rollback_restore": "NOT_REACHED",
+  "system_install": "NOT_PERFORMED",
+  "raw_files": [
+    "preflight.json",
+    "step-1-5.0.1-rc.17.json",
+    "check_step.py",
+    "root/var/log/dpkg.log"
+  ]
+}

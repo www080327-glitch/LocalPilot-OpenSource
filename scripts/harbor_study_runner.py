@@ -130,14 +130,16 @@ def reject_live_launcher(command, cwd):
     import psutil
     for process in psutil.process_iter(['pid','cmdline','cwd']):
         if process.info['cmdline'] and '--config' in process.info['cmdline']:
-            if process.info['cmdline'][1:]==command[1:] and process.info['cwd']==str(cwd):
+            if (process.info['cmdline'][1:]==command[1:] and process.info['cwd']
+                    and same_runtime_directory(process.info['cwd'], cwd)):
                 raise ValueError(f"Existing Harbor process {process.pid}; do not launch the same job twice")
 
 
 def continue_process(pid, command, cwd, docker_host=None):
     import psutil
     process = psutil.Process(pid)
-    if process.uids().real!=os.getuid() or process.cmdline()[1:]!=command[1:] or Path(process.cwd())!=cwd:
+    if (process.uids().real!=os.getuid() or process.cmdline()[1:]!=command[1:]
+            or not same_runtime_directory(process.cwd(), cwd)):
         raise ValueError('PID is not the original user-owned Harbor process for this exact frozen command/runtime')
     if docker_host is not None and process.environ().get('DOCKER_HOST')!=docker_host:
         raise ValueError('Original process Docker daemon differs from the inspected daemon')
@@ -151,3 +153,8 @@ def continue_process(pid, command, cwd, docker_host=None):
     for item in reversed(stopped):
         item.send_signal(signal.SIGCONT)
     return receipt
+
+
+def same_runtime_directory(actual, expected):
+    # macOS reports /private/var even when the launch path used /var.
+    return Path(actual).resolve() == Path(expected).resolve()

@@ -1,0 +1,74 @@
+{
+  "baseline_head": "e278f0677c8eed4c0d49b6b08a672e15fe56495d",
+  "source_identity": "baseline e278 plus working-tree changes; exact source hashes identify this run",
+  "node": "v24.22.1",
+  "npm": "11.9.0",
+  "runs": [
+    {
+      "command": [
+        "npm",
+        "test"
+      ],
+      "cwd": "<candidate-worktree>/desktop",
+      "started_at_utc": "2026-11-17T04:10:59.453159+00:00",
+      "finished_at_utc": "2026-11-17T04:11:00.597812+00:00",
+      "wrapper_seconds": 1.1446781670001656,
+      "exit_code": 0,
+      "log": "npm-test.log",
+      "log_sha256": "0fb0ed35c13093164b5acaad03aa1d01ce3f26315dd75689e99356cb1fea3171",
+      "test_summary_lines": [
+        "Test Files  13 passed (13)",
+        "Tests  74 passed (74)",
+        "Duration  722ms (transform 69%, import 22%, tests 6%, worker 3%)"
+      ]
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "cwd": "<candidate-worktree>/desktop",
+      "started_at_utc": "2026-11-17T04:11:00.597949+00:00",
+      "finished_at_utc": "2026-11-17T04:11:07.351696+00:00",
+      "wrapper_seconds": 6.753763918999539,
+      "exit_code": 0,
+      "log": "npm-build.log",
+      "log_sha256": "e76f9fd1b102e3b4824d748dd50c74f07d5f5af23295dc0707415628e114a9f1",
+      "test_summary_lines": []
+    }
+  ],
+  "source_files": 118,
+  "source_unchanged": true,
+  "source_changes": [],
+  "source_before_sha256": "67453fece514c2008dbc671498c88ce24e0908e747609930b07593d477bf1484",
+  "source_after_sha256": "67453fece514c2008dbc671498c88ce24e0908e747609930b07593d477bf1484",
+  "source_selection": "Git tracked/nonignored TS/TSX/CSS/Rust/JSON under desktop/src, desktop/tests, desktop/src-tauri/src and explicit frontend configs; excludes HTML fixture attempts and build outputs",
+  "ui_tests_defined": 8,
+  "browser_tests_executed_here": 0,
+  "scope": "Existing Vitest node tests and production TypeScript/Vite build; not browser or native GUI acceptance",
+  "candidate": {
+    "baseline_commit": "e278f0677c8eed4c0d49b6b08a672e15fe56495d",
+    "candidate_commit": null,
+    "identity_rule": "Baseline plus working-tree modifications, identified by exact source SHA manifests; no new commit ID asserted",
+    "desktop": "5.0.1-rc.15",
+    "core": "5.0.0b32",
+    "companion": "0.5.7b9"
+  },
+  "status": "UNIT_TESTS_AND_WEB_BUILD_PASS_GUI_NOT_RUN",
+  "vitest": {
+    "test_files": 13,
+    "tests": 74,
+    "passed": 74,
+    "failed": 0,
+    "skipped": 0
+  },
+  "source_manifest": "FRONTEND_SOURCE_FILES.json",
+  "history_ui": {
+    "defined": 8,
+    "prior_launch_attempted": 7,
+    "prior_launch_blocked": 7,
+    "app_assertions_executed": 0,
+    "added_after_review_not_executed": 1
+  }
+}

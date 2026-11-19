@@ -1,0 +1,33 @@
+{
+  "source_commit": "8eb042cf57508de59179b4aa2fdd5ae41e9a9eec",
+  "source_tree": "853f2dece1506f00e462be8b033ec12fcc892dab",
+  "import_provenance": [
+    "/workspace/scratch/b0df9966d470/rc20-work/agent/__init__.py",
+    "/workspace/scratch/b0df9966d470/rc20-work/suite/localpilot_suite/upgrades.py",
+    "/workspace/scratch/b0df9966d470/rc20-work/companion/__init__.py"
+  ],
+  "pythonpath": "/workspace/scratch/b0df9966d470/rc20-work:/workspace/scratch/b0df9966d470/rc20-work/suite:/workspace/scratch/b0df9966d470/rc20-work/companion",
+  "command": [
+    "/workspace/scratch/b0df9966d470/LocalPilot/.venv/bin/python",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "suite/tests",
+    "-p",
+    "test_*.py",
+    "-v"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 161.26,
+  "log": "suite-full-final-r3.log",
+  "log_sha256": "1f2fde6b9a2f35c1e15f7d45bd82b5ca4bf42b13f61b939208c96ab22833be6a",
+  "footer": [
+    "",
+    "----------------------------------------------------------------------",
+    "Ran 135 tests in 140.473s",
+    "",
+    "OK (skipped=1)"
+  ]
+}

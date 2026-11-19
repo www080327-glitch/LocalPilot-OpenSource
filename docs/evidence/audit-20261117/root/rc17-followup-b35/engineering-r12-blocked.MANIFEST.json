@@ -1,0 +1,155 @@
+{
+  "name": "engineering-r12-blocked",
+  "description": "原 Full 工程自动审批阻断；协议与合成夹具不改",
+  "archive": "engineering-r12-blocked.tar.gz",
+  "sha256": "ea466e866f7eafc7c97d8bff56ed1fc3d73954543d900ba5576df2c2a6df8254",
+  "bytes": 24093,
+  "manifest": "engineering-r12-blocked.MANIFEST.json",
+  "files_count": 24,
+  "files": [
+    {
+      "path": "REPOSITORY_VISIBILITY.json",
+      "bytes": 272,
+      "original_sha256": "0595e9186213184ec6a09e9a7b3c77c218ac9401217161884bb7d4ad3abad5cc",
+      "public_sha256": "0595e9186213184ec6a09e9a7b3c77c218ac9401217161884bb7d4ad3abad5cc"
+    },
+    {
+      "path": "engineering-luna-high-r12.log",
+      "bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "engineering-luna-high-r12/AUTOREVIEW_BLOCK.json",
+      "bytes": 329,
+      "original_sha256": "0867c510c202789f299eb6fa58c4cb0c7d78deeba90fca5ad56875b7a1b5ef8f",
+      "public_sha256": "0867c510c202789f299eb6fa58c4cb0c7d78deeba90fca5ad56875b7a1b5ef8f"
+    },
+    {
+      "path": "engineering-luna-high-r12/BLOCKED_SUMMARY.json",
+      "bytes": 937,
+      "original_sha256": "018a33acf7600414286187194618071698515c24d2e88a86cd0954719dfff6c6",
+      "public_sha256": "018a33acf7600414286187194618071698515c24d2e88a86cd0954719dfff6c6"
+    },
+    {
+      "path": "engineering-luna-high-r12/PROTOCOL.json",
+      "bytes": 14969,
+      "original_sha256": "b0a21d0d6f968bf553505ba5ed929caaea42fa167f703597398083ed62798bff",
+      "public_sha256": "b0a21d0d6f968bf553505ba5ed929caaea42fa167f703597398083ed62798bff"
+    },
+    {
+      "path": "engineering-luna-high-r12/acceptance-manifest.json",
+      "bytes": 1139,
+      "original_sha256": "b22f47e53e46966a7d115b46974c07626217c3b03950735cf4f2b26cf80136fc",
+      "public_sha256": "b22f47e53e46966a7d115b46974c07626217c3b03950735cf4f2b26cf80136fc"
+    },
+    {
+      "path": "engineering-luna-high-r12/acceptance-original/SPEC.md",
+      "bytes": 3304,
+      "original_sha256": "3a581fcd5925e86dfcea0d87bbbcacfaf0065ed8139280c100769d8c6870c3e6",
+      "public_sha256": "3a581fcd5925e86dfcea0d87bbbcacfaf0065ed8139280c100769d8c6870c3e6"
+    },
+    {
+      "path": "engineering-luna-high-r12/acceptance-original/fixtures/basic.csv",
+      "bytes": 168,
+      "original_sha256": "6c0dcee9e8d138f61ed6da850c9bc77be3ccabe49a98fb99a693298a6b431d41",
+      "public_sha256": "6c0dcee9e8d138f61ed6da850c9bc77be3ccabe49a98fb99a693298a6b431d41"
+    },
+    {
+      "path": "engineering-luna-high-r12/acceptance-original/fixtures/basic.expected.json",
+      "bytes": 374,
+      "original_sha256": "3d8d1af6ab844d19fc24b4029044458ef877dfc129232e3f9824e6bf5d54d34a",
+      "public_sha256": "3d8d1af6ab844d19fc24b4029044458ef877dfc129232e3f9824e6bf5d54d34a"
+    },
+    {
+      "path": "engineering-luna-high-r12/acceptance-original/fixtures/empty.csv",
+      "bytes": 26,
+      "original_sha256": "318a41c33c77ab0db8e5c651bd4b9918c26222daf02f90d8e2e01a8bb5be516a",
+      "public_sha256": "318a41c33c77ab0db8e5c651bd4b9918c26222daf02f90d8e2e01a8bb5be516a"
+    },
+    {
+      "path": "engineering-luna-high-r12/acceptance-original/fixtures/invalid.csv",
+      "bytes": 61,
+      "original_sha256": "74097f4b98ff64d3b01a6233836f5505ebe99bee92b9c8bc3537cb14a2f6dd34",
+      "public_sha256": "74097f4b98ff64d3b01a6233836f5505ebe99bee92b9c8bc3537cb14a2f6dd34"
+    },
+    {
+      "path": "engineering-luna-high-r12/acceptance-original/fixtures/precision.csv",
+      "bytes": 208,
+      "original_sha256": "c70350dc5653955376297e2ccedff0e24cf1371f5f09101958d0cd9182b723d8",
+      "public_sha256": "c70350dc5653955376297e2ccedff0e24cf1371f5f09101958d0cd9182b723d8"
+    },
+    {
+      "path": "engineering-luna-high-r12/acceptance-original/fixtures/precision.expected.json",
+      "bytes": 528,
+      "original_sha256": "ac5226181296f432e36f85e1bee5b5b6c1efb519bb1ae12755dd971e66850603",
+      "public_sha256": "ac5226181296f432e36f85e1bee5b5b6c1efb519bb1ae12755dd971e66850603"
+    },
+    {
+      "path": "engineering-luna-high-r12/acceptance-original/logstats/__init__.py",
+      "bytes": 45,
+      "original_sha256": "ae8f92d8e600d6dc9ad8d3ac5063b4ee18d5ef365e259d9323608625b76ef7de",
+      "public_sha256": "ae8f92d8e600d6dc9ad8d3ac5063b4ee18d5ef365e259d9323608625b76ef7de"
+    },
+    {
+      "path": "engineering-luna-high-r12/acceptance-original/logstats/__main__.py",
+      "bytes": 137,
+      "original_sha256": "f849849731b05ad7b37f1e6636741a8c7ecaf00a8d5e78712e5d132522546a5b",
+      "public_sha256": "f849849731b05ad7b37f1e6636741a8c7ecaf00a8d5e78712e5d132522546a5b"
+    },
+    {
+      "path": "engineering-luna-high-r12/acceptance-original/logstats/aggregate.py",
+      "bytes": 177,
+      "original_sha256": "9d2e4a7aec763e41478efb936a03fccb545b72f775218aa8e11123e241535d0b",
+      "public_sha256": "9d2e4a7aec763e41478efb936a03fccb545b72f775218aa8e11123e241535d0b"
+    },
+    {
+      "path": "engineering-luna-high-r12/acceptance-original/logstats/parser.py",
+      "bytes": 311,
+      "original_sha256": "16b2d904fab3ccfbfe24baa15473981957458ce4996f582b8c8c5238bc69cbda",
+      "public_sha256": "16b2d904fab3ccfbfe24baa15473981957458ce4996f582b8c8c5238bc69cbda"
+    },
+    {
+      "path": "engineering-luna-high-r12/acceptance-original/tests/test_acceptance.py",
+      "bytes": 6928,
+      "original_sha256": "e406b48f904550da19c4feff630962f393197f024bcc0c77683163fe26081837",
+      "public_sha256": "e406b48f904550da19c4feff630962f393197f024bcc0c77683163fe26081837"
+    },
+    {
+      "path": "engineering-luna-high-r12/engineering-progress.json",
+      "bytes": 160,
+      "original_sha256": "83ea4c0ad7688677ebaf52ca0f3f600a220f6a96c70256c31755bd29c9d7cf94",
+      "public_sha256": "83ea4c0ad7688677ebaf52ca0f3f600a220f6a96c70256c31755bd29c9d7cf94"
+    },
+    {
+      "path": "engineering-luna-high-r12/prompt.txt",
+      "bytes": 2360,
+      "original_sha256": "aaf084caba3d59920155ab2b614c20d8688a1af7fc0a9c50acc5b01f4997015c",
+      "public_sha256": "aaf084caba3d59920155ab2b614c20d8688a1af7fc0a9c50acc5b01f4997015c"
+    },
+    {
+      "path": "engineering-luna-high-r12/resolved-inference.json",
+      "bytes": 422,
+      "original_sha256": "4d03609ea2cd0dd9db86366015ddf08b10e16eab2a45df20f7a3d3bab37ee214",
+      "public_sha256": "4d03609ea2cd0dd9db86366015ddf08b10e16eab2a45df20f7a3d3bab37ee214"
+    },
+    {
+      "path": "engineering-luna-high-r12/resolved-runtime-budgets.json",
+      "bytes": 1238,
+      "original_sha256": "603b4a44b1de4ac5bf6159d496350670ecdebffe64db9e461e10bf7130580dd8",
+      "public_sha256": "603b4a44b1de4ac5bf6159d496350670ecdebffe64db9e461e10bf7130580dd8"
+    },
+    {
+      "path": "engineering-luna-high-r12/submission.json",
+      "bytes": 4359,
+      "original_sha256": "dd4a525494e711624f717fa40367f090d22602c238315628e5df00b115c68775",
+      "public_sha256": "dd4a525494e711624f717fa40367f090d22602c238315628e5df00b115c68775"
+    },
+    {
+      "path": "qualification-sources/qualify_openai_engineering.py",
+      "bytes": 36204,
+      "original_sha256": "1878a177ed32600e9d53490ad518a93ece8d729643f2e2681c7b10d11d4724c4",
+      "public_sha256": "1878a177ed32600e9d53490ad518a93ece8d729643f2e2681c7b10d11d4724c4"
+    }
+  ]
+}

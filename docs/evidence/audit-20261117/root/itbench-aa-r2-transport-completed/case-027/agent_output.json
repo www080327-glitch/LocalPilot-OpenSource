@@ -1,0 +1,14 @@
+{
+  "contributing_factors": [
+    {
+      "name": "chaos-mesh/Schedule/otel-demo-ad-jvm-return",
+      "reasoning": "This recurring schedule is the upstream source of the Ad service failures: it creates and applies JVMChaos experiments to the ad container, which corrupt its return path and cause a null-reference failure inside AdService. The resulting ad and dependent-request errors are symptoms, so the ad Deployment is not listed separately.",
+      "evidence": "In k8s_events_raw.tsv, the Schedule repeatedly spawns otel-demo-ad-jvm-return JVMChaos instances; at 2025-12-15 17:53:00 it spawned otel-demo-ad-jvm-return-gbjlm, which applied chaos to otel-demo/ad-554b849958-sk6fg/ad at 17:53:10, with further scheduled instances at subsequent minutes. otel_logs_raw.tsv records SEVERE errors on ad starting 17:53:11: NullPointerException, 'Cannot invoke oteldemo.AdService.getAdsByCategory(String) because service is null' (AdService.java:179). alerts/alerts_at_2025-12-15T18-11-38.997373.json still has RequestErrorRate firing for ad (1.2778); the 17:53 injection and matching exception tie the schedule to the application fault."
+    },
+    {
+      "name": "otel-demo/Deployment/frontend",
+      "reasoning": "This is an independent frontend capacity failure: the Deployment's very small CPU limit throttles the frontend under load, impairing its own request handling. This explains frontend/proxy request failures separately from the ad JVMChaos fault.",
+      "evidence": "The k8s_objects_raw.tsv snapshot at 2025-12-15 17:38:32 shows frontend limited to 100m CPU (50m request). The alerts show CPUThrottlingHigh for frontend at 35.58% at 17:43 and still 34.37% at 18:11; RequestErrorRate for frontend rises to 3.911 at 17:55 and 4.622 at 18:11. In otel_traces_raw.tsv, load-generator requests receive HTTP 503s, and a frontend-proxy ingress span marks error=true with upstream_cluster=frontend, locating that path's failure at the frontend upstream."
+    }
+  ]
+}

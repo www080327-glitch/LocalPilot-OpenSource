@@ -1,0 +1,263 @@
+{
+  "summary_version": 2,
+  "model": "gpt-6.1-sol",
+  "reasoning": "medium",
+  "kind": "SYNTHETIC_ENGINEERING_INTEGRATION",
+  "scope": "One public synthetic Python project; not a model-quality benchmark.",
+  "status": "PASS",
+  "status_source": "RESULTS.json.engineering_status (external qualification verdict)",
+  "protocol_status": "PASS",
+  "orchestration_status": "PASS",
+  "semantic_status": "PASS",
+  "source_git_head": "3764fc054899d9fb3d13c545667e4ff0fc64d044",
+  "source_manifest_sha256": "deccc17e9322418e65b67ff05a857668b6ee4103577aac02043e4a4c5433766e",
+  "runner_sha256": "1878a177ed32600e9d53490ad518a93ece8d729643f2e2681c7b10d11d4724c4",
+  "configured_inference": {
+    "default": {
+      "model": "gpt-6.1-sol",
+      "protocol": "responses",
+      "thinking": "medium"
+    },
+    "companion-execution": {
+      "model": "gpt-6.1-sol",
+      "protocol": "responses",
+      "thinking": "medium"
+    },
+    "companion-reasoning": {
+      "model": "gpt-6.1-sol",
+      "protocol": "responses",
+      "thinking": "medium"
+    },
+    "worker": {
+      "model": "gpt-6.1-sol",
+      "protocol": "responses",
+      "thinking": "medium"
+    }
+  },
+  "model_run_seconds": 212.88007739000022,
+  "outer_seconds": 213.67840282300313,
+  "model_calls": 29,
+  "model_call_scope": "Aggregate includes children; do not add child lists again.",
+  "parent_model_calls": 15,
+  "model_attempts": 29,
+  "failed_model_attempts": 0,
+  "incomplete_model_calls": [],
+  "tool_receipts": 58,
+  "receipt_counts_by_worker": {
+    "parent": 27,
+    "1.1": 16,
+    "1.2": 15
+  },
+  "tool_proposals": 58,
+  "unreceipted_tool_proposals": 0,
+  "receipt_counts_by_status": {
+    "completed": 58
+  },
+  "failed_tool_receipt_count": 0,
+  "failed_tool_receipts": [],
+  "input_tokens": 1055681,
+  "output_tokens": 5975,
+  "cached_input_tokens": 871073,
+  "uncached_input_tokens": 184608,
+  "usage_scope": "Provider-reported usage summed over aggregate model calls once; child calls are already included. Not a billing statement.",
+  "usage_reporting_counts": {
+    "input_tokens": 29,
+    "output_tokens": 29,
+    "prompt_cache_hit_tokens": 29,
+    "prompt_cache_miss_tokens": 29
+  },
+  "aggregate_model_latency_seconds": 375.55237107801076,
+  "latency_scope": "Sum over parent and child inference calls; concurrent intervals mean this is not wall-clock duration.",
+  "async_lifecycle_overlap_seconds": 78.76228857040405,
+  "overlap_scope": "Child start-to-completed lifecycles, including inference and tools; not proof of simultaneous CPU execution.",
+  "child_pair_overlaps": [
+    {
+      "children": [
+        "1.1",
+        "1.2"
+      ],
+      "seconds": 78.76228857040405
+    }
+  ],
+  "children": [
+    {
+      "id": "1.1",
+      "status": "completed",
+      "async": true,
+      "collected": true,
+      "configured_model": "gpt-6.1-sol",
+      "backend_id": "selected",
+      "tier": null,
+      "read_only": false,
+      "model_calls": 7,
+      "receipt_count": 16,
+      "parent_projected_receipt_count": 16,
+      "timeline": [
+        {
+          "event": "start",
+          "at": 1794911156.4617188
+        },
+        {
+          "event": "completed",
+          "at": 1794911244.9189851
+        }
+      ],
+      "lifecycle_interval": [
+        1794911156.4617188,
+        1794911244.9189851
+      ],
+      "single_assigned_module": true,
+      "changed_paths": [
+        "logstats/parser.py"
+      ],
+      "test_class": "ParserTests",
+      "tests_ran": true,
+      "completed": true,
+      "successful_shells": [
+        {
+          "receipt_id": "turn:1/call:call_ZV1t3t8VPfwEBxWmvvx81D3P/entry:14",
+          "command": "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-20261117/.venv/bin/python -S -m unittest discover -s tests -p test_acceptance.py -k ParserTests",
+          "tests_run": 9
+        }
+      ]
+    },
+    {
+      "id": "1.2",
+      "status": "completed",
+      "async": true,
+      "collected": true,
+      "configured_model": "gpt-6.1-sol",
+      "backend_id": "selected",
+      "tier": null,
+      "read_only": false,
+      "model_calls": 7,
+      "receipt_count": 15,
+      "parent_projected_receipt_count": 15,
+      "timeline": [
+        {
+          "event": "start",
+          "at": 1794911166.1566966
+        },
+        {
+          "event": "completed",
+          "at": 1794911263.3489132
+        }
+      ],
+      "lifecycle_interval": [
+        1794911166.1566966,
+        1794911263.3489132
+      ],
+      "single_assigned_module": true,
+      "changed_paths": [
+        "logstats/aggregate.py"
+      ],
+      "test_class": "AggregateTests",
+      "tests_ran": true,
+      "completed": true,
+      "successful_shells": [
+        {
+          "receipt_id": "turn:1/call:call_4Ue7XZaoQIZKrYI0eJQMBt2a/entry:13",
+          "command": "PYTHONDONTWRITEBYTECODE=1 /workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-20261117/.venv/bin/python -S -m unittest discover -s tests -p test_acceptance.py -k AggregateTests",
+          "tests_run": 3
+        }
+      ]
+    }
+  ],
+  "parent_successful_shells": [
+    {
+      "receipt_id": "turn:1/call:call_XOu4yiVIWrUQQzeNd1lPUkdq/entry:50",
+      "command": "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-20261117/.venv/bin/python -S -m unittest discover -s tests -p test_acceptance.py -v",
+      "tests_run": 17
+    },
+    {
+      "receipt_id": "turn:1/call:call_8nVp97JueApKb382wm0EX40P/entry:51",
+      "command": "/workspace/scratch/c0f3ec78c621/LocalPilot-dispatch-20261117/.venv/bin/python -S -m logstats fixtures/basic.csv --output result.json",
+      "tests_run": 0
+    }
+  ],
+  "external_checks": {
+    "unit": {
+      "tests_run": 17,
+      "returncode": 0,
+      "passed": true
+    },
+    "cli_cases": {
+      "basic": {
+        "returncode": 0,
+        "passed": true
+      },
+      "precision": {
+        "returncode": 0,
+        "passed": true
+      },
+      "empty": {
+        "returncode": 0,
+        "passed": true
+      },
+      "invalid": {
+        "returncode": 2,
+        "passed": true
+      }
+    },
+    "cli_case_count": 4,
+    "cli_passed_count": 4,
+    "acceptance_passed": true,
+    "parent_cli_artifact_matches": true,
+    "original_acceptance_unchanged": true
+  },
+  "owned_core_stopped": true,
+  "source_unchanged": true,
+  "result_fields": {
+    "status": "completed",
+    "runtime_status": "completed",
+    "deliverable_status": "present",
+    "verification_status": "not_run",
+    "engineering_status": "unverified",
+    "task_outcome": "unverified",
+    "task_succeeded": false,
+    "verification": null
+  },
+  "product_completion": {
+    "execution": "settled",
+    "delivery": "delivered",
+    "attempts": 1,
+    "receipt_count": 58,
+    "obligations": {
+      "pending_approval": false,
+      "queued_calls": 0,
+      "unfinished_goals": 0,
+      "unfinished_workers": 0,
+      "worker_obligations": false,
+      "computer_obligations": 0,
+      "unfinished_handoff": 0,
+      "unknown_receipts": 0,
+      "mutation_intent": false
+    }
+  },
+  "verification_boundary": "External synthetic engineering acceptance is separate from the product result. This summary preserves product verification/outcome fields and never upgrades not_run/unverified to verified.",
+  "consistency_checks": {
+    "aggregate_call_records_match": true,
+    "receipt_count_matches_product": true,
+    "tool_proposals_cover_receipts": true,
+    "child_projection_counts_match": true,
+    "unit_count_matches_qualification": true,
+    "cli_outcomes_match_qualification": true,
+    "source_execution_fingerprints_match": true,
+    "source_qualification_fingerprints_match": true
+  },
+  "provenance": {
+    "processor": "summarize_engineering_run.py",
+    "processor_sha256": "a46313471952afdd3577588dd9f8cdc9a0a17b03cc5a8766cd909e157adb1554",
+    "raw_inputs_sha256": {
+      "RESULTS.json": "315c42c913bd5955de918f10b38a8ecf43fb468259025ff6a6e81dfa5a7d8d78",
+      "engineering-task.json": "30f15cce468f6d277ba2d10ba6e97e191e91b4f0da7c0e371bf4685e5a5b6623",
+      "RUN_EXECUTION.json": "aa5bf4785ba72c3b2a15af821a7902e940b30b8bca88a680c92d06eccfe997ec",
+      "external-unittest.json": "40127637b3db99be9922d95c9bd54a154bb158bc7ba83c77d35b9a20d47d2444",
+      "external-cli.json": "c2e8d4228e7c8e5b255c2ee44cd3b7250ceaef5e63f779cdb17f3a0859fd428f",
+      "PROTOCOL.json": "70940b4e4306147be7b95b92cdb57a64cbe93b28c8ee90c0d22f2d69c597bb4f",
+      "resolved-inference.json": "4d08b44fa5f7756faebbe7f34b4f3cb4614488032921332d103d5cfc707be29d"
+    },
+    "errors_extracted_from": "engineering-task.json.tools[*].payload.error",
+    "no_model_or_acceptance_execution": true
+  }
+}

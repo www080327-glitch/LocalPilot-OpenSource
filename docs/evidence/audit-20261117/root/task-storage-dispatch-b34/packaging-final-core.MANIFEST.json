@@ -1,0 +1,122 @@
+{
+  "archive": "packaging-final-core.tar.gz",
+  "archive_bytes": 95570,
+  "archive_sha256": "7fe2f882ce3642d0ec48aa54e840b00e9c597f04da251e4d156cd6f422cd1c98",
+  "audited_expected_hashes": 0,
+  "description": "3764fc0 最终 Core 与原同批其余三个 wheel 的组合安装验证，独立保留构建来源。",
+  "exclusion_rules": [
+    "Only explicitly listed files are eligible; engineering snapshot members come from the final audited allowlist.",
+    "Private runtime/state, workspace caches, credentials/environment files and all SQLite/database sidecars are excluded.",
+    "Wheel binaries, archives, model files and unlisted file types are excluded; packaging uses hashes and import proofs.",
+    "Required files are never silently omitted. Undeclared files and directories are not traversed.",
+    "Inputs are not redacted or reformatted. Known API keys are read only from private files and matched exactly; any match aborts export."
+  ],
+  "id": "packaging-final-core",
+  "manifest": "packaging-final-core.MANIFEST.json",
+  "member_count": 17,
+  "members": [
+    {
+      "bytes": 1946,
+      "original_sha256": "e56cb83501874f0228a4d0c148653fd67a7a2452cd37ea4512ad6a39a1ca6d63",
+      "path": "packaging-final-core/ARTIFACTS.json",
+      "public_sha256": "e56cb83501874f0228a4d0c148653fd67a7a2452cd37ea4512ad6a39a1ca6d63"
+    },
+    {
+      "bytes": 5759,
+      "original_sha256": "8f46ed52bc2756669bfda2be7e8ca873d87939343bfa765a758b23d9a48fed47",
+      "path": "packaging-final-core/RESULTS.json",
+      "public_sha256": "8f46ed52bc2756669bfda2be7e8ca873d87939343bfa765a758b23d9a48fed47"
+    },
+    {
+      "bytes": 541,
+      "original_sha256": "0d3d1eeb654f032ad9bc5a41296c714b4066acfb263a938fae9130da4b076c26",
+      "path": "packaging-final-core/SHA256SUMS",
+      "public_sha256": "0d3d1eeb654f032ad9bc5a41296c714b4066acfb263a938fae9130da4b076c26"
+    },
+    {
+      "bytes": 14278,
+      "original_sha256": "3b6bcf9e6476be8b9aa47a45c55c55b7ec5ffec1eb6fdce4aa1a65c2b6e865c7",
+      "path": "packaging-final-core/installed_final_core.py",
+      "public_sha256": "3b6bcf9e6476be8b9aa47a45c55c55b7ec5ffec1eb6fdce4aa1a65c2b6e865c7"
+    },
+    {
+      "bytes": 39682,
+      "original_sha256": "d325c48d428598ec775669a94cb466c71ca469fa4bf3df62e2a79e513259911c",
+      "path": "packaging-final-core/r1/build.log",
+      "public_sha256": "d325c48d428598ec775669a94cb466c71ca469fa4bf3df62e2a79e513259911c"
+    },
+    {
+      "bytes": 289,
+      "original_sha256": "2fc878b680561ddeb3127b017f7f8c843ac0b18c1c8a28a4d842ac73ce4c8f87",
+      "path": "packaging-final-core/r1/cli-version.log",
+      "public_sha256": "2fc878b680561ddeb3127b017f7f8c843ac0b18c1c8a28a4d842ac73ce4c8f87"
+    },
+    {
+      "bytes": 1407,
+      "original_sha256": "a4d36eb4076d352747e8e179fd5068397632d38a3ec1318855382c2fca142e74",
+      "path": "packaging-final-core/r1/dependencies.log",
+      "public_sha256": "a4d36eb4076d352747e8e179fd5068397632d38a3ec1318855382c2fca142e74"
+    },
+    {
+      "bytes": 4799,
+      "original_sha256": "e49ff9de1b68b24a3409808855267281e1a29a43394b2add53380e052903f522",
+      "path": "packaging-final-core/r1/import-proof.json",
+      "public_sha256": "e49ff9de1b68b24a3409808855267281e1a29a43394b2add53380e052903f522"
+    },
+    {
+      "bytes": 1546,
+      "original_sha256": "6ffea079187375de0296d35ebe0defabba8f38023e2df03915a93bcd5042b24e",
+      "path": "packaging-final-core/r1/install.log",
+      "public_sha256": "6ffea079187375de0296d35ebe0defabba8f38023e2df03915a93bcd5042b24e"
+    },
+    {
+      "bytes": 166,
+      "original_sha256": "d6ed46b182b1635221c33772db7005b760ad847acd8a1690e8fcc7e888584128",
+      "path": "packaging-final-core/r1/pip-check.log",
+      "public_sha256": "d6ed46b182b1635221c33772db7005b760ad847acd8a1690e8fcc7e888584128"
+    },
+    {
+      "bytes": 39760,
+      "original_sha256": "cfa310e9c72c99ed80231ad4d1986fb03e96544af45cf1ce61565090269040f2",
+      "path": "packaging-final-core/r1/run.json",
+      "public_sha256": "cfa310e9c72c99ed80231ad4d1986fb03e96544af45cf1ce61565090269040f2"
+    },
+    {
+      "bytes": 14278,
+      "original_sha256": "3b6bcf9e6476be8b9aa47a45c55c55b7ec5ffec1eb6fdce4aa1a65c2b6e865c7",
+      "path": "packaging-final-core/r1/runner.py",
+      "public_sha256": "3b6bcf9e6476be8b9aa47a45c55c55b7ec5ffec1eb6fdce4aa1a65c2b6e865c7"
+    },
+    {
+      "bytes": 71950,
+      "original_sha256": "3f54c01947f932d9c0e0f1a9a5fc473a80cea21d19582f559646aa0e2e9e4e3c",
+      "path": "packaging-final-core/r1/source-after.json",
+      "public_sha256": "3f54c01947f932d9c0e0f1a9a5fc473a80cea21d19582f559646aa0e2e9e4e3c"
+    },
+    {
+      "bytes": 71950,
+      "original_sha256": "3f54c01947f932d9c0e0f1a9a5fc473a80cea21d19582f559646aa0e2e9e4e3c",
+      "path": "packaging-final-core/r1/source-before.json",
+      "public_sha256": "3f54c01947f932d9c0e0f1a9a5fc473a80cea21d19582f559646aa0e2e9e4e3c"
+    },
+    {
+      "bytes": 24257,
+      "original_sha256": "ee950356d77ba4da078a7f58a7d7ea24b21d5bf152994bba7d0461d5f6ffe680",
+      "path": "packaging-final-core/r1/stage.log",
+      "public_sha256": "ee950356d77ba4da078a7f58a7d7ea24b21d5bf152994bba7d0461d5f6ffe680"
+    },
+    {
+      "bytes": 6522,
+      "original_sha256": "214d36ac1238fff415992d80e88110711601573e8d2999175dffc8ca1fe3fb6b",
+      "path": "packaging-final-core/r1/tests.log",
+      "public_sha256": "214d36ac1238fff415992d80e88110711601573e8d2999175dffc8ca1fe3fb6b"
+    },
+    {
+      "bytes": 214,
+      "original_sha256": "896515d1bc707967f30565629bb63a1cf7b707ca835547f506fb1d9dc4d090aa",
+      "path": "packaging-final-core/r1/venv.log",
+      "public_sha256": "896515d1bc707967f30565629bb63a1cf7b707ca835547f506fb1d9dc4d090aa"
+    }
+  ],
+  "summary": "packaging-final-core.SUMMARY.md"
+}

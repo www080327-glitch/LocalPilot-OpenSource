@@ -1,0 +1,188 @@
+{
+  "kind": "LIVE_HYBRID_SESSION_ROTATION_INTEGRATION",
+  "source_commit": "b6f95da47f706581a780d6874382be53d99b33c4",
+  "model": "gpt-6-luna",
+  "protocol": "responses",
+  "reasoning": "medium",
+  "host": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "python": "3.12.14",
+  "scope": "Four synthetic file-reading/memory tasks, actual Luna, default Hybrid and rotation; not an AA score, unrestricted mutation test or long-run soak.",
+  "rotation_threshold_bytes": 1,
+  "threshold_scope": "integration test override; production default is 2 MiB",
+  "source_dirty": false,
+  "request_payload_transform": "Only encrypted reasoning content replaced by exact-value digest/length.",
+  "status": "PASS",
+  "started_at_unix": 1794897726.6699657,
+  "balance_queried": false,
+  "archive_exact_original_runtime": true,
+  "after_rotation": {
+    "generation": 1,
+    "canonical_messages": 9,
+    "receipts": 2,
+    "active_tasks": 2,
+    "first_task_archived": true
+  },
+  "restart_preserved_result_without_model_request": true,
+  "archived_idempotency_without_model_request": true,
+  "semantic_pass": true,
+  "observed_read_paths": [
+    [
+      "first.txt",
+      "second.txt"
+    ],
+    [
+      "third.txt"
+    ],
+    [
+      "fourth.txt"
+    ],
+    []
+  ],
+  "read_protocol_pass": true,
+  "input_prefix_pass": true,
+  "tools_and_reasoning_stable": true,
+  "compactions": 0,
+  "product_task_outcomes": [
+    {
+      "task_status": "completed",
+      "task_outcome": "unverified",
+      "task_succeeded": false,
+      "verification_status": "not_run",
+      "engineering_status": "unverified",
+      "completion": {
+        "execution": "settled",
+        "delivery": "delivered",
+        "attempts": 1,
+        "history": [
+          {
+            "attempt": 1,
+            "kind": "delivered",
+            "text_sha256": "16bf0e19a16c2421f807c2486ad73e1f367663982e46cf6baf050fcfebc56ac9",
+            "ledger_sha256": "f2559cfc4d802df26c558184efdfdce1f9ae43df93afcfaa86b552f4297abec9"
+          }
+        ],
+        "readiness": null,
+        "ledger_sha256": "f2559cfc4d802df26c558184efdfdce1f9ae43df93afcfaa86b552f4297abec9",
+        "receipt_count": 2,
+        "obligations": {
+          "pending_approval": false,
+          "queued_calls": 0,
+          "unfinished_goals": 0,
+          "unfinished_workers": 0,
+          "worker_obligations": false,
+          "computer_obligations": 0,
+          "unfinished_handoff": 0,
+          "unknown_receipts": 0,
+          "mutation_intent": false
+        }
+      }
+    },
+    {
+      "task_status": "completed",
+      "task_outcome": "unverified",
+      "task_succeeded": false,
+      "verification_status": "not_run",
+      "engineering_status": "unverified",
+      "completion": {
+        "execution": "settled",
+        "delivery": "delivered",
+        "attempts": 1,
+        "history": [
+          {
+            "attempt": 1,
+            "kind": "delivered",
+            "text_sha256": "3aaa23381ad9552eeb111f9b4c0accbf306c917b5a3eb9473685d8eba2eb2e9a",
+            "ledger_sha256": "e913916e8fb85cc0f4dc5386e3ebdb85d142296a5a1cc25119e50d41c7caf21c"
+          }
+        ],
+        "readiness": null,
+        "ledger_sha256": "e913916e8fb85cc0f4dc5386e3ebdb85d142296a5a1cc25119e50d41c7caf21c",
+        "receipt_count": 1,
+        "obligations": {
+          "pending_approval": false,
+          "queued_calls": 0,
+          "unfinished_goals": 0,
+          "unfinished_workers": 0,
+          "worker_obligations": false,
+          "computer_obligations": 0,
+          "unfinished_handoff": 0,
+          "unknown_receipts": 0,
+          "mutation_intent": false
+        }
+      }
+    },
+    {
+      "task_status": "completed",
+      "task_outcome": "unverified",
+      "task_succeeded": false,
+      "verification_status": "not_run",
+      "engineering_status": "unverified",
+      "completion": {
+        "execution": "settled",
+        "delivery": "delivered",
+        "attempts": 1,
+        "history": [
+          {
+            "attempt": 1,
+            "kind": "delivered",
+            "text_sha256": "a506ece1e6e7f43fd5f814191a7ff8855e279bd5a465f314b88d1a5549386ead",
+            "ledger_sha256": "d7b9c3482e44c2ca40b84f2978f683bd46c28f91e9a88f5f0b25a73a32e7700e"
+          }
+        ],
+        "readiness": null,
+        "ledger_sha256": "d7b9c3482e44c2ca40b84f2978f683bd46c28f91e9a88f5f0b25a73a32e7700e",
+        "receipt_count": 1,
+        "obligations": {
+          "pending_approval": false,
+          "queued_calls": 0,
+          "unfinished_goals": 0,
+          "unfinished_workers": 0,
+          "worker_obligations": false,
+          "computer_obligations": 0,
+          "unfinished_handoff": 0,
+          "unknown_receipts": 0,
+          "mutation_intent": false
+        }
+      }
+    },
+    {
+      "task_status": "completed",
+      "task_outcome": "unverified",
+      "task_succeeded": false,
+      "verification_status": "not_run",
+      "engineering_status": "unverified",
+      "completion": {
+        "execution": "settled",
+        "delivery": "delivered",
+        "attempts": 1,
+        "history": [
+          {
+            "attempt": 1,
+            "kind": "delivered",
+            "text_sha256": "a506ece1e6e7f43fd5f814191a7ff8855e279bd5a465f314b88d1a5549386ead",
+            "ledger_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          }
+        ],
+        "readiness": null,
+        "ledger_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "receipt_count": 0,
+        "obligations": {
+          "pending_approval": false,
+          "queued_calls": 0,
+          "unfinished_goals": 0,
+          "unfinished_workers": 0,
+          "worker_obligations": false,
+          "computer_obligations": 0,
+          "unfinished_handoff": 0,
+          "unknown_receipts": 0,
+          "mutation_intent": false
+        }
+      }
+    }
+  ],
+  "elapsed_seconds": 64.41703474099995,
+  "requests": 8,
+  "provider_responses": 8,
+  "owned_service_stopped": true,
+  "source_unchanged": true
+}

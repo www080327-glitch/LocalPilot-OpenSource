@@ -1,0 +1,24 @@
+{
+  "contributing_factors": [
+    {
+      "name": "otel-demo/Deployment/ad",
+      "reasoning": "The sole ad replica is CPU-capped at 50m and is severely throttled, delaying the GetAds call on the frontend's critical request path long enough to exceed the proxy's 15-second upstream timeout. This accounts for ad-side errors and a source of the early frontend-proxy 504s; the proxy is observing the slow upstream rather than causing it.",
+      "evidence": "The Deployment snapshot at 2025-12-15 17:28:28 specifies replicas=1 and ad container CPU limit=50m. In metrics/pod_ad-554b849958-fbw9s_raw.tsv at 17:24:47, container_cpu_cfs_throttled_periods_total=5181 of container_cpu_cfs_periods_total=5363 (~97%). Trace e7e8e5a227ca3c00b92bf54c1332f359 at 17:24 shows a 504/UT frontend-proxy ingress with a 15,001 ms duration and its router canceled against upstream_cluster=frontend, while the nested AdService/GetAds call continued for about 33.5 seconds. RequestErrorRate for ad also fired at 17:35 (0.00996)."
+    },
+    {
+      "name": "otel-demo/Deployment/frontend",
+      "reasoning": "Its only frontend replica is CPU-limited and has sustained high throttling. This is a separate front-end processing constraint (not the ad service's throttle) and adds latency on requests handled by frontend, consistent with the persistent proxy-facing request delays.",
+      "evidence": "The Deployment snapshot at 2025-12-15 17:53:25 has replicas=1 and frontend container CPU limit=100m. CPUThrottlingHigh fired for pod frontend-675fd7b5c5-64mj8 beginning 17:38 and reported 38.05% throttling; pod metrics show 7752 throttled periods of 19436 total periods at 17:49 (~40%). The frontend-proxy logs contain repeated 504 UT response_timeout entries with a 15,000 ms timeout, and traces show the proxy routing to frontend."
+    },
+    {
+      "name": "otel-demo/ConfigMap/flagd-config",
+      "reasoning": "The flag configuration switches cartFailure from off to on, making cart requests fail. Checkout and frontend failures after the change are downstream consequences of the cart fault, so those services are not separate contributing factors.",
+      "evidence": "The ConfigMap snapshot at 17:43:27 has cartFailure.defaultVariant=off, while the 17:48:26 snapshot has cartFailure.defaultVariant=on. RequestErrorRate alerts then show cart and checkout errors at 17:50 (values 0.00996 and 0.35846); frontend and frontend-proxy error rates spike at 17:49."
+    },
+    {
+      "name": "otel-demo/Deployment/fraud-detection",
+      "reasoning": "The single replica's 400Mi memory limit is reached under the observed memory growth, and its container is OOM-killed and restarted. This is an independent source of fraud-detection failures; the cart flag does not explain it.",
+      "evidence": "The Deployment snapshot specifies replicas=1 and a 400Mi memory limit. The managed Pod fraud-detection-9fb7d885b-v48vh records lastState.reason=OOMKilled, exitCode=137, finishedAt=2025-12-15T17:51:50Z and restartCount=1. Its working-set metric reached 416,960,512 bytes at 17:51:32, near the configured limit, and RequestErrorRate alerts for fraud-detection occur at 17:50 and 17:52."
+    }
+  ]
+}

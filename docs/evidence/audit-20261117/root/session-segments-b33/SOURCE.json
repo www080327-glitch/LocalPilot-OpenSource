@@ -1,0 +1,99 @@
+{
+  "source_mapping": {
+    "base": "b9615c72db68bcf0ee065c884882b26d2cf0a581",
+    "runtime": {
+      "local_commit": "b6f95da47f706581a780d6874382be53d99b33c4",
+      "remote_commit": "63ec8ab0676b77de6be9dad3f16332d459dcdc8f",
+      "tree": "36d464811bbfd9538274d88bd2c13fbcf80374be"
+    },
+    "source": {
+      "local_commit": "89d1958cc42baedb6e7221f3c5c293901f7de21f",
+      "remote_commit": "5a519b7e35d9d4902b2c0a0ee73f36eacff71325",
+      "tree": "af97c2417c751285e549d14ef95ba536a1dfbd92"
+    }
+  },
+  "final_local_commit": "89d1958cc42baedb6e7221f3c5c293901f7de21f",
+  "components": {
+    "desktop": "5.0.1-rc.16",
+    "core": "5.0.0b33",
+    "companion": "0.5.7b10",
+    "suite": "0.2.0b33",
+    "channels": "0.1.0a4"
+  },
+  "baseline_mapping": {
+    "local": "9253776b55c5e8377948267266ac5c0c4f06b03a",
+    "remote": "b9615c72db68bcf0ee065c884882b26d2cf0a581",
+    "tree": "10386dbc510601daae92be47e840b24c214ab71f"
+  },
+  "continuity": [
+    {
+      "suite": "core_final",
+      "files": 279,
+      "differences": [],
+      "meaning": "Final Core source/test files match exactly."
+    },
+    {
+      "suite": "companion_full",
+      "files": 508,
+      "differences": [
+        {
+          "path": "tests/test_release_observability.py",
+          "tested_sha256": "0810e40b65efcdbbae34f42e49b527e018746c5da0a81b0877e2d3d53c8dbae1",
+          "final_sha256": "b334c17b6f401467e732f2a9c06eb096b2aa6fcddb1e00a4ac539cd338cc1e0c"
+        }
+      ],
+      "meaning": "Only the unrelated candidate-version test fixture and its new negative-control cases changed; production and tested component files are identical."
+    },
+    {
+      "suite": "installed",
+      "files": 675,
+      "differences": [
+        {
+          "path": "tests/test_release_observability.py",
+          "tested_sha256": "0810e40b65efcdbbae34f42e49b527e018746c5da0a81b0877e2d3d53c8dbae1",
+          "final_sha256": "b334c17b6f401467e732f2a9c06eb096b2aa6fcddb1e00a4ac539cd338cc1e0c"
+        }
+      ],
+      "meaning": "Only the unrelated candidate-version test fixture and its new negative-control cases changed; production and tested component files are identical."
+    },
+    {
+      "suite": "suite",
+      "files": 675,
+      "differences": [
+        {
+          "path": "tests/test_release_observability.py",
+          "tested_sha256": "0810e40b65efcdbbae34f42e49b527e018746c5da0a81b0877e2d3d53c8dbae1",
+          "final_sha256": "b334c17b6f401467e732f2a9c06eb096b2aa6fcddb1e00a4ac539cd338cc1e0c"
+        }
+      ],
+      "meaning": "Only the unrelated candidate-version test fixture and its new negative-control cases changed; production and tested component files are identical."
+    },
+    {
+      "suite": "frontend",
+      "source_files": 260,
+      "source_unchanged": true,
+      "source_commit": "b6f95da47f706581a780d6874382be53d99b33c4"
+    },
+    {
+      "suite": "frontend_final",
+      "files": 260,
+      "differences": [],
+      "production_source_matches_final": true
+    },
+    {
+      "suite": "live_luna_final",
+      "files": 113,
+      "differences": [],
+      "production_source_matches_final": true
+    },
+    {
+      "suite": "engineering_luna_final",
+      "files": 111,
+      "differences": [],
+      "production_source_matches_final": true
+    }
+  ],
+  "runtime_test_source": "Actual model and installed-wheel runs used the runtime commit/tree. The second source commit changes only tests/test_release_observability.py; final Core rerun used that exact file with all production source unchanged.",
+  "release_status": "NOT_RELEASE_READY",
+  "formal_release_created": false
+}

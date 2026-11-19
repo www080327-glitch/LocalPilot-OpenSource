@@ -1,0 +1,42 @@
+test_linux_child_shell_cancel_keeps_unknown_and_never_replays_after_restart (tests.test_core_portability.CorePortabilityTests.test_linux_child_shell_cancel_keeps_unknown_and_never_replays_after_restart) ... FAIL
+test_linux_child_shell_cancel_keeps_unknown_and_never_replays_after_restart (tests.test_core_portability.CorePortabilityTests.test_linux_child_shell_cancel_keeps_unknown_and_never_replays_after_restart) ... FAIL
+
+======================================================================
+FAIL: test_linux_child_shell_cancel_keeps_unknown_and_never_replays_after_restart (tests.test_core_portability.CorePortabilityTests.test_linux_child_shell_cancel_keeps_unknown_and_never_replays_after_restart)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<SOURCE>/tests/test_core_portability.py", line 283, in test_linux_child_shell_cancel_keeps_unknown_and_never_replays_after_restart
+    self.assertEqual(terminal['status'], 'cancelled', terminal)
+AssertionError: 'cancelling' != 'cancelled'
+- cancelling
+?        ^^^
++ cancelled
+?        ^^
+ : {'id': 'resp_1be6acab98d840e190a7fd2ff297d177', 'object': 'localpilot.task', 'session_id': 'sess_3d7eb7d039ee4b5091743f92ad2cfa61', 'user_input': 'Delegate the child cancellation fixture.', 'execution_model': 'mock-local', 'desktop_options': {'permission_mode': 'workspace', 'agent_profile': 'standard', 'prompt_revision': 2, 'scope_revision': 3}, 'thinking': {'requested': None, 'effective': None, 'supported': []}, 'pause_requested': False, 'model': 'localpilot', 'session_model': 'localpilot', 'previous_task_id': None, 'created_at': 1794836233, 'status': 'cancelling', 'quiescent': False, 'result': None, 'streamed_text': '', 'required_action': None, 'error': None, 'output': [], 'tools': [], 'goals': [], 'subagents': [], 'computer': None, 'completion': None, 'last_event_id': 27, 'service': {'request_id': 'req_cd01415ce60e44f0a85d207e416ac7ad', 'client_subject': 'http', 'route_decision': {'selection': 'session_affinity', 'selected': 'localpilot', 'backend_model': 'mock-local', 'decisions': [{'model': 'localpilot', 'reason': 'selected'}], 'backend_fallback': False, 'reason': '沿用当前持久会话的模型；来源限制继续生效'}, 'origin_agent': 'http', 'parent_task_id': None, 'external_delegation_depth': 1, 'external_redelegation_allowed': False, 'low_power_consent': False}, 'receipt_summary': {'count': 0, 'unknown_effects': 0}, 'file_operation_verification': {'status': 'NOT_RUN', 'scope': 'filesystem effects only', 'receipts': 0}, 'verification_summary': {'runtime_status': 'UNKNOWN', 'deliverable_status': 'UNKNOWN', 'verification_status': 'UNKNOWN', 'engineering_status': 'UNKNOWN', 'task_outcome': 'UNKNOWN'}}
+
+======================================================================
+FAIL: test_linux_child_shell_cancel_keeps_unknown_and_never_replays_after_restart (tests.test_core_portability.CorePortabilityTests.test_linux_child_shell_cancel_keeps_unknown_and_never_replays_after_restart)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<SOURCE>/tests/test_core_portability.py", line 133, in stop_service
+    process.wait(timeout=10)
+  File "<PYTHON_RUNTIME>/lib/python3.12/subprocess.py", line 1264, in wait
+    return self._wait(timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<PYTHON_RUNTIME>/lib/python3.12/subprocess.py", line 2045, in _wait
+    raise TimeoutExpired(self.args, timeout)
+subprocess.TimeoutExpired: Command '['<VALIDATION>/component-install-20261115/bin/python', '-m', 'localpilot_service', '--config', '<TEMP>/service/service.json']' timed out after 10 seconds
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<SOURCE>/tests/test_core_portability.py", line 42, in tearDown
+    self.stop_service()
+  File "<SOURCE>/tests/test_core_portability.py", line 137, in stop_service
+    self.fail('Core failed to stop after SIGTERM')
+AssertionError: Core failed to stop after SIGTERM
+
+----------------------------------------------------------------------
+Ran 1 test in 15.328s
+
+FAILED (failures=2)

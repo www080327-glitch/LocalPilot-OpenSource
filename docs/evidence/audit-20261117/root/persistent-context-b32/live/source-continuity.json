@@ -1,0 +1,14 @@
+{
+  "base_commit": "e278f0677c8eed4c0d49b6b08a672e15fe56495d",
+  "live_run_was_dirty_worktree": true,
+  "files_checked": 112,
+  "unchanged_count": 111,
+  "differences_after_live_run": [
+    {
+      "path": "localpilot_service/documents/api.py",
+      "at_live_run": "a9b6bd4e95376b7e60995bd13de90b1c0937d19c2251b68b1592f670a0ae3a81",
+      "now": "f5d45c360f35a02b47ad9590ba661c5cb262a564fe312b093ad744bdea5b969c"
+    }
+  ],
+  "interpretation": "Live source_commit records its base, not a clean source tree. The document-import repair followed the live run; the final full Core gate includes that repair. No change listed here is relabelled as having been exercised by the live run."
+}

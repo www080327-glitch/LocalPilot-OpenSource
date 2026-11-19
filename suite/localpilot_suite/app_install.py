@@ -8,7 +8,7 @@ import plistlib
 import subprocess
 import uuid
 
-from .apps import archive, digest
+from .apps import archive, digest, processes
 
 LS = '/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister'
 
@@ -78,6 +78,7 @@ def make_plan(source, *, test_app=False, home=None):
             'old_version': (old or {}).get('CFBundleShortVersionString'),
             'new_version': new.get('CFBundleShortVersionString'),
             'bundle_id': expected, 'test_app': test_app, 'user_data_modified': False,
+            'blocking_processes': running_app_processes(target),
             'executed': False, 'status': 'plan_only'}
 
 
@@ -91,9 +92,11 @@ def check_reviewed_plan(current, reviewed):
 
 def install(plan):
     source, target, stage = (Path(plan[key]) for key in ('source', 'destination', 'stage'))
-    commands = subprocess.check_output(['ps', '-axo', 'command='], text=True).splitlines()
-    if any(str(target) + '/' in command for command in commands):
-        raise ValueError('Quit the selected App and explicitly stop its Core before replacing its entry')
+    plan['blocking_processes'] = running_app_processes(target)
+    if plan['blocking_processes']:
+        pids = ', '.join(str(row['pid']) for row in plan['blocking_processes'])
+        raise ValueError('所选应用或后台服务仍在运行（PID ' + pids +
+                         '）。请在服务管理中停止 Core 和 Companion，退出所选应用后重新执行安装')
     if target.exists():
         plan['rollback_archive'] = archive(target, Path(plan['archive_directory']), plan['old_sha256'])
         if plan['rollback_archive']['signature']['code']:
@@ -105,6 +108,12 @@ def install(plan):
         raise ValueError('Staged APP differs from the reviewed source')
     activate(plan)
     plan.update(executed=True, status='installed')
+
+
+def running_app_processes(target):
+    target = target.resolve()
+    return [row for row in processes()
+            if any(Path(path).resolve() == target for path in row['bundle_paths'])]
 
 
 def activate(plan):

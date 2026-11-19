@@ -1,0 +1,135 @@
+{
+  "status": "PASS",
+  "composition": {
+    "built_core_commit": "3764fc054899d9fb3d13c545667e4ff0fc64d044",
+    "reused_other_components_commit": "37570b9a7c6b64e0ac67ab2706c15eeebc714069",
+    "reused_wheels_sha256_verified": true,
+    "original_evidence": "packaging/r1/run.json"
+  },
+  "final_source": {
+    "local_commit": "3764fc054899d9fb3d13c545667e4ff0fc64d044",
+    "remote_equivalent": "2fcf955",
+    "tree": "6923f502896ebc565be54532e49107fd1bbd21d9"
+  },
+  "original_source": {
+    "local_commit": "37570b9a7c6b64e0ac67ab2706c15eeebc714069",
+    "remote_equivalent": "ce9264b2",
+    "tree": "2272b6f3a975d26bcae1c020b94bb3e2ca4ef04f"
+  },
+  "final_core": {
+    "file": "localpilot_agent_service-5.0.0b34-py3-none-any.whl",
+    "bytes": 588206,
+    "sha256": "0914939f70dce9b4f88dc6c2a00f0e09d285b0bcdfee75c786ab8b3e9852c641",
+    "path": "/workspace/scratch/c0f3ec78c621/validation/dispatch-20261117/packaging-final-core/r1/wheels/localpilot_agent_service-5.0.0b34-py3-none-any.whl",
+    "source_commit": "3764fc054899d9fb3d13c545667e4ff0fc64d044"
+  },
+  "preserved_original_core": {
+    "file": "localpilot_agent_service-5.0.0b34-py3-none-any.whl",
+    "bytes": 588198,
+    "sha256": "c259b6c6fc2bcf38d8f66a4c5e88334a55b58363cbd5a0d493c8b2a81a31022d"
+  },
+  "wheels": [
+    {
+      "file": "localpilot_channels-0.1.0a4-py3-none-any.whl",
+      "bytes": 45932,
+      "sha256": "b239b148152aeb83f05adc9a6936b41aeb6595ca8712dcdd62db3518eca9f760",
+      "path": "/workspace/scratch/c0f3ec78c621/validation/dispatch-20261117/packaging/r1/wheels/localpilot_channels-0.1.0a4-py3-none-any.whl",
+      "source_commit": "37570b9a7c6b64e0ac67ab2706c15eeebc714069"
+    },
+    {
+      "file": "localpilot_companion-0.5.7b11-py3-none-any.whl",
+      "bytes": 359222,
+      "sha256": "7db3a2d1d59c086dfd5cabd202e787571bfb3b65ac202d2b06d000548b569c53",
+      "path": "/workspace/scratch/c0f3ec78c621/validation/dispatch-20261117/packaging/r1/wheels/localpilot_companion-0.5.7b11-py3-none-any.whl",
+      "source_commit": "37570b9a7c6b64e0ac67ab2706c15eeebc714069"
+    },
+    {
+      "file": "localpilot_suite-0.2.0b34-py3-none-any.whl",
+      "bytes": 108791,
+      "sha256": "b2f4457718e656873b57737a784f3c0fcfb307d1dd121f2068c9cc7fc7a189d7",
+      "path": "/workspace/scratch/c0f3ec78c621/validation/dispatch-20261117/packaging/r1/wheels/localpilot_suite-0.2.0b34-py3-none-any.whl",
+      "source_commit": "37570b9a7c6b64e0ac67ab2706c15eeebc714069"
+    },
+    {
+      "file": "localpilot_agent_service-5.0.0b34-py3-none-any.whl",
+      "bytes": 588206,
+      "sha256": "0914939f70dce9b4f88dc6c2a00f0e09d285b0bcdfee75c786ab8b3e9852c641",
+      "path": "/workspace/scratch/c0f3ec78c621/validation/dispatch-20261117/packaging-final-core/r1/wheels/localpilot_agent_service-5.0.0b34-py3-none-any.whl",
+      "source_commit": "3764fc054899d9fb3d13c545667e4ff0fc64d044"
+    }
+  ],
+  "installed_versions": {
+    "localpilot-agent-service": "5.0.0b34",
+    "localpilot-suite": "0.2.0b34",
+    "localpilot-companion": "0.5.7b11",
+    "localpilot-channels": "0.1.0a4"
+  },
+  "same_version_distinct_core_builds": "Both Core candidates are 5.0.0b34. Their source commits and wheel SHA-256 differ; original artifacts are retained. This combination uses only the final Core.",
+  "source_files_verified": 684,
+  "source_unchanged": true,
+  "source_revision_unchanged": true,
+  "installed_source_files_verified": 288,
+  "verified_installed_source_files_by_wheel": {
+    "localpilot_channels-0.1.0a4-py3-none-any.whl": 7,
+    "localpilot_companion-0.5.7b11-py3-none-any.whl": 111,
+    "localpilot_suite-0.2.0b34-py3-none-any.whl": 21,
+    "localpilot_agent_service-5.0.0b34-py3-none-any.whl": 149
+  },
+  "required_changed_sources_verified": [
+    "agent/context_v5.py",
+    "agent/runtime_tools.py",
+    "agent/session.py",
+    "agent/session_history.py",
+    "companion/memory/store.py",
+    "companion/memory/task_store.py",
+    "companion/runtime/model_collaboration.py",
+    "companion/runtime/service.py",
+    "companion/runtime/tasks.py",
+    "localpilot_service/deployment.py",
+    "localpilot_service/protocol.py",
+    "localpilot_service/route_backends.py",
+    "localpilot_suite/model_configuration.py"
+  ],
+  "runtime_isolation": {
+    "runtime": "/workspace/scratch/c0f3ec78c621/validation/dispatch-20261117/packaging-final-core/r1/runtime",
+    "imports_within_runtime_prefix": true,
+    "direct_wheel_origin_and_sha256_verified": true,
+    "editable_install": false
+  },
+  "pip_check": "PASS",
+  "worker_roles_v1": "PRESENT",
+  "companion_task_store": "PRESENT",
+  "tests": {
+    "status": "PASS",
+    "cases": 36,
+    "seconds": 2.7787910549959633,
+    "modules": [
+      "tests.test_worker_role_routes",
+      "tests.test_hybrid_history_rotation",
+      "tests.test_context_v5",
+      "tests.test_engine_v5",
+      "tests.test_worker_role_runtime"
+    ],
+    "rotation_fixture": "Original 4000-token window and original protected-task/zero-dispatch/restart assertions retained; installed tool-free host_state omits work_contract.",
+    "unchanged_components": "No repeat of Companion/Suite/Channels behavioral suites; their original same-wheel evidence is retained in packaging/RESULTS.json."
+  },
+  "wheel_private_artifact_scan": {
+    "known_credential_checked": true,
+    "matches": 0,
+    "forbidden_paths": 0
+  },
+  "heavy_work_completed_utc": "2026-11-17T10:33:30.893367+00:00",
+  "remaining_owned_processes": [],
+  "real_model_calls": false,
+  "system_install": false,
+  "published": false,
+  "native_platform_acceptance": "NOT_RUN; Python wheel/install verification only.",
+  "evidence": [
+    "r1/run.json",
+    "r1/import-proof.json",
+    "r1/source-before.json",
+    "r1/source-after.json",
+    "r1/tests.log",
+    "../packaging/RESULTS.json"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "kind": "INDEPENDENT_READ_ONLY_REVIEW_SUMMARY",
+  "reviewer_task": "evidence_review",
+  "source_commit": "b69542583954c49672a636ba43f1ef310238883c",
+  "passed": true,
+  "external_model_calls_by_reviewer": 0,
+  "calls": {
+    "parent": 4,
+    "search": 3,
+    "review": 3,
+    "provider_models": {
+      "gpt-6.1-sol": 7,
+      "gpt-6-luna": 3
+    }
+  },
+  "receipts": {
+    "total": 7,
+    "parent": 3,
+    "children_file_reads": 4,
+    "all_completed": true,
+    "fixture_full_coverage_and_sha256_match": true
+  },
+  "usage_matches_aggregate_multiset_once": true,
+  "restored_fields_identical": [
+    "task_id",
+    "session_id",
+    "receipts",
+    "children",
+    "result",
+    "runtime_evidence"
+  ],
+  "workspace_files": 3,
+  "workspace_hashes_unchanged": true,
+  "source_files_matched_git": 111,
+  "child_lifetime_overlap": false,
+  "gap_after_search_seconds": 0.39945220947265625,
+  "parent_received_child_prose": false,
+  "length_observed": false,
+  "original_full_r12_status": "BLOCKED_BY_AUTOMATIC_APPROVAL_REVIEW",
+  "product_verification_unchanged": {
+    "verification_status": "not_run",
+    "engineering_status": "unverified",
+    "task_outcome": "unverified",
+    "task_succeeded": false
+  },
+  "note": "Derived record of independent agent review; original runtime evidence is archived separately."
+}

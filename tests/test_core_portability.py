@@ -250,6 +250,58 @@ class CorePortabilityTests(unittest.TestCase):
         self.assertEqual((self.workspace / 'partial.txt').read_text(), 'partial')
         self.assertEqual(len(self.server.requests), requests_before_restart)
 
+    @unittest.skipUnless(sys.platform == 'linux' and shutil.which('bwrap'), 'actual Linux scoped child Shell required')
+    def test_linux_child_shell_cancel_keeps_unknown_and_never_replays_after_restart(self):
+        from copy import deepcopy
+        self.initialize_service()
+        config = json.loads((self.home / 'service.json').read_text())
+        config['routes']['worker'] = deepcopy(config['routes']['default'])
+        config['routes']['default']['cooperation'] = {'routes': ['worker'], 'optimizer': {'mode': 'local-only'}}
+        core_cli.save(self.home / 'service.json', config)
+        self.start_service()
+        session = self.operator.request('/localpilot/v1/desktop-sessions', {
+            'client_subject': 'http', 'model': 'localpilot', 'source': 'local_only',
+            'options': {'permission_mode': 'workspace', 'agent_profile': 'standard'}}, key='child-shell-session')
+        self.add_stream(call=tool_call('delegate', {
+            'task': 'Run the child cancellation fixture once.', 'backend_preference': 'local',
+            'read_only': False}, 'spawn-child'))
+        self.add_stream(call=tool_call('shell', {
+            'command': 'printf child-http-partial >> child-partial.txt; sleep 60'}, 'child-shell'))
+        question = 'Delegate the child cancellation fixture.'
+        initial = self.client.submit(question, session_id=session['id'], idempotency_key='child-cancel')
+        marker = self.workspace / 'child-partial.txt'
+        deadline = time.monotonic() + 10
+        while not marker.exists() and time.monotonic() < deadline:
+            time.sleep(.01)
+        self.assertTrue(marker.exists(), self.client.status(initial['id']))
+        self.client.cancel(initial['id'])
+        terminal = self.client.status(initial['id'])
+        deadline = time.monotonic() + 5
+        while not terminal['quiescent'] and time.monotonic() < deadline:
+            time.sleep(.2)
+            terminal = self.client.status(initial['id'])
+        self.assertEqual(terminal['status'], 'cancelled', terminal)
+        self.assertTrue(terminal['quiescent'])
+        self.assertEqual(len(terminal['subagents']), 1)
+        child = terminal['subagents'][0]
+        self.assertEqual(child['status'], 'cancelled')
+        shell = [row for row in child['receipts'] if row['name'] == 'shell']
+        self.assertEqual(len(shell), 1)
+        self.assertEqual(shell[0]['side_effect_status'], 'unknown')
+        self.assertFalse(any(row['name'] == 'shell' and not row.get('worker_id') for row in terminal['tools']))
+        self.assertGreater(terminal['receipt_summary']['unknown_effects'], 0)
+        requests_before_restart = len(self.server.requests)
+        self.assertEqual(requests_before_restart, 2)
+        self.stop_service()
+        self.start_service()
+        restored = self.client.status(initial['id'])
+        self.assertEqual(restored['receipt_summary'], terminal['receipt_summary'])
+        self.assertEqual(restored['subagents'], terminal['subagents'])
+        replay = self.client.submit(question, session_id=session['id'], idempotency_key='child-cancel')
+        self.assertEqual(replay['id'], initial['id'])
+        self.assertEqual(marker.read_text(), 'child-http-partial')
+        self.assertEqual(len(self.server.requests), requests_before_restart)
+
     def test_inflight_http_cancel_does_not_dispatch_a_late_tool(self):
         self.initialize_service('--model-timeout', '10')
         self.start_service()

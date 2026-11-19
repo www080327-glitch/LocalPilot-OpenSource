@@ -1,0 +1,99 @@
+{
+  "captured_at_utc": "2026-11-16T10:23:39.907171+00:00",
+  "reference": "desktop/docs/evidence/polish-20261116/RECOVERY_SOURCE_SHA256.json",
+  "reference_sha256": "fa92dd2ee984c8805efbc935d5d8b7f11d423c66c295bdad5dbca2d3b1d6396e",
+  "scope": "15 previously reviewed Desktop production/test files checked against final integration tree; does not certify bundled backend resources or an RC.9 final package",
+  "result": "PASS",
+  "files": {
+    "desktop/src-tauri/src/main.rs": {
+      "expected_sha256": "692d7974ef9b8ff080b24f5d59e4e006df1645ab678d4f0da68ec2ba4611c449",
+      "actual_sha256": "692d7974ef9b8ff080b24f5d59e4e006df1645ab678d4f0da68ec2ba4611c449",
+      "bytes": 101324,
+      "matches": true
+    },
+    "desktop/src-tauri/src/pet_agent.rs": {
+      "expected_sha256": "1d4e542058f686bf5a43740908d5b6989526931ff4986a29b75cc755c659378d",
+      "actual_sha256": "1d4e542058f686bf5a43740908d5b6989526931ff4986a29b75cc755c659378d",
+      "bytes": 12104,
+      "matches": true
+    },
+    "desktop/src-tauri/src/pet_native.rs": {
+      "expected_sha256": "5ea7495896f4d54e29e5c246c799257e0329e28ed2a6049fb4624261b0fdd635",
+      "actual_sha256": "5ea7495896f4d54e29e5c246c799257e0329e28ed2a6049fb4624261b0fdd635",
+      "bytes": 40420,
+      "matches": true
+    },
+    "desktop/src-tauri/src/preferences.rs": {
+      "expected_sha256": "4dc84ac30c988cfebd52c8523609e6ca11b70c763508cb8b656c6f3bb6c7679b",
+      "actual_sha256": "4dc84ac30c988cfebd52c8523609e6ca11b70c763508cb8b656c6f3bb6c7679b",
+      "bytes": 6239,
+      "matches": true
+    },
+    "desktop/src-tauri/src/product.rs": {
+      "expected_sha256": "84e894185dbd8f32700a22f18e2b98be170c500c415372010e0296650af453bb",
+      "actual_sha256": "84e894185dbd8f32700a22f18e2b98be170c500c415372010e0296650af453bb",
+      "bytes": 31108,
+      "matches": true
+    },
+    "desktop/src-tauri/src/test_profile.rs": {
+      "expected_sha256": "92d5d8ed9b3e22786f5412e87ce42e3709e64bbdf3a1c0fde37274f58fc17074",
+      "actual_sha256": "92d5d8ed9b3e22786f5412e87ce42e3709e64bbdf3a1c0fde37274f58fc17074",
+      "bytes": 7222,
+      "matches": true
+    },
+    "desktop/src/App.tsx": {
+      "expected_sha256": "5b75d154807379ce0c37a343e4087828a3ad3d04a16bb15ef56818985e68b719",
+      "actual_sha256": "5b75d154807379ce0c37a343e4087828a3ad3d04a16bb15ef56818985e68b719",
+      "bytes": 95379,
+      "matches": true
+    },
+    "desktop/src/components/ModelPicker.tsx": {
+      "expected_sha256": "61a8cda285d4ac58db8850727feb6a44ea6401f672e7faf0946ea2fb8e844d33",
+      "actual_sha256": "61a8cda285d4ac58db8850727feb6a44ea6401f672e7faf0946ea2fb8e844d33",
+      "bytes": 3743,
+      "matches": true
+    },
+    "desktop/src/hooks/useServiceConnection.ts": {
+      "expected_sha256": "73e4824682a9e8c47c7122457065dcb5eee36a7ce9470ad22f7d8217b9fba06f",
+      "actual_sha256": "73e4824682a9e8c47c7122457065dcb5eee36a7ce9470ad22f7d8217b9fba06f",
+      "bytes": 6025,
+      "matches": true
+    },
+    "desktop/src/hooks/useSessionRecovery.ts": {
+      "expected_sha256": "cfbe8ee61bcb7e1c42fd9e492f2b84ffe49e3f3abd347f2f2019bca0bfe4ae9f",
+      "actual_sha256": "cfbe8ee61bcb7e1c42fd9e492f2b84ffe49e3f3abd347f2f2019bca0bfe4ae9f",
+      "bytes": 7703,
+      "matches": true
+    },
+    "desktop/src/preferences.ts": {
+      "expected_sha256": "7f33ef335b15cfea255cd3d5ab1eb25f2eb6789006858e43d6f2487948505c23",
+      "actual_sha256": "7f33ef335b15cfea255cd3d5ab1eb25f2eb6789006858e43d6f2487948505c23",
+      "bytes": 3670,
+      "matches": true
+    },
+    "desktop/tests/preferences.test.ts": {
+      "expected_sha256": "44067a327cce5aac75a877bb68786dc8dc15682511fe3e6d38d40518b6121a67",
+      "actual_sha256": "44067a327cce5aac75a877bb68786dc8dc15682511fe3e6d38d40518b6121a67",
+      "bytes": 4199,
+      "matches": true
+    },
+    "desktop/tests/session-recovery.test.ts": {
+      "expected_sha256": "05eb8f42bb2d0d79ca7d5c9031fcce1f8a59c579b27e6801866fee9b6a40403e",
+      "actual_sha256": "05eb8f42bb2d0d79ca7d5c9031fcce1f8a59c579b27e6801866fee9b6a40403e",
+      "bytes": 3745,
+      "matches": true
+    },
+    "desktop/tests/ui/intel-setup.spec.ts": {
+      "expected_sha256": "d7ecab49b9898a3c97169b8e699622ba3924778c75eb3cfdf7a2bedc5bc8102f",
+      "actual_sha256": "d7ecab49b9898a3c97169b8e699622ba3924778c75eb3cfdf7a2bedc5bc8102f",
+      "bytes": 8701,
+      "matches": true
+    },
+    "desktop/tests/ui/session-recovery.spec.ts": {
+      "expected_sha256": "6bdfd361e737934df00141f370e856ec44873f01275d6d7d5d19a6d9a7bd91d6",
+      "actual_sha256": "6bdfd361e737934df00141f370e856ec44873f01275d6d7d5d19a6d9a7bd91d6",
+      "bytes": 10276,
+      "matches": true
+    }
+  }
+}

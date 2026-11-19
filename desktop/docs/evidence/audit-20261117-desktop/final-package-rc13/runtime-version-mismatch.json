@@ -1,0 +1,14 @@
+{
+  "source_commit": "1dca93c5a6a2d0c557a9507ca020c07458dd92d1",
+  "source_tree": "1457ce75f9134196c0c489f69bc4ee5b03467d4b",
+  "expected_module_version": "5.0.0b30",
+  "bundle_self_check_version": "5.0.0b30",
+  "installed_distribution_metadata_version": "5.0.0b30",
+  "actual_service_health_version": "5.0.0b28",
+  "frozen_version_source": "localpilot_service/__init__.py",
+  "frozen_version_source_sha256": "cbc5f821de80e7796353bf2c534b9d716c181df323942a86bb49925b9978d542",
+  "source_line_2": "VERSION = \"5.0.0b28\"",
+  "native_gate": "FAIL",
+  "first_setup_observation": "Core row stayed 尚未就绪; complete button initially pale but visibly enabled in final screenshot. No permanent blockage or explicit version-rejection error was established.",
+  "causality": "Version declaration mismatch is proven. A causal explanation for the component row and initial disabled state is not established by this record."
+}

@@ -1,0 +1,39 @@
+{
+  "kind": "PUBLIC_COMMIT_TO_LOCAL_VALIDATION_TREE_MAP",
+  "repository": "www080327-glitch/LocalPilot-OpenSource",
+  "reason": "Terminal git push had no HTTPS credential; supported connected GitHub APIs published identical blobs and trees. Git commit metadata produces different commit IDs.",
+  "baseline_commit": "6c923a95c749d1db2c6d2548e2109cd79b02d938",
+  "source_and_raw_evidence_not_rewritten": true,
+  "uploaded_blob_count": 62,
+  "all_uploaded_blob_shas_matched": true,
+  "mappings": [
+    {
+      "local_commit": "8e27340e3d0cabbb37ace7a652de9b1f2f0d0eee",
+      "public_commit": "cc7707a8c62dd568dd39053180e3c520eee00269",
+      "tree": "42461b0b85f4aaf07290854277a5d54fe531dd70",
+      "parent_public_commit": "6c923a95c749d1db2c6d2548e2109cd79b02d938",
+      "scope": "tested_product",
+      "identical_tree": true,
+      "url": "https://github.com/www080327-glitch/LocalPilot-OpenSource/commit/cc7707a8c62dd568dd39053180e3c520eee00269"
+    },
+    {
+      "local_commit": "b69542583954c49672a636ba43f1ef310238883c",
+      "public_commit": "3627604f56f841bc199fbdc4c7ff38418fefbd36",
+      "tree": "cded45c5c68089c0654bc25a90a541a189e7d73e",
+      "parent_public_commit": "cc7707a8c62dd568dd39053180e3c520eee00269",
+      "scope": "final_role_harness",
+      "identical_tree": true,
+      "url": "https://github.com/www080327-glitch/LocalPilot-OpenSource/commit/3627604f56f841bc199fbdc4c7ff38418fefbd36"
+    },
+    {
+      "local_commit": "0f52884588d015550269133db3884b2b3d4c5d74",
+      "public_commit": "995bce3bc6f83372d6c202dfe095da6d14e3dba0",
+      "tree": "4767f97c18424e22c9eca9fd67be4d75b4aa1e87",
+      "parent_public_commit": "3627604f56f841bc199fbdc4c7ff38418fefbd36",
+      "scope": "pre_publication_evidence_snapshot",
+      "identical_tree": true,
+      "url": "https://github.com/www080327-glitch/LocalPilot-OpenSource/commit/995bce3bc6f83372d6c202dfe095da6d14e3dba0"
+    }
+  ],
+  "subsequent_changes": "Only this mapping, its report pointer, the publication review and regenerated delivery manifest; product and raw evidence unchanged."
+}

@@ -48,7 +48,7 @@ def main(argv=None):
     for profile, prompt in PROMPT_PROFILES.items():
         for tools in TOOL_PROFILES:
             registry = create_default_registry(args.workspace, tool_profile=tools)
-            report["profiles"][f"{profile}/{tools}"] = measure_tool_budget(registry.schemas(), prompt, tokenizer)
+            report["profiles"][f"{profile}/{tools}"] = measure_tool_budget(registry.schemas(for_model=True), prompt, tokenizer)
     rendered = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
     if args.output:
         Path(args.output).write_text(rendered, encoding="utf-8")

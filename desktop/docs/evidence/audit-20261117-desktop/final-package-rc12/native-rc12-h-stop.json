@@ -1,0 +1,62 @@
+{
+  "run": "h",
+  "started_utc": "2026-11-16T21:08:29Z",
+  "signal_sent": true,
+  "scope": "Only SIGTERM the verified UI main process below this run wrapper; no signal is sent to external PIDs or separate services.",
+  "wrapper_pid": 31444,
+  "ui_pid": 31448,
+  "candidate_sha256": "b332a1126cbdc038c0e9d7dd4be4ae3f1b1f044b9e44506f9c712f506fca0ebe",
+  "root_match": true,
+  "canonical_test_root": "/workspace/scratch/c0f3ec78c621/native-rc12-h",
+  "owned_before": [
+    {
+      "pid": 31444,
+      "ppid": 31443,
+      "name": "bwrap",
+      "state": "S (sleeping)"
+    },
+    {
+      "pid": 31447,
+      "ppid": 31444,
+      "name": "bwrap",
+      "state": "S (sleeping)"
+    },
+    {
+      "pid": 31448,
+      "ppid": 31447,
+      "name": "localpilot-desk",
+      "state": "S (sleeping)"
+    },
+    {
+      "pid": 31456,
+      "ppid": 31448,
+      "name": "WebKitNetworkPr",
+      "state": "S (sleeping)"
+    },
+    {
+      "pid": 31500,
+      "ppid": 31448,
+      "name": "WebKitWebProces",
+      "state": "S (sleeping)"
+    },
+    {
+      "pid": 31625,
+      "ppid": 31447,
+      "name": "python",
+      "state": "S (sleeping)"
+    },
+    {
+      "pid": 31629,
+      "ppid": 31447,
+      "name": "python",
+      "state": "S (sleeping)"
+    }
+  ],
+  "signal_name": "SIGTERM",
+  "ui_still_present": false,
+  "owned_remaining": [],
+  "launcher_returncode": 143,
+  "launcher_finished_utc": "2026-11-16T21:08:29Z",
+  "status": "STOPPED",
+  "finished_utc": "2026-11-16T21:08:30Z"
+}

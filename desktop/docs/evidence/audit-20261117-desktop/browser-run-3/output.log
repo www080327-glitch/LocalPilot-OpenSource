@@ -1,0 +1,103 @@
+
+Running 7 tests using 1 worker
+
+  ✘  1 tests/ui/audit-desktop.spec.ts:4:1 › pet reconnects its service from chat without resubmitting a question (30.1s)
+  ✘  2 tests/ui/audit-desktop.spec.ts:22:1 › explicit pet opening focuses input and clearing a multiline draft shrinks it (5.7s)
+  ✘  3 tests/ui/audit-desktop.spec.ts:43:1 › pet settings save a quick reminder and cancelled dialogs retain the character (30.0s)
+  ✘  4 tests/ui/audit-desktop.spec.ts:75:1 › pet model setup opens the main model library directly (16.1s)
+
+
+  1) tests/ui/audit-desktop.spec.ts:4:1 › pet reconnects its service from chat without resubmitting a question 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: '连接轻聊服务', exact: true })
+
+
+       7 |   await auditBridge(page, true);
+       8 |   await page.goto("/?pet=bubble");
+    >  9 |   await page.getByRole("button", { name: "连接轻聊服务", exact: true }).click();
+         |                                                                   ^
+      10 |   await expect(page.getByText("轻聊服务未连接。", { exact: true })).toHaveCount(
+      11 |     0,
+      12 |   );
+        at /workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui/audit-desktop.spec.ts:9:67
+
+    Error Context: docs/evidence/audit-20261117-desktop/browser-run-3/artifacts/audit-desktop-pet-reconnec-6de19-out-resubmitting-a-question/error-context.md
+
+  2) tests/ui/audit-desktop.spec.ts:22:1 › explicit pet opening focuses input and clearing a multiline draft shrinks it 
+
+    Error: expect(locator).toBeFocused() failed
+
+    Locator:  getByRole('textbox', { name: '回复 DeepSeek 娘' })
+    Expected: focused
+    Received: inactive
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeFocused" getByRole('textbox', { name: '回复 DeepSeek 娘' }) with timeout 5000ms
+      - waiting for getByRole('textbox', { name: '回复 DeepSeek 娘' })
+        14 × locator resolved to <textarea rows="1" maxlength="4000" aria-label="回复 DeepSeek 娘" placeholder="和 DeepSeek 娘说句话…"></textarea>
+           - unexpected value "inactive"
+
+
+      30 |     (window as any).emitFixture("pet-state", { expanded: true, focus: true }),
+      31 |   );
+    > 32 |   await expect(input).toBeFocused();
+         |                       ^
+      33 |   await input.fill("第一行\n第二行\n第三行\n第四行");
+      34 |   const tall = (await input.boundingBox())!.height;
+      35 |   await page.getByRole("button", { name: "发送消息", exact: true }).click();
+        at /workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui/audit-desktop.spec.ts:32:23
+
+    Error Context: docs/evidence/audit-20261117-desktop/browser-run-3/artifacts/audit-desktop-explicit-pet-0a27d--multiline-draft-shrinks-it/error-context.md
+
+  3) tests/ui/audit-desktop.spec.ts:43:1 › pet settings save a quick reminder and cancelled dialogs retain the character 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: '10 分钟后提醒' })
+
+
+      50 |   await page.getByRole("textbox", { name: "提醒内容" }).fill("喝水测试");
+      51 |   const started = Date.now() / 1000;
+    > 52 |   await page.getByRole("button", { name: "10 分钟后提醒" }).click();
+         |                                                        ^
+      53 |   await expect(page.getByText("提醒已保存。", { exact: true })).toBeVisible();
+      54 |   const writes = await page.evaluate(() =>
+      55 |     (window as any).fixtureCalls.filter(
+        at /workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui/audit-desktop.spec.ts:52:56
+
+    Error Context: docs/evidence/audit-20261117-desktop/browser-run-3/artifacts/audit-desktop-pet-settings-3b388-ialogs-retain-the-character/error-context.md
+
+  4) tests/ui/audit-desktop.spec.ts:75:1 › pet model setup opens the main model library directly ───
+
+    Test was interrupted.
+
+    Error: locator.click: Test ended.
+    Call log:
+      - waiting for getByRole('button', { name: '打开模型库配置轻聊模型' })
+
+
+      80 |   await page.getByTitle("宠物设置", { exact: true }).click();
+      81 |   await page.getByRole("button", { name: /高级设置/ }).click();
+    > 82 |   await page.getByRole("button", { name: "打开模型库配置轻聊模型" }).click();
+         |                                                           ^
+      83 |   const calls = await page.evaluate(() =>
+      84 |     (window as any).fixtureCalls.filter(
+      85 |       (call: any) =>
+        at /workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui/audit-desktop.spec.ts:82:59
+
+    Error Context: docs/evidence/audit-20261117-desktop/browser-run-3/artifacts/audit-desktop-pet-model-se-09afd-main-model-library-directly/error-context.md
+
+  3 failed
+    tests/ui/audit-desktop.spec.ts:4:1 › pet reconnects its service from chat without resubmitting a question 
+    tests/ui/audit-desktop.spec.ts:22:1 › explicit pet opening focuses input and clearing a multiline draft shrinks it 
+    tests/ui/audit-desktop.spec.ts:43:1 › pet settings save a quick reminder and cancelled dialogs retain the character 
+  1 interrupted
+    tests/ui/audit-desktop.spec.ts:75:1 › pet model setup opens the main model library directly ────
+  3 did not run

@@ -1,0 +1,12 @@
+
+Running 7 tests using 1 worker
+
+  ✓  1 tests/ui/audit-desktop.spec.ts:4:1 › pet reconnects its service from chat without resubmitting a question (1.4s)
+  ✓  2 tests/ui/audit-desktop.spec.ts:22:1 › explicit pet opening focuses input and clearing a multiline draft shrinks it (792ms)
+  ✓  3 tests/ui/audit-desktop.spec.ts:43:1 › pet settings save a quick reminder and cancelled dialogs retain the character (1.0s)
+  ✓  4 tests/ui/audit-desktop.spec.ts:75:1 › pet model setup opens the main model library directly (889ms)
+  ✓  5 tests/ui/audit-desktop.spec.ts:92:1 › system reduced motion changes propagate to the native animator live (590ms)
+  ✓  6 tests/ui/audit-desktop.spec.ts:137:1 › cloud provider form submits OpenAI options and keeps credentials out of preferences (1.5s)
+  ✓  7 tests/ui/audit-desktop.spec.ts:177:1 › long task selection sends an explicit deadline and a separate extended budget (988ms)
+
+  7 passed (8.7s)

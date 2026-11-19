@@ -10,7 +10,7 @@ import zipfile
 
 SCRIPTS = Path(__file__).resolve().parents[1] / 'scripts'
 sys.path.insert(0, str(SCRIPTS))
-from macos_artifacts import architecture, runtime_lock, wheel_supports
+from macos_artifacts import architecture, bundled_runtime_lock, runtime_lock, wheel_supports
 
 spec = importlib.util.spec_from_file_location('lock_runtime_dependencies', SCRIPTS / 'lock-runtime-dependencies.py')
 generator = importlib.util.module_from_spec(spec)
@@ -56,6 +56,26 @@ class MacArtifactTests(unittest.TestCase):
         runtime_lock(baseline, 'arm64')
         with self.assertRaisesRegex(ValueError, 'no x86_64 wheel'):
             runtime_lock(baseline, 'x86_64')
+
+    def test_checker_reuses_prepared_architecture_lock_and_honors_explicit_override(self):
+        with tempfile.TemporaryDirectory() as directory:
+            desktop = Path(directory)
+            bundled = desktop / 'src-tauri/bundled-backends'
+            bundled.mkdir(parents=True)
+            default = {'python': '3.14', 'architecture': 'arm64', 'packages': {}}
+            prepared = {'python': '3.14', 'architecture': 'x86_64', 'packages': {}}
+            (desktop / 'runtime-dependencies.json').write_text(json.dumps(default))
+            self.assertEqual(bundled_runtime_lock(bundled, 'arm64'), default)
+            (bundled / 'runtime-dependencies.json').write_text(json.dumps(prepared))
+            self.assertEqual(bundled_runtime_lock(bundled, 'x86_64'), prepared)
+            with self.assertRaisesRegex(ValueError, 'different architecture'):
+                bundled_runtime_lock(bundled, 'arm64')
+            override = desktop / 'reviewed-lock.json'
+            override.write_text(json.dumps(default))
+            self.assertEqual(bundled_runtime_lock(bundled, 'arm64', override), default)
+            (bundled / 'runtime-dependencies.json').write_text('{invalid')
+            with self.assertRaises(json.JSONDecodeError):
+                bundled_runtime_lock(bundled, 'x86_64')
 
     def test_intel_wheel_requires_cpython_314_abi_and_supported_macos(self):
         for tag in ['cp313-cp313-macosx_10_13_x86_64',

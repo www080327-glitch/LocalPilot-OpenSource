@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/resume_transport_after_session_loss.py"
+  ],
+  "cwd": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117",
+  "log": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-transport-native-resume.log",
+  "exit_receipt": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-transport-native-resume-exit.json",
+  "supervisor_sha256": "31eebe99550dec0e33fa8cb03206fe2350dde070f185dd1ff25498d7d712af8d",
+  "resume_driver_sha256": "851894b784a411a707422507cc7e44124a87d77c6c4b6eecba979b0a85b2d232",
+  "execution_surface": "Native desktop Terminal foreground, separate PID/network namespace from per-call exec",
+  "path_prefix": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin",
+  "network_changes": false,
+  "reason": "Preserve long-running process ownership across execution-session loss; do not retry started candidates."
+}

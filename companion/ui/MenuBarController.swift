@@ -50,6 +50,11 @@ final class MenuBarController: NSObject, NSApplicationDelegate {
     let taskOutput = NSTextView()
     let noticePicker = NSPopUpButton()
     let taskPicker = NSPopUpButton()
+    let olderTasksButton = NSButton()
+    let latestTasksButton = NSButton()
+    let taskHistoryLabel = NSTextField(labelWithString: "")
+    var taskHistoryBefore: JSONObject?
+    var nextTaskHistoryBefore: JSONObject?
     let exclusionInput = NSTextField()
     let pauseButton = NSButton()
     let dndButton = NSButton()
@@ -194,9 +199,15 @@ final class MenuBarController: NSObject, NSApplicationDelegate {
         privacy.addSubview(exclusionInput)
         button("保存排除", #selector(setExclusions), in: privacy, rect: NSRect(x: 572, y: 20, width: 120, height: 30))
         let tasks = page("委派任务")
-        taskPicker.frame = NSRect(x: 12, y: 392, width: 680, height: 28)
+        taskPicker.frame = NSRect(x: 12, y: 392, width: 450, height: 28)
         taskPicker.target = self; taskPicker.action = #selector(selectTask); tasks.addSubview(taskPicker)
-        scroll(taskOutput, in: tasks, rect: NSRect(x: 12, y: 134, width: 680, height: 244))
+        olderTasksButton.title = "较早任务"; olderTasksButton.target = self; olderTasksButton.action = #selector(olderTaskPage)
+        olderTasksButton.frame = NSRect(x: 474, y: 392, width: 104, height: 28); tasks.addSubview(olderTasksButton)
+        latestTasksButton.title = "最新任务"; latestTasksButton.target = self; latestTasksButton.action = #selector(latestTaskPage)
+        latestTasksButton.frame = NSRect(x: 588, y: 392, width: 104, height: 28); tasks.addSubview(latestTasksButton)
+        taskHistoryLabel.font = .systemFont(ofSize: 11)
+        taskHistoryLabel.frame = NSRect(x: 12, y: 366, width: 680, height: 20); tasks.addSubview(taskHistoryLabel)
+        scroll(taskOutput, in: tasks, rect: NSRect(x: 12, y: 134, width: 680, height: 220))
         taskInput.frame = NSRect(x: 12, y: 96, width: 680, height: 28)
         taskInput.placeholderString = "描述要委派的任务；准备后会显示待核对的上下文"
         tasks.addSubview(taskInput)
@@ -295,9 +306,21 @@ final class MenuBarController: NSObject, NSApplicationDelegate {
     func refresh() {
         guard !busy else { return }
         lastRefresh = Date(); pollCount += 1
-        request(["command": "ui_snapshot"]) { [weak self] value in self?.applySnapshot(value) }
+        var command: JSONObject = ["command": "ui_snapshot"]
+        if let before = taskHistoryBefore { command["task_before"] = before }
+        request(command) { [weak self] value in self?.applySnapshot(value) }
     }
     @objc func refreshClicked() { refresh() }
+    @objc func olderTaskPage() {
+        guard !busy, let before = nextTaskHistoryBefore else { return }
+        taskHistoryBefore = before
+        refresh()
+    }
+    @objc func latestTaskPage() {
+        guard !busy else { return }
+        taskHistoryBefore = nil
+        refresh()
+    }
 
     @objc func showContext() {
         request(["command":"current_context"]) { [weak self] result in
@@ -397,9 +420,17 @@ final class MenuBarController: NSObject, NSApplicationDelegate {
         select(levelPicker, value: proactive["level"] as? String)
         select(deliveryPicker, value: proactive["delivery"] as? String)
         let escalation = value["escalation"] as? JSONObject ?? [:]
+        let taskRows = escalation["tasks"] as? [String: JSONObject] ?? [:]
+        nextTaskHistoryBefore = escalation["next_before"] as? JSONObject
+        olderTasksButton.isEnabled = nextTaskHistoryBefore != nil
+        latestTasksButton.isEnabled = taskHistoryBefore != nil
+        taskHistoryLabel.stringValue = "显示 \(taskRows.count) 个，共 \(escalation["total"] as? Int ?? taskRows.count) 个 · 点击“查询任务”查看所选任务详情"
         let selectedTask = taskPicker.selectedItem?.representedObject as? String
         taskPicker.removeAllItems()
-        for (id, row) in (escalation["tasks"] as? [String: JSONObject] ?? [:]).sorted(by: { $0.key < $1.key }) {
+        for (id, row) in taskRows.sorted(by: {
+            let left = $0.value["timestamp"] as? Double ?? 0, right = $1.value["timestamp"] as? Double ?? 0
+            return left == right ? $0.key > $1.key : left > right
+        }) {
             taskPicker.addItem(withTitle: "\(String(id.prefix(14))) · \(CompanionPresentation.taskText(row).components(separatedBy: "\n")[0])")
             taskPicker.lastItem?.representedObject = id
         }

@@ -20,8 +20,14 @@ def work_fact_requires_source(question):
                 or re.fullmatch(r"what is my (?:project (?:name|code|budget|owner|deadline)|current (?:project|file|app))",q,re.I))
 
 
+def continues_conversation(question):
+    return bool(re.fullmatch(r"(?:请)?(?:继续|接着说|展开说说|详细一点|再详细一点|简短一点|换个说法)|"
+                            r"(?:please )?(?:continue|go on|say more|explain further)",
+                            question.strip().rstrip("。.!！?？ "), re.I))
+
+
 def refers_to_conversation(question):
-    return bool(re.search(r"刚才|上轮|前面(?:我|你|我们)?说|之前(?:我|你|我们)说|我们(?:聊过|说过)|"
+    return continues_conversation(question) or bool(re.search(r"刚才|上轮|(?:前面|之前|上次)(?:我|你|我们)?(?:说|提到|聊)|我们(?:聊过|说过)|"
                           r"what (?:did|have) (?:I|we|you) (?:say|tell)|previous (?:message|conversation)",question,re.I))
 
 

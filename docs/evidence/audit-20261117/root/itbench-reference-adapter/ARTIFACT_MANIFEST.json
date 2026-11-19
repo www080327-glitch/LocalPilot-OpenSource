@@ -1,0 +1,119 @@
+{
+  "archive_bytes_excluding_manifest": 38752,
+  "archive_files_excluding_manifest": 12,
+  "files": [
+    {
+      "archive_bytes": 4747,
+      "archive_sha256": "81163e1ff4451ff3056ffcd547d8ab157ed1ef2ed60c1aafc5a33787b76ee972",
+      "original_bytes": null,
+      "original_path": null,
+      "original_sha256": null,
+      "path": "RESULTS.md",
+      "transformation": "Authored review of the input adapter and preserved receipts"
+    },
+    {
+      "archive_bytes": 3362,
+      "archive_sha256": "5a99dbcc170ec0a4784f0d07dc493d7761826a4a09440210ed2f2e64cb12bfdc",
+      "original_bytes": null,
+      "original_path": null,
+      "original_sha256": null,
+      "path": "SOURCE_IDENTITY.json",
+      "transformation": "Generated source/protocol and validation metadata"
+    },
+    {
+      "archive_bytes": 5416,
+      "archive_sha256": "2bb6bf3c1924ec9fccbec7c14f8d372a8c1fc55f7032ea2cfa8080a58fbe40f4",
+      "original_bytes": null,
+      "original_path": null,
+      "original_sha256": null,
+      "path": "grader-input-adapter.patch",
+      "transformation": "Generated exact Git diff against the named baseline"
+    },
+    {
+      "archive_bytes": 99,
+      "archive_sha256": "c84ec767f4228a29d5a4a9a8db7ff4242f6f6dd47ded382751892c57268e1d9c",
+      "original_bytes": 99,
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-native-grading-exit.json",
+      "original_sha256": "c84ec767f4228a29d5a4a9a8db7ff4242f6f6dd47ded382751892c57268e1d9c",
+      "path": "grading-before-exit.json",
+      "transformation": "identity"
+    },
+    {
+      "archive_bytes": 1223,
+      "archive_sha256": "c9b4f700d909c0a5c842ffa74685011f78ced75d23c7759b415757521d62e501",
+      "original_bytes": 1259,
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-native-grading-job.json",
+      "original_sha256": "4dd0da25e244a2c11a4270a1764aeb28ffc22961f5fff95213ac75545a9849a9",
+      "path": "grading-before-job.json",
+      "transformation": "Replace only the --key-file argument JSON string with <private_key_file>; all other bytes preserved."
+    },
+    {
+      "archive_bytes": 120,
+      "archive_sha256": "afe0b030fbbc8708ecde6f2c96d426d9ed87e29e5f19f30545ed4a26b0a59ae7",
+      "original_bytes": 120,
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-transport-native-grading.log",
+      "original_sha256": "afe0b030fbbc8708ecde6f2c96d426d9ed87e29e5f19f30545ed4a26b0a59ae7",
+      "path": "grading-before.log",
+      "transformation": "identity"
+    },
+    {
+      "archive_bytes": 5759,
+      "archive_sha256": "eaf9711cd399fc15fa79b140e69729d89caa811c1dd1a84a0e030cbf1f719b00",
+      "original_bytes": 5759,
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/inspect_itbench_reference_duplicates.py",
+      "original_sha256": "eaf9711cd399fc15fa79b140e69729d89caa811c1dd1a84a0e030cbf1f719b00",
+      "path": "inspect_itbench_reference_duplicates.py",
+      "transformation": "identity"
+    },
+    {
+      "archive_bytes": 7064,
+      "archive_sha256": "6eb7991645f402719e4c70a37b539df5f9f408bee1a5130062405554693d013d",
+      "original_bytes": 7064,
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/inspect_itbench_reference_schema.py",
+      "original_sha256": "6eb7991645f402719e4c70a37b539df5f9f408bee1a5130062405554693d013d",
+      "path": "inspect_itbench_reference_schema.py",
+      "transformation": "identity"
+    },
+    {
+      "archive_bytes": 1467,
+      "archive_sha256": "e91dbc0658423b3a130fa663832093da32537379cf501294b2ba99bd9dd4e8f3",
+      "original_bytes": 1467,
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-reference-adapter-probe.json",
+      "original_sha256": "e91dbc0658423b3a130fa663832093da32537379cf501294b2ba99bd9dd4e8f3",
+      "path": "itbench-reference-adapter-probe.json",
+      "transformation": "identity"
+    },
+    {
+      "archive_bytes": 4189,
+      "archive_sha256": "791686275377fddb57ef1765b516b96d2e1015815a62fc708abf3de7f57986ea",
+      "original_bytes": 4189,
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-reference-schema-after.log",
+      "original_sha256": "791686275377fddb57ef1765b516b96d2e1015815a62fc708abf3de7f57986ea",
+      "path": "itbench-reference-schema-after.log",
+      "transformation": "identity"
+    },
+    {
+      "archive_bytes": 3481,
+      "archive_sha256": "1f39373dee9ab2fce6602f8f0552c552f3fe9d69e01e9905fadcb705aab87291",
+      "original_bytes": 3481,
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-reference-schema-before.log",
+      "original_sha256": "1f39373dee9ab2fce6602f8f0552c552f3fe9d69e01e9905fadcb705aab87291",
+      "path": "itbench-reference-schema-before.log",
+      "transformation": "identity"
+    },
+    {
+      "archive_bytes": 1825,
+      "archive_sha256": "17d52fc806438c4d7ed7675c14c6238aa65dc77c3ecbbdd2d1f879773ee1f2c5",
+      "original_bytes": 1825,
+      "original_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-reference-schema-probe.json",
+      "original_sha256": "17d52fc806438c4d7ed7675c14c6238aa65dc77c3ecbbdd2d1f879773ee1f2c5",
+      "path": "itbench-reference-schema-probe.json",
+      "transformation": "identity"
+    }
+  ],
+  "manifest_self_excluded": true,
+  "schema_version": 1,
+  "scope": "Reference input adapter after candidate termination and before the first judge request; no raw references or candidate answers.",
+  "source_input_bytes": 25263,
+  "source_input_count": 9
+}

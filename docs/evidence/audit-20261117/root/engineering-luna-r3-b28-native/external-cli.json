@@ -1,0 +1,156 @@
+{
+  "basic": {
+    "argv": [
+      "<task_python>",
+      "-S",
+      "-m",
+      "logstats",
+      "fixtures/basic.csv"
+    ],
+    "returncode": 0,
+    "stdout": "{\"record_count\": 3, \"groups\": [{\"category\": \"east, priority\", \"count\": 2, \"total\": \"0.30\", \"first\": \"2026-01-01T23:30:00Z\", \"last\": \"2026-01-01T23:45:00Z\"}, {\"category\": \"west \\\"desk\\\"\", \"count\": 1, \"total\": \"-2.50\", \"first\": \"2026-01-01T22:00:00Z\", \"last\": \"2026-01-01T22:00:00Z\"}]}\n",
+    "stderr": "",
+    "seconds": 0.04642200899979798,
+    "expected": {
+      "record_count": 3,
+      "groups": [
+        {
+          "category": "east, priority",
+          "count": 2,
+          "total": "0.30",
+          "first": "2026-01-01T23:30:00Z",
+          "last": "2026-01-01T23:45:00Z"
+        },
+        {
+          "category": "west \"desk\"",
+          "count": 1,
+          "total": "-2.50",
+          "first": "2026-01-01T22:00:00Z",
+          "last": "2026-01-01T22:00:00Z"
+        }
+      ]
+    },
+    "actual": {
+      "record_count": 3,
+      "groups": [
+        {
+          "category": "east, priority",
+          "count": 2,
+          "total": "0.30",
+          "first": "2026-01-01T23:30:00Z",
+          "last": "2026-01-01T23:45:00Z"
+        },
+        {
+          "category": "west \"desk\"",
+          "count": 1,
+          "total": "-2.50",
+          "first": "2026-01-01T22:00:00Z",
+          "last": "2026-01-01T22:00:00Z"
+        }
+      ]
+    },
+    "passed": true
+  },
+  "precision": {
+    "argv": [
+      "<task_python>",
+      "-S",
+      "-m",
+      "logstats",
+      "fixtures/precision.csv"
+    ],
+    "returncode": 0,
+    "stdout": "{\"record_count\": 5, \"groups\": [{\"category\": \"Alpha\", \"count\": 2, \"total\": \"0.00\", \"first\": \"2026-02-03T00:00:00Z\", \"last\": \"2026-02-03T00:30:00Z\"}, {\"category\": \"zeta\", \"count\": 2, \"total\": \"9007199254740993.10\", \"first\": \"2026-02-03T10:00:00Z\", \"last\": \"2026-02-03T10:00:00Z\"}, {\"category\": \"北区\", \"count\": 1, \"total\": \"2.00\", \"first\": \"2026-02-03T03:00:00Z\", \"last\": \"2026-02-03T03:00:00Z\"}]}\n",
+    "stderr": "",
+    "seconds": 0.04165676399861695,
+    "expected": {
+      "record_count": 5,
+      "groups": [
+        {
+          "category": "Alpha",
+          "count": 2,
+          "total": "0.00",
+          "first": "2026-02-03T00:00:00Z",
+          "last": "2026-02-03T00:30:00Z"
+        },
+        {
+          "category": "zeta",
+          "count": 2,
+          "total": "9007199254740993.10",
+          "first": "2026-02-03T10:00:00Z",
+          "last": "2026-02-03T10:00:00Z"
+        },
+        {
+          "category": "北区",
+          "count": 1,
+          "total": "2.00",
+          "first": "2026-02-03T03:00:00Z",
+          "last": "2026-02-03T03:00:00Z"
+        }
+      ]
+    },
+    "actual": {
+      "record_count": 5,
+      "groups": [
+        {
+          "category": "Alpha",
+          "count": 2,
+          "total": "0.00",
+          "first": "2026-02-03T00:00:00Z",
+          "last": "2026-02-03T00:30:00Z"
+        },
+        {
+          "category": "zeta",
+          "count": 2,
+          "total": "9007199254740993.10",
+          "first": "2026-02-03T10:00:00Z",
+          "last": "2026-02-03T10:00:00Z"
+        },
+        {
+          "category": "北区",
+          "count": 1,
+          "total": "2.00",
+          "first": "2026-02-03T03:00:00Z",
+          "last": "2026-02-03T03:00:00Z"
+        }
+      ]
+    },
+    "passed": true
+  },
+  "empty": {
+    "argv": [
+      "<task_python>",
+      "-S",
+      "-m",
+      "logstats",
+      "fixtures/empty.csv"
+    ],
+    "returncode": 0,
+    "stdout": "{\"record_count\": 0, \"groups\": []}\n",
+    "stderr": "",
+    "seconds": 0.03891656400082866,
+    "expected": {
+      "record_count": 0,
+      "groups": []
+    },
+    "actual": {
+      "record_count": 0,
+      "groups": []
+    },
+    "passed": true
+  },
+  "invalid": {
+    "argv": [
+      "<task_python>",
+      "-S",
+      "-m",
+      "logstats",
+      "fixtures/invalid.csv"
+    ],
+    "returncode": 2,
+    "stdout": "",
+    "stderr": "error: row 2: invalid decimal value\n",
+    "seconds": 0.049747650999051984,
+    "passed": true
+  }
+}

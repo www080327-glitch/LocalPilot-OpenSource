@@ -113,6 +113,19 @@ class SessionModelCalls:
                     "tool_proposals": self._tool_proposals, "max_tool_calls": self.budgets.max_tool_calls,
                     "admission_units": self._token_units, "max_units": self.budgets.max_token_units})
 
+    def _request_history_scope(self, backend, canonical_view, schemas):
+        if not canonical_view:
+            return None
+        from .persistence import backend_identity, digest, dumps
+        scope = {'backend': backend_identity(backend),
+                 'hybrid': self.hybrid._reasoning_scope() if self.hybrid else None,
+                 'system': next((m.content for m in self.messages if m.role == 'system'), None),
+                 'tools': schemas,
+                 'desktop_context': getattr(self, '_desktop_cloud_context', False)}
+        if self.computer and getattr(self.computer, 'v5_integration_revision', None) == 1:
+            scope['computer_egress'] = asdict(self.computer.cloud_egress)
+        return digest(dumps(scope))
+
     def _model_request(self):
         if self.cooperative:
             self.cooperative.before_request()
@@ -199,6 +212,11 @@ class SessionModelCalls:
                     raise ContextTooSmall(str(error)) from error
             if self.finalization_policy and self._finalizing:
                 state_view = self._delivery_view
+            history_prefix, history_scope = [], None
+            history_source_count = len(self.messages)
+            if self.engine_policy:
+                history_scope = self._request_history_scope(backend, request_messages is self.messages, schemas)
+                history_prefix, request_messages = self._request_history.split(request_messages, history_scope)
             if self.hybrid:
                 request_messages = self.hybrid.project_messages(request_messages)
                 contract = self.hybrid.contract(backend)
@@ -206,6 +224,7 @@ class SessionModelCalls:
                     from .deepseek_context import project_handoff
                     contract = project_handoff(contract, schemas)
                 state_view = None if getattr(backend, 'service_reasoning_only', False) else contract if not backend.is_local else {'working_state': state_view, 'model_handoff': contract}
+            request_messages = history_prefix + request_messages
             from .harness_context import transfer_with_optional_projection
             transfer = transfer_with_optional_projection
             v5_options = {}
@@ -298,6 +317,7 @@ class SessionModelCalls:
         cache_snapshot_committed = False
         def request():
             nonlocal cache_snapshot_committed
+            self._check_cancel()
             # Retries are charged as requests too; never reset a budget on retry.
             if self.controls.reserve and (self._attempts >= self.budgets.max_steps - (0 if self._finalizing else self.finalization_policy.max_attempts if self.finalization_policy else 1)
                     or self._token_units + request_units + output_charge > limit):
@@ -315,6 +335,11 @@ class SessionModelCalls:
             policy.check_backend(backend)
             attempt = self.hybrid.begin_attempt(request_units, egress) if self.hybrid else None
             try:
+                if self.engine_policy and not cache_snapshot_committed:
+                    # Keep exactly the authorized, budgeted view. New canonical
+                    # messages are projected once and appended on the next call.
+                    self._request_history.commit(view, history_source_count, history_scope)
+                    cache_snapshot_committed = True
                 if self._cache_enabled() and not self.engine_policy and state_view is not None and not cache_snapshot_committed:
                     # Persist the exact approved request snapshot before dispatch,
                     # so the following call extends the entire previous prefix.
@@ -339,7 +364,8 @@ class SessionModelCalls:
                     self._token_units += output_charge
                 raise
         try:
-            response = call_with_retry(request, RetryPolicy(max_attempts=1) if self._finalizing else self.retry_policy, on_retry=lambda event: self._emit("ModelRetry", **event))
+            response = call_with_retry(request, RetryPolicy(max_attempts=1) if self._finalizing else self.retry_policy,
+                on_retry=lambda event: self._emit("ModelRetry", **event), sleep=self._stop_requested.wait)
         except ReserveReached:
             if self._finalizing:
                 raise

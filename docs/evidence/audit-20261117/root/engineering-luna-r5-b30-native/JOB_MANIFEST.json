@@ -1,0 +1,46 @@
+{
+  "prepared_at_utc": "2026-11-16T21:33:02.793850+00:00",
+  "prepared_without_execution": true,
+  "job_file": "engineering-luna-r5-b30-native.job.sh",
+  "job_sha256": "2d85d2605331ae41d12e0d5ac5ffbd28b6a0490a57c2cdbf1e6aecc2fd7e6669",
+  "job_bytes": 4154,
+  "source_head": "1dca93c5a6a2d0c557a9507ca020c07458dd92d1",
+  "source_tree": "1457ce75f9134196c0c489f69bc4ee5b03467d4b",
+  "runner_sha256": "108f948c1b32fa9de95e48a1a84ede4b4b78a3d3ecfabe1c9977e4b7e21cc0fb",
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "interpreter": "<task_python_env>/bin/python",
+  "entrypoint": "Native Terminal new tab, one foreground attempt, owner-authorized start",
+  "environment_change": "Same as R4: fixed task-tool Python directory prepended to inherited PATH; no proxy/TLS changes.",
+  "changes_from_r4": [
+    "New frozen source checkout and expected commit/tree",
+    "New output and job names",
+    "Provenance-only attempt_reason text"
+  ],
+  "prompt_sha256": "9c2e3300ef2bff76b38b2c1c645f1bb9d1e112cff853a40779f4aeb8f69e693a",
+  "prompt_identical_to_r4": true,
+  "fixture_hashes_identical_to_r4": true,
+  "fixture_file_count": 12,
+  "protocol_except_source_identical_to_r4": true,
+  "model": "gpt-6-luna",
+  "reasoning": "medium",
+  "task_timeout_seconds": 1200,
+  "parent_limits": {
+    "steps": 100,
+    "tools": 200
+  },
+  "requested_child_limits": {
+    "steps": 20,
+    "tools": 40
+  },
+  "host_worker_limits": {
+    "steps": 30,
+    "tools": 60
+  },
+  "validation": [
+    "Clean frozen source and expected runner/hash confirmed",
+    "bash -n PASS",
+    "Embedded Python compile PASS",
+    "New output absent"
+  ],
+  "output": "<validation_root>/engineering-luna-r5-b30-native"
+}

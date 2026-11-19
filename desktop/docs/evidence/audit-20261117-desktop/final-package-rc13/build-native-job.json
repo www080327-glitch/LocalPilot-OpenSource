@@ -1,0 +1,16 @@
+{
+  "command": [
+    "bash",
+    "/workspace/scratch/c0f3ec78c621/prepare-audit-rc13-localpilot-package.sh",
+    "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/final-source-b30",
+    "1dca93c5a6a2d0c557a9507ca020c07458dd92d1"
+  ],
+  "cwd": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117",
+  "log": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/build-rc13-native.log",
+  "exit_receipt": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/build-rc13-native-exit.json",
+  "source_commit": "1dca93c5a6a2d0c557a9507ca020c07458dd92d1",
+  "source_tree": "1457ce75f9134196c0c489f69bc4ee5b03467d4b",
+  "scope": "Single-worker package build through the existing supervisor in a native Terminal; no model requests",
+  "recipe_sha256": "d1983b750cb8412a4ee259c8affe57948c01a292133f8c965917616990f5a647",
+  "supervisor_sha256": "31eebe99550dec0e33fa8cb03206fe2350dde070f185dd1ff25498d7d712af8d"
+}

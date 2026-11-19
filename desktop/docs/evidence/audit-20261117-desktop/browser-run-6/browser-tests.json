@@ -1,0 +1,362 @@
+{
+  "config": {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/node_modules/.bin/playwright",
+      "test",
+      "--config=docs/evidence/audit-20261117-desktop/browser-run-6/playwright.config.ts",
+      "audit-desktop.spec.ts",
+      "--output=docs/evidence/audit-20261117-desktop/browser-run-6/artifacts"
+    ],
+    "configFile": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/docs/evidence/audit-20261117-desktop/browser-run-6/playwright.config.ts",
+    "rootDir": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/docs/evidence/audit-20261117-desktop/browser-run-6/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/docs/evidence/audit-20261117-desktop/browser-run-6/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "",
+        "testDir": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui",
+        "snapshotDir": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:1437",
+          "viewport": {
+            "width": 1440,
+            "height": 940
+          },
+          "launchOptions": {
+            "executablePath": "/usr/bin/chromium"
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": ""
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "docs/evidence/audit-20261117-desktop/browser-run-6/browser-tests.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": {
+      "command": "npm run dev -- --port 1437 --strictPort",
+      "cwd": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop",
+      "url": "http://127.0.0.1:1437",
+      "reuseExistingServer": false
+    }
+  },
+  "suites": [
+    {
+      "title": "audit-desktop.spec.ts",
+      "file": "audit-desktop.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "pet reconnects its service from chat without resubmitting a question",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1416,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T17:12:07.006Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ff40bc7b53bacf6523fe-d9f162c9e4cfd8e83463",
+          "file": "audit-desktop.spec.ts",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "explicit pet opening focuses input and clearing a multiline draft shrinks it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 792,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T17:12:08.646Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ff40bc7b53bacf6523fe-7f4ce4727a350ddb3542",
+          "file": "audit-desktop.spec.ts",
+          "line": 22,
+          "column": 1
+        },
+        {
+          "title": "pet settings save a quick reminder and cancelled dialogs retain the character",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1047,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T17:12:09.455Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ff40bc7b53bacf6523fe-ea80f6cf53ddc140d3f2",
+          "file": "audit-desktop.spec.ts",
+          "line": 43,
+          "column": 1
+        },
+        {
+          "title": "pet model setup opens the main model library directly",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 889,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T17:12:10.520Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ff40bc7b53bacf6523fe-498cee6af02d119fc7ba",
+          "file": "audit-desktop.spec.ts",
+          "line": 75,
+          "column": 1
+        },
+        {
+          "title": "system reduced motion changes propagate to the native animator live",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 590,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T17:12:11.432Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ff40bc7b53bacf6523fe-170def5bd5004cdc6797",
+          "file": "audit-desktop.spec.ts",
+          "line": 92,
+          "column": 1
+        },
+        {
+          "title": "cloud provider form submits OpenAI options and keeps credentials out of preferences",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1522,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T17:12:12.033Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ff40bc7b53bacf6523fe-9569fe9d679603a1d799",
+          "file": "audit-desktop.spec.ts",
+          "line": 137,
+          "column": 1
+        },
+        {
+          "title": "long task selection sends an explicit deadline and a separate extended budget",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 988,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T17:12:13.577Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ff40bc7b53bacf6523fe-b79bd737fb4aff91105c",
+          "file": "audit-desktop.spec.ts",
+          "line": 177,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-16T17:12:05.994Z",
+    "duration": 8664.976,
+    "expected": 7,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

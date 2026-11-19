@@ -1,0 +1,30 @@
+{
+  "command": [
+    "<qualified_python_env>/bin/python",
+    "<source_root>/scripts/qualify_openai_engineering.py",
+    "--source-root",
+    "<source_root>",
+    "--output",
+    "<validation_root>/engineering-luna-r8-b33",
+    "--key-file",
+    "<private_key_file>"
+  ],
+  "before": {
+    "git_head": "b6f95da47f706581a780d6874382be53d99b33c4",
+    "git_tree": "36d464811bbfd9538274d88bd2c13fbcf80374be",
+    "git_status": "",
+    "runner_sha256": "108f948c1b32fa9de95e48a1a84ede4b4b78a3d3ecfabe1c9977e4b7e21cc0fb"
+  },
+  "attempt_count": 1,
+  "path_prepend": "<qualified_python_env>/bin",
+  "balance_queries": 0,
+  "exit_code": 1,
+  "elapsed_seconds": 283.35503545600295,
+  "after": {
+    "git_head": "b6f95da47f706581a780d6874382be53d99b33c4",
+    "git_tree": "36d464811bbfd9538274d88bd2c13fbcf80374be",
+    "git_status": "",
+    "runner_sha256": "108f948c1b32fa9de95e48a1a84ede4b4b78a3d3ecfabe1c9977e4b7e21cc0fb"
+  },
+  "source_unchanged": true
+}

@@ -18,6 +18,7 @@ from . import VERSION
 from .protocol import check
 from .sdk import Client
 from .security import private_json
+from localpilot_api.service import MAX_TASK_TIMEOUT
 
 TERMINAL = {'completed', 'incomplete', 'failed', 'cancelled', 'timed_out'}
 _controller_children = {}
@@ -291,25 +292,7 @@ def follow(client, task_id, home, *, json_output=False):
                 data = event['data']; sequence = data.get('sequence', 0)
                 if sequence <= after:
                     continue
-                if json_output:
-                    print(json.dumps({'type':'event', **event}, ensure_ascii=False), flush=True)
-                else:
-                    payload = data.get('data', {})
-                    runtime_type = payload.get('type') if isinstance(payload, dict) else None
-                    if isinstance(payload, dict) and isinstance(payload.get('data'), dict):
-                        payload = payload['data']
-                    delta = payload.get('text') if runtime_type == 'TextDelta' else None
-                    if isinstance(delta, str):
-                        print(delta, end='', flush=True)
-                        _streamed_text[task_id]=_streamed_text.get(task_id,'')+delta
-                    elif runtime_type in {'ModelRequestStarted','ToolCallStarted','ToolCallCompleted','VerificationCompleted','ModelSwitched'}:
-                        label={'ModelRequestStarted':'Thinking','ToolCallStarted':'Tool','ToolCallCompleted':'Tool finished','VerificationCompleted':'Verification','ModelSwitched':'Model switched'}[runtime_type]
-                        detail=payload.get('name') or payload.get('model') or payload.get('status') or ''
-                        print('['+label+(' · '+str(detail) if detail else '')+']',file=sys.stderr,flush=True)
-                    elif data.get('type') in {'task.created','task.status'}:
-                        status=payload.get('status')
-                        if status and status!=visible_status:
-                            visible_status=status;print('['+status+']',file=sys.stderr,flush=True)
+                visible_status = _print_follow_event(event, task_id, json_output, visible_status)
                 after = sequence
                 save(cursor_path, {'after':after})
             task = client.status(task_id)
@@ -333,6 +316,33 @@ def follow(client, task_id, home, *, json_output=False):
         if reconnects > 3:
             raise ValueError('Connection interrupted; task continues. Reconnect with task watch ' + task_id)
         time.sleep(min(2 ** reconnects, 8))
+
+
+def _print_follow_event(event, task_id, json_output, visible_status):
+    if json_output:
+        print(json.dumps({'type': 'event', **event}, ensure_ascii=False), flush=True)
+        return visible_status
+    data = event['data']
+    payload = data.get('data', {})
+    runtime_type = payload.get('type') if isinstance(payload, dict) else None
+    if isinstance(payload, dict) and isinstance(payload.get('data'), dict):
+        payload = payload['data']
+    delta = payload.get('text') if runtime_type == 'TextDelta' else None
+    labels = {'ModelRequestStarted': 'Thinking', 'ToolCallStarted': 'Tool',
+              'ToolCallCompleted': 'Tool finished', 'VerificationCompleted': 'Verification',
+              'ModelSwitched': 'Model switched'}
+    if isinstance(delta, str):
+        print(delta, end='', flush=True)
+        _streamed_text[task_id] = _streamed_text.get(task_id, '') + delta
+    elif runtime_type in labels:
+        detail = payload.get('name') or payload.get('model') or payload.get('status') or ''
+        print('[' + labels[runtime_type] + (' · ' + str(detail) if detail else '') + ']', file=sys.stderr, flush=True)
+    elif data.get('type') in {'task.created', 'task.status'}:
+        status = payload.get('status')
+        if status and status != visible_status:
+            visible_status = status
+            print('[' + status + ']', file=sys.stderr, flush=True)
+    return visible_status
 
 
 def ensure_controller(home, client, task, ticket, timeout_seconds):
@@ -375,8 +385,8 @@ def submit(args, home, client, text, *, chat_session=None):
         if not getattr(args, 'allow_local_on_battery', False) and external_power() is not True:
             raise ValueError('Local model inference blocked: external power required; --allow-local-on-battery explicitly permits this request on battery or unknown power')
     key = getattr(args, 'key', None) or uuid.uuid4().hex
-    if getattr(args,'timeout',None) is not None and (not math.isfinite(args.timeout) or not 0 < args.timeout <= 3600):
-        raise ValueError('Task timeout must be finite and within (0, 3600]')
+    if getattr(args,'timeout',None) is not None and (not math.isfinite(args.timeout) or not 0 < args.timeout <= MAX_TASK_TIMEOUT):
+        raise ValueError(f'Task timeout must be finite and within (0, {MAX_TASK_TIMEOUT}]')
     body = {'input':text, 'model':model}
     if getattr(args,'timeout',None) is not None:body['timeout_seconds']=args.timeout
     if chat_session or getattr(args, 'session', None):
@@ -446,7 +456,7 @@ def parser():
     for name in ['ask','agent','chat']:
         cmd = sub.add_parser(name, help='Reasoning only' if name != 'agent' else 'Submit standard Agent task through Permission Gateway')
         if name != 'chat':cmd.add_argument('text')
-        cmd.add_argument('--model'); cmd.add_argument('--session'); cmd.add_argument('--key'); cmd.add_argument('--detach', action='store_true'); cmd.add_argument('--timeout', type=float, help='Total task deadline in seconds, including approvals; maximum 3600')
+        cmd.add_argument('--model'); cmd.add_argument('--session'); cmd.add_argument('--key'); cmd.add_argument('--detach', action='store_true'); cmd.add_argument('--timeout', type=float, help=f'Total task deadline in seconds, including approvals; maximum {MAX_TASK_TIMEOUT} (24 hours)')
         cmd.add_argument('--allow-local-on-battery', action='store_true',
                          help='Explicitly allow this local-openai request on battery or unknown power; does not override operator model disable')
     task = sub.add_parser('task').add_subparsers(dest='operation', required=True)

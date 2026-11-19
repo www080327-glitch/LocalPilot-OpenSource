@@ -1,0 +1,18 @@
+{
+  "full_index_check": {
+    "command": "git diff --cached --check",
+    "exit_code": 2,
+    "diagnostics": "docs/evidence/audit-20261117/root/persistent-context-b32/engineering/acceptance-original/fixtures/basic.csv:6: trailing whitespace.\n+  \ndocs/evidence/audit-20261117/root/persistent-context-b32/engineering/acceptance-original/fixtures/basic.csv:6: new blank line at EOF.\ndocs/evidence/audit-20261117/root/persistent-context-b32/engineering/acceptance-original/fixtures/empty.csv:2: new blank line at EOF.\ndocs/evidence/audit-20261117/root/persistent-context-b32/engineering/final-project/fixtures/basic.csv:6: trailing whitespace.\n+  \ndocs/evidence/audit-20261117/root/persistent-context-b32/engineering/final-project/fixtures/basic.csv:6: new blank line at EOF.\ndocs/evidence/audit-20261117/root/persistent-context-b32/engineering/final-project/fixtures/empty.csv:2: new blank line at EOF.\ndocs/evidence/audit-20261117/root/persistent-context-b32/engineering/project.diff:11: trailing whitespace.\n+ \ndocs/evidence/audit-20261117/root/persistent-context-b32/engineering/project.diff:12: trailing whitespace.\n+ \ndocs/evidence/audit-20261117/root/persistent-context-b32/engineering/project.diff:15: trailing whitespace.\n+ \ndocs/evidence/audit-20261117/root/persistent-context-b32/engineering/project.diff:16: trailing whitespace.\n+ \ndocs/evidence/audit-20261117/root/persistent-context-b32/engineering/project.diff:92: trailing whitespace.\n+ \ndocs/evidence/audit-20261117/root/persistent-context-b32/engineering/project.diff:93: trailing whitespace.\n+ \ndocs/evidence/audit-20261117/root/persistent-context-b32/engineering/project.diff:206: trailing whitespace.\n+ \ndocs/evidence/audit-20261117/root/persistent-context-b32/engineering/project.diff:207: trailing whitespace.\n+ \n"
+  },
+  "authored_source_and_docs_check": {
+    "exit_code": 0,
+    "excluded_paths": [
+      "docs/evidence/audit-20261117/root/persistent-context-b32/engineering/acceptance-original/fixtures/basic.csv",
+      "docs/evidence/audit-20261117/root/persistent-context-b32/engineering/acceptance-original/fixtures/empty.csv",
+      "docs/evidence/audit-20261117/root/persistent-context-b32/engineering/final-project/fixtures/basic.csv",
+      "docs/evidence/audit-20261117/root/persistent-context-b32/engineering/final-project/fixtures/empty.csv",
+      "docs/evidence/audit-20261117/root/persistent-context-b32/engineering/project.diff"
+    ]
+  },
+  "reason": "The excluded immutable CSV fixtures intentionally exercise whitespace/blank-line parsing. project.diff is the original generated patch, including blank context lines. Their exact original bytes and acceptance hashes must be preserved; no file, checker configuration, hook or criterion was changed to silence the findings."
+}

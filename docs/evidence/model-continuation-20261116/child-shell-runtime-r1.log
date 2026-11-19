@@ -1,0 +1,61 @@
+test_linux_child_shell_cancel_keeps_unknown_and_never_replays_after_restart (tests.test_core_portability.CorePortabilityTests.test_linux_child_shell_cancel_keeps_unknown_and_never_replays_after_restart) ... ERROR
+test_linux_child_shell_cancel_keeps_unknown_and_never_replays_after_restart (tests.test_core_portability.CorePortabilityTests.test_linux_child_shell_cancel_keeps_unknown_and_never_replays_after_restart) ... FAIL
+
+======================================================================
+ERROR: test_linux_child_shell_cancel_keeps_unknown_and_never_replays_after_restart (tests.test_core_portability.CorePortabilityTests.test_linux_child_shell_cancel_keeps_unknown_and_never_replays_after_restart)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<SOURCE>/tests/test_core_portability.py", line 278, in test_linux_child_shell_cancel_keeps_unknown_and_never_replays_after_restart
+    terminal = self.settled(initial)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "<SOURCE>/tests/test_core_portability.py", line 145, in settled
+    result = self.client.status(task['id'])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<SOURCE>/localpilot_service/sdk.py", line 46, in status
+    return self.request("/localpilot/v1/tasks/" + quote(task_id, safe=""))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<SOURCE>/localpilot_service/sdk.py", line 39, in request
+    with self.opener.open(self._request(path, body, method, key), timeout=self.timeout) as response:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<PYTHON_RUNTIME>/lib/python3.12/urllib/request.py", line 521, in open
+    response = meth(req, response)
+               ^^^^^^^^^^^^^^^^^^^
+  File "<PYTHON_RUNTIME>/lib/python3.12/urllib/request.py", line 630, in http_response
+    response = self.parent.error(
+               ^^^^^^^^^^^^^^^^^^
+  File "<PYTHON_RUNTIME>/lib/python3.12/urllib/request.py", line 559, in error
+    return self._call_chain(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "<PYTHON_RUNTIME>/lib/python3.12/urllib/request.py", line 492, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "<PYTHON_RUNTIME>/lib/python3.12/urllib/request.py", line 639, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 429: Too Many Requests
+
+======================================================================
+FAIL: test_linux_child_shell_cancel_keeps_unknown_and_never_replays_after_restart (tests.test_core_portability.CorePortabilityTests.test_linux_child_shell_cancel_keeps_unknown_and_never_replays_after_restart)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<SOURCE>/tests/test_core_portability.py", line 133, in stop_service
+    process.wait(timeout=10)
+  File "<PYTHON_RUNTIME>/lib/python3.12/subprocess.py", line 1264, in wait
+    return self._wait(timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<PYTHON_RUNTIME>/lib/python3.12/subprocess.py", line 2045, in _wait
+    raise TimeoutExpired(self.args, timeout)
+subprocess.TimeoutExpired: Command '['<VALIDATION>/component-install-20261115/bin/python', '-m', 'localpilot_service', '--config', '<TEMP>/service/service.json']' timed out after 10 seconds
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<SOURCE>/tests/test_core_portability.py", line 42, in tearDown
+    self.stop_service()
+  File "<SOURCE>/tests/test_core_portability.py", line 137, in stop_service
+    self.fail('Core failed to stop after SIGTERM')
+AssertionError: Core failed to stop after SIGTERM
+
+----------------------------------------------------------------------
+Ran 1 test in 12.777s
+
+FAILED (failures=1, errors=1)

@@ -1,0 +1,218 @@
+--- before/logstats/parser.py
++++ after/logstats/parser.py
+@@ -1,6 +1,9 @@
++import csv
+ from dataclasses import dataclass
+-from datetime import datetime
++from datetime import datetime, timezone
+ from decimal import Decimal
++import io
++import re
+ 
+ 
+ @dataclass(frozen=True)
+@@ -10,5 +13,114 @@
+     value: Decimal
+ 
+ 
++_TIMESTAMP_RE = re.compile(
++    r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:Z|[+-][0-9]{2}:[0-9]{2})"
++)
++_VALUE_RE = re.compile(r"[+-]?[0-9]+(?:\.[0-9]{1,2})?")
++
++
++def _row_error(row_number: int, message: str) -> ValueError:
++    return ValueError(f"row {row_number}: {message}")
++
++
++def _invalid_quote_syntax(raw_record: str) -> bool:
++    """Reject quotes in unquoted fields while leaving CSV parsing to csv.reader."""
++    field_start = True
++    in_quotes = False
++    after_quote = False
++    index = 0
++    while index < len(raw_record):
++        char = raw_record[index]
++        if in_quotes:
++            if char == '"':
++                if index + 1 < len(raw_record) and raw_record[index + 1] == '"':
++                    index += 2
++                    continue
++                in_quotes = False
++                after_quote = True
++        elif char in "\r\n":
++            field_start = True
++            after_quote = False
++        elif after_quote:
++            if char == ",":
++                field_start = True
++                after_quote = False
++            else:
++                return True
++        elif field_start:
++            if char == '"':
++                in_quotes = True
++                field_start = False
++            elif char == ",":
++                field_start = True
++            else:
++                field_start = False
++        elif char == ",":
++            field_start = True
++        elif char == '"':
++            return True
++        index += 1
++    return False
++
++
+ def parse_records(text: str) -> list[Record]:
+-    raise NotImplementedError("Implement the public parser contract")
++    """Parse CSV event records, reporting errors at their physical ending line."""
++    reader = csv.reader(io.StringIO(text, newline=""), strict=True)
++    physical_lines = text.splitlines(keepends=True)
++    records: list[Record] = []
++    previous_line = 0
++    header_seen = False
++
++    while True:
++        try:
++            fields = next(reader)
++        except StopIteration:
++            break
++        except csv.Error as exc:
++            raise _row_error(max(reader.line_num, 1), f"invalid CSV: {exc}") from None
++
++        row_number = max(reader.line_num, 1)
++        raw_record = "".join(physical_lines[previous_line:reader.line_num])
++        previous_line = reader.line_num
++        if _invalid_quote_syntax(raw_record):
++            raise _row_error(row_number, "invalid CSV quoting")
++
++        # csv.reader returns [] for a physically empty row and a one-field value
++        # for a whitespace-only row. Do not discard quoted whitespace fields.
++        if not fields or (len(fields) == 1 and not raw_record.strip()):
++            continue
++
++        if not header_seen:
++            header_seen = True
++            header = [field.strip() for field in fields]
++            if header != ["timestamp", "category", "value"]:
++                raise _row_error(row_number, "expected header timestamp,category,value")
++            continue
++
++        if len(fields) != 3:
++            raise _row_error(row_number, "record must contain exactly three fields")
++
++        timestamp_text, category, value_text = (field.strip() for field in fields)
++        if not category:
++            raise _row_error(row_number, "category must not be empty")
++
++        if not _TIMESTAMP_RE.fullmatch(timestamp_text):
++            raise _row_error(row_number, "timestamp must include a timezone and seconds")
++        try:
++            timestamp = datetime.strptime(timestamp_text, "%Y-%m-%dT%H:%M:%S%z")
++        except ValueError:
++            raise _row_error(row_number, "invalid timestamp") from None
++        timestamp = timestamp.astimezone(timezone.utc)
++
++        if not _VALUE_RE.fullmatch(value_text):
++            raise _row_error(row_number, "value must be a decimal with at most two fractional digits")
++        try:
++            value = Decimal(value_text)
++        except Exception:
++            raise _row_error(row_number, "invalid decimal value") from None
++
++        records.append(Record(timestamp, category, value))
++
++    if not header_seen:
++        raise _row_error(max(reader.line_num, 1), "missing header")
++    return records
+--- before/logstats/aggregate.py
++++ after/logstats/aggregate.py
+@@ -1,6 +1,48 @@
+ from collections.abc import Sequence
++from datetime import timezone
++from decimal import Decimal, localcontext
++
+ from .parser import Record
+ 
+ 
++def _utc_string(timestamp) -> str:
++    return timestamp.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
++
++
+ def summarize(records: Sequence[Record]) -> dict:
+-    raise NotImplementedError("Implement exact aggregation")
++    """Summarize records by category without changing the input sequence."""
++    grouped: dict[str, list[Record]] = {}
++    record_count = 0
++    for record in records:
++        record_count += 1
++        grouped.setdefault(record.category, []).append(record)
++
++    groups = []
++    for category in sorted(grouped):
++        category_records = grouped[category]
++
++        # Decimal arithmetic obeys the active context. Choose enough precision
++        # for exact addition, including alignment of the input exponents and the
++        # extra digits needed when summing multiple records.
++        min_exponent = min(record.value.as_tuple().exponent for record in category_records)
++        max_adjusted = max(record.value.adjusted() for record in category_records)
++        precision = max(28, max_adjusted - min_exponent + len(str(len(category_records))) + 2)
++        with localcontext() as context:
++            context.prec = precision
++            total = sum((record.value for record in category_records), Decimal(0))
++            if total == 0:
++                total = Decimal(0)
++            total_text = format(total.quantize(Decimal("0.01")), ".2f")
++
++        timestamps = [record.timestamp for record in category_records]
++        first = min(timestamps).astimezone(timezone.utc)
++        last = max(timestamps).astimezone(timezone.utc)
++        groups.append({
++            "category": category,
++            "count": len(category_records),
++            "total": total_text,
++            "first": _utc_string(first),
++            "last": _utc_string(last),
++        })
++
++    return {"record_count": record_count, "groups": groups}
+--- before/logstats/__main__.py
++++ after/logstats/__main__.py
+@@ -1,5 +1,32 @@
+-def main():
+-    raise NotImplementedError("Implement the public CLI contract")
++"""Command-line interface for the logstats package."""
++
++import argparse
++import json
++import sys
++
++from .aggregate import summarize
++from .parser import parse_records
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(prog="python -m logstats")
++    parser.add_argument("input", help="UTF-8 CSV event log")
++    parser.add_argument("--output", help="write JSON to this path instead of stdout")
++    args = parser.parse_args(argv)
++
++    try:
++        with open(args.input, "r", encoding="utf-8", newline="") as source:
++            records = parse_records(source.read())
++        result = json.dumps(summarize(records), ensure_ascii=False) + "\n"
++        if args.output is None:
++            sys.stdout.write(result)
++        else:
++            with open(args.output, "w", encoding="utf-8", newline="") as destination:
++                destination.write(result)
++    except (OSError, UnicodeError, ValueError) as exc:
++        print(f"error: {exc}", file=sys.stderr)
++        return 2
++    return 0
+ 
+ 
+ if __name__ == "__main__":

@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "manifest_excludes_self": true,
+  "scope": "Local real Registry/Session/filesystem regression with scripted model responses; no external API.",
+  "transformations": [
+    "Log copies replace only the absolute source checkout prefix with <source_root>."
+  ],
+  "files": [
+    {
+      "file": "BEFORE.log",
+      "original": "<validation_root>/multihunk-patch-before.log",
+      "original_bytes": 2854,
+      "original_sha256": "7994a24cf7c608ce1d8b19a458c2ffa04f7c642ecc517ccadd5f7c471d52c4c1",
+      "published_bytes": 2548,
+      "published_sha256": "fbb601b9a2bb9c6c199bacb4912c964a6f77d350c086daff18bcce31cb997cad"
+    },
+    {
+      "file": "FOCUSED_FIRST.log",
+      "original": "<validation_root>/multihunk-patch-focused.log",
+      "original_bytes": 1535,
+      "original_sha256": "7af21e5be824551449c12745f07278ad9ce154e9fb8e2575ebaee7c6247cfcd6",
+      "published_bytes": 1484,
+      "published_sha256": "ac155da14178c1c0a52282de0631ca33c322d12861fe009a80ca7bab4973a9da"
+    },
+    {
+      "file": "AFTER_IMPLEMENTATION.log",
+      "original": "<validation_root>/multihunk-patch-after.log",
+      "original_bytes": 11921,
+      "original_sha256": "dac01bf8dd9f669331f9d572274047e39e72455459f6beedf5f55b422168b6cd",
+      "published_bytes": 11921,
+      "published_sha256": "dac01bf8dd9f669331f9d572274047e39e72455459f6beedf5f55b422168b6cd"
+    },
+    {
+      "file": "AFTER.log",
+      "original": "<validation_root>/multihunk-patch-final.log",
+      "original_bytes": 11921,
+      "original_sha256": "0ec5681509e6291071e3ae699e7e0bbd829fecac8f5f3ef5b613406e9137f949",
+      "published_bytes": 11921,
+      "published_sha256": "0ec5681509e6291071e3ae699e7e0bbd829fecac8f5f3ef5b613406e9137f949"
+    },
+    {
+      "file": "SOURCE_BEFORE.json",
+      "published_bytes": 422,
+      "published_sha256": "4b8a48e81716d5341a05900d107e80dafd5cbcf577827717114c2bce02516c8a"
+    },
+    {
+      "file": "SOURCE_AFTER_IMPLEMENTATION.json",
+      "published_bytes": 1167,
+      "published_sha256": "7c0f4ad54033178c82363871fb141eed83e67650be95b9e37b7b905fca7f48b2"
+    },
+    {
+      "file": "SOURCE_AFTER.json",
+      "published_bytes": 1733,
+      "published_sha256": "9beb8051e64065b610c11b5e1cb04cf23bfd6c70a6d337ef4e0f331e89d8d298"
+    },
+    {
+      "file": "RESULTS.md",
+      "published_bytes": 5802,
+      "published_sha256": "f03932f3a770b5f26135d72e453d3ca739142a41201085f74e9b0335980ea4b6"
+    }
+  ]
+}

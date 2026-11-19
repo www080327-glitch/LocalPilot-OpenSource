@@ -1,0 +1,36 @@
+{
+  "stage": "Actual old checker on real primary source before owner version bump",
+  "time_unix": 1794865423.694062,
+  "git_head": "71c771592e68df0ffc8e2f1b95ee3ebe7e6a5d43",
+  "command": [
+    "/workspace/scratch/2a488f6eabf5/LocalPilot-OpenSource/.venv/bin/python",
+    "-B",
+    "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/scripts/check-candidate-versions.py"
+  ],
+  "cwd": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116",
+  "returncode": 0,
+  "checker_report": {
+    "consistent": true,
+    "desktop": "5.0.1-rc.13",
+    "core": "5.0.0b30",
+    "suite": "0.2.0b32",
+    "companion": "0.5.7b8"
+  },
+  "runtime_source_VERSION": "5.0.0b28",
+  "package_version": "5.0.0b30",
+  "false_positive_reproduced": true,
+  "files": {
+    "scripts/check-candidate-versions.py": {
+      "bytes": 1357,
+      "sha256": "ed691b76eec77c7bb9771849697d4d5f5a84f533d64c450e60be767daf5a4a0d"
+    },
+    "localpilot_service/__init__.py": {
+      "bytes": 87,
+      "sha256": "cbc5f821de80e7796353bf2c534b9d716c181df323942a86bb49925b9978d542"
+    },
+    "pyproject.toml": {
+      "bytes": 2570,
+      "sha256": "679d7145bd8d7dcd51822d06f59365fcfc9953cbc0a0a679ec964852b42abf4f"
+    }
+  }
+}

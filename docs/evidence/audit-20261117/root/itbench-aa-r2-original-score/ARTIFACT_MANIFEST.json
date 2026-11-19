@@ -1,0 +1,1343 @@
+{
+  "schema_version": 1,
+  "directory": "itbench-aa-r2-original-score",
+  "files": [
+    {
+      "path": "study.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/study.json",
+      "source_bytes": 2184,
+      "source_sha256": "48f91eb52521b364f07d5aa56791672d49e78fa747bc7643ef3c16ecef3803ca",
+      "archive_bytes": 2184,
+      "archive_sha256": "48f91eb52521b364f07d5aa56791672d49e78fa747bc7643ef3c16ecef3803ca",
+      "transformation": "copy"
+    },
+    {
+      "path": "RUN_SUMMARY.json.gz",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/RUN_SUMMARY.json",
+      "source_bytes": 1489735,
+      "source_sha256": "8f6dab4e6eae8256776ab33203efacb8e1b2777ec6f04012b60d733ed48b03a3",
+      "archive_bytes": 236056,
+      "archive_sha256": "32b149c9f5c9751f9f4e7060fc2dad156d4e6149c2e0f4314e550dc72565d9f0",
+      "transformation": "gzip_mtime_0"
+    },
+    {
+      "path": "case-001/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-001/case-result.json",
+      "source_bytes": 47883,
+      "source_sha256": "9ec8e404fb1d0da87d7905f69d3fc4edfd319719c4c32e141dd418489b11a44e",
+      "archive_bytes": 47883,
+      "archive_sha256": "9ec8e404fb1d0da87d7905f69d3fc4edfd319719c4c32e141dd418489b11a44e",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-001/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-001/agent_output.json",
+      "source_bytes": 1725,
+      "source_sha256": "5ff517a9d8b52fef4dc473abc3ee2fc5fc02c531501eee4e8d46033e7a47319c",
+      "archive_bytes": 1725,
+      "archive_sha256": "5ff517a9d8b52fef4dc473abc3ee2fc5fc02c531501eee4e8d46033e7a47319c",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-002/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-002/case-result.json",
+      "source_bytes": 50757,
+      "source_sha256": "b1dd3daa71e130567c880f8a933af72592109bc9c5667be87494cf924563501a",
+      "archive_bytes": 50757,
+      "archive_sha256": "b1dd3daa71e130567c880f8a933af72592109bc9c5667be87494cf924563501a",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-002/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-002/agent_output.json",
+      "source_bytes": 3176,
+      "source_sha256": "ca1850e55d02ec5802ef8215acf5a288e548da1bdf1a903cdb7ea52737c804c1",
+      "archive_bytes": 3176,
+      "archive_sha256": "ca1850e55d02ec5802ef8215acf5a288e548da1bdf1a903cdb7ea52737c804c1",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-003/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-003/case-result.json",
+      "source_bytes": 35052,
+      "source_sha256": "486edc5090c238848cdf266e8d793cff400fb0a785890fafcab676cb92a32c5a",
+      "archive_bytes": 35052,
+      "archive_sha256": "486edc5090c238848cdf266e8d793cff400fb0a785890fafcab676cb92a32c5a",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-003/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-003/agent_output.json",
+      "source_bytes": 1208,
+      "source_sha256": "5d5e2f4d9e5921f0d3a7c6fbd59f75ac232a3d7250508719708aeca009967481",
+      "archive_bytes": 1208,
+      "archive_sha256": "5d5e2f4d9e5921f0d3a7c6fbd59f75ac232a3d7250508719708aeca009967481",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-004/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-004/case-result.json",
+      "source_bytes": 7851,
+      "source_sha256": "8cfaff165251c2b98b2ca83c7692979d631480457f20669aea91949b21fc7b58",
+      "archive_bytes": 7851,
+      "archive_sha256": "8cfaff165251c2b98b2ca83c7692979d631480457f20669aea91949b21fc7b58",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-005/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-005/case-result.json",
+      "source_bytes": 48614,
+      "source_sha256": "082e41d2aa7678c6ac75f1e2c40a37626f58ddbdbfe703324dcd83a8cec17881",
+      "archive_bytes": 48614,
+      "archive_sha256": "082e41d2aa7678c6ac75f1e2c40a37626f58ddbdbfe703324dcd83a8cec17881",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-006/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-006/case-result.json",
+      "source_bytes": 50959,
+      "source_sha256": "0f6b45af89289c2beecb61f4add2bb7df8d0c973d5925e6847f031823ae6f20e",
+      "archive_bytes": 50959,
+      "archive_sha256": "0f6b45af89289c2beecb61f4add2bb7df8d0c973d5925e6847f031823ae6f20e",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-006/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-006/agent_output.json",
+      "source_bytes": 2275,
+      "source_sha256": "f9e94105abb7ffe6ad404ae4ec7f1dbcc64fefc5a1b2c7872eb37a9e9c5dc7fc",
+      "archive_bytes": 2275,
+      "archive_sha256": "f9e94105abb7ffe6ad404ae4ec7f1dbcc64fefc5a1b2c7872eb37a9e9c5dc7fc",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-007/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-007/case-result.json",
+      "source_bytes": 47122,
+      "source_sha256": "f25becc676469473691f749db942a0ddf9169694b5176b7f78416ca83271736b",
+      "archive_bytes": 47122,
+      "archive_sha256": "f25becc676469473691f749db942a0ddf9169694b5176b7f78416ca83271736b",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-007/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-007/agent_output.json",
+      "source_bytes": 2341,
+      "source_sha256": "a1a7a959a7f2ce5adae482ed19dc24ab83f8848e2fce0b3b1f6e24b3031e9a27",
+      "archive_bytes": 2341,
+      "archive_sha256": "a1a7a959a7f2ce5adae482ed19dc24ab83f8848e2fce0b3b1f6e24b3031e9a27",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-008/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-008/case-result.json",
+      "source_bytes": 50790,
+      "source_sha256": "5d058504ca8ba9fb2fe8142c2476ddd3c22f13498c5f9d54bfa74a3ed3bddc6e",
+      "archive_bytes": 50790,
+      "archive_sha256": "5d058504ca8ba9fb2fe8142c2476ddd3c22f13498c5f9d54bfa74a3ed3bddc6e",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-008/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-008/agent_output.json",
+      "source_bytes": 1136,
+      "source_sha256": "ee52f680b70037ea563455f7f6f67f6d0fff9d48eb01a159c6f0d1b5a60309a5",
+      "archive_bytes": 1136,
+      "archive_sha256": "ee52f680b70037ea563455f7f6f67f6d0fff9d48eb01a159c6f0d1b5a60309a5",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-009/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-009/case-result.json",
+      "source_bytes": 50344,
+      "source_sha256": "b1e708f45e1d2e0222a67e3176a0cfdc44995c0d56b5ab2fd03b7b53ae0ad35c",
+      "archive_bytes": 50344,
+      "archive_sha256": "b1e708f45e1d2e0222a67e3176a0cfdc44995c0d56b5ab2fd03b7b53ae0ad35c",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-009/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-009/agent_output.json",
+      "source_bytes": 1317,
+      "source_sha256": "81cfba3549a10dbd2166adbed34f9ba62709457d42b965124f0175a1e9cce0a2",
+      "archive_bytes": 1317,
+      "archive_sha256": "81cfba3549a10dbd2166adbed34f9ba62709457d42b965124f0175a1e9cce0a2",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-010/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-010/case-result.json",
+      "source_bytes": 32754,
+      "source_sha256": "da5773c2e5d15f3289cff5f446f7a732c2bfadd6328ad09b164c28f1c8a3a884",
+      "archive_bytes": 32754,
+      "archive_sha256": "da5773c2e5d15f3289cff5f446f7a732c2bfadd6328ad09b164c28f1c8a3a884",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-010/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-010/agent_output.json",
+      "source_bytes": 1855,
+      "source_sha256": "ce69ef83bc43c81c3ad79fd68a5b8ed3a1b57a265a22d9c9e7652e017d6fb32b",
+      "archive_bytes": 1855,
+      "archive_sha256": "ce69ef83bc43c81c3ad79fd68a5b8ed3a1b57a265a22d9c9e7652e017d6fb32b",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-011/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-011/case-result.json",
+      "source_bytes": 53640,
+      "source_sha256": "7ae1a3027b29d505c15e1bf0069d95f5be093595d506298d7b10e354e19a69f4",
+      "archive_bytes": 53640,
+      "archive_sha256": "7ae1a3027b29d505c15e1bf0069d95f5be093595d506298d7b10e354e19a69f4",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-011/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-011/agent_output.json",
+      "source_bytes": 1519,
+      "source_sha256": "29aed7344c7f849f20ac260e031302bf8f603ca4a63ca9c655a91f82a61aa353",
+      "archive_bytes": 1519,
+      "archive_sha256": "29aed7344c7f849f20ac260e031302bf8f603ca4a63ca9c655a91f82a61aa353",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-012/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-012/case-result.json",
+      "source_bytes": 52513,
+      "source_sha256": "9b7da2455ed082b1bf30f241463894c2bcd861d558d3a3ada7b4765f3fa30753",
+      "archive_bytes": 52513,
+      "archive_sha256": "9b7da2455ed082b1bf30f241463894c2bcd861d558d3a3ada7b4765f3fa30753",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-012/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-012/agent_output.json",
+      "source_bytes": 1679,
+      "source_sha256": "b0f51fac298952b3be5b88d5f7068210f584a7df51e99be65f61caba23647a45",
+      "archive_bytes": 1679,
+      "archive_sha256": "b0f51fac298952b3be5b88d5f7068210f584a7df51e99be65f61caba23647a45",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-013/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-013/case-result.json",
+      "source_bytes": 65397,
+      "source_sha256": "c814f74e5ff6e6a65dd5a93ea3a429316c4a277335aeca9ad280351d5ea3a7fe",
+      "archive_bytes": 65397,
+      "archive_sha256": "c814f74e5ff6e6a65dd5a93ea3a429316c4a277335aeca9ad280351d5ea3a7fe",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-013/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-013/agent_output.json",
+      "source_bytes": 2243,
+      "source_sha256": "a957c01d50bcbd2392553dff99e7df80ef06d453693ad75033284194614ec0dd",
+      "archive_bytes": 2243,
+      "archive_sha256": "a957c01d50bcbd2392553dff99e7df80ef06d453693ad75033284194614ec0dd",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-014/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-014/case-result.json",
+      "source_bytes": 59673,
+      "source_sha256": "e1c527f2b46983ac50921ec449c1c153bfe52d611ac002361f6685fff9050b2c",
+      "archive_bytes": 59673,
+      "archive_sha256": "e1c527f2b46983ac50921ec449c1c153bfe52d611ac002361f6685fff9050b2c",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-014/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-014/agent_output.json",
+      "source_bytes": 2388,
+      "source_sha256": "065ebf6414968fbae15eb2c6368391721d7aaa9a551fd5dc2fa113c761f3dbf1",
+      "archive_bytes": 2388,
+      "archive_sha256": "065ebf6414968fbae15eb2c6368391721d7aaa9a551fd5dc2fa113c761f3dbf1",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-015/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-015/case-result.json",
+      "source_bytes": 49035,
+      "source_sha256": "c0d5ba56b157e330bb9848a71e47bb3adaeeba384072b966d891c671f805618a",
+      "archive_bytes": 49035,
+      "archive_sha256": "c0d5ba56b157e330bb9848a71e47bb3adaeeba384072b966d891c671f805618a",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-015/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-015/agent_output.json",
+      "source_bytes": 2578,
+      "source_sha256": "88adc5de0aea372a65ad3a91f88ebcd4fd6491f61e4219cb93e5419b3d75a3bb",
+      "archive_bytes": 2578,
+      "archive_sha256": "88adc5de0aea372a65ad3a91f88ebcd4fd6491f61e4219cb93e5419b3d75a3bb",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-016/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-016/case-result.json",
+      "source_bytes": 66614,
+      "source_sha256": "0020fe5e4c19221a8f492a40fbca777539883a0d18f366f9fb2dd9f3d10337b1",
+      "archive_bytes": 66614,
+      "archive_sha256": "0020fe5e4c19221a8f492a40fbca777539883a0d18f366f9fb2dd9f3d10337b1",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-016/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-016/agent_output.json",
+      "source_bytes": 1409,
+      "source_sha256": "36ba4defd03cbd7ef037bf0a3f31cd758b7767e72603f41524b0cc2ba9f02990",
+      "archive_bytes": 1409,
+      "archive_sha256": "36ba4defd03cbd7ef037bf0a3f31cd758b7767e72603f41524b0cc2ba9f02990",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-017/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-017/case-result.json",
+      "source_bytes": 39909,
+      "source_sha256": "3d708b652eb6356c58a769315ebc06a6ace3ddbfcf3ca3fe3c416b3f0ef2e230",
+      "archive_bytes": 39909,
+      "archive_sha256": "3d708b652eb6356c58a769315ebc06a6ace3ddbfcf3ca3fe3c416b3f0ef2e230",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-017/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-017/agent_output.json",
+      "source_bytes": 1521,
+      "source_sha256": "f7d296ae927e740575747fdc3d58b061954a53b75146cbcc553a11721c8f181d",
+      "archive_bytes": 1521,
+      "archive_sha256": "f7d296ae927e740575747fdc3d58b061954a53b75146cbcc553a11721c8f181d",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-018/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-018/case-result.json",
+      "source_bytes": 31659,
+      "source_sha256": "860d241c59f9d25673b7616442bc0997466d135f7c4818fb6805bdf99d40b88d",
+      "archive_bytes": 31659,
+      "archive_sha256": "860d241c59f9d25673b7616442bc0997466d135f7c4818fb6805bdf99d40b88d",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-018/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-018/agent_output.json",
+      "source_bytes": 1566,
+      "source_sha256": "905013d23e2fea9fe659881b084d756533ccfd7c0f59f59ce479ee2909db4c1a",
+      "archive_bytes": 1566,
+      "archive_sha256": "905013d23e2fea9fe659881b084d756533ccfd7c0f59f59ce479ee2909db4c1a",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-019/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-019/case-result.json",
+      "source_bytes": 45870,
+      "source_sha256": "d6b658d8ab687bd97e6773f1bb25ed1c1260974b450e4b2fb96def57216dabb4",
+      "archive_bytes": 45870,
+      "archive_sha256": "d6b658d8ab687bd97e6773f1bb25ed1c1260974b450e4b2fb96def57216dabb4",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-019/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-019/agent_output.json",
+      "source_bytes": 1602,
+      "source_sha256": "2c37da020cf6ed2e19ad45f44f14c4b13c330f7dcf3abad985debae9f914b652",
+      "archive_bytes": 1602,
+      "archive_sha256": "2c37da020cf6ed2e19ad45f44f14c4b13c330f7dcf3abad985debae9f914b652",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-020/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-020/case-result.json",
+      "source_bytes": 36154,
+      "source_sha256": "4267213d1a34fe6f17ce62b77be07a49656342bb3e89675dacb299d43c61ee6d",
+      "archive_bytes": 36154,
+      "archive_sha256": "4267213d1a34fe6f17ce62b77be07a49656342bb3e89675dacb299d43c61ee6d",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-020/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-020/agent_output.json",
+      "source_bytes": 1610,
+      "source_sha256": "be7095cf212be42e8da5a97e75605cc783b3a952a822c193c9646317d990b67f",
+      "archive_bytes": 1610,
+      "archive_sha256": "be7095cf212be42e8da5a97e75605cc783b3a952a822c193c9646317d990b67f",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-021/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-021/case-result.json",
+      "source_bytes": 49843,
+      "source_sha256": "195d7c8ba8765a9d7bc3bf76cf079c91e8e633bdb45ec11340bc578b05b04c59",
+      "archive_bytes": 49843,
+      "archive_sha256": "195d7c8ba8765a9d7bc3bf76cf079c91e8e633bdb45ec11340bc578b05b04c59",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-021/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-021/agent_output.json",
+      "source_bytes": 1646,
+      "source_sha256": "eeff34b412a0dc963d8e2f368b16de43d3b9524e69043727a6eb358dafb839ee",
+      "archive_bytes": 1646,
+      "archive_sha256": "eeff34b412a0dc963d8e2f368b16de43d3b9524e69043727a6eb358dafb839ee",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-022/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-022/case-result.json",
+      "source_bytes": 36885,
+      "source_sha256": "360421a9715aa90be9b386a12ede08f62f8f8bebf5fc173d37460c2be9621d3d",
+      "archive_bytes": 36885,
+      "archive_sha256": "360421a9715aa90be9b386a12ede08f62f8f8bebf5fc173d37460c2be9621d3d",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-022/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-022/agent_output.json",
+      "source_bytes": 1177,
+      "source_sha256": "86a7279d7e19e29f12c5dc92444c8e042dffe1a8304da0a7a233312e2d7b134c",
+      "archive_bytes": 1177,
+      "archive_sha256": "86a7279d7e19e29f12c5dc92444c8e042dffe1a8304da0a7a233312e2d7b134c",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-023/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-023/case-result.json",
+      "source_bytes": 360,
+      "source_sha256": "a9f3fa6667e5422ebe90142d85ca4bc42f102d499ef3a7fbcf6e243551c2f254",
+      "archive_bytes": 360,
+      "archive_sha256": "a9f3fa6667e5422ebe90142d85ca4bc42f102d499ef3a7fbcf6e243551c2f254",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-024/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-024/case-result.json",
+      "source_bytes": 5535,
+      "source_sha256": "3cf54c2715570b9d2c83e7616621bdfc43d0d5d47da3992152c8b8b469668247",
+      "archive_bytes": 5535,
+      "archive_sha256": "3cf54c2715570b9d2c83e7616621bdfc43d0d5d47da3992152c8b8b469668247",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-025/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-025/case-result.json",
+      "source_bytes": 361,
+      "source_sha256": "90f70f97d788fdd3829a1bfc5f9638aa0f625c62dcf9374af57d0fb7797dfb03",
+      "archive_bytes": 361,
+      "archive_sha256": "90f70f97d788fdd3829a1bfc5f9638aa0f625c62dcf9374af57d0fb7797dfb03",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-026/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-026/case-result.json",
+      "source_bytes": 356,
+      "source_sha256": "29458931e76d17ca4b6f83064db579790e32aa484112ec2e0cd1d8c9c5115413",
+      "archive_bytes": 356,
+      "archive_sha256": "29458931e76d17ca4b6f83064db579790e32aa484112ec2e0cd1d8c9c5115413",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-027/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-027/case-result.json",
+      "source_bytes": 360,
+      "source_sha256": "717b232fac689480b98141bc8260246be05cdd2a226bf39a2cb15faacd36d535",
+      "archive_bytes": 360,
+      "archive_sha256": "717b232fac689480b98141bc8260246be05cdd2a226bf39a2cb15faacd36d535",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-028/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-028/case-result.json",
+      "source_bytes": 361,
+      "source_sha256": "393bf5b8fbd37c709a9e019cfc105093e7df1b1b66668d0f65a38c7cf80b3e31",
+      "archive_bytes": 361,
+      "archive_sha256": "393bf5b8fbd37c709a9e019cfc105093e7df1b1b66668d0f65a38c7cf80b3e31",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-029/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-029/case-result.json",
+      "source_bytes": 361,
+      "source_sha256": "5ae8e470128681344a7927c1b937483b801ae99e757eb0290bfeca6f04e0e1e6",
+      "archive_bytes": 361,
+      "archive_sha256": "5ae8e470128681344a7927c1b937483b801ae99e757eb0290bfeca6f04e0e1e6",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-030/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-030/case-result.json",
+      "source_bytes": 37123,
+      "source_sha256": "0a8b99102638a569156146fba817c9549088dcc158a5765425451d5dd10e8522",
+      "archive_bytes": 37123,
+      "archive_sha256": "0a8b99102638a569156146fba817c9549088dcc158a5765425451d5dd10e8522",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-031/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-031/case-result.json",
+      "source_bytes": 50420,
+      "source_sha256": "9e26ae09c65aeb79a48248be0b0614453f80f76e60aad042f128b8c1aac25722",
+      "archive_bytes": 50420,
+      "archive_sha256": "9e26ae09c65aeb79a48248be0b0614453f80f76e60aad042f128b8c1aac25722",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-031/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-031/agent_output.json",
+      "source_bytes": 1373,
+      "source_sha256": "2c97536ebea14d38624b205e7fc6f7dcea3b441ebb626797435951857a9d8e17",
+      "archive_bytes": 1373,
+      "archive_sha256": "2c97536ebea14d38624b205e7fc6f7dcea3b441ebb626797435951857a9d8e17",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-032/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-032/case-result.json",
+      "source_bytes": 43002,
+      "source_sha256": "b9ccbd061efe935970de459777c9105fbb18eefe6b88e2fdc421e287a6942769",
+      "archive_bytes": 43002,
+      "archive_sha256": "b9ccbd061efe935970de459777c9105fbb18eefe6b88e2fdc421e287a6942769",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-032/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-032/agent_output.json",
+      "source_bytes": 2160,
+      "source_sha256": "938fc6e07d5994aa8d84e90f7c280a669749e895c2471e0bbac0f27150816f3a",
+      "archive_bytes": 2160,
+      "archive_sha256": "938fc6e07d5994aa8d84e90f7c280a669749e895c2471e0bbac0f27150816f3a",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-033/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-033/case-result.json",
+      "source_bytes": 376,
+      "source_sha256": "0d4a47eaa27f3648e3fe47e8fa14bb0cb04c2b08eea865b59c403ac69ce9c740",
+      "archive_bytes": 376,
+      "archive_sha256": "0d4a47eaa27f3648e3fe47e8fa14bb0cb04c2b08eea865b59c403ac69ce9c740",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-034/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-034/case-result.json",
+      "source_bytes": 29011,
+      "source_sha256": "8b9b4113d53cc15662f9d95f79212df2c5ce69d71f0f2a124929a50b88375b37",
+      "archive_bytes": 29011,
+      "archive_sha256": "8b9b4113d53cc15662f9d95f79212df2c5ce69d71f0f2a124929a50b88375b37",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-034/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-034/agent_output.json",
+      "source_bytes": 1652,
+      "source_sha256": "02e3eef20cf3bcca85818b1fe771ae20e36a1d5d6688c3df7c27b82dea7106ef",
+      "archive_bytes": 1652,
+      "archive_sha256": "02e3eef20cf3bcca85818b1fe771ae20e36a1d5d6688c3df7c27b82dea7106ef",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-035/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-035/case-result.json",
+      "source_bytes": 375,
+      "source_sha256": "b551096963dccd3e7c73bd0f01e6f40e7bb73c9e06130600143f59e16cd68e5a",
+      "archive_bytes": 375,
+      "archive_sha256": "b551096963dccd3e7c73bd0f01e6f40e7bb73c9e06130600143f59e16cd68e5a",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-036/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-036/case-result.json",
+      "source_bytes": 48131,
+      "source_sha256": "7dec3483aff360ddc67c9fc17e7112f0334ced8282a347975228b5ca99e0eafc",
+      "archive_bytes": 48131,
+      "archive_sha256": "7dec3483aff360ddc67c9fc17e7112f0334ced8282a347975228b5ca99e0eafc",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-036/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-036/agent_output.json",
+      "source_bytes": 1741,
+      "source_sha256": "85a702de35a40f1ec244e1f5a74b388e98b17437d2daa313368cef3b8786b77a",
+      "archive_bytes": 1741,
+      "archive_sha256": "85a702de35a40f1ec244e1f5a74b388e98b17437d2daa313368cef3b8786b77a",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-037/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-037/case-result.json",
+      "source_bytes": 40297,
+      "source_sha256": "9b2b62f64df8d625484bde4ced0b60f1645945df881f886945aaddfdc000d112",
+      "archive_bytes": 40297,
+      "archive_sha256": "9b2b62f64df8d625484bde4ced0b60f1645945df881f886945aaddfdc000d112",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-037/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-037/agent_output.json",
+      "source_bytes": 1577,
+      "source_sha256": "b88f379dafbbb0bf880bcd6fc28418cb9defd9302558ea78018f3992eaa9b227",
+      "archive_bytes": 1577,
+      "archive_sha256": "b88f379dafbbb0bf880bcd6fc28418cb9defd9302558ea78018f3992eaa9b227",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-038/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-038/case-result.json",
+      "source_bytes": 41076,
+      "source_sha256": "9f0f612abf152fa5a4332354526989bdfabdfd9991e956beef21adc899204453",
+      "archive_bytes": 41076,
+      "archive_sha256": "9f0f612abf152fa5a4332354526989bdfabdfd9991e956beef21adc899204453",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-038/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-038/agent_output.json",
+      "source_bytes": 2139,
+      "source_sha256": "ab59ae9a00268b3a6ea133d478c0ed42a79f7c39d7b7de98121205fcd543687a",
+      "archive_bytes": 2139,
+      "archive_sha256": "ab59ae9a00268b3a6ea133d478c0ed42a79f7c39d7b7de98121205fcd543687a",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-039/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-039/case-result.json",
+      "source_bytes": 57371,
+      "source_sha256": "d9ce167f791cf5025cb09d198b3d5b78fee73e289978fef55401bd34f03c95da",
+      "archive_bytes": 57371,
+      "archive_sha256": "d9ce167f791cf5025cb09d198b3d5b78fee73e289978fef55401bd34f03c95da",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-039/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-039/agent_output.json",
+      "source_bytes": 2317,
+      "source_sha256": "f42606454ec9267ed961657f30c2ca447954c7efd6c7d9fd6203044e306288eb",
+      "archive_bytes": 2317,
+      "archive_sha256": "f42606454ec9267ed961657f30c2ca447954c7efd6c7d9fd6203044e306288eb",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-040/case-result.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-040/case-result.json",
+      "source_bytes": 51794,
+      "source_sha256": "aca6534780939c12990934e41735fac3cbf72b977d360eff0a58aa12014b3e1b",
+      "archive_bytes": 51794,
+      "archive_sha256": "aca6534780939c12990934e41735fac3cbf72b977d360eff0a58aa12014b3e1b",
+      "transformation": "copy"
+    },
+    {
+      "path": "case-040/agent_output.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/case-040/agent_output.json",
+      "source_bytes": 1675,
+      "source_sha256": "55f505ec5d75a9537d2ca173e123ea3d365f6e4cd97536582d4c1f8c9a1b22bb",
+      "archive_bytes": 1675,
+      "archive_sha256": "55f505ec5d75a9537d2ca173e123ea3d365f6e4cd97536582d4c1f8c9a1b22bb",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/manifest.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/manifest.json",
+      "source_bytes": 1354,
+      "source_sha256": "bbc8244b70dd32272c550696e1fc5ec39c0545fcebeebc89617454b8d20e8705",
+      "archive_bytes": 1354,
+      "archive_sha256": "bbc8244b70dd32272c550696e1fc5ec39c0545fcebeebc89617454b8d20e8705",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-001.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-001.json",
+      "source_bytes": 12109,
+      "source_sha256": "f7e9bc52e64ae64c547527a9933051482627de9755d085dd77438d72d61ae16d",
+      "archive_bytes": 12109,
+      "archive_sha256": "f7e9bc52e64ae64c547527a9933051482627de9755d085dd77438d72d61ae16d",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-001.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-001.started.json",
+      "source_bytes": 123,
+      "source_sha256": "f1d6d99ccb9e3b60a4f84ffa945a1d2e7018d625e86d626abc7c946da9162cf2",
+      "archive_bytes": 123,
+      "archive_sha256": "f1d6d99ccb9e3b60a4f84ffa945a1d2e7018d625e86d626abc7c946da9162cf2",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-002.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-002.json",
+      "source_bytes": 15767,
+      "source_sha256": "179efa769da00b5dbf7162779f4cc52be3b21d2cb2163cc3fc0144e1f92157e5",
+      "archive_bytes": 15767,
+      "archive_sha256": "179efa769da00b5dbf7162779f4cc52be3b21d2cb2163cc3fc0144e1f92157e5",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-002.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-002.started.json",
+      "source_bytes": 123,
+      "source_sha256": "211c3b68ba877224e11f41a23a26cc8b8fc1d88834130fe9fa63e9b58203f893",
+      "archive_bytes": 123,
+      "archive_sha256": "211c3b68ba877224e11f41a23a26cc8b8fc1d88834130fe9fa63e9b58203f893",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-003.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-003.json",
+      "source_bytes": 16601,
+      "source_sha256": "89a889716ee7d4e0dcaf7833458a08fce61a47be95621e88d2b06246d09eadd2",
+      "archive_bytes": 16601,
+      "archive_sha256": "89a889716ee7d4e0dcaf7833458a08fce61a47be95621e88d2b06246d09eadd2",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-003.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-003.started.json",
+      "source_bytes": 123,
+      "source_sha256": "b44d157513b5519a8c79afb513f8bc90784872625e36a2ff5929bea28c73fd84",
+      "archive_bytes": 123,
+      "archive_sha256": "b44d157513b5519a8c79afb513f8bc90784872625e36a2ff5929bea28c73fd84",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-004.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-004.json",
+      "source_bytes": 434,
+      "source_sha256": "f7598682460cc3bcb2babbd2eb0172fab5eb5df637879286ed3beccdd9590ae5",
+      "archive_bytes": 434,
+      "archive_sha256": "f7598682460cc3bcb2babbd2eb0172fab5eb5df637879286ed3beccdd9590ae5",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-005.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-005.json",
+      "source_bytes": 430,
+      "source_sha256": "f970420fb6bf736795d1bbeb6263afd201c1afdbcd4b3793cd0e5ae6fb6a1b0e",
+      "archive_bytes": 430,
+      "archive_sha256": "f970420fb6bf736795d1bbeb6263afd201c1afdbcd4b3793cd0e5ae6fb6a1b0e",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-006.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-006.json",
+      "source_bytes": 12412,
+      "source_sha256": "c185fd2be5abb2a0baed51a802df9fee9f1c42c52f059b188480957ef06374cf",
+      "archive_bytes": 12412,
+      "archive_sha256": "c185fd2be5abb2a0baed51a802df9fee9f1c42c52f059b188480957ef06374cf",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-006.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-006.started.json",
+      "source_bytes": 123,
+      "source_sha256": "8f504e5ac017b631397b8927138f2b1cd2d932b86597aaa08f6cb35e5ac5761b",
+      "archive_bytes": 123,
+      "archive_sha256": "8f504e5ac017b631397b8927138f2b1cd2d932b86597aaa08f6cb35e5ac5761b",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-007.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-007.json",
+      "source_bytes": 15260,
+      "source_sha256": "c8d019f87e1afc2a2bdb74b1d2883c73390d524d3b8b609b236712f750cad445",
+      "archive_bytes": 15260,
+      "archive_sha256": "c8d019f87e1afc2a2bdb74b1d2883c73390d524d3b8b609b236712f750cad445",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-007.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-007.started.json",
+      "source_bytes": 123,
+      "source_sha256": "4992ed050cf8cca5725fa922e0c90ee3f6ca8cb7c494237ca75c71ba11275667",
+      "archive_bytes": 123,
+      "archive_sha256": "4992ed050cf8cca5725fa922e0c90ee3f6ca8cb7c494237ca75c71ba11275667",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-008.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-008.json",
+      "source_bytes": 12596,
+      "source_sha256": "9986a6a4eca08c97e2ec2b5292c8de4d8dc417cf38fc8c74b51f061d0c0d2e12",
+      "archive_bytes": 12596,
+      "archive_sha256": "9986a6a4eca08c97e2ec2b5292c8de4d8dc417cf38fc8c74b51f061d0c0d2e12",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-008.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-008.started.json",
+      "source_bytes": 123,
+      "source_sha256": "18d1535943648b5b5eea9bedeb4be13ea0ade15c2caf2dfd5fedbe6434479029",
+      "archive_bytes": 123,
+      "archive_sha256": "18d1535943648b5b5eea9bedeb4be13ea0ade15c2caf2dfd5fedbe6434479029",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-009.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-009.json",
+      "source_bytes": 12749,
+      "source_sha256": "12b35538a1e6a494696b9f6dcb2b49af79345fb321bf52e42d585638d4c270a2",
+      "archive_bytes": 12749,
+      "archive_sha256": "12b35538a1e6a494696b9f6dcb2b49af79345fb321bf52e42d585638d4c270a2",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-009.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-009.started.json",
+      "source_bytes": 122,
+      "source_sha256": "ff98d77aa0ed895db9ddf298610bad717cee37c30be299370362fc12c3ec76bf",
+      "archive_bytes": 122,
+      "archive_sha256": "ff98d77aa0ed895db9ddf298610bad717cee37c30be299370362fc12c3ec76bf",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-010.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-010.json",
+      "source_bytes": 14177,
+      "source_sha256": "a26c87d269bd3d1875a0ab5681edcf8dc30076d95c8bf69719ab33d94a5119f3",
+      "archive_bytes": 14177,
+      "archive_sha256": "a26c87d269bd3d1875a0ab5681edcf8dc30076d95c8bf69719ab33d94a5119f3",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-010.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-010.started.json",
+      "source_bytes": 123,
+      "source_sha256": "2705a48a6318fe9cc403a3aa92b27f9665fc966973a6f15b79ba7d9556ee464d",
+      "archive_bytes": 123,
+      "archive_sha256": "2705a48a6318fe9cc403a3aa92b27f9665fc966973a6f15b79ba7d9556ee464d",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-011.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-011.json",
+      "source_bytes": 10778,
+      "source_sha256": "4037530b10d04bcc60437e4e288e5411cfa933a6a3a7a5d7eb9609c328e08f26",
+      "archive_bytes": 10778,
+      "archive_sha256": "4037530b10d04bcc60437e4e288e5411cfa933a6a3a7a5d7eb9609c328e08f26",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-011.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-011.started.json",
+      "source_bytes": 121,
+      "source_sha256": "8ed5757cde066d28377d404f7933d56329d62803a81cc1500fd54d88816f946a",
+      "archive_bytes": 121,
+      "archive_sha256": "8ed5757cde066d28377d404f7933d56329d62803a81cc1500fd54d88816f946a",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-012.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-012.json",
+      "source_bytes": 15571,
+      "source_sha256": "00fe97190331fe800a85141e16550d195532d4595d4314f33c65d054282838b8",
+      "archive_bytes": 15571,
+      "archive_sha256": "00fe97190331fe800a85141e16550d195532d4595d4314f33c65d054282838b8",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-012.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-012.started.json",
+      "source_bytes": 123,
+      "source_sha256": "04527c7fa68e306da9cfbe31bd2fac0dfd643bb6f7c52907955cb3cdb625d321",
+      "archive_bytes": 123,
+      "archive_sha256": "04527c7fa68e306da9cfbe31bd2fac0dfd643bb6f7c52907955cb3cdb625d321",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-013.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-013.json",
+      "source_bytes": 12031,
+      "source_sha256": "1ebf546111ab46797d81c34a7102c053c2423c63e210af58c92cc1a60b9290f5",
+      "archive_bytes": 12031,
+      "archive_sha256": "1ebf546111ab46797d81c34a7102c053c2423c63e210af58c92cc1a60b9290f5",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-013.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-013.started.json",
+      "source_bytes": 123,
+      "source_sha256": "c996f1c37758e6a3d67524eba9cc876e47d9e50d3b7d866b8f96767c1286d067",
+      "archive_bytes": 123,
+      "archive_sha256": "c996f1c37758e6a3d67524eba9cc876e47d9e50d3b7d866b8f96767c1286d067",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-014.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-014.json",
+      "source_bytes": 14143,
+      "source_sha256": "302eead7e6277fb49757878d9cd046006f453e9098b0cfeb93985772653a13ab",
+      "archive_bytes": 14143,
+      "archive_sha256": "302eead7e6277fb49757878d9cd046006f453e9098b0cfeb93985772653a13ab",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-014.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-014.started.json",
+      "source_bytes": 123,
+      "source_sha256": "a92334c2bd0592df461a4af65e307a7172f94d0a5e57eeab707f824d8b697206",
+      "archive_bytes": 123,
+      "archive_sha256": "a92334c2bd0592df461a4af65e307a7172f94d0a5e57eeab707f824d8b697206",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-015.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-015.json",
+      "source_bytes": 14039,
+      "source_sha256": "70b6a68f6a1cd84b1d00f640d56cb708eeb49e3ed240212adddf75332e5e0f6e",
+      "archive_bytes": 14039,
+      "archive_sha256": "70b6a68f6a1cd84b1d00f640d56cb708eeb49e3ed240212adddf75332e5e0f6e",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-015.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-015.started.json",
+      "source_bytes": 123,
+      "source_sha256": "34adf8912f4d79a7413e385ee6c9ab786298f9a14c5b66121d5e462f37189986",
+      "archive_bytes": 123,
+      "archive_sha256": "34adf8912f4d79a7413e385ee6c9ab786298f9a14c5b66121d5e462f37189986",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-016.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-016.json",
+      "source_bytes": 11153,
+      "source_sha256": "85c2904be9b50cc90004472a9652f86fb8959fed7b915a05b7c288f4fb4dc0ea",
+      "archive_bytes": 11153,
+      "archive_sha256": "85c2904be9b50cc90004472a9652f86fb8959fed7b915a05b7c288f4fb4dc0ea",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-016.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-016.started.json",
+      "source_bytes": 123,
+      "source_sha256": "fa1d50961c9bcb8a0de029eb8c597f6f3f768bd179c3bdd524d1157d655c069f",
+      "archive_bytes": 123,
+      "archive_sha256": "fa1d50961c9bcb8a0de029eb8c597f6f3f768bd179c3bdd524d1157d655c069f",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-017.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-017.json",
+      "source_bytes": 11646,
+      "source_sha256": "62ce1738cd521b38441052001a8fb7c615ca9b7b8dcf9d1cbacc8a1c1e1f8378",
+      "archive_bytes": 11646,
+      "archive_sha256": "62ce1738cd521b38441052001a8fb7c615ca9b7b8dcf9d1cbacc8a1c1e1f8378",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-017.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-017.started.json",
+      "source_bytes": 123,
+      "source_sha256": "bc7aa2296fc0e00f57495e9e59a8c5b81ae114a4cf6a13e9b0827d326b34fd57",
+      "archive_bytes": 123,
+      "archive_sha256": "bc7aa2296fc0e00f57495e9e59a8c5b81ae114a4cf6a13e9b0827d326b34fd57",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-018.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-018.json",
+      "source_bytes": 11910,
+      "source_sha256": "76fa1f9a17c3036366b0d08fc50922c1d2dc7e8efe571c62a4660c7be64a43e6",
+      "archive_bytes": 11910,
+      "archive_sha256": "76fa1f9a17c3036366b0d08fc50922c1d2dc7e8efe571c62a4660c7be64a43e6",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-018.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-018.started.json",
+      "source_bytes": 122,
+      "source_sha256": "cbbe73729b6fa5dfff35dcaa641d53157792521656b1638f44e639283c37c9e1",
+      "archive_bytes": 122,
+      "archive_sha256": "cbbe73729b6fa5dfff35dcaa641d53157792521656b1638f44e639283c37c9e1",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-019.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-019.json",
+      "source_bytes": 498,
+      "source_sha256": "cd847b6a380fcfd43bb6bfed6fa6d09e2daa7fa3068e61f4ec9575ebd99ae3fb",
+      "archive_bytes": 498,
+      "archive_sha256": "cd847b6a380fcfd43bb6bfed6fa6d09e2daa7fa3068e61f4ec9575ebd99ae3fb",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-020.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-020.json",
+      "source_bytes": 498,
+      "source_sha256": "3ffc8a555d632588f118ce1e0337fb280b416706bf72a42a255d6a4c88433334",
+      "archive_bytes": 498,
+      "archive_sha256": "3ffc8a555d632588f118ce1e0337fb280b416706bf72a42a255d6a4c88433334",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-021.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-021.json",
+      "source_bytes": 13193,
+      "source_sha256": "3ce8dd2a373f73db70423f4e4e8f40b6b05a790995b937dfb910a5a93db126d9",
+      "archive_bytes": 13193,
+      "archive_sha256": "3ce8dd2a373f73db70423f4e4e8f40b6b05a790995b937dfb910a5a93db126d9",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-021.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-021.started.json",
+      "source_bytes": 122,
+      "source_sha256": "c9d03806222aee08103d5b4070410ac3e46e6899b9067fbb6c0cc8c9b60e8f9d",
+      "archive_bytes": 122,
+      "archive_sha256": "c9d03806222aee08103d5b4070410ac3e46e6899b9067fbb6c0cc8c9b60e8f9d",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-022.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-022.json",
+      "source_bytes": 23395,
+      "source_sha256": "fbe1cfcd4fefcee38a1b97ab0bf0371441aec9e86ba9b869465fc4dad505754f",
+      "archive_bytes": 23395,
+      "archive_sha256": "fbe1cfcd4fefcee38a1b97ab0bf0371441aec9e86ba9b869465fc4dad505754f",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-022.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-022.started.json",
+      "source_bytes": 123,
+      "source_sha256": "c0783114109bc055e1c1259cda643f5eb85d38c7abaa9820b4d1ac9b7d24f1f5",
+      "archive_bytes": 123,
+      "archive_sha256": "c0783114109bc055e1c1259cda643f5eb85d38c7abaa9820b4d1ac9b7d24f1f5",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-023.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-023.json",
+      "source_bytes": 428,
+      "source_sha256": "d0d39f07cbc39fbc9e7ba346c882aa5c72b44effe42e6aa644027bca6ec3f190",
+      "archive_bytes": 428,
+      "archive_sha256": "d0d39f07cbc39fbc9e7ba346c882aa5c72b44effe42e6aa644027bca6ec3f190",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-024.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-024.json",
+      "source_bytes": 436,
+      "source_sha256": "9e33035ac4ae0e20984b8590a85a80e347efd30d5440d0b55036349798297f9c",
+      "archive_bytes": 436,
+      "archive_sha256": "9e33035ac4ae0e20984b8590a85a80e347efd30d5440d0b55036349798297f9c",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-025.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-025.json",
+      "source_bytes": 428,
+      "source_sha256": "68823bd425bf849790b945a55513528ea88b9dc1acef9e3423c454d221586165",
+      "archive_bytes": 428,
+      "archive_sha256": "68823bd425bf849790b945a55513528ea88b9dc1acef9e3423c454d221586165",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-026.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-026.json",
+      "source_bytes": 428,
+      "source_sha256": "647315400a6fe2e3ef78a0ee41ee19f0d801c2f481a5c24021e636e8b3d5a398",
+      "archive_bytes": 428,
+      "archive_sha256": "647315400a6fe2e3ef78a0ee41ee19f0d801c2f481a5c24021e636e8b3d5a398",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-027.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-027.json",
+      "source_bytes": 428,
+      "source_sha256": "5b41dd806b350e03b2a9d8e38eb2414f47058fae367bfc304123a22f57a9a4f8",
+      "archive_bytes": 428,
+      "archive_sha256": "5b41dd806b350e03b2a9d8e38eb2414f47058fae367bfc304123a22f57a9a4f8",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-028.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-028.json",
+      "source_bytes": 428,
+      "source_sha256": "a69fa37dede10d17d0c6170b6e1d04cefa3aca09b6c5d4c5401435a83bb5af6b",
+      "archive_bytes": 428,
+      "archive_sha256": "a69fa37dede10d17d0c6170b6e1d04cefa3aca09b6c5d4c5401435a83bb5af6b",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-029.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-029.json",
+      "source_bytes": 428,
+      "source_sha256": "0f379ba7061caed1cf8519afda79e1fc7db29837695cd91fb91ad127736a12f7",
+      "archive_bytes": 428,
+      "archive_sha256": "0f379ba7061caed1cf8519afda79e1fc7db29837695cd91fb91ad127736a12f7",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-030.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-030.json",
+      "source_bytes": 436,
+      "source_sha256": "96ec3c659b4892f9b6b28a5bfcd1538c722cac87f89192cefda321c1a59a42bc",
+      "archive_bytes": 436,
+      "archive_sha256": "96ec3c659b4892f9b6b28a5bfcd1538c722cac87f89192cefda321c1a59a42bc",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-031.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-031.json",
+      "source_bytes": 12971,
+      "source_sha256": "a1b471e0dca7922829746886dab42d68d9c6f8f771d5141c0fd57e8904430efc",
+      "archive_bytes": 12971,
+      "archive_sha256": "a1b471e0dca7922829746886dab42d68d9c6f8f771d5141c0fd57e8904430efc",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-031.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-031.started.json",
+      "source_bytes": 123,
+      "source_sha256": "24867d4e54bb99d4aa59c89c0df1ccd0a665c626f20a47520641a576f31e59ec",
+      "archive_bytes": 123,
+      "archive_sha256": "24867d4e54bb99d4aa59c89c0df1ccd0a665c626f20a47520641a576f31e59ec",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-032.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-032.json",
+      "source_bytes": 12308,
+      "source_sha256": "ace8ec38172c122cee474d98d4c5569a0638688e20ed6fe5e1a935400c08b786",
+      "archive_bytes": 12308,
+      "archive_sha256": "ace8ec38172c122cee474d98d4c5569a0638688e20ed6fe5e1a935400c08b786",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-032.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-032.started.json",
+      "source_bytes": 122,
+      "source_sha256": "d4a48533783268fa374e6ecd2e4b1cb6a3d657c3c5c49307a1bbf86cb41d2f8b",
+      "archive_bytes": 122,
+      "archive_sha256": "d4a48533783268fa374e6ecd2e4b1cb6a3d657c3c5c49307a1bbf86cb41d2f8b",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-033.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-033.json",
+      "source_bytes": 428,
+      "source_sha256": "6a2f3e923d419d9e6b67ab6120b510e66903bbf1a6539db3bd4069e91e7859ae",
+      "archive_bytes": 428,
+      "archive_sha256": "6a2f3e923d419d9e6b67ab6120b510e66903bbf1a6539db3bd4069e91e7859ae",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-034.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-034.json",
+      "source_bytes": 11820,
+      "source_sha256": "1ebd7410d0d2ce88ad9858cd3cb5f0267bc467201b65b5330a039fb51c2e15cb",
+      "archive_bytes": 11820,
+      "archive_sha256": "1ebd7410d0d2ce88ad9858cd3cb5f0267bc467201b65b5330a039fb51c2e15cb",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-034.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-034.started.json",
+      "source_bytes": 122,
+      "source_sha256": "5edf086643c58aa5bf12cc066aed92eef7f77abe60e2d8d7d63cba0edb20f68b",
+      "archive_bytes": 122,
+      "archive_sha256": "5edf086643c58aa5bf12cc066aed92eef7f77abe60e2d8d7d63cba0edb20f68b",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-035.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-035.json",
+      "source_bytes": 428,
+      "source_sha256": "9046e1b323cc91de097703492ee61b49c3dbcf6ca192140c422550f008215892",
+      "archive_bytes": 428,
+      "archive_sha256": "9046e1b323cc91de097703492ee61b49c3dbcf6ca192140c422550f008215892",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-036.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-036.json",
+      "source_bytes": 12509,
+      "source_sha256": "f5286bcb0b1dd3bd0aab29769904ff94974dd1664ceb6e8e63150cd06d75f8bd",
+      "archive_bytes": 12509,
+      "archive_sha256": "f5286bcb0b1dd3bd0aab29769904ff94974dd1664ceb6e8e63150cd06d75f8bd",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-036.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-036.started.json",
+      "source_bytes": 123,
+      "source_sha256": "18516085918435044e594fcdcb5a0d2356b3b01c1640bfb895121d9db9ef186b",
+      "archive_bytes": 123,
+      "archive_sha256": "18516085918435044e594fcdcb5a0d2356b3b01c1640bfb895121d9db9ef186b",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-037.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-037.json",
+      "source_bytes": 12611,
+      "source_sha256": "5f26451771a9de8501e47ceecd94f112560d632aea38d0ff3ff7084369a8cc58",
+      "archive_bytes": 12611,
+      "archive_sha256": "5f26451771a9de8501e47ceecd94f112560d632aea38d0ff3ff7084369a8cc58",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-037.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-037.started.json",
+      "source_bytes": 122,
+      "source_sha256": "d876f18f05685d9f4074b5c567d1ba4193b78905bbdaf75e1627d8914796bc03",
+      "archive_bytes": 122,
+      "archive_sha256": "d876f18f05685d9f4074b5c567d1ba4193b78905bbdaf75e1627d8914796bc03",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-038.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-038.json",
+      "source_bytes": 16136,
+      "source_sha256": "3388e52b13111065896115b73aadbae756cae5469598357da141ed2961ceb36b",
+      "archive_bytes": 16136,
+      "archive_sha256": "3388e52b13111065896115b73aadbae756cae5469598357da141ed2961ceb36b",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-038.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-038.started.json",
+      "source_bytes": 123,
+      "source_sha256": "d2e56a3a1f8e7fe0ead671fe035e801199a52dac77216c5281980f859abfcbe2",
+      "archive_bytes": 123,
+      "archive_sha256": "d2e56a3a1f8e7fe0ead671fe035e801199a52dac77216c5281980f859abfcbe2",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-039.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-039.json",
+      "source_bytes": 18333,
+      "source_sha256": "9d6235d8bcca72865c111952a45160f515de20cab60d6e9a7f661aa2a1eb9ec1",
+      "archive_bytes": 18333,
+      "archive_sha256": "9d6235d8bcca72865c111952a45160f515de20cab60d6e9a7f661aa2a1eb9ec1",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-039.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-039.started.json",
+      "source_bytes": 123,
+      "source_sha256": "79dcd7c9c1706a5534167e3dd63faf11b833b8e88c7dca096faa8fddfe0e7631",
+      "archive_bytes": 123,
+      "archive_sha256": "79dcd7c9c1706a5534167e3dd63faf11b833b8e88c7dca096faa8fddfe0e7631",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-040.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-040.json",
+      "source_bytes": 22758,
+      "source_sha256": "88841474725d2af62ca1dbc9e13f7e16298f3945c5fddecb539b0d05336cb460",
+      "archive_bytes": 22758,
+      "archive_sha256": "88841474725d2af62ca1dbc9e13f7e16298f3945c5fddecb539b0d05336cb460",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/case-040.started.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/case-040.started.json",
+      "source_bytes": 123,
+      "source_sha256": "7ecc16dd1e2b7b35680646608a12ab62244b1788b5263f85da5656d2a23654f4",
+      "archive_bytes": 123,
+      "archive_sha256": "7ecc16dd1e2b7b35680646608a12ab62244b1788b5263f85da5656d2a23654f4",
+      "transformation": "copy"
+    },
+    {
+      "path": "grading/SUMMARY.json.gz",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/grading/SUMMARY.json",
+      "source_bytes": 396738,
+      "source_sha256": "22cf313b3d557f0485139ac3db135f0442fb7c9df281151b4a0b48ac4852d202",
+      "archive_bytes": 93814,
+      "archive_sha256": "b958e3faf45a872b0457129ecfc92e3295dac3382dadb9433e4a6c2bfc804a6b",
+      "transformation": "gzip_mtime_0"
+    },
+    {
+      "path": "CACHE_REUSE_PREPARED.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/CACHE_REUSE_PREPARED.json",
+      "source_bytes": 59157,
+      "source_sha256": "36c6470f8e780405e281302926a830ad188684557c868e13a0e185a21d04949e",
+      "archive_bytes": 59157,
+      "archive_sha256": "36c6470f8e780405e281302926a830ad188684557c868e13a0e185a21d04949e",
+      "transformation": "copy"
+    },
+    {
+      "path": "CACHE_REUSE.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-score/CACHE_REUSE.json",
+      "source_bytes": 39551,
+      "source_sha256": "473ae23e4493fd9b9d7ecc004ac90aebfb8db0318c59262f095a56793778ed01",
+      "archive_bytes": 39551,
+      "archive_sha256": "473ae23e4493fd9b9d7ecc004ac90aebfb8db0318c59262f095a56793778ed01",
+      "transformation": "copy"
+    },
+    {
+      "path": "cache-run/guard.py",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/grade_original_r2_from_cache.py",
+      "source_bytes": 5234,
+      "source_sha256": "06176eefca63249d0ee3b586eaa03b820f27dcb7fe848772b51fb92f459ac448",
+      "archive_bytes": 5234,
+      "archive_sha256": "06176eefca63249d0ee3b586eaa03b820f27dcb7fe848772b51fb92f459ac448",
+      "transformation": "copy"
+    },
+    {
+      "path": "cache-run/job.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-cache-grading-native-job.json",
+      "source_bytes": 1577,
+      "source_sha256": "e75442aaaa9022376d8127edc11869d1fb9ca94474ccd27e20b1879c820ca565",
+      "archive_bytes": 1577,
+      "archive_sha256": "e75442aaaa9022376d8127edc11869d1fb9ca94474ccd27e20b1879c820ca565",
+      "transformation": "copy"
+    },
+    {
+      "path": "cache-run/grading.log",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-cache-grading-native.log",
+      "source_bytes": 3685,
+      "source_sha256": "76ab8e7842d289cf85a3ad2c305a02fdeb52e799872c20b190e100eae3cb73b3",
+      "archive_bytes": 3685,
+      "archive_sha256": "76ab8e7842d289cf85a3ad2c305a02fdeb52e799872c20b190e100eae3cb73b3",
+      "transformation": "copy"
+    },
+    {
+      "path": "cache-run/exit.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-cache-grading-native-exit.json",
+      "source_bytes": 99,
+      "source_sha256": "cb02713abe1fa504ea5e094b129c282a7b620af5ef023de74add7898d5695748",
+      "archive_bytes": 99,
+      "archive_sha256": "cb02713abe1fa504ea5e094b129c282a7b620af5ef023de74add7898d5695748",
+      "transformation": "copy"
+    },
+    {
+      "path": "cache-run/supervisor.py",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/run_qualification_job.py",
+      "source_bytes": 1279,
+      "source_sha256": "31eebe99550dec0e33fa8cb03206fe2350dde070f185dd1ff25498d7d712af8d",
+      "archive_bytes": 1279,
+      "archive_sha256": "31eebe99550dec0e33fa8cb03206fe2350dde070f185dd1ff25498d7d712af8d",
+      "transformation": "copy"
+    },
+    {
+      "path": "cache-run/VERIFICATION.json",
+      "source_path": "/workspace/scratch/c0f3ec78c621/validation/audit-20261117/itbench-aa-r2-original-grading-verification.json",
+      "source_bytes": 5549,
+      "source_sha256": "b014eee663aa00398b7ba0da614e20f4c5a57ebdfc8018f41f409be9479c396e",
+      "archive_bytes": 5549,
+      "archive_sha256": "b014eee663aa00398b7ba0da614e20f4c5a57ebdfc8018f41f409be9479c396e",
+      "transformation": "copy"
+    },
+    {
+      "path": "ALLOWLIST.json",
+      "source_path": null,
+      "source_bytes": null,
+      "source_sha256": null,
+      "archive_bytes": 31468,
+      "archive_sha256": "d5d027feda9c819017e897749d9db175df72f7c6a042004e9a630f72338d6131",
+      "transformation": "generated_evidence_report"
+    },
+    {
+      "path": "RESULTS.md",
+      "source_path": null,
+      "source_bytes": null,
+      "source_sha256": null,
+      "archive_bytes": 5327,
+      "archive_sha256": "47d498dcb4c6e2664726a90b71c42c4a0f5e1a72257e5a40c610f25f7188f9fe",
+      "transformation": "generated_evidence_report"
+    }
+  ],
+  "manifest_excluded_from_own_entries": true,
+  "file_count_including_manifest": 149,
+  "payload_bytes_excluding_manifest": 2331249,
+  "compression": "gzip.compress(mtime=0); decompressing exactly reproduces source bytes.",
+  "redaction": "Only an already-known private key filepath may be replaced; no credential file was read."
+}

@@ -1,0 +1,202 @@
+{
+  "config": {
+    "argv": [
+      "/usr/local/bin/node",
+      "/workspace/LocalPilot-OpenSource/desktop/node_modules/.bin/playwright",
+      "test",
+      "tests/ui/model-configuration.spec.ts",
+      "--output=/workspace/LocalPilot-OpenSource/docs/evidence/native-polish-final-20261117/browser-traced/test-results",
+      "--trace",
+      "on"
+    ],
+    "configFile": "/workspace/LocalPilot-OpenSource/desktop/playwright.config.ts",
+    "rootDir": "/workspace/LocalPilot-OpenSource/desktop/tests/ui",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/workspace/LocalPilot-OpenSource/docs/evidence/native-polish-final-20261117/browser-traced/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/workspace/LocalPilot-OpenSource/desktop/tests/ui",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/workspace/LocalPilot-OpenSource/docs/evidence/native-polish-final-20261117/browser-traced/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "",
+        "testDir": "/workspace/LocalPilot-OpenSource/desktop/tests/ui",
+        "snapshotDir": "/workspace/LocalPilot-OpenSource/desktop/tests/ui",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:1420",
+          "viewport": {
+            "width": 1440,
+            "height": 940
+          },
+          "trace": "on"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": ""
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/workspace/LocalPilot-OpenSource/docs/evidence/native-polish-final-20261117/browser-traced/browser-tests.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": {
+      "command": "npm run dev",
+      "url": "http://127.0.0.1:1420",
+      "reuseExistingServer": true
+    }
+  },
+  "suites": [
+    {
+      "title": "model-configuration.spec.ts",
+      "file": "model-configuration.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "optional worker roles preserve the chosen coordinator and configured efforts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 923,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-17T13:28:10.153Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/workspace/LocalPilot-OpenSource/docs/evidence/native-polish-final-20261117/browser-traced/test-results/model-configuration-option-11377-ator-and-configured-efforts/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "eaf93d9190e24c7e883f-22c3c433a11b871bbfb8",
+          "file": "model-configuration.spec.ts",
+          "line": 35,
+          "column": 1
+        },
+        {
+          "title": "removing a partner or choosing it as primary clears both optional roles",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 567,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-17T13:28:11.373Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/workspace/LocalPilot-OpenSource/docs/evidence/native-polish-final-20261117/browser-traced/test-results/model-configuration-removi-2e8dc--clears-both-optional-roles/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "eaf93d9190e24c7e883f-eb0023572f6a4e58c107",
+          "file": "model-configuration.spec.ts",
+          "line": 68,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-17T13:28:08.681Z",
+    "duration": 3333.9809999999998,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

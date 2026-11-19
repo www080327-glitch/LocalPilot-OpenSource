@@ -1,0 +1,30 @@
+{
+  "source_commit": "3793af90877aef18075c66e0e593c9a8578cbac6",
+  "source_tree": "5c49815729466734c467903246e7a771ec42c98c",
+  "playwright": "1.64.1",
+  "workers": 1,
+  "exit_code": 0,
+  "passed": 0,
+  "failed": 0,
+  "skipped": 0,
+  "tests": [
+    {
+      "file": "pet-controls.spec.ts",
+      "name": "the pet size slider sends its selected size to the window and restores the default",
+      "result": "expected",
+      "duration_ms": 1310
+    },
+    {
+      "file": "pet-controls.spec.ts",
+      "name": "the title bar X requests bubble collapse and an explicit reopening retains the unsent draft",
+      "result": "expected",
+      "duration_ms": 1050
+    },
+    {
+      "file": "pet-window.spec.ts",
+      "name": "pet settings offer pose recovery only after a local character is identified",
+      "result": "expected",
+      "duration_ms": 1025
+    }
+  ]
+}

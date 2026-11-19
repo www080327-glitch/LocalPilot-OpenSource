@@ -1,0 +1,15 @@
+
+> localpilot-desktop@5.0.1-rc.17 test:ui
+> playwright test tests/ui/model-configuration.spec.ts --output=<workspace>/LocalPilot-OpenSource/docs/evidence/native-polish-final-20261117/browser/test-results
+
+[WebServer] (node:4047) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:4059) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/ui/model-configuration.spec.ts:35:1 › optional worker roles preserve the chosen coordinator and configured efforts (793ms)
+  ✓  2 tests/ui/model-configuration.spec.ts:68:1 › removing a partner or choosing it as primary clears both optional roles (477ms)
+
+  2 passed (2.9s)

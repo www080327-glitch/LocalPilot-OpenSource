@@ -1,0 +1,422 @@
+{
+  "config": {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/node_modules/.bin/playwright",
+      "test",
+      "tests/ui/audit-desktop.spec.ts",
+      "--output=docs/evidence/audit-20261117-desktop/browser-run-3/artifacts"
+    ],
+    "configFile": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/playwright.config.ts",
+    "rootDir": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/docs/evidence/audit-20261117-desktop/browser-run-3/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/docs/evidence/audit-20261117-desktop/browser-run-3/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "",
+        "testDir": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui",
+        "snapshotDir": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:1420",
+          "viewport": {
+            "width": 1440,
+            "height": 940
+          },
+          "launchOptions": {
+            "executablePath": "/usr/bin/chromium"
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": ""
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "docs/evidence/audit-20261117-desktop/browser-run-3/browser-tests.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": {
+      "command": "npm run dev",
+      "url": "http://127.0.0.1:1420",
+      "reuseExistingServer": true
+    }
+  },
+  "suites": [
+    {
+      "title": "audit-desktop.spec.ts",
+      "file": "audit-desktop.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "pet reconnects its service from chat without resubmitting a question",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 30073,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui/audit-desktop.spec.ts",
+                        "column": 67,
+                        "line": 9
+                      },
+                      "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '连接轻聊服务', exact: true })\u001b[22m\n\n\n   7 |   await auditBridge(page, true);\n   8 |   await page.goto(\"/?pet=bubble\");\n>  9 |   await page.getByRole(\"button\", { name: \"连接轻聊服务\", exact: true }).click();\n     |                                                                   ^\n  10 |   await expect(page.getByText(\"轻聊服务未连接。\", { exact: true })).toHaveCount(\n  11 |     0,\n  12 |   );\n    at /workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui/audit-desktop.spec.ts:9:67"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T17:07:40.955Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/docs/evidence/audit-20261117-desktop/browser-run-3/artifacts/audit-desktop-pet-reconnec-6de19-out-resubmitting-a-question/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "ff40bc7b53bacf6523fe-d9f162c9e4cfd8e83463",
+          "file": "audit-desktop.spec.ts",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "explicit pet opening focuses input and clearing a multiline draft shrinks it",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5691,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeFocused\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('textbox', { name: '回复 DeepSeek 娘' })\nExpected: focused\nReceived: inactive\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeFocused\" getByRole('textbox', { name: '回复 DeepSeek 娘' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('textbox', { name: '回复 DeepSeek 娘' })\u001b[22m\n\u001b[2m    14 × locator resolved to <textarea rows=\"1\" maxlength=\"4000\" aria-label=\"回复 DeepSeek 娘\" placeholder=\"和 DeepSeek 娘说句话…\"></textarea>\u001b[22m\n\u001b[2m       - unexpected value \"inactive\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeFocused\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('textbox', { name: '回复 DeepSeek 娘' })\nExpected: focused\nReceived: inactive\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeFocused\" getByRole('textbox', { name: '回复 DeepSeek 娘' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('textbox', { name: '回复 DeepSeek 娘' })\u001b[22m\n\u001b[2m    14 × locator resolved to <textarea rows=\"1\" maxlength=\"4000\" aria-label=\"回复 DeepSeek 娘\" placeholder=\"和 DeepSeek 娘说句话…\"></textarea>\u001b[22m\n\u001b[2m       - unexpected value \"inactive\"\u001b[22m\n\n    at /workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui/audit-desktop.spec.ts:32:23",
+                    "location": {
+                      "file": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui/audit-desktop.spec.ts",
+                      "column": 23,
+                      "line": 32
+                    },
+                    "snippet": "  30 |     (window as any).emitFixture(\"pet-state\", { expanded: true, focus: true }),\n  31 |   );\n> 32 |   await expect(input).toBeFocused();\n     |                       ^\n  33 |   await input.fill(\"第一行\\n第二行\\n第三行\\n第四行\");\n  34 |   const tall = (await input.boundingBox())!.height;\n  35 |   await page.getByRole(\"button\", { name: \"发送消息\", exact: true }).click();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui/audit-desktop.spec.ts",
+                        "column": 23,
+                        "line": 32
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeFocused\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('textbox', { name: '回复 DeepSeek 娘' })\nExpected: focused\nReceived: inactive\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeFocused\" getByRole('textbox', { name: '回复 DeepSeek 娘' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('textbox', { name: '回复 DeepSeek 娘' })\u001b[22m\n\u001b[2m    14 × locator resolved to <textarea rows=\"1\" maxlength=\"4000\" aria-label=\"回复 DeepSeek 娘\" placeholder=\"和 DeepSeek 娘说句话…\"></textarea>\u001b[22m\n\u001b[2m       - unexpected value \"inactive\"\u001b[22m\n\n\n  30 |     (window as any).emitFixture(\"pet-state\", { expanded: true, focus: true }),\n  31 |   );\n> 32 |   await expect(input).toBeFocused();\n     |                       ^\n  33 |   await input.fill(\"第一行\\n第二行\\n第三行\\n第四行\");\n  34 |   const tall = (await input.boundingBox())!.height;\n  35 |   await page.getByRole(\"button\", { name: \"发送消息\", exact: true }).click();\n    at /workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui/audit-desktop.spec.ts:32:23"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T17:08:11.669Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/docs/evidence/audit-20261117-desktop/browser-run-3/artifacts/audit-desktop-explicit-pet-0a27d--multiline-draft-shrinks-it/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui/audit-desktop.spec.ts",
+                    "column": 23,
+                    "line": 32
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "ff40bc7b53bacf6523fe-7f4ce4727a350ddb3542",
+          "file": "audit-desktop.spec.ts",
+          "line": 22,
+          "column": 1
+        },
+        {
+          "title": "pet settings save a quick reminder and cancelled dialogs retain the character",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 30039,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui/audit-desktop.spec.ts",
+                        "column": 56,
+                        "line": 52
+                      },
+                      "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '10 分钟后提醒' })\u001b[22m\n\n\n  50 |   await page.getByRole(\"textbox\", { name: \"提醒内容\" }).fill(\"喝水测试\");\n  51 |   const started = Date.now() / 1000;\n> 52 |   await page.getByRole(\"button\", { name: \"10 分钟后提醒\" }).click();\n     |                                                        ^\n  53 |   await expect(page.getByText(\"提醒已保存。\", { exact: true })).toBeVisible();\n  54 |   const writes = await page.evaluate(() =>\n  55 |     (window as any).fixtureCalls.filter(\n    at /workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui/audit-desktop.spec.ts:52:56"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T17:08:17.879Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/docs/evidence/audit-20261117-desktop/browser-run-3/artifacts/audit-desktop-pet-settings-3b388-ialogs-retain-the-character/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "ff40bc7b53bacf6523fe-ea80f6cf53ddc140d3f2",
+          "file": "audit-desktop.spec.ts",
+          "line": 43,
+          "column": 1
+        },
+        {
+          "title": "pet model setup opens the main model library directly",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "interrupted",
+                  "duration": 16119,
+                  "error": {
+                    "message": "Error: locator.click: Test ended.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '打开模型库配置轻聊模型' })\u001b[22m\n",
+                    "stack": "Error: locator.click: Test ended.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '打开模型库配置轻聊模型' })\u001b[22m\n\n    at /workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui/audit-desktop.spec.ts:82:59",
+                    "location": {
+                      "file": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui/audit-desktop.spec.ts",
+                      "column": 59,
+                      "line": 82
+                    },
+                    "snippet": "  80 |   await page.getByTitle(\"宠物设置\", { exact: true }).click();\n  81 |   await page.getByRole(\"button\", { name: /高级设置/ }).click();\n> 82 |   await page.getByRole(\"button\", { name: \"打开模型库配置轻聊模型\" }).click();\n     |                                                           ^\n  83 |   const calls = await page.evaluate(() =>\n  84 |     (window as any).fixtureCalls.filter(\n  85 |       (call: any) =>"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui/audit-desktop.spec.ts",
+                        "column": 59,
+                        "line": 82
+                      },
+                      "message": "Error: locator.click: Test ended.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '打开模型库配置轻聊模型' })\u001b[22m\n\n\n  80 |   await page.getByTitle(\"宠物设置\", { exact: true }).click();\n  81 |   await page.getByRole(\"button\", { name: /高级设置/ }).click();\n> 82 |   await page.getByRole(\"button\", { name: \"打开模型库配置轻聊模型\" }).click();\n     |                                                           ^\n  83 |   const calls = await page.evaluate(() =>\n  84 |     (window as any).fixtureCalls.filter(\n  85 |       (call: any) =>\n    at /workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui/audit-desktop.spec.ts:82:59"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T17:08:48.511Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/docs/evidence/audit-20261117-desktop/browser-run-3/artifacts/audit-desktop-pet-model-se-09afd-main-model-library-directly/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/workspace/scratch/2a488f6eabf5/LocalPilot-polish-final-20261116/desktop/tests/ui/audit-desktop.spec.ts",
+                    "column": 59,
+                    "line": 82
+                  }
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "ff40bc7b53bacf6523fe-498cee6af02d119fc7ba",
+          "file": "audit-desktop.spec.ts",
+          "line": 75,
+          "column": 1
+        },
+        {
+          "title": "system reduced motion changes propagate to the native animator live",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "ff40bc7b53bacf6523fe-170def5bd5004cdc6797",
+          "file": "audit-desktop.spec.ts",
+          "line": 92,
+          "column": 1
+        },
+        {
+          "title": "cloud provider form submits OpenAI options and keeps credentials out of preferences",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "ff40bc7b53bacf6523fe-9569fe9d679603a1d799",
+          "file": "audit-desktop.spec.ts",
+          "line": 137,
+          "column": 1
+        },
+        {
+          "title": "long task selection sends an explicit deadline and a separate extended budget",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "ff40bc7b53bacf6523fe-b79bd737fb4aff91105c",
+          "file": "audit-desktop.spec.ts",
+          "line": 175,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-16T17:07:40.372Z",
+    "duration": 84540.884,
+    "expected": 0,
+    "skipped": 4,
+    "unexpected": 3,
+    "flaky": 0
+  }
+}

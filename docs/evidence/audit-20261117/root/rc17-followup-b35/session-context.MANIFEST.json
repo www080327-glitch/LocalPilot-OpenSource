@@ -1,0 +1,65 @@
+{
+  "name": "session-context",
+  "description": "来源投影、迁移、旧 writer、1k/10k 性能和初次失败",
+  "archive": "session-context.tar.gz",
+  "sha256": "56e32c970757711f05f219d120a0d95e9ab487a5e01046dda3a17dbcfbbfc5a6",
+  "bytes": 9063,
+  "manifest": "session-context.MANIFEST.json",
+  "files_count": 9,
+  "files": [
+    {
+      "path": "session-context-20261117/INITIAL_ENVIRONMENT_FAILURE.json",
+      "bytes": 485,
+      "original_sha256": "93bc88a3c60d667ae74ae5c3a255f66b6af0480cb115a4980a605366a6b12185",
+      "public_sha256": "93bc88a3c60d667ae74ae5c3a255f66b6af0480cb115a4980a605366a6b12185"
+    },
+    {
+      "path": "session-context-20261117/PERF_COMPARISON.json",
+      "bytes": 5523,
+      "original_sha256": "09cc9e715c36e7cd8b0c9423bc4e9d26fdff8d4aff0deccde6666b35fb33c908",
+      "public_sha256": "09cc9e715c36e7cd8b0c9423bc4e9d26fdff8d4aff0deccde6666b35fb33c908"
+    },
+    {
+      "path": "session-context-20261117/RESULTS.json",
+      "bytes": 5349,
+      "original_sha256": "8f66409ce87ec665d43bbc1d2d98fa73807fd653eea7b575e46bebd1ca855cb6",
+      "public_sha256": "8f66409ce87ec665d43bbc1d2d98fa73807fd653eea7b575e46bebd1ca855cb6"
+    },
+    {
+      "path": "session-context-20261117/SOURCE.json",
+      "bytes": 738,
+      "original_sha256": "54824880429708006e914cf95a82ffaa718656dd66dbdcca79f3b51852dc96c3",
+      "public_sha256": "54824880429708006e914cf95a82ffaa718656dd66dbdcca79f3b51852dc96c3"
+    },
+    {
+      "path": "session-context-20261117/compare_session_context.py",
+      "bytes": 7506,
+      "original_sha256": "2ab95fa5b74226fea7efff80f6cf98b2ff9ca532368a255bb8ce28559ae2a50b",
+      "public_sha256": "2ab95fa5b74226fea7efff80f6cf98b2ff9ca532368a255bb8ce28559ae2a50b"
+    },
+    {
+      "path": "session-context-20261117/performance.log",
+      "bytes": 5523,
+      "original_sha256": "09cc9e715c36e7cd8b0c9423bc4e9d26fdff8d4aff0deccde6666b35fb33c908",
+      "public_sha256": "09cc9e715c36e7cd8b0c9423bc4e9d26fdff8d4aff0deccde6666b35fb33c908"
+    },
+    {
+      "path": "session-context-20261117/targeted-tests-r2.log",
+      "bytes": 11886,
+      "original_sha256": "8cca37688a7e2d1f556ba08be6b989ab43689c48b4708e1edd56c8ea2c0236e4",
+      "public_sha256": "8cca37688a7e2d1f556ba08be6b989ab43689c48b4708e1edd56c8ea2c0236e4"
+    },
+    {
+      "path": "session-context-20261117/targeted-tests.log",
+      "bytes": 12487,
+      "original_sha256": "ae8a77b7812125ee0a942ff135cb794498a15663081e978ec0bc1ef8ce92af1a",
+      "public_sha256": "ae8a77b7812125ee0a942ff135cb794498a15663081e978ec0bc1ef8ce92af1a"
+    },
+    {
+      "path": "session-context-20261117/task-store-final.log",
+      "bytes": 2539,
+      "original_sha256": "92c54d04e7ee5ef4c152a01a9d802bcc1de03b6b603c0e770b5c56b35bdd924c",
+      "public_sha256": "92c54d04e7ee5ef4c152a01a9d802bcc1de03b6b603c0e770b5c56b35bdd924c"
+    }
+  ]
+}

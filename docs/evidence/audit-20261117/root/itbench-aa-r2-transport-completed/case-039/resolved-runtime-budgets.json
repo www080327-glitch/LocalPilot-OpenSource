@@ -1,0 +1,46 @@
+{
+  "default": {
+    "max_steps": 100,
+    "max_tool_calls": 200,
+    "max_output_tokens": 8192,
+    "max_token_units": 67108864,
+    "max_subagents_per_turn": 2,
+    "max_worker_steps": 30,
+    "max_worker_tool_calls": 60,
+    "max_worker_token_units": 8388608,
+    "max_worker_output_tokens": 4096
+  },
+  "companion-execution": {
+    "max_steps": 100,
+    "max_tool_calls": 200,
+    "max_output_tokens": 8192,
+    "max_token_units": 67108864,
+    "max_subagents_per_turn": 2,
+    "max_worker_steps": 30,
+    "max_worker_tool_calls": 60,
+    "max_worker_token_units": 8388608,
+    "max_worker_output_tokens": 4096
+  },
+  "companion-reasoning": {
+    "max_steps": 100,
+    "max_tool_calls": 200,
+    "max_output_tokens": 8192,
+    "max_token_units": 67108864,
+    "max_subagents_per_turn": 2,
+    "max_worker_steps": 30,
+    "max_worker_tool_calls": 60,
+    "max_worker_token_units": 8388608,
+    "max_worker_output_tokens": 4096
+  },
+  "worker": {
+    "max_steps": 100,
+    "max_tool_calls": 200,
+    "max_output_tokens": 8192,
+    "max_token_units": 67108864,
+    "max_subagents_per_turn": 2,
+    "max_worker_steps": 30,
+    "max_worker_tool_calls": 60,
+    "max_worker_token_units": 8388608,
+    "max_worker_output_tokens": 4096
+  }
+}

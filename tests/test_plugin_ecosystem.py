@@ -8,6 +8,7 @@ import tempfile
 import threading
 import time
 import unittest
+from unittest.mock import patch
 
 from agent.registry import create_default_registry
 from agent.session import AgentSession, SessionState
@@ -27,14 +28,11 @@ class PluginTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.shared = tempfile.TemporaryDirectory()
+        cls.addClassCleanup(cls.shared.cleanup)
         manager = PluginManager(Path(cls.shared.name).resolve() / "plugins")
+        cls.addClassCleanup(manager.close)
         manager.add(cls.config())
         cls.catalog = manager.discover("fixture", source_reviewed=True, license_id="MIT-test-fixture")["catalog"]
-        manager.close()
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.shared.cleanup()
 
     @staticmethod
     def config(mode="full", **extra):
@@ -79,11 +77,17 @@ class PluginTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             second.discover("fixture", license_id="MIT")
 
-    def test_gateway_approval_even_full_permission(self):
-        result = self.invoke(approved=False)
-        self.assertEqual(result["status"], "approval_required")
-        self.assertFalse(list(self.manager.receipts.glob("*.json")))
+    def test_full_permission_reuses_review_and_lower_modes_still_ask(self):
+        self.assertEqual(self.invoke(approved=False)["status"], "ok")
+        self.registry.gateway.mode = 'approve-mutations'
+        before = len(list(self.manager.receipts.glob('*.json')))
+        self.assertEqual(self.invoke(approved=False)["status"], "approval_required")
+        self.assertEqual(len(list(self.manager.receipts.glob('*.json'))), before)
         self.assertEqual(self.invoke()["status"], "ok")
+        self.registry.gateway.mode = 'full-permission'
+        self.manager.enable('fixture', enabled=False)
+        with self.assertRaises(ValueError):
+            self.invoke(approved=False)
 
     def test_resource_prompt_and_untrusted_instruction_boundary(self):
         resource = self.invoke("read", {"uri": "public://greeting"}, kind="resource")
@@ -91,7 +95,7 @@ class PluginTests(unittest.TestCase):
         prompt = self.invoke("get", {"name": "explain", "arguments": {"topic": "MCP"}}, kind="prompt")
         self.assertEqual(prompt["trust"], "untrusted_external_data_not_host_instructions")
         self.assertIn("Ignore all", json.dumps(prompt))
-        self.assertEqual(self.invoke(approved=False)["status"], "approval_required")
+        self.assertEqual(self.invoke(approved=False)["status"], "ok")
         self.assertNotIn("MALICIOUS_DESCRIPTION", json.dumps(self.registry.schemas()))
         self.assertNotIn("Ignore all Host", json.dumps(self.registry.schemas()))
 
@@ -232,6 +236,7 @@ class PluginTests(unittest.TestCase):
         self.assertFalse(list(self.manager.receipts.glob("*.json")))
 
     def test_scripted_agent_selection_approval_receipt_and_schema_feedback(self):
+        self.registry.gateway.mode = 'approve-mutations'
         name = tool_name("fixture", "tool", "echo")
         backend = ScriptBackend(response(None, call(name, {"text": "public sample"})), response("Retrieved public sample"))
         runtime = AgentSession(self.registry, backend=backend)
@@ -257,6 +262,40 @@ class PluginTests(unittest.TestCase):
         finally:
             runtime.close()
 
+    def test_scripted_agent_validates_plugin_arguments_once_before_dispatch(self):
+        name = tool_name('fixture', 'tool', 'echo')
+        tool = self.registry._tools[name]
+        validate = tool.validate_arguments
+        validations = []
+
+        def counted(arguments):
+            validations.append(dict(arguments))
+            validate(arguments)
+
+        tool.validate_arguments = counted
+        runtime = AgentSession(self.registry, backend=ScriptBackend(
+            response(None, call(name, {'text': 'once'})), response('Observed once')))
+        try:
+            self.assertEqual(runtime.run_turn('Read the public tool once.').status, 'completed')
+            self.assertEqual(validations, [{'text': 'once'}])
+            self.assertEqual(len(list(self.manager.receipts.glob('*.json'))), 1)
+        finally:
+            runtime.close()
+
+    def test_prompt_argument_validation_precedes_intent(self):
+        name = tool_name('fixture', 'prompt', 'get')
+        runtime = AgentSession(self.registry, backend=ScriptBackend(
+            response(None, call(name, {'name': 'explain', 'arguments': {'unexpected': 'x'}})),
+            response('Missing prompt argument.')))
+        try:
+            runtime.run_turn('Retrieve the prompt.')
+            receipt = runtime.tool_history[0]
+            self.assertEqual(receipt['payload']['error']['type'], 'schema_validation')
+            self.assertFalse(list(self.manager.receipts.glob('*.json')))
+            self.assertFalse(self.registry.plugin_manager.clients)
+        finally:
+            runtime.close()
+
     def test_agent_external_success_stays_unknown_and_snapshot_restores_namespace(self):
         from agent.persistence import snapshot_runtime, restore_runtime
         counter = self.workspace / 'counter'
@@ -265,7 +304,6 @@ class PluginTests(unittest.TestCase):
         runtime = AgentSession(self.registry, backend=backend)
         try:
             runtime.run_turn('Append one public test line')
-            runtime.approve()
             self.assertEqual(runtime.tool_history[-1]['side_effect_status'], 'unknown')
             self.assertEqual(runtime.tool_history[-1]['payload']['result']['status'], 'unknown')
             data = snapshot_runtime(runtime)
@@ -322,6 +360,7 @@ class PluginTests(unittest.TestCase):
                 runtime.registry.plugin_manager.close()
 
     def test_agent_cancel_interrupts_plugin_and_preserves_receipt(self):
+        self.registry.gateway.mode = 'approve-mutations'
         name = tool_name('fixture', 'tool', 'wait')
         runtime = AgentSession(self.registry, backend=ScriptBackend(response(None, call(name, {})), response('Stopped')))
         try:
@@ -344,6 +383,7 @@ class PluginTests(unittest.TestCase):
             runtime.close()
 
     def test_cancel_during_validation_does_not_launch_plugin(self):
+        self.registry.gateway.mode = 'approve-mutations'
         from unittest.mock import patch
         from localpilot_plugins.security import validate_input
         name = tool_name('fixture', 'tool', 'echo')
@@ -370,6 +410,17 @@ class PluginTests(unittest.TestCase):
         finally:
             release.set()
             runtime.close()
+
+
+class PluginStartupTests(unittest.TestCase):
+    def test_denied_process_enumeration_fails_before_worker_launch(self):
+        client = MCPClient(PluginTests.config())
+        self.addCleanup(client.close)
+        with patch("psutil.pids", side_effect=PermissionError(1, "Operation not permitted")):
+            with self.assertRaisesRegex(TransportFailure, "^process_inspection_unavailable$"):
+                client.connect()
+        self.assertIsNone(client.process)
+        self.assertIsNone(client.directory)
 
 
 class SkillTests(unittest.TestCase):
