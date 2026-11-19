@@ -1,0 +1,1169 @@
+{
+  "scope": "Mechanical extraction of actual log footers; runs are not merged or added into a coverage total.",
+  "limits": "No test footer or an empty typecheck log is not classified as PASS. A completed footer does not identify the source snapshot; use the source receipts. Original failures remain included.",
+  "logs": [
+    {
+      "path": "install/app-installer-baseline.log",
+      "bytes": 1973,
+      "sha256": "98ec19d2f950d359520346088e797d239f84c154b9dc1744f995ce03e6e4c3a5",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 11,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "passed": 11,
+          "result": "OK",
+          "seconds": 0.034,
+          "footer": "Ran 11 tests in 0.034s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "install/app-installer-r1.log",
+      "bytes": 2171,
+      "sha256": "ab5f11b6a072a743ac265864928c7871e6e113c51fa64a0175d388d0332ba90b",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 12,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "passed": 12,
+          "result": "OK",
+          "seconds": 0.053,
+          "footer": "Ran 12 tests in 0.053s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "install/app-installer-r2.log",
+      "bytes": 2171,
+      "sha256": "9b4bd1a5359b26242c3394e83887faa2e789c3a6f3b5032bd059dd83524e4d85",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 12,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "passed": 12,
+          "result": "OK",
+          "seconds": 0.068,
+          "footer": "Ran 12 tests in 0.068s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "install/build-tools.log",
+      "bytes": 979,
+      "sha256": "efef01dab56a1419b9d55041c179c94ae2dafdf1c15289d6f4743ac397442466",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/cleanup-r1.log",
+      "bytes": 698,
+      "sha256": "f90ed53a637ceb07b6362623a4826b81e55f72f20a0080071f263dc6090862dd",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 4,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "passed": 4,
+          "result": "OK",
+          "seconds": 0.023,
+          "footer": "Ran 4 tests in 0.023s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "install/cloud-key-regressions.log",
+      "bytes": 2713,
+      "sha256": "924871cb9fe9284b58d6b6a90d3b46f5003e101ab53c1b240b16940094b5bbb8",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 8,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "passed": 8,
+          "result": "OK",
+          "seconds": 57.529,
+          "footer": "Ran 8 tests in 57.529s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "install/linux/apt-download.log",
+      "bytes": 75164,
+      "sha256": "8f377d2efd40b96f2b58546fb5009fa74c37798e9782ae2c8bb1bc8e088b810c",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/apt-extra.log",
+      "bytes": 1732,
+      "sha256": "defb253e6e2e7bdb0c137e60280d1e646b561469c9fb3137149d3f5183f1ef1c",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/apt-update.log",
+      "bytes": 788,
+      "sha256": "b10a54a6af3a41caa4164a8ee8dae0b79532d84755df6ce709ef32d67167be78",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/cargo-fetch.log",
+      "bytes": 12455,
+      "sha256": "1d43241c66a1a412f57c34eef02e8bf9ae54df6cfc622657aa8a5556b6fa7b78",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/extracted-runtime-check.log",
+      "bytes": 6938,
+      "sha256": "e8e3de88947c93d8dfa9d7743243d1680b72f5a9a6dd01e7a86cc301c33bb0b7",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/final-npm-ci.log",
+      "bytes": 201,
+      "sha256": "fbb19cb45f667cf488240b5e8b327f00d77dbb2506700f547ce2e2079f69be6f",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/final-prepare.log",
+      "bytes": 11936,
+      "sha256": "418d6ce23e85ac58c20752c6d04135ef525d38c90449d7789ed698294ca7d21e",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/final-r2-core-wheel.log",
+      "bytes": 39571,
+      "sha256": "5523a8aaa335e377d3a027dae2292ff9a9ee6a75c6a9ee3956ce30e40a43dbc3",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/final-r2-native-build.log",
+      "bytes": 18023,
+      "sha256": "a09be3f125f25f18cdf56f845556754e7c6d98d161025d9a9a146cfac12c7211",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/final-r2-npm-ci.log",
+      "bytes": 201,
+      "sha256": "18f233d204c4bf2d09d8e993d7501c32ed4ab58dc65ab82150468de7768f4ff8",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/final-r2-prepare.log",
+      "bytes": 11936,
+      "sha256": "1ac913520706655f5bffe86e0577388dab3f30f9a570d8282090dfbc0c7aa0b0",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/native-snapshot-frontend.log",
+      "bytes": 1140,
+      "sha256": "ff8232729ce139ec20b81f09ce114fff59d0c79f089a8c145bb7405eee2e6cc0",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/native-snapshot-icons.log",
+      "bytes": 2708,
+      "sha256": "a2c8359f706c831aa6c5a23236e97f0005132f7858f374aae190c3f1f2a09691",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/native-snapshot-npm-ci.log",
+      "bytes": 201,
+      "sha256": "47852f6aedf03dc12ff62f0bb672881990242a4272d1397153620eda725b349f",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/native-ui.log",
+      "bytes": 221,
+      "sha256": "dd2d3ca5a69010313b2cc1617bd7fbb0f81ddcea81e044cfba6b42e4f1319780",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/node-download.log",
+      "bytes": 791,
+      "sha256": "7a37360daf8594abeecd046a0a40b2c8fab42d85cfc7f6bc291ab9c23b0ecdd4",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/packaged-runtime-tests.log",
+      "bytes": 5580,
+      "sha256": "f4dd9664aaa854785327434a607527f9b70df36c2361984a7463bfc3463dac2f",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 27,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "passed": 27,
+          "result": "OK",
+          "seconds": 2.644,
+          "footer": "Ran 27 tests in 2.644s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "install/linux/pip-download.log",
+      "bytes": 11608,
+      "sha256": "c8ce0f352a16073fd54e43e84838abbb5fe36b288ef0897df26fea2e04b485c6",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/rust-core-recovery-r2.log",
+      "bytes": 666,
+      "sha256": "13b5636630e18bc8433dc215777772c68b5fb54fabdb8aa17848d60700bfa86b",
+      "footers": [
+        {
+          "framework": "rust",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "footer": "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 65 filtered out; finished in 1.48s"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "install/linux/rust-default-r2.log",
+      "bytes": 5810,
+      "sha256": "be1a2ba9132b5880ee32ce30f3b1c76c42e80b937b6eb59088bfe078c1e02ec0",
+      "footers": [
+        {
+          "framework": "rust",
+          "result": "ok",
+          "passed": 63,
+          "failed": 0,
+          "ignored": 3,
+          "footer": "test result: ok. 63 passed; 0 failed; 3 ignored; 0 measured; 0 filtered out; finished in 0.04s"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "install/linux/rust-offline-release-r2.log",
+      "bytes": 439,
+      "sha256": "28dbfef0fc1070bfd111c97a47f2c79eb79d5df8ab1b2f174c60dc8fa6af8cd1",
+      "footers": [
+        {
+          "framework": "rust",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "footer": "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 65 filtered out; finished in 0.00s"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "install/linux/rust-tests-snapshot-r1.log",
+      "bytes": 17493,
+      "sha256": "bb9e4a21d35edd002bd773b4264d554875011585f395daadc9c651e02a3cc233",
+      "footers": [
+        {
+          "framework": "rust",
+          "result": "ok",
+          "passed": 63,
+          "failed": 0,
+          "ignored": 3,
+          "footer": "test result: ok. 63 passed; 0 failed; 3 ignored; 0 measured; 0 filtered out; finished in 0.05s"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "install/linux/sysroot-extract.log",
+      "bytes": 29,
+      "sha256": "eab849563853778d4265f6e79d1d23d4c3b688c67fce32de5cef6ca6fa9a36d1",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/wheel-channels.log",
+      "bytes": 7335,
+      "sha256": "fc1be0926f199551ac785b380a0403b1186d0215737ec446f644d348bb5bfadc",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/wheel-companion.log",
+      "bytes": 27925,
+      "sha256": "1fc3b6cc48c382acde526010d81c111e2de0189159a596c1630edd431e1c790d",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/wheel-core.log",
+      "bytes": 39449,
+      "sha256": "a00f7d1a4c86dd4d9c3d8775733625a3cd2c552ed58e231614f6572ebb037de4",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/linux/wheel-suite.log",
+      "bytes": 7993,
+      "sha256": "0c2610ee4d25e9942d5cf99afa5660dcad2cbe2ac3ec1bb3fc9b72049c75352b",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "install/macos-artifacts-baseline.log",
+      "bytes": 1685,
+      "sha256": "a5af794dc5ad6a62f412e3e0dd5f018f31022b7ba29df215f6a9f83dc97da340",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 9,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "passed": 9,
+          "result": "OK",
+          "seconds": 0.032,
+          "footer": "Ran 9 tests in 0.032s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "install/macos-artifacts-r1.log",
+      "bytes": 1885,
+      "sha256": "7f91b4c8b768b94a897ed5da79601517c73549cc9f1b986ddf76dcb01d11b46a",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 10,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "passed": 10,
+          "result": "OK",
+          "seconds": 0.029,
+          "footer": "Ran 10 tests in 0.029s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "install/rc19-final-suite.log",
+      "bytes": 23874,
+      "sha256": "1060765c605b8ce3aefefd1b1f0a40daf2fd8eb26a62e728068b4a0974be53b2",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 128,
+          "skipped": 1,
+          "failures": 0,
+          "errors": 0,
+          "passed": 127,
+          "result": "OK",
+          "seconds": 91.848,
+          "footer": "Ran 128 tests in 91.848s\n\nOK (skipped=1)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "install/suite-r1.log",
+      "bytes": 23164,
+      "sha256": "8ebb4afbbac34c0da09b4e3d0805465902046d7b4ed2434ffad5f7a98c3f0f7b",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 127,
+          "skipped": 1,
+          "failures": 0,
+          "errors": 0,
+          "passed": 126,
+          "result": "OK",
+          "seconds": 78.821,
+          "footer": "Ran 127 tests in 78.821s\n\nOK (skipped=1)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "pet/frontend-tests.log",
+      "bytes": 654,
+      "sha256": "77a492201178ceed963f0f4ce8f1c0b31fa0f9aa403c87ee0a595efdc9514a3e",
+      "footers": [
+        {
+          "framework": "vitest",
+          "passed": 5,
+          "footer": "Tests  5 passed (5)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "pet/typecheck.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "footers": [],
+      "classification": "EMPTY_LOG"
+    },
+    {
+      "path": "pet/ui-test-collection.log",
+      "bytes": 559,
+      "sha256": "e31bf5ae8f6fa81db43ca03ebf4effffeb6420358c59273cca15d2e02888604a",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "runtime/channels-node-full.log",
+      "bytes": 17842,
+      "sha256": "a5171037ea7e0bd066493f061c53b3dc79f23423c5b9d1346270bd53a268d7be",
+      "footers": [
+        {
+          "framework": "node",
+          "tests": 86,
+          "pass": 76,
+          "fail": 10,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/channels-node-r2.log",
+      "bytes": 8174,
+      "sha256": "4b1398d99064b48cc9739cb3653f74266c21260459b7ebe4d46cd1d9537764ce",
+      "footers": [
+        {
+          "framework": "node",
+          "tests": 86,
+          "pass": 86,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/companion-full-r1.log",
+      "bytes": 131860,
+      "sha256": "e652eccc25101e59dda34e642eabb0c4d4640f448af99f88535e7bc84547cb99",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 763,
+          "skipped": 33,
+          "failures": 0,
+          "errors": 0,
+          "passed": 730,
+          "result": "OK",
+          "seconds": 44.597,
+          "footer": "Ran 763 tests in 44.597s\n\nOK (skipped=33)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/core-env-check-r1.log",
+      "bytes": 671,
+      "sha256": "528e02504183f2de5c0ca5192ba94fce97e015d89ae6773310c241d1251a18c3",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 4,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "passed": 4,
+          "result": "OK",
+          "seconds": 5.446,
+          "footer": "Ran 4 tests in 5.446s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/core-full-r1.log",
+      "bytes": 311898,
+      "sha256": "427b7733b82529b5a0569e9d9bd650b1e102328d62609b1115e7f785b404cc66",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 1710,
+          "skipped": 99,
+          "failures": 6,
+          "errors": 6,
+          "passed": 1599,
+          "result": "FAILED",
+          "seconds": 196.618,
+          "footer": "Ran 1710 tests in 196.618s\n\nFAILED (failures=6, errors=6, skipped=99)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/core-full-r2.log",
+      "bytes": 301934,
+      "sha256": "6b97ee9ad40388f6b38aa3a551c347fb7ec6e6e5921307aa6ae375171b73a006",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 1734,
+          "skipped": 99,
+          "failures": 1,
+          "errors": 0,
+          "passed": 1634,
+          "result": "FAILED",
+          "seconds": 278.931,
+          "footer": "Ran 1734 tests in 278.931s\n\nFAILED (failures=1, skipped=99)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/core-full-r3.log",
+      "bytes": 300064,
+      "sha256": "5a843bc8733ec3416e5d1f80e1e75ed9d7aabf5e8f033bec1debc5f96afa428d",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 1735,
+          "skipped": 99,
+          "failures": 0,
+          "errors": 0,
+          "passed": 1636,
+          "result": "OK",
+          "seconds": 235.996,
+          "footer": "Ran 1735 tests in 235.996s\n\nOK (skipped=99)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/dependencies-defusedxml.log",
+      "bytes": 240,
+      "sha256": "cdd31e14e287d2882840e14f5fda1f028a791c945d9fffbd51378873b69310ee",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "runtime/dependencies-pinned.log",
+      "bytes": 6984,
+      "sha256": "3df48d7471928f299911973eff973b6cfb9d4542fd271e0b1b7bf42c61d76009",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "runtime/dependencies.log",
+      "bytes": 253,
+      "sha256": "0fe279b7538cec782f342f7e0adf99239fcf7be0f161157b53c9b5367bfea347",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "runtime/doc-failure-r1.log",
+      "bytes": 11084,
+      "sha256": "b6df08a6b683e5f890b9b40c7e2c9edaee78113aa7a95f6c603c09e3ed61ff8d",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 12,
+          "skipped": 0,
+          "failures": 5,
+          "errors": 1,
+          "passed": 6,
+          "result": "FAILED",
+          "seconds": 6.819,
+          "footer": "Ran 12 tests in 6.819s\n\nFAILED (failures=5, errors=1)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/long-turn-r1.log",
+      "bytes": 523,
+      "sha256": "913ed7e54cf2995a881e57a758b4545bed6ffb4b93e87f425d4ac93be1514ffb",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "runtime/long-turn-r2.log",
+      "bytes": 6070,
+      "sha256": "123b22467f34de2375b4f5f6666af2a76b478ec96e779718018b0dca93ddb2de",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "runtime/recall-existing-r1.log",
+      "bytes": 7515,
+      "sha256": "391711403cafd9d4e62f185764e45f84a6d6feba5273937b6670b87301a1c11a",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 23,
+          "skipped": 0,
+          "failures": 1,
+          "errors": 1,
+          "passed": 21,
+          "result": "FAILED",
+          "seconds": 4.002,
+          "footer": "Ran 23 tests in 4.002s\n\nFAILED (failures=1, errors=1)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/recall-final-r1.log",
+      "bytes": 10208,
+      "sha256": "c741796e8ba8e19e7f7c07a42b6280a7c670630c2b14250ae704f8cbb3db6090",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 50,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 1,
+          "passed": 49,
+          "result": "FAILED",
+          "seconds": 6.248,
+          "footer": "Ran 50 tests in 6.248s\n\nFAILED (errors=1)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/recall-final-r2.log",
+      "bytes": 21965,
+      "sha256": "2ad4fed6ca5aeca700dd30ce5b3e9d9bc245b1e05c1ab6e053341392e7e16b99",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 130,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "passed": 130,
+          "result": "OK",
+          "seconds": 10.413,
+          "footer": "Ran 130 tests in 10.413s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/recall-r10.log",
+      "bytes": 1418,
+      "sha256": "744d4cdb2ace22343323819d7d16cc3eae82090a81dff4060963861ee2b5570a",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 7,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "passed": 7,
+          "result": "OK",
+          "seconds": 1.189,
+          "footer": "Ran 7 tests in 1.189s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/recall-r2.log",
+      "bytes": 9422,
+      "sha256": "22fa9e97176df8ae1bef792fa0a2192f3eaecab1a2b338898b3095330088c547",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 27,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 4,
+          "passed": 23,
+          "result": "FAILED",
+          "seconds": 4.106,
+          "footer": "Ran 27 tests in 4.106s\n\nFAILED (errors=4)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/recall-r3.log",
+      "bytes": 4615,
+      "sha256": "173d34a4b8c9715a7ef722667b9a54240ee39f1f8a46b409c776587df9ef0c10",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 4,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 4,
+          "passed": 0,
+          "result": "FAILED",
+          "seconds": 0.335,
+          "footer": "Ran 4 tests in 0.335s\n\nFAILED (errors=4)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/recall-r4.log",
+      "bytes": 810,
+      "sha256": "eeacaf0c07012526dc701e32c549b45fea0e36de180d07d32970ed06e8539bb7",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 4,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "passed": 4,
+          "result": "OK",
+          "seconds": 0.396,
+          "footer": "Ran 4 tests in 0.396s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/recall-r5.log",
+      "bytes": 5130,
+      "sha256": "8b3df1efc037e35a5c52f320abccdebafe30a6d17dce05ec2ebf6d0101c741a2",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 27,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "passed": 27,
+          "result": "OK",
+          "seconds": 6.536,
+          "footer": "Ran 27 tests in 6.536s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/recall-r6.log",
+      "bytes": 9470,
+      "sha256": "5ad7a0552719399fffb088c2bdd789fd6e8d584ff8148b315ab27c618ba85ead",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 48,
+          "skipped": 2,
+          "failures": 0,
+          "errors": 1,
+          "passed": 45,
+          "result": "FAILED",
+          "seconds": 2.561,
+          "footer": "Ran 48 tests in 2.561s\n\nFAILED (errors=1, skipped=2)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/recall-r7.log",
+      "bytes": 14240,
+      "sha256": "506735063a04c63942e0bb70922e2bfa7fd84c17cd4e89755cb9790c5aef3513",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 69,
+          "skipped": 2,
+          "failures": 0,
+          "errors": 1,
+          "passed": 66,
+          "result": "FAILED",
+          "seconds": 6.956,
+          "footer": "Ran 69 tests in 6.956s\n\nFAILED (errors=1, skipped=2)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/recall-r8.log",
+      "bytes": 12892,
+      "sha256": "5de216bcbb109990f2ae163914e651ed32ec82d3761ea7ff4d5b6b396f0782c3",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 69,
+          "skipped": 2,
+          "failures": 0,
+          "errors": 0,
+          "passed": 67,
+          "result": "OK",
+          "seconds": 6.395,
+          "footer": "Ran 69 tests in 6.395s\n\nOK (skipped=2)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/recall-r9.log",
+      "bytes": 1418,
+      "sha256": "2c8b84dbb9051bfa7fece0c8c1aa02979a02d5e2ef2d60359b3b8cde20303289",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 7,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "passed": 7,
+          "result": "OK",
+          "seconds": 1.094,
+          "footer": "Ran 7 tests in 1.094s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/recall-unicode-before.log",
+      "bytes": 3067,
+      "sha256": "10028941306243e2c43036945cd7e4bdaf3d13024783ec1dd3af3078b07a26ef",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 1,
+          "skipped": 0,
+          "failures": 1,
+          "errors": 0,
+          "passed": 0,
+          "result": "FAILED",
+          "seconds": 0.381,
+          "footer": "Ran 1 test in 0.381s\n\nFAILED (failures=1)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/rollback-r1.log",
+      "bytes": 3130,
+      "sha256": "9a7983cea6404119202355ee756014c649b472d1842b0333cc6125b6ff1a7b3f",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "runtime/rotation-r1.log",
+      "bytes": 2473,
+      "sha256": "93c454eba3e8ba2acf0b6c6cd7ff0f8623752f3ddfb640b6689fa1160e578f1b",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 12,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "passed": 12,
+          "result": "OK",
+          "seconds": 3.579,
+          "footer": "Ran 12 tests in 3.579s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/rotation-r2.log",
+      "bytes": 5358,
+      "sha256": "f4211d59e19603d92019721e589f34433562aac68c44147a3d647a0240d25772",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 4,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 2,
+          "passed": 2,
+          "result": "FAILED",
+          "seconds": 0.252,
+          "footer": "Ran 4 tests in 0.252s\n\nFAILED (errors=2)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/rotation-r3.log",
+      "bytes": 990,
+      "sha256": "d17a1600b9848d39d1467e0631a965511d485e216ada3442e580916a5530bd73",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 4,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "passed": 4,
+          "result": "OK",
+          "seconds": 0.625,
+          "footer": "Ran 4 tests in 0.625s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/stream-timeout-recheck.log",
+      "bytes": 461,
+      "sha256": "be78de4ff420c0fe7d5615ba7675fffc94da5b8c3d9888e680afd8c2886dd465",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 3,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "passed": 3,
+          "result": "OK",
+          "seconds": 0.318,
+          "footer": "Ran 3 tests in 0.318s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/targeted-r1.log",
+      "bytes": 29659,
+      "sha256": "5f99083bd7a6aa6ba823e18572f0f872c8484b2ae4840ba133b7fe5a79614d3d",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 90,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 11,
+          "passed": 79,
+          "result": "FAILED",
+          "seconds": 16.305,
+          "footer": "Ran 90 tests in 16.305s\n\nFAILED (errors=11)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/targeted-r2.log",
+      "bytes": 16802,
+      "sha256": "56f6791e4a42f92402f85b247d2abf9bcc5f7b89dec354a690ce48a3f8499e56",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 90,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "passed": 90,
+          "result": "OK",
+          "seconds": 16.405,
+          "footer": "Ran 90 tests in 16.405s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "runtime/worker-models-r1.log",
+      "bytes": 12163,
+      "sha256": "6a6b1d0bb875bce4ac407ff23d933ee0cc6a1d116c45eec2940196f5a5c2e15a",
+      "footers": [
+        {
+          "framework": "unittest",
+          "ran": 69,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "passed": 69,
+          "result": "OK",
+          "seconds": 26.92,
+          "footer": "Ran 69 tests in 26.920s\n\nOK"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "ui/baseline-page.log",
+      "bytes": 4192,
+      "sha256": "f70c8ad1f391c233bcab4d9aee722fd5c854441b9cd63587dba604c3e7c4c109",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "ui/baseline-vitest.log",
+      "bytes": 605,
+      "sha256": "771b440a84359ea6f769b8391abdbdbd920c031e4b8a929a81eab09cfd92c6a7",
+      "footers": [
+        {
+          "framework": "vitest",
+          "passed": 75,
+          "footer": "Tests  75 passed (75)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "ui/format-status.log",
+      "bytes": 318,
+      "sha256": "c6177320a41dc0d45ac5045c3655d00971061324c197f98c0bf119364cd3d7b5",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "ui/format-upgrade.log",
+      "bytes": 182,
+      "sha256": "c7d63d765b01ada05605c000db8675865b14cbd8f4eaf59522ab6ece0f412a56",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "ui/installed-browser.log",
+      "bytes": 11808,
+      "sha256": "72a69c4fdc65ea67bca22db3b3d2220547ea483a52c7a1c27084743b8727cbd4",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "ui/product-build-r1.log",
+      "bytes": 889,
+      "sha256": "3e2859514e0f67fcb402181a8e3e196b9b4f6bae5c07bfbc42cb9b97128788ad",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "ui/rc19-browser-collection.log",
+      "bytes": 7536,
+      "sha256": "d0cd8ded173a5928fc07d16f9b95df797eb234cf1bf3b4175e9da11d26d5f6e3",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "ui/rc19-browser-typecheck.log",
+      "bytes": 426,
+      "sha256": "2741f24a127b72469ac26075baa32b8ccc9ef2033671b105e7862e28c62f37ee",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "ui/rc19-build.log",
+      "bytes": 889,
+      "sha256": "826ab36903aa20e02d875f3fdbe62406fbdda8f632ed19623b28df6cb8f48b87",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "ui/rc19-changed-browser-typecheck.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "footers": [],
+      "classification": "EMPTY_LOG"
+    },
+    {
+      "path": "ui/rc19-final-browser-collection.log",
+      "bytes": 7636,
+      "sha256": "e3e0e693c0ec5888aa83ca0464104f22d359843a721f76e7c15594ce937ab45f",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "ui/rc19-final-build.log",
+      "bytes": 889,
+      "sha256": "10f1bd52c780f65307788096824e89fffe9e4aedb43d1fadecf6aea3b5dd12ae",
+      "footers": [],
+      "classification": "NO_PARSED_TEST_FOOTER"
+    },
+    {
+      "path": "ui/rc19-final-changed-browser-typecheck.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "footers": [],
+      "classification": "EMPTY_LOG"
+    },
+    {
+      "path": "ui/rc19-final-vitest.log",
+      "bytes": 605,
+      "sha256": "455c539860c9737d266f1a9d0304f63f820d06003a641194837daf3bb783f1ea",
+      "footers": [
+        {
+          "framework": "vitest",
+          "passed": 78,
+          "footer": "Tests  78 passed (78)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    },
+    {
+      "path": "ui/rc19-vitest.log",
+      "bytes": 606,
+      "sha256": "cf8cd4e497278b843a90064aa402ae897a95b86e06a056704f5dc3bc7d3f759d",
+      "footers": [
+        {
+          "framework": "vitest",
+          "passed": 77,
+          "footer": "Tests  77 passed (77)"
+        }
+      ],
+      "classification": "REPORTED_FOOTER"
+    }
+  ],
+  "browser_reports": [
+    {
+      "path": "ui/baseline-page/browser-tests.json",
+      "stats": {
+        "startTime": "2026-11-19T00:35:07.509Z",
+        "duration": 2653.884,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "top_level_errors": [],
+      "note": "Framework counts include browser-launch failures; consult UI_RESULTS.json for actual page assertions."
+    },
+    {
+      "path": "ui/installed-browser/browser-tests.json",
+      "stats": {
+        "startTime": "2026-11-19T00:36:28.566Z",
+        "duration": 2837.7709999999997,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "top_level_errors": [],
+      "note": "Framework counts include browser-launch failures; consult UI_RESULTS.json for actual page assertions."
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "scope": "RC19 pet appearance recovery, animation diagnostics and AppKit direction review",
+  "base_commit": "fe9765c69ce8a39e8a3682d61ceb67c86894c3b4",
+  "fixes": [
+    {
+      "problem": "An imported base atlas could only be displayed during dragging when its extra edge pack was absent. A normal selection left the idle character invisible.",
+      "change": "Explicit basic_appearance setting renders the selected local atlas at every anchor with existing directional drag rows. Default false preserves saved appearance choice. No other character, artwork or source is supplied."
+    },
+    {
+      "problem": "An external copy of a supported character directory lost identity because selection depended on its exact .codex/pets path.",
+      "change": "New import_package folder dialog reads registered identity, version and display name from that selected pet.json. Actual image bytes still use the existing decode/size/alpha validation. Existing single-image import stays available."
+    },
+    {
+      "problem": "Motion diagnostics counted invisible CSS changes and divided by the interval between changes, so a burst could hide a long stall.",
+      "change": "Skip unloaded sprite images, fully transparent ancestry, hidden elements and geometry outside the viewport. Changes are divided by the whole stage. Report sampling_method=visible_element_styles, pixel_visibility_verified=false, and NO_ANIMATION_STAGES when none occurred."
+    },
+    {
+      "problem": "AppKit drag direction was based on the cumulative displacement from mouse down, so reversals before crossing the initial point retained the old direction.",
+      "change": "Once dragging begins, each native event stores its screen position and resulting window origin for the next event. Positions and source-frame direction then follow the latest segment."
+    },
+    {
+      "problem": "Adding a new appearance field directly to pet-settings-v1.json makes RC18 strict deserialization reject all preferences on rollback.",
+      "change": "Keep the prior settings file schema unchanged; persist basic_appearance in pet-appearance-v1.json. A real save/read regression parses the original file with the exact RC18 deny_unknown_fields schema and verifies the new mode reloads separately."
+    },
+    {
+      "problem": "Native diagnostics derived character identity only from the optional edge pack, producing null for a valid imported character in basic mode.",
+      "change": "Both native diagnostic paths use the imported asset metadata for the existing character key, and add appearance_mode=basic or extended. Rendering readiness remains separately observable through edge.render."
+    }
+  ],
+  "frontend_checks": {
+    "vitest": "PASS 5/5 across animation-probe and pet-policy",
+    "typescript": "tsc -b PASS",
+    "logs": [
+      "frontend-tests.log",
+      "typecheck.log"
+    ],
+    "playwright_collection": "PASS: 1 test in animation-probe.spec.ts collected; no browser launch",
+    "playwright_typescript": "PASS: strict tsc with explicit ES2022/DOM/bundler options on tests/ui/animation-probe.spec.ts and dependencies"
+  },
+  "native_tests_added": [
+    "package_identity_is_read_from_the_selected_folder",
+    "explicit_basic_appearance_uses_the_imported_atlas_without_an_edge_pack",
+    "basic_appearance_keeps_existing_settings_compatible_with_rollback",
+    "diagnostics_keep_imported_identity_without_an_optional_edge_pack"
+  ],
+  "native_test_execution": "Pending root single-slot Rust build",
+  "browser_test_added": "animation sampling excludes transparent parents and offscreen sprites",
+  "browser_test_execution": "NOT_EXECUTED: root ordinary Playwright launches blocked before assertions (missing default Chromium executable; installed /usr/bin/chromium process_singleton socket EPERM). Test collected and independently typechecked; no alternate launch flags or escalated retry.",
+  "physical_validation": "The Mac report fe9765c has PENDING and zero observed stages. No actual visible animation, artwork recovery or physical dragging was executed in this source work.",
+  "no_art_replaced_or_uploaded": true,
+  "no_external_model_calls": true,
+  "changed_source_sha256": {
+    "desktop/src-tauri/src/pet_assets.rs": "1c2b70a80c39232495f6408bd16aa6e89e1d7dde5596c7bf0b83b7b841946da1",
+    "desktop/src-tauri/src/pet_edge.rs": "8ce2e169fdd615792314dfe79570174014cca79d6fe72cfe1daf9099f2fcb2df",
+    "desktop/src-tauri/src/pet_macos.rs": "9674781e033c2fa8feac19ccc2ca4c74f902d39da07f4647f5a71b923da30784",
+    "desktop/src-tauri/src/pet_native.rs": "e36d7cd175ec9508610168f8b779a68d5b6e8b816683d42ea44d0e2b09f9465c",
+    "desktop/src/pet/EdgeCharacter.tsx": "264bc2495634c444e068a57b50c92c8de036109f40c171afef5ce7ee608108ab",
+    "desktop/src/pet/animationProbe.ts": "d29c8a4fa23b0c2185fb6266ba75cefeb2f5498ec8eeb225b91bfad45fa514cd",
+    "desktop/src/pet/policy.ts": "dd7934e71995581f43847c35cb89a1ba38d4160c6eb96fe866c822845a56eaf5",
+    "desktop/tests/animation-probe.test.ts": "a6ab950bae4552aa1634ba89d5befadf9f17590fec5b3068132586ca81b0553d",
+    "desktop/tests/ui/animation-probe.spec.ts": "09f6cadda52b82a2b73b4bee8e082999fce68ebaa1f006295d17bb16ccbab807",
+    "desktop/src-tauri/src/pet_portable.rs": "24749278fada570c1a728a655a98475af9b8f2bd7301c30b30e72698776e4215"
+  },
+  "independent_ui_review": {
+    "scope": [
+      "desktop/src/Pet.tsx",
+      "desktop/src/components/SetupAssistant.tsx",
+      "desktop/src/components/ComponentUpgrades.tsx"
+    ],
+    "finding": "ComponentUpgrades initially marked Core stopped for status=stopping. Reported to root for correction; localpilot_service.cli.stop explicitly returns stopping after its 15-second wait and checked_cli accepts a successful JSON response. No other concrete newly introduced bug found in reviewed UI source. Browser behavior remains unverified in current environment."
+  },
+  "source_hash_scope": "Snapshot after pet source freeze; install agent concurrently owns Linux drag sections in shared native files. Root must produce final unified source hashes after its final freeze.",
+  "runtime_independent_review": {
+    "scope": "Canonical recall integration, additive schema-3 text projection, adaptive/computer/egress history rotation",
+    "status": "Complete: all identified recall defects corrected; no remaining concrete issue found in reviewed scope",
+    "findings_corrected": [
+      "Reattach history reader after folder-bound profile changes; final prompt refresh happens after complete registry rebuilding.",
+      "Project eligible historical user text to generic cloud without disclosing prior assistant text.",
+      "Filter eligible messages before the result limit, so recent assistant echoes cannot hide an earlier user instruction.",
+      "Preserve unsuccessful gateway status instead of relabeling it as assistant withholding."
+    ],
+    "failure_evidence": [
+      "recall-cloud-review.json",
+      "recall-filter-limit-review.json"
+    ],
+    "independent_fixed_reproduction": "recall-filter-limit-fixed.json",
+    "reviewed_agent_validation": [
+      "../runtime/recall-r10.log: 7 tests PASS",
+      "../runtime/rollback-r1.log: candidate -> actual RC18 write -> candidate reopen PASS, original segment/task hashes preserved"
+    ],
+    "rotation_review": "No concrete integrity/permission issue found. Current-turn budgets, exact grants, unresolved native obligations, raw archives, and restart reobservation boundaries remain in place."
+  }
+}

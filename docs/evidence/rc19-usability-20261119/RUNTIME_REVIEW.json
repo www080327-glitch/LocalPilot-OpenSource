@@ -1,0 +1,20 @@
+{
+  "scope": "Final bounded recall result sizing and timeout-test synchronization changes since 05a5dd7",
+  "method": "Read-only implementation and test review; no additional test execution or source mutation",
+  "status": "PASS_REVIEW",
+  "findings": [],
+  "checks": [
+    "Result sizing uses the exact Registry JSON ensure_ascii=False UTF-8 byte representation.",
+    "All chosen search references and metadata remain while excerpts shorten; no canonical source bytes or SHA are changed.",
+    "Reference next_offset advances by emitted Python character length after shortening, preserving exact reconstruction.",
+    "Regression uses real Registry calls with ten emoji matches and 5000-fox text reconstructed over multiple chunks.",
+    "Timeout regression still uses the original 50 ms task deadline and checks cancelling, timed_out and absence of later streamed text; synchronization now waits for the actual state under the shared condition."
+  ],
+  "reviewed_validation_log": "../runtime/recall-final-r2.log",
+  "reviewed_validation_result": "130 tests OK; performed by runtime agent",
+  "source_sha256": {
+    "agent/history_recall.py": "c8bd3fbb5218bdece1f6f06081bb8cbf69e52c4acad152a2a133b455ee4ebd5f",
+    "tests/test_history_recall.py": "f4028a4c94fe687151e054ca130efdfae2a33fd8598ef4d2f2e7159aa57548dc",
+    "tests/test_runtime_api.py": "dbba9e162992207b0a895cc7c733df84eaec426de55974b24a6e255a595170ed"
+  }
+}

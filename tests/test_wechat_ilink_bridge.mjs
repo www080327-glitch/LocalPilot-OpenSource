@@ -196,7 +196,7 @@ for (const failure of [503, "disconnect"]) {
     assert.equal(f.adapterCalls.length, 3);
     assert.deepEqual(f.sent.map((m) => [m.to_user_id, m.context_token]),
       [["peer-a", "a-first-context"], ["peer-b", "b-first-context"], ["peer-a", "a-second-context"]]);
-    assert.deepEqual(f.sent.map((m) => m.item_list[0].text_item.text.split("\n")[1]), ["a-first", "b-first", "a-second"]);
+    assert.deepEqual(f.sent.map((m) => m.item_list[0].text_item.text), ["a-first", "b-first", "a-second"]);
     assert.deepEqual(f.received.filter((r) => r.route.endsWith("getupdates")).map((r) => r.body.get_updates_buf),
       ["", "before-disconnect", "before-disconnect"]);
     f.store.close();
@@ -237,7 +237,7 @@ test("unknown sender state and repeated queries stay isolated across restart", a
     assert.equal(restored.data.blocked[senderId("peer-b")], undefined);
     assert.equal(f.sent.at(-1).to_user_id, "peer-b");
     assert.match(f.sent.at(-1).item_list[0].text_item.text, /b-still-works/);
-    assert.match(f.sent.at(-2).item_list[0].text_item.text, /暂停/);
+    assert.match(f.sent.at(-2).item_list[0].text_item.text, /暂未提交新的任务/);
   } finally { restored.close(); }
 });
 
@@ -260,7 +260,7 @@ test("query and decision receipts must match the exact requested task", async (t
     const command = `/lp ${action} ${f.id}` + (action === "approve" ? " operation-1 decision-1" : "");
     await f.bridge.handle(event("bad-receipt", "peer-a", command));
     assert.equal(f.store.data.blocked[senderId("peer-a")], true);
-    assert.match(f.sent.at(-1).item_list[0].text_item.text, /结果未知/);
+    assert.match(f.sent.at(-1).item_list[0].text_item.text, /无法确认执行结果/);
     assert.ok(!f.sent.at(-1).item_list[0].text_item.text.includes("WRONG_TASK_RESULT"));
     await f.bridge.handle(event("new-task", "peer-a"));
     assert.equal(f.adapterCalls.length, 2);
@@ -272,14 +272,14 @@ test("only a known same-sender pending task may redirect a new message", async (
   f.control.result = () => ({ status: "pending_approval", task_id: f.id,
     approval_id: "operation-1", approval: { tool: "apply_patch", target: "test.txt" } });
   await f.bridge.handle(event("second-message", "peer-a"));
-  assert.match(f.sent.at(-1).item_list[0].text_item.text, /等待人工审批/);
+  assert.match(f.sent.at(-1).item_list[0].text_item.text, /需要你确认后才能继续/);
   assert.equal(f.store.data.blocked[senderId("peer-a")], undefined);
   await f.bridge.handle(event("second-message", "peer-b"));
-  assert.match(f.sent.at(-1).item_list[0].text_item.text, /结果未知/);
+  assert.match(f.sent.at(-1).item_list[0].text_item.text, /无法确认执行结果/);
   assert.equal(f.store.data.blocked[senderId("peer-b")], true);
   f.control.result = () => ({ status: "completed", reply: "MISSING_TASK_RESULT" });
   await f.bridge.handle(event("missing-task", "peer-a"));
-  assert.match(f.sent.at(-1).item_list[0].text_item.text, /结果未知/);
+  assert.match(f.sent.at(-1).item_list[0].text_item.text, /无法确认执行结果/);
   assert.ok(!f.sent.at(-1).item_list[0].text_item.text.includes("MISSING_TASK_RESULT"));
 });
 test("pending approval is not completed and later explicit query returns final result", async (t) => {
@@ -287,7 +287,7 @@ test("pending approval is not completed and later explicit query returns final r
   f.control.result = (body) => ({ status: "pending_approval", task_id: body.message_id });
   await f.bridge.handle(event());
   const id = f.adapterCalls[0].body.message_id;
-  assert.match(f.sent[0].item_list[0].text_item.text, /等待人工审批，尚未完成/);
+  assert.match(f.sent[0].item_list[0].text_item.text, /需要你确认后才能继续/);
   f.control.result = (body) => ({ status: "completed", task_id: body.task_id, reply: "human approved result" });
   await f.bridge.handle(event("query", "peer-a", "/lp status " + id));
   assert.deepEqual(f.adapterCalls.map((c) => c.route), ["/messages", "/tasks/query"]);
@@ -301,7 +301,7 @@ test("querying another sender's task never forwards the query", async (t) => {
   await f.bridge.handle(event("query", "peer-b", "/lp status " + f.adapterCalls[0].body.message_id));
   assert.equal(f.adapterCalls.length, 1);
   assert.equal(f.sent[1].to_user_id, "peer-b");
-  assert.match(f.sent[1].item_list[0].text_item.text, /失败/);
+  assert.match(f.sent[1].item_list[0].text_item.text, /请求没能完成/);
 });
 test("adapter restart losing a pending receipt blocks new work instead of rebuilding task", async (t) => {
   const f = await fixture(t);
@@ -338,7 +338,7 @@ test("adapter timeout persists unknown, blocks new submissions but permits safe 
   f.control.hang = true;
   await f.bridge.handle(event());
   const id = f.adapterCalls[0].body.message_id;
-  assert.match(f.sent[0].item_list[0].text_item.text, /结果未知/);
+  assert.match(f.sent[0].item_list[0].text_item.text, /无法确认执行结果/);
   f.store.close();
   const next = new State(f.directory);
   try {
@@ -476,7 +476,7 @@ test("rejection requires reason and returns rejected status and reason without m
     decisions: [{ decision: "reject", outcome: "applied", reason: "不要写入" }] });
   await f.bridge.handle(event("reject", "peer-a", `/lp reject ${f.id} operation-1 reject-2 不要写入`));
   assert.equal(f.adapterCalls[1].body.decision, "reject");
-  assert.match(f.sent.at(-1).item_list[0].text_item.text, /操作被拒绝/);
+  assert.match(f.sent.at(-1).item_list[0].text_item.text, /这一步已被拒绝/);
   assert.match(f.sent.at(-1).item_list[0].text_item.text, /不要写入/);
   await f.bridge.handle(event("duplicate-reject", "peer-a", `/lp reject ${f.id} operation-1 reject-2 不要写入`));
   assert.equal(f.adapterCalls.length, 2);
@@ -519,7 +519,7 @@ test("decision timeout blocks new IDs, never replays exact decision after restar
     await bridge.handle(event("new-id", "peer-a", `/lp approve ${f.id} operation-1 timed-2`));
   } finally { restored.close(); }
   assert.equal(f.adapterCalls.length, 2);
-  assert.match(f.sent.at(-1).item_list[0].text_item.text, /结果未知/);
+  assert.match(f.sent.at(-1).item_list[0].text_item.text, /无法确认执行结果/);
 });
 test("approval auth refusal keeps original task pending, no automatic retries", async (t) => {
   const f = await pendingApproval(t);

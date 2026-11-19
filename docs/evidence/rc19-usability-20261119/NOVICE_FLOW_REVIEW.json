@@ -1,0 +1,44 @@
+{
+  "scope": [
+    "App.tsx submit/cancel/requery/unknown and onboarding completion",
+    "SetupAssistant and local/cloud configuration forms",
+    "useServiceConnection and task stream recovery",
+    "ComponentUpgrades / InstallationSettings / ProductSettings",
+    "TaskInspector goal presentation"
+  ],
+  "method": "Read-only source review; current browser assertions remain blocked and are not counted as passed",
+  "findings": [
+    {
+      "problem": "Creating a new upgrade plan while viewing an older one reused the older render closure when loading receipts.",
+      "impact": "Prior success/failure/rollback state could be displayed on the new plan and disable installation.",
+      "status": "Root fixed explicit load(created.id); read-only patch check confirms correct selection and missing-row clearing."
+    },
+    {
+      "problem": "Real GoalStore status=done was tested only against completed in TaskInspector and missing from shared translated labels.",
+      "impact": "Completed goals showed no checkmarks and 0/N, with raw enum text.",
+      "status": "Fixed by root and independently source-reviewed: goalDone accepts done/completed for count and checkmark; domain maps done/in_progress/pending/blocked to Chinese. New test renders real TaskInspector and checks 2/4, two checkmarks, and visible translated statuses."
+    },
+    {
+      "problem": "Main settings CloudProviderForm lacks onConnected refresh callback.",
+      "impact": "New model does not immediately appear in App selection despite saved notice; wait for 30-second poll/focus.",
+      "status": "Fixed by root and independently source-reviewed: App refresh -> SettingsDialog refresh -> ProductSettings onModelsChanged -> CloudProviderForm onConnected, awaited after successful cloud save. Model catalog updates without waiting for periodic polling."
+    }
+  ],
+  "positive_findings": [
+    "Submission clears draft only after accepted task response; failed submissions retain text.",
+    "Unknown side effects and active tasks block automatic new submission into the existing session.",
+    "Cancel requests stop and re-query the original task; no automatic tool replay.",
+    "Onboarding completion verifies Core readiness; no configured model is explicitly distinguished in the summary.",
+    "Native cloud configuration rejects malformed keys before storing; UI clears key after successful save and distinguishes API readiness from configuration."
+  ],
+  "no_source_mutations_in_this_review": true,
+  "final_status": "All three concrete novice-flow findings addressed; no new issue in the bounded final patch review. No browser execution claim.",
+  "final_review_source_sha256": {
+    "desktop/src/components/ComponentUpgrades.tsx": "e7debc46d987408014cdf45ccda99fa24920b5ac0e1ba7286d598540cba701da",
+    "desktop/src/components/TaskInspector.tsx": "723c95b38534a4ecce7648b89915206c0b8ef2e1e2c641ad52c91af817f18a67",
+    "desktop/src/domain.ts": "fe1ce0c8bd7b940ef56dcfbe7ddd2543d0a6e7e8d7a12c9be23f28b6a360e461",
+    "desktop/src/components/ProductSettings.tsx": "5b642206856c19426dbc82d0570dbb549e3d815aa366b2bc8622f9ee3c52b45e",
+    "desktop/src/components/SettingsDialog.tsx": "a2104a57ade9cd7caafa71e91fa82ce66f3fb0d268b1ec459cb9addfb0ab94a3",
+    "desktop/tests/task-inspector.test.tsx": "902e606eb75b94f149baf6007a54f5ba7f1141b3fa3b8fa690dc95e903ee775a"
+  }
+}

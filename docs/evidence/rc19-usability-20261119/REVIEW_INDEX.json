@@ -1,0 +1,71 @@
+{
+  "scope": "Index of independent source/requirements reviews; these do not replace native or browser execution.",
+  "reviews": [
+    {
+      "path": "install/CLOUD_KEY_REVIEW.json",
+      "sha256": "25aeef1d3cb9e97af3037433279f15955227e6445474229bbccdc32be745d8a0"
+    },
+    {
+      "path": "install/INSTALL_SOURCE_REVIEW.json",
+      "sha256": "860bcbabea55f7ae26840158d5b20b69ae3fab7617871756aa86f4db48ad1c92"
+    },
+    {
+      "path": "install/MAC_REPORT_REVIEW.json",
+      "sha256": "161f6d44443f27cfc90159f5fbae43cde1e806e6cdab8a6818984165ad83af23"
+    },
+    {
+      "path": "install/REQUIREMENTS_REVIEW.json",
+      "sha256": "1995a209b4268884cdaef8fa94c10182c0deb5f25d2e770039e7485e9f4e8f00"
+    },
+    {
+      "path": "install/linux/WAYLAND_API_REVIEW.json",
+      "sha256": "df4f708376583228f12a14e305cb834ef7e2a33f4a8aed1db6accdd967b3e48b"
+    },
+    {
+      "path": "pet/novice-review.json",
+      "sha256": "a1e25daa37de283206bb1f66e1779d4a221dbe2c23ca2de66839ba6a3659f084",
+      "scope": [
+        "App.tsx submit/cancel/requery/unknown and onboarding completion",
+        "SetupAssistant and local/cloud configuration forms",
+        "useServiceConnection and task stream recovery",
+        "ComponentUpgrades / InstallationSettings / ProductSettings",
+        "TaskInspector goal presentation"
+      ],
+      "method": "Read-only source review; current browser assertions remain blocked and are not counted as passed",
+      "final_status": "All three concrete novice-flow findings addressed; no new issue in the bounded final patch review. No browser execution claim.",
+      "findings": [
+        {
+          "problem": "Creating a new upgrade plan while viewing an older one reused the older render closure when loading receipts.",
+          "impact": "Prior success/failure/rollback state could be displayed on the new plan and disable installation.",
+          "status": "Root fixed explicit load(created.id); read-only patch check confirms correct selection and missing-row clearing."
+        },
+        {
+          "problem": "Real GoalStore status=done was tested only against completed in TaskInspector and missing from shared translated labels.",
+          "impact": "Completed goals showed no checkmarks and 0/N, with raw enum text.",
+          "status": "Fixed by root and independently source-reviewed: goalDone accepts done/completed for count and checkmark; domain maps done/in_progress/pending/blocked to Chinese. New test renders real TaskInspector and checks 2/4, two checkmarks, and visible translated statuses."
+        },
+        {
+          "problem": "Main settings CloudProviderForm lacks onConnected refresh callback.",
+          "impact": "New model does not immediately appear in App selection despite saved notice; wait for 30-second poll/focus.",
+          "status": "Fixed by root and independently source-reviewed: App refresh -> SettingsDialog refresh -> ProductSettings onModelsChanged -> CloudProviderForm onConnected, awaited after successful cloud save. Model catalog updates without waiting for periodic polling."
+        }
+      ]
+    },
+    {
+      "path": "pet/recall-cloud-review.json",
+      "sha256": "4f6bdd4493acf586197f57b3f108ebee28f4984c49d5405a7c3596cf66337c9f"
+    },
+    {
+      "path": "pet/recall-filter-limit-review.json",
+      "sha256": "f711f0e06378c3832387d309a3bb0cafb165a14c411a0286d8da72890a2371a4"
+    },
+    {
+      "path": "pet/runtime-final-delta-review.json",
+      "sha256": "e8379ab4cf631f84f363e0d36c4423998563a2a7720ce7597e0fa181cdcf206b",
+      "scope": "Final bounded recall result sizing and timeout-test synchronization changes since 05a5dd7",
+      "method": "Read-only implementation and test review; no additional test execution or source mutation",
+      "status": "PASS_REVIEW",
+      "findings": []
+    }
+  ]
+}

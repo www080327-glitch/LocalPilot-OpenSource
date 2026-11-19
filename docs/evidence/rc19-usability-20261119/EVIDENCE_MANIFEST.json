@@ -1,0 +1,950 @@
+{
+  "format": "localpilot-rc19-public-evidence-v1",
+  "phase": "final",
+  "source_map": {
+    "uploaded_report_sha256": "6572578e9c51ec37a090e32e3d13d6cb3e8f8a920cf7651d5d6d0917baef1761",
+    "published_rc18_report_sha256": "6572578e9c51ec37a090e32e3d13d6cb3e8f8a920cf7651d5d6d0917baef1761",
+    "same_bytes": true,
+    "original_remote_head": "fe9765c69ce8a39e8a3682d61ceb67c86894c3b4",
+    "source_commits": [
+      {
+        "local": "05a5dd7aae139d3df37e9215ff063c0870323c59",
+        "public": "c65ab45b9a66458f6152fb16295e0c85e04fdf64",
+        "tree": "5910952cdd567c3676eb0c00a6e62a07934d0653"
+      },
+      {
+        "local": "02838a5db0b342647fc0f7904738bee87f167cf0",
+        "public": "26ae7a1a1ace2a6d0200121b1ef14e4ea4baf9e1",
+        "tree": "3983bab60b25a6e60515e4baaaf221b6f27f9f7a"
+      }
+    ]
+  },
+  "raw_member_count": 150,
+  "raw_member_bytes": 3237387,
+  "archive_count": 5,
+  "archive_bytes": 714169,
+  "selection": {
+    "direct_text_directories": {
+      "runtime": [
+        "runtime"
+      ],
+      "desktop-ui": [
+        "ui"
+      ],
+      "desktop-native": [
+        "install",
+        "install/linux"
+      ],
+      "reviews": [
+        "pet"
+      ]
+    },
+    "direct_extensions": [
+      ".json",
+      ".log",
+      ".txt"
+    ],
+    "explicit_files": {
+      "provenance": [
+        "PUBLIC_SOURCE_MAP.json",
+        "source-publication.json",
+        "source-publication-final.json",
+        "stage_rc19_evidence.py"
+      ],
+      "runtime": [
+        "runtime/check_rollback.py",
+        "runtime/measure_long_turn.py",
+        "runtime/rollback-case/candidate-create.json",
+        "runtime/rollback-case/rc18-write.json",
+        "runtime/rollback-case/candidate-reopen.json",
+        "runtime/rollback-case/tasks.json",
+        "runtime/long-turn-case-r2/measurements.json"
+      ],
+      "desktop-ui": [
+        "ui/baseline-page/browser-tests.json",
+        "ui/installed-browser/browser-tests.json"
+      ],
+      "desktop-native": [
+        "install/linux/offline-release/offline-check.json",
+        "install/linux/native_environment.py",
+        "install/linux/installed-harness/run_installed.py"
+      ]
+    },
+    "excluded": [
+      "All subdirectories except explicitly selected nested JSON receipts",
+      "Repository clones and source snapshots (their JSON source manifests are included)",
+      "Virtual environments, node_modules, Cargo, sysroots, downloaded packages and models",
+      "Runtime SQLite databases, journals, lock files and generated bulk fixtures",
+      "Personal artwork, artwork source archives, artwork manifests and private downloads",
+      "Built apps, executables, wheels, DEBs, screenshots and other binary files",
+      "Library upload helpers, build helpers and all unlisted Python scripts"
+    ]
+  },
+  "transformations": [],
+  "archives": [
+    {
+      "path": "desktop-native.tar.gz",
+      "bytes": 478004,
+      "sha256": "8bec67f0c1ba953e774bc5c0a152628683fcc430e89d83dc66ae2a961d98da5b",
+      "member_count": 71,
+      "members": [
+        {
+          "path": "install/CLOUD_KEY_REVIEW.json",
+          "bytes": 1926,
+          "sha256": "25aeef1d3cb9e97af3037433279f15955227e6445474229bbccdc32be745d8a0"
+        },
+        {
+          "path": "install/INSTALL_FINAL_RESULTS.json",
+          "bytes": 1711,
+          "sha256": "565b3190c3fd29f1c6ece5485354f3fb71427f7067bb881daccbc6c4d555f47e"
+        },
+        {
+          "path": "install/INSTALL_SOURCE_REVIEW.json",
+          "bytes": 1507,
+          "sha256": "860bcbabea55f7ae26840158d5b20b69ae3fab7617871756aa86f4db48ad1c92"
+        },
+        {
+          "path": "install/MAC_REPORT_REVIEW.json",
+          "bytes": 1826,
+          "sha256": "161f6d44443f27cfc90159f5fbae43cde1e806e6cdab8a6818984165ad83af23"
+        },
+        {
+          "path": "install/REQUIREMENTS_REVIEW.json",
+          "bytes": 3536,
+          "sha256": "1995a209b4268884cdaef8fa94c10182c0deb5f25d2e770039e7485e9f4e8f00"
+        },
+        {
+          "path": "install/app-installer-baseline.log",
+          "bytes": 1973,
+          "sha256": "98ec19d2f950d359520346088e797d239f84c154b9dc1744f995ce03e6e4c3a5"
+        },
+        {
+          "path": "install/app-installer-r1.log",
+          "bytes": 2171,
+          "sha256": "ab5f11b6a072a743ac265864928c7871e6e113c51fa64a0175d388d0332ba90b"
+        },
+        {
+          "path": "install/app-installer-r2.log",
+          "bytes": 2171,
+          "sha256": "9b4bd1a5359b26242c3394e83887faa2e789c3a6f3b5032bd059dd83524e4d85"
+        },
+        {
+          "path": "install/build-tools.log",
+          "bytes": 979,
+          "sha256": "efef01dab56a1419b9d55041c179c94ae2dafdf1c15289d6f4743ac397442466"
+        },
+        {
+          "path": "install/cleanup-r1.log",
+          "bytes": 698,
+          "sha256": "f90ed53a637ceb07b6362623a4826b81e55f72f20a0080071f263dc6090862dd"
+        },
+        {
+          "path": "install/cloud-key-regressions.log",
+          "bytes": 2713,
+          "sha256": "924871cb9fe9284b58d6b6a90d3b46f5003e101ab53c1b240b16940094b5bbb8"
+        },
+        {
+          "path": "install/linux/EXTRACTED_SOURCE_CHECK.json",
+          "bytes": 7549,
+          "sha256": "29526c80f57126041a2f6f0f0b5d04d47ac5a3943dfbfa85802c3379e143203c"
+        },
+        {
+          "path": "install/linux/FINAL_NATIVE_BUILD_R2.json",
+          "bytes": 259,
+          "sha256": "906e8cc4e004ed391824f79703f27adea789b3dad1b2bf027829212ea18858c1"
+        },
+        {
+          "path": "install/linux/FINAL_NATIVE_TESTS_R2.json",
+          "bytes": 1276,
+          "sha256": "a9d3a73592aa04d582aad383ef666c9f18ab0fd42f21fc278a804b85c421b1b0"
+        },
+        {
+          "path": "install/linux/FINAL_PREPARE.json",
+          "bytes": 866,
+          "sha256": "8fe7575034669a77c890f57876e73d78efd0c6a75cc8ee28b402e7c8f675f299"
+        },
+        {
+          "path": "install/linux/FINAL_PREPARE_R2.json",
+          "bytes": 1250,
+          "sha256": "1d16f587c32c24d83405a66f98a3dc8c6fe347f98cd7f65551d69cac9a7a58dd"
+        },
+        {
+          "path": "install/linux/FINAL_SOURCE.json",
+          "bytes": 572066,
+          "sha256": "6baac609dcdc7325047f8080d0ea2235b10ecb1b08cd1ece0943c5ae787b8dd3"
+        },
+        {
+          "path": "install/linux/FINAL_SOURCE_POSTRUN.json",
+          "bytes": 235,
+          "sha256": "efc8499f0e092afe7c1fc74958c98fb1bfe325935d79bd7bd43dd3eed787c69c"
+        },
+        {
+          "path": "install/linux/FINAL_SOURCE_R2.json",
+          "bytes": 572066,
+          "sha256": "e0ab7dc9d48a5922ad849f7faa1ac44d123e71bc1356ef77d437ff6bdab213cf"
+        },
+        {
+          "path": "install/linux/GUI_READY.json",
+          "bytes": 1299,
+          "sha256": "94696ce0ea2fc9877e10b31f3a62934c24862d87cc3eedc03460aa73489e1de1"
+        },
+        {
+          "path": "install/linux/INSTALLED_HARNESS_SOURCE.json",
+          "bytes": 17294,
+          "sha256": "18700cc11b5c767a76cceaa004ba1076331ab3c00e9c11ed558aabb7c46589b2"
+        },
+        {
+          "path": "install/linux/NATIVE_FINAL_COMPARISON.json",
+          "bytes": 251,
+          "sha256": "c3bbb301c4b9c3d432f32c0b3af40d6ea16a58e3dbe9e770c539bd1adf01fcfb"
+        },
+        {
+          "path": "install/linux/NATIVE_GUI_LAUNCH.json",
+          "bytes": 1309,
+          "sha256": "b2dda152bacbe6a737273077bc5c3bf0ec47aa49c682dc4416b06701eea71258"
+        },
+        {
+          "path": "install/linux/NATIVE_PREBUILD.json",
+          "bytes": 485,
+          "sha256": "96630dcf13535eb7b6db68ae50580fcc678fd9e7313929e231a541d569ca37e4"
+        },
+        {
+          "path": "install/linux/NATIVE_SOURCE_SNAPSHOT.json",
+          "bytes": 102677,
+          "sha256": "4be951fedcc83ce4089fa4a4094d94e021841ca0b870ea9cda4cf006e9bf930b"
+        },
+        {
+          "path": "install/linux/PACKAGED_RUNTIME_COMMAND.json",
+          "bytes": 341,
+          "sha256": "191701ec2a0e624c43c5c1117fd633cead6785c00ac7352ba5035a6f21f8c750"
+        },
+        {
+          "path": "install/linux/PACKAGED_RUNTIME_TESTS.json",
+          "bytes": 11683,
+          "sha256": "6ac11f5f35ad972fd26398dd6431318d624ee8b2966ec1369ddaec7f32bae5a6"
+        },
+        {
+          "path": "install/linux/PREPARATION.json",
+          "bytes": 887,
+          "sha256": "5cb58c6373a2b83a2145b503e9f0bd260998bcfa14c975ac34fe34ec2a06d479"
+        },
+        {
+          "path": "install/linux/RC19_PACKAGE.json",
+          "bytes": 4688,
+          "sha256": "ace240e99b586dd6f643bbbc26e7614cb78c39e8633be0eb20077f96a469bcf6"
+        },
+        {
+          "path": "install/linux/RUST_SNAPSHOT_R1.json",
+          "bytes": 363,
+          "sha256": "1052082e4bd7a915458c8c8b932bfaf444262550be38fc2d4a94b563bdb79c9f"
+        },
+        {
+          "path": "install/linux/SYSTEM_DEPENDENCY_CAPABILITY.json",
+          "bytes": 1913,
+          "sha256": "b0dde4f8c51cc0ab2035eb2d497a3df02e4041086cd8f5f8a0c6ffc46c87bf20"
+        },
+        {
+          "path": "install/linux/UNCHANGED_WHEELS_R2.json",
+          "bytes": 516,
+          "sha256": "67830ac709159bde2b40d769b2043e0c2fec302a2ffcf944eced7b9f10f769d7"
+        },
+        {
+          "path": "install/linux/WAYLAND_API_REVIEW.json",
+          "bytes": 1155,
+          "sha256": "df4f708376583228f12a14e305cb834ef7e2a33f4a8aed1db6accdd967b3e48b"
+        },
+        {
+          "path": "install/linux/WHEEL_BUILD.json",
+          "bytes": 1484,
+          "sha256": "2d9de7bceafdda7b791d3183d1fa312a136ca3529f4cacbc2f853c2678d8c2cd"
+        },
+        {
+          "path": "install/linux/apt-download.log",
+          "bytes": 75164,
+          "sha256": "8f377d2efd40b96f2b58546fb5009fa74c37798e9782ae2c8bb1bc8e088b810c"
+        },
+        {
+          "path": "install/linux/apt-extra.log",
+          "bytes": 1732,
+          "sha256": "defb253e6e2e7bdb0c137e60280d1e646b561469c9fb3137149d3f5183f1ef1c"
+        },
+        {
+          "path": "install/linux/apt-update.log",
+          "bytes": 788,
+          "sha256": "b10a54a6af3a41caa4164a8ee8dae0b79532d84755df6ce709ef32d67167be78"
+        },
+        {
+          "path": "install/linux/cargo-fetch.log",
+          "bytes": 12455,
+          "sha256": "1d43241c66a1a412f57c34eef02e8bf9ae54df6cfc622657aa8a5556b6fa7b78"
+        },
+        {
+          "path": "install/linux/cargo-metadata.json",
+          "bytes": 6890,
+          "sha256": "9906a122792b3ab2fa9e900c68cd84ac39a3244a1dc140a03d26151b74ccd2ae"
+        },
+        {
+          "path": "install/linux/extracted-runtime-check.log",
+          "bytes": 6938,
+          "sha256": "e8e3de88947c93d8dfa9d7743243d1680b72f5a9a6dd01e7a86cc301c33bb0b7"
+        },
+        {
+          "path": "install/linux/final-npm-ci.log",
+          "bytes": 201,
+          "sha256": "fbb19cb45f667cf488240b5e8b327f00d77dbb2506700f547ce2e2079f69be6f"
+        },
+        {
+          "path": "install/linux/final-prepare.log",
+          "bytes": 11936,
+          "sha256": "418d6ce23e85ac58c20752c6d04135ef525d38c90449d7789ed698294ca7d21e"
+        },
+        {
+          "path": "install/linux/final-r2-core-wheel.log",
+          "bytes": 39571,
+          "sha256": "5523a8aaa335e377d3a027dae2292ff9a9ee6a75c6a9ee3956ce30e40a43dbc3"
+        },
+        {
+          "path": "install/linux/final-r2-native-build.log",
+          "bytes": 18023,
+          "sha256": "a09be3f125f25f18cdf56f845556754e7c6d98d161025d9a9a146cfac12c7211"
+        },
+        {
+          "path": "install/linux/final-r2-npm-ci.log",
+          "bytes": 201,
+          "sha256": "18f233d204c4bf2d09d8e993d7501c32ed4ab58dc65ab82150468de7768f4ff8"
+        },
+        {
+          "path": "install/linux/final-r2-prepare.log",
+          "bytes": 11936,
+          "sha256": "1ac913520706655f5bffe86e0577388dab3f30f9a570d8282090dfbc0c7aa0b0"
+        },
+        {
+          "path": "install/linux/installed-harness/run_installed.py",
+          "bytes": 1722,
+          "sha256": "98d51eb30e382762576fdeb75ad0fce948c19d5a228ebee440ffda6c790cf2c6"
+        },
+        {
+          "path": "install/linux/native-snapshot-frontend.log",
+          "bytes": 1140,
+          "sha256": "ff8232729ce139ec20b81f09ce114fff59d0c79f089a8c145bb7405eee2e6cc0"
+        },
+        {
+          "path": "install/linux/native-snapshot-icons.log",
+          "bytes": 2708,
+          "sha256": "a2c8359f706c831aa6c5a23236e97f0005132f7858f374aae190c3f1f2a09691"
+        },
+        {
+          "path": "install/linux/native-snapshot-npm-ci.log",
+          "bytes": 201,
+          "sha256": "47852f6aedf03dc12ff62f0bb672881990242a4272d1397153620eda725b349f"
+        },
+        {
+          "path": "install/linux/native-ui.log",
+          "bytes": 221,
+          "sha256": "dd2d3ca5a69010313b2cc1617bd7fbb0f81ddcea81e044cfba6b42e4f1319780"
+        },
+        {
+          "path": "install/linux/native_environment.py",
+          "bytes": 1319,
+          "sha256": "f41f805561c33616266789e4184dbd9db8238a3e159f90389d4276a8f7cc946e"
+        },
+        {
+          "path": "install/linux/node-download.log",
+          "bytes": 791,
+          "sha256": "7a37360daf8594abeecd046a0a40b2c8fab42d85cfc7f6bc291ab9c23b0ecdd4"
+        },
+        {
+          "path": "install/linux/offline-release/offline-check.json",
+          "bytes": 224,
+          "sha256": "ec928e080b4ebd7ef67a2aaf915a34424ee4da4ac4ed0fa4e06f575e7031f665"
+        },
+        {
+          "path": "install/linux/packaged-runtime-tests.log",
+          "bytes": 5580,
+          "sha256": "f4dd9664aaa854785327434a607527f9b70df36c2361984a7463bfc3463dac2f"
+        },
+        {
+          "path": "install/linux/pip-download.log",
+          "bytes": 11608,
+          "sha256": "c8ce0f352a16073fd54e43e84838abbb5fe36b288ef0897df26fea2e04b485c6"
+        },
+        {
+          "path": "install/linux/requirements-hashed.txt",
+          "bytes": 3488,
+          "sha256": "c8ca1d28571352af0c9e2b041bef09ede5a9be41a775bd740dd15aef7d38322e"
+        },
+        {
+          "path": "install/linux/rust-core-recovery-r2.log",
+          "bytes": 666,
+          "sha256": "13b5636630e18bc8433dc215777772c68b5fb54fabdb8aa17848d60700bfa86b"
+        },
+        {
+          "path": "install/linux/rust-default-r2.log",
+          "bytes": 5810,
+          "sha256": "be1a2ba9132b5880ee32ce30f3b1c76c42e80b937b6eb59088bfe078c1e02ec0"
+        },
+        {
+          "path": "install/linux/rust-offline-release-r2.log",
+          "bytes": 439,
+          "sha256": "28dbfef0fc1070bfd111c97a47f2c79eb79d5df8ab1b2f174c60dc8fa6af8cd1"
+        },
+        {
+          "path": "install/linux/rust-tests-snapshot-r1.log",
+          "bytes": 17493,
+          "sha256": "bb9e4a21d35edd002bd773b4264d554875011585f395daadc9c651e02a3cc233"
+        },
+        {
+          "path": "install/linux/sysroot-extract.log",
+          "bytes": 29,
+          "sha256": "eab849563853778d4265f6e79d1d23d4c3b688c67fce32de5cef6ca6fa9a36d1"
+        },
+        {
+          "path": "install/linux/sysroot-packages.json",
+          "bytes": 50810,
+          "sha256": "d07cbc7ea246832c74ce7a0b0332370c1960ce2af8eb4c58e3b1c2a1fa254ce6"
+        },
+        {
+          "path": "install/linux/wheel-channels.log",
+          "bytes": 7335,
+          "sha256": "fc1be0926f199551ac785b380a0403b1186d0215737ec446f644d348bb5bfadc"
+        },
+        {
+          "path": "install/linux/wheel-companion.log",
+          "bytes": 27925,
+          "sha256": "1fc3b6cc48c382acde526010d81c111e2de0189159a596c1630edd431e1c790d"
+        },
+        {
+          "path": "install/linux/wheel-core.log",
+          "bytes": 39449,
+          "sha256": "a00f7d1a4c86dd4d9c3d8775733625a3cd2c552ed58e231614f6572ebb037de4"
+        },
+        {
+          "path": "install/linux/wheel-suite.log",
+          "bytes": 7993,
+          "sha256": "0c2610ee4d25e9942d5cf99afa5660dcad2cbe2ac3ec1bb3fc9b72049c75352b"
+        },
+        {
+          "path": "install/macos-artifacts-baseline.log",
+          "bytes": 1685,
+          "sha256": "a5af794dc5ad6a62f412e3e0dd5f018f31022b7ba29df215f6a9f83dc97da340"
+        },
+        {
+          "path": "install/macos-artifacts-r1.log",
+          "bytes": 1885,
+          "sha256": "7f91b4c8b768b94a897ed5da79601517c73549cc9f1b986ddf76dcb01d11b46a"
+        },
+        {
+          "path": "install/rc19-final-suite.log",
+          "bytes": 23874,
+          "sha256": "1060765c605b8ce3aefefd1b1f0a40daf2fd8eb26a62e728068b4a0974be53b2"
+        },
+        {
+          "path": "install/suite-r1.log",
+          "bytes": 23164,
+          "sha256": "8ebb4afbbac34c0da09b4e3d0805465902046d7b4ed2434ffad5f7a98c3f0f7b"
+        }
+      ]
+    },
+    {
+      "path": "desktop-ui.tar.gz",
+      "bytes": 15567,
+      "sha256": "f6ca978dc511e6d3f97951b44583c5fede83e394934f21ad45fb225ad30c41bd",
+      "member_count": 18,
+      "members": [
+        {
+          "path": "ui/RESULTS.json",
+          "bytes": 13468,
+          "sha256": "d3d54317af78ba09658985d60479212461d94f236772b56087d0c687dda26d92"
+        },
+        {
+          "path": "ui/baseline-page.log",
+          "bytes": 4192,
+          "sha256": "f70c8ad1f391c233bcab4d9aee722fd5c854441b9cd63587dba604c3e7c4c109"
+        },
+        {
+          "path": "ui/baseline-page/browser-tests.json",
+          "bytes": 12115,
+          "sha256": "3bec66e620ee4dc425b26ed017b5c598224467921f46da5d479f2c46f9162cab"
+        },
+        {
+          "path": "ui/baseline-vitest.log",
+          "bytes": 605,
+          "sha256": "771b440a84359ea6f769b8391abdbdbd920c031e4b8a929a81eab09cfd92c6a7"
+        },
+        {
+          "path": "ui/format-status.log",
+          "bytes": 318,
+          "sha256": "c6177320a41dc0d45ac5045c3655d00971061324c197f98c0bf119364cd3d7b5"
+        },
+        {
+          "path": "ui/format-upgrade.log",
+          "bytes": 182,
+          "sha256": "c7d63d765b01ada05605c000db8675865b14cbd8f4eaf59522ab6ece0f412a56"
+        },
+        {
+          "path": "ui/installed-browser.log",
+          "bytes": 11808,
+          "sha256": "72a69c4fdc65ea67bca22db3b3d2220547ea483a52c7a1c27084743b8727cbd4"
+        },
+        {
+          "path": "ui/installed-browser/browser-tests.json",
+          "bytes": 36244,
+          "sha256": "6ff985d10d5205a9dd14e942c44c8fe200db34d5567ee3b54dbce5cd93d77b7a"
+        },
+        {
+          "path": "ui/product-build-r1.log",
+          "bytes": 889,
+          "sha256": "3e2859514e0f67fcb402181a8e3e196b9b4f6bae5c07bfbc42cb9b97128788ad"
+        },
+        {
+          "path": "ui/rc19-browser-collection.log",
+          "bytes": 7536,
+          "sha256": "d0cd8ded173a5928fc07d16f9b95df797eb234cf1bf3b4175e9da11d26d5f6e3"
+        },
+        {
+          "path": "ui/rc19-browser-typecheck.log",
+          "bytes": 426,
+          "sha256": "2741f24a127b72469ac26075baa32b8ccc9ef2033671b105e7862e28c62f37ee"
+        },
+        {
+          "path": "ui/rc19-build.log",
+          "bytes": 889,
+          "sha256": "826ab36903aa20e02d875f3fdbe62406fbdda8f632ed19623b28df6cb8f48b87"
+        },
+        {
+          "path": "ui/rc19-changed-browser-typecheck.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "ui/rc19-final-browser-collection.log",
+          "bytes": 7636,
+          "sha256": "e3e0e693c0ec5888aa83ca0464104f22d359843a721f76e7c15594ce937ab45f"
+        },
+        {
+          "path": "ui/rc19-final-build.log",
+          "bytes": 889,
+          "sha256": "10f1bd52c780f65307788096824e89fffe9e4aedb43d1fadecf6aea3b5dd12ae"
+        },
+        {
+          "path": "ui/rc19-final-changed-browser-typecheck.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "ui/rc19-final-vitest.log",
+          "bytes": 605,
+          "sha256": "455c539860c9737d266f1a9d0304f63f820d06003a641194837daf3bb783f1ea"
+        },
+        {
+          "path": "ui/rc19-vitest.log",
+          "bytes": 606,
+          "sha256": "cf8cd4e497278b843a90064aa402ae897a95b86e06a056704f5dc3bc7d3f759d"
+        }
+      ]
+    },
+    {
+      "path": "provenance.tar.gz",
+      "bytes": 9517,
+      "sha256": "c7fb7780b0078451d1004384edf74258f55459bb0131872a19f151347d9d8fd3",
+      "member_count": 4,
+      "members": [
+        {
+          "path": "PUBLIC_SOURCE_MAP.json",
+          "bytes": 697,
+          "sha256": "cb3074af4896086f279f586b0d6e426f2a249195bdbe82ea68c9fc94633ee9c6"
+        },
+        {
+          "path": "source-publication-final.json",
+          "bytes": 1226,
+          "sha256": "93ec412747cc6bee8f7c5f054ddb0c8800214b58543997241aa34433637ad990"
+        },
+        {
+          "path": "source-publication.json",
+          "bytes": 13011,
+          "sha256": "aaead4bb4ea310098cc4c45d99374d880019a8683b821568b1c37f8558257ffa"
+        },
+        {
+          "path": "stage_rc19_evidence.py",
+          "bytes": 14642,
+          "sha256": "9ade9a587614acef792c6648d3cd1b10af1a7f4e579b4552ae7572e881fdcfd8"
+        }
+      ]
+    },
+    {
+      "path": "reviews.tar.gz",
+      "bytes": 6908,
+      "sha256": "718403b842a41bf74caccfe7ed54ff904e8885a0de8205d6efcb86b79179963d",
+      "member_count": 9,
+      "members": [
+        {
+          "path": "pet/RESULTS.json",
+          "bytes": 7447,
+          "sha256": "e7bc1daf4f3854083a2546e464f27df8ef78ae035096d3decdc9da85fda98288"
+        },
+        {
+          "path": "pet/frontend-tests.log",
+          "bytes": 654,
+          "sha256": "77a492201178ceed963f0f4ce8f1c0b31fa0f9aa403c87ee0a595efdc9514a3e"
+        },
+        {
+          "path": "pet/novice-review.json",
+          "bytes": 3358,
+          "sha256": "a1e25daa37de283206bb1f66e1779d4a221dbe2c23ca2de66839ba6a3659f084"
+        },
+        {
+          "path": "pet/recall-cloud-review.json",
+          "bytes": 935,
+          "sha256": "4f6bdd4493acf586197f57b3f108ebee28f4984c49d5405a7c3596cf66337c9f"
+        },
+        {
+          "path": "pet/recall-filter-limit-fixed.json",
+          "bytes": 544,
+          "sha256": "d0e6a759b77207cb12ad6cb07e658b4f2102b6cfa49df6ba47724f017c6671f0"
+        },
+        {
+          "path": "pet/recall-filter-limit-review.json",
+          "bytes": 424,
+          "sha256": "f711f0e06378c3832387d309a3bb0cafb165a14c411a0286d8da72890a2371a4"
+        },
+        {
+          "path": "pet/runtime-final-delta-review.json",
+          "bytes": 1423,
+          "sha256": "e8379ab4cf631f84f363e0d36c4423998563a2a7720ce7597e0fa181cdcf206b"
+        },
+        {
+          "path": "pet/typecheck.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "pet/ui-test-collection.log",
+          "bytes": 559,
+          "sha256": "e31bf5ae8f6fa81db43ca03ebf4effffeb6420358c59273cca15d2e02888604a"
+        }
+      ]
+    },
+    {
+      "path": "runtime.tar.gz",
+      "bytes": 204173,
+      "sha256": "b3f286c33586d98b00c82a32442104d952ba5089b43e4b036687fc7f37909b5a",
+      "member_count": 48,
+      "members": [
+        {
+          "path": "runtime/ENVIRONMENT.json",
+          "bytes": 417,
+          "sha256": "959f17cc87e7ad8eb547c36bac2aeddb9113150c13a31ab702d86b2478f43898"
+        },
+        {
+          "path": "runtime/RESULTS.json",
+          "bytes": 7947,
+          "sha256": "4e80bd31e9b42996deb09786b5edf0f70c0ad88e8358bbb7cdfd1ff162fe8aba"
+        },
+        {
+          "path": "runtime/RESULTS_SHA256.json",
+          "bytes": 2020,
+          "sha256": "14d24027dcd791388f2ce8be5455059b9efd216b7f148cd55596bde27d805d25"
+        },
+        {
+          "path": "runtime/SOURCE_MANIFEST.json",
+          "bytes": 1849,
+          "sha256": "6de40071e291fdc0708a0b15b0bab2751effd54fee7ff30386ffbce359e7d247"
+        },
+        {
+          "path": "runtime/SOURCE_MANIFEST_frozen_05a5dd7.json",
+          "bytes": 1691,
+          "sha256": "75828e01e4bdce8dcb5be259efec83f5cd35a09ab794caadc893ee45cbf33252"
+        },
+        {
+          "path": "runtime/channels-node-full.log",
+          "bytes": 17842,
+          "sha256": "a5171037ea7e0bd066493f061c53b3dc79f23423c5b9d1346270bd53a268d7be"
+        },
+        {
+          "path": "runtime/channels-node-r2.log",
+          "bytes": 8174,
+          "sha256": "4b1398d99064b48cc9739cb3653f74266c21260459b7ebe4d46cd1d9537764ce"
+        },
+        {
+          "path": "runtime/check_rollback.py",
+          "bytes": 3681,
+          "sha256": "01de6e1eb326b3bd797d7c9802c7a89f2c167f46f115474c4a4a8fa8a2da9b50"
+        },
+        {
+          "path": "runtime/child-recall-ownership.json",
+          "bytes": 1771,
+          "sha256": "c7d00613e2e7300a3c900c2ed8a132e01e865d78d35e69d9e43c88af7e27092e"
+        },
+        {
+          "path": "runtime/companion-full-r1.log",
+          "bytes": 131860,
+          "sha256": "e652eccc25101e59dda34e642eabb0c4d4640f448af99f88535e7bc84547cb99"
+        },
+        {
+          "path": "runtime/core-env-check-r1.log",
+          "bytes": 671,
+          "sha256": "528e02504183f2de5c0ca5192ba94fce97e015d89ae6773310c241d1251a18c3"
+        },
+        {
+          "path": "runtime/core-full-r1.log",
+          "bytes": 311898,
+          "sha256": "427b7733b82529b5a0569e9d9bd650b1e102328d62609b1115e7f785b404cc66"
+        },
+        {
+          "path": "runtime/core-full-r2.log",
+          "bytes": 301934,
+          "sha256": "6b97ee9ad40388f6b38aa3a551c347fb7ec6e6e5921307aa6ae375171b73a006"
+        },
+        {
+          "path": "runtime/core-full-r3.log",
+          "bytes": 300064,
+          "sha256": "5a843bc8733ec3416e5d1f80e1e75ed9d7aabf5e8f033bec1debc5f96afa428d"
+        },
+        {
+          "path": "runtime/dependencies-defusedxml.log",
+          "bytes": 240,
+          "sha256": "cdd31e14e287d2882840e14f5fda1f028a791c945d9fffbd51378873b69310ee"
+        },
+        {
+          "path": "runtime/dependencies-pinned.log",
+          "bytes": 6984,
+          "sha256": "3df48d7471928f299911973eff973b6cfb9d4542fd271e0b1b7bf42c61d76009"
+        },
+        {
+          "path": "runtime/dependencies.log",
+          "bytes": 253,
+          "sha256": "0fe279b7538cec782f342f7e0adf99239fcf7be0f161157b53c9b5367bfea347"
+        },
+        {
+          "path": "runtime/doc-failure-r1.log",
+          "bytes": 11084,
+          "sha256": "b6df08a6b683e5f890b9b40c7e2c9edaee78113aa7a95f6c603c09e3ed61ff8d"
+        },
+        {
+          "path": "runtime/long-turn-case-r2/measurements.json",
+          "bytes": 7791,
+          "sha256": "d8118288513aa2b52a595a964dcbfca321be6e62ac4b6673e90d1287be04a393"
+        },
+        {
+          "path": "runtime/long-turn-r1.log",
+          "bytes": 523,
+          "sha256": "913ed7e54cf2995a881e57a758b4545bed6ffb4b93e87f425d4ac93be1514ffb"
+        },
+        {
+          "path": "runtime/long-turn-r2.log",
+          "bytes": 6070,
+          "sha256": "123b22467f34de2375b4f5f6666af2a76b478ec96e779718018b0dca93ddb2de"
+        },
+        {
+          "path": "runtime/measure_long_turn.py",
+          "bytes": 2809,
+          "sha256": "a78e3705315f1ac7eee984f56b6f63e58d5e0bfd64b229d0145f71ae56e92b2f"
+        },
+        {
+          "path": "runtime/python-dependencies-final.txt",
+          "bytes": 2402,
+          "sha256": "327c20bce8404b107438e19b290413c87d4362b97dbab8400dddbc22d6de3dc3"
+        },
+        {
+          "path": "runtime/recall-existing-r1.log",
+          "bytes": 7515,
+          "sha256": "391711403cafd9d4e62f185764e45f84a6d6feba5273937b6670b87301a1c11a"
+        },
+        {
+          "path": "runtime/recall-final-r1.log",
+          "bytes": 10208,
+          "sha256": "c741796e8ba8e19e7f7c07a42b6280a7c670630c2b14250ae704f8cbb3db6090"
+        },
+        {
+          "path": "runtime/recall-final-r2.log",
+          "bytes": 21965,
+          "sha256": "2ad4fed6ca5aeca700dd30ce5b3e9d9bc245b1e05c1ab6e053341392e7e16b99"
+        },
+        {
+          "path": "runtime/recall-r10.log",
+          "bytes": 1418,
+          "sha256": "744d4cdb2ace22343323819d7d16cc3eae82090a81dff4060963861ee2b5570a"
+        },
+        {
+          "path": "runtime/recall-r2.log",
+          "bytes": 9422,
+          "sha256": "22fa9e97176df8ae1bef792fa0a2192f3eaecab1a2b338898b3095330088c547"
+        },
+        {
+          "path": "runtime/recall-r3.log",
+          "bytes": 4615,
+          "sha256": "173d34a4b8c9715a7ef722667b9a54240ee39f1f8a46b409c776587df9ef0c10"
+        },
+        {
+          "path": "runtime/recall-r4.log",
+          "bytes": 810,
+          "sha256": "eeacaf0c07012526dc701e32c549b45fea0e36de180d07d32970ed06e8539bb7"
+        },
+        {
+          "path": "runtime/recall-r5.log",
+          "bytes": 5130,
+          "sha256": "8b3df1efc037e35a5c52f320abccdebafe30a6d17dce05ec2ebf6d0101c741a2"
+        },
+        {
+          "path": "runtime/recall-r6.log",
+          "bytes": 9470,
+          "sha256": "5ad7a0552719399fffb088c2bdd789fd6e8d584ff8148b315ab27c618ba85ead"
+        },
+        {
+          "path": "runtime/recall-r7.log",
+          "bytes": 14240,
+          "sha256": "506735063a04c63942e0bb70922e2bfa7fd84c17cd4e89755cb9790c5aef3513"
+        },
+        {
+          "path": "runtime/recall-r8.log",
+          "bytes": 12892,
+          "sha256": "5de216bcbb109990f2ae163914e651ed32ec82d3761ea7ff4d5b6b396f0782c3"
+        },
+        {
+          "path": "runtime/recall-r9.log",
+          "bytes": 1418,
+          "sha256": "2c8b84dbb9051bfa7fece0c8c1aa02979a02d5e2ef2d60359b3b8cde20303289"
+        },
+        {
+          "path": "runtime/recall-unicode-before.log",
+          "bytes": 3067,
+          "sha256": "10028941306243e2c43036945cd7e4bdaf3d13024783ec1dd3af3078b07a26ef"
+        },
+        {
+          "path": "runtime/rollback-case/candidate-create.json",
+          "bytes": 774,
+          "sha256": "676f029b956f6e41720008114a72323a8c4293f9e820d7ea222483208a246977"
+        },
+        {
+          "path": "runtime/rollback-case/candidate-reopen.json",
+          "bytes": 1350,
+          "sha256": "3aa69eb5c31aecf7121ec2140302a48a2cdb94cc8ca8fa5d346b281a7d1de25a"
+        },
+        {
+          "path": "runtime/rollback-case/rc18-write.json",
+          "bytes": 1227,
+          "sha256": "afce9aa234a95d93c053e20722315a4bf12273d36a716c6972ce63c935cc026b"
+        },
+        {
+          "path": "runtime/rollback-case/tasks.json",
+          "bytes": 41010,
+          "sha256": "182ae8146591158caf44dd4f9c72dc15e82d80e7cc3421d78d0ca9922b8a02c3"
+        },
+        {
+          "path": "runtime/rollback-r1.log",
+          "bytes": 3130,
+          "sha256": "9a7983cea6404119202355ee756014c649b472d1842b0333cc6125b6ff1a7b3f"
+        },
+        {
+          "path": "runtime/rotation-r1.log",
+          "bytes": 2473,
+          "sha256": "93c454eba3e8ba2acf0b6c6cd7ff0f8623752f3ddfb640b6689fa1160e578f1b"
+        },
+        {
+          "path": "runtime/rotation-r2.log",
+          "bytes": 5358,
+          "sha256": "f4211d59e19603d92019721e589f34433562aac68c44147a3d647a0240d25772"
+        },
+        {
+          "path": "runtime/rotation-r3.log",
+          "bytes": 990,
+          "sha256": "d17a1600b9848d39d1467e0631a965511d485e216ada3442e580916a5530bd73"
+        },
+        {
+          "path": "runtime/stream-timeout-recheck.log",
+          "bytes": 461,
+          "sha256": "be78de4ff420c0fe7d5615ba7675fffc94da5b8c3d9888e680afd8c2886dd465"
+        },
+        {
+          "path": "runtime/targeted-r1.log",
+          "bytes": 29659,
+          "sha256": "5f99083bd7a6aa6ba823e18572f0f872c8484b2ae4840ba133b7fe5a79614d3d"
+        },
+        {
+          "path": "runtime/targeted-r2.log",
+          "bytes": 16802,
+          "sha256": "56f6791e4a42f92402f85b247d2abf9bcc5f7b89dec354a690ce48a3f8499e56"
+        },
+        {
+          "path": "runtime/worker-models-r1.log",
+          "bytes": 12163,
+          "sha256": "6a6b1d0bb875bce4ac407ff23d933ee0cc6a1d116c45eec2940196f5a5c2e15a"
+        }
+      ]
+    }
+  ],
+  "standalone": [
+    {
+      "path": "PUBLIC_SOURCE_MAP.json",
+      "source": "PUBLIC_SOURCE_MAP.json",
+      "bytes": 697,
+      "sha256": "cb3074af4896086f279f586b0d6e426f2a249195bdbe82ea68c9fc94633ee9c6"
+    },
+    {
+      "path": "UI_RESULTS.json",
+      "source": "ui/RESULTS.json",
+      "bytes": 13468,
+      "sha256": "d3d54317af78ba09658985d60479212461d94f236772b56087d0c687dda26d92"
+    },
+    {
+      "path": "PET_RESULTS.json",
+      "source": "pet/RESULTS.json",
+      "bytes": 7447,
+      "sha256": "e7bc1daf4f3854083a2546e464f27df8ef78ae035096d3decdc9da85fda98288"
+    },
+    {
+      "path": "NOVICE_FLOW_REVIEW.json",
+      "source": "pet/novice-review.json",
+      "bytes": 3358,
+      "sha256": "a1e25daa37de283206bb1f66e1779d4a221dbe2c23ca2de66839ba6a3659f084"
+    },
+    {
+      "path": "RUNTIME_REVIEW.json",
+      "source": "pet/runtime-final-delta-review.json",
+      "bytes": 1423,
+      "sha256": "e8379ab4cf631f84f363e0d36c4423998563a2a7720ce7597e0fa181cdcf206b"
+    },
+    {
+      "path": "RUNTIME_RESULTS.json",
+      "source": "runtime/RESULTS.json",
+      "bytes": 7947,
+      "sha256": "4e80bd31e9b42996deb09786b5edf0f70c0ad88e8358bbb7cdfd1ff162fe8aba"
+    },
+    {
+      "path": "NATIVE_PACKAGE_RESULTS.json",
+      "source": "install/INSTALL_FINAL_RESULTS.json",
+      "bytes": 1711,
+      "sha256": "565b3190c3fd29f1c6ece5485354f3fb71427f7067bb881daccbc6c4d555f47e"
+    },
+    {
+      "path": "NATIVE_GUI_RESULTS.json",
+      "source": "install/linux/NATIVE_GUI_LAUNCH.json",
+      "bytes": 1309,
+      "sha256": "b2dda152bacbe6a737273077bc5c3bf0ec47aa49c682dc4416b06701eea71258"
+    },
+    {
+      "path": "LOG_SUMMARY.json",
+      "generated": true,
+      "bytes": 34230,
+      "sha256": "fd6ed6de5e5891bdd815e3470eb8d37a1d5b2475b65562299d08389380c8c71c"
+    },
+    {
+      "path": "REVIEW_INDEX.json",
+      "generated": true,
+      "bytes": 3813,
+      "sha256": "7f8997b056a8f1c331f86b6dfef9e695421266178095868fe96a7a0c4aa10b17"
+    },
+    {
+      "path": "SANITIZATION.json",
+      "generated": true,
+      "bytes": 380,
+      "sha256": "a7dfbbb62800ea874d8f60f4beba99117bde26e3060e028dcd8c2eb7db26c3f0"
+    },
+    {
+      "path": "EVIDENCE_README.md",
+      "generated": true,
+      "bytes": 2050,
+      "sha256": "6d58479ae387b36a03e9ce74eb65b705cd1823ba9fee9c71b8f864b18522e006"
+    }
+  ]
+}
