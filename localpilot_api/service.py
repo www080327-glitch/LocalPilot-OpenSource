@@ -227,7 +227,7 @@ class TaskService:
     def _arm_timer(self, task):
         if task.deadline is None:
             return
-        task.timer = threading.Timer(max(0, task.deadline - time.time()), lambda: self.cancel(task.id, "timed_out"))
+        task.timer = threading.Timer(max(0, task.deadline - time.time()), self._timeout_task, args=(task.id,))
         task.timer.daemon = True
         task.timer.start()
 
@@ -672,7 +672,7 @@ class TaskService:
             task.output_cap = output_cap
             task.deadline = time.time() + timeout
             task.timeout_seconds = timeout
-            task.timer = threading.Timer(timeout, lambda: self.cancel(task.id, "timed_out"))
+            task.timer = threading.Timer(timeout, self._timeout_task, args=(task.id,))
             task.timer.daemon = True
             self._emit(task, "task.created", self._snapshot(task))
             self._launch(task, lambda: session.runtime.run_turn(request.input), output_cap)
@@ -996,6 +996,12 @@ class TaskService:
             runtime.request_pause()
             self._emit(task,'task.status',self._snapshot(task))
             return self._snapshot(task)
+
+    def _timeout_task(self, task_id):
+        with self.condition:
+            # Timer.cancel cannot stop a callback already waiting for this lock.
+            if not self.closed:
+                self.cancel(task_id, "timed_out")
 
     def cancel(self, task_id, reason="cancelled", *, drain_response=False):
         if reason not in {"cancelled", "timed_out"}:

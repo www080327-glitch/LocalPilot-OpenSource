@@ -10,9 +10,11 @@ LocalPilot 采用 Apache 2.0 开源协议，致力于让强大、易用且低成
 
 ## 当前源码组件版本
 
-本源码树包含 Desktop **5.0.1-rc.20**、Core **5.0.0b37**、Suite **0.2.0b36**、Companion **0.5.7b12** 和独立 Channels **0.1.0a4**。源码版本不代表已经发布或通过全部原生安装验收；可用发行资产以 GitHub Releases 为准。
+本源码树包含 Desktop **5.0.1-rc.21**、Core **5.0.0b38**、Suite **0.2.0b36**、Companion **0.5.7b12** 和独立 Channels **0.1.0a4**。源码版本不代表已经发布或通过全部原生安装验收；可用发行资产以 GitHub Releases 为准。
 
-RC20 继续解决单个长任务反复保存完整活动记录的问题，增加同一事务内的增量块、恢复校验，以及正常停服和回滚前的旧格式自动整理。原文和工具收据保留；任务结束、归档、恢复和兼容转换仍各有完整处理成本。实现边界见[增量保存说明](docs/development/RC20_INCREMENTAL_CHECKPOINTS.md)，结果见[当前验收](docs/evidence/rc20-incremental-20261119/RESULTS.md)。仍为 **NOT_RELEASE_READY**。
+RC21 修复正常停服后已开始的超时回调仍修改内存任务、尝试写入已关闭数据库的问题。创建与恢复的定时器统一在服务锁内检查关闭状态，显式取消与持久化故障行为不变；保留 RC20 所有失败证据。[当前验收](docs/evidence/rc21-timer-20261119/RESULTS.md)与[本地/云端 Work 续验](docs/development/WORK_RC21_ACCEPTANCE.md)分别记录实际状态。仍为 **NOT_RELEASE_READY**。
+
+RC20 继续解决单个长任务反复保存完整活动记录的问题，增加同一事务内的增量块、恢复校验，以及正常停服和回滚前的旧格式自动整理。原文和工具收据保留；任务结束、归档、恢复和兼容转换仍各有完整处理成本。实现边界见[增量保存说明](docs/development/RC20_INCREMENTAL_CHECKPOINTS.md)，结果见[RC20 验收](docs/evidence/rc20-incremental-20261119/RESULTS.md)。仍为 **NOT_RELEASE_READY**。
 
 RC19 修复重新填写云端密钥后仍使用旧密钥、首次设置跳过按钮不前进和 ARM Linux 错选 MLX 路径的问题；桌宠增加角色文件夹导入和显式基础动作，修正拖动方向与动画报告。Core 增加同会话原文检索，并补齐 Adaptive、精确云授权和空闲 Computer 会话的执行段轮换。实现边界见[RC19 续作](docs/development/RC19_FOLLOWUP_20261119.md)，原始结果见[RC19 验收](docs/evidence/rc19-usability-20261119/RESULTS.md)。
 
@@ -38,7 +40,7 @@ RC16 继续处理长期开启同一对话时的记录增长：在任务之间把
 
 | 平台 | 当前可用路径 | 验收边界 |
 | --- | --- | --- |
-| Apple Silicon Mac | macOS 15+ 桌面 APP；oMLX/MLX 或已有本地 HTTP 服务；云端模型 | RC18 的 M1 Max 构建、升级/回滚/恢复、标题栏收起保留草稿和真实滑块已通过；角色当时不可见，没有可采样的动画阶段。RC20 新代码仍需按[本轮步骤](docs/development/WORK_RC20_ACCEPTANCE.md)验证，Intel 与多屏不继承 M1 结果。 |
+| Apple Silicon Mac | macOS 15+ 桌面 APP；oMLX/MLX 或已有本地 HTTP 服务；云端模型 | RC18 的 M1 Max 构建、升级/回滚/恢复、标题栏收起保留草稿和真实滑块已通过；角色当时不可见，没有可采样的动画阶段。RC20 新代码仍需按[本轮步骤](docs/development/WORK_RC21_ACCEPTANCE.md)验证，Intel 与多屏不继承 M1 结果。 |
 | **Intel Mac** | **优先支持本地 HTTP + CPU 推理**；Core/Suite CLI、Companion 服务；x86_64 桌面资源与构建路径 | 代码和跨平台协议测试已补齐；尚无通过 Intel 真机验收的安装包。桌面构建仍要求 macOS 15+。 |
 | **Linux x86_64** | **CLI、受限/Full Shell、HTTP/SSE、恢复、本地模型；Tauri/DEB 构建入口；Companion 文件/文字及可选桌面/音轨接入** | RC18 的 Debian 13 Test DEB 构建、提取后的 ELF 与安装态组件检查已有记录。当前 RC20 结果单独记录；系统 DEB 安装循环、X11/Wayland 原生交互、真实会议音轨与登录/睡眠分别验收。通用 Linux GUI 操作型 Computer Use 尚未实现。 |
 | Linux aarch64 / 其他发行版 | Ubuntu 24.04 arm64 的 RC14 Test DEB 已在目标环境构建并完成 apt 安装循环；其他发行版须独立构建 | RC13 重建夹具首装 → RC14 升级 → RC13 降级 → RC14 恢复均通过；该 VM 无 GUI。RC20 新源码不继承 RC14 包验收，其他发行版仍未验收。 |
@@ -106,7 +108,7 @@ localpilot agent --allow-local-on-battery '读取工作文件夹里的项目说�
 Linux 桌面采用发行版原生 DEB，内含四组件 wheel 与隔离环境，依赖构建时匹配的系统 Python minor、GTK/WebKit；不含模型。RC14 的 Debian 13 x86_64 原生短验见 [RC14 验收记录](desktop/docs/evidence/audit-20261117-desktop/final-package-rc14/RESULTS.md)；Ubuntu 24.04 arm64 已另行通过 RC13 重建夹具首装、升级 RC14、回滚 RC13 和恢复 RC14，详见[续验](desktop/docs/evidence/audit-20261117-desktop/native-delivery-20261117/RESULTS.md)。两种架构的产物和哈希互不通用。当前没有公开 RC14 DEB 下载；重新构建必须使用该次输出的 `SHA256SUMS`，不能沿用历史制品哈希。取得**与自己发行版和架构匹配、已核对 SHA-256 的候选包**后安装：
 
 ```sh
-sudo apt install ./LocalPilot-Test-5.0.1-rc.20-linux-x86_64.deb
+sudo apt install ./LocalPilot-Test-5.0.1-rc.21-linux-x86_64.deb
 ```
 
 Test 候选要求显式的独立测试目录。首次创建一个尚不存在的目录并写入私有身份标记：
