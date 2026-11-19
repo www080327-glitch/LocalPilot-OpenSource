@@ -10,17 +10,17 @@
 
 ### 0. 核对当前 Core 全量与已有失败
 
-上一阶段 RC20 Core 最后一轮为 1,742 项：1,641 通过、99 跳过、2 项错误，不能写成全量通过。`HTTPTests.test_json_sse_session_and_protocol_headers` 在初始化发现插件时等 worker 目录帧超时；`test_oversized_http_is_contained` 在工具派发前的独立 Schema 校验进程报预算或可用性错误，尚未执行超大响应断言。两项在相同源码的前一轮全量均通过，原因仍需定位，不能直接归因于机器或模型。
+当前 RC21 唯一一次 Core 全量发现 1,743 项：1,620 通过、99 跳过、24 项因 `test_plugin_ecosystem.PluginTests.setUpClass` 初始化失败而未执行。错误为本机 stdio 插件 worker 首个目录帧超时；夹具原超时为 2 秒，父进程等待为 timeout+1，日志不能定位具体慢阶段。新增定时器回归通过，原始日志没有未捕获线程异常标题。仍不能写成全量通过。
 
-先读 RC20 证据中的 `FINAL_REGRESSION_RESULTS.json` 和各轮原始日志。在空闲的本机、锁定依赖和正确源码导入路径下，使用仓库既有全量入口复验；记录 worker 启动、回环握手、目录返回和 Schema 子进程异常类型。确认有缺陷再做最小修复，不提高超时/内存预算，不通过跳过或反复跑到绿来完成门禁。保留所有失败；单项通过不能合并成一次全量通过。
+先读 RC21 证据中的 `FINAL_CORE_RESULTS.json`、RC20 的 `FINAL_REGRESSION_RESULTS.json` 和原始日志。上一阶段的 HTTP/SSE 和超大响应两项在 RC21 通过，但不得用不同运行拼成全量通过。在空闲的本机、锁定依赖和正确源码导入路径下，使用仓库既有全量入口复验；记录 worker 启动、协议初始化、目录返回和 Schema 子进程异常类型。确认有缺陷再做最小修复，不提高超时/内存预算，不通过跳过或反复跑到绿来完成门禁。保留所有失败，区分已执行、类初始化失败导致未执行和普通 skip。原运行器曾因类错误不计入 testsRun 而少算一个通过项，应按逐项回执核对。
 
 ### 1. Mac Test APP 和不丢数据的升级、回滚
 
-在真实 M1 Max 按现有资源准备和 `desktop/scripts/build-macos.sh` 构建当前 RC21 Test APP。四组件 wheel 必须来自受测源码。使用 `src-tauri/tauri.test.conf.json` 和独立 `LP_INSTALL_TEST_ROOT`，先读现有安装脚本的 `--help`，再通过计划、执行和收据完成 RC18→RC21→RC18→RC21；不覆盖日常身份。
+在真实 M1 Max 按现有资源准备流程构建当前 RC21 Test APP。四组件 wheel 必须来自受测源码。在仓库根显式运行 `LP_GUI_TEST_CONFIG=src-tauri/tauri.test.conf.json desktop/scripts/build-macos.sh`，这个开关决定 Test 身份。先读 `python3 desktop/scripts/install-local-app.py --help`，用实际构建产物和 `--test-app` 走已有计划、执行和收据完成 RC18→RC21→RC18→RC21。启动时给独立的绝对路径 `LP_INSTALL_TEST_ROOT`，按现有流程创建有效的 `test-owner.json`；不覆盖日常身份。
 
 核验 Test Bundle ID、签名、架构、真实安装路径、四组件版本、包内容和实际模块加载来源。不得用源码目录覆盖安装 runtime 来测试。
 
-RC20 活动检查点使用 schema 4；正常停止 Core 会自动整理成 schema 3，Suite 换包/回滚前也会准备兼容数据。用界面正常停止 Core 和 Companion，再执行已审阅计划。验证升级后新建任务、原文和收据在降级后的旧版可继续读写，再升级仍完整。UNKNOWN 不能因换版本自动重放。异常中断留下 schema 4 时，先用当前候选恢复并正常停服；不能让旧版读取过期完整快照，也不能恢复较早备份丢掉新记录。
+RC21 延续 RC20 的兼容机制：活动检查点使用 schema 4；正常停止 Core 会自动整理成 schema 3，Suite 换包/回滚前也会准备兼容数据。用界面正常停止 Core 和 Companion，再执行已审阅计划。验证升级后新建任务、原文和收据在降级后的旧版可继续读写，再升级仍完整。UNKNOWN 不能因换版本自动重放。异常中断留下 schema 4 时，先用当前候选恢复并正常停服；不能让旧版读取过期完整快照，也不能恢复较早备份丢掉新记录。
 
 ### 2. 新手常用路线与错误恢复
 
@@ -44,13 +44,13 @@ RC20 活动检查点使用 schema 4；正常停止 Core 会自动整理成 schem
 
 真实鼠标向四个方向拖动，中途反向、按住停顿、继续和释放，观察收边、六个锚点和方向变化。验证大小滑块、标题栏 X 收起保留草稿、输入焦点与减少动态效果。跨屏需要真正第二个显示器，覆盖负坐标和不同缩放；单屏移动不算跨屏通过。
 
-主动触发 `RETRACTING` / `PEEKING`，调用已有 `measure_animation` 并录制带时间的可见窗口。完整阶段内可见变化需达到 24 Hz；回调次数、CSS 报告或静态截图不能独立证明实际显示帧率。无阶段记 `NO_ANIMATION_STAGES`，不可见记未通过可见性，不写成有效 0 Hz。
+对正在运行且使用同一绝对测试根的 Test APP，运行 `python3 desktop/scripts/pet-control.py measure_animation --test-root "$LP_INSTALL_TEST_ROOT"`，按脚本现有入口开启采样后，在窗口内触发 `RETRACTING` / `PEEKING` 并录制带时间的可见画面；不要在过渡结束后才采样。完整阶段内可见变化需达到 24 Hz；回调次数、CSS 报告或静态截图不能独立证明实际显示帧率。无阶段记 `NO_ANIMATION_STAGES`，不可见记未通过可见性，不写成有效 0 Hz。
 
 高级探头、尾巴/水花及特定情节仍需要原私人姿态包：`pack.json`、`poses.png` 和清单列明的图片。只搜索用户授权的素材路径；找不到时列出缺失，不伪造、不上传私人画作。
 
 ### 4. 真实模型、音轨和休眠等设备功能
 
-先核对原 R12 Luna medium Full 和 7,219.684 秒／240 心跳安装态长任务记录，它们属于原版本。对当前 b38 先做安装态检索、长任务保存、停止和恢复；若做真实工程复验，使用现有 `scripts/qualify_openai_engineering.py`，保留原提示、夹具、两个 child 和 4096 child 输出上限。
+先核对原 R12 Luna medium Full 和 7,219.684 秒／240 心跳安装态长任务记录，它们属于原版本。对当前 b38 先做安装态检索、长任务保存、停止和恢复；真实源码工程复验使用 `scripts/qualify_openai_engineering.py`：先读 `--help`，显式给当前受测提交的 `--source-root`、全新目录 `--output` 和本机既有私有密钥的 `--key-file`，保留原提示、夹具、两个 child 和 4096 child 输出上限。这是源码工程门禁；安装态 Full/长任务须用实际安装 runtime 并记录模块来源，不能互相替代。
 
 先使用已授权的 `gpt-6-luna / medium`；只有实际能力问题才用 Sol 对照，记录具体模型和 effort。密钥缺失、TLS、系统权限、测试启动错误与模型能力分开。不要增加预算或放宽外部验收来制造 PASS。所有子任务须有各自自测和外部验收，所有失败与重跑保留；自动审批拒绝要如实记录，不换入口绕过。
 

@@ -1,0 +1,45 @@
+{
+  "scope": "Read-only Git object comparison for inherited historical source test evidence.",
+  "previous_tested_product": "8eb042cf57508de59179b4aa2fdd5ae41e9a9eec",
+  "current_frozen_product": "66665f459bb5ad2d688cdc4bd3693edb7e5e1856",
+  "unchanged_git_objects": {
+    "channels": "5bff3c5930c94e1b41544f8ad286eb77b58e009f",
+    "companion": "4ee778cccd6ff45c69f3f54a00c404e6e427f295",
+    "desktop/index.html": "29262b8fe31ca0fe67c4c3f0ad4c0bbc1fe4ac93",
+    "desktop/playwright.config.ts": "aa1acfddee9f1e03d77d57af464a41cc7383aff3",
+    "desktop/public": "640d8d50bd3959d1a178eefe997b2e9840af0a0d",
+    "desktop/scripts": "625b6aa6c6d2ce2bb40053fdbfaad33ab4fdbea5",
+    "desktop/src-tauri/src": "3dd18daaacb1311ad158a8b293931c3c810aecf4",
+    "desktop/src": "b92e3831a7f2f57b6e968a760276021ee9620f2e",
+    "desktop/tests": "8f358e3893b79df0af3c01e2f10897fc2fd1f648",
+    "desktop/tsconfig.json": "2af475926eb06da05e975921feb21e18719326a6",
+    "desktop/vite.config.ts": "9cc4dec4d887160d3c09932f641fb7f694b81f66",
+    "suite": "ef90152c2fdb954e7d18116ba1822ae06c823194",
+    "tests/test_wechat_ilink_bridge.mjs": "6cf9fbe1dd50a489ddba4461df55dbbcddfd631e"
+  },
+  "changed_non_docs_paths_since_rc20": [
+    "MODULE_RELEASE.json",
+    "README.md",
+    "desktop/README.md",
+    "desktop/package-lock.json",
+    "desktop/package.json",
+    "desktop/src-tauri/Cargo.lock",
+    "desktop/src-tauri/Cargo.toml",
+    "desktop/src-tauri/tauri.conf.json",
+    "localpilot_api/service.py",
+    "localpilot_service/__init__.py",
+    "pyproject.toml",
+    "tests/test_persistent_runtime.py",
+    "tests/test_plugin_http.py",
+    "tests/test_service_history.py"
+  ],
+  "evidence": {
+    "rc19_ui_and_node": "https://github.com/www080327-glitch/LocalPilot-OpenSource/blob/89d49cf5d4510fe0831c06caaa28da5b43d3b5ca/docs/evidence/rc19-usability-20261119/RESULTS.md",
+    "rc20_suite_companion_and_native_default": "https://github.com/www080327-glitch/LocalPilot-OpenSource/blob/31644d806ca5af8c29b4be5783d44a1dd528fde4/docs/evidence/rc20-incremental-20261119/RESULTS.md"
+  },
+  "interpretation": [
+    "Historical test outcomes remain tied to their individual source and execution receipts.",
+    "Identical Suite, Companion, Channels, frontend, native source and selected tests justify source-scope comparison.",
+    "Core implementation and release metadata changed. RC21 package and its newly run checks have independent provenance, and package validation does not imply system installation, GUI or page assertions."
+  ]
+}

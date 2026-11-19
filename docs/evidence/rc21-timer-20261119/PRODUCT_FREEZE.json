@@ -1,0 +1,19 @@
+{
+  "source_commit": "66665f459bb5ad2d688cdc4bd3693edb7e5e1856",
+  "tree": "31dec4b22999741f5b58c2fdd8e90c29b444d475",
+  "source_files_sha256": {
+    "localpilot_api/service.py": "f4f81f1d20e00cc5b941fdd31bb9d45bbe533b0a22541f83454dac60432ac215",
+    "tests/test_persistent_runtime.py": "e89ac363922e567728614ddf1140942e760e80ab75bb6af7810861ed33e8a571",
+    "tests/test_plugin_http.py": "3cd32d8524b52859e50343267ba1de444cc3670b74b96c5292399508d82f00d5",
+    "pyproject.toml": "b587419466d33783c667ae0b4d15ad86e6369bdc6f0e077f8db93fc4fd379dc4",
+    "localpilot_service/__init__.py": "d19ee21e8934b47edb9ac8137a80014433c40e82629b55f11ec3a4b9a22eb73f",
+    "MODULE_RELEASE.json": "d26c1dd7c8035d28b4e86b7da30b5dabb4fb5a9176014faf08c9e44304bfc6a1",
+    "desktop/package.json": "8a2487857d3063d027c83fc51b2c7854ef5fe2dedd147f0777cc3beb84ffe822",
+    "desktop/package-lock.json": "5c86082fc20656b89702a565e7a69d8b5a743f4fbe5ef41a7e5da8075376e5a5",
+    "desktop/src-tauri/Cargo.toml": "27e6012fa3b4bd224e75cec6e26d98a24a4d9aed7e7d95463b00d4585b4fc021",
+    "desktop/src-tauri/Cargo.lock": "1b6f145fc445b028d4a557cfdadbc822002923c442392bf64c48be2818029c14",
+    "desktop/src-tauri/tauri.conf.json": "053839186f80445dace89b8da8e6db2aead7c479dd13efafa515e970a947acc9"
+  },
+  "independent_review": "rc21-review/INDEPENDENT_REVIEW.json",
+  "product_diff_scope": "Only TaskService private timeout callback changed since RC20; versions regenerated for b38/rc21. Test fixture cleanup and one true lifecycle regression included."
+}

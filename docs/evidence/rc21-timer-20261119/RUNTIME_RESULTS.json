@@ -1,0 +1,66 @@
+{
+  "status": "TARGETED_PASS",
+  "source": {
+    "base_commit": "2e7d2e61eba5efc7e3bc1fc3cec85c55323323d9",
+    "fix_commit": "bd5ded785f984358ccbfa6df2e79d3ed1085a00b",
+    "fix_tree": "ecff5af0dbd126e3088d9b39d7537b37db8d360e",
+    "changed_files": [
+      "localpilot_api/service.py",
+      "tests/test_persistent_runtime.py"
+    ],
+    "test_file_sha256": "e89ac363922e567728614ddf1140942e760e80ab75bb6af7810861ed33e8a571"
+  },
+  "scope": "Both Timer registrations use one private callback that reads service.closed under the existing condition and calls the original cancellation path only while open. No exception is caught or budget changed.",
+  "regression_before": {
+    "product_commit": "2e7d2e61eba5efc7e3bc1fc3cec85c55323323d9",
+    "test_file": "Same tracked regression file as the fixed run, applied before the product fix",
+    "exit_code": 1,
+    "tests_run": 1,
+    "observed": "Expected failure capturing the uncaught timer-thread PersistenceError",
+    "log": "timer-regression-before.log"
+  },
+  "regression_after": {
+    "product_commit": "bd5ded785f984358ccbfa6df2e79d3ed1085a00b",
+    "exit_code": 0,
+    "tests_run": 5,
+    "passed": 5,
+    "elapsed_seconds": 3.528,
+    "cases": [
+      "test_suspend_ignores_timer_already_waiting_for_the_service_lock",
+      "test_approval_survives_restart_and_old_action_is_rejected",
+      "test_timeout_includes_downtime_and_retires_session",
+      "test_deadline_includes_waiting_for_approval",
+      "test_stream_timeout_stops_future_chunks"
+    ],
+    "log": "timer-regression-after.log"
+  },
+  "shared_sqlite_probe": {
+    "script": "reproduce_timer_after_clean_suspend.py",
+    "synchronization": "The real timer stack enters the service condition while the test holds its lock. The real suspend closes SQLite before that lock is released.",
+    "before": "timer-suspend-probe-before.log",
+    "after": "timer-suspend-probe-after.log",
+    "before_store_state": "requires_approval",
+    "before_service_state": "cancelling",
+    "before_timer_error": "Persistent runtime fenced after storage failure/close",
+    "after_store_state": "requires_approval",
+    "after_service_state": "requires_approval",
+    "after_timer_error": null,
+    "after_snapshot_unchanged": true,
+    "after_durable_checkpoint_and_journal_unchanged": true,
+    "write_dispatched_after_fix": false,
+    "production_import_hashes_match_commits": true
+  },
+  "production_model_calls": 0,
+  "candidate_full_regression_performed": false,
+  "artifact_sha256": {
+    "reproduce_timer_after_clean_suspend.py": "d1b4d7650c033df9cb9b07c16b4dab612ac61d540eb024b13c00a0d4e8a01f74",
+    "timer-regression-after.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "timer-regression-after.log": "0a9d66c0cfcb38df9937ccfe3aa97a08d02f41bfb5c21cdae7811f102ee9435a",
+    "timer-regression-before.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "timer-regression-before.log": "22d3dbd26fb28fd11a90998246c470ded926890b856941dea2c8669450b4974f",
+    "timer-suspend-probe-after.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "timer-suspend-probe-after.log": "9753a2a5627c6b13d302f817be6546743a1eadbebef4bddba99f0eeef5004ccd",
+    "timer-suspend-probe-before.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "timer-suspend-probe-before.log": "79ad30fc65e1363aa9c7510f342200d4614f5fc203b440ad6449eb9139ba0953"
+  }
+}

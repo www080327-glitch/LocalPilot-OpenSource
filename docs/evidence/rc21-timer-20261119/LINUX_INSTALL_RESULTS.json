@@ -1,0 +1,80 @@
+{
+  "status": "PASS",
+  "source_commit": "66665f459bb5ad2d688cdc4bd3693edb7e5e1856",
+  "source_tree": "31dec4b22999741f5b58c2fdd8e90c29b444d475",
+  "tracked_files_unchanged": 3959,
+  "artifact": {
+    "artifact": "LocalPilot-Test-5.0.1-rc.21-linux-x86_64.deb",
+    "local_artifact": "/workspace/scratch/b0df9966d470/nov19-validation/rc21-install/linux/final-source/desktop/release/linux-test-v5.0.1-rc.21/20261119-113339-90/LocalPilot-Test-5.0.1-rc.21-linux-x86_64.deb",
+    "sha256": "936f7c5535c689f3acb4968ad1b55b84fbc5914c57aae3b520b7d77c4ba2709a",
+    "bytes": 114680164
+  },
+  "package": {
+    "Package": "local-pilot-test",
+    "Version": "5.0.1-rc.21",
+    "Architecture": "amd64",
+    "Depends": "python3, xdg-utils, zenity, bubblewrap, python3.13, libayatana-appindicator3-1, libwebkit2gtk-4.1-0, libgtk-3-0"
+  },
+  "bundle_id": "io.localpilot.desktop.test",
+  "module_versions": {
+    "suite": "0.2.0b36",
+    "localpilot-agent-service": "5.0.0b38",
+    "localpilot-companion": "0.5.7b12",
+    "localpilot-channels": "0.1.0a4"
+  },
+  "wheel_count": 40,
+  "verified_product_code": {
+    "localpilot-agent-service": {
+      "source_files": 151,
+      "sha256": "822dd4914e63235e1eca3f3b88e209633880eb4ff51bed22d8c79a58d401486a"
+    },
+    "localpilot-channels": {
+      "source_files": 7,
+      "sha256": "daad54598b7822efdf6805b7ce6ed47f4701fde8f1682abf1eef4b80d5c8a394"
+    },
+    "localpilot-companion": {
+      "source_files": 111,
+      "sha256": "418bd428b8a5aba4a322aa652904ec1f05b61e9ef2b511971ba134e106c31ee6"
+    },
+    "localpilot-suite": {
+      "source_files": 21,
+      "sha256": "00c5ef1ebbdbc06fe2cf7c83fdfded2e71520b9e38d5179e4281c56b1730f8bb"
+    }
+  },
+  "source_files_verified": 290,
+  "pip_check": "No broken requirements found.",
+  "node": {
+    "status": "PASS",
+    "version": "v22.23.4",
+    "sha256": "b8492284c76a54baf58d61668dd0e41ee0fc98adabf9503d30f05d08f55b4406"
+  },
+  "packaged_python": {
+    "python": "3.13.5 (main, Aug 10 2026, 12:06:59) [GCC 14.2.0]",
+    "isolated": true,
+    "run": 28,
+    "passed": 28,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "product_modules_loaded_from_extracted_runtime": 128,
+  "packaged_timer_regression": "PASS",
+  "native_core_recovery": {
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0,
+    "measured": 0,
+    "filtered": 65
+  },
+  "inherited_suite_and_rust_default": "INHERITED_RC20_ACCEPTANCE.json",
+  "packaged_rollback": "PACKAGED_ROLLBACK.json",
+  "deliverable": {
+    "artifact": "LocalPilot-Test-5.0.1-rc.21-linux-x86_64.deb",
+    "path": "/workspace/scratch/b0df9966d470/nov19-validation/deliverables/LocalPilot-Test-5.0.1-rc.21-linux-x86_64.deb",
+    "sha256": "936f7c5535c689f3acb4968ad1b55b84fbc5914c57aae3b520b7d77c4ba2709a",
+    "bytes": 114680164
+  },
+  "system_installed": false,
+  "physical_native_gui": "NOT_RUN_RC21",
+  "prior_gui_blocker_receipt": "../../install/linux/NATIVE_GUI_LAUNCH.json"
+}

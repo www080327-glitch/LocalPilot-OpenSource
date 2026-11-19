@@ -1,0 +1,631 @@
+{
+  "format": "localpilot-rc21-public-evidence-v1",
+  "phase": "final",
+  "source_map": {
+    "local_commit": "66665f459bb5ad2d688cdc4bd3693edb7e5e1856",
+    "public_commit": "8bb7c78b8880d4f15498cb341726c23c82858b84",
+    "tree": "31dec4b22999741f5b58c2fdd8e90c29b444d475",
+    "remote_tree_read_back": true,
+    "pr": 15,
+    "branch": "codex/native-polish-final-20261116"
+  },
+  "raw_member_count": 81,
+  "raw_member_bytes": 1382521,
+  "archive_count": 4,
+  "archive_bytes": 373674,
+  "selection": {
+    "explicit_files": {
+      "provenance": [
+        "PUBLIC_RC20_EVIDENCE_MAP.json",
+        "PUBLIC_RC21_SOURCE_MAP.json",
+        "RC21_EVIDENCE_SELECTION.json",
+        "RC21_PRODUCT_FREEZE.json",
+        "RC21_SOURCE_PUBLISH.json",
+        "stage_rc21_evidence.py"
+      ],
+      "reviews": [
+        "rc21-review/INDEPENDENT_REVIEW.json",
+        "rc21-review/INHERITED_SOURCE_SCOPE.json"
+      ],
+      "runtime": [
+        "rc21-runtime/RESULTS.json",
+        "rc21-runtime/core-full-final.exit",
+        "rc21-runtime/core-full-final.launch.log",
+        "rc21-runtime/core-full-final/FINAL_CORE_RESULTS.json",
+        "rc21-runtime/core-full-final/MODULE_ORIGINS.json",
+        "rc21-runtime/core-full-final/RESULTS.json",
+        "rc21-runtime/core-full-final/runner.py",
+        "rc21-runtime/core-full-final/source-after.json",
+        "rc21-runtime/core-full-final/source-before.json",
+        "rc21-runtime/core-full-final/tests.log",
+        "rc21-runtime/reproduce_timer_after_clean_suspend.py",
+        "rc21-runtime/timer-regression-after.exit",
+        "rc21-runtime/timer-regression-after.log",
+        "rc21-runtime/timer-regression-before.exit",
+        "rc21-runtime/timer-regression-before.log",
+        "rc21-runtime/timer-suspend-probe-after.exit",
+        "rc21-runtime/timer-suspend-probe-after.log",
+        "rc21-runtime/timer-suspend-probe-before.exit",
+        "rc21-runtime/timer-suspend-probe-before.log"
+      ],
+      "install": [
+        "rc21-install/linux/DELIVERABLE.json",
+        "rc21-install/linux/EXTRACTED_SOURCE_CHECK.json",
+        "rc21-install/linux/FINAL_SOURCE.json",
+        "rc21-install/linux/FINAL_SOURCE_POSTRUN.json",
+        "rc21-install/linux/INHERITED_RC20_ACCEPTANCE.json",
+        "rc21-install/linux/INSTALLED_HARNESS_SOURCE.json",
+        "rc21-install/linux/INSTALL_FINAL_RESULTS.json",
+        "rc21-install/linux/PACKAGED_ROLLBACK.json",
+        "rc21-install/linux/PACKAGED_ROLLBACK_RAW_SHA256.json",
+        "rc21-install/linux/PACKAGED_RUNTIME_TESTS.json",
+        "rc21-install/linux/PACKAGE_VERIFICATION.json",
+        "rc21-install/linux/PRODUCT_WHEELS.json",
+        "rc21-install/linux/build-worktree.json",
+        "rc21-install/linux/build-worktree.log",
+        "rc21-install/linux/deb-extract.json",
+        "rc21-install/linux/deb-extract.log",
+        "rc21-install/linux/extracted-runtime-check.json",
+        "rc21-install/linux/extracted-runtime-check.log",
+        "rc21-install/linux/native-build.json",
+        "rc21-install/linux/native-build.log",
+        "rc21-install/linux/npm-ci.json",
+        "rc21-install/linux/npm-ci.log",
+        "rc21-install/linux/packaged-rollback-conversion.log",
+        "rc21-install/linux/packaged-rollback-fixture.py",
+        "rc21-install/linux/packaged-runtime-tests.json",
+        "rc21-install/linux/packaged-runtime-tests.log",
+        "rc21-install/linux/prepare.json",
+        "rc21-install/linux/prepare.log",
+        "rc21-install/linux/roundtrip-candidate-create.json",
+        "rc21-install/linux/roundtrip-candidate-create.log",
+        "rc21-install/linux/roundtrip-candidate-reopen.json",
+        "rc21-install/linux/roundtrip-candidate-reopen.log",
+        "rc21-install/linux/roundtrip-downgrade-execute.json",
+        "rc21-install/linux/roundtrip-downgrade-execute.log",
+        "rc21-install/linux/roundtrip-downgrade-plan.json",
+        "rc21-install/linux/roundtrip-downgrade-plan.log",
+        "rc21-install/linux/roundtrip-rc18-write.json",
+        "rc21-install/linux/roundtrip-rc18-write.log",
+        "rc21-install/linux/roundtrip-reupgrade-execute.json",
+        "rc21-install/linux/roundtrip-reupgrade-execute.log",
+        "rc21-install/linux/roundtrip-reupgrade-plan.json",
+        "rc21-install/linux/roundtrip-reupgrade-plan.log",
+        "rc21-install/linux/run_acceptance.py",
+        "rc21-install/linux/run_packaged_rollback.py",
+        "rc21-install/linux/rust-core-recovery.json",
+        "rc21-install/linux/rust-core-recovery.log",
+        "rc21-install/linux/wheel-channels.json",
+        "rc21-install/linux/wheel-channels.log",
+        "rc21-install/linux/wheel-companion.json",
+        "rc21-install/linux/wheel-companion.log",
+        "rc21-install/linux/wheel-core.json",
+        "rc21-install/linux/wheel-core.log",
+        "rc21-install/linux/wheel-suite.json",
+        "rc21-install/linux/wheel-suite.log"
+      ]
+    },
+    "excluded": [
+      "Repository clones and source snapshots (selected SHA-256 manifests are included)",
+      "Virtual environments, node_modules, toolchains, sysroots, packages and models",
+      "Databases, journals, locks, workspace files and generated bulk fixtures",
+      "Artwork, images, screenshots, built applications and other binary artifacts",
+      "Private Library identifiers, URLs, upload helpers and download receipts",
+      "All files outside the explicit list, including previous-phase raw results"
+    ]
+  },
+  "transformations": [],
+  "archives": [
+    {
+      "path": "install.tar.gz",
+      "bytes": 216506,
+      "sha256": "3f2f46d1761791069a87bed42806a5482509a4caae68e1316e4074e24f532642",
+      "member_count": 54,
+      "members": [
+        {
+          "path": "rc21-install/linux/DELIVERABLE.json",
+          "bytes": 287,
+          "sha256": "4912e186f28f4c5012ecfdfab86396dbe52671d16a53d545faae267d2f031ae4"
+        },
+        {
+          "path": "rc21-install/linux/EXTRACTED_SOURCE_CHECK.json",
+          "bytes": 7754,
+          "sha256": "c4d5e0677c6b9cc080779402558bccd16799c48ee858611f995232994450cc4f"
+        },
+        {
+          "path": "rc21-install/linux/FINAL_SOURCE.json",
+          "bytes": 579146,
+          "sha256": "b95265d27aa8d9e0bca57a7293f9ccd8fc2bedf69b13309d22b119e65b3c0c16"
+        },
+        {
+          "path": "rc21-install/linux/FINAL_SOURCE_POSTRUN.json",
+          "bytes": 151,
+          "sha256": "501f3c7bf2e5c8ae901f4645a58ac720d0fff0c38aa5ac3ba86fdf2b1a6d2c15"
+        },
+        {
+          "path": "rc21-install/linux/INHERITED_RC20_ACCEPTANCE.json",
+          "bytes": 685,
+          "sha256": "f683ef4dd98dccb1693b39382fc74d4b89e0c566e8787864805b35223545686c"
+        },
+        {
+          "path": "rc21-install/linux/INSTALLED_HARNESS_SOURCE.json",
+          "bytes": 17294,
+          "sha256": "b9b1dc882636ff41dd9c4875add7793c050be22ca8e38857f10535a646a45a68"
+        },
+        {
+          "path": "rc21-install/linux/INSTALL_FINAL_RESULTS.json",
+          "bytes": 2911,
+          "sha256": "6491624b3aa521013b4a6f078b849902e708ef2ba84e71855f8214cba7caaeda"
+        },
+        {
+          "path": "rc21-install/linux/PACKAGED_ROLLBACK.json",
+          "bytes": 1656,
+          "sha256": "b47fa2ed9616acaec88df58cf521ac4c235cca8410c3dd8d14aa5cc585658924"
+        },
+        {
+          "path": "rc21-install/linux/PACKAGED_ROLLBACK_RAW_SHA256.json",
+          "bytes": 211,
+          "sha256": "2ad8ff3d54b1a536de1d8170f47ab67fc8ca66046cf055635d66519a81ec716c"
+        },
+        {
+          "path": "rc21-install/linux/PACKAGED_RUNTIME_TESTS.json",
+          "bytes": 11902,
+          "sha256": "d53d304bba629026a86f9a2fd01796726640ae86f7bc9729a5ff079a641678a0"
+        },
+        {
+          "path": "rc21-install/linux/PACKAGE_VERIFICATION.json",
+          "bytes": 4896,
+          "sha256": "dd4f579771449b07ae4e32bbbc704cef6e9795e2e9c380b9241f363c469a4c76"
+        },
+        {
+          "path": "rc21-install/linux/PRODUCT_WHEELS.json",
+          "bytes": 481,
+          "sha256": "53b5829bb724a9ae267003dffebd3aab5dc821a01c9bd328f69f34ddb80e3f73"
+        },
+        {
+          "path": "rc21-install/linux/build-worktree.json",
+          "bytes": 415,
+          "sha256": "c1cb1d0b1bee583f0bd7b8df3fe74e302f98507e3122c80ceec4db12a6e6f927"
+        },
+        {
+          "path": "rc21-install/linux/build-worktree.log",
+          "bytes": 120,
+          "sha256": "381da029905a94784320cde60742af39749c81d29ba282a4888613de177aea55"
+        },
+        {
+          "path": "rc21-install/linux/deb-extract.json",
+          "bytes": 569,
+          "sha256": "fd4b336302f652eaeb80d9f214fc5906fbf730634f674fbc0545464495ffd04b"
+        },
+        {
+          "path": "rc21-install/linux/deb-extract.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "rc21-install/linux/extracted-runtime-check.json",
+          "bytes": 498,
+          "sha256": "8a4bbdcb5c3d0b0b3113caf3657ca1b3d67961405b151ac10d9058cd927871a1"
+        },
+        {
+          "path": "rc21-install/linux/extracted-runtime-check.log",
+          "bytes": 6938,
+          "sha256": "d9c431ddf51ffe9a7986a71f255def056099c59a6ddaf24266041288b390e10f"
+        },
+        {
+          "path": "rc21-install/linux/native-build.json",
+          "bytes": 315,
+          "sha256": "8786ca13f3dbd6c35dee1ec24366ed534cd92d2f6beb794fcf9d244b2051aad8"
+        },
+        {
+          "path": "rc21-install/linux/native-build.log",
+          "bytes": 17977,
+          "sha256": "d28a4685a2b522412bb6adc94de519d8c536181fd9a8cfe7cde5e27b0ed4b0ce"
+        },
+        {
+          "path": "rc21-install/linux/npm-ci.json",
+          "bytes": 285,
+          "sha256": "6e335ec65979072ee62a1d3bfecf29244cf6b7b34f8f97a3217b8824e1528fd5"
+        },
+        {
+          "path": "rc21-install/linux/npm-ci.log",
+          "bytes": 201,
+          "sha256": "eb1b36507cc45078e426b035cba45e859350516452e9b83618e2331b996d4daa"
+        },
+        {
+          "path": "rc21-install/linux/packaged-rollback-conversion.log",
+          "bytes": 318,
+          "sha256": "cae18c5e5932d51c539a7dfc2fe4511b9e99bfb37e5a23b9997010c572be6259"
+        },
+        {
+          "path": "rc21-install/linux/packaged-rollback-fixture.py",
+          "bytes": 4109,
+          "sha256": "8403e6a657a9e72abec02255c7c87f9e3fe50009efa972b0e9ccd88734a3b621"
+        },
+        {
+          "path": "rc21-install/linux/packaged-runtime-tests.json",
+          "bytes": 539,
+          "sha256": "0087e44a0f65c845be43f02b5d528ce83e9b7523e941a02ae726560d008c3beb"
+        },
+        {
+          "path": "rc21-install/linux/packaged-runtime-tests.log",
+          "bytes": 5899,
+          "sha256": "3326b44f1cc0b3d226a752fb4a1917213092d81e11757ec0e640a676d908df9f"
+        },
+        {
+          "path": "rc21-install/linux/prepare.json",
+          "bytes": 872,
+          "sha256": "73fba5f19b5d2c34adeaf37e9ba6d3294871b55ab3cf3224ec327c033ab3a71f"
+        },
+        {
+          "path": "rc21-install/linux/prepare.log",
+          "bytes": 11936,
+          "sha256": "93df9f4a7987eb7fa25e78ed52bb51ce6cabd3eadfd8146a9733943b7fc2875d"
+        },
+        {
+          "path": "rc21-install/linux/roundtrip-candidate-create.json",
+          "bytes": 467,
+          "sha256": "db6fec8b27104d18e388d148991348021b55acf7e6883b5c1fda5fdee9b3283d"
+        },
+        {
+          "path": "rc21-install/linux/roundtrip-candidate-create.log",
+          "bytes": 785,
+          "sha256": "f2cc3e48355dc84a5a84d262b7d63502751da36c27af51c617ff5b5a7675a9d7"
+        },
+        {
+          "path": "rc21-install/linux/roundtrip-candidate-reopen.json",
+          "bytes": 467,
+          "sha256": "1fa1769b9989628e8322c56b00c09d24fb35a4351a62cbb9079eae6805c7dafd"
+        },
+        {
+          "path": "rc21-install/linux/roundtrip-candidate-reopen.log",
+          "bytes": 1329,
+          "sha256": "9273b55ed724392619f37a63955c01dc3a9dd0f7dfe5fc4e26364ae63d833a1b"
+        },
+        {
+          "path": "rc21-install/linux/roundtrip-downgrade-execute.json",
+          "bytes": 639,
+          "sha256": "37ee70e74c1880b5ed3a712ab7be05a56c1af4a6e6b1923578ba9e0e301c062f"
+        },
+        {
+          "path": "rc21-install/linux/roundtrip-downgrade-execute.log",
+          "bytes": 817,
+          "sha256": "798844ad9ea1866b7868d7dff7b1053eaa3bb6800c6c1b9a9c91d908652e0177"
+        },
+        {
+          "path": "rc21-install/linux/roundtrip-downgrade-plan.json",
+          "bytes": 832,
+          "sha256": "d9a56d6d0afa149616bcecfbf0ead7b60462eea7a50d88ee4cc2aceac3709fd0"
+        },
+        {
+          "path": "rc21-install/linux/roundtrip-downgrade-plan.log",
+          "bytes": 3971,
+          "sha256": "d5f84bc44d0e9652febe5fa6ea0402915d6ee3964e8136c3736408bdd630b500"
+        },
+        {
+          "path": "rc21-install/linux/roundtrip-rc18-write.json",
+          "bytes": 455,
+          "sha256": "75e5026f68ee70fbc3f3711604cfaa44572722602e38937fecaa2406e6bb8477"
+        },
+        {
+          "path": "rc21-install/linux/roundtrip-rc18-write.log",
+          "bytes": 1187,
+          "sha256": "81a6cb6b466da4eb866929db62f3a6b118cfddf12a449a8fa6082b157b1ddaae"
+        },
+        {
+          "path": "rc21-install/linux/roundtrip-reupgrade-execute.json",
+          "bytes": 639,
+          "sha256": "7905da017822b68c3240759681a4f75cda3e2dbc33de06fecd03cbf8abcf9589"
+        },
+        {
+          "path": "rc21-install/linux/roundtrip-reupgrade-execute.log",
+          "bytes": 729,
+          "sha256": "d44f5a581f571707eb61cde145b18a5fe395f3f31b70547f610278339f04869a"
+        },
+        {
+          "path": "rc21-install/linux/roundtrip-reupgrade-plan.json",
+          "bytes": 832,
+          "sha256": "11f3ffa8bb9c95c03a87e008c80aff95de4b979db9b09f25aa312a231ae56c85"
+        },
+        {
+          "path": "rc21-install/linux/roundtrip-reupgrade-plan.log",
+          "bytes": 3960,
+          "sha256": "a750c97aedbea3d8446561820c81288fa8375b461de067329f77b49377c9995f"
+        },
+        {
+          "path": "rc21-install/linux/run_acceptance.py",
+          "bytes": 12337,
+          "sha256": "c1c2b1cb2c12bd2aa7d9ad2dad55ad28e4ba65158320f94b81e8588992d2e3f6"
+        },
+        {
+          "path": "rc21-install/linux/run_packaged_rollback.py",
+          "bytes": 6888,
+          "sha256": "ce197556956756207f33b4e717ae1d0ce786b48ddf593c82ab0dfe2363c2205e"
+        },
+        {
+          "path": "rc21-install/linux/rust-core-recovery.json",
+          "bytes": 555,
+          "sha256": "cccd4e0ee6716fff054e0771146227d50507f896305a7ea717c0f1eeb67c97e4"
+        },
+        {
+          "path": "rc21-install/linux/rust-core-recovery.log",
+          "bytes": 813,
+          "sha256": "e18e62783bcdca60c4213e12b2b59dc7ff2ac0d26319d9df6dd437bd06ec8657"
+        },
+        {
+          "path": "rc21-install/linux/wheel-channels.json",
+          "bytes": 505,
+          "sha256": "0bd95bd1f0627674e278f57e1dcfb15ca40dac4e5b25c66bd768c4c2e48f28d0"
+        },
+        {
+          "path": "rc21-install/linux/wheel-channels.log",
+          "bytes": 7459,
+          "sha256": "fdcc7701a6b478402b2604b214482f12583852e9132e7497da0a2f5aab23d6c6"
+        },
+        {
+          "path": "rc21-install/linux/wheel-companion.json",
+          "bytes": 525,
+          "sha256": "91bde15833b32f8397fc62bfbea9fd6aecb4914e8d7395f5a6b01b7a37516418"
+        },
+        {
+          "path": "rc21-install/linux/wheel-companion.log",
+          "bytes": 28049,
+          "sha256": "14b14a9b93387ccebe9f8bfe13e550072f6e1af81cca6b73e7c8f3d92e1ab734"
+        },
+        {
+          "path": "rc21-install/linux/wheel-core.json",
+          "bytes": 512,
+          "sha256": "e2fb09d83c780f574a1f31c326f988cee680b986bbe7fec6de4f7089424a0feb"
+        },
+        {
+          "path": "rc21-install/linux/wheel-core.log",
+          "bytes": 39750,
+          "sha256": "871434a4529a58dbe33230c09277c6f0051218c216a1cc97cd570b4edbed0b61"
+        },
+        {
+          "path": "rc21-install/linux/wheel-suite.json",
+          "bytes": 517,
+          "sha256": "3d02ac3396d143370cc38cd5276cd3f3048a39791817b95d4595cf9b2b096e61"
+        },
+        {
+          "path": "rc21-install/linux/wheel-suite.log",
+          "bytes": 8117,
+          "sha256": "c992594420514d5f9be2a46d7ec9d4189634466b0b5ffd8e9083aa6850db056a"
+        }
+      ]
+    },
+    {
+      "path": "provenance.tar.gz",
+      "bytes": 7297,
+      "sha256": "ae7d2624682dc1f165096ab20ea61f1947ae99e675bbba899c7bba34cae5283f",
+      "member_count": 6,
+      "members": [
+        {
+          "path": "PUBLIC_RC20_EVIDENCE_MAP.json",
+          "bytes": 277,
+          "sha256": "713ba14da3d6f83b487387140e4ce02143be9742b5151ffa4468c59c2db74b71"
+        },
+        {
+          "path": "PUBLIC_RC21_SOURCE_MAP.json",
+          "bytes": 277,
+          "sha256": "4b19d1c11124205add6332ad035ec7e5e92b5cd5c6e812e47e9cf23ae8b7523d"
+        },
+        {
+          "path": "RC21_EVIDENCE_SELECTION.json",
+          "bytes": 4016,
+          "sha256": "eebb0c60bb35c77a469ea40b78f9bb88a64a76b76bd870f0bb2310a6b04de7f5"
+        },
+        {
+          "path": "RC21_PRODUCT_FREEZE.json",
+          "bytes": 1518,
+          "sha256": "afa384ee9061f40fe9e8d14c284bfe0c57231109b4f069d07ba625c5469d9242"
+        },
+        {
+          "path": "RC21_SOURCE_PUBLISH.json",
+          "bytes": 3034,
+          "sha256": "ee805c60d194c65e49f3d3c1677e962a2c14175aaa050d73b5016b56a680e38d"
+        },
+        {
+          "path": "stage_rc21_evidence.py",
+          "bytes": 11699,
+          "sha256": "9a3341835e6fd28d0f1a86b25782d3b09a15ebcbff6f63a8e440c0fe377e2afe"
+        }
+      ]
+    },
+    {
+      "path": "reviews.tar.gz",
+      "bytes": 3003,
+      "sha256": "ced3ee0bc05d09bfce2493934d77d1e337726b7140c2fd9a091a61f314732dc6",
+      "member_count": 2,
+      "members": [
+        {
+          "path": "rc21-review/INDEPENDENT_REVIEW.json",
+          "bytes": 3436,
+          "sha256": "e6292efe5a79462640cb9f31bea94e6efd951858c01617d3d12937b11b179be5"
+        },
+        {
+          "path": "rc21-review/INHERITED_SOURCE_SCOPE.json",
+          "bytes": 2514,
+          "sha256": "5daaf3d80f7d6c33b5ade890a524f7bd8d92a8cdb1e7538d33d9dbe0166cdf7b"
+        }
+      ]
+    },
+    {
+      "path": "runtime.tar.gz",
+      "bytes": 146868,
+      "sha256": "d2bebf1c6921560fc1fb7dcbed594e362f7a397be7ec1648d5d118421b577f06",
+      "member_count": 19,
+      "members": [
+        {
+          "path": "rc21-runtime/RESULTS.json",
+          "bytes": 3454,
+          "sha256": "507257a55ebed37c3ab916f8729354229e9a802af372a6cf059b5dbf1c38bb17"
+        },
+        {
+          "path": "rc21-runtime/core-full-final.exit",
+          "bytes": 2,
+          "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+        },
+        {
+          "path": "rc21-runtime/core-full-final.launch.log",
+          "bytes": 3086,
+          "sha256": "579727fbf9c638663184eeeedcdfccd062985f6f6682f1f34f5e7cfe000d514f"
+        },
+        {
+          "path": "rc21-runtime/core-full-final/FINAL_CORE_RESULTS.json",
+          "bytes": 6582,
+          "sha256": "3391384e20c1fbd6bc0a06d2b3b88afc2c3173f652fc0fe746f78f688ef31bb8"
+        },
+        {
+          "path": "rc21-runtime/core-full-final/MODULE_ORIGINS.json",
+          "bytes": 34320,
+          "sha256": "d3448a82f928e4d24274f3864941ed05b47803e8b8ad37c6a18189565a2a390d"
+        },
+        {
+          "path": "rc21-runtime/core-full-final/RESULTS.json",
+          "bytes": 25939,
+          "sha256": "2d31d20131e3eba8a2a5703dd85ab7682f1f8e959a5c25bbd2d8f3a3accfcfe3"
+        },
+        {
+          "path": "rc21-runtime/core-full-final/runner.py",
+          "bytes": 3110,
+          "sha256": "d34c5f7cb98254924cc381b6cd428f45ad2fda574d486f996bef9fda663bb533"
+        },
+        {
+          "path": "rc21-runtime/core-full-final/source-after.json",
+          "bytes": 89957,
+          "sha256": "adb3f9bb06628036f0baf054c7d5c62c527d6de68f971e1cc5e03f979ad5b3e9"
+        },
+        {
+          "path": "rc21-runtime/core-full-final/source-before.json",
+          "bytes": 89957,
+          "sha256": "adb3f9bb06628036f0baf054c7d5c62c527d6de68f971e1cc5e03f979ad5b3e9"
+        },
+        {
+          "path": "rc21-runtime/core-full-final/tests.log",
+          "bytes": 286093,
+          "sha256": "8d5d066cf89fbd541d64210ad5e991fbfa04d8a5b162a41ff5e6d4ccadf885af"
+        },
+        {
+          "path": "rc21-runtime/reproduce_timer_after_clean_suspend.py",
+          "bytes": 5995,
+          "sha256": "d1b4d7650c033df9cb9b07c16b4dab612ac61d540eb024b13c00a0d4e8a01f74"
+        },
+        {
+          "path": "rc21-runtime/timer-regression-after.exit",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "rc21-runtime/timer-regression-after.log",
+          "bytes": 880,
+          "sha256": "0a9d66c0cfcb38df9937ccfe3aa97a08d02f41bfb5c21cdae7811f102ee9435a"
+        },
+        {
+          "path": "rc21-runtime/timer-regression-before.exit",
+          "bytes": 2,
+          "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+        },
+        {
+          "path": "rc21-runtime/timer-regression-before.log",
+          "bytes": 1591,
+          "sha256": "22d3dbd26fb28fd11a90998246c470ded926890b856941dea2c8669450b4974f"
+        },
+        {
+          "path": "rc21-runtime/timer-suspend-probe-after.exit",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "rc21-runtime/timer-suspend-probe-after.log",
+          "bytes": 824,
+          "sha256": "9753a2a5627c6b13d302f817be6546743a1eadbebef4bddba99f0eeef5004ccd"
+        },
+        {
+          "path": "rc21-runtime/timer-suspend-probe-before.exit",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "rc21-runtime/timer-suspend-probe-before.log",
+          "bytes": 2451,
+          "sha256": "79ad30fc65e1363aa9c7510f342200d4614f5fc203b440ad6449eb9139ba0953"
+        }
+      ]
+    }
+  ],
+  "standalone": [
+    {
+      "path": "PRODUCT_FREEZE.json",
+      "bytes": 1518,
+      "sha256": "afa384ee9061f40fe9e8d14c284bfe0c57231109b4f069d07ba625c5469d9242",
+      "source": "RC21_PRODUCT_FREEZE.json"
+    },
+    {
+      "path": "PUBLIC_SOURCE_MAP.json",
+      "bytes": 277,
+      "sha256": "4b19d1c11124205add6332ad035ec7e5e92b5cd5c6e812e47e9cf23ae8b7523d",
+      "source": "PUBLIC_RC21_SOURCE_MAP.json"
+    },
+    {
+      "path": "RUNTIME_RESULTS.json",
+      "bytes": 3454,
+      "sha256": "507257a55ebed37c3ab916f8729354229e9a802af372a6cf059b5dbf1c38bb17",
+      "source": "rc21-runtime/RESULTS.json"
+    },
+    {
+      "path": "FINAL_CORE_RESULTS.json",
+      "bytes": 6582,
+      "sha256": "3391384e20c1fbd6bc0a06d2b3b88afc2c3173f652fc0fe746f78f688ef31bb8",
+      "source": "rc21-runtime/core-full-final/FINAL_CORE_RESULTS.json"
+    },
+    {
+      "path": "INDEPENDENT_REVIEW.json",
+      "bytes": 3436,
+      "sha256": "e6292efe5a79462640cb9f31bea94e6efd951858c01617d3d12937b11b179be5",
+      "source": "rc21-review/INDEPENDENT_REVIEW.json"
+    },
+    {
+      "path": "INHERITED_SOURCE_SCOPE.json",
+      "bytes": 2514,
+      "sha256": "5daaf3d80f7d6c33b5ade890a524f7bd8d92a8cdb1e7538d33d9dbe0166cdf7b",
+      "source": "rc21-review/INHERITED_SOURCE_SCOPE.json"
+    },
+    {
+      "path": "LINUX_INSTALL_RESULTS.json",
+      "bytes": 2911,
+      "sha256": "6491624b3aa521013b4a6f078b849902e708ef2ba84e71855f8214cba7caaeda",
+      "source": "rc21-install/linux/INSTALL_FINAL_RESULTS.json"
+    },
+    {
+      "path": "LINUX_PACKAGE_VERIFICATION.json",
+      "bytes": 4896,
+      "sha256": "dd4f579771449b07ae4e32bbbc704cef6e9795e2e9c380b9241f363c469a4c76",
+      "source": "rc21-install/linux/PACKAGE_VERIFICATION.json"
+    },
+    {
+      "path": "LINUX_PACKAGED_ROLLBACK.json",
+      "bytes": 1656,
+      "sha256": "b47fa2ed9616acaec88df58cf521ac4c235cca8410c3dd8d14aa5cc585658924",
+      "source": "rc21-install/linux/PACKAGED_ROLLBACK.json"
+    },
+    {
+      "path": "LOG_SUMMARY.json",
+      "bytes": 8004,
+      "sha256": "03e0779dcdd45ff16003ee3e0e368bc40aa82b5a8ea4dbddc26268734cbc458a",
+      "generated": true
+    },
+    {
+      "path": "SANITIZATION.json",
+      "bytes": 412,
+      "sha256": "1dd5da287416754caf40cffdc4a4bee64cbc37de1822e266db698bf00246f502",
+      "generated": true
+    },
+    {
+      "path": "EVIDENCE_README.md",
+      "bytes": 1365,
+      "sha256": "72f35c7f959d2615bc0e71e76413564676cebbfc239413f38dd77daf8a926ad6",
+      "generated": true
+    }
+  ]
+}

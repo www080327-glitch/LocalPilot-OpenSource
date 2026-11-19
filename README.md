@@ -12,7 +12,7 @@ LocalPilot 采用 Apache 2.0 开源协议，致力于让强大、易用且低成
 
 本源码树包含 Desktop **5.0.1-rc.21**、Core **5.0.0b38**、Suite **0.2.0b36**、Companion **0.5.7b12** 和独立 Channels **0.1.0a4**。源码版本不代表已经发布或通过全部原生安装验收；可用发行资产以 GitHub Releases 为准。
 
-RC21 修复正常停服后已开始的超时回调仍修改内存任务、尝试写入已关闭数据库的问题。创建与恢复的定时器统一在服务锁内检查关闭状态，显式取消与持久化故障行为不变；保留 RC20 所有失败证据。[当前验收](docs/evidence/rc21-timer-20261119/RESULTS.md)与[本地/云端 Work 续验](docs/development/WORK_RC21_ACCEPTANCE.md)分别记录实际状态。仍为 **NOT_RELEASE_READY**。
+RC21 修复正常停服后已开始的超时回调仍修改内存任务、尝试写入已关闭数据库的问题。创建与恢复的定时器统一在服务锁内检查关闭状态，显式取消与持久化故障行为不变；保留 RC20 所有失败证据。[当前验收](docs/evidence/rc21-timer-20261119/RESULTS.md)与[本地/云端 Work 续验](docs/development/WORK_RC21_ACCEPTANCE.md)分别记录实际状态。仍为 **NOT_RELEASE_READY**。 当前Core全量仍有一个插件类初始化超时，24项用例未执行；新包内28项回归通过不替代完整门禁。
 
 RC20 继续解决单个长任务反复保存完整活动记录的问题，增加同一事务内的增量块、恢复校验，以及正常停服和回滚前的旧格式自动整理。原文和工具收据保留；任务结束、归档、恢复和兼容转换仍各有完整处理成本。实现边界见[增量保存说明](docs/development/RC20_INCREMENTAL_CHECKPOINTS.md)，结果见[RC20 验收](docs/evidence/rc20-incremental-20261119/RESULTS.md)。仍为 **NOT_RELEASE_READY**。
 
