@@ -9,7 +9,10 @@ test.beforeEach(async ({ page }) => {
       export async function call(command,args={}) {
         window.linuxCalls.push({command,args});
         if(command==='desktop_installation') return {platform:'linux',version:'5.0.1-rc.8',desktop_upgrade:'system_package_manager'};
-        if(command==='upgrade_plan') return {exit:0,result:[{upgrades:[]}]};
+        if(command==='upgrade_plan') return {exit:0,result:[args.module==='history' ? {upgrades:window.linuxUpgrades || []} : {
+          id:'fixture-upgrade',home:'/fixture/home',python:'/fixture/python',components:[],blocking_services:['Core','Companion']
+        }]};
+        if(command==='product_control' && args.operation==='service_control') return {status:window.linuxStopStatus || 'stopping'};
         if(command==='companion' && args.command==='training_export') return {
           status:'ok',counts:{train:6,valid:2,...(args.args.test_fraction ? {test:2}:{})},training:'NOT_RUN'
         };
@@ -17,6 +20,91 @@ test.beforeEach(async ({ page }) => {
       }`,
     }),
   );
+});
+
+test("a new upgrade plan does not inherit a previous plan's completion receipt", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    (window as any).linuxUpgrades = [
+      {
+        plan: {
+          id: "previous-plan",
+          created_at: 1700000000,
+          components: [],
+          home: "/fixture/home",
+          python: "/fixture/python",
+        },
+        receipt: { status: "completed", attempted: ["core"] },
+        handoff_error: { at: 1700000000, error: "previous-plan-error" },
+      },
+    ];
+  });
+  await page.goto("/tests/ui/linux-fixture.html");
+  await page.getByText("已有计划与恢复入口（1）", { exact: true }).click();
+  await page.getByRole("button", { name: /安装与组件验证通过/ }).click();
+  await expect(
+    page.getByText("待审阅计划 · previous-plan", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "恢复此计划的原版本", exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "升级独立组件", exact: true }).click();
+  await expect(
+    page.getByText("待审阅计划 · fixture-upgrade", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("previous-plan-error", { exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "恢复此计划的原版本", exact: true }),
+  ).toHaveCount(0);
+  await page
+    .getByRole("checkbox", { name: "我已核对版本、路径、回滚包及退出行为" })
+    .check();
+  await expect(
+    page.getByRole("button", { name: "执行此升级", exact: true }),
+  ).toBeEnabled();
+});
+
+test("component plan can stop services and keeps an unfinished stop retryable", async ({
+  page,
+}) => {
+  await page.goto("/tests/ui/linux-fixture.html");
+  await page.getByRole("button", { name: "升级独立组件", exact: true }).click();
+  await expect(
+    page.getByText("生成计划时仍运行：Core、Companion", { exact: false }),
+  ).toBeVisible();
+  const stop = page.getByRole("button", { name: "停止 Core", exact: true });
+  await stop.click();
+  await expect(page.getByRole("alert")).toContainText("Core 仍在停止");
+  await expect(stop).toBeEnabled();
+  await page.evaluate(() => {
+    (window as any).linuxStopStatus = "stopped";
+  });
+  await stop.click();
+  await expect(
+    page.getByRole("button", { name: "Core 已停止", exact: true }),
+  ).toBeDisabled();
+  const calls = await page.evaluate(() => (window as any).linuxCalls);
+  expect(
+    calls.filter((item: any) => item.args.operation === "service_control"),
+  ).toEqual([
+    {
+      command: "product_control",
+      args: {
+        operation: "service_control",
+        args: { module: "core", action: "stop", confirmed: true },
+      },
+    },
+    {
+      command: "product_control",
+      args: {
+        operation: "service_control",
+        args: { module: "core", action: "stop", confirmed: true },
+      },
+    },
+  ]);
 });
 
 test("Linux offers component transactions and distribution package guidance", async ({

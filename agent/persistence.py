@@ -118,9 +118,12 @@ def backend_identity(backend):
 
 def configuration(runtime):
     gateway = runtime.registry.gateway
+    schemas = runtime.registry.schemas()
+    if getattr(runtime.registry, 'canonical_history_reader', None) is not None:
+        schemas = [schema for schema in schemas if schema['function']['name'] != 'recall_history']
     config = {"workspace": str(runtime.workspace), "policy": runtime.routing_policy.value,
         "permission": runtime.permission_mode, "capabilities": asdict(gateway.capabilities),
-        "data_policy": asdict(runtime.hard_data_policy), "schemas": runtime.registry.schemas(),
+        "data_policy": asdict(runtime.hard_data_policy), "schemas": schemas,
         "cloud": backend_identity(runtime.cloud_backend), "local": backend_identity(runtime.local_backend),
         "workers": {k: backend_identity(v) for k, v in runtime.cloud_worker_backends.items()},
         "budgets": asdict(runtime.budgets), "controls": asdict(runtime.controls),
@@ -448,6 +451,15 @@ class SQLiteRuntimeStore:
                 CREATE TABLE IF NOT EXISTS runtime_segments(session_id TEXT NOT NULL REFERENCES checkpoints(session_id),
                     generation INTEGER NOT NULL, payload TEXT NOT NULL, sha256 TEXT NOT NULL,
                     PRIMARY KEY(session_id, generation));
+                CREATE TABLE IF NOT EXISTS runtime_history_sources(session_id TEXT NOT NULL,
+                    generation INTEGER NOT NULL, configuration TEXT NOT NULL, sha256 TEXT NOT NULL,
+                    PRIMARY KEY(session_id,generation),
+                    FOREIGN KEY(session_id,generation) REFERENCES runtime_segments(session_id,generation));
+                CREATE TABLE IF NOT EXISTS runtime_history_text(session_id TEXT NOT NULL,
+                    generation INTEGER NOT NULL, position INTEGER NOT NULL, role TEXT NOT NULL,
+                    body TEXT NOT NULL, sha256 TEXT NOT NULL,
+                    PRIMARY KEY(session_id,generation,position),
+                    FOREIGN KEY(session_id,generation) REFERENCES runtime_segments(session_id,generation));
                 PRAGMA user_version=3; COMMIT;""")
         except Exception as exc:
             self.close()
@@ -495,6 +507,8 @@ class SQLiteRuntimeStore:
                     archived_raw = dumps(archived_runtime)
                     db.execute("INSERT INTO runtime_segments VALUES(?,?,?,?)",
                                (session_id, archived_runtime['generation'], archived_raw, digest(archived_raw)))
+                    from .history_recall import index_segment
+                    index_segment(db, session_id, archived_runtime, digest(archived_raw))
                 if self.fault_hook:
                     self.fault_hook("before_commit", point)
                 db.execute("COMMIT")

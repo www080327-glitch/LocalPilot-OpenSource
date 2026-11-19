@@ -103,7 +103,7 @@ def sync_models(home):
     return {'status':'synchronized','added_routes':added,'downloaded':False,'loaded':False,'existing_routes_preserved':True}
 
 
-def configure_cloud(home, key_file, provider='deepseek', model=None):
+def configure_cloud(home, key_file, provider='deepseek', model=None, *, replace_key=False):
     from copy import deepcopy
     import hashlib
     import secrets
@@ -135,26 +135,43 @@ def configure_cloud(home, key_file, provider='deepseek', model=None):
     name = provider + '-agent'
     if name in config['routes'] and config['routes'][name]['backend']['model'] != model:
         name = provider + '-' + hashlib.sha256(model.encode()).hexdigest()[:12] + '-agent'
-    if name in config['routes']:
+    existing = name in config['routes']
+    if existing and not replace_key:
         return {'status': 'already_configured', 'provider': provider, 'route': name,
                 'cloud_egress': config['routes'][name]['cloud_egress'], 'model': model,
                 'credential_copied': False, 'api_connection': 'NOT_PROBED'}
 
-    additions, reasoning_name, cooperative_name = _cloud_route_additions(
-        config['routes'], provider, model, key_file, name)
-    config['routes'].update(additions)
-    for principal in config['clients']:
-        if not principal.get('operator'):
-            principal['routes'].update({route: route for route in additions})
     resource_token = None
-    if not any(principal['subject'] == 'resource' for principal in config['clients']):
-        config['clients'].append({'subject': 'resource', 'token_env': 'LOCALPILOT_RESOURCE_TOKEN',
-            'operator': True, 'scopes': ['read', 'resource_control'], 'approval_for': ['companion'], 'routes': {}})
-        resource_token = secrets.token_urlsafe(32)
     companion_before = private_json(home / 'companion.json')
-    companion = {**companion_before, 'localpilot_allow_cloud': True,
-                 'localpilot_resource_key_env': 'LOCALPILOT_RESOURCE_TOKEN',
-                 'localpilot_cloud_analysis_route': reasoning_name}
+    companion = deepcopy(companion_before)
+    reasoning_name = cooperative_name = None
+    if existing:
+        backend = config['routes'][name]['backend']
+        kind = 'openai' if provider == 'openai' else 'deepseek-native'
+        if backend.get('kind') != kind or backend.get('model') != model:
+            raise ValueError('The existing route belongs to another provider or model')
+        previous_key = backend.get('key_file')
+        for route_name, route in config['routes'].items():
+            candidate = route['backend']
+            shared_credential = (previous_key is not None and candidate.get('key_file') == previous_key
+                                 and candidate.get('kind') == kind and candidate.get('model') == model)
+            if route_name == name or shared_credential:
+                candidate['key_file'] = key_file
+                candidate.pop('api_key_env', None)
+    else:
+        additions, reasoning_name, cooperative_name = _cloud_route_additions(
+            config['routes'], provider, model, key_file, name)
+        config['routes'].update(additions)
+        for principal in config['clients']:
+            if not principal.get('operator'):
+                principal['routes'].update({route: route for route in additions})
+        if not any(principal['subject'] == 'resource' for principal in config['clients']):
+            config['clients'].append({'subject': 'resource', 'token_env': 'LOCALPILOT_RESOURCE_TOKEN',
+                'operator': True, 'scopes': ['read', 'resource_control'], 'approval_for': ['companion'], 'routes': {}})
+            resource_token = secrets.token_urlsafe(32)
+        companion.update(localpilot_allow_cloud=True,
+                         localpilot_resource_key_env='LOCALPILOT_RESOURCE_TOKEN',
+                         localpilot_cloud_analysis_route=reasoning_name)
     backup = home / ('service.before-cloud-' + str(time.time_ns()) + '.json')
     save(backup, before)
     credentials_before = (home / 'clients.env').read_bytes() if resource_token else None
@@ -186,9 +203,9 @@ def configure_cloud(home, key_file, provider='deepseek', model=None):
         service(home, 'core', 'recover')
         service(home, 'companion', 'recover')
         raise
-    return {'status': 'configured', 'provider': provider, 'route': name,
+    return {'status': 'credential_updated' if existing else 'configured', 'provider': provider, 'route': name,
             'reasoning_route': reasoning_name, 'cooperative_route': cooperative_name,
-            'cloud_egress': 'REQUIRES_APPROVAL', 'model': model, 'credential_copied': False,
+            'cloud_egress': config['routes'][name]['cloud_egress'], 'model': model, 'credential_copied': False,
             'api_connection': 'NOT_PROBED', 'backup': str(backup)}
 
 

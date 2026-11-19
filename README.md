@@ -10,7 +10,9 @@ LocalPilot 采用 Apache 2.0 开源协议，致力于让强大、易用且低成
 
 ## 当前源码组件版本
 
-本源码树包含 Desktop **5.0.1-rc.18**、Core **5.0.0b35**、Suite **0.2.0b34**、Companion **0.5.7b12** 和独立 Channels **0.1.0a4**。源码版本不代表已经发布或通过全部原生安装验收；可用发行资产以 GitHub Releases 为准。
+本源码树包含 Desktop **5.0.1-rc.19**、Core **5.0.0b36**、Suite **0.2.0b35**、Companion **0.5.7b12** 和独立 Channels **0.1.0a4**。源码版本不代表已经发布或通过全部原生安装验收；可用发行资产以 GitHub Releases 为准。
+
+RC19 修复重新填写云端密钥后仍使用旧密钥、首次设置跳过按钮不前进和 ARM Linux 错选 MLX 路径的问题；桌宠增加角色文件夹导入和显式基础动作，修正拖动方向与动画报告。Core 增加同会话原文检索，并补齐 Adaptive、精确云授权和空闲 Computer 会话的执行段轮换。实现边界见[RC19 续作](docs/development/RC19_FOLLOWUP_20261119.md)，逐项结果见[本轮验收](docs/evidence/rc19-usability-20261119/RESULTS.md)。仍为 **NOT_RELEASE_READY**。
 
 RC17 续作补齐子任务输出截断后的原预算恢复，并把同会话来源检查改为索引化的依赖投影，完整历史记录继续保留。Super Agent 仍负责统筹，探索和审阅角色使用各自配置的模型与思考强度。实现、真实模型结果及本机续验入口见[本轮续作](docs/development/RC17_FOLLOWUP_20261117.md)。
 
@@ -34,10 +36,10 @@ RC16 继续处理长期开启同一对话时的记录增长：在任务之间把
 
 | 平台 | 当前可用路径 | 验收边界 |
 | --- | --- | --- |
-| Apple Silicon Mac | macOS 15+ 桌面 APP；oMLX/MLX 或已有本地 HTTP 服务；云端模型 | 旧版本保留 arm64 构建和回归记录；RC15 新原生构建与交互尚未执行。当前 Mac 缺少完整 Xcode，受控 Test APP 槽仍被现有进程占用；不能由 Linux 或旧包验收推定通过。 |
+| Apple Silicon Mac | macOS 15+ 桌面 APP；oMLX/MLX 或已有本地 HTTP 服务；云端模型 | RC18 的 M1 Max 构建、升级/回滚/恢复、标题栏收起保留草稿和真实滑块已通过；角色当时不可见，没有可采样的动画阶段。RC19 新代码仍需按[本轮步骤](docs/development/WORK_RC19_ACCEPTANCE.md)验证，Intel 与多屏不继承 M1 结果。 |
 | **Intel Mac** | **优先支持本地 HTTP + CPU 推理**；Core/Suite CLI、Companion 服务；x86_64 桌面资源与构建路径 | 代码和跨平台协议测试已补齐；尚无通过 Intel 真机验收的安装包。桌面构建仍要求 macOS 15+。 |
-| **Linux x86_64** | **CLI、受限/Full Shell、HTTP/SSE、恢复、本地模型；Tauri/DEB 构建入口；Companion 文件/文字及可选桌面/音轨接入** | RC15 对应源码的 Core / Companion 回归通过；新历史界面因当前浏览器环境受限未完成验收。旧版本保留真实模型、Chromium 合成桥与 RC14 X11/WebKit 记录；新包、x86_64 系统 DEB 循环、Wayland、音轨及登录/睡眠仍未验收。 |
-| Linux aarch64 / 其他发行版 | Ubuntu 24.04 arm64 的 RC14 Test DEB 已在目标环境构建并完成 apt 安装循环；其他发行版须独立构建 | RC13 重建夹具首装 → RC14 升级 → RC13 降级 → RC14 恢复均通过；该 VM 无 GUI。RC15 新源码不继承 RC14 包验收，其他发行版仍未验收。 |
+| **Linux x86_64** | **CLI、受限/Full Shell、HTTP/SSE、恢复、本地模型；Tauri/DEB 构建入口；Companion 文件/文字及可选桌面/音轨接入** | RC18 的 Debian 13 Test DEB 构建、提取后的 ELF 与安装态组件检查已有记录。RC19 本轮结果单独记录；系统 DEB 安装循环、X11/Wayland 原生交互、真实会议音轨与登录/睡眠分别验收。通用 Linux GUI 操作型 Computer Use 尚未实现。 |
+| Linux aarch64 / 其他发行版 | Ubuntu 24.04 arm64 的 RC14 Test DEB 已在目标环境构建并完成 apt 安装循环；其他发行版须独立构建 | RC13 重建夹具首装 → RC14 升级 → RC13 降级 → RC14 恢复均通过；该 VM 无 GUI。RC19 新源码不继承 RC14 包验收，其他发行版仍未验收。 |
 
 Intel 本地推理使用外部 CPU 服务，例如 [llama.cpp](https://github.com/ggml-org/llama.cpp) 与兼容的 GGUF 模型。LocalPilot 的 HTTP 路径不依赖 MLX 或 MPS；是否使用 CPU、Metal 或其他加速由模型服务器决定。现有 MLX 权重不能直接当作 GGUF 使用，内置 MLX/LoRA 也不会自动变成 Intel CPU 实现。[LM Studio 官方系统要求](https://lmstudio.ai/docs/app/system-requirements)目前不支持 Intel Mac，因此不把它作为 Intel 安装方案。
 

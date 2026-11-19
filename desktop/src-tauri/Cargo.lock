@@ -2124,11 +2124,12 @@ checksum = "47d9d19d1d6efa0109d2f65ff4c85cddd50bd572e5a00127ab10987290bcefae"
 
 [[package]]
 name = "localpilot-desktop"
-version = "5.0.1-rc.18"
+version = "5.0.1-rc.19"
 dependencies = [
  "base64 0.22.1",
  "block2",
  "futures-util",
+ "gtk",
  "image",
  "libc",
  "objc2",

@@ -257,6 +257,7 @@ def switch_profile(server, principal, session_id, body):
             session.child_route_contexts = child_contexts or None
             session.desktop_options=updated
             session.base_prompt=runtime.base_prompt
+            service._attach_persistence(session)
             runtime._persistence_config=digest(dumps(configuration(runtime)))
             service._checkpoint(session_id,'desktop_profile_changed')
         except Exception:

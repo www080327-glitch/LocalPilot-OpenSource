@@ -48,7 +48,6 @@ pub enum Direction {
     Up,
     Down,
 }
-#[cfg(any(target_os = "macos", test))]
 pub fn direction(dx: f64, dy: f64) -> Direction {
     if dx.abs() >= dy.abs() {
         if dx < 0.0 {
@@ -225,7 +224,7 @@ fn smooth(t: f64) -> f64 {
 }
 /// Grip contact, not transparent canvas bounds, is placed on the physical edge.
 /// The bottom uses the comic portrait rather than a grasping-hand illustration.
-fn render(e: &EdgeState, legacy: Option<&pet_assets::Atlas>) -> Render {
+fn render(e: &EdgeState, legacy: Option<&pet_assets::Atlas>, basic: bool) -> Render {
     let dragging = e.mode == Mode::Dragging;
     let frame = if dragging {
         match e.direction {
@@ -248,6 +247,8 @@ fn render(e: &EdgeState, legacy: Option<&pet_assets::Atlas>) -> Render {
             Direction::Up => [0, 9],
             Direction::Down => [0, 10],
         }
+    } else if basic && e.motion {
+        [(e.since.elapsed().as_secs_f64() * 8.0) as u32 % 8, 0]
     } else {
         [0, 0]
     };
@@ -259,17 +260,18 @@ fn render(e: &EdgeState, legacy: Option<&pet_assets::Atlas>) -> Render {
     };
     let comic = bottom(e.anchor)
         && !dragging
+        && !basic
         && e.pack
             .as_ref()
             .is_some_and(|p| p.identity.starts_with("deepseek") && p.extras.contains_key("comic"));
-    let source = if dragging {
+    let source = if dragging || basic {
         "legacy"
     } else if comic {
         "comic"
     } else {
         "edge"
     };
-    let rect = if dragging {
+    let rect = if dragging || basic {
         legacy.map(|s| s.frame_rect(frame[0], frame[1]))
     } else if comic {
         e.pack
@@ -302,7 +304,10 @@ fn render(e: &EdgeState, legacy: Option<&pet_assets::Atlas>) -> Render {
     let (mut x, mut y) = ((VIEW_W - w) / 2.0, VIEW_H - h);
     let mut angle = 0.0;
     if !dragging {
-        if bottom(e.anchor) {
+        if basic {
+            x = if left(e.anchor) { 0.0 } else { VIEW_W - w };
+            y = if top(e.anchor) { 0.0 } else { VIEW_H - h };
+        } else if bottom(e.anchor) {
             x = if left(e.anchor) { 0.0 } else { VIEW_W - w };
             y = VIEW_H - h + 2.0;
         } else {
@@ -336,8 +341,10 @@ fn render(e: &EdgeState, legacy: Option<&pet_assets::Atlas>) -> Render {
             x += sign * 10.0 * dive;
             angle = sign * 12.0 * (std::f64::consts::PI * dive).sin();
             let u = ((t - 0.60) / 0.40).clamp(0.0, 1.0);
-            water = (std::f64::consts::PI * u).sin().max(0.0);
-            if u > 0.0 && u < 1.0 {
+            if !basic {
+                water = (std::f64::consts::PI * u).sin().max(0.0);
+            }
+            if !basic && u > 0.0 && u < 1.0 {
                 if let Some(p) = e.pack.as_ref().and_then(|p| p.extras.get("tail")) {
                     let r = p.rect;
                     let sc = (78.0 / r[2] as f64).min(65.0 / r[3] as f64);
@@ -395,6 +402,8 @@ fn render(e: &EdgeState, legacy: Option<&pet_assets::Atlas>) -> Render {
         pose_index: index,
         pose_name: if dragging {
             "DIRECTIONAL_ATLAS"
+        } else if basic {
+            "BASIC_ATLAS"
         } else if comic {
             "COMIC_BOTTOM"
         } else if left(e.anchor) {
@@ -406,6 +415,7 @@ fn render(e: &EdgeState, legacy: Option<&pet_assets::Atlas>) -> Render {
 }
 pub fn snapshot(app: &tauri::AppHandle) -> Presentation {
     let state = app.state::<pet_native::PetState>();
+    let basic = state.settings.lock().unwrap().basic_appearance;
     let e = state.edge.lock().unwrap();
     let sprite = state.sprite.lock().unwrap();
     Presentation {
@@ -421,7 +431,7 @@ pub fn snapshot(app: &tauri::AppHandle) -> Presentation {
             "HEAD_AND_HANDS"
         },
         relocations: e.relocations,
-        render: render(&e, sprite.as_ref()),
+        render: render(&e, sprite.as_ref(), basic),
         chat_box: chat_box(e.anchor),
         viewport: [VIEW_W, VIEW_H],
         phase: e.phase,
@@ -441,9 +451,10 @@ pub fn hit(app: &tauri::AppHandle, x: f64, y: f64) -> bool {
         return true;
     }
     let state = app.state::<pet_native::PetState>();
+    let basic = state.settings.lock().unwrap().basic_appearance;
     let e = state.edge.lock().unwrap();
     let sprite = state.sprite.lock().unwrap();
-    let v = render(&e, sprite.as_ref());
+    let v = render(&e, sprite.as_ref(), basic);
     let s = match v.part.source {
         "legacy" => sprite.as_ref().map(|atlas| &atlas.sprite),
         "edge" => e.pack.as_ref().map(|p| &p.sprite),
@@ -553,19 +564,24 @@ pub fn initialize(app: &tauri::AppHandle) -> Result<(), String> {
     place(app)?;
     persist(app)
 }
-#[cfg(target_os = "macos")]
 pub fn drag(app: &tauri::AppHandle, dx: f64, dy: f64) {
     let state = app.state::<pet_native::PetState>();
     let mut e = state.edge.lock().unwrap();
-    let d = direction(dx, dy);
+    apply_drag(&mut e, dx, dy, Instant::now());
+}
+fn apply_drag(e: &mut EdgeState, dx: f64, dy: f64, now: Instant) {
     if e.mode != Mode::Dragging {
-        e.since = Instant::now();
+        e.since = now;
     }
     e.mode = Mode::Dragging;
-    e.direction = d;
     e.target = None;
     e.reveal = 1.0;
-    e.touched = Instant::now();
+    e.touched = now;
+    if dx == 0.0 && dy == 0.0 {
+        return;
+    }
+    let d = direction(dx, dy);
+    e.direction = d;
     if e.drag_history.len() > 80 {
         e.drag_history.remove(0);
     }
@@ -576,7 +592,6 @@ pub fn drag(app: &tauri::AppHandle, dx: f64, dy: f64) {
         e.drag_history.push(json!({"direction":d,"dx":dx,"dy":dy,"row":match d {Direction::Left=>2,Direction::Right=>1,Direction::Up=>9,Direction::Down=>10}}));
     }
 }
-#[cfg(target_os = "macos")]
 pub fn end_drag(app: &tauri::AppHandle) {
     let state = app.state::<pet_native::PetState>();
     let mut e = state.edge.lock().unwrap();
@@ -860,10 +875,56 @@ mod tests {
     #[test]
     fn optional_comic_art_falls_back_to_the_imported_edge_pose() {
         let e = character();
-        let pose = render(&e, None);
+        let pose = render(&e, None, false);
         assert_eq!(pose.part.source, "edge");
         assert_eq!(pose.part.opacity, 1.0);
         assert!(pose.part.bounds[2] > 0.0);
+    }
+    #[test]
+    fn explicit_basic_appearance_uses_the_imported_atlas_without_an_edge_pack() {
+        let mut image = image::RgbaImage::new(16, 22);
+        for row in 0..11 {
+            for column in 0..8 {
+                image.put_pixel(column * 2, row * 2, image::Rgba([20, 120, 200, 255]));
+            }
+        }
+        let mut bytes = std::io::Cursor::new(Vec::new());
+        image.write_to(&mut bytes, image::ImageFormat::Png).unwrap();
+        let atlas = pet_assets::decode(bytes.get_ref()).unwrap();
+        let mut e = EdgeState::default();
+        e.motion = false;
+        assert_eq!(render(&e, Some(&atlas), false).pose_name, "PENDING");
+        for anchor in ANCHORS {
+            e.anchor = anchor;
+            let pose = render(&e, Some(&atlas), true);
+            assert_eq!(pose.part.source, "legacy");
+            assert_eq!(pose.pose_name, "BASIC_ATLAS");
+            assert_eq!(pose.part.rect, atlas.frame_rect(0, 0));
+            let [x, y, width, height] = pose.part.bounds;
+            assert!(x >= 0.0 && y >= 0.0 && x + width <= VIEW_W && y + height <= VIEW_H);
+            assert!(sprite_hit(
+                &pose,
+                &atlas.sprite,
+                x + width / 2.0,
+                y + height / 2.0
+            ));
+        }
+        e.mode = Mode::Dragging;
+        e.direction = Direction::Left;
+        assert_eq!(
+            render(&e, Some(&atlas), true).part.rect,
+            atlas.frame_rect(0, 2)
+        );
+        e.direction = Direction::Right;
+        assert_eq!(
+            render(&e, Some(&atlas), true).part.rect,
+            atlas.frame_rect(0, 1)
+        );
+        e.mode = Mode::Retracting;
+        e.phase = 0.75;
+        let retreat = render(&e, Some(&atlas), true);
+        assert!(retreat.tail.is_none());
+        assert_eq!(retreat.water, 0.0);
     }
     #[test]
     fn reduced_motion_relocation_has_no_dive_or_reveal_frames() {
@@ -876,7 +937,7 @@ mod tests {
         assert_eq!(e.mode, Mode::IdleEdge);
         assert_eq!(e.phase, 1.0);
         assert!(e.target.is_none());
-        let pose = render(&e, None);
+        let pose = render(&e, None, false);
         assert_eq!(pose.part.opacity, 1.0);
         assert_eq!(pose.part.angle, 0.0);
         assert!(pose.tail.is_none());
@@ -897,7 +958,7 @@ mod tests {
                 false,
                 false,
             );
-            let pose = render(&e, None);
+            let pose = render(&e, None, false);
             if positions.last() != Some(&pose.part.bounds) {
                 positions.push(pose.part.bounds);
             }
@@ -910,7 +971,7 @@ mod tests {
     #[test]
     fn native_sprite_hit_uses_the_rendered_crop_transform_and_alpha() {
         let e = character();
-        let mut pose = render(&e, None);
+        let mut pose = render(&e, None, false);
         pose.part.bounds = [10.0, 20.0, 40.0, 80.0];
         let mut sprite = pet_assets::Sprite {
             width: 4,
@@ -950,6 +1011,23 @@ mod tests {
         assert_eq!(direction(90.0, -4.0), Direction::Right);
         assert_eq!(direction(2.0, 70.0), Direction::Up);
         assert_eq!(direction(2.0, -70.0), Direction::Down);
+    }
+    #[test]
+    fn drag_waits_for_release_without_inventing_initial_pointer_motion() {
+        let mut edge = EdgeState::default();
+        edge.direction = Direction::Left;
+        let now = Instant::now();
+        apply_drag(&mut edge, 0.0, 0.0, now);
+        assert_eq!(edge.mode, Mode::Dragging);
+        assert_eq!(edge.direction, Direction::Left);
+        assert!(edge.drag_history.is_empty());
+        apply_drag(&mut edge, 2.0, -70.0, now);
+        assert_eq!(edge.direction, Direction::Down);
+        assert_eq!(edge.drag_history.len(), 1);
+        advance(&mut edge, now + Duration::from_secs(2), true, false, true);
+        assert_eq!(edge.mode, Mode::Dragging);
+        advance(&mut edge, now + Duration::from_secs(2), true, false, false);
+        assert_ne!(edge.mode, Mode::Dragging);
     }
     #[test]
     fn anchors_respect_dock_work_area_and_negative_monitors() {

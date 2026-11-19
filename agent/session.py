@@ -418,7 +418,7 @@ class AgentSession(SessionComputer, SessionModelCalls, SessionWorkers, SessionTo
             workspace_schemas = [s for s in workspace_schemas
                 if not (s['function']['name'] in {'execute', 'run_command'} and not executable)
                 and not (s['function']['name'] in {'apply_patch','make_directory','move_file','copy_file','shell'} and not writable)
-                and not (s['function']['name'] in {'read_file', 'list_directory', 'search_text', 'file_info', 'list_entries','inspect_file'} and not caps.read)]
+                and not (s['function']['name'] in {'read_file', 'list_directory', 'search_text', 'file_info', 'list_entries','inspect_file', 'recall_history'} and not caps.read)]
         result = workspace_schemas + schemas
         if self._cache_enabled() or self.engine_policy:
             # Registration order and dict insertion order are not model semantics.

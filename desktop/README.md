@@ -1,6 +1,6 @@
 # LocalPilot Desktop
 
-2026-11-18 source candidate: Desktop **5.0.1-rc.18**; Core **5.0.0b35**; Suite **0.2.0b34**; Companion **0.5.7b12**; Channels **0.1.0a4**. Linux 原生桌面、离线模块资源和 DEB 构建入口已接入；本轮构建基线为 Debian 13 x86_64 / 系统 CPython 3.13。Intel Mac 仍待物理设备验收。本源码候选不是已发布的新 Release。
+2026-11-19 source candidate: Desktop **5.0.1-rc.19**; Core **5.0.0b36**; Suite **0.2.0b35**; Companion **0.5.7b12**; Channels **0.1.0a4**. Linux 原生桌面、离线模块资源和 DEB 构建入口已接入；本轮构建基线为 Debian 13 x86_64 / 系统 CPython 3.13。Intel Mac 仍待物理设备验收。本源码候选不是已发布的新 Release。
 
 ## 快速安装
 
@@ -10,13 +10,13 @@ Linux 构建成功后，在含有 `SHA256SUMS` 和 DEB 的输出目录执行：
 
 ```sh
 sha256sum -c SHA256SUMS
-sudo apt install ./LocalPilot-5.0.1-rc.18-linux-x86_64.deb
+sudo apt install ./LocalPilot-5.0.1-rc.19-linux-x86_64.deb
 localpilot-desktop
 ```
 
 首次设置可选择现有的本机 OpenAI 兼容模型端点，也可在“连接云端模型”中选择 DeepSeek 或 OpenAI、填写模型和密钥，再点“保存并连接”。设置页也提供同一入口；OpenAI 默认 `gpt-6-luna`，保存配置不会发送模型任务。安装包不含模型权重；CPU / CUDA 推理由用户选择的本机服务提供。不要在 Linux 安装 macOS APP、使用 MLX 文件夹入口，或把 x86_64 DEB 安装到 ARM 设备。
 
-独立测试构建使用 `LocalPilot-Test-5.0.1-rc.18-linux-x86_64.deb`、命令 `localpilot-desktop-test` 和身份 `io.localpilot.desktop.test`。启动前须按[根 README 的测试安装步骤](../README.md#linux-桌面候选)创建私有测试根目录和 `test-owner.json`，并显式传入 `LP_INSTALL_TEST_ROOT`；仅使用相同 Bundle ID 下的新后台目录不能证明旧版本的 WebView 隔离。RC.9 的存储隔离与认证恢复实现见 [恢复说明](docs/development/SESSION_WEBVIEW_RECOVERY_20261116.md)。Linux 桌面升级/降级由系统包管理器处理；设置中的组件事务仍独立管理 Core、Companion 和 Suite。该 DEB 依赖构建时的系统 Python **同一小版本**；Debian 13 x86_64 产物不承诺兼容 Debian 12 或其他发行版。RC14 x86_64 已完成提取运行的原生短验；Ubuntu 24.04 arm64 的独立 RC14 包已完成 RC13 夹具首装、升级、降级和恢复，详情见[原始安装证据](docs/evidence/audit-20261117-desktop/native-delivery-20261117/RESULTS.md)。RC16 的 schema 3 会话分段见[长期会话分段](../docs/development/PERSISTENT_SESSION_SEGMENTS_20261117.md)。RC17 增加任务逐条存储和模型职责选择，仍需按当前候选重新做原生交互验收；见[本轮实现](../docs/development/TASK_STORAGE_SCHEDULING_20261117.md)。
+独立测试构建使用 `LocalPilot-Test-5.0.1-rc.19-linux-x86_64.deb`、命令 `localpilot-desktop-test` 和身份 `io.localpilot.desktop.test`。启动前须按[根 README 的测试安装步骤](../README.md#linux-桌面候选)创建私有测试根目录和 `test-owner.json`，并显式传入 `LP_INSTALL_TEST_ROOT`；仅使用相同 Bundle ID 下的新后台目录不能证明旧版本的 WebView 隔离。RC.9 的存储隔离与认证恢复实现见 [恢复说明](docs/development/SESSION_WEBVIEW_RECOVERY_20261116.md)。Linux 桌面升级/降级由系统包管理器处理；设置中的组件事务仍独立管理 Core、Companion 和 Suite。该 DEB 依赖构建时的系统 Python **同一小版本**；Debian 13 x86_64 产物不承诺兼容 Debian 12 或其他发行版。RC14 x86_64 已完成提取运行的原生短验；Ubuntu 24.04 arm64 的独立 RC14 包已完成 RC13 夹具首装、升级、降级和恢复，详情见[原始安装证据](docs/evidence/audit-20261117-desktop/native-delivery-20261117/RESULTS.md)。RC16 的 schema 3 会话分段见[长期会话分段](../docs/development/PERSISTENT_SESSION_SEGMENTS_20261117.md)。RC17 增加任务逐条存储和模型职责选择，仍需按当前候选重新做原生交互验收；见[本轮实现](../docs/development/TASK_STORAGE_SCHEDULING_20261117.md)。
 
 macOS 安装与隔离测试继续使用 [现有安装与回滚流程](../docs/development/MAC_PORTABILITY_20261114.md)；Intel 构建见 [Intel Mac 指南](docs/development/INTEL_MAC_20261116.md)。尚未核验的下载资产、安装、回滚或模型能力不作为通过项。
 

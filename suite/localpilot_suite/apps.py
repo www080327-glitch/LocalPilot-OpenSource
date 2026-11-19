@@ -169,6 +169,8 @@ def cleanup(plan, destination):
         with (app/'Contents/Info.plist').open('rb') as f:identity=plistlib.load(f).get('CFBundleIdentifier','')
         if not str(identity).startswith('io.localpilot.desktop'):raise ValueError('Application ownership unknown; cleanup refused')
         backup = archive(app,destination,row['sha256'])
+        if backup['signature']['code']:
+            raise ValueError('Restored archive failed signature verification; application retained')
         # Recheck immediately after the potentially long archive operation.
         if digest(app) != row['sha256'] or str(app) in current_references() or any(str(app) == path for p in processes() for path in p['bundle_paths']):
             raise ValueError('Application changed or started during backup; cleanup refused')

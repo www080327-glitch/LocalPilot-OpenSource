@@ -15,6 +15,7 @@ pub struct PetSettings {
     pub topmost: bool,
     pub size: f64,
     pub animation: bool,
+    pub basic_appearance: bool,
     pub quiet: bool,
     pub focus: bool,
     pub proactive: bool,
@@ -32,6 +33,7 @@ impl Default for PetSettings {
             topmost: true,
             size: 1.0,
             animation: true,
+            basic_appearance: false,
             quiet: false,
             focus: true,
             proactive: false,
@@ -391,6 +393,27 @@ pub async fn pet_runtime(
 fn settings(app: &tauri::AppHandle) -> PetSettings {
     app.state::<PetState>().settings.lock().unwrap().clone()
 }
+fn read_settings(root: &Path) -> PetSettings {
+    let mut prefs: PetSettings = private_json(&root.join("pet-settings-v1.json"))
+        .ok()
+        .and_then(|value| serde_json::from_value(value).ok())
+        .unwrap_or_default();
+    prefs.basic_appearance = private_json(&root.join("pet-appearance-v1.json"))
+        .ok()
+        .and_then(|value| value["basic_appearance"].as_bool())
+        .unwrap_or(false);
+    prefs
+}
+fn save_settings(root: &Path, settings: &PetSettings) -> Result<(), String> {
+    let mut legacy = serde_json::to_value(settings).map_err(|error| error.to_string())?;
+    // RC18 rejects unknown fields. Preserve its settings schema during rollback.
+    legacy.as_object_mut().unwrap().remove("basic_appearance");
+    save(&root.join("pet-settings-v1.json"), &legacy)?;
+    save(
+        &root.join("pet-appearance-v1.json"),
+        &json!({"version":1,"basic_appearance":settings.basic_appearance}),
+    )
+}
 fn persist_position(app: &tauri::AppHandle) -> Result<(), String> {
     if let Some(w) = app.get_webview_window("pet") {
         let p = w.outer_position().map_err(|e| e.to_string())?;
@@ -545,10 +568,7 @@ pub fn expand(app: &tauri::AppHandle, value: bool, focus: bool) -> Result<(), St
     Ok(())
 }
 pub fn create(app: &tauri::AppHandle) -> Result<(), String> {
-    let prefs: PetSettings = private_json(&data(app)?.join("pet-settings-v1.json"))
-        .ok()
-        .and_then(|v| serde_json::from_value(v).ok())
-        .unwrap_or_default();
+    let prefs = read_settings(&data(app)?);
     *app.state::<PetState>().settings.lock().unwrap() = prefs.clone();
     if let Some(w) = app.get_webview_window("pet") {
         w.show().map_err(|e| e.to_string())?;
@@ -802,18 +822,32 @@ pub async fn pet_action(
             Ok(json!({}))
         }
         "drag" => {
-            app.state::<PetState>()
-                .dragging
-                .store(true, Ordering::Relaxed);
-            let window = app.get_webview_window("pet").ok_or("宠物未开启")?;
-            let _ = window.set_ignore_cursor_events(false);
-            let result = window.start_dragging();
-            app.state::<PetState>()
-                .dragging
-                .store(false, Ordering::Relaxed);
-            result.map_err(|e| e.to_string())?;
-            settle(&app)?;
-            Ok(json!({}))
+            #[cfg(target_os = "linux")]
+            {
+                let (tx, rx) = tokio::sync::oneshot::channel();
+                let handle = app.clone();
+                app.run_on_main_thread(move || {
+                    let _ = tx.send(super::pet_macos::begin_drag(&handle));
+                })
+                .map_err(|e| e.to_string())?;
+                rx.await.map_err(|e| e.to_string())??;
+                return Ok(json!({}));
+            }
+            #[cfg(not(target_os = "linux"))]
+            {
+                app.state::<PetState>()
+                    .dragging
+                    .store(true, Ordering::Relaxed);
+                let window = app.get_webview_window("pet").ok_or("宠物未开启")?;
+                let _ = window.set_ignore_cursor_events(false);
+                let result = window.start_dragging();
+                app.state::<PetState>()
+                    .dragging
+                    .store(false, Ordering::Relaxed);
+                result.map_err(|e| e.to_string())?;
+                settle(&app)?;
+                Ok(json!({}))
+            }
         }
         "motion_preference" => {
             let reduced = value.and_then(|v| v.as_bool()).ok_or("动态效果偏好无效")?;
@@ -883,7 +917,7 @@ pub async fn pet_action(
             {
                 return Err("设置超出允许范围".into());
             }
-            save(&data(&app)?.join("pet-settings-v1.json"), &s)?;
+            save_settings(&data(&app)?, &s)?;
             *app.state::<PetState>().settings.lock().unwrap() = s.clone();
             for name in ["pet", "pet-bubble"] {
                 if let Some(w) = app.get_webview_window(name) {
@@ -1064,6 +1098,56 @@ pub fn setup_tray(app: &tauri::AppHandle) -> Result<(), String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn basic_appearance_keeps_existing_settings_compatible_with_rollback() {
+        #[derive(Deserialize)]
+        #[serde(deny_unknown_fields)]
+        struct Rc18Settings {
+            version: u32,
+            topmost: bool,
+            size: f64,
+            animation: bool,
+            quiet: bool,
+            focus: bool,
+            proactive: bool,
+            banter: bool,
+            cooldown_minutes: u32,
+            daily_limit: u32,
+            quiet_start: u32,
+            quiet_end: u32,
+            event_allowlist: Vec<String>,
+        }
+        let root = std::env::temp_dir().join(format!("lp-pet-settings-{}", uuid::Uuid::new_v4()));
+        fs::create_dir(&root).unwrap();
+        let prefs = PetSettings {
+            basic_appearance: true,
+            size: 1.2,
+            quiet: true,
+            ..PetSettings::default()
+        };
+        save_settings(&root, &prefs).unwrap();
+        let old: Rc18Settings =
+            serde_json::from_value(private_json(&root.join("pet-settings-v1.json")).unwrap())
+                .unwrap();
+        assert_eq!(old.size, 1.2);
+        assert!(old.quiet && old.topmost && old.animation && old.focus && old.banter);
+        assert!(!old.proactive);
+        assert_eq!(
+            (old.version, old.cooldown_minutes, old.daily_limit),
+            (1, 30, 4)
+        );
+        assert_eq!((old.quiet_start, old.quiet_end), (22, 8));
+        assert_eq!(old.event_allowlist, prefs.event_allowlist);
+        let loaded = read_settings(&root);
+        assert!(loaded.basic_appearance && loaded.quiet);
+        assert_eq!(loaded.size, 1.2);
+        fs::remove_file(root.join("pet-appearance-v1.json")).unwrap();
+        let old_install = read_settings(&root);
+        assert!(!old_install.basic_appearance);
+        assert!(old_install.quiet);
+        assert_eq!(old_install.size, 1.2);
+        fs::remove_dir_all(root).unwrap();
+    }
     #[test]
     fn edge_placement() {
         assert_eq!(

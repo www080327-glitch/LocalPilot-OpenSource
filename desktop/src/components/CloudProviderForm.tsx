@@ -36,16 +36,19 @@ export function CloudProviderForm({
         return;
       }
       const result = await call<Json>("configure_cloud_key", {
-        key,
+        key: key.trim(),
         provider,
         model: model.trim(),
         confirmed: true,
+        replaceKey: true,
       });
       setKey("");
       setNotice(
         result.status === "already_configured"
           ? `${name} / ${model.trim()} 已有配置，保留原有密钥。可在模型选择器选择此模型。`
-          : `${name} 配置已保存，服务已连接。可在模型选择器选择 ${model.trim()}；API 是否可用以实际任务结果为准。`,
+          : result.status === "credential_updated"
+            ? `${name} / ${model.trim()} 的密钥已更新，服务已重新连接。可以重试之前的任务。`
+            : `${name} 配置已保存，服务已连接。可在模型选择器选择 ${model.trim()}；API 是否可用以实际任务结果为准。`,
       );
       await onConnected?.();
     } catch (error) {
@@ -101,13 +104,13 @@ export function CloudProviderForm({
       </label>
       <button
         className="secondary"
-        disabled={!desktop || disabled || busy || !key || !model.trim()}
+        disabled={!desktop || disabled || busy || !key.trim() || !model.trim()}
         onClick={() => void connect()}
       >
-        {busy ? "正在连接…" : "保存并连接"}
+        {busy ? "正在连接…" : "保存密钥并连接"}
       </button>
       <p className="micro muted">
-        密钥仅保存到本机私有目录。连接配置不会发送任务；发送任务时按当前权限处理云端上下文。
+        密钥保存在本机。再次保存会更新此模型的密钥。连接后的实际任务会使用所选模型。
       </p>
       {notice && (
         <p role="status" aria-live="polite">

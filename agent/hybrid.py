@@ -260,12 +260,14 @@ class HybridController:
                             'child_status': set(), 'wait_children': set(), 'cancel_child': {'worker_id'},
                             'manage_goal': {'action', 'id', 'status'}, 'get_env': set(),
                             'search_text': {'path', 'file_pattern', 'case_sensitive', 'max_results'},
+                            'recall_history': {'reference', 'offset'},
                         }.get(call.name, set())
                         projected = {k: deepcopy(v) for k, v in args.items() if k in public}
                         private_fields = {
                             'delegate': {'task'}, 'request_model_switch': {'reason'},
                             'manage_goal': {'description', 'subgoals'},
                             'search_text': {'query'}, 'execute': {'argv'}, 'run_command': {'argv'},
+                            'recall_history': {'query'},
                         }.get(call.name, set())
                         # Keep schema field names and types; a hash must never
                         # masquerade as a fresh, advertised tool parameter.
@@ -288,6 +290,11 @@ class HybridController:
                 m.tool_calls = calls
             elif m.role == 'tool':
                 name, args = proposals.get(m.tool_call_id, (None, {}))
+                history_reader = getattr(self.runtime.registry, 'canonical_history_reader', None)
+                if name == 'recall_history' and history_reader is not None:
+                    m.content = json.dumps(history_reader.project_cloud_result(json.loads(m.content or '{}')))
+                    out.append(m)
+                    continue
                 if name in getattr(self.runtime.registry, 'public_tool_results', ()):
                     out.append(m)
                     continue

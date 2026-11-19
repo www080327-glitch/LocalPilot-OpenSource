@@ -45,15 +45,16 @@ export function ComponentUpgrades({
   const [reviewed, setReviewed] = useState(false);
   const [identityAllowed, setIdentityAllowed] = useState(true);
   const [error, setError] = useState("");
-  async function load() {
+  const [stoppedServices, setStoppedServices] = useState<string[]>([]);
+  async function load(selectedPlanId: string | undefined = plan?.id) {
     const rows: Json[] =
       result(await call<Json>("upgrade_plan", { module: "history" }))
         .upgrades || [];
     setRecords(rows);
-    const selected = rows.find((row) => row.plan.id === plan?.id);
-    if (selected) {
-      setReceipt(selected.receipt || null);
-      setHandoffError(selected.handoff_error || null);
+    if (selectedPlanId) {
+      const selected = rows.find((row) => row.plan.id === selectedPlanId);
+      setReceipt(selected?.receipt || null);
+      setHandoffError(selected?.handoff_error || null);
     }
   }
   useEffect(() => {
@@ -68,9 +69,11 @@ export function ComponentUpgrades({
     setHandoffError(null);
     setPlan(null);
     setIdentityAllowed(true);
+    setStoppedServices([]);
     try {
-      setPlan(result(await call<Json>("upgrade_plan", { module })));
-      await load();
+      const created = result(await call<Json>("upgrade_plan", { module }));
+      setPlan(created);
+      await load(created.id);
     } catch (e) {
       setError(String(e));
     } finally {
@@ -92,6 +95,25 @@ export function ComponentUpgrades({
         throw Error(value?.error || "操作返回未知结果，请读取原计划收据。");
       setReceipt(value);
       await load();
+    } catch (e) {
+      setError(String(e));
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function stopService(module: "core" | "companion", label: string) {
+    setBusy(true);
+    setError("");
+    try {
+      const stopped = await call<Json>("product_control", {
+        operation: "service_control",
+        args: { module, action: "stop", confirmed: true },
+      });
+      if (stopped.status !== "stopped") {
+        setError(`${label} 仍在停止，请稍后再次检查。`);
+        return;
+      }
+      setStoppedServices((old) => [...old, label]);
     } catch (e) {
       setError(String(e));
     } finally {
@@ -231,14 +253,33 @@ export function ComponentUpgrades({
           ))}
           <p>
             Core、Companion
-            和已安装的消息平台服务必须先安全停止。存在活动任务时不会自动终止或重放；完成后在服务管理中显式恢复。
+            和已安装的消息平台服务需要先停止。请等待任务完成，再使用下方按钮停止当前安装的服务。
           </p>
           {plan.blocking_services?.length > 0 && (
             <p className="form-error">
               生成计划时仍运行：{plan.blocking_services.join("、")}
-              。请先在服务管理中停止；执行时将再次检查。
+              。执行安装时会重新检查。
             </p>
           )}
+          <div className="management-actions">
+            {(
+              [
+                ["companion", "Companion"],
+                ["core", "Core"],
+              ] as const
+            ).map(([module, label]) => (
+              <button
+                className="secondary"
+                key={module}
+                disabled={busy || stoppedServices.includes(label)}
+                onClick={() => void stopService(module, label)}
+              >
+                {stoppedServices.includes(label)
+                  ? `${label} 已停止`
+                  : `停止 ${label}`}
+              </button>
+            ))}
+          </div>
           <label className="tool-confirm">
             <input
               type="checkbox"
@@ -322,6 +363,7 @@ export function ComponentUpgrades({
               key={row.plan.id}
               onClick={() => {
                 setPlan(row.plan);
+                setStoppedServices([]);
                 setReceipt(row.receipt || null);
                 setHandoffError(row.handoff_error || null);
                 setReviewed(false);

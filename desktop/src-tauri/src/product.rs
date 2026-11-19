@@ -691,6 +691,7 @@ pub async fn configure_cloud_key(
     confirmed: bool,
     provider: Option<String>,
     model: Option<String>,
+    replace_key: Option<bool>,
 ) -> Result<Value, String> {
     let provider = provider.as_deref().unwrap_or("deepseek");
     if !["deepseek", "openai"].contains(&provider) {
@@ -725,6 +726,9 @@ pub async fn configure_cloud_key(
     ];
     if let Some(model) = model {
         args.push(format!("--model={model}"));
+    }
+    if replace_key.unwrap_or(false) {
+        args.push("--replace-key".into());
     }
     checked_cli(current(&n), args).await
 }

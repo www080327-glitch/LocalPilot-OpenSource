@@ -13,7 +13,13 @@ test("pet settings offer pose recovery only after a local character is identifie
     (window as any).emitFixture("pet-asset", { status: "asset_pending" }),
   );
   await expect(poses).toBeDisabled();
-  await expect(page.getByText(/未找到已登记的本机角色/)).toBeVisible();
+  await expect(page.getByText(/还没有选择角色/)).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "选择角色文件夹", exact: true }),
+  ).toBeEnabled();
+  await expect(
+    page.getByRole("checkbox", { name: "使用基础动作", exact: true }),
+  ).toBeDisabled();
   await page.evaluate(() =>
     (window as any).emitFixture("pet-asset", {
       status: "ready",
@@ -21,6 +27,9 @@ test("pet settings offer pose recovery only after a local character is identifie
     }),
   );
   await expect(poses).toBeDisabled();
+  await expect(
+    page.getByRole("checkbox", { name: "使用基础动作", exact: true }),
+  ).toBeEnabled();
   await page.evaluate(() =>
     (window as any).emitFixture("pet-asset", {
       status: "ready",
@@ -31,7 +40,7 @@ test("pet settings offer pose recovery only after a local character is identifie
   );
   await expect(poses).toBeEnabled();
   await expect(
-    page.getByText(/姿态包身份已变化。选择与当前角色对应的姿态包文件夹/),
+    page.getByText(/姿态包身份已变化。可先使用基础动作/),
   ).toBeVisible();
   await poses.click();
   await expect(page.getByText(/姿态包身份已变化/)).toHaveCount(0);

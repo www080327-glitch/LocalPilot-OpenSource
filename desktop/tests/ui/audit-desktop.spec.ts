@@ -149,8 +149,8 @@ test("cloud provider form submits OpenAI options and keeps credentials out of pr
     "gpt-6-luna",
   );
   const key = form.getByLabel("OpenAI API 密钥", { exact: true });
-  await key.fill("fixture-only-not-a-secret-key");
-  await form.getByRole("button", { name: "保存并连接" }).click();
+  await key.fill("  fixture-only-not-a-secret-key  ");
+  await form.getByRole("button", { name: "保存密钥并连接" }).click();
   await expect(key).toHaveValue("");
   const calls = await page.evaluate(() =>
     (window as any).fixtureCalls.filter(
@@ -165,6 +165,7 @@ test("cloud provider form submits OpenAI options and keeps credentials out of pr
         provider: "openai",
         model: "gpt-6-luna",
         confirmed: true,
+        replaceKey: true,
       },
     },
   ]);
@@ -173,10 +174,17 @@ test("cloud provider form submits OpenAI options and keeps credentials out of pr
   );
   await expect(form.getByRole("status")).toContainText("OpenAI 配置已保存");
   await page.evaluate(() => {
+    (window as any).fixtureCloudStatus = "credential_updated";
+  });
+  await key.fill("fixture-corrected-key");
+  await form.getByRole("button", { name: "保存密钥并连接" }).click();
+  await expect(key).toHaveValue("");
+  await expect(form.getByRole("status")).toContainText("密钥已更新");
+  await page.evaluate(() => {
     (window as any).fixtureCloudStatus = "already_configured";
   });
   await key.fill("fixture-second-unused-key");
-  await form.getByRole("button", { name: "保存并连接" }).click();
+  await form.getByRole("button", { name: "保存密钥并连接" }).click();
   await expect(key).toHaveValue("");
   await expect(form.getByRole("status")).toContainText("保留原有密钥");
   await expect(form.getByRole("status")).not.toContainText("配置已保存");

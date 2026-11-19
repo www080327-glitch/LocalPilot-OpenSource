@@ -211,6 +211,8 @@ class TaskService:
             raise PersistenceError("Runtime database must be outside the tool workspace")
         for runtime in nodes(session.runtime):
             runtime._persistence_hook = lambda point, sid=session.id: self._checkpoint(sid, point)
+        from agent.history_recall import attach
+        attach(session, self.store)
 
     def _arm_timer(self, task):
         if task.deadline is None:
@@ -449,10 +451,13 @@ class TaskService:
         previous_tasks = self.tasks
         previous_routes, previous_start = session.child_route_contexts, session.context_start
         previous_hybrid = runtime.hybrid.state if runtime.hybrid else None
+        previous_adaptive = runtime.adaptive.state if runtime.adaptive else None
         for name, value in retained.items():
             setattr(runtime, name, value)
         if runtime.hybrid:
             runtime.hybrid.state = runtime.hybrid.retained_history_state()
+        if runtime.adaptive:
+            runtime.adaptive.state = runtime.adaptive.retained_history_state()
         self.tasks = {key: task for key, task in self.tasks.items() if key not in retired_ids}
         if session.child_route_contexts:
             session.child_route_contexts = {key: value for key, value in session.child_route_contexts.items()
@@ -468,23 +473,28 @@ class TaskService:
             session.child_route_contexts, session.context_start = previous_routes, previous_start
             if runtime.hybrid:
                 runtime.hybrid.state = previous_hybrid
+            if runtime.adaptive:
+                runtime.adaptive.state = previous_adaptive
             session.history_generation -= 1
             raise
 
     def _history_rotation(self, session):
         from agent.session_history import retained_turn
         from agent.session_types import SessionState
+        from agent.computer_ledger import computer_obligations
 
         runtime = session.runtime
-        if (not self.store or not runtime.engine_policy or runtime.computer or runtime.adaptive
-                or runtime.hybrid and runtime.hybrid.state['grants']
+        if (not self.store or not runtime.engine_policy
                 or not session.last_task or runtime.state != SessionState.TURN_FINISHED):
             return None
         latest = self._task(session.last_task)
         if latest.status not in TERMINAL or latest.executing or latest.control_pending:
             return None
         tree = list(nodes(runtime))
-        if (recovery_class(runtime) != 'SAFE_TO_RESUME'
+        if runtime.computer and (runtime.computer.paused or any(computer_obligations(runtime.tool_history))):
+            return None
+        recovery = 'REQUIRES_REOBSERVATION' if runtime.computer else 'SAFE_TO_RESUME'
+        if (recovery_class(runtime) != recovery
                 or any(node._queue or node._durable_intent for node in tree)
                 or any(node.state != SessionState.SESSION_FINISHED for node in tree[1:])
                 or self.scheduler and any(self.scheduler.owns_worker(node, worker_id)

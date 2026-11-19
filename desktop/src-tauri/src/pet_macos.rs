@@ -35,13 +35,16 @@ pub fn diagnostics(app: &tauri::AppHandle) -> Result<Value, String> {
                 "frame_points":{"x":f.origin.x,"y":f.origin.y,"width":f.size.width,"height":f.size.height}}));
         }
     }
-    let character = {
-        let state = app.state::<pet_native::PetState>();
-        let edge = state.edge.lock().unwrap();
-        edge.pack.as_ref().map(|p| p.identity.clone())
-    };
+    let appearance = pet_assets::diagnostic_appearance(
+        &data(app)?,
+        app.state::<pet_native::PetState>()
+            .settings
+            .lock()
+            .unwrap()
+            .basic_appearance,
+    );
     Ok(
-        json!({"character":character,"pid":std::process::id(),"bundle_id":app.config().identifier,"windows":rows,
+        json!({"character":appearance["character"],"appearance_mode":appearance["appearance_mode"],"pid":std::process::id(),"bundle_id":app.config().identifier,"windows":rows,
         "edge":pet_edge::snapshot(app),"thought_glass":thought_glass_diagnostics(app),
         "pose":*app.state::<pet_native::PetState>().pose.lock().unwrap(),
         "drag_count":app.state::<pet_native::PetState>().drag_count.load(Ordering::Relaxed),
@@ -120,6 +123,9 @@ pub fn install(app: &tauri::AppHandle) {
                         origin.x = *ox + dx;
                         origin.y = *oy + dy;
                         native.setFrameOrigin(origin);
+                        // Subsequent direction follows the latest movement, including
+                        // reversals that have not crossed the initial press point.
+                        (*x, *y, *ox, *oy) = (point.x, point.y, origin.x, origin.y);
                     }
                 }
                 std::ptr::null_mut()

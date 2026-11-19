@@ -253,7 +253,7 @@ class SessionSegmentTests(unittest.TestCase):
         self.assertEqual(service.store.runtime_segments(sid), [])
         self.assertEqual((self.workspace / 'uncertain.txt').read_text(), 'written once')
 
-    def test_exact_egress_grants_remain_unmodified_and_skip_rotation(self):
+    def test_exact_egress_grants_remain_unmodified_during_rotation_and_restart(self):
         self.egress = 'REQUIRES_APPROVAL'
         service = self.service()
         sid = service.create_session()['id']
@@ -263,7 +263,9 @@ class SessionSegmentTests(unittest.TestCase):
             service.act(pending['id'], 'approve', pending['required_action']['id'])
             self.assertEqual(service.wait(pending['id'])['status'], 'completed')
         self.assertEqual(len(service.sessions[sid].runtime.hybrid.state['grants']), 3)
-        self.assertEqual(service.store.runtime_segments(sid), [])
+        self.assertEqual(len(service.store.runtime_segments(sid)), 1)
+        archived = service.store.runtime_segment(sid, 0)['runtime']['hybrid']['state']['grants']
+        self.assertEqual(archived, service.sessions[sid].runtime.hybrid.state['grants'][:2])
         grants = deepcopy(service.sessions[sid].runtime.hybrid.state['grants'])
         service.suspend()
         service = self.service()

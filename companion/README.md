@@ -30,7 +30,7 @@ companion --config /path/to/companion.json ui --show
 
 Help confirmation permits submitting a task. Tool approval stays with the Core Permission Gateway and a separate trusted operator. Cloud consultation needs its own explicit consent and a new question-only Session. Closing a card, declining help, and stopping a task are distinct actions. UNKNOWN never authorizes replay.
 
-API and client contract: 1.0. Current source integration: Core 5.0.0b33 (API 1.0). Historical 4.9.2 RC consumer evidence remains historical. Initial migration from old Companion 0.5.4 requires upgrading Companion first. Keep data outside the installation directory.
+API and client contract: 1.0. Current source integration: Core 5.0.0b36 (API 1.0). Historical 4.9.2 RC consumer evidence remains historical. Initial migration from old Companion 0.5.4 requires upgrading Companion first. Keep data outside the installation directory.
 
 This is a scoped release candidate. A real ordinary arithmetic prompt produced an incorrect 0.8B answer; factual accuracy is not guaranteed by the routing or host verifier. See the joint release report and failure ledger. The portable Linux service has regression coverage; Intel hardware, native macOS lifecycle and all-day stability still require device validation.
 

@@ -19,6 +19,7 @@ export function ProductSettings({
   models,
   onDefaultModel,
   onUpdates,
+  onModelsChanged,
 }: {
   meeting: CompanionMeeting;
   enterBehavior: EnterBehavior;
@@ -27,6 +28,7 @@ export function ProductSettings({
   models: any[];
   onDefaultModel: (s: string) => void;
   onUpdates: () => void;
+  onModelsChanged?: () => void | Promise<void>;
   permissionMode: string;
   onPermission: (s: string) => void;
   onModels: () => void;
@@ -207,7 +209,7 @@ export function ProductSettings({
       </details>
       <details className="advanced-settings">
         <summary>连接云端模型</summary>
-        <CloudProviderForm />
+        <CloudProviderForm onConnected={onModelsChanged} />
       </details>
       <p className="micro muted">
         数据与隐私：本地附件在授权工作区保留副本。选择云端模型后，按当前权限处理并发送上下文。关闭窗口不会删除配置、历史或任务。

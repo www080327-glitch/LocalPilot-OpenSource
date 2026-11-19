@@ -5,6 +5,16 @@ use sha2::{Digest, Sha256};
 use std::io::Write;
 
 pub(super) const HIT_ALPHA: u8 = 24;
+const CHARACTER_IDS: [&str; 8] = [
+    "deepseek-whale-maid-chibi-v4",
+    "chatgpt-white-dragon-chibi-v5",
+    "claude-orange-scholar-chibi-v3",
+    "gemini-star-cat-chibi-v1",
+    "grok-gothic-chibi-v1",
+    "kimi-moon-maid-chibi-v2",
+    "qwen-chibi-scholar-v3",
+    "zhipu-chibi-tech-v2",
+];
 
 pub struct Sprite {
     pub width: u32,
@@ -29,7 +39,7 @@ impl Atlas {
         ]
     }
 }
-fn decode(bytes: &[u8]) -> Result<Atlas, String> {
+pub(super) fn decode(bytes: &[u8]) -> Result<Atlas, String> {
     if bytes.len() > 16 * 1024 * 1024 {
         return Err("素材超过 16 MB".into());
     }
@@ -96,21 +106,11 @@ pub async fn pet_asset(
         .home_dir()
         .map_err(|e| e.to_string())?
         .join(".codex/pets");
-    let allowed = [
-        "deepseek-whale-maid-chibi-v4",
-        "chatgpt-white-dragon-chibi-v5",
-        "claude-orange-scholar-chibi-v3",
-        "gemini-star-cat-chibi-v1",
-        "grok-gothic-chibi-v1",
-        "kimi-moon-maid-chibi-v2",
-        "qwen-chibi-scholar-v3",
-        "zhipu-chibi-tech-v2",
-    ];
     if action == "import_edge" {
         let meta = private_json(&data(&app)?.join("pet-asset-v1.json"))?;
         let identity = meta["id"]
             .as_str()
-            .filter(|id| allowed.contains(id))
+            .filter(|id| CHARACTER_IDS.contains(id))
             .ok_or("请先选择本机角色")?;
         let folder = rfd::AsyncFileDialog::new()
             .set_title("导入该角色的个人探头姿态包（pack.json 与 poses.png）")
@@ -131,19 +131,14 @@ pub async fn pet_asset(
         return Ok(edge);
     }
     if action == "catalog" {
-        let items: Vec<Value> = allowed
+        let items: Vec<Value> = CHARACTER_IDS
             .iter()
             .filter_map(|id| {
-                let meta: Value =
-                    serde_json::from_slice(&fs::read(library.join(id).join("pet.json")).ok()?)
-                        .ok()?;
-                if meta["id"] != *id
-                    || meta["spriteVersionNumber"] != 2
-                    || !library.join(id).join("spritesheet.webp").is_file()
-                {
+                let (identity, label) = character_metadata(&library.join(id)).ok()?;
+                if identity != *id || !library.join(id).join("spritesheet.webp").is_file() {
                     return None;
                 }
-                Some(json!({"id":id,"label":meta["displayName"]}))
+                Some(json!({"id":id,"label":label}))
             })
             .collect();
         return Ok(
@@ -151,17 +146,33 @@ pub async fn pet_asset(
         );
     }
     let target = data(&app)?.join("pet-sprite.webp");
-    if action == "import" || action == "select_local" {
+    if ["import", "import_package", "select_local"].contains(&action.as_str()) {
         let selected;
-        let chosen_path = if action == "select_local" {
+        let mut identity = None;
+        let chosen_path = if action == "import_package" {
+            let folder = rfd::AsyncFileDialog::new()
+                .set_title("选择角色文件夹（pet.json 和 spritesheet.webp）")
+                .pick_folder()
+                .await;
+            let Some(folder) = folder else {
+                return Ok(json!({"cancelled":true}));
+            };
+            identity = Some(character_metadata(folder.path())?);
+            folder.path().join("spritesheet.webp")
+        } else if action == "select_local" {
             let id = id
                 .as_deref()
-                .filter(|id| allowed.contains(id))
+                .filter(|id| CHARACTER_IDS.contains(id))
                 .ok_or("角色身份无效")?;
+            let found = character_metadata(&library.join(id))?;
+            if found.0 != id {
+                return Err("角色文件夹与身份不一致".into());
+            }
+            identity = Some(found);
             library.join(id).join("spritesheet.webp")
         } else {
             let chosen = rfd::AsyncFileDialog::new()
-                .set_title("导入有权个人使用的同系列 DeepSeek 娘图集")
+                .set_title("导入有权个人使用的 8 列、11 行透明角色图集")
                 .add_filter("透明 WebP 图集", &["webp"])
                 .pick_file()
                 .await;
@@ -171,10 +182,15 @@ pub async fn pet_asset(
             selected = chosen;
             selected.path().to_path_buf()
         };
-        let id = allowed
-            .iter()
-            .find(|id| chosen_path == library.join(id).join("spritesheet.webp"))
-            .map(|id| (*id).to_string());
+        if identity.is_none() {
+            identity = CHARACTER_IDS
+                .iter()
+                .find(|id| chosen_path == library.join(id).join("spritesheet.webp"))
+                .and_then(|id| character_metadata(&library.join(id)).ok());
+        }
+        let (id, label) = identity
+            .map(|(id, label)| (Some(id), label))
+            .unwrap_or((None, "个人角色".into()));
         let info = fs::symlink_metadata(&chosen_path).map_err(|_| "素材不可读")?;
         if !info.is_file() || info.len() > 16 * 1024 * 1024 {
             return Err("素材必须是普通文件，且小于 16 MB".into());
@@ -194,12 +210,15 @@ pub async fn pet_asset(
             .map_err(|e| e.to_string())?;
         save(
             &data(&app)?.join("pet-asset-v1.json"),
-            &json!({"version":1,"sha256":format!("{:x}",Sha256::digest(&bytes)),"usage":"personal_import","redistribution":"not_granted","id":id,"label":id.as_deref().and_then(|id| fs::read(library.join(id).join("pet.json")).ok()).and_then(|b| serde_json::from_slice::<Value>(&b).ok()).and_then(|m| m["displayName"].as_str().map(String::from)).unwrap_or_else(||"个人角色".into())}),
+            &json!({"version":1,"sha256":format!("{:x}",Sha256::digest(&bytes)),"usage":"personal_import","redistribution":"not_granted","id":id,"label":label}),
         )?;
     } else if action != "load" {
         return Err("未知素材操作".into());
     }
     if !target.exists() {
+        let state = app.state::<pet_native::PetState>();
+        *state.sprite.lock().unwrap() = None;
+        state.edge.lock().unwrap().pack = None;
         return Ok(json!({"status":"asset_pending","label":"素材待确认"}));
     }
     let info = fs::symlink_metadata(&target).map_err(|_| "素材不可读")?;
@@ -227,6 +246,30 @@ pub async fn pet_asset(
     Ok(payload)
 }
 
+pub(super) fn diagnostic_appearance(root: &Path, basic: bool) -> Value {
+    let character = private_json(&root.join("pet-asset-v1.json"))
+        .ok()
+        .and_then(|meta| meta["id"].as_str().map(String::from));
+    json!({"character":character,"appearance_mode":if basic {"basic"} else {"extended"}})
+}
+
+fn character_metadata(folder: &Path) -> Result<(String, String), String> {
+    let bytes = fs::read(folder.join("pet.json"))
+        .map_err(|_| "请选择包含 pet.json 和 spritesheet.webp 的角色文件夹")?;
+    let meta: Value = serde_json::from_slice(&bytes).map_err(|_| "角色说明 pet.json 无法读取")?;
+    let id = meta["id"]
+        .as_str()
+        .filter(|id| CHARACTER_IDS.contains(id))
+        .ok_or("这个角色身份尚未支持，请选择角色列表中的图集")?;
+    if meta["spriteVersionNumber"] != 2 {
+        return Err("请选择第 2 版角色图集，包含 8 列、11 行动作".into());
+    }
+    Ok((
+        id.to_owned(),
+        meta["displayName"].as_str().unwrap_or(id).to_owned(),
+    ))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -242,6 +285,49 @@ mod tests {
         assert_eq!(atlas.frame_rect(1, 2), [5, 8, 3, 3]);
         assert_eq!(atlas.frame_rect(7, 2), [29, 8, 3, 3]);
         assert_eq!(atlas.frame_rect(0, 0), [0, 0, 4, 4]);
+    }
+
+    #[test]
+    fn package_identity_is_read_from_the_selected_folder() {
+        let folder = std::env::temp_dir().join(format!("lp-character-{}", uuid::Uuid::new_v4()));
+        fs::create_dir(&folder).unwrap();
+        let path = folder.join("pet.json");
+        let mut meta = json!({"id":"deepseek-whale-maid-chibi-v4","displayName":"我的蓝鲸","spriteVersionNumber":2});
+        fs::write(&path, serde_json::to_vec(&meta).unwrap()).unwrap();
+        assert_eq!(
+            character_metadata(&folder).unwrap(),
+            ("deepseek-whale-maid-chibi-v4".into(), "我的蓝鲸".into())
+        );
+        meta["spriteVersionNumber"] = json!(1);
+        fs::write(&path, serde_json::to_vec(&meta).unwrap()).unwrap();
+        assert!(character_metadata(&folder).is_err());
+        meta["spriteVersionNumber"] = json!(2);
+        meta["id"] = json!("unknown-character");
+        fs::write(&path, serde_json::to_vec(&meta).unwrap()).unwrap();
+        assert!(character_metadata(&folder).is_err());
+        fs::remove_dir_all(folder).unwrap();
+    }
+
+    #[test]
+    fn diagnostics_keep_imported_identity_without_an_optional_edge_pack() {
+        let root =
+            std::env::temp_dir().join(format!("lp-pet-diagnostics-{}", uuid::Uuid::new_v4()));
+        fs::create_dir(&root).unwrap();
+        let identity = "deepseek-whale-maid-chibi-v4";
+        save(
+            &root.join("pet-asset-v1.json"),
+            &json!({"version":1,"id":identity}),
+        )
+        .unwrap();
+        assert_eq!(
+            diagnostic_appearance(&root, true),
+            json!({"character":identity,"appearance_mode":"basic"})
+        );
+        assert_eq!(
+            diagnostic_appearance(&root, false),
+            json!({"character":identity,"appearance_mode":"extended"})
+        );
+        fs::remove_dir_all(root).unwrap();
     }
 
     #[test]

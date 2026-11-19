@@ -13,6 +13,7 @@ from agent.backends import Message, ToolCall
 from agent.cloud_credentials import resolve_openai_key
 from agent.local_http import LocalBackendError
 from agent.policy import DataPolicy
+from agent.worker_tiers import configure_workers
 from localpilot_service.backend_contract import ServiceOpenAIResponsesBackend
 from localpilot_service.deployment import build
 from localpilot_service.route_backends import build_backend
@@ -41,6 +42,15 @@ def response_payload(*, text=None, call=False, status='completed'):
 
 
 class OpenAIResponsesConfigurationTests(unittest.TestCase):
+    def test_configured_worker_keeps_missing_credentials_and_local_only_boundaries(self):
+        mapping = {'LIGHT': 'openai:gpt-6.1-sol', 'STRONG': 'openai:gpt-6.2-sol'}
+        with patch.dict(os.environ, {}, clear=True):
+            backends, availability = configure_workers(mapping)
+        self.assertEqual(backends, {'LIGHT': None, 'STRONG': None})
+        self.assertEqual(availability['STRONG']['reason'], 'missing_api_credentials')
+        with self.assertRaises(PermissionError):
+            configure_workers(mapping, data_policy=DataPolicy(local_only=True))
+
     def test_gpt55_default_efforts_match_alias_and_dated_snapshot(self):
         for model in ('gpt-5.5', 'gpt-5.5-2026-04-23'):
             with self.subTest(model=model):
@@ -106,6 +116,26 @@ class OpenAIResponsesConfigurationTests(unittest.TestCase):
 class OpenAIResponsesTransportTests(OpenAICloudFixture):
     def backend(self, **options):
         return super().backend(protocol='responses', **options)
+
+    def test_explicit_cli_worker_models_use_responses_and_preserve_output_budget(self):
+        workers, availability = configure_workers({
+            'LIGHT': 'openai:gpt-6.1-sol', 'STRONG': 'openai:gpt-6.2-sol'})
+        for tier, model in (('LIGHT', 'gpt-6.1-sol'), ('STRONG', 'gpt-6.2-sol')):
+            with self.subTest(tier=tier):
+                backend = workers[tier]
+                self.assertEqual(backend.base_url, 'https://api.openai.com/v1')
+                backend.base_url = self.model.base_url
+                self.model.add(response_payload(text='WORKER-OK'))
+                result = backend.request([Message('user', 'public worker fixture')],
+                                         thinking='medium', max_tokens=512)
+                self.assertEqual(result.message.content, 'WORKER-OK')
+                self.assertEqual(self.model.headers[-1][0], '/v1/responses')
+                payload = self.model.requests[-1]
+                self.assertEqual(payload['model'], model)
+                self.assertEqual(payload['reasoning'], {'effort': 'medium'})
+                self.assertEqual(payload['max_output_tokens'], 512)
+                self.assertFalse(payload['store'])
+                self.assertFalse(availability[tier]['verified_api_access'])
 
     def test_tool_result_and_encrypted_reasoning_replay_use_responses_wire_format(self):
         backend = self.backend()

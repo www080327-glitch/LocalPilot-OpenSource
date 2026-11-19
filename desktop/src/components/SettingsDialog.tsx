@@ -145,7 +145,7 @@ export function SettingsDialog({
           保存全局默认值
         </button>
       </section>
-      <ProductSettings {...product} />
+      <ProductSettings {...product} onModelsChanged={refresh} />
       <details className="advanced-settings">
         <summary>高级设置 · 服务、API、路由与诊断</summary>
         <div className="settings-grid">

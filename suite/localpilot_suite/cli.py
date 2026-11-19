@@ -177,9 +177,10 @@ def main(argv=None):
             p=argparse.ArgumentParser();p.add_argument('--key-file',required=True)
             p.add_argument('--provider',choices=['deepseek','openai'],default='deepseek')
             p.add_argument('--model')
+            p.add_argument('--replace-key',action='store_true')
             a=p.parse_args(rest[1:])
             from .desktop_setup import configure_cloud
-            emit(configure_cloud(home,a.key_file,provider=a.provider,model=a.model));return 0
+            emit(configure_cloud(home,a.key_file,provider=a.provider,model=a.model,replace_key=a.replace_key));return 0
         if rest[0]=='cloud-scope':
             p=argparse.ArgumentParser();p.add_argument('--paths-json',required=True)
             a=p.parse_args(rest[1:])

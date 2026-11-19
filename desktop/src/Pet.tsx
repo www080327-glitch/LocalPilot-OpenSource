@@ -882,15 +882,18 @@ export default function Pet() {
               <button
                 className="pet-row-button"
                 onClick={() =>
-                  void call<any>("pet_asset", { action: "import" })
+                  void call<any>("pet_asset", { action: "import_package" })
                     .then((result) => {
                       if (!result.cancelled) setAsset(result);
                     })
                     .catch(handleError)
                 }
               >
-                导入个人角色素材
+                选择角色文件夹
               </button>
+              <p className="pet-explanation">
+                选择下载或保存的角色文件夹，即可在这里使用。文件夹中应有角色说明和图片。
+              </p>
               <h4>本机任务</h4>
               <button
                 className="pet-row-button"
@@ -974,10 +977,26 @@ export default function Pet() {
               </div>
               {!characters.length && !asset?.id && (
                 <p className="pet-explanation">
-                  未找到已登记的本机角色。恢复个人角色库 ~/.codex/pets
-                  中的角色包后，重启桌宠。
+                  还没有选择角色。点击“选择角色文件夹”导入，随后打开“使用基础动作”即可显示。
                 </p>
               )}
+              <label className="pet-setting">
+                <span>使用基础动作</span>
+                <input
+                  type="checkbox"
+                  checked={settings.basic_appearance}
+                  disabled={asset?.status !== "ready"}
+                  onChange={(e) =>
+                    void update({
+                      ...settings,
+                      basic_appearance: e.target.checked,
+                    })
+                  }
+                />
+              </label>
+              <p className="pet-explanation">
+                使用当前角色自带的动作显示和拖动。导入完整探头姿态后，可关闭此选项使用专门的扒边动作。
+              </p>
               <button
                 className="pet-row-button"
                 disabled={!asset?.id}
@@ -995,12 +1014,31 @@ export default function Pet() {
                   <p className="pet-explanation">
                     {asset?.edge?.error ? `${asset.edge.error}。` : ""}
                     {asset?.id
-                      ? "选择与当前角色对应的姿态包文件夹，内含 pack.json 和 poses.png。"
+                      ? "可先使用基础动作，也可选择当前角色的完整探头姿态文件夹。"
                       : characters.length > 0
                         ? edgeImportHint(asset)
                         : ""}
                   </p>
                 )}
+              <details>
+                <summary>高级 · 导入单张角色图集</summary>
+                <button
+                  className="pet-row-button"
+                  onClick={() =>
+                    void call<any>("pet_asset", { action: "import" })
+                      .then((result) => {
+                        if (!result.cancelled) setAsset(result);
+                      })
+                      .catch(handleError)
+                  }
+                >
+                  选择角色图集文件
+                </button>
+                <p className="pet-explanation">
+                  适用于已有 8 列、11 行透明 WebP
+                  图集的用户。导入后可开启基础动作。
+                </p>
+              </details>
               {toggle("banter", "偶尔碎碎念 · 哦鲸鲸")}
               {toggle("topmost", "总在上方")}
               {toggle("animation", "轻柔动画")}

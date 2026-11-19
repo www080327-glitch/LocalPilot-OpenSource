@@ -21,11 +21,33 @@ export default function EdgeCharacter({
 }) {
   const [edge, setEdge] = useState<EdgePresentation | null>(null),
     [pack, setPack] = useState<EdgePack | undefined>(),
+    [loadedImages, setLoadedImages] = useState<Set<string>>(() => new Set()),
     [error, setError] = useState("");
   const pointer = useRef<{ x: number; y: number; dragged: boolean } | null>(
     null,
   );
   useEffect(() => setPack(asset?.edge), [asset]);
+  useEffect(() => {
+    setLoadedImages(new Set());
+    setError("");
+    const images = [asset, pack, ...Object.values(pack?.extras || {})]
+      .filter((source) => source?.url)
+      .map((source) => {
+        const url = source!.url!;
+        const image = new Image();
+        image.onload = () =>
+          setLoadedImages((loaded) => new Set(loaded).add(url));
+        image.onerror = () =>
+          setError("当前角色图片未能显示，请在宠物设置中重新导入");
+        image.src = url;
+        return image;
+      });
+    return () =>
+      images.forEach((image) => {
+        image.onload = null;
+        image.onerror = null;
+      });
+  }, [asset, pack]);
   useEffect(() => {
     const events = petEvents((error) => setError(String(error)));
     let stopProbe = () => {};
@@ -59,6 +81,8 @@ export default function EdgeCharacter({
         className={`edge-sprite ${cls}`}
         role="img"
         aria-label={asset?.label || "角色"}
+        data-image-ready={loadedImages.has(src.url)}
+        data-sprite-source={part.source}
         style={{
           left: b[0],
           top: b[1],
@@ -183,7 +207,9 @@ export default function EdgeCharacter({
           {caption}
         </span>
       </button>
-      {(!pack?.url || r?.source === "pending" || error) && (
+      {(r?.source === "pending" ||
+        (!settings.basic_appearance && !pack?.url) ||
+        error) && (
         <span className="edge-pending">
           {error || edgeImportHint(asset, pack?.status)}
         </span>

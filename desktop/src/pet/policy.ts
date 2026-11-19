@@ -5,6 +5,7 @@ export interface PetSettings {
   topmost: boolean;
   size: number;
   animation: boolean;
+  basic_appearance: boolean;
   quiet: boolean;
   focus: boolean;
   proactive: boolean;
@@ -20,6 +21,7 @@ export const defaults: PetSettings = {
   topmost: true,
   size: 1,
   animation: true,
+  basic_appearance: false,
   quiet: false,
   focus: true,
   proactive: false,
